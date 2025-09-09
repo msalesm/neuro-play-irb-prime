@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Brain, Gamepad2, Heart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-gaming.jpg";
 
 export const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background with gradient overlay */}
@@ -44,6 +47,7 @@ export const HeroSection = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <Button 
             size="lg" 
+            onClick={() => navigate('/games')}
             className="bg-white text-primary hover:bg-white/90 shadow-glow text-lg px-8 py-4 transition-bounce font-semibold"
           >
             Explorar Jogos
