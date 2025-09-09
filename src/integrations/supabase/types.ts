@@ -2147,7 +2147,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      doctor_profiles_public: {
+        Row: {
+          approved: boolean | null
+          bio: string | null
+          created_at: string | null
+          id: string | null
+          is_online: boolean | null
+          location_public: Json | null
+          photo_url: string | null
+          rating_avg: number | null
+          specialty: string | null
+          user_id: string | null
+        }
+        Insert: {
+          approved?: boolean | null
+          bio?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_online?: boolean | null
+          location_public?: never
+          photo_url?: string | null
+          rating_avg?: number | null
+          specialty?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          approved?: boolean | null
+          bio?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_online?: boolean | null
+          location_public?: never
+          photo_url?: string | null
+          rating_avg?: number | null
+          specialty?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_current_user_role: {
@@ -2173,6 +2211,19 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      search_doctors_secure: {
+        Args: { p_city?: string; p_specialty?: string; p_state?: string }
+        Returns: {
+          bio: string
+          id: string
+          location_city: string
+          location_state: string
+          photo_url: string
+          rating_avg: number
+          specialty: string
+          user_id: string
+        }[]
       }
       update_trending_topics: {
         Args: Record<PropertyKey, never>
