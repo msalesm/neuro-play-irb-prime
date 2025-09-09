@@ -11,6 +11,7 @@ import Games from "./pages/Games";
 import Dashboard from "./pages/Dashboard";
 import MindfulBreath from "./pages/games/MindfulBreath";
 import FocusForest from "./pages/games/FocusForest";
+import SocialScenarios from "./pages/games/SocialScenarios";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/games" element={<Games />} />
             <Route path="/games/mindful-breath" element={<MindfulBreath />} />
             <Route path="/games/focus-forest" element={<FocusForest />} />
+            <Route path="/games/social-scenarios" element={<SocialScenarios />} />
             <Route path="/dashboard" element={<Dashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

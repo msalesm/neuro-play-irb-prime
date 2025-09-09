@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Target } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const pilotGames = [
   {
@@ -13,7 +14,8 @@ const pilotGames = [
     duration: "10-20 min",
     players: "1 jogador",
     status: "Em desenvolvimento",
-    color: "bg-green-100 text-green-800"
+    color: "bg-green-100 text-green-800",
+    route: "/games/mindful-breath"
   },
   {
     title: "Focus Forest",
@@ -24,7 +26,8 @@ const pilotGames = [
     duration: "15-30 min",
     players: "1-2 jogadores",
     status: "Alpha testing",
-    color: "bg-blue-100 text-blue-800"
+    color: "bg-blue-100 text-blue-800",
+    route: "/games/focus-forest"
   },
   {
     title: "Social Scenarios Simulator",
@@ -35,11 +38,18 @@ const pilotGames = [
     duration: "20-40 min",
     players: "1-4 jogadores",
     status: "Conceito validado",
-    color: "bg-purple-100 text-purple-800"
+    color: "bg-purple-100 text-purple-800",
+    route: "/games/social-scenarios"
   }
 ];
 
 export const PilotGames = () => {
+  const navigate = useNavigate();
+
+  const handleGameClick = (route: string) => {
+    navigate(route);
+  };
+
   return (
     <section className="py-24 bg-gradient-card">
       <div className="container mx-auto px-6">
@@ -106,8 +116,9 @@ export const PilotGames = () => {
               <Button 
                 className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
                 variant="outline"
+                onClick={() => handleGameClick(game.route)}
               >
-                Saber Mais
+                Jogar Agora
               </Button>
             </Card>
           ))}
