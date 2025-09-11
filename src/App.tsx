@@ -17,6 +17,10 @@ import FocusQuest from "./pages/games/FocusQuest";
 import SocialScenarios from "./pages/games/SocialScenarios";
 import SocialCompass from "./pages/games/SocialCompass";
 import EmotionalWeather from "./pages/games/EmotionalWeather";
+import BalanceQuest from "./pages/games/BalanceQuest";
+import SensoryFlow from "./pages/games/SensoryFlow";
+import VisualSync from "./pages/games/VisualSync";
+import TouchMapper from "./pages/games/TouchMapper";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +50,10 @@ const App = () => (
               <Route path="/games/social-scenarios" element={<SocialScenarios />} />
               <Route path="/games/social-compass" element={<SocialCompass />} />
               <Route path="/games/emotional-weather" element={<EmotionalWeather />} />
+              <Route path="/games/balance-quest" element={<BalanceQuest />} />
+              <Route path="/games/sensory-flow" element={<SensoryFlow />} />
+              <Route path="/games/visual-sync" element={<VisualSync />} />
+              <Route path="/games/touch-mapper" element={<TouchMapper />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
