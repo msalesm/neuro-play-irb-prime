@@ -2180,7 +2180,63 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_profiles_basic: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string | null
+          is_public: boolean | null
+          name: string | null
+          updated_at: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id?: string | null
+          is_public?: boolean | null
+          name?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string | null
+          is_public?: boolean | null
+          name?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
+      user_profiles_contact: {
+        Row: {
+          address: Json | null
+          created_at: string | null
+          email: string | null
+          id: string | null
+          name: string | null
+          phone: string | null
+        }
+        Insert: {
+          address?: Json | null
+          created_at?: string | null
+          email?: string | null
+          id?: string | null
+          name?: string | null
+          phone?: string | null
+        }
+        Update: {
+          address?: Json | null
+          created_at?: string | null
+          email?: string | null
+          id?: string | null
+          name?: string | null
+          phone?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_current_user_role: {
