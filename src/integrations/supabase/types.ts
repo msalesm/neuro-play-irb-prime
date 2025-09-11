@@ -101,6 +101,39 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_permissions: {
+        Row: {
+          expires_at: string | null
+          granted_at: string | null
+          granted_by: string | null
+          id: string
+          is_active: boolean | null
+          permission: Database["public"]["Enums"]["admin_permission"]
+          reason: string | null
+          user_id: string
+        }
+        Insert: {
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          permission: Database["public"]["Enums"]["admin_permission"]
+          reason?: string | null
+          user_id: string
+        }
+        Update: {
+          expires_at?: string | null
+          granted_at?: string | null
+          granted_by?: string | null
+          id?: string
+          is_active?: boolean | null
+          permission?: Database["public"]["Enums"]["admin_permission"]
+          reason?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_predictions: {
         Row: {
           confidence_score: number
@@ -2182,6 +2215,13 @@ export type Database = {
           urgency_level: string
         }[]
       }
+      has_admin_permission: {
+        Args: {
+          _permission: Database["public"]["Enums"]["admin_permission"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -2208,6 +2248,13 @@ export type Database = {
       }
     }
     Enums: {
+      admin_permission:
+        | "view_basic_profiles"
+        | "view_contact_info"
+        | "view_medical_data"
+        | "modify_profiles"
+        | "delete_profiles"
+        | "full_admin_access"
       app_role: "admin" | "moderator" | "user"
       clothing_category:
         | "dresses"
@@ -2382,6 +2429,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      admin_permission: [
+        "view_basic_profiles",
+        "view_contact_info",
+        "view_medical_data",
+        "modify_profiles",
+        "delete_profiles",
+        "full_admin_access",
+      ],
       app_role: ["admin", "moderator", "user"],
       clothing_category: [
         "dresses",
