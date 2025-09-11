@@ -9,6 +9,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Games from "./pages/Games";
+import GameMap from "./components/GameMap";
 import Dashboard from "./pages/Dashboard";
 import MindfulBreath from "./pages/games/MindfulBreath";
 import FocusForest from "./pages/games/FocusForest";
@@ -37,6 +38,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/game-map" element={<GameMap />} />
               <Route path="/games" element={<Games />} />
               <Route path="/games/mindful-breath" element={<MindfulBreath />} />
               <Route path="/games/focus-forest" element={<FocusForest />} />

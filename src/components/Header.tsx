@@ -8,6 +8,7 @@ export const Header = () => {
   const location = useLocation();
 
   const navigation = [
+    { name: 'Mapa', href: '/game-map', icon: Brain },
     { name: 'Jogos', href: '/games', icon: Gamepad2 },
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
     { name: 'Conquistas', href: '/achievements', icon: Trophy },
