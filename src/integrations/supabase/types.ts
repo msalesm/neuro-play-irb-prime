@@ -818,6 +818,99 @@ export type Database = {
         }
         Relationships: []
       }
+      focus_forest_achievements: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          name: string
+          requirement_type: string
+          requirement_value: Json
+          stars_reward: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          name: string
+          requirement_type: string
+          requirement_value: Json
+          stars_reward?: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          requirement_type?: string
+          requirement_value?: Json
+          stars_reward?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      focus_forest_stats: {
+        Row: {
+          accuracy: number
+          achievements_unlocked: string[] | null
+          best_accuracy_per_level: Json | null
+          created_at: string
+          difficulty_modifier: string | null
+          duration_seconds: number
+          hits: number
+          id: string
+          level: number
+          misses: number
+          score: number
+          session_date: string
+          targets_hit_sequence: Json | null
+          trees_grown: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accuracy?: number
+          achievements_unlocked?: string[] | null
+          best_accuracy_per_level?: Json | null
+          created_at?: string
+          difficulty_modifier?: string | null
+          duration_seconds?: number
+          hits?: number
+          id?: string
+          level?: number
+          misses?: number
+          score?: number
+          session_date?: string
+          targets_hit_sequence?: Json | null
+          trees_grown?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accuracy?: number
+          achievements_unlocked?: string[] | null
+          best_accuracy_per_level?: Json | null
+          created_at?: string
+          difficulty_modifier?: string | null
+          duration_seconds?: number
+          hits?: number
+          id?: string
+          level?: number
+          misses?: number
+          score?: number
+          session_date?: string
+          targets_hit_sequence?: Json | null
+          trees_grown?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       friendships: {
         Row: {
           created_at: string
@@ -1738,6 +1831,30 @@ export type Database = {
           created_at?: string
           id?: string
           topic_name?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_focus_forest_achievements: {
+        Row: {
+          achievement_name: string
+          id: string
+          session_stats: Json | null
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_name: string
+          id?: string
+          session_stats?: Json | null
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_name?: string
+          id?: string
+          session_stats?: Json | null
+          unlocked_at?: string
           user_id?: string
         }
         Relationships: []

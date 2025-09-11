@@ -5,9 +5,12 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Play, Pause, RotateCcw, Trees, Star, Home, Target } from "lucide-react";
+import { Play, Pause, RotateCcw, Trees, Star, Home, Target, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useFocusForestStats } from "@/hooks/useFocusForestStats";
+import { FocusForestStats } from "@/components/FocusForestStats";
+import { FocusForestAchievements } from "@/components/FocusForestAchievements";
 
 interface FocusTarget {
   id: number;
@@ -19,17 +22,27 @@ interface FocusTarget {
   timeLeft: number;
 }
 
+type DifficultyMode = 'easy' | 'normal' | 'hard';
+
 const difficultyLevels = [
-  { name: 'Broto', targets: 1, duration: 3000, spawnRate: 4000 },
-  { name: 'Mudinha', targets: 2, duration: 2500, spawnRate: 3500 },
-  { name: 'Arbusto', targets: 2, duration: 2000, spawnRate: 3000 },
-  { name: 'Árvore Jovem', targets: 3, duration: 1800, spawnRate: 2500 },
-  { name: 'Árvore Adulta', targets: 3, duration: 1500, spawnRate: 2000 },
+  { name: 'Broto', targets: 1, duration: 3000, spawnRate: 4000, unlockRequirement: { hits: 0, accuracy: 0 } },
+  { name: 'Mudinha', targets: 2, duration: 2500, spawnRate: 3500, unlockRequirement: { hits: 5, accuracy: 60 } },
+  { name: 'Arbusto', targets: 2, duration: 2000, spawnRate: 3000, unlockRequirement: { hits: 8, accuracy: 70 } },
+  { name: 'Árvore Jovem', targets: 3, duration: 1800, spawnRate: 2500, unlockRequirement: { hits: 12, accuracy: 80 } },
+  { name: 'Árvore Adulta', targets: 3, duration: 1500, spawnRate: 2000, unlockRequirement: { hits: 15, accuracy: 85 } },
 ];
+
+const difficultyModifiers = {
+  easy: { sizeMultiplier: 1.3, durationMultiplier: 1.5, name: 'Fácil' },
+  normal: { sizeMultiplier: 1.0, durationMultiplier: 1.0, name: 'Normal' },
+  hard: { sizeMultiplier: 0.7, durationMultiplier: 0.8, name: 'Difícil' }
+};
 
 export default function FocusForest() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { stats, achievements, loading, saveGameSession } = useFocusForestStats();
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const [level, setLevel] = useState(0);
   const [score, setScore] = useState(0);
@@ -38,10 +51,24 @@ export default function FocusForest() {
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
   const [treesGrown, setTreesGrown] = useState(0);
+  const [difficulty, setDifficulty] = useState<DifficultyMode>('normal');
+  const [consecutiveHits, setConsecutiveHits] = useState(0);
+  const [maxConsecutiveHits, setMaxConsecutiveHits] = useState(0);
+  const [targetsHitSequence, setTargetsHitSequence] = useState<number[]>([]);
+  const [showDifficultySettings, setShowDifficultySettings] = useState(false);
+  
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const targetIdRef = useRef(0);
 
   const currentDifficulty = difficultyLevels[Math.min(level, difficultyLevels.length - 1)];
+  const difficultyMod = difficultyModifiers[difficulty];
+  
+  // Verificar se nível está desbloqueado
+  const isLevelUnlocked = (levelIndex: number) => {
+    if (levelIndex === 0) return true;
+    const requirement = difficultyLevels[levelIndex].unlockRequirement;
+    return hits >= requirement.hits && accuracy >= requirement.accuracy;
+  };
 
   useEffect(() => {
     let gameInterval: NodeJS.Timeout;
@@ -66,6 +93,8 @@ export default function FocusForest() {
         })).filter(target => {
           if (target.timeLeft <= 0) {
             setMisses(m => m + 1);
+            setTargetsHitSequence(prev => [...prev, 0]); // 0 = erro
+            setConsecutiveHits(0); // Reset consecutive hits
             return false;
           }
           return true;
@@ -87,13 +116,13 @@ export default function FocusForest() {
       const maxTargets = currentDifficulty.targets;
       
       if (prev.length >= maxTargets) {
-        console.log(`Max targets reached: ${prev.length}/${maxTargets}`);
         return prev;
       }
 
       const rect = gameAreaRef.current!.getBoundingClientRect();
-      const size = Math.random() * 30 + 40; // 40-70px
-      const colors = ['bg-green-400', 'bg-blue-400', 'bg-yellow-400', 'bg-purple-400'];
+      const baseSize = Math.random() * 30 + 40; // 40-70px
+      const size = baseSize * difficultyMod.sizeMultiplier;
+      const colors = ['bg-green-400', 'bg-blue-400', 'bg-yellow-400', 'bg-purple-400', 'bg-pink-400', 'bg-indigo-400'];
       
       const newTarget: FocusTarget = {
         id: targetIdRef.current++,
@@ -102,35 +131,50 @@ export default function FocusForest() {
         size,
         color: colors[Math.floor(Math.random() * colors.length)],
         active: true,
-        timeLeft: currentDifficulty.duration,
+        timeLeft: currentDifficulty.duration * difficultyMod.durationMultiplier,
       };
 
-      console.log(`Spawning target ${newTarget.id}, total will be: ${prev.length + 1}`);
       return [...prev, newTarget];
     });
   };
 
   const hitTarget = (targetId: number) => {
     setTargets(prev => prev.filter(t => t.id !== targetId));
-    setScore(prev => prev + 10);
+    
+    // Calcular pontuação baseada na dificuldade
+    const baseScore = 10;
+    const difficultyBonus = difficulty === 'hard' ? 15 : difficulty === 'normal' ? 10 : 5;
+    setScore(prev => prev + baseScore + difficultyBonus);
     setTreesGrown(prev => prev + 1);
 
-    // Level up every 10 hits - use functional update to get current hits
+    // Atualizar sequência de acertos
+    setTargetsHitSequence(prev => [...prev, 1]); // 1 = acerto
+    setConsecutiveHits(prev => {
+      const newConsecutive = prev + 1;
+      setMaxConsecutiveHits(max => Math.max(max, newConsecutive));
+      return newConsecutive;
+    });
+
+    // Level up based on requirements
     setHits(prev => {
       const newHits = prev + 1;
+      const currentAccuracy = (newHits / (newHits + misses)) * 100;
       
-      if (newHits % 10 === 0 && level < difficultyLevels.length - 1) {
-        setLevel(currentLevel => {
-          const newLevel = currentLevel + 1;
-          toast({
-            title: `Nível ${newLevel + 1} desbloqueado! 🌲`,
-            description: `Sua floresta está crescendo!`,
+      // Verificar se pode subir de nível
+      if (level < difficultyLevels.length - 1) {
+        const nextLevelReq = difficultyLevels[level + 1].unlockRequirement;
+        if (newHits >= nextLevelReq.hits && currentAccuracy >= nextLevelReq.accuracy) {
+          setLevel(currentLevel => {
+            const newLevel = currentLevel + 1;
+            toast({
+              title: `🌲 Nível ${newLevel + 1} desbloqueado!`,
+              description: `${difficultyLevels[newLevel].name} - Sua floresta está crescendo!`,
+            });
+            return newLevel;
           });
-          return newLevel;
-        });
+        }
       }
       
-      console.log(`Hit target ${targetId}, total hits: ${newHits}`);
       return newHits;
     });
   };
@@ -156,6 +200,9 @@ export default function FocusForest() {
     setHits(0);
     setMisses(0);
     setLevel(0);
+    setConsecutiveHits(0);
+    setMaxConsecutiveHits(0);
+    setTargetsHitSequence([]);
   };
 
   const completeGame = async () => {
@@ -164,33 +211,23 @@ export default function FocusForest() {
     try {
       const accuracy = hits / (hits + misses) * 100;
       
-      await supabase.from('therapy_sessions').insert({
-        user_id: user.id,
-        session_type: 'focus_training',
-        title: `Sessão Focus Forest`,
-        content: {
-          score: score,
-          hits: hits,
-          misses: misses,
-          accuracy: accuracy,
-          level_reached: level + 1,
-          trees_grown: treesGrown,
-          duration_seconds: Math.round(gameTime / 1000)
-        },
-        duration_minutes: Math.round(gameTime / 60000),
-        completion_status: 'completed'
-      });
+      const sessionData = {
+        level: level + 1,
+        score: score,
+        hits: hits,
+        misses: misses,
+        accuracy: accuracy,
+        duration_seconds: Math.round(gameTime / 1000),
+        trees_grown: treesGrown,
+        targets_hit_sequence: targetsHitSequence,
+        difficulty_modifier: difficulty
+      };
 
-      await supabase.from('user_activities').insert({
-        user_id: user.id,
-        activity_type: 'focus_game',
-        topic_name: 'Focus Forest',
-        content: `${hits} acertos, ${treesGrown} árvores cultivadas`
-      });
+      await saveGameSession(sessionData);
 
       toast({
-        title: "Floresta cultivada! 🌳",
-        description: `Você plantou ${treesGrown} árvores com ${accuracy.toFixed(1)}% de precisão`,
+        title: "🌳 Floresta cultivada!",
+        description: `${treesGrown} árvores plantadas • ${accuracy.toFixed(1)}% precisão • Máximo ${maxConsecutiveHits} acertos consecutivos`,
       });
 
       resetGame();
@@ -249,7 +286,36 @@ export default function FocusForest() {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Game Area */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 space-y-4">
+            {/* Difficulty Settings */}
+            <Card className="shadow-card">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <Settings className="h-4 w-4 text-gray-600" />
+                      <span className="text-sm font-medium">Dificuldade:</span>
+                    </div>
+                    <div className="flex gap-2">
+                      {Object.entries(difficultyModifiers).map(([mode, config]) => (
+                        <Button
+                          key={mode}
+                          variant={difficulty === mode ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setDifficulty(mode as DifficultyMode)}
+                          disabled={isPlaying}
+                        >
+                          {config.name}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                  <Badge variant="outline" className="text-xs">
+                    {difficultyMod.name} • Alvos {(difficultyMod.sizeMultiplier * 100).toFixed(0)}% • Tempo {(difficultyMod.durationMultiplier * 100).toFixed(0)}%
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
             <Card className="shadow-glow bg-white/80 backdrop-blur">
               <CardHeader>
                 <div className="flex justify-between items-center">
@@ -354,73 +420,96 @@ export default function FocusForest() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Stats */}
+            <FocusForestStats 
+              stats={stats}
+              currentSession={{
+                hits,
+                misses,
+                accuracy,
+                treesGrown,
+                level
+              }}
+            />
+
+            <FocusForestAchievements 
+              achievements={achievements}
+              currentSession={{
+                hits,
+                accuracy,
+                level,
+                duration_seconds: Math.round(gameTime / 1000)
+              }}
+            />
+
+            {/* Enhanced Level Progress */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="text-lg">Estatísticas</CardTitle>
+                <CardTitle className="text-lg">Progressão de Níveis</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-sm">Precisão</span>
-                    <span className="text-sm font-medium">{accuracy.toFixed(1)}%</span>
-                  </div>
-                  <Progress value={accuracy} className="h-2" />
-                </div>
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div className="p-2 bg-green-50 rounded">
-                    <div className="text-lg font-bold text-green-600">{hits}</div>
-                    <div className="text-xs text-green-700">Acertos</div>
-                  </div>
-                  <div className="p-2 bg-red-50 rounded">
-                    <div className="text-lg font-bold text-red-600">{misses}</div>
-                    <div className="text-xs text-red-700">Erros</div>
-                  </div>
-                </div>
-                <div className="text-center p-2 bg-blue-50 rounded">
-                  <div className="text-lg font-bold text-blue-600">{treesGrown}</div>
-                  <div className="text-xs text-blue-700">Árvores Plantadas</div>
-                </div>
+              <CardContent className="space-y-3">
+                {difficultyLevels.map((lvl, index) => {
+                  const isUnlocked = index === 0 || isLevelUnlocked(index);
+                  const isCurrent = index === level;
+                  
+                  return (
+                    <div 
+                      key={index}
+                      className={`p-3 rounded-lg border transition-all duration-200 ${
+                        isCurrent
+                          ? 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-300 shadow-md' 
+                          : isUnlocked 
+                          ? 'bg-green-50 border-green-200' 
+                          : 'bg-gray-50 border-gray-200 opacity-60'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">{lvl.name}</span>
+                          {isCurrent && <Badge className="text-xs bg-green-600">Atual</Badge>}
+                          {isUnlocked && index <= level && <Badge variant="secondary" className="text-xs">✓</Badge>}
+                        </div>
+                        {!isUnlocked && (
+                          <Badge variant="outline" className="text-xs">
+                            🔒 {lvl.unlockRequirement.hits} acertos • {lvl.unlockRequirement.accuracy}%
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {lvl.targets} alvos • {(lvl.duration * difficultyMod.durationMultiplier / 1000).toFixed(1)}s duração
+                      </div>
+                      {!isUnlocked && (
+                        <div className="mt-2 space-y-1">
+                          <div className="flex justify-between text-xs">
+                            <span>Acertos: {hits}/{lvl.unlockRequirement.hits}</span>
+                            <span>Precisão: {accuracy.toFixed(1)}%/{lvl.unlockRequirement.accuracy}%</span>
+                          </div>
+                          <Progress 
+                            value={Math.min(
+                              (hits / lvl.unlockRequirement.hits * 50) + 
+                              (Math.min(accuracy, lvl.unlockRequirement.accuracy) / lvl.unlockRequirement.accuracy * 50), 
+                              100
+                            )} 
+                            className="h-1" 
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </CardContent>
             </Card>
 
-            {/* Levels */}
+            {/* Enhanced Performance Tips */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="text-lg">Níveis da Floresta</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {difficultyLevels.map((lvl, index) => (
-                  <div 
-                    key={index}
-                    className={`p-3 rounded-lg border ${
-                      index <= level 
-                        ? 'bg-green-50 border-green-200' 
-                        : 'bg-gray-50 border-gray-200 opacity-60'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{lvl.name}</span>
-                      {index <= level && <Badge variant="secondary">✓</Badge>}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {lvl.targets} alvos • {lvl.duration/1000}s duração
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Tips */}
-            <Card className="shadow-card">
-              <CardHeader>
-                <CardTitle className="text-lg">Dicas</CardTitle>
+                <CardTitle className="text-lg">Dicas de Performance</CardTitle>
               </CardHeader>
               <CardContent className="text-sm space-y-2 text-muted-foreground">
-                <p>• Mantenha o foco nos alvos que aparecem</p>
-                <p>• Quanto mais rápido clicar, mais árvores crescem</p>
-                <p>• Cada nível fica mais desafiador</p>
-                <p>• Sua precisão é mais importante que velocidade</p>
+                <p>🎯 <strong>Precisão:</strong> Mantenha acima de 80% para desbloquear níveis</p>
+                <p>⚡ <strong>Velocidade:</strong> Acertos rápidos geram mais pontos</p>
+                <p>🔄 <strong>Sequência:</strong> Acertos consecutivos desbloqueiam achievements</p>
+                <p>💪 <strong>Resistência:</strong> Jogadas longas com boa precisão valem mais</p>
+                <p>🏆 <strong>Dificuldade:</strong> Modos difíceis dão mais pontos e estrelas</p>
               </CardContent>
             </Card>
           </div>
