@@ -2147,50 +2147,27 @@ export type Database = {
       }
     }
     Views: {
-      doctor_profiles_public: {
-        Row: {
-          approved: boolean | null
-          bio: string | null
-          created_at: string | null
-          id: string | null
-          is_online: boolean | null
-          location_public: Json | null
-          photo_url: string | null
-          rating_avg: number | null
-          specialty: string | null
-          user_id: string | null
-        }
-        Insert: {
-          approved?: boolean | null
-          bio?: string | null
-          created_at?: string | null
-          id?: string | null
-          is_online?: boolean | null
-          location_public?: never
-          photo_url?: string | null
-          rating_avg?: number | null
-          specialty?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          approved?: boolean | null
-          bio?: string | null
-          created_at?: string | null
-          id?: string | null
-          is_online?: boolean | null
-          location_public?: never
-          photo_url?: string | null
-          rating_avg?: number | null
-          specialty?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       get_current_user_role: {
         Args: Record<PropertyKey, never>
         Returns: Database["public"]["Enums"]["app_role"]
+      }
+      get_public_doctor_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          approved: boolean
+          bio: string
+          created_at: string
+          id: string
+          is_online: boolean
+          location_public: Json
+          photo_url: string
+          rating_avg: number
+          specialty: string
+          user_id: string
+        }[]
       }
       get_user_consultation_history: {
         Args: { user_uuid: string }
