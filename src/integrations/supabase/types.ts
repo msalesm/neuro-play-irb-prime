@@ -2180,63 +2180,7 @@ export type Database = {
       }
     }
     Views: {
-      user_profiles_basic: {
-        Row: {
-          created_at: string | null
-          email: string | null
-          id: string | null
-          is_public: boolean | null
-          name: string | null
-          updated_at: string | null
-          verified: boolean | null
-        }
-        Insert: {
-          created_at?: string | null
-          email?: string | null
-          id?: string | null
-          is_public?: boolean | null
-          name?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-        }
-        Update: {
-          created_at?: string | null
-          email?: string | null
-          id?: string | null
-          is_public?: boolean | null
-          name?: string | null
-          updated_at?: string | null
-          verified?: boolean | null
-        }
-        Relationships: []
-      }
-      user_profiles_contact: {
-        Row: {
-          address: Json | null
-          created_at: string | null
-          email: string | null
-          id: string | null
-          name: string | null
-          phone: string | null
-        }
-        Insert: {
-          address?: Json | null
-          created_at?: string | null
-          email?: string | null
-          id?: string | null
-          name?: string | null
-          phone?: string | null
-        }
-        Update: {
-          address?: Json | null
-          created_at?: string | null
-          email?: string | null
-          id?: string | null
-          name?: string | null
-          phone?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       get_current_user_role: {
@@ -2270,6 +2214,38 @@ export type Database = {
           symptoms: string[]
           urgency_level: string
         }[]
+      }
+      get_user_profiles_basic: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          email: string
+          id: string
+          is_public: boolean
+          name: string
+          updated_at: string
+          verified: boolean
+        }[]
+      }
+      get_user_profiles_contact: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: Json
+          created_at: string
+          email: string
+          id: string
+          name: string
+          phone: string
+        }[]
+      }
+      grant_admin_permission: {
+        Args: {
+          _expires_at?: string
+          _permission: Database["public"]["Enums"]["admin_permission"]
+          _reason?: string
+          _target_user_id: string
+        }
+        Returns: boolean
       }
       has_admin_permission: {
         Args: {
