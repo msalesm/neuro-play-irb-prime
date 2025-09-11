@@ -134,6 +134,66 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_assessments: {
+        Row: {
+          alert_indicators: Json | null
+          areas_for_development: Json | null
+          assessment_date: string
+          assessment_type: string
+          cognitive_profile: Json | null
+          confidence_score: number | null
+          created_at: string
+          data_sources: Json | null
+          emotional_profile: Json | null
+          id: string
+          overall_score: number | null
+          recommendations: Json | null
+          sensory_profile: Json | null
+          social_profile: Json | null
+          strengths_identified: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          alert_indicators?: Json | null
+          areas_for_development?: Json | null
+          assessment_date?: string
+          assessment_type: string
+          cognitive_profile?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          data_sources?: Json | null
+          emotional_profile?: Json | null
+          id?: string
+          overall_score?: number | null
+          recommendations?: Json | null
+          sensory_profile?: Json | null
+          social_profile?: Json | null
+          strengths_identified?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          alert_indicators?: Json | null
+          areas_for_development?: Json | null
+          assessment_date?: string
+          assessment_type?: string
+          cognitive_profile?: Json | null
+          confidence_score?: number | null
+          created_at?: string
+          data_sources?: Json | null
+          emotional_profile?: Json | null
+          id?: string
+          overall_score?: number | null
+          recommendations?: Json | null
+          sensory_profile?: Json | null
+          social_profile?: Json | null
+          strengths_identified?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_predictions: {
         Row: {
           confidence_score: number
@@ -323,6 +383,57 @@ export type Database = {
         }
         Relationships: []
       }
+      balance_quest_sessions: {
+        Row: {
+          balance_challenges_completed: Json | null
+          balance_stability_score: number | null
+          completed_at: string | null
+          coordination_accuracy: number | null
+          created_at: string
+          id: string
+          level: number
+          motion_data: Json | null
+          motion_tolerance_level: number | null
+          postural_control_score: number | null
+          score: number
+          session_date: string
+          session_duration_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          balance_challenges_completed?: Json | null
+          balance_stability_score?: number | null
+          completed_at?: string | null
+          coordination_accuracy?: number | null
+          created_at?: string
+          id?: string
+          level?: number
+          motion_data?: Json | null
+          motion_tolerance_level?: number | null
+          postural_control_score?: number | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          balance_challenges_completed?: Json | null
+          balance_stability_score?: number | null
+          completed_at?: string | null
+          coordination_accuracy?: number | null
+          created_at?: string
+          id?: string
+          level?: number
+          motion_data?: Json | null
+          motion_tolerance_level?: number | null
+          postural_control_score?: number | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       behavioral_patterns: {
         Row: {
           confidence: number
@@ -358,6 +469,60 @@ export type Database = {
           pattern_type?: string
           strength?: number
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      clinical_reports: {
+        Row: {
+          alert_flags: Json | null
+          created_at: string
+          detailed_analysis: Json | null
+          generated_by_ai: boolean | null
+          generated_date: string
+          id: string
+          intervention_recommendations: Json | null
+          professional_notes: string | null
+          progress_indicators: Json | null
+          report_period_end: string | null
+          report_period_start: string | null
+          report_type: string
+          reviewed_by_professional: boolean | null
+          summary_insights: string | null
+          user_id: string
+        }
+        Insert: {
+          alert_flags?: Json | null
+          created_at?: string
+          detailed_analysis?: Json | null
+          generated_by_ai?: boolean | null
+          generated_date?: string
+          id?: string
+          intervention_recommendations?: Json | null
+          professional_notes?: string | null
+          progress_indicators?: Json | null
+          report_period_end?: string | null
+          report_period_start?: string | null
+          report_type: string
+          reviewed_by_professional?: boolean | null
+          summary_insights?: string | null
+          user_id: string
+        }
+        Update: {
+          alert_flags?: Json | null
+          created_at?: string
+          detailed_analysis?: Json | null
+          generated_by_ai?: boolean | null
+          generated_date?: string
+          id?: string
+          intervention_recommendations?: Json | null
+          professional_notes?: string | null
+          progress_indicators?: Json | null
+          report_period_end?: string | null
+          report_period_start?: string | null
+          report_type?: string
+          reviewed_by_professional?: boolean | null
+          summary_insights?: string | null
           user_id?: string
         }
         Relationships: []
@@ -488,6 +653,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      community_circle_sessions: {
+        Row: {
+          collaboration_effectiveness: number | null
+          completed_at: string | null
+          conflict_resolution_score: number | null
+          created_at: string
+          group_communication_score: number | null
+          group_dynamics_data: Json | null
+          id: string
+          leadership_score: number | null
+          level: number
+          multiplayer_interactions: Json | null
+          score: number
+          session_date: string
+          session_duration_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          collaboration_effectiveness?: number | null
+          completed_at?: string | null
+          conflict_resolution_score?: number | null
+          created_at?: string
+          group_communication_score?: number | null
+          group_dynamics_data?: Json | null
+          id?: string
+          leadership_score?: number | null
+          level?: number
+          multiplayer_interactions?: Json | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          collaboration_effectiveness?: number | null
+          completed_at?: string | null
+          conflict_resolution_score?: number | null
+          created_at?: string
+          group_communication_score?: number | null
+          group_dynamics_data?: Json | null
+          id?: string
+          leadership_score?: number | null
+          level?: number
+          multiplayer_interactions?: Json | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       consultations: {
         Row: {
@@ -743,6 +959,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      emotion_palette_sessions: {
+        Row: {
+          art_creation_data: Json | null
+          biofeedback_data: Json | null
+          completed_at: string | null
+          created_at: string
+          emotion_recognition_accuracy: number | null
+          emotional_journey_completion: Json | null
+          id: string
+          level: number
+          regulation_strategy_usage: Json | null
+          score: number
+          session_date: string
+          session_duration_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          art_creation_data?: Json | null
+          biofeedback_data?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          emotion_recognition_accuracy?: number | null
+          emotional_journey_completion?: Json | null
+          id?: string
+          level?: number
+          regulation_strategy_usage?: Json | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          art_creation_data?: Json | null
+          biofeedback_data?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          emotion_recognition_accuracy?: number | null
+          emotional_journey_completion?: Json | null
+          id?: string
+          level?: number
+          regulation_strategy_usage?: Json | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       facial_analysis_results: {
         Row: {
@@ -1306,6 +1570,57 @@ export type Database = {
           },
         ]
       }
+      memory_maze_sessions: {
+        Row: {
+          attention_switching_accuracy: number | null
+          cognitive_flexibility_score: number | null
+          completed_at: string | null
+          created_at: string
+          executive_function_metrics: Json | null
+          id: string
+          level: number
+          maze_completion_data: Json | null
+          n_back_performance: Json | null
+          score: number
+          session_date: string
+          session_duration_seconds: number | null
+          user_id: string
+          working_memory_span: number | null
+        }
+        Insert: {
+          attention_switching_accuracy?: number | null
+          cognitive_flexibility_score?: number | null
+          completed_at?: string | null
+          created_at?: string
+          executive_function_metrics?: Json | null
+          id?: string
+          level?: number
+          maze_completion_data?: Json | null
+          n_back_performance?: Json | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          user_id: string
+          working_memory_span?: number | null
+        }
+        Update: {
+          attention_switching_accuracy?: number | null
+          cognitive_flexibility_score?: number | null
+          completed_at?: string | null
+          created_at?: string
+          executive_function_metrics?: Json | null
+          id?: string
+          level?: number
+          maze_completion_data?: Json | null
+          n_back_performance?: Json | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          user_id?: string
+          working_memory_span?: number | null
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string
@@ -1545,6 +1860,57 @@ export type Database = {
         }
         Relationships: []
       }
+      sensory_flow_sessions: {
+        Row: {
+          accuracy_percentage: number
+          audio_patterns_completed: Json | null
+          completed_at: string | null
+          created_at: string
+          difficulty_progression: Json | null
+          frequency_discrimination_score: number | null
+          id: string
+          level: number
+          reaction_time_avg_ms: number | null
+          score: number
+          session_date: string
+          session_duration_seconds: number | null
+          temporal_processing_score: number | null
+          user_id: string
+        }
+        Insert: {
+          accuracy_percentage?: number
+          audio_patterns_completed?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          difficulty_progression?: Json | null
+          frequency_discrimination_score?: number | null
+          id?: string
+          level?: number
+          reaction_time_avg_ms?: number | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          temporal_processing_score?: number | null
+          user_id: string
+        }
+        Update: {
+          accuracy_percentage?: number
+          audio_patterns_completed?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          difficulty_progression?: Json | null
+          frequency_discrimination_score?: number | null
+          id?: string
+          level?: number
+          reaction_time_avg_ms?: number | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          temporal_processing_score?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       sleep_data: {
         Row: {
           awake_minutes: number | null
@@ -1599,6 +1965,57 @@ export type Database = {
           sleep_start?: string
           source?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      smart_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          action_required: string | null
+          alert_data: Json | null
+          alert_type: string
+          created_at: string
+          description: string
+          id: string
+          priority_level: string
+          resolved_at: string | null
+          status: string | null
+          title: string
+          triggered_by: string | null
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          action_required?: string | null
+          alert_data?: Json | null
+          alert_type: string
+          created_at?: string
+          description: string
+          id?: string
+          priority_level?: string
+          resolved_at?: string | null
+          status?: string | null
+          title: string
+          triggered_by?: string | null
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          action_required?: string | null
+          alert_data?: Json | null
+          alert_type?: string
+          created_at?: string
+          description?: string
+          id?: string
+          priority_level?: string
+          resolved_at?: string | null
+          status?: string | null
+          title?: string
+          triggered_by?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -1885,6 +2302,57 @@ export type Database = {
           id?: string
           session_type?: string
           title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      touch_mapper_sessions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          desensitization_progress: Json | null
+          haptic_patterns_completed: Json | null
+          id: string
+          level: number
+          pressure_tolerance_level: number | null
+          score: number
+          session_date: string
+          session_duration_seconds: number | null
+          spatial_discrimination_score: number | null
+          tactile_sensitivity_score: number | null
+          texture_recognition_accuracy: number | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          desensitization_progress?: Json | null
+          haptic_patterns_completed?: Json | null
+          id?: string
+          level?: number
+          pressure_tolerance_level?: number | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          spatial_discrimination_score?: number | null
+          tactile_sensitivity_score?: number | null
+          texture_recognition_accuracy?: number | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          desensitization_progress?: Json | null
+          haptic_patterns_completed?: Json | null
+          id?: string
+          level?: number
+          pressure_tolerance_level?: number | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          spatial_discrimination_score?: number | null
+          tactile_sensitivity_score?: number | null
+          texture_recognition_accuracy?: number | null
           user_id?: string
         }
         Relationships: []
@@ -2334,6 +2802,57 @@ export type Database = {
           total_credits?: number
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      visual_sync_sessions: {
+        Row: {
+          completed_at: string | null
+          contrast_sensitivity_level: number | null
+          created_at: string
+          eye_tracking_data: Json | null
+          id: string
+          level: number
+          movement_patterns_completed: Json | null
+          score: number
+          session_date: string
+          session_duration_seconds: number | null
+          spatial_processing_score: number | null
+          user_id: string
+          visual_motor_integration_score: number | null
+          visual_tracking_accuracy: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          contrast_sensitivity_level?: number | null
+          created_at?: string
+          eye_tracking_data?: Json | null
+          id?: string
+          level?: number
+          movement_patterns_completed?: Json | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          spatial_processing_score?: number | null
+          user_id: string
+          visual_motor_integration_score?: number | null
+          visual_tracking_accuracy?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          contrast_sensitivity_level?: number | null
+          created_at?: string
+          eye_tracking_data?: Json | null
+          id?: string
+          level?: number
+          movement_patterns_completed?: Json | null
+          score?: number
+          session_date?: string
+          session_duration_seconds?: number | null
+          spatial_processing_score?: number | null
+          user_id?: string
+          visual_motor_integration_score?: number | null
+          visual_tracking_accuracy?: number | null
         }
         Relationships: []
       }
