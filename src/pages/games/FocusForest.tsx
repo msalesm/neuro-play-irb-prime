@@ -78,52 +78,70 @@ export default function FocusForest() {
         clearInterval(targetUpdate);
       };
     }
-  }, [isPlaying, currentDifficulty.spawnRate]);
+  }, [isPlaying, currentDifficulty.spawnRate, targets.length]);
 
   const spawnTarget = () => {
     if (!gameAreaRef.current) return;
 
-    const rect = gameAreaRef.current.getBoundingClientRect();
-    const maxTargets = currentDifficulty.targets;
-    
-    if (targets.length >= maxTargets) return;
+    setTargets(prev => {
+      const maxTargets = currentDifficulty.targets;
+      
+      if (prev.length >= maxTargets) {
+        console.log(`Max targets reached: ${prev.length}/${maxTargets}`);
+        return prev;
+      }
 
-    const size = Math.random() * 30 + 40; // 40-70px
-    const colors = ['bg-green-400', 'bg-blue-400', 'bg-yellow-400', 'bg-purple-400'];
-    
-    const newTarget: FocusTarget = {
-      id: targetIdRef.current++,
-      x: Math.random() * (rect.width - size),
-      y: Math.random() * (rect.height - size),
-      size,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      active: true,
-      timeLeft: currentDifficulty.duration,
-    };
+      const rect = gameAreaRef.current!.getBoundingClientRect();
+      const size = Math.random() * 30 + 40; // 40-70px
+      const colors = ['bg-green-400', 'bg-blue-400', 'bg-yellow-400', 'bg-purple-400'];
+      
+      const newTarget: FocusTarget = {
+        id: targetIdRef.current++,
+        x: Math.random() * (rect.width - size),
+        y: Math.random() * (rect.height - size),
+        size,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        active: true,
+        timeLeft: currentDifficulty.duration,
+      };
 
-    setTargets(prev => [...prev, newTarget]);
+      console.log(`Spawning target ${newTarget.id}, total will be: ${prev.length + 1}`);
+      return [...prev, newTarget];
+    });
   };
 
   const hitTarget = (targetId: number) => {
     setTargets(prev => prev.filter(t => t.id !== targetId));
     setScore(prev => prev + 10);
-    setHits(prev => prev + 1);
     setTreesGrown(prev => prev + 1);
 
-    // Level up every 10 hits
-    if ((hits + 1) % 10 === 0 && level < difficultyLevels.length - 1) {
-      setLevel(prev => prev + 1);
-      toast({
-        title: `Nível ${level + 2} desbloqueado! 🌲`,
-        description: `Sua floresta está crescendo!`,
-      });
-    }
+    // Level up every 10 hits - use functional update to get current hits
+    setHits(prev => {
+      const newHits = prev + 1;
+      
+      if (newHits % 10 === 0 && level < difficultyLevels.length - 1) {
+        setLevel(currentLevel => {
+          const newLevel = currentLevel + 1;
+          toast({
+            title: `Nível ${newLevel + 1} desbloqueado! 🌲`,
+            description: `Sua floresta está crescendo!`,
+          });
+          return newLevel;
+        });
+      }
+      
+      console.log(`Hit target ${targetId}, total hits: ${newHits}`);
+      return newHits;
+    });
   };
 
   const startGame = () => {
-    setIsPlaying(true);
     setTargets([]);
-    spawnTarget();
+    setIsPlaying(true);
+    // Spawn initial target after a small delay to ensure game area is ready
+    setTimeout(() => {
+      spawnTarget();
+    }, 100);
   };
 
   const pauseGame = () => {
