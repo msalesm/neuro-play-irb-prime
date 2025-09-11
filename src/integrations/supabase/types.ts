@@ -3027,42 +3027,7 @@ export type Database = {
       }
     }
     Views: {
-      public_profiles: {
-        Row: {
-          avatar_url: string | null
-          city: string | null
-          created_at: string | null
-          id: string | null
-          is_public: boolean | null
-          name: string | null
-          reputation_score: number | null
-          state: string | null
-          verified: boolean | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          city?: string | null
-          created_at?: string | null
-          id?: string | null
-          is_public?: boolean | null
-          name?: string | null
-          reputation_score?: number | null
-          state?: string | null
-          verified?: boolean | null
-        }
-        Update: {
-          avatar_url?: string | null
-          city?: string | null
-          created_at?: string | null
-          id?: string | null
-          is_public?: boolean | null
-          name?: string | null
-          reputation_score?: number | null
-          state?: string | null
-          verified?: boolean | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       get_current_user_role: {
@@ -3086,6 +3051,18 @@ export type Database = {
       }
       get_safe_public_profile: {
         Args: { profile_id: string }
+        Returns: {
+          avatar_url: string
+          city: string
+          id: string
+          name: string
+          reputation_score: number
+          state: string
+          verified: boolean
+        }[]
+      }
+      get_safe_public_profiles: {
+        Args: Record<PropertyKey, never>
         Returns: {
           avatar_url: string
           city: string
