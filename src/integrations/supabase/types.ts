@@ -1602,6 +1602,185 @@ export type Database = {
         }
         Relationships: []
       }
+      social_achievements: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          name: string
+          requirement_type: string
+          requirement_value: Json
+          stars_reward: number
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          name: string
+          requirement_type: string
+          requirement_value: Json
+          stars_reward?: number
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          requirement_type?: string
+          requirement_value?: Json
+          stars_reward?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      social_progress: {
+        Row: {
+          best_scores: Json
+          created_at: string
+          current_level: number
+          experience_points: number
+          id: string
+          scenarios_completed: number
+          skill_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          best_scores?: Json
+          created_at?: string
+          current_level?: number
+          experience_points?: number
+          id?: string
+          scenarios_completed?: number
+          skill_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          best_scores?: Json
+          created_at?: string
+          current_level?: number
+          experience_points?: number
+          id?: string
+          scenarios_completed?: number
+          skill_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      social_scenarios: {
+        Row: {
+          age_range: string
+          choices: Json
+          context: string
+          created_at: string
+          description: string
+          difficulty_level: string
+          educational_notes: string | null
+          id: string
+          scenario_data: Json
+          skills_focus: string[]
+          title: string
+          unlock_requirements: Json | null
+          updated_at: string
+        }
+        Insert: {
+          age_range?: string
+          choices?: Json
+          context: string
+          created_at?: string
+          description: string
+          difficulty_level?: string
+          educational_notes?: string | null
+          id?: string
+          scenario_data?: Json
+          skills_focus?: string[]
+          title: string
+          unlock_requirements?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          age_range?: string
+          choices?: Json
+          context?: string
+          created_at?: string
+          description?: string
+          difficulty_level?: string
+          educational_notes?: string | null
+          id?: string
+          scenario_data?: Json
+          skills_focus?: string[]
+          title?: string
+          unlock_requirements?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      social_sessions: {
+        Row: {
+          achievements_unlocked: string[] | null
+          assertiveness_score: number
+          choices_made: Json
+          communication_score: number
+          completed_at: string | null
+          completion_time_seconds: number | null
+          created_at: string
+          empathy_score: number
+          feedback_received: Json | null
+          id: string
+          scenario_id: string
+          score: number
+          session_date: string
+          user_id: string
+        }
+        Insert: {
+          achievements_unlocked?: string[] | null
+          assertiveness_score?: number
+          choices_made?: Json
+          communication_score?: number
+          completed_at?: string | null
+          completion_time_seconds?: number | null
+          created_at?: string
+          empathy_score?: number
+          feedback_received?: Json | null
+          id?: string
+          scenario_id: string
+          score?: number
+          session_date?: string
+          user_id: string
+        }
+        Update: {
+          achievements_unlocked?: string[] | null
+          assertiveness_score?: number
+          choices_made?: Json
+          communication_score?: number
+          completed_at?: string | null
+          completion_time_seconds?: number | null
+          created_at?: string
+          empathy_score?: number
+          feedback_received?: Json | null
+          id?: string
+          scenario_id?: string
+          score?: number
+          session_date?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_sessions_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "social_scenarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscribers: {
         Row: {
           created_at: string
@@ -2089,6 +2268,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_social_achievements: {
+        Row: {
+          achievement_name: string
+          id: string
+          session_stats: Json | null
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_name: string
+          id?: string
+          session_stats?: Json | null
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_name?: string
+          id?: string
+          session_stats?: Json | null
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_social_achievements_achievement_name_fkey"
+            columns: ["achievement_name"]
+            isOneToOne: false
+            referencedRelation: "social_achievements"
+            referencedColumns: ["name"]
+          },
+        ]
       }
       user_wallets: {
         Row: {

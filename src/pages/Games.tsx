@@ -38,15 +38,15 @@ const gamesList = [
     id: 'social-scenarios',
     title: "Social Scenarios Simulator",
     category: "Habilidades Sociais",
-    description: "Pratique interações sociais em ambientes seguros e controlados, com feedback construtivo e múltiplas abordagens possíveis.",
-    features: ["Cenários reais", "Múltiplas escolhas", "Feedback positivo"],
+    description: "Pratique interações sociais em cenários realistas com feedback terapêutico e sistema de progresso.",
+    features: ["Cenários interativos", "Múltiplas escolhas", "Feedback terapêutico", "Sistema de progresso"],
     ageRange: "12-30 anos",
-    duration: "20-40 min",
-    players: "1-4 jogadores",
-    status: "Em breve",
+    duration: "5-15 min por cenário",
+    players: "Individual",
+    status: "Disponível",
     color: "bg-purple-100 text-purple-800",
     gradient: "from-purple-400 to-pink-400",
-    unlocked: false,
+    unlocked: true,
   }
 ];
 
