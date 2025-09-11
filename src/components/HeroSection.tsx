@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Brain, Gamepad2, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import heroImage from "@/assets/hero-gaming.jpg";
 
 export const HeroSection = () => {
   const navigate = useNavigate();
@@ -12,7 +11,7 @@ export const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-hero opacity-95" />
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: `url(${heroImage})` }}
+        style={{ backgroundImage: 'url(/hero-gaming.jpg)' }}
       />
       
       {/* Content */}
