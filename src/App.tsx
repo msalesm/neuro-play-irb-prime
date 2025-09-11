@@ -12,7 +12,10 @@ import Games from "./pages/Games";
 import Dashboard from "./pages/Dashboard";
 import MindfulBreath from "./pages/games/MindfulBreath";
 import FocusForest from "./pages/games/FocusForest";
+import FocusQuest from "./pages/games/FocusQuest";
 import SocialScenarios from "./pages/games/SocialScenarios";
+import SocialCompass from "./pages/games/SocialCompass";
+import EmotionalWeather from "./pages/games/EmotionalWeather";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,7 +40,10 @@ const App = () => (
               <Route path="/games" element={<Games />} />
               <Route path="/games/mindful-breath" element={<MindfulBreath />} />
               <Route path="/games/focus-forest" element={<FocusForest />} />
+              <Route path="/games/focus-quest" element={<FocusQuest />} />
               <Route path="/games/social-scenarios" element={<SocialScenarios />} />
+              <Route path="/games/social-compass" element={<SocialCompass />} />
+              <Route path="/games/emotional-weather" element={<EmotionalWeather />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
