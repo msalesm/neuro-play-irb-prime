@@ -21,6 +21,7 @@ import BalanceQuest from "./pages/games/BalanceQuest";
 import SensoryFlow from "./pages/games/SensoryFlow";
 import VisualSync from "./pages/games/VisualSync";
 import TouchMapper from "./pages/games/TouchMapper";
+import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => (
               <Route path="/games/sensory-flow" element={<SensoryFlow />} />
               <Route path="/games/visual-sync" element={<VisualSync />} />
               <Route path="/games/touch-mapper" element={<TouchMapper />} />
+              <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Play, Pause, RotateCcw, Hand, Vibrate, Home, Settings, Keyboard } from "lucide-react";
+import { Play, Pause, RotateCcw, Hand, Keyboard, Home, Settings, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
@@ -21,20 +21,20 @@ interface TexturePattern {
 type SensitivityLevel = 'low' | 'medium' | 'high';
 
 const textureTypes = {
-  smooth: { name: 'Liso', color: 'bg-blue-200', description: 'Superfície lisa e uniforme' },
-  rough: { name: 'Áspero', color: 'bg-yellow-300', description: 'Superfície irregular' },
-  bumpy: { name: 'Com Relevos', color: 'bg-green-300', description: 'Pequenas elevações' },
-  soft: { name: 'Macio', color: 'bg-pink-200', description: 'Textura suave' },
-  rigid: { name: 'Rígido', color: 'bg-gray-300', description: 'Superfície firme' }
+  smooth: { name: 'Liso', color: 'bg-blue-200', description: 'Superfície lisa e uniforme', symbol: '▓' },
+  rough: { name: 'Áspero', color: 'bg-yellow-300', description: 'Superfície irregular', symbol: '▒' },
+  bumpy: { name: 'Com Relevos', color: 'bg-green-300', description: 'Pequenas elevações', symbol: '░' },
+  soft: { name: 'Macio', color: 'bg-pink-200', description: 'Textura suave', symbol: '▪' },
+  rigid: { name: 'Rígido', color: 'bg-gray-300', description: 'Superfície firme', symbol: '▫' }
 };
 
 const sensitivityLevels = {
-  low: { name: 'Baixa', multiplier: 2.0, vibrationIntensity: 0.8 },
-  medium: { name: 'Média', multiplier: 1.0, vibrationIntensity: 0.5 },
-  high: { name: 'Alta', multiplier: 0.5, vibrationIntensity: 0.3 }
+  low: { name: 'Baixa', multiplier: 2.0, detectionRange: 60 },
+  medium: { name: 'Média', multiplier: 1.0, detectionRange: 40 },
+  high: { name: 'Alta', multiplier: 0.5, detectionRange: 25 }
 };
 
-export default function TouchMapper() {
+export default function TouchMapperKeyboard() {
   const { user } = useAuth();
   const { toast } = useToast();
   
@@ -49,8 +49,10 @@ export default function TouchMapper() {
   const [sessionStartTime, setSessionStartTime] = useState<number>(0);
   const [explorationsCount, setExplorationsCount] = useState(0);
   const [currentTexture, setCurrentTexture] = useState<string | null>(null);
+  const [cursorPosition, setCursorPosition] = useState({ x: 200, y: 150 });
 
   const currentSensitivity = sensitivityLevels[sensitivity];
+  const gridSize = 20; // Size of each grid cell for movement
 
   const generatePatterns = () => {
     const patternCount = Math.min(3 + Math.floor(level / 2), 8);
@@ -59,12 +61,12 @@ export default function TouchMapper() {
     const patterns: TexturePattern[] = Array.from({ length: patternCount }, (_, index) => ({
       id: index,
       type: types[Math.floor(Math.random() * types.length)],
-      intensity: Math.random() * 0.7 + 0.3, // 0.3 to 1.0
+      intensity: Math.random() * 0.7 + 0.3,
       position: {
-        x: Math.random() * 300 + 50, // Keep patterns within bounds
-        y: Math.random() * 200 + 50
+        x: Math.floor(Math.random() * 15) * gridSize + 50, // Snap to grid
+        y: Math.floor(Math.random() * 10) * gridSize + 50
       },
-      size: Math.random() * 40 + 30, // 30 to 70px
+      size: Math.random() * 40 + 30,
       discovered: false
     }));
 
@@ -79,17 +81,44 @@ export default function TouchMapper() {
     setDiscoveredPatterns([]);
     setExplorationsCount(0);
     setSessionStartTime(Date.now());
+    setCursorPosition({ x: 200, y: 150 });
     
     const patterns = generatePatterns();
     setCurrentPatterns(patterns);
     
     toast({
-      title: "🖐️ Explore com o toque!",
-      description: "Use o mouse para descobrir diferentes texturas",
+      title: "🎮 Use o teclado para explorar!",
+      description: "WASD ou setas para mover, ESPAÇO para explorar",
     });
   };
 
-  const handleExploration = (x: number, y: number) => {
+  const handleMovement = useCallback((direction: string) => {
+    if (!isPlaying) return;
+    
+    setCursorPosition(prev => {
+      const newPos = { ...prev };
+      const moveSpeed = gridSize;
+      
+      switch (direction) {
+        case 'up':
+          newPos.y = Math.max(25, prev.y - moveSpeed);
+          break;
+        case 'down':
+          newPos.y = Math.min(275, prev.y + moveSpeed);
+          break;
+        case 'left':
+          newPos.x = Math.max(25, prev.x - moveSpeed);
+          break;
+        case 'right':
+          newPos.x = Math.min(375, prev.x + moveSpeed);
+          break;
+      }
+      
+      return newPos;
+    });
+  }, [isPlaying, gridSize]);
+
+  const handleExploration = useCallback(() => {
     if (!isPlaying) return;
     
     setExplorationsCount(prev => prev + 1);
@@ -97,18 +126,13 @@ export default function TouchMapper() {
     // Check if exploration hits a pattern
     const hitPattern = currentPatterns.find(pattern => 
       !pattern.discovered &&
-      Math.abs(pattern.position.x - x) < pattern.size / 2 &&
-      Math.abs(pattern.position.y - y) < pattern.size / 2
+      Math.abs(pattern.position.x - cursorPosition.x) < currentSensitivity.detectionRange &&
+      Math.abs(pattern.position.y - cursorPosition.y) < currentSensitivity.detectionRange
     );
 
     if (hitPattern) {
-      // Provide haptic feedback (vibration if supported)
-      if ('vibrate' in navigator) {
-        const vibrationIntensity = Math.round(
-          hitPattern.intensity * currentSensitivity.vibrationIntensity * 200
-        );
-        navigator.vibrate(vibrationIntensity);
-      }
+      // Visual feedback instead of vibration
+      setCurrentTexture(textureTypes[hitPattern.type].name);
 
       // Mark pattern as discovered
       setCurrentPatterns(prev => 
@@ -117,13 +141,12 @@ export default function TouchMapper() {
       
       setDiscoveredPatterns(prev => [...prev, hitPattern]);
       
-      // Update score based on sensitivity and pattern complexity
+      // Update score
       const baseScore = 10;
       const sensitivityBonus = sensitivity === 'high' ? 20 : sensitivity === 'medium' ? 10 : 5;
       const intensityBonus = Math.round(hitPattern.intensity * 15);
       
       setScore(prev => prev + baseScore + sensitivityBonus + intensityBonus);
-      setCurrentTexture(textureTypes[hitPattern.type].name);
       
       toast({
         title: `✋ Textura descoberta!`,
@@ -138,14 +161,27 @@ export default function TouchMapper() {
       
       // Clear current texture display after 2 seconds
       setTimeout(() => setCurrentTexture(null), 2000);
+    } else {
+      // Provide proximity feedback
+      const nearbyPattern = currentPatterns.find(pattern => 
+        !pattern.discovered &&
+        Math.abs(pattern.position.x - cursorPosition.x) < currentSensitivity.detectionRange * 1.5 &&
+        Math.abs(pattern.position.y - cursorPosition.y) < currentSensitivity.detectionRange * 1.5
+      );
+      
+      if (nearbyPattern) {
+        toast({
+          title: "🔍 Quase lá!",
+          description: "Você está próximo de uma textura. Continue explorando!",
+        });
+      }
     }
-  };
+  }, [isPlaying, cursorPosition, currentPatterns, discoveredPatterns, sensitivity, currentSensitivity]);
 
   const levelComplete = () => {
     const newLevel = level + 1;
     setLevel(newLevel);
     
-    // Calculate accuracy based on exploration efficiency
     const efficiency = currentPatterns.length / explorationsCount;
     const newAccuracy = Math.min(100, efficiency * 100);
     setAccuracy(prev => (prev + newAccuracy) / 2);
@@ -155,7 +191,6 @@ export default function TouchMapper() {
       description: `Todas as texturas mapeadas! Eficiência: ${(efficiency * 100).toFixed(1)}%`,
     });
     
-    // Generate new patterns for next level
     setTimeout(() => {
       const patterns = generatePatterns();
       setCurrentPatterns(patterns);
@@ -163,6 +198,40 @@ export default function TouchMapper() {
       setExplorationsCount(0);
     }, 2000);
   };
+
+  // Keyboard event handler
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (!isPlaying) return;
+      
+      event.preventDefault();
+      
+      switch (event.key.toLowerCase()) {
+        case 'w':
+        case 'arrowup':
+          handleMovement('up');
+          break;
+        case 's':
+        case 'arrowdown':
+          handleMovement('down');
+          break;
+        case 'a':
+        case 'arrowleft':
+          handleMovement('left');
+          break;
+        case 'd':
+        case 'arrowright':
+          handleMovement('right');
+          break;
+        case ' ':
+          handleExploration();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [isPlaying, handleMovement, handleExploration]);
 
   const saveSession = async () => {
     if (!user || discoveredPatterns.length < 1) return;
@@ -184,7 +253,8 @@ export default function TouchMapper() {
         desensitization_progress: {
           sensitivity_level: sensitivity,
           tolerance_improvement: tolerance - 50,
-          explorations_count: explorationsCount
+          explorations_count: explorationsCount,
+          input_method: 'keyboard'
         },
         session_duration_seconds: Math.round((Date.now() - sessionStartTime) / 1000),
         completed_at: new Date().toISOString()
@@ -219,6 +289,7 @@ export default function TouchMapper() {
     setDiscoveredPatterns([]);
     setExplorationsCount(0);
     setCurrentTexture(null);
+    setCursorPosition({ x: 200, y: 150 });
   };
 
   if (!user) {
@@ -247,18 +318,19 @@ export default function TouchMapper() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 text-orange-900">
-              TouchMapper
+            <h1 className="font-heading text-4xl font-bold mb-2 text-orange-900 flex items-center gap-3">
+              <Keyboard className="w-10 h-10" />
+              TouchMapper - Teclado
             </h1>
             <p className="text-orange-700">
-              Desenvolva seu processamento tátil explorando texturas virtuais
+              Versão adaptada para notebooks - Use WASD ou setas para navegar
             </p>
           </div>
           <div className="flex gap-2">
             <Button variant="outline" asChild>
-              <Link to="/games/touch-mapper-keyboard" className="flex items-center gap-2">
-                <Keyboard className="h-4 w-4" />
-                Versão Teclado
+              <Link to="/games/touch-mapper" className="flex items-center gap-2">
+                <Hand className="h-4 w-4" />
+                Versão Mouse
               </Link>
             </Button>
             <Button variant="outline" asChild>
@@ -273,15 +345,35 @@ export default function TouchMapper() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Main Game Area */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Sensitivity Settings */}
-            <Card className="shadow-card">
+            {/* Keyboard Controls Guide */}
+            <Card className="shadow-card bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <Settings className="h-4 w-4 text-gray-600" />
-                      <span className="text-sm font-medium">Sensibilidade:</span>
+                    <Keyboard className="h-6 w-6 text-blue-600" />
+                    <div>
+                      <h3 className="font-semibold text-blue-900 mb-1">Controles do Teclado</h3>
+                      <div className="flex gap-4 text-sm text-blue-700">
+                        <div className="flex items-center gap-1">
+                          <kbd className="px-2 py-1 bg-blue-100 rounded text-xs">WASD</kbd>
+                          <span>ou</span>
+                          <div className="flex gap-1">
+                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">↑</kbd>
+                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">↓</kbd>
+                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">←</kbd>
+                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">→</kbd>
+                          </div>
+                          <span>Mover</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <kbd className="px-2 py-1 bg-blue-100 rounded text-xs">ESPAÇO</kbd>
+                          <span>Explorar</span>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">Sensibilidade:</span>
                     <div className="flex gap-2">
                       {Object.entries(sensitivityLevels).map(([key, config]) => (
                         <Button
@@ -295,19 +387,6 @@ export default function TouchMapper() {
                         </Button>
                       ))}
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">Tolerância:</span>
-                    <input
-                      type="range"
-                      min="20"
-                      max="100"
-                      value={tolerance}
-                      onChange={(e) => setTolerance(Number(e.target.value))}
-                      className="w-20"
-                      disabled={isPlaying}
-                    />
-                    <span className="text-sm font-medium">{tolerance}%</span>
                   </div>
                 </div>
               </CardContent>
@@ -333,7 +412,7 @@ export default function TouchMapper() {
                 {currentTexture && (
                   <div className="text-center mb-4">
                     <Badge className="bg-orange-100 text-orange-800 text-lg px-4 py-2">
-                      <Vibrate className="h-4 w-4 mr-2" />
+                      <Hand className="h-4 w-4 mr-2" />
                       {currentTexture}
                     </Badge>
                   </div>
@@ -341,13 +420,7 @@ export default function TouchMapper() {
 
                 {/* Exploration Area */}
                 <div 
-                  className="relative w-full h-96 bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg border-4 border-orange-300 overflow-hidden cursor-crosshair select-none"
-                  onClick={(e) => {
-                    const rect = e.currentTarget.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    handleExploration(x, y);
-                  }}
+                  className="relative w-full h-96 bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg border-4 border-orange-300 overflow-hidden select-none"
                   style={{
                     background: `
                       radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.1) 0%, transparent 50%),
@@ -356,6 +429,35 @@ export default function TouchMapper() {
                     `
                   }}
                 >
+                  {/* Grid overlay for better navigation */}
+                  <div className="absolute inset-0 opacity-20">
+                    {Array.from({ length: 20 }, (_, i) => (
+                      <div
+                        key={`v-${i}`}
+                        className="absolute top-0 bottom-0 w-px bg-gray-400"
+                        style={{ left: `${(i + 1) * gridSize}px` }}
+                      />
+                    ))}
+                    {Array.from({ length: 15 }, (_, i) => (
+                      <div
+                        key={`h-${i}`}
+                        className="absolute left-0 right-0 h-px bg-gray-400"
+                        style={{ top: `${(i + 1) * gridSize}px` }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Cursor */}
+                  <div
+                    className="absolute w-6 h-6 bg-blue-500 rounded-full border-2 border-white shadow-lg transition-all duration-150 flex items-center justify-center"
+                    style={{
+                      left: cursorPosition.x - 12,
+                      top: cursorPosition.y - 12,
+                    }}
+                  >
+                    <div className="w-2 h-2 bg-white rounded-full" />
+                  </div>
+
                   {/* Texture Patterns */}
                   {currentPatterns.map((pattern) => (
                     <div
@@ -375,7 +477,7 @@ export default function TouchMapper() {
                     >
                       {pattern.discovered && (
                         <div className="flex items-center justify-center h-full text-xs font-bold text-gray-700">
-                          {textureTypes[pattern.type].name}
+                          {textureTypes[pattern.type].symbol}
                         </div>
                       )}
                     </div>
@@ -384,10 +486,11 @@ export default function TouchMapper() {
                   {/* Instructions overlay */}
                   {!isPlaying && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-orange-700 bg-white/80 p-6 rounded-lg">
-                        <Hand className="h-16 w-16 mx-auto mb-4 text-orange-500" />
-                        <p className="text-xl font-semibold mb-2">Explore com o toque</p>
-                        <p className="text-sm">Clique na área para descobrir texturas ocultas</p>
+                      <div className="text-center text-orange-700 bg-white/90 p-6 rounded-lg">
+                        <Keyboard className="h-16 w-16 mx-auto mb-4 text-orange-500" />
+                        <p className="text-xl font-semibold mb-2">Explore com o teclado</p>
+                        <p className="text-sm mb-2">Use WASD ou setas para mover</p>
+                        <p className="text-sm">Pressione ESPAÇO para explorar texturas</p>
                       </div>
                     </div>
                   )}
@@ -399,8 +502,8 @@ export default function TouchMapper() {
                     <p className="text-sm font-medium mb-2">Texturas descobertas:</p>
                     <div className="flex gap-2 flex-wrap">
                       {discoveredPatterns.map((pattern, index) => (
-                        <Badge key={index} className={textureTypes[pattern.type].color}>
-                          {textureTypes[pattern.type].name}
+                        <Badge key={index} className={`${textureTypes[pattern.type].color} text-gray-800`}>
+                          {textureTypes[pattern.type].symbol} {textureTypes[pattern.type].name}
                         </Badge>
                       ))}
                     </div>
@@ -462,13 +565,6 @@ export default function TouchMapper() {
                 
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span>Descobertas</span>
-                    <span className="font-medium">{discoveredPatterns.length}</span>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
                     <span>Explorações</span>
                     <span className="font-medium">{explorationsCount}</span>
                   </div>
@@ -476,49 +572,54 @@ export default function TouchMapper() {
                 
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span>Tolerância</span>
-                    <span className="font-medium">{tolerance}%</span>
+                    <span>Posição</span>
+                    <span className="font-medium text-xs">
+                      X:{Math.round(cursorPosition.x)} Y:{Math.round(cursorPosition.y)}
+                    </span>
                   </div>
-                  <Progress value={tolerance} className="h-2" />
                 </div>
               </CardContent>
             </Card>
 
-            {/* Instructions */}
+            {/* Game Instructions */}
             <Card className="shadow-card">
               <CardHeader>
-                <CardTitle className="text-lg">Como Jogar</CardTitle>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Settings className="h-5 w-5" />
+                  Como Jogar
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
-                <p>1. Clique na área de exploração</p>
-                <p>2. Sinta a vibração quando encontrar texturas</p>
-                <p>3. Descubra todas as texturas do nível</p>
-                <p>4. Ajuste a sensibilidade conforme necessário</p>
+                <div className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-1.5" />
+                  <span>Use WASD ou setas para mover o cursor</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-1.5" />
+                  <span>Pressione ESPAÇO para explorar texturas</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-1.5" />
+                  <span>Encontre todas as texturas ocultas</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-1.5" />
+                  <span>Maior sensibilidade = mais desafio</span>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Benefits */}
-            <Card className="shadow-card">
+            {/* Therapeutic Benefits */}
+            <Card className="shadow-card bg-gradient-to-b from-green-50 to-emerald-50 border-green-200">
               <CardHeader>
-                <CardTitle className="text-lg">Benefícios Terapêuticos</CardTitle>
+                <CardTitle className="text-lg text-green-800">Benefícios Terapêuticos</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-sm">
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 shrink-0" />
-                  <span>Discriminação tátil</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 shrink-0" />
-                  <span>Dessensibilização gradual</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 shrink-0" />
-                  <span>Propriocepção</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 shrink-0" />
-                  <span>Integração sensorial</span>
-                </div>
+              <CardContent className="space-y-2 text-sm text-green-700">
+                <div>• Desenvolve coordenação motora</div>
+                <div>• Melhora processamento sensorial</div>
+                <div>• Fortalece atenção espacial</div>
+                <div>• Aumenta controle de movimento</div>
+                <div>• Promove paciência e persistência</div>
               </CardContent>
             </Card>
           </div>
