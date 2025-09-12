@@ -48,39 +48,39 @@ export const NeuroPlayFeatures = () => {
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-12 sm:py-20 bg-muted/30">
       <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold font-heading text-foreground mb-4">
+        {/* Section Header - Mobile First */}
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-foreground mb-4">
             Por que o 
             <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent"> NeuroPlay?</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-muted-foreground mx-auto px-4">
             Criado especificamente para crianças neurodiversas, seguindo as melhores práticas pedagógicas e terapêuticas
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {/* Features Grid - Mobile First */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <Card 
               key={index}
               className="border-0 shadow-card hover:shadow-glow transition-all duration-300 hover:scale-[1.02] bg-card/80 backdrop-blur-sm"
             >
-              <CardContent className="p-8 text-center">
+              <CardContent className="p-6 sm:p-8 text-center">
                 {/* Icon */}
-                <div className={`w-16 h-16 ${feature.bg} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-soft`}>
-                  <feature.icon className={`w-8 h-8 ${feature.color}`} />
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 ${feature.bg} rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-soft`}>
+                  <feature.icon className={`w-6 h-6 sm:w-8 sm:h-8 ${feature.color}`} />
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold font-heading text-card-foreground mb-4">
+                <h3 className="text-lg sm:text-xl font-bold font-heading text-card-foreground mb-3 sm:mb-4">
                   {feature.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
                   {feature.description}
                 </p>
               </CardContent>
@@ -88,21 +88,21 @@ export const NeuroPlayFeatures = () => {
           ))}
         </div>
 
-        {/* Bottom Statistics */}
-        <div className="mt-20">
-          <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-8 shadow-card">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        {/* Bottom Statistics - Mobile First */}
+        <div className="mt-16 sm:mt-20">
+          <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-card">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center">
               <div>
-                <div className="text-4xl font-bold text-primary mb-2">15+</div>
-                <div className="text-muted-foreground">Jogos Cognitivos</div>
+                <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">15+</div>
+                <div className="text-muted-foreground text-sm sm:text-base">Jogos Cognitivos</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-primary mb-2">3</div>
-                <div className="text-muted-foreground">Módulos Especializados</div>
+                <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">3</div>
+                <div className="text-muted-foreground text-sm sm:text-base">Módulos Especializados</div>
               </div>
               <div>
-                <div className="text-4xl font-bold text-primary mb-2">100%</div>
-                <div className="text-muted-foreground">Baseado em Ciência</div>
+                <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">100%</div>
+                <div className="text-muted-foreground text-sm sm:text-base">Baseado em Ciência</div>
               </div>
             </div>
           </div>

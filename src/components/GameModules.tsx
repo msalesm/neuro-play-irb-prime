@@ -47,60 +47,60 @@ export const GameModules = () => {
   ];
 
   return (
-    <section className="py-20 bg-background">
+    <section className="py-12 sm:py-20 bg-background">
       <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold font-heading text-foreground mb-4">
+        {/* Section Header - Mobile First */}
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading text-foreground mb-4">
             Escolha seu 
             <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent"> Módulo</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-muted-foreground mx-auto px-4">
             Três mundos especialmente criados para apoiar diferentes tipos de neurodiversidade
           </p>
         </div>
 
-        {/* Game Modules Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {/* Game Modules Grid - Mobile First */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
           {modules.map((module, index) => (
             <Card 
               key={module.id} 
               className={`relative overflow-hidden border-0 shadow-card hover:shadow-glow transition-all duration-300 hover:scale-[1.02] ${module.color}`}
             >
-              <CardContent className="p-8">
-                {/* Module Icon & Emoji */}
+              <CardContent className="p-6 sm:p-8">
+                {/* Module Icon & Emoji - Mobile Optimized */}
                 <div className="flex items-center justify-between mb-6">
-                  <div className={`w-16 h-16 rounded-2xl ${module.iconBg} flex items-center justify-center shadow-soft`}>
-                    <module.icon className="w-8 h-8" />
+                  <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl ${module.iconBg} flex items-center justify-center shadow-soft`}>
+                    <module.icon className="w-6 h-6 sm:w-8 sm:h-8" />
                   </div>
-                  <div className="text-4xl">{module.emoji}</div>
+                  <div className="text-3xl sm:text-4xl">{module.emoji}</div>
                 </div>
 
                 {/* Title & Subtitle */}
                 <div className="mb-6">
-                  <h3 className="text-2xl font-bold font-heading text-card-foreground mb-2">
+                  <h3 className="text-xl sm:text-2xl font-bold font-heading text-card-foreground mb-2">
                     {module.title}
                   </h3>
-                  <p className="text-primary font-semibold text-lg">
+                  <p className="text-primary font-semibold text-base sm:text-lg">
                     {module.subtitle}
                   </p>
                 </div>
 
                 {/* Description */}
-                <p className="text-muted-foreground mb-6 leading-relaxed">
+                <p className="text-muted-foreground mb-6 leading-relaxed text-sm sm:text-base">
                   {module.description}
                 </p>
 
                 {/* Mini Games List */}
                 <div className="mb-6">
-                  <h4 className="font-semibold text-card-foreground mb-3 flex items-center gap-2">
+                  <h4 className="font-semibold text-card-foreground mb-3 flex items-center gap-2 text-sm sm:text-base">
                     <Gamepad2 className="w-4 h-4" />
                     Jogos Inclusos:
                   </h4>
                   <ul className="space-y-2">
                     {module.games.map((game, gameIndex) => (
-                      <li key={gameIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                      <li key={gameIndex} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full flex-shrink-0"></div>
                         {game}
                       </li>
                     ))}
@@ -109,13 +109,13 @@ export const GameModules = () => {
 
                 {/* Rewards */}
                 <div className="mb-8">
-                  <h4 className="font-semibold text-card-foreground mb-2 flex items-center gap-2">
+                  <h4 className="font-semibold text-card-foreground mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <Trophy className="w-4 h-4 text-yellow-500" />
                     Recompensas:
                   </h4>
-                  <p className="text-sm text-muted-foreground flex items-center gap-2">
-                    <Star className="w-4 h-4 text-yellow-400" />
-                    {module.rewards}
+                  <p className="text-xs sm:text-sm text-muted-foreground flex items-start gap-2">
+                    <Star className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <span>{module.rewards}</span>
                   </p>
                 </div>
 
@@ -132,28 +132,28 @@ export const GameModules = () => {
                 </Button>
 
                 {/* Decorative elements */}
-                <div className="absolute -top-4 -right-4 w-20 h-20 bg-primary/5 rounded-full"></div>
-                <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-accent/10 rounded-full"></div>
+                <div className="absolute -top-4 -right-4 w-16 sm:w-20 h-16 sm:h-20 bg-primary/5 rounded-full"></div>
+                <div className="absolute -bottom-6 -left-6 w-12 sm:w-16 h-12 sm:h-16 bg-accent/10 rounded-full"></div>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-8 shadow-card max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold font-heading text-card-foreground mb-4">
+        {/* Bottom CTA - Mobile First */}
+        <div className="text-center mt-12 sm:mt-16">
+          <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-card mx-auto">
+            <h3 className="text-xl sm:text-2xl font-bold font-heading text-card-foreground mb-4">
               Pronto para começar a jornada?
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-muted-foreground mb-6 text-sm sm:text-base">
               Cada jogo foi desenvolvido por especialistas para apoiar o desenvolvimento cognitivo e emocional
             </p>
             <Button 
               asChild 
               size="lg"
-              className="bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 text-primary-foreground shadow-soft transition-bounce"
+              className="w-full sm:w-auto bg-gradient-to-r from-primary to-primary-glow hover:from-primary/90 hover:to-primary-glow/90 text-primary-foreground shadow-soft transition-bounce"
             >
-              <Link to="/auth" className="flex items-center gap-2">
+              <Link to="/auth" className="flex items-center justify-center gap-2">
                 <Heart className="w-5 h-5" />
                 Criar Conta Gratuita
               </Link>
