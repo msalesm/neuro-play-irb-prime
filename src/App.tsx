@@ -36,6 +36,8 @@ import AttentionSustained from "./pages/games/AttentionSustainedGame";
 import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import ClinicalDashboard from "./pages/ClinicalDashboard";
+import Neuroplasticity from "./pages/Neuroplasticity";
+import RapidReasoning from "./pages/games/RapidReasoning";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -83,6 +85,8 @@ const App = () => (
               <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibility />} />
               <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
               <Route path="/clinical" element={<ClinicalDashboard />} />
+              <Route path="/neuroplasticity" element={<Neuroplasticity />} />
+              <Route path="/neuroplasticity/rapid-reasoning" element={<RapidReasoning />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

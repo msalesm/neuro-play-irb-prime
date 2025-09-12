@@ -1,193 +1,96 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import { Play, Clock, Users, Target, Lock } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import React from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { Brain, BarChart3 } from 'lucide-react';
 
-const gamesList = [
-  // Jogos Básicos
-  {
-    id: 'memoria-colorida',
-    title: "Memória Colorida",
-    category: "Memória & Atenção",
-    description: "Repita sequências de cores em ordem crescente de dificuldade. Desenvolva memória de trabalho e atenção sequencial.",
-    features: ["Memória de trabalho", "Atenção sequencial", "Coordenação mão-olho", "Progressão adaptativa"],
-    ageRange: "6-16 anos",
-    duration: "5-15 min",
-    players: "1 jogador",
-    status: "Disponível",
-    color: "bg-purple-100 text-purple-800",
-    gradient: "from-purple-400 to-purple-600",
-    unlocked: true,
-    type: "basic"
+// Jogos organizados por categorias cognitivas (inspirado no CLEVER)
+const gameCategories = {
+  memory: {
+    title: 'Memória',
+    description: 'Desenvolva diferentes tipos de memória',
+    color: 'from-green-400 to-emerald-500',
+    icon: '🧠',
+    games: [
+      {
+        id: 'memoria-colorida',
+        title: 'Memória Colorida',
+        category: 'Memória',
+        description: 'Jogo de memória com cores vibrantes e padrões únicos para desenvolver a memória visual e sequencial.',
+        features: ['Memória Visual', 'Concentração', 'Padrões'],
+        ageRange: '4-12 anos',
+        duration: '10-15 min',
+        players: '1 jogador',
+        status: 'Disponível',
+        color: 'from-green-400 to-emerald-500',
+        unlocked: true,
+        type: 'basic' as const
+      }
+    ]
   },
-  {
-    id: 'caca-foco',
-    title: "Caça ao Foco",
-    category: "Atenção & Concentração",
-    description: "Encontre objetos específicos entre distrações visuais. Desenvolva atenção seletiva e controle inibitório.",
-    features: ["Atenção seletiva", "Controle inibitório", "Processamento visual", "Resistência a distrações"],
-    ageRange: "5-14 anos",
-    duration: "3-10 min",
-    players: "1 jogador",
-    status: "Disponível",
-    color: "bg-blue-100 text-blue-800",
-    gradient: "from-blue-400 to-blue-600",
-    unlocked: true,
-    type: "basic"
+  focus: {
+    title: 'Foco e Atenção',
+    description: 'Aprimore concentração e atenção sustentada',
+    color: 'from-blue-400 to-cyan-500',
+    icon: '🎯',
+    games: [
+      {
+        id: 'caca-foco',
+        title: 'Caça Foco',
+        category: 'Foco',
+        description: 'Encontre objetos específicos em cenários complexos para treinar atenção seletiva e concentração.',
+        features: ['Atenção Seletiva', 'Concentração', 'Busca Visual'],
+        ageRange: '5-14 anos',
+        duration: '8-12 min',
+        players: '1 jogador',
+        status: 'Disponível',
+        color: 'from-blue-400 to-cyan-500',
+        unlocked: true,
+        type: 'basic' as const
+      }
+    ]
   },
-  {
-    id: 'logica-rapida',
-    title: "Lógica Rápida",
-    category: "Raciocínio & Lógica",
-    description: "Resolva quebra-cabeças de padrões em tempo limitado. Desenvolva raciocínio lógico e velocidade de processamento.",
-    features: ["Raciocínio lógico", "Reconhecimento de padrões", "Velocidade de processamento", "Resolução de problemas"],
-    ageRange: "8-18 anos",
-    duration: "5-12 min",
-    players: "1 jogador",
-    status: "Disponível",
-    color: "bg-green-100 text-green-800",
-    gradient: "from-green-400 to-green-600",
-    unlocked: true,
-    type: "basic"
-  },
-  {
-    id: 'ritmo-musical',
-    title: "Ritmo Musical",
-    category: "Coordenação & Ritmo",
-    description: "Replique padrões rítmicos musicais usando teclado ou toques. Desenvolva coordenação e percepção temporal.",
-    features: ["Coordenação motora", "Percepção temporal", "Memória auditiva", "Sincronização"],
-    ageRange: "6-16 anos",
-    duration: "4-10 min",
-    players: "1 jogador",
-    status: "Disponível",
-    color: "bg-orange-100 text-orange-800",
-    gradient: "from-orange-400 to-orange-600",
-    unlocked: true,
-    type: "basic"
-  },
-  {
-    id: 'caca-letras',
-    title: "Caça Letras",
-    category: "Leitura & Dislexia",
-    description: "Encontre letras específicas dentro de palavras. Desenvolva reconhecimento visual rápido e consciência fonológica.",
-    features: ["Reconhecimento visual", "Processamento fonológico", "Atenção seletiva", "Velocidade de leitura"],
-    ageRange: "5-14 anos",
-    duration: "3-8 min",
-    players: "1 jogador",
-    status: "Disponível",
-    color: "bg-emerald-100 text-emerald-800",
-    gradient: "from-emerald-400 to-emerald-600",
-    unlocked: true,
-    type: "basic"
-  },
-    {
-      id: 'silaba-magica',
-      title: 'Sílaba Mágica',
-      category: 'Linguagem',
-      description: 'Forme e separe palavras através de sílabas de forma lúdica',
-      features: ['Separação silábica', 'Formação de palavras', 'Feedback visual'],
-      ageRange: '6-10 anos',
-      duration: '15-20 min',
-      players: '1 jogador',
-      status: 'Disponível',
-      color: 'bg-emerald-100 text-emerald-800',
-      gradient: 'from-emerald-400 to-emerald-600',
-      unlocked: true,
-      type: 'basic'
-    },
-    {
-      id: 'quebra-cabeca-magico',
-      title: 'Quebra-Cabeça Mágico',
-      category: 'Resolução de Problemas',
-      description: 'Ajude o mago a resolver quebra-cabeças com personagens animados',
-      features: ['Puzzles progressivos', 'Personagem mago', 'Efeitos visuais'],
-      ageRange: '5-12 anos',
-      duration: '10-25 min',
-      players: '1 jogador',
-      status: 'Disponível',
-      color: 'bg-purple-100 text-purple-800',
-      gradient: 'from-purple-400 to-purple-600',
-      unlocked: true,
-      type: 'basic'
-    },
-    {
-      id: 'aventura-numeros',
-      title: 'Aventura dos Números',
-      category: 'Matemática',
-      description: 'Explore mapas do tesouro resolvendo operações matemáticas',
-      features: ['Exploração', 'Operações básicas', 'Coleta de moedas'],
-      ageRange: '6-12 anos',
-      duration: '15-30 min',
-      players: '1 jogador',
-      status: 'Disponível',
-      color: 'bg-yellow-100 text-yellow-800',
-      gradient: 'from-yellow-400 to-orange-600',
-      unlocked: true,
-      type: 'basic'
-    },
-    {
-      id: 'contador-historias',
-      title: 'Contador de Histórias',
-      category: 'Linguagem',
-      description: 'Complete histórias mágicas escolhendo as palavras certas',
-      features: ['Narrativas interativas', 'Escolhas múltiplas', 'Personagens'],
-      ageRange: '5-10 anos',
-      duration: '20-30 min',
-      players: '1 jogador',
-      status: 'Disponível',
-      color: 'bg-pink-100 text-pink-800',
-      gradient: 'from-pink-400 to-purple-600',
-      unlocked: true,
-      type: 'basic'
-    },
-  
-  // Jogos Diagnósticos
+  logic: {
+    title: 'Raciocínio Lógico',
+    description: 'Desenvolva pensamento crítico e lógico',
+    color: 'from-purple-400 to-blue-500',
+    icon: '🧩',
+    games: [
+      {
+        id: 'logica-rapida',
+        title: 'Lógica Rápida',
+        category: 'Lógica',
+        description: 'Desafios de raciocínio lógico com tempo limitado para estimular agilidade mental e tomada de decisões.',
+        features: ['Raciocínio Lógico', 'Velocidade', 'Tomada de Decisão'],
+        ageRange: '7-15 anos',
+        duration: '5-10 min',
+        players: '1 jogador',
+        status: 'Disponível',
+        color: 'from-purple-400 to-blue-500',
+        unlocked: true,
+        type: 'basic' as const
+      }
+    ]
+  }
+};
+
+// Testes Diagnósticos Especializados
+const diagnosticTests = [
   {
     id: 'attention-sustained',
-    title: "Teste de Atenção Sustentada",
-    category: "Diagnóstico • TDAH",
-    description: "Avaliação científica da capacidade de manter atenção focada. Identifica déficits característicos do TDAH.",
-    features: ["Vigilância sustentada", "Tempo de reação", "Controle inibitório", "Declínio da atenção"],
-    ageRange: "6-18 anos",
-    duration: "8-12 min",
-    players: "1 jogador",
-    status: "Diagnóstico",
-    color: "bg-red-100 text-red-800",
-    gradient: "from-red-400 to-red-600",
+    title: 'Atenção Sustentada',
+    category: 'TDAH',
+    description: 'Avaliação científica da capacidade de manter atenção focada por períodos prolongados.',
+    features: ['Teste CPT', 'Métricas Precisas', 'Relatório Científico'],
+    ageRange: '6-16 anos',
+    duration: '15-20 min',
+    players: '1 jogador',
+    status: 'Disponível',
+    color: 'from-orange-500 to-red-600',
     unlocked: true,
-    type: "diagnostic"
-  },
-  {
-    id: 'cognitive-flexibility',
-    title: "Flexibilidade Cognitiva",
-    category: "Diagnóstico • TEA",
-    description: "Teste baseado no Wisconsin Card Sorting. Detecta rigidez cognitiva e dificuldades executivas típicas do TEA.",
-    features: ["Mudança de regras", "Adaptabilidade", "Função executiva", "Perseveração"],
-    ageRange: "8-18 anos",
-    duration: "10-15 min",
-    players: "1 jogador",
-    status: "Diagnóstico",
-    color: "bg-indigo-100 text-indigo-800",
-    gradient: "from-indigo-400 to-indigo-600",
-    unlocked: true,
-    type: "diagnostic"
-  },
-  {
-    id: 'phonological-processing',
-    title: "Processamento Fonológico",
-    category: "Diagnóstico • Dislexia",
-    description: "Avalia habilidades de consciência fonológica. Principal indicador de risco para dificuldades de leitura.",
-    features: ["Rimas", "Segmentação", "Síntese", "Manipulação fonêmica"],
-    ageRange: "5-16 anos",
-    duration: "6-10 min",
-    players: "1 jogador",
-    status: "Diagnóstico",
-    color: "bg-teal-100 text-teal-800",
-    gradient: "from-teal-400 to-teal-600",
-    unlocked: true,
-    type: "diagnostic"
+    type: 'diagnostic' as const
   }
 ];
 
@@ -196,16 +99,18 @@ export default function Games() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-card flex items-center justify-center p-6">
-        <Card className="max-w-md">
-          <CardHeader>
-            <h1 className="text-2xl font-bold text-center">Acesso Restrito</h1>
+      <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-6">
+        <Card className="w-full max-w-md shadow-card">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl gradient-hero bg-clip-text text-transparent">
+              Login Necessário
+            </CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">
-              Para acessar os jogos terapêuticos, você precisa fazer login.
+              Faça login para acessar os jogos terapêuticos.
             </p>
-            <Button asChild>
+            <Button asChild className="w-full">
               <Link to="/auth">Fazer Login</Link>
             </Button>
           </CardContent>
@@ -215,180 +120,196 @@ export default function Games() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-card py-12">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-balance">
-            Jogos 
-            <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">NeuroPlay</span>
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
+      <div className="container mx-auto px-6 py-12 space-y-16">
+        {/* Hero Section */}
+        <div className="text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+            <span className="text-sm font-medium text-primary">Plataforma CLEVER Inspired</span>
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-bold gradient-hero bg-clip-text text-transparent text-balance">
+            Jogos & Avaliações
           </h1>
+          
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-balance">
-            Jogos terapêuticos e testes diagnósticos para desenvolvimento cognitivo e detecção precoce.
+            Experiências organizadas por categorias cognitivas para desenvolvimento terapêutico 
+            e avaliações diagnósticas baseadas em evidências científicas.
           </p>
+
+          <div className="flex gap-4 justify-center">
+            <Button asChild size="lg">
+              <Link to="/neuroplasticity">
+                <Brain className="w-5 h-5 mr-2" />
+                Neuroplasticidade
+              </Link>
+            </Button>
+            <Button variant="outline" size="lg">
+              <Link to="/clinical">
+                <BarChart3 className="w-5 h-5 mr-2" />
+                Painel Clínico
+              </Link>
+            </Button>
+          </div>
         </div>
 
-        {/* Seção de Jogos Básicos */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold mb-8 text-center">
-            <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+        {/* Jogos Terapêuticos por Categoria */}
+        <section className="space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl md:text-5xl font-bold gradient-hero bg-clip-text text-transparent text-balance">
               Jogos Terapêuticos
-            </span>
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
-            {gamesList.filter(game => game.type === 'basic').map((game) => (
-              <Card 
-                key={game.id}
-                className={`p-6 border-0 shadow-card hover:shadow-glow transition-all duration-500 hover:-translate-y-2 group bg-card relative overflow-hidden ${
-                  !game.unlocked ? 'opacity-75' : ''
-                }`}
-              >
-                {/* Gradient background */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-5`} />
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
+              Organizados por habilidades cognitivas específicas para desenvolvimento direcionado e progressivo.
+            </p>
+          </div>
+
+          {Object.entries(gameCategories).map(([categoryKey, category]) => (
+            <div key={categoryKey} className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${category.color} flex items-center justify-center text-2xl shadow-lg`}>
+                  {category.icon}
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">{category.title}</h3>
+                  <p className="text-muted-foreground">{category.description}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {category.games.map((game) => (
+                  <Card key={game.id} className="shadow-card hover:shadow-glow transition-all duration-300 border-0 overflow-hidden group">
+                    <div className={`h-2 bg-gradient-to-r ${category.color}`} />
+                    
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <Badge variant="secondary" className="text-xs">
+                          {game.category}
+                        </Badge>
+                        {!game.unlocked && (
+                          <div className="text-muted-foreground">🔒</div>
+                        )}
+                      </div>
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                        {game.title}
+                      </CardTitle>
+                    </CardHeader>
+
+                    <CardContent className="space-y-4">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {game.description}
+                      </p>
+
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap gap-1">
+                          {game.features.map((feature, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {feature}
+                            </Badge>
+                          ))}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                          <div>👥 {game.players}</div>
+                          <div>⏱️ {game.duration}</div>
+                          <div>🎯 {game.ageRange}</div>
+                          <div>✨ {game.status}</div>
+                        </div>
+                      </div>
+
+                      <Button 
+                        asChild={game.unlocked} 
+                        disabled={!game.unlocked}
+                        className="w-full"
+                        variant={game.unlocked ? "default" : "secondary"}
+                      >
+                        {game.unlocked ? (
+                          <Link to={`/games/${game.id}`}>
+                            Jogar Agora
+                          </Link>
+                        ) : (
+                          <span>Em Breve</span>
+                        )}
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* Testes Diagnósticos */}
+        <section className="space-y-8">
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl md:text-5xl font-bold gradient-hero bg-clip-text text-transparent text-balance">
+              Testes Diagnósticos
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
+              Avaliações científicas padronizadas para identificar perfis cognitivos e necessidades específicas.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {diagnosticTests.map((test) => (
+              <Card key={test.id} className="shadow-card hover:shadow-glow transition-all duration-300 border-0 overflow-hidden group">
+                <div className={`h-2 bg-gradient-to-r ${test.color}`} />
                 
-                <div className="relative z-10">
-                  <div className="flex justify-between items-start mb-4">
-                    <Badge className={`${game.color} font-semibold text-xs`}>
-                      {game.category}
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {test.category}
                     </Badge>
-                    {!game.unlocked && <Lock className="h-4 w-4 text-muted-foreground" />}
+                    {!test.unlocked && (
+                      <div className="text-muted-foreground">🔒</div>
+                    )}
                   </div>
+                  <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                    {test.title}
+                  </CardTitle>
+                </CardHeader>
 
-                  <h3 className="font-heading text-lg font-bold mb-3 group-hover:text-primary transition-colors">
-                    {game.title}
-                  </h3>
-
-                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed line-clamp-3">
-                    {game.description}
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {test.description}
                   </p>
 
-                  <div className="space-y-2 mb-4 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <Target className="h-3 w-3" />
-                      <span>{game.ageRange}</span>
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap gap-1">
+                      {test.features.map((feature, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">
+                          {feature}
+                        </Badge>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-3 w-3" />
-                      <span>{game.duration}</span>
+
+                    <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                      <div>👥 {test.players}</div>
+                      <div>⏱️ {test.duration}</div>
+                      <div>🎯 {test.ageRange}</div>
+                      <div>✨ {test.status}</div>
                     </div>
                   </div>
 
                   <Button 
-                    className={`w-full text-sm ${game.unlocked ? 'group-hover:bg-primary group-hover:text-primary-foreground' : ''} transition-colors`}
-                    variant={game.unlocked ? "default" : "secondary"}
-                    disabled={!game.unlocked}
-                    asChild={game.unlocked}
-                    size="sm"
+                    asChild={test.unlocked} 
+                    disabled={!test.unlocked}
+                    className="w-full"
+                    variant={test.unlocked ? "default" : "secondary"}
                   >
-                    {game.unlocked ? (
-                      <Link to={`/games/${game.id}`} className="flex items-center gap-2">
-                        <Play className="h-3 w-3" />
-                        Jogar
+                    {test.unlocked ? (
+                      <Link to={`/games/${test.id}`}>
+                        Iniciar Teste
                       </Link>
                     ) : (
-                      <span className="flex items-center gap-2">
-                        <Lock className="h-3 w-3" />
-                        Em Breve
-                      </span>
+                      <span>Em Breve</span>
                     )}
                   </Button>
-                </div>
+                </CardContent>
               </Card>
             ))}
           </div>
-        </div>
-
-        {/* Seção de Jogos Diagnósticos */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold mb-4 text-center">
-            <span className="bg-gradient-to-r from-destructive to-orange-500 bg-clip-text text-transparent">
-              Testes Diagnósticos
-            </span>
-          </h2>
-          <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Avaliações científicas para identificação precoce de TEA, TDAH e Dislexia
-          </p>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {gamesList.filter(game => game.type === 'diagnostic').map((game) => (
-            <Card 
-              key={game.id}
-              className={`p-8 border-0 shadow-card hover:shadow-glow transition-all duration-500 hover:-translate-y-2 group bg-card relative overflow-hidden ${
-                !game.unlocked ? 'opacity-75' : ''
-              }`}
-            >
-              {/* Gradient background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-5`} />
-              
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-6">
-                  <Badge className={`${game.color} font-semibold`}>
-                    {game.category}
-                  </Badge>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      {game.status}
-                    </Badge>
-                    {!game.unlocked && <Lock className="h-4 w-4 text-muted-foreground" />}
-                  </div>
-                </div>
-
-                <h3 className="font-heading text-2xl font-bold mb-4 group-hover:text-primary transition-colors">
-                  {game.title}
-                </h3>
-
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  {game.description}
-                </p>
-
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <Target className="h-4 w-4" />
-                    <span>{game.ageRange}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>{game.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <Users className="h-4 w-4" />
-                    <span>{game.players}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-3 mb-8">
-                  <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                    Características Principais
-                  </h4>
-                  {game.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-
-                <Button 
-                  className={`w-full ${game.unlocked ? 'group-hover:bg-primary group-hover:text-primary-foreground' : ''} transition-colors`}
-                  variant={game.unlocked ? "default" : "secondary"}
-                  disabled={!game.unlocked}
-                  asChild={game.unlocked}
-                >
-                  {game.unlocked ? (
-                    <Link to={`/games/${game.id}`} className="flex items-center gap-2">
-                      <Play className="h-4 w-4" />
-                      Jogar Agora
-                    </Link>
-                  ) : (
-                    <span className="flex items-center gap-2">
-                      <Lock className="h-4 w-4" />
-                      Em Breve
-                    </span>
-                  )}
-                </Button>
-              </div>
-            </Card>
-            ))}
-          </div>
-        </div>
+        </section>
       </div>
     </div>
   );

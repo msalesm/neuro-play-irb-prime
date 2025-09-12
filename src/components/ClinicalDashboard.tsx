@@ -106,9 +106,10 @@ export const ClinicalDashboard: React.FC = () => {
 
       {currentReport && (
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="patterns">Padrões</TabsTrigger>
+            <TabsTrigger value="neuroplasticity">Neuroplasticidade</TabsTrigger>
             <TabsTrigger value="trends">Tendências</TabsTrigger>
             <TabsTrigger value="interventions">Intervenções</TabsTrigger>
           </TabsList>
