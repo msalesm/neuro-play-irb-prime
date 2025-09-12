@@ -314,7 +314,7 @@ export default function Games() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {category.games.map((game) => (
-                  <Card key={game.id} className="shadow-card hover:shadow-glow transition-smooth border-0 overflow-hidden group">
+                  <Card key={game.id} className="h-full shadow-card hover:shadow-glow transition-smooth border-0 overflow-hidden group flex flex-col">
                     <div className={`h-2 ${category.color}`} />
                     
                     <CardHeader className="pb-4">
@@ -331,12 +331,12 @@ export default function Games() {
                       </CardTitle>
                     </CardHeader>
 
-                    <CardContent className="space-y-4">
+                    <CardContent className="flex flex-col flex-1 space-y-4 pb-6">
                       <p className="text-sm text-muted-foreground leading-relaxed">
                         {game.description}
                       </p>
 
-                      <div className="space-y-2">
+                      <div className="space-y-2 flex-1">
                         <div className="flex flex-wrap gap-1">
                           {game.features.map((feature, index) => (
                             <Badge key={index} variant="outline" className="text-xs">
@@ -356,7 +356,7 @@ export default function Games() {
                       <Button 
                         asChild={game.unlocked} 
                         disabled={!game.unlocked}
-                        className="w-full"
+                        className="w-full mt-auto"
                         variant={game.unlocked ? "default" : "secondary"}
                       >
                         {game.unlocked ? (
@@ -388,7 +388,7 @@ export default function Games() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {diagnosticTests.map((test) => (
-              <Card key={test.id} className="shadow-card hover:shadow-glow transition-smooth border-0 overflow-hidden group">
+              <Card key={test.id} className="h-full shadow-card hover:shadow-glow transition-smooth border-0 overflow-hidden group flex flex-col">
                 <div className={`h-2 bg-gradient-to-r ${test.color}`} />
                 
                 <CardHeader className="pb-4">
@@ -405,12 +405,12 @@ export default function Games() {
                   </CardTitle>
                 </CardHeader>
 
-                <CardContent className="space-y-4">
+                <CardContent className="flex flex-col flex-1 space-y-4 pb-6">
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {test.description}
                   </p>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 flex-1">
                     <div className="flex flex-wrap gap-1">
                       {test.features.map((feature, index) => (
                         <Badge key={index} variant="outline" className="text-xs">
@@ -430,7 +430,7 @@ export default function Games() {
                   <Button 
                     asChild={test.unlocked} 
                     disabled={!test.unlocked}
-                    className="w-full transition-smooth"
+                    className="w-full transition-smooth mt-auto"
                     variant={test.unlocked ? "default" : "secondary"}
                   >
                     {test.unlocked ? (
