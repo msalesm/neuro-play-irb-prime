@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, BookOpen, Sparkles, Trophy, Heart } from 'lucide-react';
+import { ArrowLeft, BookOpen, Sparkles, Trophy, Heart, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { GameOnboarding } from '@/components/GameOnboarding';
+import { GameAchievements } from '@/components/GameAchievement';
 
 interface StoryChapter {
   id: number;
@@ -21,6 +23,18 @@ interface Story {
   theme: string;
 }
 
+interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  type: 'instant' | 'progress' | 'milestone';
+  value?: number;
+  maxValue?: number;
+  unlocked: boolean;
+  justUnlocked?: boolean;
+}
+
 export default function ContadorHistorias() {
   const { toast } = useToast();
   const [currentStory, setCurrentStory] = useState(0);
@@ -30,6 +44,47 @@ export default function ContadorHistorias() {
   const [completedStories, setCompletedStories] = useState(0);
   const [magicEffect, setMagicEffect] = useState(false);
   const [stories, setStories] = useState<Story[]>([]);
+  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [achievements, setAchievements] = useState<Achievement[]>([
+    {
+      id: 'first_story',
+      title: 'Primeiro Capítulo',
+      description: 'Complete seu primeiro capítulo da história!',
+      icon: '📖',
+      type: 'instant',
+      unlocked: false
+    },
+    {
+      id: 'story_master',
+      title: 'Contador de Histórias',
+      description: 'Complete 3 histórias completas',
+      icon: '📚',
+      type: 'progress',
+      value: 0,
+      maxValue: 3,
+      unlocked: false
+    },
+    {
+      id: 'perfect_choices',
+      title: 'Escolhas Perfeitas',
+      description: 'Faça 5 escolhas corretas seguidas',
+      icon: '⭐',
+      type: 'progress',
+      value: 0,
+      maxValue: 5,
+      unlocked: false
+    },
+    {
+      id: 'story_explorer',
+      title: 'Explorador de Histórias',
+      description: 'Ganhe 100 pontos contando histórias',
+      icon: '🏆',
+      type: 'progress',
+      value: 0,
+      maxValue: 100,
+      unlocked: false
+    }
+  ]);
 
   // Generate stories
   useEffect(() => {
@@ -129,6 +184,43 @@ export default function ContadorHistorias() {
     setStories(storyTemplates);
   }, []);
 
+  const updateAchievements = (newScore: number, newCompletedStories: number, isCorrect: boolean, chapterIndex: number) => {
+    const updatedAchievements = [...achievements];
+    
+    // First story
+    if (isCorrect && chapterIndex === 0 && !achievements[0].unlocked) {
+      updatedAchievements[0].unlocked = true;
+      updatedAchievements[0].justUnlocked = true;
+    }
+    
+    // Story master
+    updatedAchievements[1].value = newCompletedStories;
+    if (newCompletedStories >= 3 && !achievements[1].unlocked) {
+      updatedAchievements[1].unlocked = true;
+      updatedAchievements[1].justUnlocked = true;
+    }
+    
+    // Perfect choices
+    if (isCorrect) {
+      updatedAchievements[2].value = Math.min((updatedAchievements[2].value || 0) + 1, 5);
+      if (updatedAchievements[2].value >= 5 && !achievements[2].unlocked) {
+        updatedAchievements[2].unlocked = true;
+        updatedAchievements[2].justUnlocked = true;
+      }
+    } else {
+      updatedAchievements[2].value = 0; // Reset streak
+    }
+    
+    // Story explorer
+    updatedAchievements[3].value = newScore;
+    if (newScore >= 100 && !achievements[3].unlocked) {
+      updatedAchievements[3].unlocked = true;
+      updatedAchievements[3].justUnlocked = true;
+    }
+    
+    setAchievements(updatedAchievements);
+  };
+
   const handleOptionSelect = (optionIndex: number) => {
     setSelectedOption(optionIndex);
   };
@@ -146,7 +238,9 @@ export default function ContadorHistorias() {
       const newStories = [...stories];
       newStories[currentStory].chapters[currentChapter].completed = true;
       setStories(newStories);
-      setScore(score + 10);
+      const newScore = score + 10;
+      setScore(newScore);
+      updateAchievements(newScore, completedStories, true, currentChapter);
       
       toast({
         title: "✨ Escolha Perfeita!",
@@ -387,6 +481,26 @@ export default function ContadorHistorias() {
                 <div className="text-sm text-indigo-500">História Atual</div>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Achievements */}
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-yellow-500" />
+              Conquistas
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <GameAchievements 
+              achievements={achievements} 
+              onAchievementComplete={(achievementId) => {
+                setAchievements(prev => prev.map(a => 
+                  a.id === achievementId ? { ...a, justUnlocked: false } : a
+                ));
+              }}
+            />
           </CardContent>
         </Card>
       </div>

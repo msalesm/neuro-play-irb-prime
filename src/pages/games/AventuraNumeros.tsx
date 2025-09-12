@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Coins, MapPin, Trophy, Target } from 'lucide-react';
+import { ArrowLeft, Coins, MapPin, Trophy, Target, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { GameOnboarding } from '@/components/GameOnboarding';
+import { GameAchievements } from '@/components/GameAchievement';
 
 interface Treasure {
   id: number;
@@ -14,6 +16,18 @@ interface Treasure {
   collected: boolean;
   x: number;
   y: number;
+}
+
+interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  type: 'instant' | 'progress' | 'milestone';
+  value?: number;
+  maxValue?: number;
+  unlocked: boolean;
+  justUnlocked?: boolean;
 }
 
 export default function AventuraNumeros() {
@@ -26,6 +40,45 @@ export default function AventuraNumeros() {
   const [explorerPosition, setExplorerPosition] = useState({ x: 50, y: 50 });
   const [discoveredTreasures, setDiscoveredTreasures] = useState(0);
   const [celebrationEffect, setCelebrationEffect] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [achievements, setAchievements] = useState<Achievement[]>([
+    {
+      id: 'first_treasure',
+      title: 'Primeiro Tesouro',
+      description: 'Encontre seu primeiro tesouro matemático!',
+      icon: '💎',
+      type: 'instant',
+      unlocked: false
+    },
+    {
+      id: 'quick_solver',
+      title: 'Explorador Rápido',
+      description: 'Resolva 5 problemas consecutivos rapidamente',
+      icon: '⚡',
+      type: 'progress',
+      value: 0,
+      maxValue: 5,
+      unlocked: false
+    },
+    {
+      id: 'level_master',
+      title: 'Mestre dos Níveis',
+      description: 'Complete o nível 5',
+      icon: '🏆',
+      type: 'milestone',
+      unlocked: false
+    },
+    {
+      id: 'treasure_hunter',
+      title: 'Caçador de Tesouros',
+      description: 'Colete 50 moedas',
+      icon: '🪙',
+      type: 'progress',
+      value: 0,
+      maxValue: 50,
+      unlocked: false
+    }
+  ]);
 
   // Generate treasures for current level
   useEffect(() => {
@@ -95,6 +148,42 @@ export default function AventuraNumeros() {
     setSelectedAnswer(null);
   }, [level]);
 
+  const updateAchievements = (newCoins: number, newLevel: number, isCorrect: boolean) => {
+    const updatedAchievements = [...achievements];
+    
+    // First treasure
+    if (isCorrect && discoveredTreasures === 0 && !achievements[0].unlocked) {
+      updatedAchievements[0].unlocked = true;
+      updatedAchievements[0].justUnlocked = true;
+    }
+    
+    // Quick solver
+    if (isCorrect) {
+      updatedAchievements[1].value = Math.min((updatedAchievements[1].value || 0) + 1, 5);
+      if (updatedAchievements[1].value >= 5 && !achievements[1].unlocked) {
+        updatedAchievements[1].unlocked = true;
+        updatedAchievements[1].justUnlocked = true;
+      }
+    } else {
+      updatedAchievements[1].value = 0; // Reset streak
+    }
+    
+    // Level master
+    if (newLevel >= 5 && !achievements[2].unlocked) {
+      updatedAchievements[2].unlocked = true;
+      updatedAchievements[2].justUnlocked = true;
+    }
+    
+    // Treasure hunter
+    updatedAchievements[3].value = newCoins;
+    if (newCoins >= 50 && !achievements[3].unlocked) {
+      updatedAchievements[3].unlocked = true;
+      updatedAchievements[3].justUnlocked = true;
+    }
+    
+    setAchievements(updatedAchievements);
+  };
+
   const handleTreasureClick = (treasure: Treasure) => {
     if (treasure.collected) return;
     
@@ -116,13 +205,16 @@ export default function AventuraNumeros() {
       setCelebrationEffect(true);
       setTimeout(() => setCelebrationEffect(false), 1500);
       
+      const newCoins = coins + 10;
+      const newDiscovered = discoveredTreasures + 1;
       const newTreasures = treasures.map(t => 
         t.id === currentTreasure.id ? { ...t, collected: true } : t
       );
       
       setTreasures(newTreasures);
-      setCoins(coins + 10);
-      setDiscoveredTreasures(discoveredTreasures + 1);
+      setCoins(newCoins);
+      setDiscoveredTreasures(newDiscovered);
+      updateAchievements(newCoins, level, true);
       
       toast({
         title: "🏆 Tesouro Descoberto!",
@@ -137,14 +229,17 @@ export default function AventuraNumeros() {
         });
         
         setTimeout(() => {
-          setLevel(level + 1);
-          setCoins(coins + 50); // Level completion bonus
+          const newLevel = level + 1;
+          setLevel(newLevel);
+          setCoins(newCoins + 50); // Level completion bonus
+          updateAchievements(newCoins + 50, newLevel, true);
         }, 2000);
       }
       
       setCurrentTreasure(null);
     } else {
       // Wrong answer
+      updateAchievements(coins, level, false);
       toast({
         title: "❌ Resposta Incorreta",
         description: "O explorador precisa tentar novamente!",
@@ -158,7 +253,46 @@ export default function AventuraNumeros() {
     setCoins(0);
     setDiscoveredTreasures(0);
     setExplorerPosition({ x: 50, y: 50 });
+    setCurrentTreasure(null);
+    setSelectedAnswer(null);
   };
+
+  const onboardingSteps = [
+    {
+      title: "Bem-vindo à Aventura dos Números!",
+      description: "Torne-se um explorador matemático e descubra tesouros resolvendo problemas!",
+      visual: <div className="text-4xl">🏴‍☠️⚡</div>,
+      tips: ["Cada tesouro esconde um problema matemático", "Resolva corretamente para ganhar moedas!"]
+    },
+    {
+      title: "Como Encontrar Tesouros",
+      description: "Clique nos diamantes brilhantes no mapa para revelar os desafios matemáticos.",
+      visual: (
+        <div className="flex gap-3 items-center">
+          <div className="text-3xl animate-pulse">💎</div>
+          <div className="text-2xl">→</div>
+          <div className="bg-blue-50 p-2 rounded">
+            <div className="text-lg font-bold">5 + 3 = ?</div>
+          </div>
+        </div>
+      ),
+      tips: ["Tesouros coletados ficam dourados", "Cada tesouro vale 10 moedas!"]
+    },
+    {
+      title: "Resolvendo Problemas",
+      description: "Escolha a resposta correta entre as opções para descobrir o tesouro!",
+      visual: (
+        <div className="space-y-2">
+          <div className="text-lg font-bold">8 × 2 = ?</div>
+          <div className="grid grid-cols-2 gap-1 text-sm">
+            <div className="bg-muted p-2 rounded">14</div>
+            <div className="bg-primary text-primary-foreground p-2 rounded">16 ✓</div>
+          </div>
+        </div>
+      ),
+      tips: ["Respostas corretas ganham moedas", "Complete todos os tesouros para subir de nível!"]
+    }
+  ];
 
   const progress = (treasures.filter(t => t.collected).length / treasures.length) * 100;
 
@@ -330,25 +464,46 @@ export default function AventuraNumeros() {
           </Card>
         </div>
 
-        {/* Stats */}
-        <Card className="mt-6">
-          <CardContent className="p-4">
-            <div className="flex justify-center gap-8 text-center">
-              <div>
-                <div className="text-2xl font-bold text-yellow-600">{discoveredTreasures}</div>
-                <div className="text-sm text-yellow-500">Tesouros Descobertos</div>
+        {/* Stats and Achievements */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex justify-center gap-8 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-yellow-600">{discoveredTreasures}</div>
+                  <div className="text-sm text-yellow-500">Tesouros Descobertos</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-orange-600">{coins}</div>
+                  <div className="text-sm text-orange-500">Moedas Coletadas</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-red-600">{level}</div>
+                  <div className="text-sm text-red-500">Nível Atual</div>
+                </div>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-orange-600">{coins}</div>
-                <div className="text-sm text-orange-500">Moedas Coletadas</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-red-600">{level}</div>
-                <div className="text-sm text-red-500">Nível Atual</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-yellow-500" />
+                Conquistas
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <GameAchievements 
+                achievements={achievements} 
+                onAchievementComplete={(achievementId) => {
+                  setAchievements(prev => prev.map(a => 
+                    a.id === achievementId ? { ...a, justUnlocked: false } : a
+                  ));
+                }}
+              />
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
