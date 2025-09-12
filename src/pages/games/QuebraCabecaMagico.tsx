@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Sparkles, Star, Trophy } from 'lucide-react';
+import { ArrowLeft, Sparkles, Star, Trophy, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { GameOnboarding } from '@/components/GameOnboarding';
 
 interface PuzzlePiece {
   id: number;
   correctPosition: number;
   currentPosition: number;
   image: string;
+  color: string;
+  pattern: string;
+  number: number;
   isPlaced: boolean;
 }
 
@@ -22,10 +26,13 @@ export default function QuebraCabecaMagico() {
   const [draggedPiece, setDraggedPiece] = useState<number | null>(null);
   const [completedPuzzles, setCompletedPuzzles] = useState(0);
   const [magicEffect, setMagicEffect] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   // Generate puzzle pieces for current level
   useEffect(() => {
     const numPieces = Math.min(4 + level, 9); // 4-9 pieces based on level
+    const colors = ['bg-red-400', 'bg-blue-400', 'bg-green-400', 'bg-yellow-400', 'bg-purple-400', 'bg-pink-400', 'bg-orange-400', 'bg-cyan-400', 'bg-indigo-400'];
+    const patterns = ['🌟', '💎', '🔥', '⚡', '🌈', '🎭', '🎨', '🎪', '🎯'];
     const newPieces: PuzzlePiece[] = [];
     
     for (let i = 0; i < numPieces; i++) {
@@ -33,7 +40,10 @@ export default function QuebraCabecaMagico() {
         id: i,
         correctPosition: i,
         currentPosition: Math.floor(Math.random() * numPieces),
-        image: `🧩`, // Using emoji as placeholder for puzzle pieces
+        image: `🧩`,
+        color: colors[i % colors.length],
+        pattern: patterns[i % patterns.length],
+        number: i + 1,
         isPlaced: false
       });
     }
@@ -106,10 +116,56 @@ export default function QuebraCabecaMagico() {
     setCompletedPuzzles(0);
   };
 
+  const onboardingSteps = [
+    {
+      title: "Bem-vindo ao Quebra-Cabeça Mágico!",
+      description: "Use sua magia para reorganizar as peças e formar quebra-cabeças incríveis!",
+      visual: <div className="text-4xl">🧙‍♂️✨</div>,
+      tips: ["Cada peça tem uma cor e símbolo únicos", "Observe bem os padrões para identificar cada peça"]
+    },
+    {
+      title: "Como Arrastar as Peças",
+      description: "Clique e arraste cada peça colorida para sua posição correta no tabuleiro.",
+      visual: (
+        <div className="flex gap-2 items-center">
+          <div className="w-12 h-12 bg-red-400 rounded-lg flex items-center justify-center text-white font-bold">1</div>
+          <div className="text-2xl">→</div>
+          <div className="w-12 h-12 border-2 border-dashed border-purple-300 rounded-lg flex items-center justify-center text-gray-400">?</div>
+        </div>
+      ),
+      tips: ["Cada peça tem um número que indica sua posição", "Arraste das 'Peças Mágicas' para a 'Área do Puzzle'"]
+    },
+    {
+      title: "Feedback Visual",
+      description: "Quando acertar, a peça ficará verde! Quando errar, receba uma dica do mago.",
+      visual: (
+        <div className="flex gap-3">
+          <div className="w-12 h-12 bg-green-100 border-2 border-green-400 rounded-lg flex items-center justify-center">
+            <Star className="w-6 h-6 text-yellow-500" />
+          </div>
+          <div className="text-xl">vs</div>
+          <div className="w-12 h-12 bg-red-100 border-2 border-red-400 rounded-lg flex items-center justify-center text-red-500">
+            ❌
+          </div>
+        </div>
+      ),
+      tips: ["Peças corretas ganham uma estrela dourada", "Continue tentando até completar o puzzle!"]
+    }
+  ];
+
   const progress = (pieces.filter(p => p.isPlaced).length / pieces.length) * 100;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 p-4">
+      {showOnboarding && (
+        <GameOnboarding
+          gameName="Quebra-Cabeça Mágico"
+          gameIcon="🧙‍♂️"
+          steps={onboardingSteps}
+          onComplete={() => setShowOnboarding(false)}
+          onSkip={() => setShowOnboarding(false)}
+        />
+      )}
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -121,6 +177,14 @@ export default function QuebraCabecaMagico() {
           </Link>
           
           <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowOnboarding(true)}
+            >
+              <HelpCircle className="w-4 h-4 mr-2" />
+              Como Jogar
+            </Button>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-700">⭐ {score}</div>
               <div className="text-sm text-purple-600">Pontos Mágicos</div>
@@ -198,12 +262,15 @@ export default function QuebraCabecaMagico() {
                       onDrop={() => handleDrop(index)}
                     >
                       {placedPiece ? (
-                        <div className="animate-pulse">
-                          {placedPiece.image}
-                          <Star className="w-4 h-4 text-yellow-500 absolute" />
+                        <div className="relative animate-pulse">
+                          <div className={`w-full h-full rounded-lg ${placedPiece.color} flex flex-col items-center justify-center text-white font-bold`}>
+                            <div className="text-lg">{placedPiece.pattern}</div>
+                            <div className="text-sm">{placedPiece.number}</div>
+                          </div>
+                          <Star className="w-4 h-4 text-yellow-500 absolute -top-1 -right-1" />
                         </div>
                       ) : (
-                        <div className="text-gray-400">?</div>
+                        <div className="text-gray-400 text-lg">?</div>
                       )}
                     </div>
                   );
@@ -227,9 +294,10 @@ export default function QuebraCabecaMagico() {
                     key={piece.id}
                     draggable
                     onDragStart={() => handleDragStart(piece.id)}
-                    className="aspect-square border-2 border-purple-300 rounded-lg flex items-center justify-center text-4xl cursor-move hover:border-purple-500 hover:scale-105 transition-all duration-200 bg-gradient-to-br from-purple-100 to-blue-100 hover:from-purple-200 hover:to-blue-200"
+                    className={`aspect-square border-2 border-purple-300 rounded-lg flex flex-col items-center justify-center cursor-move hover:border-purple-500 hover:scale-105 transition-all duration-200 ${piece.color} text-white font-bold relative`}
                   >
-                    {piece.image}
+                    <div className="text-2xl">{piece.pattern}</div>
+                    <div className="text-sm bg-black/20 px-2 py-1 rounded-full">{piece.number}</div>
                   </div>
                 ))}
               </div>

@@ -17,7 +17,7 @@ interface Achievement {
 
 interface GameAchievementProps {
   achievement: Achievement;
-  onAnimationComplete?: () => void;
+  onAnimationComplete?: (achievementId: string) => void;
 }
 
 export const GameAchievement: React.FC<GameAchievementProps> = ({
@@ -31,12 +31,12 @@ export const GameAchievement: React.FC<GameAchievementProps> = ({
       setIsVisible(true);
       const timer = setTimeout(() => {
         setIsVisible(false);
-        onAnimationComplete?.();
+        onAnimationComplete?.(achievement.id);
       }, 3000);
       
       return () => clearTimeout(timer);
     }
-  }, [achievement.justUnlocked, onAnimationComplete]);
+  }, [achievement.justUnlocked, onAnimationComplete, achievement.id]);
 
   // Achievement popup for just unlocked
   if (achievement.justUnlocked && isVisible) {
@@ -117,11 +117,13 @@ export const GameAchievement: React.FC<GameAchievementProps> = ({
 interface GameAchievementsProps {
   achievements: Achievement[];
   className?: string;
+  onAchievementComplete?: (achievementId: string) => void;
 }
 
 export const GameAchievements: React.FC<GameAchievementsProps> = ({
   achievements,
-  className = ""
+  className = "",
+  onAchievementComplete
 }) => {
   const [activeAchievement, setActiveAchievement] = useState<Achievement | null>(null);
 
@@ -132,12 +134,17 @@ export const GameAchievements: React.FC<GameAchievementsProps> = ({
     }
   }, [achievements, activeAchievement]);
 
+  const handleAnimationComplete = (achievementId: string) => {
+    setActiveAchievement(null);
+    onAchievementComplete?.(achievementId);
+  };
+
   return (
     <div className={`space-y-2 ${className}`}>
       {activeAchievement && (
         <GameAchievement 
           achievement={activeAchievement}
-          onAnimationComplete={() => setActiveAchievement(null)}
+          onAnimationComplete={handleAnimationComplete}
         />
       )}
       

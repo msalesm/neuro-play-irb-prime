@@ -453,7 +453,14 @@ export default function SilabaMagica() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <GameAchievements achievements={achievements} />
+                <GameAchievements 
+                  achievements={achievements} 
+                  onAchievementComplete={(achievementId) => {
+                    setAchievements(prev => prev.map(a => 
+                      a.id === achievementId ? { ...a, justUnlocked: false } : a
+                    ));
+                  }}
+                />
               </CardContent>
             </Card>
           </div>
