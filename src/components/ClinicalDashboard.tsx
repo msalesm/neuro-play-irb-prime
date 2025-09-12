@@ -15,10 +15,12 @@ import {
   FileText,
   Target,
   Users,
-  Calendar
+  Calendar,
+  BarChart3
 } from 'lucide-react';
 import { useBehavioralAnalysis, DiagnosticPattern } from '@/hooks/useBehavioralAnalysis';
 import { useAuth } from '@/hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 export const ClinicalDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -73,14 +75,22 @@ export const ClinicalDashboard: React.FC = () => {
             Análise avançada de padrões comportamentais para diagnóstico de TEA, TDAH e Dislexia
           </p>
         </div>
-        <Button 
-          onClick={generateClinicalReport} 
-          disabled={loading}
-          className="shadow-soft"
-        >
-          <FileText className="w-4 h-4 mr-2" />
-          {loading ? 'Gerando...' : 'Gerar Relatório'}
-        </Button>
+        <div className="flex gap-3">
+          <Button variant="outline" asChild>
+            <Link to="/dashboard">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Meu Progresso
+            </Link>
+          </Button>
+          <Button 
+            onClick={generateClinicalReport} 
+            disabled={loading}
+            className="shadow-soft"
+          >
+            <FileText className="w-4 h-4 mr-2" />
+            {loading ? 'Gerando...' : 'Gerar Relatório'}
+          </Button>
+        </div>
       </div>
 
       {loading && (
@@ -359,8 +369,8 @@ export const ClinicalDashboard: React.FC = () => {
             <p className="text-muted-foreground mb-4">
               Complete alguns jogos diagnósticos para ver a análise comportamental
             </p>
-            <Button variant="outline">
-              Ir para Jogos
+            <Button variant="outline" asChild>
+              <Link to="/games">Ir para Jogos</Link>
             </Button>
           </CardContent>
         </Card>

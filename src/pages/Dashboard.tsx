@@ -4,8 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users } from "lucide-react";
+import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 interface UserStats {
   total_stars: number;
@@ -123,13 +124,29 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-card py-12">
       <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="font-heading text-4xl font-bold mb-4">
-            Olá, {user.user_metadata?.name || user.email?.split('@')[0]}! 👋
-          </h1>
-          <p className="text-xl text-muted-foreground">
-            Continue sua jornada de desenvolvimento pessoal
-          </p>
+        <div className="mb-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div>
+            <h1 className="font-heading text-4xl font-bold mb-4">
+              Olá, {user.user_metadata?.name || user.email?.split('@')[0]}! 👋
+            </h1>
+            <p className="text-xl text-muted-foreground">
+              Continue sua jornada de desenvolvimento pessoal
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button variant="outline" asChild>
+              <Link to="/games">
+                <Plus className="w-4 h-4 mr-2" />
+                Jogar Agora
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link to="/clinical">
+                <Brain className="w-4 h-4 mr-2" />
+                Análise Clínica
+              </Link>
+            </Button>
+          </div>
         </div>
 
         {/* Stats Grid */}
@@ -191,6 +208,43 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Clinical Analysis Quick View */}
+          <Card className="lg:col-span-3 shadow-card mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span className="flex items-center">
+                  <Brain className="w-5 h-5 mr-2" />
+                  Análise Comportamental
+                </span>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/clinical">Ver Completo</Link>
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-muted/50 rounded-lg">
+                  <Activity className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+                  <h4 className="font-semibold mb-1">Jogos Diagnósticos</h4>
+                  <p className="text-sm text-muted-foreground">Complete jogos para análise comportamental</p>
+                  <Button variant="outline" size="sm" className="mt-3" asChild>
+                    <Link to="/games">Começar</Link>
+                  </Button>
+                </div>
+                <div className="text-center p-4 bg-muted/50 rounded-lg">
+                  <TrendingUp className="w-8 h-8 mx-auto mb-2 text-green-600" />
+                  <h4 className="font-semibold mb-1">Padrões Identificados</h4>
+                  <p className="text-sm text-muted-foreground">Análise em tempo real dos seus resultados</p>
+                </div>
+                <div className="text-center p-4 bg-muted/50 rounded-lg">
+                  <AlertTriangle className="w-8 h-8 mx-auto mb-2 text-orange-600" />
+                  <h4 className="font-semibold mb-1">Relatórios Automáticos</h4>
+                  <p className="text-sm text-muted-foreground">Relatórios detalhados baseados em IA</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Game Categories */}
           <Card className="lg:col-span-2 shadow-card">
             <CardHeader>
