@@ -213,11 +213,11 @@ export default function MemoriaColorida() {
   const accuracy = stats.totalAttempts > 0 ? Math.round((stats.correctAnswers / stats.totalAttempts) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-card py-8">
+    <div className="min-h-screen gradient-card py-8">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Button variant="ghost" asChild className="gap-2">
+          <Button variant="ghost" asChild className="gap-2 transition-smooth">
             <Link to="/games">
               <ArrowLeft className="w-4 h-4" />
               Voltar aos Jogos
@@ -225,7 +225,7 @@ export default function MemoriaColorida() {
           </Button>
           
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold font-heading gradient-hero bg-clip-text text-transparent">
               🎨 Memória Colorida
             </h1>
             <p className="text-muted-foreground text-sm">Estilo Simon Clássico</p>
@@ -235,7 +235,7 @@ export default function MemoriaColorida() {
             variant="outline"
             size="sm"
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="gap-2"
+            className="gap-2 transition-smooth"
           >
             {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
           </Button>
@@ -243,59 +243,59 @@ export default function MemoriaColorida() {
 
         {/* Stats Panel */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-4 text-center">
               <div className="text-2xl font-bold text-primary">{stats.level}</div>
               <div className="text-sm text-muted-foreground">Sequência</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-600">{stats.score}</div>
+              <div className="text-2xl font-bold gradient-memory bg-clip-text text-transparent">{stats.score}</div>
               <div className="text-sm text-muted-foreground">Pontos</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-yellow-600">{stats.bestStreak}</div>
+              <div className="text-2xl font-bold text-accent-foreground">{stats.bestStreak}</div>
               <div className="text-sm text-muted-foreground">Melhor</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-purple-600">{accuracy}%</div>
+              <div className="text-2xl font-bold text-primary">{accuracy}%</div>
               <div className="text-sm text-muted-foreground">Precisão</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Game Area */}
-        <Card className="mb-8">
+        <Card className="mb-8 shadow-card">
           <CardContent className="p-8">
             {gameState === 'idle' && (
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-6 animate-fade-in">
                 <div className="space-y-4">
                   <h2 className="text-xl font-bold">Como Jogar Simon</h2>
                   <div className="space-y-2 text-left max-w-md mx-auto">
                     <p className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
                       Observe a sequência de cores que pisca
                     </p>
                     <p className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
                       Repita a sequência clicando nas cores
                     </p>
                     <p className="flex items-center gap-2">
-                      <span className="w-2 h-2 bg-primary rounded-full"></span>
+                      <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
                       A cada rodada, uma nova cor é adicionada
                     </p>
                   </div>
                 </div>
                 
-                <Button onClick={startGame} size="lg" className="gap-2">
+                <Button onClick={startGame} size="lg" className="gap-2 transition-smooth hover-scale shadow-soft">
                   <Play className="w-5 h-5" />
                   Começar Simon
                 </Button>
@@ -303,10 +303,10 @@ export default function MemoriaColorida() {
             )}
 
             {(gameState === 'showing' || gameState === 'playing') && (
-              <div className="space-y-8">
+              <div className="space-y-8 animate-fade-in">
                 {/* Game Status */}
                 <div className="text-center">
-                  <Badge variant="outline" className="mb-4 text-lg p-3">
+                  <Badge variant="outline" className="mb-4 text-lg p-3 animate-scale-in">
                     {gameState === 'showing' ? '👀 Observe a sequência...' : `🎯 Sua vez! (${playerSequence.length + 1}/${sequence.length})`}
                   </Badge>
                   
@@ -317,17 +317,17 @@ export default function MemoriaColorida() {
 
                 {/* Classic Simon Layout - 2x2 Grid */}
                 <div className="flex justify-center">
-                  <div className="grid grid-cols-2 gap-4 p-8 bg-gray-800 rounded-full shadow-2xl">
+                  <div className="grid grid-cols-2 gap-4 p-8 bg-gray-800 rounded-full shadow-glow transition-smooth">
                     {COLORS.map((color, index) => (
                       <button
                         key={color}
                         onClick={() => handleColorClick(color)}
                         disabled={gameState !== 'playing'}
                         className={`
-                          w-32 h-32 sm:w-40 sm:h-40 transition-all duration-200 shadow-inner
+                          w-32 h-32 sm:w-40 sm:h-40 transition-smooth shadow-inner
                           ${showingColor === color ? COLOR_CONFIG[color].activeBg : COLOR_CONFIG[color].bg}
-                          ${showingColor === color ? 'scale-105 brightness-150 shadow-lg' : ''}
-                          ${gameState === 'playing' ? 'hover:scale-105 hover:brightness-110 cursor-pointer' : 'cursor-not-allowed opacity-70'}
+                          ${showingColor === color ? 'scale-105 brightness-150 shadow-glow animate-pulse' : ''}
+                          ${gameState === 'playing' ? 'hover:scale-105 hover:brightness-110 cursor-pointer hover-scale' : 'cursor-not-allowed opacity-70'}
                           ${index === 0 ? 'rounded-tl-3xl' : ''}
                           ${index === 1 ? 'rounded-tr-3xl' : ''}
                           ${index === 2 ? 'rounded-bl-3xl' : ''}
@@ -346,11 +346,11 @@ export default function MemoriaColorida() {
                     {sequence.map((color, index) => (
                       <div
                         key={index}
-                        className={`w-6 h-6 rounded-full transition-all duration-200 ${
+                        className={`w-6 h-6 rounded-full transition-smooth ${
                           index < playerSequence.length 
                             ? COLOR_CONFIG[color].bg 
                             : index === currentShowingIndex
-                            ? COLOR_CONFIG[color].activeBg + ' scale-125'
+                            ? COLOR_CONFIG[color].activeBg + ' scale-125 animate-pulse'
                             : 'bg-gray-300 border-2 border-dashed border-gray-400'
                         }`}
                       />
@@ -361,7 +361,7 @@ export default function MemoriaColorida() {
             )}
 
             {gameState === 'gameOver' && (
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-6 animate-fade-in">
                 <div className="space-y-2">
                   <h2 className="text-xl font-bold text-destructive">Fim de Jogo!</h2>
                   <p className="text-muted-foreground">
@@ -369,22 +369,22 @@ export default function MemoriaColorida() {
                   </p>
                   <div className="flex justify-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-500" />
+                      <Star className="w-4 h-4 text-yellow-500 animate-pulse" />
                       Melhor sequência: {stats.bestStreak}
                     </div>
                     <div className="flex items-center gap-1">
-                      <Trophy className="w-4 h-4 text-purple-500" />
+                      <Trophy className="w-4 h-4 text-purple-500 animate-pulse" />
                       Precisão: {accuracy}%
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex gap-4 justify-center">
-                  <Button onClick={startGame} className="gap-2">
+                  <Button onClick={startGame} className="gap-2 transition-smooth hover-scale">
                     <Play className="w-4 h-4" />
                     Jogar Novamente
                   </Button>
-                  <Button variant="outline" onClick={resetGame} className="gap-2">
+                  <Button variant="outline" onClick={resetGame} className="gap-2 transition-smooth hover-scale">
                     <RotateCcw className="w-4 h-4" />
                     Reiniciar
                   </Button>
@@ -395,22 +395,22 @@ export default function MemoriaColorida() {
         </Card>
 
         {/* Benefits */}
-        <Card>
+        <Card className="shadow-card">
           <CardContent className="p-6">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" />
+              <Trophy className="w-5 h-5 text-yellow-500 animate-pulse" />
               Benefícios Terapêuticos
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div>
+              <div className="transition-smooth hover:shadow-soft p-4 rounded-lg">
                 <h4 className="font-medium text-primary">Memória de Trabalho</h4>
                 <p className="text-muted-foreground">Fortalece a capacidade de reter e manipular sequências temporariamente</p>
               </div>
-              <div>
+              <div className="transition-smooth hover:shadow-soft p-4 rounded-lg">
                 <h4 className="font-medium text-primary">Atenção Sequencial</h4>
                 <p className="text-muted-foreground">Desenvolve foco em padrões e ordem temporal</p>
               </div>
-              <div>
+              <div className="transition-smooth hover:shadow-soft p-4 rounded-lg">
                 <h4 className="font-medium text-primary">Concentração</h4>
                 <p className="text-muted-foreground">Melhora sustentação da atenção e controle inibitório</p>
               </div>

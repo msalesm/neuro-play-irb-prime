@@ -263,11 +263,11 @@ export default function CacaFoco() {
   const accuracy = stats.totalClicks > 0 ? Math.round((stats.correctClicks / stats.totalClicks) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-card py-8">
+    <div className="min-h-screen gradient-card py-8">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <Button variant="ghost" asChild className="gap-2">
+          <Button variant="ghost" asChild className="gap-2 transition-smooth">
             <Link to="/games">
               <ArrowLeft className="w-4 h-4" />
               Voltar aos Jogos
@@ -275,7 +275,7 @@ export default function CacaFoco() {
           </Button>
           
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold font-heading gradient-hero bg-clip-text text-transparent">
               🎯 Caça ao Foco
             </h1>
             <p className="text-muted-foreground text-sm">Encontre os objetos corretos</p>
@@ -283,13 +283,13 @@ export default function CacaFoco() {
 
           <div className="flex gap-2">
             {gameState === 'playing' && (
-              <Button variant="outline" onClick={togglePause} size="sm" className="gap-2">
+              <Button variant="outline" onClick={togglePause} size="sm" className="gap-2 transition-smooth">
                 <Pause className="w-4 h-4" />
                 Pausar
               </Button>
             )}
             {gameState === 'paused' && (
-              <Button variant="outline" onClick={togglePause} size="sm" className="gap-2">
+              <Button variant="outline" onClick={togglePause} size="sm" className="gap-2 transition-smooth">
                 <Play className="w-4 h-4" />
                 Retomar
               </Button>
@@ -299,37 +299,37 @@ export default function CacaFoco() {
 
         {/* Stats Panel */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-3 text-center">
               <div className="text-xl font-bold text-primary">{stats.level}</div>
               <div className="text-xs text-muted-foreground">Nível</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-green-600">{stats.score}</div>
+              <div className="text-xl font-bold gradient-focus bg-clip-text text-transparent">{stats.score}</div>
               <div className="text-xs text-muted-foreground">Pontos</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-red-600">{stats.timeLeft}s</div>
+              <div className="text-xl font-bold text-destructive">{stats.timeLeft}s</div>
               <div className="text-xs text-muted-foreground">Tempo</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-purple-600">{accuracy}%</div>
+              <div className="text-xl font-bold text-primary">{accuracy}%</div>
               <div className="text-xs text-muted-foreground">Precisão</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="shadow-card transition-smooth">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-yellow-600">{stats.streak}</div>
+              <div className="text-xl font-bold text-accent-foreground">{stats.streak}</div>
               <div className="text-xs text-muted-foreground">Sequência</div>
             </CardContent>
           </Card>
@@ -337,11 +337,11 @@ export default function CacaFoco() {
 
         {/* Game Instructions & Target */}
         {(gameState === 'playing' || gameState === 'paused') && (
-          <Card className="mb-6">
+          <Card className="mb-6 shadow-card">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="text-3xl">{currentTarget}</div>
+                  <div className="text-3xl animate-pulse">{currentTarget}</div>
                   <div>
                     <h3 className="font-semibold">Encontre este símbolo!</h3>
                     <p className="text-sm text-muted-foreground">
@@ -351,7 +351,7 @@ export default function CacaFoco() {
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-muted-foreground">Alvos restantes</div>
-                  <div className="text-2xl font-bold text-primary">
+                  <div className="text-2xl font-bold text-primary animate-scale-in">
                     {items.filter(i => i.isTarget).length}
                   </div>
                 </div>
@@ -361,29 +361,29 @@ export default function CacaFoco() {
         )}
 
         {/* Game Area */}
-        <Card className="mb-6">
+        <Card className="mb-6 shadow-card">
           <CardContent className="p-4 sm:p-8">
             {gameState === 'idle' && (
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-6 animate-fade-in">
                 <div className="space-y-4">
                   <h2 className="text-xl font-bold">Como Jogar</h2>
                   <div className="space-y-2 text-left max-w-md mx-auto">
                     <p className="flex items-center gap-2">
-                      <Target className="w-4 h-4 text-primary" />
+                      <Target className="w-4 h-4 text-primary animate-pulse" />
                       Encontre todos os símbolos-alvo na tela
                     </p>
                     <p className="flex items-center gap-2">
-                      <Eye className="w-4 h-4 text-primary" />
+                      <Eye className="w-4 h-4 text-primary animate-pulse" />
                       Ignore os símbolos distratores
                     </p>
                     <p className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-primary" />
+                      <Clock className="w-4 h-4 text-primary animate-pulse" />
                       Complete antes do tempo acabar
                     </p>
                   </div>
                 </div>
                 
-                <Button onClick={startGame} size="lg" className="gap-2">
+                <Button onClick={startGame} size="lg" className="gap-2 transition-smooth hover-scale shadow-soft">
                   <Play className="w-5 h-5" />
                   Começar Jogo
                 </Button>
@@ -391,19 +391,19 @@ export default function CacaFoco() {
             )}
 
             {gameState === 'paused' && (
-              <div className="text-center space-y-4">
+              <div className="text-center space-y-4 animate-fade-in">
                 <h2 className="text-xl font-bold">Jogo Pausado</h2>
                 <p className="text-muted-foreground">Clique em "Retomar" para continuar</p>
               </div>
             )}
 
             {(gameState === 'playing' && items.length > 0) && (
-              <div className="relative min-h-96 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border-2 border-dashed border-primary/30">
+              <div className="relative min-h-96 gradient-accent rounded-2xl p-4 border-2 border-dashed border-primary/30 animate-fade-in">
                 {items.map((item) => (
                   <button
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className="absolute text-2xl sm:text-3xl transition-all duration-200 hover:scale-125 cursor-pointer transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-white/50"
+                    className="absolute text-2xl sm:text-3xl transition-smooth hover:scale-125 cursor-pointer transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-white/50 hover-scale shadow-soft"
                     style={{
                       left: `${item.x}%`,
                       top: `${item.y}%`,
@@ -417,7 +417,7 @@ export default function CacaFoco() {
             )}
 
             {gameState === 'gameOver' && (
-              <div className="text-center space-y-6">
+              <div className="text-center space-y-6 animate-fade-in">
                 <div className="space-y-2">
                   <h2 className="text-xl font-bold">
                     {stats.correctClicks > 0 ? 'Parabéns!' : 'Tempo Esgotado!'}
@@ -427,22 +427,22 @@ export default function CacaFoco() {
                   </p>
                   <div className="flex justify-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
-                      <Target className="w-4 h-4 text-green-500" />
+                      <Target className="w-4 h-4 text-green-500 animate-pulse" />
                       Acertos: {stats.correctClicks}/{stats.correctClicks + items.filter(i => i.isTarget).length}
                     </div>
                     <div className="flex items-center gap-1">
-                      <Trophy className="w-4 h-4 text-purple-500" />
+                      <Trophy className="w-4 h-4 text-purple-500 animate-pulse" />
                       Precisão: {accuracy}%
                     </div>
                   </div>
                 </div>
                 
                 <div className="flex gap-4 justify-center">
-                  <Button onClick={startGame} className="gap-2">
+                  <Button onClick={startGame} className="gap-2 transition-smooth hover-scale">
                     <Play className="w-4 h-4" />
                     Jogar Novamente
                   </Button>
-                  <Button variant="outline" onClick={resetGame} className="gap-2">
+                  <Button variant="outline" onClick={resetGame} className="gap-2 transition-smooth hover-scale">
                     <RotateCcw className="w-4 h-4" />
                     Reiniciar
                   </Button>
@@ -453,22 +453,22 @@ export default function CacaFoco() {
         </Card>
 
         {/* Benefits */}
-        <Card>
+        <Card className="shadow-card">
           <CardContent className="p-6">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" />
+              <Trophy className="w-5 h-5 text-yellow-500 animate-pulse" />
               Benefícios Terapêuticos
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div>
+              <div className="transition-smooth hover:shadow-soft p-4 rounded-lg">
                 <h4 className="font-medium text-primary">Atenção Seletiva</h4>
                 <p className="text-muted-foreground">Melhora a capacidade de focar em estímulos relevantes ignorando distrações</p>
               </div>
-              <div>
+              <div className="transition-smooth hover:shadow-soft p-4 rounded-lg">
                 <h4 className="font-medium text-primary">Controle Inibitório</h4>
                 <p className="text-muted-foreground">Fortalece a habilidade de suprimir respostas automáticas inadequadas</p>
               </div>
-              <div>
+              <div className="transition-smooth hover:shadow-soft p-4 rounded-lg">
                 <h4 className="font-medium text-primary">Processamento Visual</h4>
                 <p className="text-muted-foreground">Desenvolve rapidez e precisão na identificação visual de objetos</p>
               </div>
