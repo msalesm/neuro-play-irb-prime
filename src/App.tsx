@@ -17,6 +17,11 @@ import MemoriaColorida from "./pages/games/MemoriaColorida";
 import CacaFoco from "./pages/games/CacaFoco";
 import LogicaRapida from "./pages/games/LogicaRapida";
 import RitmoMusical from "./pages/games/RitmoMusical";
+import CacaLetras from './pages/games/CacaLetras';
+import SilabaMagica from './pages/games/SilabaMagica';
+import QuebraCabecaMagico from './pages/games/QuebraCabecaMagico';
+import AventuraNumeros from './pages/games/AventuraNumeros';
+import ContadorHistorias from './pages/games/ContadorHistorias';
 import CacaLetras from "./pages/games/CacaLetras";
 import SilabaMagica from "./pages/games/SilabaMagica";
 import FocusForest from "./pages/games/FocusForest";
@@ -62,6 +67,9 @@ const App = () => (
               <Route path="/games/ritmo-musical" element={<RitmoMusical />} />
               <Route path="/games/caca-letras" element={<CacaLetras />} />
               <Route path="/games/silaba-magica" element={<SilabaMagica />} />
+              <Route path="/games/quebra-cabeca-magico" element={<QuebraCabecaMagico />} />
+              <Route path="/games/aventura-numeros" element={<AventuraNumeros />} />
+              <Route path="/games/contador-historias" element={<ContadorHistorias />} />
               <Route path="/games/mindful-breath" element={<MindfulBreath />} />
               <Route path="/games/focus-forest" element={<FocusForest />} />
               <Route path="/games/focus-quest" element={<FocusQuest />} />
