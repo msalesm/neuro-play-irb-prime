@@ -2,6 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { LucideIcon, Lock } from 'lucide-react';
+import { GameIllustration } from './GameIllustration';
 
 interface ModernGameCardProps {
   title: string;
@@ -16,6 +17,7 @@ interface ModernGameCardProps {
   duration?: string;
   unlocked?: boolean;
   path: string;
+  gameId?: string;
 }
 
 export function ModernGameCard({
@@ -27,15 +29,22 @@ export function ModernGameCard({
   difficulty,
   duration,
   unlocked = true,
-  path
+  path,
+  gameId
 }: ModernGameCardProps) {
   const content = (
     <Card className={`relative overflow-hidden transition-smooth hover:scale-105 hover:shadow-glow ${!unlocked ? 'opacity-70' : ''}`}>
       {/* Background gradient */}
       <div className={`absolute inset-0 ${gradient} opacity-90`} />
       
+      {/* Game Illustration Background */}
+      {gameId && (
+        <div className="absolute top-2 right-2 opacity-20">
+          <GameIllustration gameId={gameId} className="w-20 h-20" />
+        </div>
+      )}
+      
       {/* Decorative elements */}
-      <div className="absolute top-2 right-2 w-12 h-12 bg-white/10 rounded-full blur-lg" />
       <div className="absolute bottom-2 left-2 w-8 h-8 bg-white/10 rounded-full blur-md" />
       
       {/* Lock overlay for locked games */}
@@ -57,7 +66,11 @@ export function ModernGameCard({
       <CardContent className="relative p-4 h-32 flex flex-col justify-between text-white">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-            <Icon className="w-5 h-5 text-white" />
+            {gameId ? (
+              <GameIllustration gameId={gameId} className="w-6 h-6" animated />
+            ) : (
+              <Icon className="w-5 h-5 text-white" />
+            )}
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-sm leading-tight mb-1">{title}</h3>

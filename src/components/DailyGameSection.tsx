@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Clock, Target, Brain, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { GameIllustration } from './GameIllustration';
 
 // Jogos que podem ser sugeridos como "jogo diário"
 const dailyGames = [
@@ -62,8 +63,12 @@ export function DailyGameSection() {
         {/* Background gradient */}
         <div className={`absolute inset-0 ${todaysGame.gradient} rounded-2xl opacity-90`} />
         
+        {/* Game Illustration Background */}
+        <div className="absolute top-4 right-4 opacity-20">
+          <GameIllustration gameId={todaysGame.id} className="w-32 h-32" />
+        </div>
+        
         {/* Decorative elements */}
-        <div className="absolute top-4 right-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
         <div className="absolute bottom-4 left-4 w-16 h-16 bg-white/10 rounded-full blur-lg" />
         
         {/* Content */}
@@ -97,7 +102,7 @@ export function DailyGameSection() {
 
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                <Icon className="w-6 h-6 text-white" />
+                <GameIllustration gameId={todaysGame.id} className="w-7 h-7" animated />
               </div>
               <div>
                 <h3 className="text-lg font-semibold">{todaysGame.title}</h3>

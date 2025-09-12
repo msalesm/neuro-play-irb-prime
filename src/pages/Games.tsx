@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import { GameIllustration } from "@/components/GameIllustration";
 
 const gamesList = [
   // Jogos Básicos
@@ -272,11 +273,21 @@ export default function Games() {
                 {/* Gradient background */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-20`} />
                 
+                {/* Game Illustration Background */}
+                <div className="absolute top-4 right-4 opacity-15">
+                  <GameIllustration gameId={game.id} className="w-24 h-24" />
+                </div>
+                
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-4">
-                    <Badge className="bg-gradient-to-r from-purple-500/80 to-blue-500/80 text-white border-0 shadow-lg">
-                      {game.category}
-                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                        <GameIllustration gameId={game.id} className="w-5 h-5" animated />
+                      </div>
+                      <Badge className="bg-gradient-to-r from-purple-500/80 to-blue-500/80 text-white border-0 shadow-lg">
+                        {game.category}
+                      </Badge>
+                    </div>
                     {!game.unlocked && <Lock className="h-4 w-4 text-white/50" />}
                   </div>
 
