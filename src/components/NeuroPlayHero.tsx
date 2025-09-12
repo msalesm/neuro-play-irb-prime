@@ -35,9 +35,9 @@ export const NeuroPlayHero = () => {
 
         <p className="text-base sm:text-lg text-muted-foreground/80 mb-8 sm:mb-12 mx-auto px-4 leading-relaxed">
           Minigames de 1-3 minutos que apoiam o desenvolvimento de crianças com 
-          <span className="text-primary font-semibold"> Dislexia</span>, 
-          <span className="text-primary font-semibold"> TDAH</span> e 
-          <span className="text-primary font-semibold"> TEA</span>
+          <span className="text-dislexia font-semibold"> Dislexia</span>, 
+          <span className="text-tdah font-semibold"> TDAH</span> e 
+          <span className="text-tea font-semibold"> TEA</span>
         </p>
 
         {/* Call to Action - Mobile First */}
@@ -66,30 +66,30 @@ export const NeuroPlayHero = () => {
           </Button>
         </div>
 
-        {/* Features highlight - Mobile First */}
+        {/* Features highlight with neurodiversity colors - Mobile First */}
         <div className="mt-12 sm:mt-16 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mx-auto px-4">
-          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-card">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-card border border-orange-200/20">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 gradient-tdah rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-glow">
               <span className="text-xl sm:text-2xl">🎯</span>
             </div>
-            <h3 className="font-semibold text-card-foreground mb-2 text-sm sm:text-base">Jogos Rápidos</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">Atividades de 1-3 minutos para manter o foco</p>
+            <h3 className="font-semibold text-card-foreground mb-2 text-sm sm:text-base text-tdah">TDAH - Foco</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">Jogos de atenção e concentração</p>
           </div>
           
-          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-card">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
-              <span className="text-xl sm:text-2xl">🏆</span>
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-card border border-blue-200/20">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 gradient-tea rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-glow">
+              <span className="text-xl sm:text-2xl">🧩</span>
             </div>
-            <h3 className="font-semibold text-card-foreground mb-2 text-sm sm:text-base">Recompensas</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">Sistema de pontos e conquistas motivadoras</p>
+            <h3 className="font-semibold text-card-foreground mb-2 text-sm sm:text-base text-tea">TEA - Rotinas</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">Estrutura e previsibilidade social</p>
           </div>
           
-          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-card sm:col-span-1 col-span-1">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
-              <span className="text-xl sm:text-2xl">📊</span>
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 shadow-card border border-green-200/20">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 gradient-dislexia rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-glow">
+              <span className="text-xl sm:text-2xl">📚</span>
             </div>
-            <h3 className="font-semibold text-card-foreground mb-2 text-sm sm:text-base">Acompanhamento</h3>
-            <p className="text-xs sm:text-sm text-muted-foreground">Relatórios simples para pais e professores</p>
+            <h3 className="font-semibold text-card-foreground mb-2 text-sm sm:text-base text-dislexia">Dislexia - Leitura</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground">Processamento fonológico e palavras</p>
           </div>
         </div>
       </div>

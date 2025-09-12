@@ -67,6 +67,36 @@ const gamesList = [
     unlocked: true,
     type: "basic"
   },
+  {
+    id: 'caca-letras',
+    title: "Caça Letras",
+    category: "Leitura & Dislexia",
+    description: "Encontre letras específicas dentro de palavras. Desenvolva reconhecimento visual rápido e consciência fonológica.",
+    features: ["Reconhecimento visual", "Processamento fonológico", "Atenção seletiva", "Velocidade de leitura"],
+    ageRange: "5-14 anos",
+    duration: "3-8 min",
+    players: "1 jogador",
+    status: "Disponível",
+    color: "bg-emerald-100 text-emerald-800",
+    gradient: "from-emerald-400 to-emerald-600",
+    unlocked: true,
+    type: "basic"
+  },
+  {
+    id: 'silaba-magica',
+    title: "Sílaba Mágica",
+    category: "Leitura & Dislexia",
+    description: "Separe palavras em sílabas ou forme palavras a partir de sílabas. Fortaleça a consciência fonológica e decodificação.",
+    features: ["Segmentação silábica", "Consciência fonológica", "Decodificação", "Síntese de palavras"],
+    ageRange: "6-16 anos",
+    duration: "5-12 min",
+    players: "1 jogador",
+    status: "Disponível",
+    color: "bg-cyan-100 text-cyan-800",
+    gradient: "from-cyan-400 to-cyan-600",
+    unlocked: true,
+    type: "basic"
+  },
   
   // Jogos Diagnósticos
   {

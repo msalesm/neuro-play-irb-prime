@@ -609,7 +609,76 @@ export default function RitmoMusical() {
                   </div>
                 )}
 
-                {/* ... keep existing code (playing, paused, gameOver states) */}
+                {gameState === 'playing' && (
+                  <div className="space-y-6">
+                    {/* Current Pattern Display */}
+                    <div className="text-center">
+                      <Badge variant="outline" className="text-lg p-3 mb-4">
+                        🎹 Sua vez! Reproduza o padrão
+                      </Badge>
+                      
+                      {/* Pattern Display */}
+                      <div className="bg-muted/20 rounded-lg p-4 mb-6">
+                        <h4 className="text-sm font-medium text-muted-foreground mb-3">Padrão Alvo:</h4>
+                        <div className="flex justify-center gap-2 flex-wrap">
+                          {pattern.map((beat, index) => (
+                            <div
+                              key={beat.id}
+                              className={`w-12 h-12 rounded-full flex items-center justify-center text-lg border-2 ${BEAT_SOUNDS[beat.type].color} border-white shadow-sm`}
+                            >
+                              {beat.type === 'kick' ? '🥁' : 
+                               beat.type === 'snare' ? '🪘' : 
+                               beat.type === 'hihat' ? '🎵' : '💥'}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Interactive Drum Kit */}
+                    <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-6">
+                      <h4 className="text-sm font-medium text-center text-muted-foreground mb-4">Kit de Bateria Virtual</h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {Object.entries(BEAT_SOUNDS).map(([beatType, config]) => (
+                          <button
+                            key={beatType}
+                            onClick={() => handleBeatInput(beatType as BeatType)}
+                            className={`${config.color} hover:scale-105 active:scale-95 transition-all duration-150 rounded-xl p-4 text-white font-medium shadow-lg hover:shadow-xl border-2 border-white/20`}
+                          >
+                            <div className="text-2xl mb-1">
+                              {beatType === 'kick' ? '🥁' : 
+                               beatType === 'snare' ? '🪘' : 
+                               beatType === 'hihat' ? '🎵' : '💥'}
+                            </div>
+                            <div className="text-xs">{config.name}</div>
+                            <div className="text-xs opacity-75">{config.key}</div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Player Progress */}
+                    <div className="text-center">
+                      <div className="flex justify-center gap-2 flex-wrap">
+                        <span className="text-sm text-muted-foreground">Tocado:</span>
+                        {playerBeats.map((beat, index) => (
+                          <div
+                            key={index}
+                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${BEAT_SOUNDS[beat.type].color} border border-white shadow-sm`}
+                          >
+                            {beat.type === 'kick' ? '🥁' : 
+                             beat.type === 'snare' ? '🪘' : 
+                             beat.type === 'hihat' ? '🎵' : '💥'}
+                          </div>
+                        ))}
+                      </div>
+                      <Progress 
+                        value={(playerBeats.length / pattern.length) * 100} 
+                        className="w-full max-w-xs mx-auto mt-3"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 {gameState === 'paused' && (
                   <div className="text-center space-y-4">

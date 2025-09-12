@@ -17,6 +17,8 @@ import MemoriaColorida from "./pages/games/MemoriaColorida";
 import CacaFoco from "./pages/games/CacaFoco";
 import LogicaRapida from "./pages/games/LogicaRapida";
 import RitmoMusical from "./pages/games/RitmoMusical";
+import CacaLetras from "./pages/games/CacaLetras";
+import SilabaMagica from "./pages/games/SilabaMagica";
 import FocusForest from "./pages/games/FocusForest";
 import FocusQuest from "./pages/games/FocusQuest";
 import SocialScenarios from "./pages/games/SocialScenarios";
@@ -58,6 +60,8 @@ const App = () => (
               <Route path="/games/caca-foco" element={<CacaFoco />} />
               <Route path="/games/logica-rapida" element={<LogicaRapida />} />
               <Route path="/games/ritmo-musical" element={<RitmoMusical />} />
+              <Route path="/games/caca-letras" element={<CacaLetras />} />
+              <Route path="/games/silaba-magica" element={<SilabaMagica />} />
               <Route path="/games/mindful-breath" element={<MindfulBreath />} />
               <Route path="/games/focus-forest" element={<FocusForest />} />
               <Route path="/games/focus-quest" element={<FocusQuest />} />
