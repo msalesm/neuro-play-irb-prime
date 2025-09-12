@@ -6,8 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Header } from "@/components/Header";
+import { BottomNavigation } from "@/components/BottomNavigation";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
+import ModernIndex from "./pages/ModernIndex";
 import Auth from "./pages/Auth";
 import Games from "./pages/Games";
 import GameMap from "./components/GameMap";
@@ -54,41 +56,46 @@ const App = () => (
               v7_relativeSplatPath: true,
             }}
           >
-            <Header />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/game-map" element={<GameMap />} />
-              <Route path="/games" element={<Games />} />
-              <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
-              <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
-              <Route path="/games/caca-foco" element={<CacaFoco />} />
-              <Route path="/games/logica-rapida" element={<LogicaRapida />} />
-              <Route path="/games/ritmo-musical" element={<RitmoMusical />} />
-              <Route path="/games/caca-letras" element={<CacaLetras />} />
-              <Route path="/games/silaba-magica" element={<SilabaMagica />} />
-              <Route path="/games/quebra-cabeca-magico" element={<QuebraCabecaMagico />} />
-              <Route path="/games/aventura-numeros" element={<AventuraNumeros />} />
-              <Route path="/games/contador-historias" element={<ContadorHistorias />} />
-              <Route path="/games/mindful-breath" element={<MindfulBreath />} />
-              <Route path="/games/focus-forest" element={<FocusForest />} />
-              <Route path="/games/focus-quest" element={<FocusQuest />} />
-              <Route path="/games/social-scenarios" element={<SocialScenarios />} />
-              <Route path="/games/social-compass" element={<SocialCompass />} />
-              <Route path="/games/emotional-weather" element={<EmotionalWeather />} />
-              <Route path="/games/balance-quest" element={<BalanceQuest />} />
-              <Route path="/games/sensory-flow" element={<SensoryFlow />} />
-              <Route path="/games/visual-sync" element={<VisualSync />} />
-              <Route path="/games/touch-mapper" element={<TouchMapper />} />
-              <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
-              <Route path="/games/attention-sustained" element={<AttentionSustained />} />
-              <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibility />} />
-              <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
-              <Route path="/clinical" element={<ClinicalDashboard />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+              <Header />
+              <main className="pb-20">
+                <Routes>
+                  <Route path="/" element={<ModernIndex />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/game-map" element={<GameMap />} />
+                  <Route path="/games" element={<Games />} />
+                  <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
+                  <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
+                  <Route path="/games/caca-foco" element={<CacaFoco />} />
+                  <Route path="/games/logica-rapida" element={<LogicaRapida />} />
+                  <Route path="/games/ritmo-musical" element={<RitmoMusical />} />
+                  <Route path="/games/caca-letras" element={<CacaLetras />} />
+                  <Route path="/games/silaba-magica" element={<SilabaMagica />} />
+                  <Route path="/games/quebra-cabeca-magico" element={<QuebraCabecaMagico />} />
+                  <Route path="/games/aventura-numeros" element={<AventuraNumeros />} />
+                  <Route path="/games/contador-historias" element={<ContadorHistorias />} />
+                  <Route path="/games/mindful-breath" element={<MindfulBreath />} />
+                  <Route path="/games/focus-forest" element={<FocusForest />} />
+                  <Route path="/games/focus-quest" element={<FocusQuest />} />
+                  <Route path="/games/social-scenarios" element={<SocialScenarios />} />
+                  <Route path="/games/social-compass" element={<SocialCompass />} />
+                  <Route path="/games/emotional-weather" element={<EmotionalWeather />} />
+                  <Route path="/games/balance-quest" element={<BalanceQuest />} />
+                  <Route path="/games/sensory-flow" element={<SensoryFlow />} />
+                  <Route path="/games/visual-sync" element={<VisualSync />} />
+                  <Route path="/games/touch-mapper" element={<TouchMapper />} />
+                  <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
+                  <Route path="/games/attention-sustained" element={<AttentionSustained />} />
+                  <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibility />} />
+                  <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
+                  <Route path="/clinical" element={<ClinicalDashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <BottomNavigation />
+            </div>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>

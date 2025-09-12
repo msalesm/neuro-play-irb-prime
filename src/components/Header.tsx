@@ -21,130 +21,48 @@ export const Header = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
-    <header className="bg-card/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
+    <header className="bg-transparent backdrop-blur-sm border-b border-white/10 sticky top-0 z-40">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 sm:gap-3" onClick={closeMobileMenu}>
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-hero rounded-lg flex items-center justify-center">
-              <Brain className="h-4 w-4 sm:h-6 sm:w-6 text-primary-foreground" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+              <Brain className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
             </div>
-            <span className="font-heading text-xl sm:text-2xl font-bold text-foreground">
+            <span className="font-heading text-xl sm:text-2xl font-bold text-white">
               NeuroPlay
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-4">
-            {user && navigation.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-smooth ${
-                    isActive(item.href)
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Desktop Auth */}
-          <div className="hidden lg:flex items-center gap-4">
+          {/* Desktop Auth - Simplified */}
+          <div className="flex items-center gap-4">
             {user ? (
               <div className="flex items-center gap-3">
-                <span className="text-sm text-muted-foreground hidden xl:block">
-                  Olá, {user.user_metadata?.name || user.email}
+                <span className="text-sm text-white/80 hidden md:block">
+                  {user.user_metadata?.name || user.email?.split('@')[0]}
                 </span>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={signOut}
-                  className="flex items-center gap-2"
+                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
                 >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden xl:inline">Sair</span>
+                  <LogOut className="h-4 w-4 md:mr-2" />
+                  <span className="hidden md:inline">Sair</span>
                 </Button>
               </div>
             ) : (
-              <Button variant="outline" size="sm" asChild>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                asChild 
+                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+              >
                 <Link to="/auth">Entrar</Link>
               </Button>
             )}
           </div>
-
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="lg:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </Button>
         </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 pb-4 border-t border-border pt-4">
-            {/* Mobile Navigation */}
-            {user && (
-              <nav className="space-y-2 mb-4">
-                {navigation.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      onClick={closeMobileMenu}
-                      className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-smooth ${
-                        isActive(item.href)
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                      }`}
-                    >
-                      <Icon className="h-5 w-5" />
-                      {item.name}
-                    </Link>
-                  );
-                })}
-              </nav>
-            )}
-
-            {/* Mobile Auth */}
-            <div className="space-y-3">
-              {user ? (
-                <>
-                  <div className="px-3 py-2 text-sm text-muted-foreground">
-                    Olá, {user.user_metadata?.name || user.email}
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      signOut();
-                      closeMobileMenu();
-                    }}
-                    className="w-full justify-center gap-2"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Sair
-                  </Button>
-                </>
-              ) : (
-                <Button variant="outline" size="sm" asChild className="w-full">
-                  <Link to="/auth" onClick={closeMobileMenu}>Entrar</Link>
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </header>
   );

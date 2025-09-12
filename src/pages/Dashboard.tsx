@@ -122,7 +122,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-card py-12">
+    <div className="min-h-screen text-white py-12 pb-24">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="mb-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
