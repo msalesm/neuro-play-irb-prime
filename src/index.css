@@ -58,8 +58,10 @@ All colors MUST be HSL.
     --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --font-heading: 'Inter', system-ui, sans-serif;
-    --font-body: 'Inter', system-ui, sans-serif;
+    /* Typography - Using OpenDyslexic for accessibility */
+    --font-heading: 'Open Sans', system-ui, sans-serif;
+    --font-body: 'OpenDyslexic', 'Open Sans', system-ui, sans-serif;
+    --font-dyslexic: 'OpenDyslexic', 'Open Sans', system-ui, sans-serif;
 
     --sidebar-background: 0 0% 98%;
 
@@ -124,6 +126,32 @@ All colors MUST be HSL.
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
   }
+}
+
+/* Accessibility Classes */
+.dyslexic-font {
+  font-family: var(--font-dyslexic) !important;
+}
+
+.dyslexic-font * {
+  font-family: var(--font-dyslexic) !important;
+}
+
+.reduce-motion *,
+.reduce-motion *:before,
+.reduce-motion *:after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+.high-contrast {
+  filter: contrast(150%) !important;
+}
+
+.reduced-sounds {
+  /* This class will be used by game components to reduce sound effects */
 }
 
 @layer components {

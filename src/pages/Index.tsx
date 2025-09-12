@@ -1,13 +1,15 @@
 import { NeuroPlayHero } from "@/components/NeuroPlayHero";
-import { GameModules } from "@/components/GameModules";
+import { MVPGameModules } from "@/components/MVPGameModules";
 import { NeuroPlayFeatures } from "@/components/NeuroPlayFeatures";
+import { AccessibilityControls } from "@/components/AccessibilityControls";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <AccessibilityControls />
       <NeuroPlayHero />
-      <GameModules />
+      <MVPGameModules />
       <NeuroPlayFeatures />
       <Footer />
     </div>

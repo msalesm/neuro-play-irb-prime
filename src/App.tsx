@@ -45,6 +45,10 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/game-map" element={<GameMap />} />
               <Route path="/games" element={<Games />} />
+            <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
+            <Route path="/games/caca-foco" element={<CacaFoco />} />
+              <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
+              <Route path="/games/caca-foco" element={<CacaFoco />} />
               <Route path="/games/mindful-breath" element={<MindfulBreath />} />
               <Route path="/games/focus-forest" element={<FocusForest />} />
               <Route path="/games/focus-quest" element={<FocusQuest />} />

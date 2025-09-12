@@ -50,8 +50,9 @@ export default {
         },
       },
       fontFamily: {
-        heading: "var(--font-heading)",
-        body: "var(--font-body)",
+        'heading': ['Open Sans', 'system-ui', 'sans-serif'],
+        'body': ['OpenDyslexic', 'Open Sans', 'system-ui', 'sans-serif'],
+        'dyslexic': ['OpenDyslexic', 'Open Sans', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-hero': 'var(--gradient-hero)',
