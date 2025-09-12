@@ -55,6 +55,8 @@ export const AttentionSustained: React.FC = () => {
   const [taskTimer, setTaskTimer] = useState<NodeJS.Timeout | null>(null);
   const [startTime, setStartTime] = useState<number>(0);
   const [taskStartTime, setTaskStartTime] = useState<number>(0);
+  const [timeRemaining, setTimeRemaining] = useState<number>(60000);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
   
   const gameAreaRef = useRef<HTMLDivElement>(null);
   
@@ -89,43 +91,120 @@ export const AttentionSustained: React.FC = () => {
     };
   }, []);
 
+  // Complete current level
+  const completeLevel = useCallback(async () => {
+    if (gameTimer) clearTimeout(gameTimer);
+    if (taskTimer) clearTimeout(taskTimer);
+    
+    const sessionDuration = Date.now() - startTime;
+    const avgReactionTime = reactionTimes.length > 0 
+      ? reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length 
+      : 0;
+    
+    // Calculate vigilance decrement (attention decline over time)
+    const vigilanceDecrement = calculateVigilanceDecrement(reactionTimes);
+    
+    // Calculate attention span score
+    const attentionSpan = calculateAttentionSpan(stats.correctResponses, stats.totalTrials, sessionDuration);
+    
+    const finalStats: SessionStats = {
+      ...stats,
+      averageReactionTime: avgReactionTime,
+      vigilanceDecrement,
+      attentionSpan,
+      sessionDuration
+    };
+    
+    setStats(finalStats);
+    setGameState('completed');
+    
+    // Save behavioral metrics
+    if (user?.id) {
+      await saveBehavioralMetric({
+        gameType: 'attention_sustained',
+        sessionId: `attention-${Date.now()}`,
+        metrics: {
+          attentionSpan: attentionSpan / 100, // Normalize to 0-1
+          vigilanceDecrement: vigilanceDecrement / 100,
+          reactionTime: avgReactionTime,
+          inhibitoryControl: 1 - (finalStats.falseAlarms / Math.max(finalStats.totalTrials, 1)),
+          workingMemory: finalStats.correctResponses / Math.max(finalStats.totalTrials, 1)
+        },
+        riskIndicators: {
+          tdahRisk: calculateTDAHRisk(finalStats, avgReactionTime, vigilanceDecrement),
+          teaRisk: calculateTEARisk(finalStats),
+          dislexiaRisk: 0.1 // Low relevance for this task
+        },
+        sessionDuration: sessionDuration / 1000
+      });
+    }
+  }, [gameTimer, taskTimer, startTime, reactionTimes, stats, user?.id, saveBehavioralMetric]);
+
+  // Timer update effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    
+    if (gameState === 'playing' && gameStarted) {
+      interval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const remaining = Math.max(0, TRIAL_DURATION - elapsed);
+        setTimeRemaining(remaining);
+        
+        if (remaining <= 0) {
+          completeLevel();
+        }
+      }, 100);
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [gameState, gameStarted, startTime, completeLevel]);
+
   // Start game session
   const startGame = useCallback(() => {
-    setGameState('playing');
-    setStartTime(Date.now());
-    setCurrentTrial(0);
-    setReactionTimes([]);
+    // Show countdown
+    setGameState('instructions');
     
-    const initialStats: SessionStats = {
-      level: 1,
-      score: 0,
-      correctResponses: 0,
-      falseAlarms: 0,
-      missedTargets: 0,
-      averageReactionTime: 0,
-      vigilanceDecrement: 0,
-      attentionSpan: 0,
-      totalTrials: 0,
-      sessionDuration: 0
-    };
-    setStats(initialStats);
-    
-    // Start first task
-    const firstTask = generateTask(1);
-    setCurrentTask(firstTask);
-    setTaskStartTime(Date.now());
-    
-    // Set task timeout
-    const timeout = setTimeout(() => {
-      handleMissedTarget();
-    }, STIMULUS_DURATION);
-    setTaskTimer(timeout);
-    
-    // Set session timer
-    const sessionTimer = setTimeout(() => {
-      completeLevel();
-    }, TRIAL_DURATION);
-    setGameTimer(sessionTimer);
+    setTimeout(() => {
+      setGameState('playing');
+      setGameStarted(true);
+      setStartTime(Date.now());
+      setTimeRemaining(TRIAL_DURATION);
+      setCurrentTrial(0);
+      setReactionTimes([]);
+      
+      const initialStats: SessionStats = {
+        level: 1,
+        score: 0,
+        correctResponses: 0,
+        falseAlarms: 0,
+        missedTargets: 0,
+        averageReactionTime: 0,
+        vigilanceDecrement: 0,
+        attentionSpan: 0,
+        totalTrials: 0,
+        sessionDuration: 0
+      };
+      setStats(initialStats);
+      
+      // Start first task
+      const firstTask = generateTask(1);
+      setCurrentTask(firstTask);
+      setTaskStartTime(Date.now());
+      
+      // Set task timeout
+      const timeout = setTimeout(() => {
+        handleMissedTarget();
+      }, STIMULUS_DURATION);
+      setTaskTimer(timeout);
+      
+      // Set session timer
+      const sessionTimer = setTimeout(() => {
+        completeLevel();
+      }, TRIAL_DURATION);
+      setGameTimer(sessionTimer);
+    }, 3000); // 3 second countdown
     
   }, [generateTask]);
 
@@ -209,55 +288,6 @@ export const AttentionSustained: React.FC = () => {
       }
     }, ISI_RANGE[0] + Math.random() * (ISI_RANGE[1] - ISI_RANGE[0]));
   }, [currentTask, gameState, generateTask, stats.level]);
-
-  // Complete current level
-  const completeLevel = useCallback(async () => {
-    if (gameTimer) clearTimeout(gameTimer);
-    if (taskTimer) clearTimeout(taskTimer);
-    
-    const sessionDuration = Date.now() - startTime;
-    const avgReactionTime = reactionTimes.length > 0 
-      ? reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length 
-      : 0;
-    
-    // Calculate vigilance decrement (attention decline over time)
-    const vigilanceDecrement = calculateVigilanceDecrement(reactionTimes);
-    
-    // Calculate attention span score
-    const attentionSpan = calculateAttentionSpan(stats.correctResponses, stats.totalTrials, sessionDuration);
-    
-    const finalStats: SessionStats = {
-      ...stats,
-      averageReactionTime: avgReactionTime,
-      vigilanceDecrement,
-      attentionSpan,
-      sessionDuration
-    };
-    
-    setStats(finalStats);
-    setGameState('completed');
-    
-    // Save behavioral metrics
-    if (user?.id) {
-      await saveBehavioralMetric({
-        gameType: 'attention_sustained',
-        sessionId: `attention-${Date.now()}`,
-        metrics: {
-          attentionSpan: attentionSpan / 100, // Normalize to 0-1
-          vigilanceDecrement: vigilanceDecrement / 100,
-          reactionTime: avgReactionTime,
-          inhibitoryControl: 1 - (finalStats.falseAlarms / Math.max(finalStats.totalTrials, 1)),
-          workingMemory: finalStats.correctResponses / Math.max(finalStats.totalTrials, 1)
-        },
-        riskIndicators: {
-          tdahRisk: calculateTDAHRisk(finalStats, avgReactionTime, vigilanceDecrement),
-          teaRisk: calculateTEARisk(finalStats),
-          dislexiaRisk: 0.1 // Low relevance for this task
-        },
-        sessionDuration: sessionDuration / 1000
-      });
-    }
-  }, [gameTimer, taskTimer, startTime, reactionTimes, stats, user?.id, saveBehavioralMetric]);
 
   // Calculate vigilance decrement
   const calculateVigilanceDecrement = (reactionTimes: number[]): number => {
@@ -408,7 +438,7 @@ export const AttentionSustained: React.FC = () => {
         </Card>
       )}
 
-      {gameState === 'instructions' && (
+      {gameState === 'instructions' && !gameStarted && (
         <Card className="shadow-card max-w-2xl mx-auto">
           <CardHeader>
             <CardTitle>Instruções Detalhadas</CardTitle>
@@ -438,10 +468,74 @@ export const AttentionSustained: React.FC = () => {
         </Card>
       )}
 
+      {gameState === 'instructions' && gameStarted && (
+        <Card className="shadow-glow max-w-2xl mx-auto">
+          <CardContent className="p-12 text-center">
+            <div className="space-y-6">
+              <div className="relative w-32 h-32 mx-auto">
+                <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+                <div 
+                  className="absolute inset-0 border-4 border-primary rounded-full transition-all duration-1000"
+                  style={{ 
+                    clipPath: `polygon(50% 0%, 50% 0%, 50% 50%, 50% 50%)`,
+                    transform: 'rotate(-90deg)',
+                    animation: 'spin 3s linear'
+                  }}
+                ></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-4xl font-bold text-primary">PRONTO</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-primary">Teste Iniciando!</h2>
+                <p className="text-lg text-muted-foreground">Foque no centro da tela</p>
+                <p className="text-sm text-muted-foreground">O teste começará em alguns segundos...</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {gameState === 'playing' && (
         <div className="space-y-6">
-          {/* Game Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Timer and Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {/* Circular Timer */}
+            <Card className="shadow-soft md:col-span-1">
+              <CardContent className="p-4 text-center">
+                <div className="relative w-20 h-20 mx-auto mb-2">
+                  <svg className="w-20 h-20 transform -rotate-90" viewBox="0 0 80 80">
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="36"
+                      stroke="hsl(var(--muted))"
+                      strokeWidth="8"
+                      fill="none"
+                    />
+                    <circle
+                      cx="40"
+                      cy="40"
+                      r="36"
+                      stroke="hsl(var(--primary))"
+                      strokeWidth="8"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeDasharray={`${2 * Math.PI * 36}`}
+                      strokeDashoffset={`${2 * Math.PI * 36 * (1 - timeRemaining / TRIAL_DURATION)}`}
+                      className="transition-all duration-100"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">
+                      {Math.ceil(timeRemaining / 1000)}s
+                    </span>
+                  </div>
+                </div>
+                <div className="text-xs text-muted-foreground">Tempo</div>
+              </CardContent>
+            </Card>
+
             <Card className="shadow-soft">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-primary">{stats.score}</div>

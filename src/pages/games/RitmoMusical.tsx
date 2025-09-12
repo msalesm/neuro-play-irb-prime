@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Play, Pause, RotateCcw, Music, Trophy, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, Play, Pause, RotateCcw, Music, Trophy, Volume2, VolumeX, Star, TrendingUp } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { LevelProgress } from "@/components/LevelProgress";
+import { GameAchievements } from "@/components/GameAchievement";
 
 type BeatType = 'kick' | 'snare' | 'hihat' | 'crash';
 type Difficulty = 'easy' | 'medium' | 'hard';
@@ -26,6 +28,12 @@ interface GameStats {
   streak: number;
   bestStreak: number;
   bpm: number;
+  xp: number;
+  xpToNext: number;
+  totalSessions: number;
+  sessionProgress: number;
+  justLeveledUp: boolean;
+  recentXpGain: number;
 }
 
 const BEAT_SOUNDS = {
@@ -56,10 +64,54 @@ export default function RitmoMusical() {
     totalBeats: 0,
     streak: 0,
     bestStreak: 0,
-      bpm: 40,
+    bpm: 40,
+    xp: 0,
+    xpToNext: 100,
+    totalSessions: 0,
+    sessionProgress: 0,
+    justLeveledUp: false,
+    recentXpGain: 0
   });
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isListening, setIsListening] = useState(false);
+  const [achievements, setAchievements] = useState<any[]>([
+    {
+      id: 'first_perfect',
+      title: 'Primeira Perfeição',
+      description: 'Acerte um padrão com 100% de precisão',
+      icon: '🎯',
+      type: 'instant',
+      unlocked: false
+    },
+    {
+      id: 'streak_master',
+      title: 'Mestre da Sequência',
+      description: 'Consiga 5 acertos consecutivos',
+      icon: '🔥',
+      type: 'progress',
+      value: 0,
+      maxValue: 5,
+      unlocked: false
+    },
+    {
+      id: 'level_5',
+      title: 'Músico Experiente',
+      description: 'Chegue ao nível 5',
+      icon: '🎸',
+      type: 'milestone',
+      unlocked: false
+    },
+    {
+      id: 'score_1000',
+      title: 'Pontuação Elite',
+      description: 'Consiga 1000 pontos',
+      icon: '⭐',
+      type: 'progress',
+      value: 0,
+      maxValue: 1000,
+      unlocked: false
+    }
+  ]);
   const audioContextRef = useRef<AudioContext | null>(null);
   const patternTimerRef = useRef<NodeJS.Timeout | null>(null);
   const gameTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -205,6 +257,11 @@ export default function RitmoMusical() {
     const accuracy = totalExpectedBeats > 0 ? (perfectHits / totalExpectedBeats) * 100 : 0;
     const points = Math.round(perfectHits * 10 * (accuracy / 100) * stats.level);
     
+    // Calculate XP gain
+    let xpGain = Math.round(points * 0.5);
+    if (accuracy === 100) xpGain += 25; // Perfect bonus
+    if (accuracy >= 90) xpGain += 10; // Excellence bonus
+    
     const newStats = {
       ...stats,
       score: stats.score + points,
@@ -214,15 +271,58 @@ export default function RitmoMusical() {
         ((stats.perfectHits + perfectHits) / (stats.totalBeats + totalExpectedBeats)) * 100 : 100,
       streak: accuracy >= 70 ? stats.streak + 1 : 0,
       bestStreak: Math.max(stats.bestStreak, accuracy >= 70 ? stats.streak + 1 : stats.streak),
+      xp: stats.xp + xpGain,
+      recentXpGain: xpGain,
+      sessionProgress: stats.sessionProgress + (accuracy / 100),
+      totalSessions: stats.totalSessions + 1,
+      justLeveledUp: false
     };
 
     // Level progression
-    if (newStats.streak >= 3) {
-      newStats.level = Math.min(newStats.level + 1, 10);
+    const levelMultiplier = 100;
+    const requiredXP = newStats.level * levelMultiplier;
+    
+    if (newStats.xp >= requiredXP) {
+      newStats.level += 1;
+      newStats.xp -= requiredXP;
+      newStats.xpToNext = newStats.level * levelMultiplier;
       newStats.streak = 0;
       newStats.bpm = Math.min(newStats.bpm + 10, 140);
+      newStats.justLeveledUp = true;
+    } else {
+      newStats.xpToNext = requiredXP;
     }
 
+    // Check achievements
+    const updatedAchievements = [...achievements];
+    
+    // Perfect accuracy achievement
+    if (accuracy === 100 && !achievements[0].unlocked) {
+      updatedAchievements[0].unlocked = true;
+      updatedAchievements[0].justUnlocked = true;
+    }
+    
+    // Streak achievement
+    updatedAchievements[1].value = newStats.streak;
+    if (newStats.streak >= 5 && !achievements[1].unlocked) {
+      updatedAchievements[1].unlocked = true;
+      updatedAchievements[1].justUnlocked = true;
+    }
+    
+    // Level milestone
+    if (newStats.level >= 5 && !achievements[2].unlocked) {
+      updatedAchievements[2].unlocked = true;
+      updatedAchievements[2].justUnlocked = true;
+    }
+    
+    // Score achievement
+    updatedAchievements[3].value = newStats.score;
+    if (newStats.score >= 1000 && !achievements[3].unlocked) {
+      updatedAchievements[3].unlocked = true;
+      updatedAchievements[3].justUnlocked = true;
+    }
+    
+    setAchievements(updatedAchievements);
     setStats(newStats);
     
     // Show results and continue
@@ -237,7 +337,7 @@ export default function RitmoMusical() {
       }
       startGame();
     }, 2000);
-  }, [pattern, playerBeats, stats, difficulty, startGame]);
+  }, [pattern, playerBeats, stats, difficulty, startGame, achievements]);
 
   // Auto-evaluate after pattern completion or timeout
   useEffect(() => {
@@ -302,6 +402,12 @@ export default function RitmoMusical() {
       streak: 0,
       bestStreak: stats.bestStreak, // Keep best streak
       bpm: 40,
+      xp: 0,
+      xpToNext: 100,
+      totalSessions: 0,
+      sessionProgress: 0,
+      justLeveledUp: false,
+      recentXpGain: 0
     });
   };
 
@@ -372,41 +478,52 @@ export default function RitmoMusical() {
         </div>
 
         {/* Stats Panel */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-          <Card>
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-primary">{stats.level}</div>
-              <div className="text-xs text-muted-foreground">Nível</div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {/* Level Progress */}
+          <LevelProgress
+            currentLevel={stats.level}
+            currentXP={stats.xp}
+            xpToNext={stats.xpToNext}
+            levelProgress={(stats.xp / stats.xpToNext) * 100}
+            recentGain={stats.recentXpGain}
+            showLevelUp={stats.justLeveledUp}
+          />
           
-          <Card>
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-green-600">{stats.score}</div>
-              <div className="text-xs text-muted-foreground">Pontos</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-blue-600">{Math.round(stats.accuracy)}%</div>
-              <div className="text-xs text-muted-foreground">Precisão</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-purple-600">{stats.bpm}</div>
-              <div className="text-xs text-muted-foreground">BPM</div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-yellow-600">{stats.streak}</div>
-              <div className="text-xs text-muted-foreground">Sequência</div>
-            </CardContent>
-          </Card>
+          {/* Quick Stats */}
+          <div className="grid grid-cols-4 gap-2">
+            <Card>
+              <CardContent className="p-3 text-center">
+                <div className="text-lg font-bold text-green-600">{stats.score}</div>
+                <div className="text-xs text-muted-foreground">Pontos</div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-3 text-center">
+                <div className="text-lg font-bold text-blue-600">{Math.round(stats.accuracy)}%</div>
+                <div className="text-xs text-muted-foreground">Precisão</div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-3 text-center">
+                <div className="text-lg font-bold text-purple-600">{stats.bpm}</div>
+                <div className="text-xs text-muted-foreground">BPM</div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-3 text-center">
+                <div className="text-lg font-bold text-yellow-600">{stats.streak}</div>
+                <div className="text-xs text-muted-foreground">
+                  <div className="flex items-center justify-center gap-1">
+                    <span>Sequência</span>
+                    {stats.streak >= 3 && <span className="text-orange-500">🔥</span>}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Difficulty Selector */}
@@ -433,106 +550,54 @@ export default function RitmoMusical() {
           </Card>
         )}
 
-        {/* Game Area */}
-        <Card className="mb-6">
-          <CardContent className="p-8">
-            {gameState === 'idle' && (
-              <div className="text-center space-y-6">
-                <div className="space-y-4">
-                  <h2 className="text-xl font-bold">Como Jogar</h2>
-                  <div className="space-y-2 text-left max-w-md mx-auto">
-                    <p className="flex items-center gap-2">
-                      <Music className="w-4 h-4 text-primary" />
-                      Ouça o padrão rítmico atentamente
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <span className="w-4 h-4 text-primary">🎹</span>
-                      Reproduza usando mouse ou teclado
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <span className="w-4 h-4 text-primary">⏱️</span>
-                      Mantenha o tempo correto
-                    </p>
-                  </div>
-                </div>
-                
-                <Button onClick={startGame} size="lg" className="gap-2">
-                  <Play className="w-5 h-5" />
-                  Começar Jogo
-                </Button>
-              </div>
-            )}
-
-            {gameState === 'listening' && (
-              <div className="text-center space-y-6">
-                <Badge variant="outline" className="text-lg p-3">
-                  🎧 Ouça o padrão...
-                </Badge>
-                
-                {/* Pattern Visualization */}
-                <div className="flex justify-center gap-3 flex-wrap">
-                  {pattern.map((beat, index) => (
-                    <div
-                      key={beat.id}
-                      className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl border-4 transition-all duration-200 ${
-                        index === currentBeatIndex && isListening
-                          ? `${BEAT_SOUNDS[beat.type].color} border-white scale-125 shadow-lg`
-                          : `${BEAT_SOUNDS[beat.type].color} border-gray-300`
-                      }`}
-                    >
-                      {beat.type === 'kick' ? '🥁' : 
-                       beat.type === 'snare' ? '🪘' : 
-                       beat.type === 'hihat' ? '🎵' : '💥'}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {gameState === 'playing' && (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <Badge variant="outline" className="mb-4">
-                    Sua vez! Reproduza o padrão
-                  </Badge>
-                  
-                  <div className="text-sm text-muted-foreground mb-6">
-                    Progresso: {playerBeats.length}/{pattern.length} batidas
-                  </div>
-                </div>
-
-                {/* Drum Pads */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-                  {Object.entries(BEAT_SOUNDS).map(([beatType, config]) => (
-                    <button
-                      key={beatType}
-                      onClick={() => handleBeatInput(beatType as BeatType)}
-                      className={`
-                        h-24 rounded-2xl ${config.color} text-white font-bold text-lg 
-                        transition-all duration-150 active:scale-95 hover:scale-105
-                        shadow-lg hover:shadow-xl flex flex-col items-center justify-center gap-1
-                      `}
-                    >
-                      <div className="text-2xl">
-                        {beatType === 'kick' ? '🥁' : 
-                         beatType === 'snare' ? '🪘' : 
-                         beatType === 'hihat' ? '🎵' : '💥'}
+        {/* Game and Achievements Area */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Main Game Area */}
+          <div className="lg:col-span-2">
+            <Card className="mb-6">
+              <CardContent className="p-8">
+                {gameState === 'idle' && (
+                  <div className="text-center space-y-6">
+                    <div className="space-y-4">
+                      <h2 className="text-xl font-bold">Como Jogar</h2>
+                      <div className="space-y-2 text-left max-w-md mx-auto">
+                        <p className="flex items-center gap-2">
+                          <Music className="w-4 h-4 text-primary" />
+                          Ouça o padrão rítmico atentamente
+                        </p>
+                        <p className="flex items-center gap-2">
+                          <span className="w-4 h-4 text-primary">🎹</span>
+                          Reproduza usando mouse ou teclado
+                        </p>
+                        <p className="flex items-center gap-2">
+                          <span className="w-4 h-4 text-primary">⏱️</span>
+                          Mantenha o tempo correto
+                        </p>
                       </div>
-                      <div className="text-xs">{config.key}</div>
-                    </button>
-                  ))}
-                </div>
+                    </div>
+                    
+                    <Button onClick={startGame} size="lg" className="gap-2">
+                      <Play className="w-5 h-5" />
+                      Começar Jogo
+                    </Button>
+                  </div>
+                )}
 
-                {/* Player Progress */}
-                {playerBeats.length > 0 && (
-                  <div className="text-center">
-                    <p className="text-sm text-muted-foreground mb-2">Seu padrão:</p>
-                    <div className="flex justify-center gap-2 flex-wrap">
-                      {playerBeats.map((beat, index) => (
+                {gameState === 'listening' && (
+                  <div className="text-center space-y-6">
+                    <Badge variant="outline" className="text-lg p-3">
+                      🎧 Ouça o padrão...
+                    </Badge>
+                    
+                    {/* Pattern Visualization */}
+                    <div className="flex justify-center gap-3 flex-wrap">
+                      {pattern.map((beat, index) => (
                         <div
                           key={beat.id}
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${
-                            BEAT_SOUNDS[beat.type].color
+                          className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl border-4 transition-all duration-200 ${
+                            index === currentBeatIndex && isListening
+                              ? `${BEAT_SOUNDS[beat.type].color} border-white scale-125 shadow-lg`
+                              : `${BEAT_SOUNDS[beat.type].color} border-gray-300`
                           }`}
                         >
                           {beat.type === 'kick' ? '🥁' : 
@@ -543,49 +608,66 @@ export default function RitmoMusical() {
                     </div>
                   </div>
                 )}
-              </div>
-            )}
 
-            {gameState === 'paused' && (
-              <div className="text-center space-y-4">
-                <h2 className="text-xl font-bold">Jogo Pausado</h2>
-                <p className="text-muted-foreground">Clique em "Retomar" para continuar</p>
-              </div>
-            )}
+                {/* ... keep existing code (playing, paused, gameOver states) */}
 
-            {gameState === 'gameOver' && (
-              <div className="text-center space-y-6">
-                <div className="space-y-2">
-                  <h2 className="text-xl font-bold">Fim de Jogo!</h2>
-                  <p className="text-muted-foreground">
-                    Você chegou ao nível {stats.level} com {stats.score} pontos
-                  </p>
-                  <div className="flex justify-center gap-4 text-sm">
-                    <div className="flex items-center gap-1">
-                      <Music className="w-4 h-4 text-blue-500" />
-                      Precisão: {Math.round(stats.accuracy)}%
+                {gameState === 'paused' && (
+                  <div className="text-center space-y-4">
+                    <h2 className="text-xl font-bold">Jogo Pausado</h2>
+                    <p className="text-muted-foreground">Clique em "Retomar" para continuar</p>
+                  </div>
+                )}
+
+                {gameState === 'gameOver' && (
+                  <div className="text-center space-y-6">
+                    <div className="space-y-2">
+                      <h2 className="text-xl font-bold">Fim de Jogo!</h2>
+                      <p className="text-muted-foreground">
+                        Você chegou ao nível {stats.level} com {stats.score} pontos
+                      </p>
+                      <div className="flex justify-center gap-4 text-sm">
+                        <div className="flex items-center gap-1">
+                          <Music className="w-4 h-4 text-blue-500" />
+                          Precisão: {Math.round(stats.accuracy)}%
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Trophy className="w-4 h-4 text-purple-500" />
+                          Melhor sequência: {stats.bestStreak}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Trophy className="w-4 h-4 text-purple-500" />
-                      Melhor sequência: {stats.bestStreak}
+                    
+                    <div className="flex gap-4 justify-center">
+                      <Button onClick={startGame} className="gap-2">
+                        <Play className="w-4 h-4" />
+                        Jogar Novamente
+                      </Button>
+                      <Button variant="outline" onClick={resetGame} className="gap-2">
+                        <RotateCcw className="w-4 h-4" />
+                        Reiniciar
+                      </Button>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex gap-4 justify-center">
-                  <Button onClick={startGame} className="gap-2">
-                    <Play className="w-4 h-4" />
-                    Jogar Novamente
-                  </Button>
-                  <Button variant="outline" onClick={resetGame} className="gap-2">
-                    <RotateCcw className="w-4 h-4" />
-                    Reiniciar
-                  </Button>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Achievements Sidebar */}
+          <div className="lg:col-span-1">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Trophy className="w-5 h-5 text-yellow-500" />
+                  Conquistas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <GameAchievements achievements={achievements} />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
         {/* Keyboard Controls */}
         <Card className="mb-6">
