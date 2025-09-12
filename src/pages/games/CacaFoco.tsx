@@ -47,16 +47,16 @@ export default function CacaFoco() {
   const [difficulty, setDifficulty] = useState(1);
 
   // Generate game items based on difficulty
-  const generateItems = useCallback((level: number) => {
+  const generateItems = useCallback((level: number, targetEmoji: string) => {
     const itemCount = Math.min(8 + level, 15); // Fewer items, easier to find
     const targetCount = Math.max(1, Math.min(3, Math.ceil(level / 2))); // Start with 1 target
     const newItems: GameItem[] = [];
     
-    // Add target items - use currentTarget that's already set
+    // Add target items - use the passed targetEmoji parameter
     for (let i = 0; i < targetCount; i++) {
       newItems.push({
         id: `target-${i}`,
-        emoji: currentTarget,
+        emoji: targetEmoji,
         isTarget: true,
         x: Math.random() * 70 + 15, // More centered positioning
         y: Math.random() * 60 + 20, 
@@ -64,7 +64,7 @@ export default function CacaFoco() {
     }
 
     // Add distractor items - make sure they're different from target
-    const availableDistractors = DISTRACTOR_EMOJIS.filter(emoji => emoji !== currentTarget);
+    const availableDistractors = DISTRACTOR_EMOJIS.filter(emoji => emoji !== targetEmoji);
     for (let i = 0; i < itemCount - targetCount; i++) {
       const randomDistractor = availableDistractors[Math.floor(Math.random() * availableDistractors.length)];
       newItems.push({
@@ -101,7 +101,7 @@ export default function CacaFoco() {
     });
 
     setItems(adjustedItems);
-  }, [currentTarget]);
+  }, []);
 
   // Start game
   const startGame = useCallback(() => {
@@ -116,26 +116,24 @@ export default function CacaFoco() {
     };
     setStats(initialStats);
     
-    // Generate items AFTER setting the target
-    setTimeout(() => {
-      generateItems(stats.level);
-      setGameState('playing');
-      setStartTime(Date.now());
-      
-      // Start timer
-      const timer = setInterval(() => {
-        setStats(prev => {
-          if (prev.timeLeft <= 1) {
-            setGameState('gameOver');
-            if (timer) clearInterval(timer);
-            return { ...prev, timeLeft: 0 };
-          }
-          return { ...prev, timeLeft: prev.timeLeft - 1 };
-        });
-      }, 1000);
-      
-      setGameTimer(timer);
-    }, 100);
+    // Generate items immediately with the new target
+    generateItems(stats.level, newTarget);
+    setGameState('playing');
+    setStartTime(Date.now());
+    
+    // Start timer
+    const timer = setInterval(() => {
+      setStats(prev => {
+        if (prev.timeLeft <= 1) {
+          setGameState('gameOver');
+          if (timer) clearInterval(timer);
+          return { ...prev, timeLeft: 0 };
+        }
+        return { ...prev, timeLeft: prev.timeLeft - 1 };
+      });
+    }, 1000);
+    
+    setGameTimer(timer);
   }, [stats.level]);
 
   // Handle item click
@@ -183,7 +181,7 @@ export default function CacaFoco() {
             // Continue current level
             const nextTarget = TARGET_EMOJIS[Math.floor(Math.random() * TARGET_EMOJIS.length)];
             setCurrentTarget(nextTarget);
-            generateItems(newStats.level);
+            generateItems(newStats.level, nextTarget);
           }
         }, 1000);
       }
