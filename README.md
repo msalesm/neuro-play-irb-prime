@@ -1,73 +1,113 @@
-# Welcome to your Lovable project
+# 🧠 NeuroPlay
 
-## Project info
+**Jogos cognitivos divertidos para crianças e jovens neurodiversos**
 
-**URL**: https://lovable.dev/projects/9e05873d-1aef-43dc-ad8a-2d79e79f282d
+NeuroPlay é um aplicativo de jogos educativos curtos (1-3 minutos) criado especificamente para apoiar o desenvolvimento de crianças com **Dislexia**, **TDAH** e **TEA** (Transtorno do Espectro Autista).
 
-## How can I edit this code?
+## 🎯 Módulos de Jogos
 
-There are several ways of editing your application.
+### 📚 Mundo das Letras (Dislexia)
+- **Palavras Mágicas**: Complete palavras com letras que faltam
+- **Sílabas Coloridas**: Separe sílabas com códigos de cores
+- **Caça Letras**: Encontre letras específicas em textos
+- **Recompensas**: Desbloqueie novos mapas e personagens
 
-**Use Lovable**
+### 🎯 Mestre do Foco (TDAH)
+- **Sequência Cores**: Memorize e repita sequências coloridas
+- **Ritmo Perfeito**: Mantenha o ritmo tocando na tela
+- **Foco Total**: Resista a distrações visuais e sonoras
+- **Recompensas**: Ganhe skins exclusivas e troféus
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9e05873d-1aef-43dc-ad8a-2d79e79f282d) and start prompting.
+### 😊 Missão Emoções (TEA)
+- **Reconhecer Emoções**: Identifique expressões faciais
+- **Rotina Visual**: Monte sequências de atividades diárias
+- **Situações Sociais**: Escolha respostas apropriadas
+- **Recompensas**: Novos personagens e cenários
 
-Changes made via Lovable will be committed automatically to this repo.
+## ✨ Características Principais
 
-**Use your preferred IDE**
+- **⏱️ Jogos Rápidos**: Atividades de 1-3 minutos para manter o engajamento
+- **🎉 Feedback Imediato**: Recompensas visuais e sonoras instantâneas  
+- **📈 Progressão Adaptativa**: Dificuldade se ajusta ao desempenho
+- **👨‍👩‍👧‍👦 Relatórios Simples**: Acompanhamento para pais e professores
+- **🛡️ Ambiente Seguro**: Interface limpa, sem distrações
+- **🎨 Design Amigável**: Cores suaves e personagens divertidos
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🚀 Tecnologias
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **Frontend**: React + TypeScript + Tailwind CSS
+- **Backend**: Supabase (PostgreSQL + Auth + Realtime)
+- **UI Components**: shadcn/ui + Radix UI
+- **Animações**: CSS Animations + Framer Motion
+- **Roteamento**: React Router
+- **Estado**: React Query + Context API
 
-Follow these steps:
+## 📱 Instalação
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# Clone o repositório
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# Entre na pasta
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Instale as dependências
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Execute em modo de desenvolvimento
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 🎮 Como Usar
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. **Criar Conta**: Registre-se gratuitamente
+2. **Escolher Módulo**: Selecione baseado na neurodiversidade
+3. **Jogar**: Complete minigames de 1-3 minutos
+4. **Acompanhar**: Veja o progresso no dashboard
+5. **Recompensar**: Desbloqueie conquistas e itens
 
-**Use GitHub Codespaces**
+## 🧬 Base Científica
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+O NeuroPlay é baseado em:
 
-## What technologies are used for this project?
+- **Neuroplasticidade**: Exercícios que estimulam conexões neurais
+- **Gamificação Terapêutica**: Motivação através de recompensas
+- **Intervalos Curtos**: Respeitando a capacidade de atenção
+- **Feedback Positivo**: Reforço imediato para aprendizado
+- **Progressão Adaptativa**: Ajuste automático de dificuldade
 
-This project is built with:
+## 👨‍👩‍👧‍👦 Para Pais e Educadores
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Relatórios Incluem:
+- Tempo de jogo e frequência
+- Pontuações e melhorias
+- Áreas de maior dificuldade
+- Sugestões de atividades complementares
 
-## How can I deploy this project?
+### Dicas de Uso:
+- **Consistência**: 10-15 minutos diários
+- **Horário Fixo**: Mesmo período todos os dias  
+- **Acompanhamento**: Celebre as conquistas
+- **Paciência**: Cada criança tem seu ritmo
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Por favor:
+
+1. Faça fork do projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 🔗 Deploy
 
 Simply open [Lovable](https://lovable.dev/projects/9e05873d-1aef-43dc-ad8a-2d79e79f282d) and click on Share -> Publish.
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+**Desenvolvido com ❤️ para apoiar crianças neurodiversas em sua jornada de aprendizado**

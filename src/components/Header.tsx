@@ -8,10 +8,8 @@ export const Header = () => {
   const location = useLocation();
 
   const navigation = [
-    { name: 'Mapa', href: '/game-map', icon: Brain },
-    { name: 'Jogos', href: '/games', icon: Gamepad2 },
-    { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
-    { name: 'Conquistas', href: '/achievements', icon: Trophy },
+    { name: 'Mundos', href: '/games', icon: Gamepad2 },
+    { name: 'Meu Progresso', href: '/dashboard', icon: BarChart3 },
   ];
 
   const isActive = (path: string) => location.pathname.startsWith(path);
@@ -25,7 +23,7 @@ export const Header = () => {
               <Brain className="h-6 w-6 text-primary-foreground" />
             </div>
             <span className="font-heading text-2xl font-bold text-foreground">
-              GameNeuro
+              NeuroPlay
             </span>
           </Link>
 

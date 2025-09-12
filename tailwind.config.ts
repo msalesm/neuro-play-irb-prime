@@ -57,6 +57,7 @@ export default {
         'gradient-hero': 'var(--gradient-hero)',
         'gradient-card': 'var(--gradient-card)',
         'gradient-accent': 'var(--gradient-accent)',
+        'gradient-playful': 'var(--gradient-playful)',
       },
       boxShadow: {
         'soft': 'var(--shadow-soft)',
