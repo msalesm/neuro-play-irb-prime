@@ -36,9 +36,9 @@ const BEAT_SOUNDS = {
 };
 
 const DIFFICULTY_SETTINGS = {
-  easy: { bpm: 80, tolerance: 200, beatsPerPattern: 4 },
-  medium: { bpm: 100, tolerance: 150, beatsPerPattern: 6 },
-  hard: { bpm: 120, tolerance: 100, beatsPerPattern: 8 },
+  easy: { bpm: 40, tolerance: 300, beatsPerPattern: 2 },
+  medium: { bpm: 60, tolerance: 250, beatsPerPattern: 3 },
+  hard: { bpm: 80, tolerance: 200, beatsPerPattern: 4 },
 };
 
 export default function RitmoMusical() {
@@ -56,7 +56,7 @@ export default function RitmoMusical() {
     totalBeats: 0,
     streak: 0,
     bestStreak: 0,
-    bpm: 80,
+      bpm: 40,
   });
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isListening, setIsListening] = useState(false);
@@ -103,23 +103,21 @@ export default function RitmoMusical() {
   // Generate rhythm pattern
   const generatePattern = useCallback((difficulty: Difficulty, level: number): Beat[] => {
     const settings = DIFFICULTY_SETTINGS[difficulty];
-    const beatTypes: BeatType[] = level >= 3 ? ['kick', 'snare', 'hihat', 'crash'] : 
-                                 level >= 2 ? ['kick', 'snare', 'hihat'] : ['kick', 'snare'];
+    const beatTypes: BeatType[] = level >= 5 ? ['kick', 'snare', 'hihat'] : 
+                                 level >= 3 ? ['kick', 'snare'] : ['kick'];
     
     const beats: Beat[] = [];
     const beatInterval = (60 / settings.bpm) * 1000; // ms per beat
     
+    // Simple patterns - every beat has a sound for easier learning
     for (let i = 0; i < settings.beatsPerPattern; i++) {
-      // Not every position has a beat (for rhythm complexity)
-      if (Math.random() > 0.3 || i === 0) { // Always include first beat
-        const beatType = beatTypes[Math.floor(Math.random() * beatTypes.length)];
-        beats.push({
-          id: `beat-${i}`,
-          type: beatType,
-          time: i * beatInterval,
-          played: false,
-        });
-      }
+      const beatType = beatTypes[i % beatTypes.length]; // Cycle through available types
+      beats.push({
+        id: `beat-${i}`,
+        type: beatType,
+        time: i * beatInterval,
+        played: false,
+      });
     }
     
     return beats;
@@ -303,7 +301,7 @@ export default function RitmoMusical() {
       totalBeats: 0,
       streak: 0,
       bestStreak: stats.bestStreak, // Keep best streak
-      bpm: 80,
+      bpm: 40,
     });
   };
 

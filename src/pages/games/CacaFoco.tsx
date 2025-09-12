@@ -48,51 +48,52 @@ export default function CacaFoco() {
 
   // Generate game items based on difficulty
   const generateItems = useCallback((level: number) => {
-    const itemCount = Math.min(15 + (level * 2), 25);
-    const targetCount = Math.max(2, Math.min(5, Math.floor(itemCount * 0.2)));
+    const itemCount = Math.min(8 + level, 15); // Fewer items, easier to find
+    const targetCount = Math.max(1, Math.min(3, Math.ceil(level / 2))); // Start with 1 target
     const newItems: GameItem[] = [];
     
-    // Add target items
+    // Add target items - use currentTarget that's already set
     for (let i = 0; i < targetCount; i++) {
       newItems.push({
         id: `target-${i}`,
         emoji: currentTarget,
         isTarget: true,
-        x: Math.random() * 80 + 5, // 5% to 85% to avoid edges
-        y: Math.random() * 70 + 10, // 10% to 80% to avoid edges
+        x: Math.random() * 70 + 15, // More centered positioning
+        y: Math.random() * 60 + 20, 
       });
     }
 
-    // Add distractor items
+    // Add distractor items - make sure they're different from target
+    const availableDistractors = DISTRACTOR_EMOJIS.filter(emoji => emoji !== currentTarget);
     for (let i = 0; i < itemCount - targetCount; i++) {
-      const randomDistractor = DISTRACTOR_EMOJIS[Math.floor(Math.random() * DISTRACTOR_EMOJIS.length)];
+      const randomDistractor = availableDistractors[Math.floor(Math.random() * availableDistractors.length)];
       newItems.push({
         id: `distractor-${i}`,
         emoji: randomDistractor,
         isTarget: false,
-        x: Math.random() * 80 + 5,
-        y: Math.random() * 70 + 10,
+        x: Math.random() * 70 + 15,
+        y: Math.random() * 60 + 20,
       });
     }
 
-    // Ensure no overlapping positions
+    // Ensure no overlapping positions with better spacing
     const adjustedItems = newItems.map((item, index) => {
       let attempts = 0;
       let newX = item.x;
       let newY = item.y;
       
-      while (attempts < 10) {
+      while (attempts < 15) {
         const tooClose = newItems.slice(0, index).some(otherItem => {
           const distance = Math.sqrt(
             Math.pow(newX - otherItem.x, 2) + Math.pow(newY - otherItem.y, 2)
           );
-          return distance < 8; // Minimum 8% distance
+          return distance < 12; // Larger minimum distance
         });
         
         if (!tooClose) break;
         
-        newX = Math.random() * 80 + 5;
-        newY = Math.random() * 70 + 10;
+        newX = Math.random() * 70 + 15;
+        newY = Math.random() * 60 + 20;
         attempts++;
       }
       
@@ -106,8 +107,6 @@ export default function CacaFoco() {
   const startGame = useCallback(() => {
     const newTarget = TARGET_EMOJIS[Math.floor(Math.random() * TARGET_EMOJIS.length)];
     setCurrentTarget(newTarget);
-    setGameState('playing');
-    setStartTime(Date.now());
     
     const initialStats = {
       ...stats,
@@ -117,22 +116,27 @@ export default function CacaFoco() {
     };
     setStats(initialStats);
     
-    generateItems(stats.level);
-    
-    // Start timer
-    const timer = setInterval(() => {
-      setStats(prev => {
-        if (prev.timeLeft <= 1) {
-          setGameState('gameOver');
-          if (timer) clearInterval(timer);
-          return { ...prev, timeLeft: 0 };
-        }
-        return { ...prev, timeLeft: prev.timeLeft - 1 };
-      });
-    }, 1000);
-    
-    setGameTimer(timer);
-  }, [stats.level, generateItems]);
+    // Generate items AFTER setting the target
+    setTimeout(() => {
+      generateItems(stats.level);
+      setGameState('playing');
+      setStartTime(Date.now());
+      
+      // Start timer
+      const timer = setInterval(() => {
+        setStats(prev => {
+          if (prev.timeLeft <= 1) {
+            setGameState('gameOver');
+            if (timer) clearInterval(timer);
+            return { ...prev, timeLeft: 0 };
+          }
+          return { ...prev, timeLeft: prev.timeLeft - 1 };
+        });
+      }, 1000);
+      
+      setGameTimer(timer);
+    }, 100);
+  }, [stats.level]);
 
   // Handle item click
   const handleItemClick = (item: GameItem) => {
