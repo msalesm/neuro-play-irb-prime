@@ -22,8 +22,6 @@ import SilabaMagica from './pages/games/SilabaMagica';
 import QuebraCabecaMagico from './pages/games/QuebraCabecaMagico';
 import AventuraNumeros from './pages/games/AventuraNumeros';
 import ContadorHistorias from './pages/games/ContadorHistorias';
-import CacaLetras from "./pages/games/CacaLetras";
-import SilabaMagica from "./pages/games/SilabaMagica";
 import FocusForest from "./pages/games/FocusForest";
 import FocusQuest from "./pages/games/FocusQuest";
 import SocialScenarios from "./pages/games/SocialScenarios";
