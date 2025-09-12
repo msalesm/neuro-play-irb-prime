@@ -26,6 +26,10 @@ import SensoryFlow from "./pages/games/SensoryFlow";
 import VisualSync from "./pages/games/VisualSync";
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
+import AttentionSustained from "./pages/games/AttentionSustainedGame";
+import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
+import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
+import ClinicalDashboard from "./pages/ClinicalDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -64,6 +68,10 @@ const App = () => (
               <Route path="/games/visual-sync" element={<VisualSync />} />
               <Route path="/games/touch-mapper" element={<TouchMapper />} />
               <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
+              <Route path="/games/attention-sustained" element={<AttentionSustained />} />
+              <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibility />} />
+              <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
+              <Route path="/clinical" element={<ClinicalDashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

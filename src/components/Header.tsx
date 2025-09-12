@@ -10,7 +10,8 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigation = [
-    { name: 'Mundos', href: '/games', icon: Gamepad2 },
+    { name: 'Jogos', href: '/games', icon: Gamepad2 },
+    { name: 'Painel Clínico', href: '/clinical', icon: Brain },
     { name: 'Meu Progresso', href: '/dashboard', icon: BarChart3 },
   ];
 
