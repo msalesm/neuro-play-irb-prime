@@ -12,6 +12,10 @@ import Games from "./pages/Games";
 import GameMap from "./components/GameMap";
 import Dashboard from "./pages/Dashboard";
 import MindfulBreath from "./pages/games/MindfulBreath";
+import MemoriaColorida from "./pages/games/MemoriaColorida";
+import CacaFoco from "./pages/games/CacaFoco";
+import LogicaRapida from "./pages/games/LogicaRapida";
+import RitmoMusical from "./pages/games/RitmoMusical";
 import FocusForest from "./pages/games/FocusForest";
 import FocusQuest from "./pages/games/FocusQuest";
 import SocialScenarios from "./pages/games/SocialScenarios";
@@ -45,10 +49,10 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/game-map" element={<GameMap />} />
               <Route path="/games" element={<Games />} />
-            <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
-            <Route path="/games/caca-foco" element={<CacaFoco />} />
               <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
               <Route path="/games/caca-foco" element={<CacaFoco />} />
+              <Route path="/games/logica-rapida" element={<LogicaRapida />} />
+              <Route path="/games/ritmo-musical" element={<RitmoMusical />} />
               <Route path="/games/mindful-breath" element={<MindfulBreath />} />
               <Route path="/games/focus-forest" element={<FocusForest />} />
               <Route path="/games/focus-quest" element={<FocusQuest />} />
