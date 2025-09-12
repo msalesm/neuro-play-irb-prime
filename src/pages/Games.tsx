@@ -2,8 +2,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { Play, Clock, Users, Target, Lock, Trophy } from "lucide-react";
+import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { cn } from "@/lib/utils";
 
 const gamesList = [
   // Jogos Básicos
@@ -215,18 +216,36 @@ export default function Games() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-card py-12">
-      <div className="container mx-auto px-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-12 pb-24 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-3/4 -right-4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <h1 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-balance">
-            Jogos 
-            <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">Terapêuticos</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-balance">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-purple-500/25">
+              <Gamepad2 className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-white">
+              Jogos 
+              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                Terapêuticos
+              </span>
+            </h1>
+          </div>
+          <p className="text-xl text-white/70 max-w-3xl mx-auto text-balance mb-8">
             Desenvolva habilidades cognitivas através de jogos divertidos e envolventes.
           </p>
           <div className="mt-6">
-            <Button variant="outline" asChild>
+            <Button 
+              variant="outline" 
+              asChild
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20 shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+            >
               <Link to="/diagnostic-tests" className="flex items-center gap-2">
                 <Trophy className="h-4 w-4" />
                 Ver Testes Diagnósticos
@@ -237,39 +256,39 @@ export default function Games() {
 
         {/* Seção de Jogos Básicos */}
         <div className="mb-16">
-          <h2 className="text-2xl font-bold mb-8 text-center">
-            <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-              Jogos Terapêuticos
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              Jogos Disponíveis
             </span>
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {gamesList.filter(game => game.type === 'basic').map((game) => (
               <Card 
                 key={game.id}
-                className={`p-6 border-0 shadow-card hover:shadow-glow transition-all duration-500 hover:-translate-y-2 group bg-card relative overflow-hidden ${
+                className={`p-6 border-white/20 backdrop-blur-sm bg-white/10 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2 group relative overflow-hidden ${
                   !game.unlocked ? 'opacity-75' : ''
                 }`}
               >
                 {/* Gradient background */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-5`} />
+                <div className={`absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-20`} />
                 
                 <div className="relative z-10">
                   <div className="flex justify-between items-start mb-4">
-                    <Badge className={`${game.color} font-semibold text-xs`}>
+                    <Badge className="bg-gradient-to-r from-purple-500/80 to-blue-500/80 text-white border-0 shadow-lg">
                       {game.category}
                     </Badge>
-                    {!game.unlocked && <Lock className="h-4 w-4 text-muted-foreground" />}
+                    {!game.unlocked && <Lock className="h-4 w-4 text-white/50" />}
                   </div>
 
-                  <h3 className="font-heading text-lg font-bold mb-3 group-hover:text-primary transition-colors">
+                  <h3 className="font-heading text-xl font-bold mb-3 text-white group-hover:text-purple-200 transition-colors">
                     {game.title}
                   </h3>
 
-                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed line-clamp-3">
+                  <p className="text-white/70 text-sm mb-4 leading-relaxed line-clamp-3">
                     {game.description}
                   </p>
 
-                  <div className="space-y-2 mb-4 text-xs text-muted-foreground">
+                  <div className="space-y-2 mb-6 text-xs text-white/60">
                     <div className="flex items-center gap-2">
                       <Target className="h-3 w-3" />
                       <span>{game.ageRange}</span>
@@ -281,20 +300,24 @@ export default function Games() {
                   </div>
 
                   <Button 
-                    className={`w-full text-sm ${game.unlocked ? 'group-hover:bg-primary group-hover:text-primary-foreground' : ''} transition-colors`}
-                    variant={game.unlocked ? "default" : "secondary"}
+                    className={cn(
+                      'w-full text-sm transition-all duration-300',
+                      game.unlocked 
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-purple-500/25' 
+                        : 'bg-white/20 text-white/70 cursor-not-allowed'
+                    )}
                     disabled={!game.unlocked}
                     asChild={game.unlocked}
                     size="sm"
                   >
                     {game.unlocked ? (
                       <Link to={`/games/${game.id}`} className="flex items-center gap-2">
-                        <Play className="h-3 w-3" />
+                        <Play className="h-4 w-4" />
                         Jogar
                       </Link>
                     ) : (
                       <span className="flex items-center gap-2">
-                        <Lock className="h-3 w-3" />
+                        <Lock className="h-4 w-4" />
                         Em Breve
                       </span>
                     )}

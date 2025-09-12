@@ -65,40 +65,60 @@ export const ClinicalDashboard: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold gradient-playful bg-clip-text text-transparent">
-            Painel Clínico - Análise Comportamental
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            Análise avançada de padrões comportamentais para diagnóstico de TEA, TDAH e Dislexia
-          </p>
-        </div>
-        <div className="flex gap-3">
-          <Button variant="outline" asChild>
-            <Link to="/dashboard">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Meu Progresso
-            </Link>
-          </Button>
-          <Button 
-            onClick={generateClinicalReport} 
-            disabled={loading}
-            className="shadow-soft"
-          >
-            <FileText className="w-4 h-4 mr-2" />
-            {loading ? 'Gerando...' : 'Gerar Relatório'}
-          </Button>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 text-white pb-24 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 -left-4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-3/4 -right-4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl" />
       </div>
 
+      <div className="container mx-auto p-6 space-y-6 relative z-10">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl">
+                <Brain className="h-6 w-6 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold text-white">
+                Painel 
+                <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                  Clínico
+                </span>
+              </h1>
+            </div>
+            <p className="text-white/70 mt-2">
+              Análise avançada de padrões comportamentais para diagnóstico de TEA, TDAH e Dislexia
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button 
+              variant="outline" 
+              asChild
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20 shadow-lg"
+            >
+              <Link to="/dashboard">
+                <BarChart3 className="w-4 h-4 mr-2" />
+                Meu Progresso
+              </Link>
+            </Button>
+            <Button 
+              onClick={generateClinicalReport} 
+              disabled={loading}
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              {loading ? 'Gerando...' : 'Gerar Relatório'}
+            </Button>
+          </div>
+        </div>
+
       {loading && (
-        <Card className="shadow-soft">
+        <Card className="backdrop-blur-sm bg-white/10 border-white/20">
           <CardContent className="p-6">
             <div className="flex items-center space-x-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-              <span>Analisando padrões comportamentais...</span>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-400"></div>
+              <span className="text-white">Analisando padrões comportamentais...</span>
             </div>
           </CardContent>
         </Card>
@@ -106,69 +126,72 @@ export const ClinicalDashboard: React.FC = () => {
 
       {currentReport && (
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-            <TabsTrigger value="patterns">Padrões</TabsTrigger>
-            <TabsTrigger value="trends">Tendências</TabsTrigger>
-            <TabsTrigger value="interventions">Intervenções</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 bg-white/10 backdrop-blur-sm border-white/20">
+            <TabsTrigger value="overview" className="text-white data-[state=active]:bg-white/20 data-[state=active]:text-white">Visão Geral</TabsTrigger>
+            <TabsTrigger value="patterns" className="text-white data-[state=active]:bg-white/20 data-[state=active]:text-white">Padrões</TabsTrigger>
+            <TabsTrigger value="trends" className="text-white data-[state=active]:bg-white/20 data-[state=active]:text-white">Tendências</TabsTrigger>
+            <TabsTrigger value="interventions" className="text-white data-[state=active]:bg-white/20 data-[state=active]:text-white">Intervenções</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
             {/* Risk Assessment Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="shadow-card gradient-card">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Risco TEA</CardTitle>
-                  <Brain className="h-4 w-4 text-muted-foreground" />
+              <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden hover:bg-white/15 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 opacity-50" />
+                <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white/80">Risco TEA</CardTitle>
+                  <Brain className="h-4 w-4 text-white/60" />
                 </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
+                <CardContent className="relative">
+                  <div className="text-2xl font-bold mb-2 text-white">
                     {(currentReport.overallRiskAssessment.tea * 100).toFixed(1)}%
                   </div>
-                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.tea).variant}>
+                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.tea).variant} className="mb-3">
                     {getRiskLevel(currentReport.overallRiskAssessment.tea).level}
                   </Badge>
                   <Progress 
                     value={currentReport.overallRiskAssessment.tea * 100} 
-                    className="mt-3"
+                    className="mt-3 bg-white/20"
                   />
                 </CardContent>
               </Card>
 
-              <Card className="shadow-card gradient-card">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Risco TDAH</CardTitle>
-                  <Activity className="h-4 w-4 text-muted-foreground" />
+              <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden hover:bg-white/15 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-red-500/20 opacity-50" />
+                <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white/80">Risco TDAH</CardTitle>
+                  <Activity className="h-4 w-4 text-white/60" />
                 </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
+                <CardContent className="relative">
+                  <div className="text-2xl font-bold mb-2 text-white">
                     {(currentReport.overallRiskAssessment.tdah * 100).toFixed(1)}%
                   </div>
-                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.tdah).variant}>
+                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.tdah).variant} className="mb-3">
                     {getRiskLevel(currentReport.overallRiskAssessment.tdah).level}
                   </Badge>
                   <Progress 
                     value={currentReport.overallRiskAssessment.tdah * 100} 
-                    className="mt-3"
+                    className="mt-3 bg-white/20"
                   />
                 </CardContent>
               </Card>
 
-              <Card className="shadow-card gradient-card">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Risco Dislexia</CardTitle>
-                  <FileText className="h-4 w-4 text-muted-foreground" />
+              <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden hover:bg-white/15 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 opacity-50" />
+                <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white/80">Risco Dislexia</CardTitle>
+                  <FileText className="h-4 w-4 text-white/60" />
                 </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold mb-2">
+                <CardContent className="relative">
+                  <div className="text-2xl font-bold mb-2 text-white">
                     {(currentReport.overallRiskAssessment.dislexia * 100).toFixed(1)}%
                   </div>
-                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.dislexia).variant}>
+                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.dislexia).variant} className="mb-3">
                     {getRiskLevel(currentReport.overallRiskAssessment.dislexia).level}
                   </Badge>
                   <Progress 
                     value={currentReport.overallRiskAssessment.dislexia * 100} 
-                    className="mt-3"
+                    className="mt-3 bg-white/20"
                   />
                 </CardContent>
               </Card>
@@ -362,19 +385,24 @@ export const ClinicalDashboard: React.FC = () => {
       )}
 
       {metrics.length === 0 && !loading && (
-        <Card className="shadow-card">
+        <Card className="backdrop-blur-sm bg-white/10 border-white/20">
           <CardContent className="text-center py-8">
-            <Brain className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">Nenhum Dado Disponível</h3>
-            <p className="text-muted-foreground mb-4">
+            <Brain className="w-12 h-12 mx-auto mb-4 text-white/50" />
+            <h3 className="text-lg font-semibold mb-2 text-white">Nenhum Dado Disponível</h3>
+            <p className="text-white/70 mb-4">
               Complete alguns jogos diagnósticos para ver a análise comportamental
             </p>
-            <Button variant="outline" asChild>
+            <Button 
+              variant="outline" 
+              asChild
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+            >
               <Link to="/games">Ir para Jogos</Link>
             </Button>
           </CardContent>
         </Card>
       )}
+      </div>
     </div>
   );
 };
