@@ -20,7 +20,7 @@ const navigationItems = [
   },
   {
     name: 'Cérebro',
-    path: '/clinical',
+    path: '/neuroplasticity',
     icon: Brain,
   },
 ];

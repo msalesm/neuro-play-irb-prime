@@ -14,6 +14,7 @@ import Auth from "./pages/Auth";
 import Games from "./pages/Games";
 import GameMap from "./components/GameMap";
 import Dashboard from "./pages/Dashboard";
+import Neuroplasticity from "./pages/Neuroplasticity";
 import MindfulBreath from "./pages/games/MindfulBreath";
 import MemoriaColorida from "./pages/games/MemoriaColorida";
 import CacaFoco from "./pages/games/CacaFoco";
@@ -64,6 +65,7 @@ const App = () => (
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/game-map" element={<GameMap />} />
                   <Route path="/games" element={<Games />} />
+                  <Route path="/neuroplasticity" element={<Neuroplasticity />} />
                   <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
                   <Route path="/games/caca-foco" element={<CacaFoco />} />
