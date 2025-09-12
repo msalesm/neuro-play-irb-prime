@@ -1704,6 +1704,36 @@ export type Database = {
         }
         Relationships: []
       }
+      neuroplasticity_history: {
+        Row: {
+          category: string
+          created_at: string
+          game_session_data: Json | null
+          id: string
+          recorded_at: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          game_session_data?: Json | null
+          id?: string
+          recorded_at?: string
+          score: number
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          game_session_data?: Json | null
+          id?: string
+          recorded_at?: string
+          score?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           buyer_id: string
@@ -2582,6 +2612,69 @@ export type Database = {
           longitude?: number
           name?: string
           radius_meters?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_neuroplasticity: {
+        Row: {
+          coordination_score: number
+          created_at: string
+          flexible_thinking: number
+          focus_score: number
+          games_completed: number
+          id: string
+          language_score: number
+          logic_score: number
+          math_score: number
+          memory_score: number
+          memory_thinking: number
+          music_score: number
+          overall_score: number
+          quick_reasoning: number
+          total_sessions: number
+          tracking_ability: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          coordination_score?: number
+          created_at?: string
+          flexible_thinking?: number
+          focus_score?: number
+          games_completed?: number
+          id?: string
+          language_score?: number
+          logic_score?: number
+          math_score?: number
+          memory_score?: number
+          memory_thinking?: number
+          music_score?: number
+          overall_score?: number
+          quick_reasoning?: number
+          total_sessions?: number
+          tracking_ability?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          coordination_score?: number
+          created_at?: string
+          flexible_thinking?: number
+          focus_score?: number
+          games_completed?: number
+          id?: string
+          language_score?: number
+          logic_score?: number
+          math_score?: number
+          memory_score?: number
+          memory_thinking?: number
+          music_score?: number
+          overall_score?: number
+          quick_reasoning?: number
+          total_sessions?: number
+          tracking_ability?: number
           updated_at?: string
           user_id?: string
         }

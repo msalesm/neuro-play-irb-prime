@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle, Plus } from "lucide-react";
+import { NeuroplasticityButton } from "@/components/NeuroplasticityButton";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -133,7 +134,7 @@ export default function Dashboard() {
               Continue sua jornada de desenvolvimento pessoal
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button variant="outline" asChild>
               <Link to="/games">
                 <Plus className="w-4 h-4 mr-2" />
@@ -147,6 +148,11 @@ export default function Dashboard() {
               </Link>
             </Button>
           </div>
+        </div>
+
+        {/* Neuroplasticity Button */}
+        <div className="mb-8 flex justify-center">
+          <NeuroplasticityButton />
         </div>
 
         {/* Stats Grid */}
