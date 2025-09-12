@@ -35,6 +35,7 @@ import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
 import AttentionSustained from "./pages/games/AttentionSustainedGame";
 import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
+import DiagnosticTests from "./pages/DiagnosticTests";
 import ClinicalDashboard from "./pages/ClinicalDashboard";
 import NotFound from "./pages/NotFound";
 
@@ -59,6 +60,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/game-map" element={<GameMap />} />
               <Route path="/games" element={<Games />} />
+              <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
               <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
               <Route path="/games/caca-foco" element={<CacaFoco />} />
               <Route path="/games/logica-rapida" element={<LogicaRapida />} />

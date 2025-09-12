@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { Play, Clock, Users, Target, Lock } from "lucide-react";
+import { Play, Clock, Users, Target, Lock, Trophy } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 const gamesList = [
@@ -220,11 +220,19 @@ export default function Games() {
         <div className="text-center mb-16">
           <h1 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-balance">
             Jogos 
-            <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">NeuroPlay</span>
+            <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">Terapêuticos</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-balance">
-            Jogos terapêuticos e testes diagnósticos para desenvolvimento cognitivo e detecção precoce.
+            Desenvolva habilidades cognitivas através de jogos divertidos e envolventes.
           </p>
+          <div className="mt-6">
+            <Button variant="outline" asChild>
+              <Link to="/diagnostic-tests" className="flex items-center gap-2">
+                <Trophy className="h-4 w-4" />
+                Ver Testes Diagnósticos
+              </Link>
+            </Button>
+          </div>
         </div>
 
         {/* Seção de Jogos Básicos */}
@@ -297,98 +305,6 @@ export default function Games() {
           </div>
         </div>
 
-        {/* Seção de Jogos Diagnósticos */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold mb-4 text-center">
-            <span className="bg-gradient-to-r from-destructive to-orange-500 bg-clip-text text-transparent">
-              Testes Diagnósticos
-            </span>
-          </h2>
-          <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Avaliações científicas para identificação precoce de TEA, TDAH e Dislexia
-          </p>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {gamesList.filter(game => game.type === 'diagnostic').map((game) => (
-            <Card 
-              key={game.id}
-              className={`p-8 border-0 shadow-card hover:shadow-glow transition-all duration-500 hover:-translate-y-2 group bg-card relative overflow-hidden ${
-                !game.unlocked ? 'opacity-75' : ''
-              }`}
-            >
-              {/* Gradient background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-5`} />
-              
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-6">
-                  <Badge className={`${game.color} font-semibold`}>
-                    {game.category}
-                  </Badge>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      {game.status}
-                    </Badge>
-                    {!game.unlocked && <Lock className="h-4 w-4 text-muted-foreground" />}
-                  </div>
-                </div>
-
-                <h3 className="font-heading text-2xl font-bold mb-4 group-hover:text-primary transition-colors">
-                  {game.title}
-                </h3>
-
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  {game.description}
-                </p>
-
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <Target className="h-4 w-4" />
-                    <span>{game.ageRange}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>{game.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                    <Users className="h-4 w-4" />
-                    <span>{game.players}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-3 mb-8">
-                  <h4 className="font-semibold text-sm uppercase tracking-wide text-muted-foreground">
-                    Características Principais
-                  </h4>
-                  {game.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-primary rounded-full mr-3" />
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-
-                <Button 
-                  className={`w-full ${game.unlocked ? 'group-hover:bg-primary group-hover:text-primary-foreground' : ''} transition-colors`}
-                  variant={game.unlocked ? "default" : "secondary"}
-                  disabled={!game.unlocked}
-                  asChild={game.unlocked}
-                >
-                  {game.unlocked ? (
-                    <Link to={`/games/${game.id}`} className="flex items-center gap-2">
-                      <Play className="h-4 w-4" />
-                      Jogar Agora
-                    </Link>
-                  ) : (
-                    <span className="flex items-center gap-2">
-                      <Lock className="h-4 w-4" />
-                      Em Breve
-                    </span>
-                  )}
-                </Button>
-              </div>
-            </Card>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ export const Header = () => {
 
   const navigation = [
     { name: 'Jogos', href: '/games', icon: Gamepad2 },
+    { name: 'Testes Diagnósticos', href: '/diagnostic-tests', icon: Trophy },
     { name: 'Painel Clínico', href: '/clinical', icon: Brain },
     { name: 'Meu Progresso', href: '/dashboard', icon: BarChart3 },
   ];
