@@ -34,6 +34,8 @@ export interface LearningSession {
   improvements_noted: string[];
   session_duration_seconds: number | null;
   completed: boolean;
+  completed_at: string | null;
+  created_at: string;
 }
 
 export function useEducationalSystem() {

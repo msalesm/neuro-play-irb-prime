@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Gamepad2, Calendar, FileText, Brain } from 'lucide-react';
+import { Gamepad2, Calendar, FileText, GraduationCap } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 const navigationItems = [
@@ -19,9 +19,9 @@ const navigationItems = [
     icon: FileText,
   },
   {
-    name: 'Cérebro',
-    path: '/neuroplasticity',
-    icon: Brain,
+    name: 'Aprendizado',
+    path: '/educational-dashboard',
+    icon: GraduationCap,
   },
 ];
 

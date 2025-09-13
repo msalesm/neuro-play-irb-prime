@@ -8,6 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { Header } from "@/components/Header";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ModernEducationalDashboard } from '@/components/ModernEducationalDashboard';
 import Index from "./pages/Index";
 import ModernIndex from "./pages/ModernIndex";
 import Auth from "./pages/Auth";
@@ -66,7 +67,14 @@ const App = () => (
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/game-map" element={<GameMap />} />
                   <Route path="/games" element={<Games />} />
-                  <Route path="/neuroplasticity" element={<Neuroplasticity />} />
+          <Route path="/neuroplasticity" element={<Neuroplasticity />} />
+          <Route path="/educational-dashboard" element={
+            <div className="min-h-screen bg-gradient-card pb-20 pt-6">
+              <div className="container mx-auto px-4 max-w-6xl">
+                <ModernEducationalDashboard />
+              </div>
+            </div>
+          } />
                   <Route path="/digital-notebook" element={<DigitalNotebook />} />
                   <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
