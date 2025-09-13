@@ -910,6 +910,81 @@ export type Database = {
         }
         Relationships: []
       }
+      educational_achievements: {
+        Row: {
+          achievement_type: string
+          category: string
+          criteria_met: Json
+          description: string
+          educational_impact: string | null
+          id: string
+          level: number
+          title: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_type: string
+          category: string
+          criteria_met?: Json
+          description: string
+          educational_impact?: string | null
+          id?: string
+          level?: number
+          title: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_type?: string
+          category?: string
+          criteria_met?: Json
+          description?: string
+          educational_impact?: string | null
+          id?: string
+          level?: number
+          title?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      educator_notes: {
+        Row: {
+          action_required: boolean
+          content: string
+          created_at: string
+          educator_id: string
+          id: string
+          learning_area: string | null
+          note_type: string
+          priority_level: string
+          student_id: string
+        }
+        Insert: {
+          action_required?: boolean
+          content: string
+          created_at?: string
+          educator_id: string
+          id?: string
+          learning_area?: string | null
+          note_type?: string
+          priority_level?: string
+          student_id: string
+        }
+        Update: {
+          action_required?: boolean
+          content?: string
+          created_at?: string
+          educator_id?: string
+          id?: string
+          learning_area?: string | null
+          note_type?: string
+          priority_level?: string
+          student_id?: string
+        }
+        Relationships: []
+      }
       emergency_alerts: {
         Row: {
           ai_assessment: string | null
@@ -1343,6 +1418,134 @@ export type Database = {
           },
         ]
       }
+      learning_analytics: {
+        Row: {
+          context_data: Json
+          created_at: string
+          id: string
+          metric_type: string
+          metric_value: number
+          recorded_date: string
+          user_id: string
+        }
+        Insert: {
+          context_data?: Json
+          created_at?: string
+          id?: string
+          metric_type: string
+          metric_value: number
+          recorded_date?: string
+          user_id: string
+        }
+        Update: {
+          context_data?: Json
+          created_at?: string
+          id?: string
+          metric_type?: string
+          metric_value?: number
+          recorded_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      learning_sessions: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          game_type: string
+          id: string
+          improvements_noted: Json
+          learning_indicators: Json
+          level: number
+          performance_data: Json
+          session_duration_seconds: number | null
+          struggles_detected: Json
+          trail_id: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          game_type: string
+          id?: string
+          improvements_noted?: Json
+          learning_indicators?: Json
+          level?: number
+          performance_data?: Json
+          session_duration_seconds?: number | null
+          struggles_detected?: Json
+          trail_id: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          game_type?: string
+          id?: string
+          improvements_noted?: Json
+          learning_indicators?: Json
+          level?: number
+          performance_data?: Json
+          session_duration_seconds?: number | null
+          struggles_detected?: Json
+          trail_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_sessions_trail_id_fkey"
+            columns: ["trail_id"]
+            isOneToOne: false
+            referencedRelation: "learning_trails"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_trails: {
+        Row: {
+          adaptive_settings: Json
+          cognitive_category: string
+          completed_exercises: number
+          created_at: string
+          current_level: number
+          id: string
+          learning_path: Json
+          max_level_unlocked: number
+          total_xp: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          adaptive_settings?: Json
+          cognitive_category: string
+          completed_exercises?: number
+          created_at?: string
+          current_level?: number
+          id?: string
+          learning_path?: Json
+          max_level_unlocked?: number
+          total_xp?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          adaptive_settings?: Json
+          cognitive_category?: string
+          completed_exercises?: number
+          created_at?: string
+          current_level?: number
+          id?: string
+          learning_path?: Json
+          max_level_unlocked?: number
+          total_xp?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       life_goals: {
         Row: {
           created_at: string
@@ -1701,6 +1904,45 @@ export type Database = {
           updated_at?: string
           user_id?: string
           visit_count?: number
+        }
+        Relationships: []
+      }
+      neurodiversity_profiles: {
+        Row: {
+          adaptive_strategies: Json
+          assessment_data: Json
+          confidence_scores: Json
+          created_at: string
+          detected_conditions: Json
+          id: string
+          last_assessment: string | null
+          needs_educator_review: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          adaptive_strategies?: Json
+          assessment_data?: Json
+          confidence_scores?: Json
+          created_at?: string
+          detected_conditions?: Json
+          id?: string
+          last_assessment?: string | null
+          needs_educator_review?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          adaptive_strategies?: Json
+          assessment_data?: Json
+          confidence_scores?: Json
+          created_at?: string
+          detected_conditions?: Json
+          id?: string
+          last_assessment?: string | null
+          needs_educator_review?: boolean
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
