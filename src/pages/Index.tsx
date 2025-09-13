@@ -6,12 +6,14 @@ import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Stethoscope, Brain, Target, TrendingUp, ArrowRight } from "lucide-react";
+import { Stethoscope, Brain, Target, TrendingUp, ArrowRight, GraduationCap, Zap, BookOpen, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen">
@@ -19,21 +21,110 @@ const Index = () => {
       <NeuroPlayHero />
       <MVPGameModules />
       
+      {/* Educational System Section */}
+      <section className="py-24 bg-gradient-to-br from-primary/5 to-secondary/10">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+              {t('common.newFeature')} • {t('educational.title')}
+            </Badge>
+            <h2 className="text-4xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                {t('educational.title')}
+              </span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              {t('educational.subtitle')}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card className="shadow-card hover:shadow-glow transition-all duration-300">
+              <CardHeader className="text-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Zap className="w-6 h-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">{t('educational.features.unifiedScoring.title')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center">
+                  {t('educational.features.unifiedScoring.description')}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-card hover:shadow-glow transition-all duration-300">
+              <CardHeader className="text-center">
+                <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <GraduationCap className="w-6 h-6 text-secondary" />
+                </div>
+                <CardTitle className="text-lg">{t('educational.features.pedagogicalFeedback.title')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center">
+                  {t('educational.features.pedagogicalFeedback.description')}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-card hover:shadow-glow transition-all duration-300">
+              <CardHeader className="text-center">
+                <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Brain className="w-6 h-6 text-accent" />
+                </div>
+                <CardTitle className="text-lg">{t('educational.features.adaptiveLearning.title')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center">
+                  {t('educational.features.adaptiveLearning.description')}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-card hover:shadow-glow transition-all duration-300">
+              <CardHeader className="text-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <BarChart3 className="w-6 h-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">{t('educational.features.progressTracking.title')}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center">
+                  {t('educational.features.progressTracking.description')}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {user && (
+            <div className="text-center mt-12">
+              <Button asChild size="lg" className="shadow-soft">
+                <Link to="/educational-dashboard" className="flex items-center gap-2">
+                  <BookOpen className="w-5 h-5" />
+                  {t('common.myLearning')}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
+          )}
+        </div>
+      </section>
+      
       {/* Clinical Dashboard Section */}
       {user && (
         <section className="py-24 bg-gradient-to-br from-muted/30 to-accent/20">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <Badge className="mb-4 bg-red-100 text-red-800 border-red-200">
-                Novidade • Análise Comportamental
+                {t('common.newFeature')} • {t('clinical.behavioralAnalysis')}
               </Badge>
               <h2 className="text-4xl font-bold mb-6">
                 <span className="bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent">
-                  Painel Clínico Avançado
+                  {t('clinical.title')}
                 </span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Sistema de análise comportamental com IA para identificação precoce de TEA, TDAH e Dislexia
+                {t('clinical.subtitle')}
               </p>
             </div>
             
@@ -43,7 +134,7 @@ const Index = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center text-red-700">
                       <Stethoscope className="w-5 h-5 mr-2" />
-                      Avaliações Diagnósticas
+                      {t('clinical.diagnosticTests')}
                     </CardTitle>
                     <CardDescription>
                       Testes baseados em evidências científicas para detecção precoce
@@ -71,7 +162,7 @@ const Index = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center text-blue-700">
                       <Brain className="w-5 h-5 mr-2" />
-                      Análise Comportamental
+                      {t('clinical.behavioralAnalysis')}
                     </CardTitle>
                     <CardDescription>
                       IA analisa padrões de comportamento em tempo real
@@ -101,7 +192,7 @@ const Index = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center text-primary">
                       <TrendingUp className="w-5 h-5 mr-2" />
-                      Relatórios Automáticos
+                      {t('clinical.automaticReports')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -127,7 +218,7 @@ const Index = () => {
                     <Button asChild className="w-full mt-6 shadow-soft">
                       <Link to="/clinical" className="flex items-center gap-2">
                         <Target className="w-4 h-4" />
-                        Acessar Painel Clínico
+                        {t('clinical.accessPanel')}
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                     </Button>

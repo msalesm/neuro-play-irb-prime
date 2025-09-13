@@ -3,16 +3,19 @@ import { useAuth } from "@/hooks/useAuth";
 import { Link, useLocation } from "react-router-dom";
 import { Brain, Gamepad2, Trophy, BarChart3, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 export const Header = () => {
   const { user, signOut } = useAuth();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   const navigation = [
-    { name: 'Jogos', href: '/games', icon: Gamepad2 },
+    { name: t('nav.games'), href: '/games', icon: Gamepad2 },
     { name: 'Testes Diagnósticos', href: '/diagnostic-tests', icon: Trophy },
-    { name: 'Painel Clínico', href: '/clinical', icon: Brain },
+    { name: t('nav.clinical'), href: '/clinical', icon: Brain },
     { name: 'Meu Progresso', href: '/dashboard', icon: BarChart3 },
   ];
 
@@ -36,6 +39,7 @@ export const Header = () => {
 
           {/* Desktop Auth - Simplified */}
           <div className="flex items-center gap-4">
+            <LanguageSelector />
             {user ? (
               <div className="flex items-center gap-3">
                 <span className="text-sm text-white/80 hidden md:block">

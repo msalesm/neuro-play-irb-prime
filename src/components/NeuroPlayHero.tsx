@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Brain, Heart, Sparkles } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const NeuroPlayHero = () => {
+  const { t } = useLanguage();
+  
   return (
     <section className="relative min-h-screen bg-gradient-hero flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
       {/* Floating elements for playful design - adjusted for mobile */}
@@ -24,20 +27,17 @@ export const NeuroPlayHero = () => {
         {/* Main Title - Mobile First */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold font-heading text-foreground mb-4 sm:mb-6">
           <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-            NeuroPlay
+            {t('hero.title')}
           </span>
         </h1>
 
         {/* Subtitle - Mobile First */}
         <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-3 sm:mb-4 mx-auto font-medium px-4">
-          Jogos cognitivos divertidos para crianças e jovens neurodiversos
+          {t('hero.subtitle')}
         </p>
 
         <p className="text-base sm:text-lg text-muted-foreground/80 mb-8 sm:mb-12 mx-auto px-4 leading-relaxed">
-          Minigames de 1-3 minutos que apoiam o desenvolvimento de crianças com 
-          <span className="text-dislexia font-semibold"> Dislexia</span>, 
-          <span className="text-tdah font-semibold"> TDAH</span> e 
-          <span className="text-tea font-semibold"> TEA</span>
+          {t('hero.description')}
         </p>
 
         {/* Call to Action - Mobile First */}
@@ -49,7 +49,7 @@ export const NeuroPlayHero = () => {
           >
             <Link to="/games" className="flex items-center justify-center gap-2">
               <Sparkles className="w-5 h-5" />
-              Começar a Jogar
+              {t('hero.cta')}
             </Link>
           </Button>
           

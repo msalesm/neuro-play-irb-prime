@@ -1,10 +1,10 @@
 import { useAuth } from '@/hooks/useAuth';
 import { DailyGameSection } from '@/components/DailyGameSection';
 import { ModernGameCard } from '@/components/ModernGameCard';
-
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   Brain, 
   Target, 
@@ -19,77 +19,78 @@ import {
   Heart
 } from 'lucide-react';
 
-const popularGames = [
-  {
-    id: 'focus-forest',
-    title: 'Focus Forest',
-    description: 'Desenvolva sua atenção sustentada',
-    icon: Brain,
-    gradient: 'gradient-focus',
-    progress: { current: 12, total: 50 },
-    difficulty: 'Intermediário',
-    duration: '5-10 min',
-    path: '/games/focus-forest'
-  },
-  {
-    id: 'memoria-colorida',
-    title: 'Memória Colorida',
-    description: 'Fortaleça sua memória visual',
-    icon: Target,
-    gradient: 'gradient-memory',
-    progress: { current: 8, total: 25 },
-    difficulty: 'Fácil',
-    duration: '3-7 min',
-    path: '/games/memoria-colorida'
-  },
-  {
-    id: 'logica-rapida',
-    title: 'Lógica Rápida',
-    description: 'Acelere seu raciocínio lógico',
-    icon: Zap,
-    gradient: 'gradient-problem',
-    progress: { current: 15, total: 40 },
-    difficulty: 'Difícil',
-    duration: '4-8 min',
-    path: '/games/logica-rapida'
-  },
-  {
-    id: 'ritmo-musical',
-    title: 'Ritmo Musical',
-    description: 'Sincronize com o ritmo',
-    icon: Music,
-    gradient: 'gradient-playful',
-    progress: { current: 6, total: 30 },
-    difficulty: 'Intermediário',
-    duration: '3-6 min',
-    path: '/games/ritmo-musical'
-  },
-  {
-    id: 'aventura-numeros',
-    title: 'Aventura dos Números',
-    description: 'Explore o mundo da matemática',
-    icon: Calculator,
-    gradient: 'gradient-math',
-    progress: { current: 4, total: 35 },
-    difficulty: 'Intermediário',
-    duration: '5-10 min',
-    path: '/games/aventura-numeros'
-  },
-  {
-    id: 'social-scenarios',
-    title: 'Cenários Sociais',
-    description: 'Desenvolva habilidades sociais',
-    icon: Users,
-    gradient: 'gradient-social',
-    progress: { current: 2, total: 20 },
-    difficulty: 'Adaptável',
-    duration: '8-12 min',
-    path: '/games/social-scenarios'
-  }
-];
-
 export default function ModernIndex() {
   const { user } = useAuth();
+  const { t } = useLanguage();
+
+  const popularGames = [
+    {
+      id: 'focus-forest',
+      title: t('games.focusForest'),
+      description: t('games.descriptions.focusForest'),
+      icon: Brain,
+      gradient: 'gradient-focus',
+      progress: { current: 12, total: 50 },
+      difficulty: t('games.difficulty.intermediate'),
+      duration: '5-10 min',
+      path: '/games/focus-forest'
+    },
+    {
+      id: 'memoria-colorida',
+      title: t('games.memoriaColorida'),
+      description: t('games.descriptions.memoriaColorida'),
+      icon: Target,
+      gradient: 'gradient-memory',
+      progress: { current: 8, total: 25 },
+      difficulty: t('games.difficulty.easy'),
+      duration: '3-7 min',
+      path: '/games/memoria-colorida'
+    },
+    {
+      id: 'logica-rapida',
+      title: t('games.logicaRapida'),
+      description: t('games.descriptions.logicaRapida'),
+      icon: Zap,
+      gradient: 'gradient-problem',
+      progress: { current: 15, total: 40 },
+      difficulty: t('games.difficulty.hard'),
+      duration: '4-8 min',
+      path: '/games/logica-rapida'
+    },
+    {
+      id: 'ritmo-musical',
+      title: t('games.ritmoMusical'),
+      description: t('games.descriptions.ritmoMusical'),
+      icon: Music,
+      gradient: 'gradient-playful',
+      progress: { current: 6, total: 30 },
+      difficulty: t('games.difficulty.intermediate'),
+      duration: '3-6 min',
+      path: '/games/ritmo-musical'
+    },
+    {
+      id: 'aventura-numeros',
+      title: t('games.aventuraNumeros'),
+      description: t('games.descriptions.aventuraNumeros'),
+      icon: Calculator,
+      gradient: 'gradient-math',
+      progress: { current: 4, total: 35 },
+      difficulty: t('games.difficulty.intermediate'),
+      duration: '5-10 min',
+      path: '/games/aventura-numeros'
+    },
+    {
+      id: 'social-scenarios',
+      title: t('games.socialScenarios'),
+      description: t('games.descriptions.socialScenarios'),
+      icon: Users,
+      gradient: 'gradient-social',
+      progress: { current: 2, total: 20 },
+      difficulty: t('games.difficulty.adaptive'),
+      duration: '8-12 min',
+      path: '/games/social-scenarios'
+    }
+  ];
 
   if (!user) {
     return (
@@ -98,12 +99,12 @@ export default function ModernIndex() {
           <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto backdrop-blur-sm">
             <Brain className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold">NeuroPlay</h1>
+          <h1 className="text-3xl font-bold">{t('hero.title')}</h1>
           <p className="text-white/80">
-            Desenvolva suas habilidades cognitivas através de jogos terapêuticos personalizados.
+            {t('hero.cognitiveDescription')}
           </p>
           <Button asChild size="lg" className="bg-white/20 hover:bg-white/30 text-white">
-            <Link to="/auth">Começar Jornada</Link>
+            <Link to="/auth">{t('hero.startJourney')}</Link>
           </Button>
         </div>
       </div>
@@ -117,9 +118,9 @@ export default function ModernIndex() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold mb-1">
-              Olá, {user.user_metadata?.name || user.email?.split('@')[0]}! 👋
+              {t('common.hello')}, {user.user_metadata?.name || user.email?.split('@')[0]}! 👋
             </h1>
-            <p className="text-white/70 text-sm">Continue seu desenvolvimento cognitivo</p>
+            <p className="text-white/70 text-sm">{t('hero.continueDevelopment')}</p>
           </div>
         </div>
         
@@ -132,7 +133,7 @@ export default function ModernIndex() {
           >
             <Link to="/educational-dashboard">
               <BookOpen className="w-4 h-4 mr-2" />
-              Meu Aprendizado
+              {t('common.myLearning')}
             </Link>
           </Button>
         </div>
@@ -145,7 +146,7 @@ export default function ModernIndex() {
       <section className="px-4">
         <div className="flex items-center gap-2 mb-6">
           <Heart className="w-5 h-5 text-yellow-400 fill-current" />
-          <h2 className="text-xl font-bold text-yellow-400">Popular</h2>
+          <h2 className="text-xl font-bold text-yellow-400">{t('games.popular')}</h2>
         </div>
 
         {/* Grid de Jogos */}
@@ -174,7 +175,7 @@ export default function ModernIndex() {
           >
             <Link to="/games">
               <Gamepad2 className="w-4 h-4 mr-2" />
-              Ver Todos os Jogos
+              {t('common.viewAll')}
             </Link>
           </Button>
         </div>
