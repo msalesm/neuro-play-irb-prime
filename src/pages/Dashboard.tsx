@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle, Plus } from "lucide-react";
-import { NeuroplasticityButton } from "@/components/NeuroplasticityButton";
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -164,9 +164,18 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Neuroplasticity Button */}
+        {/* Educational Dashboard Link */}
         <div className="mb-8 flex justify-center">
-          <NeuroplasticityButton />
+          <Button 
+            variant="outline" 
+            asChild
+            className="bg-white/10 border-white/30 text-white hover:bg-white/20 shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+          >
+            <Link to="/educational-dashboard">
+              <Trophy className="w-4 h-4 mr-2" />
+              Meu Aprendizado
+            </Link>
+          </Button>
         </div>
 
         {/* Stats Grid */}

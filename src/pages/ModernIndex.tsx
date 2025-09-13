@@ -1,7 +1,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import { DailyGameSection } from '@/components/DailyGameSection';
 import { ModernGameCard } from '@/components/ModernGameCard';
-import { NeuroplasticityButton } from '@/components/NeuroplasticityButton';
+
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
@@ -123,9 +123,18 @@ export default function ModernIndex() {
           </div>
         </div>
         
-        {/* Botão de Neuroplasticidade centralizado */}
+        {/* Link para Meu Aprendizado centralizado */}
         <div className="flex justify-center mb-6">
-          <NeuroplasticityButton />
+          <Button 
+            variant="outline" 
+            asChild
+            className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+          >
+            <Link to="/educational-dashboard">
+              <BookOpen className="w-4 h-4 mr-2" />
+              Meu Aprendizado
+            </Link>
+          </Button>
         </div>
       </div>
 

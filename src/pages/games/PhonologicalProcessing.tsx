@@ -143,15 +143,35 @@ export const PhonologicalProcessing: React.FC = () => {
   
   const audioRef = useRef<SpeechSynthesisUtterance | null>(null);
 
+  // Clean text for natural speech synthesis
+  const cleanTextForSpeech = useCallback((text: string): string => {
+    // Convert phonetic symbols to pronounceable text
+    return text
+      .replace(/\/([aeiouáéíóú])\//gi, (match, vowel) => `som de ${vowel}`)
+      .replace(/\/([bcdfghjklmnpqrstvwxyz])\//gi, (match, consonant) => {
+        const consonantNames: { [key: string]: string } = {
+          'b': 'bê', 'c': 'cê', 'd': 'dê', 'f': 'éfe', 'g': 'gê', 'h': 'agá',
+          'j': 'jota', 'k': 'cá', 'l': 'éle', 'm': 'ême', 'n': 'êne', 'p': 'pê',
+          'q': 'quê', 'r': 'érre', 's': 'ésse', 't': 'tê', 'v': 'vê', 'w': 'dáblio',
+          'x': 'xis', 'y': 'ípsilon', 'z': 'zê'
+        };
+        return `som de ${consonantNames[consonant.toLowerCase()] || consonant}`;
+      })
+      .replace(/\/([^\/]+)\//g, (match, phoneme) => `som de ${phoneme}`)
+      .replace(/\s+/g, ' ')
+      .trim();
+  }, []);
+
   // Text-to-speech function
   const speakText = useCallback((text: string) => {
     if ('speechSynthesis' in window) {
       // Cancel any ongoing speech
       window.speechSynthesis.cancel();
       
-      const utterance = new SpeechSynthesisUtterance(text);
+      const cleanedText = cleanTextForSpeech(text);
+      const utterance = new SpeechSynthesisUtterance(cleanedText);
       utterance.lang = 'pt-BR';
-      utterance.rate = 0.8;
+      utterance.rate = 0.7; // Slightly slower for better clarity
       utterance.pitch = 1.0;
       
       utterance.onstart = () => setIsPlayingAudio(true);
@@ -161,7 +181,7 @@ export const PhonologicalProcessing: React.FC = () => {
       audioRef.current = utterance;
       window.speechSynthesis.speak(utterance);
     }
-  }, []);
+  }, [cleanTextForSpeech]);
 
   // Start next task
   const startNextTask = useCallback(() => {
