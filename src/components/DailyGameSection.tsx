@@ -5,47 +5,50 @@ import { Badge } from '@/components/ui/badge';
 import { Clock, Target, Brain, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { GameIllustration } from './GameIllustration';
-
-// Jogos que podem ser sugeridos como "jogo diário"
-const dailyGames = [
-  {
-    id: 'focus-forest',
-    title: 'Focus Forest',
-    subtitle: 'Atenção Sustentada',
-    description: 'Desenvolva sua capacidade de foco',
-    duration: '5-10 min',
-    difficulty: 'Adaptável',
-    icon: Brain,
-    gradient: 'gradient-focus',
-    path: '/games/focus-forest'
-  },
-  {
-    id: 'memoria-colorida',
-    title: 'Memória Colorida',
-    subtitle: 'Memória Visual',
-    description: 'Fortaleça sua memória visual',
-    duration: '3-7 min',
-    difficulty: 'Intermediário',
-    icon: Target,
-    gradient: 'gradient-memory',
-    path: '/games/memoria-colorida'
-  },
-  {
-    id: 'logica-rapida',
-    title: 'Lógica Rápida',
-    subtitle: 'Raciocínio',
-    description: 'Acelere seu pensamento lógico',
-    duration: '4-8 min',
-    difficulty: 'Desafiador',
-    icon: Zap,
-    gradient: 'gradient-problem',
-    path: '/games/logica-rapida'
-  }
-];
 
 export function DailyGameSection() {
   const { user } = useAuth();
+  const { t } = useLanguage();
+  
+  // Jogos que podem ser sugeridos como "jogo diário"
+  const dailyGames = [
+    {
+      id: 'focus-forest',
+      title: t('games.focusForest'),
+      subtitle: t('games.subtitles.sustainedAttention'),
+      description: t('games.dailyGame.focusCapacity'),
+      duration: '5-10 min',
+      difficulty: t('games.difficulty.adaptive'),
+      icon: Brain,
+      gradient: 'gradient-focus',
+      path: '/games/focus-forest'
+    },
+    {
+      id: 'memoria-colorida',
+      title: t('games.memoriaColorida'),
+      subtitle: t('games.subtitles.visualMemory'),
+      description: t('games.descriptions.memoriaColorida'),
+      duration: '3-7 min',
+      difficulty: t('games.difficulty.intermediate'),
+      icon: Target,
+      gradient: 'gradient-memory',
+      path: '/games/memoria-colorida'
+    },
+    {
+      id: 'logica-rapida',
+      title: t('games.logicaRapida'),
+      subtitle: t('games.subtitles.reasoning'),
+      description: t('games.dailyGame.logicalThinking'),
+      duration: '4-8 min',
+      difficulty: t('games.difficulty.challenging'),
+      icon: Zap,
+      gradient: 'gradient-problem',
+      path: '/games/logica-rapida'
+    }
+  ];
+  
   const [currentGameIndex] = useState(() => {
     // Selecionar jogo baseado no dia da semana
     const today = new Date().getDay();
@@ -76,11 +79,11 @@ export function DailyGameSection() {
           <CardContent className="p-6 text-white">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-2xl font-bold mb-1">Seu Jogo Diário</h2>
+                <h2 className="text-2xl font-bold mb-1">{t('games.dailyGame.title')}</h2>
                 <div className="flex items-center gap-4 text-white/80 text-sm">
                   <div className="flex items-center gap-1">
                     <Target className="w-4 h-4" />
-                    <span>Linha única</span>
+                    <span>{t('games.dailyGame.uniqueLine')}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
@@ -95,7 +98,7 @@ export function DailyGameSection() {
                 className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
               >
                 <Link to={todaysGame.path}>
-                  JOGAR
+                  {t('games.dailyGame.play')}
                 </Link>
               </Button>
             </div>

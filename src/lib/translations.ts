@@ -73,7 +73,8 @@ export const translations = {
         easy: 'Fácil',
         intermediate: 'Intermediário',
         hard: 'Difícil',
-        adaptive: 'Adaptável'
+        adaptive: 'Adaptável',
+        challenging: 'Desafiador'
       },
       descriptions: {
         focusForest: 'Desenvolva sua atenção sustentada',
@@ -82,6 +83,18 @@ export const translations = {
         ritmoMusical: 'Sincronize com o ritmo',
         aventuraNumeros: 'Explore o mundo da matemática',
         socialScenarios: 'Desenvolva habilidades sociais'
+      },
+      subtitles: {
+        sustainedAttention: 'Atenção Sustentada',
+        visualMemory: 'Memória Visual',
+        reasoning: 'Raciocínio'
+      },
+      dailyGame: {
+        title: 'Seu Jogo Diário',
+        uniqueLine: 'Linha única',
+        play: 'JOGAR',
+        focusCapacity: 'Desenvolva sua capacidade de foco',
+        logicalThinking: 'Acelere seu pensamento lógico'
       }
     },
     
@@ -178,7 +191,8 @@ export const translations = {
         easy: 'Facile',
         intermediate: 'Intermedio',
         hard: 'Difficile',
-        adaptive: 'Adattivo'
+        adaptive: 'Adattivo',
+        challenging: 'Sfidante'
       },
       descriptions: {
         focusForest: 'Sviluppa la tua attenzione sostenuta',
@@ -187,6 +201,18 @@ export const translations = {
         ritmoMusical: 'Sincronizzati con il ritmo',
         aventuraNumeros: 'Esplora il mondo della matematica',
         socialScenarios: 'Sviluppa abilità sociali'
+      },
+      subtitles: {
+        sustainedAttention: 'Attenzione Sostenuta',
+        visualMemory: 'Memoria Visiva',
+        reasoning: 'Ragionamento'
+      },
+      dailyGame: {
+        title: 'Il Tuo Gioco Giornaliero',
+        uniqueLine: 'Linea unica',
+        play: 'GIOCA',
+        focusCapacity: 'Sviluppa la tua capacità di concentrazione',
+        logicalThinking: 'Accelera il tuo pensiero logico'
       }
     },
     
