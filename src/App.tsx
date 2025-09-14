@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,9 +8,11 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { Header } from "@/components/Header";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { Loading } from "@/components/Loading";
 import { ModernEducationalDashboard } from '@/components/ModernEducationalDashboard';
 import Index from "./pages/Index";
-import ModernIndex from "./pages/ModernIndex";
+const ModernIndex = lazy(() => import("./pages/ModernIndex"));
+const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
 import Auth from "./pages/Auth";
 import Games from "./pages/Games";
 import GameMap from "./components/GameMap";
@@ -67,7 +69,12 @@ const App = () => (
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/game-map" element={<GameMap />} />
                   <Route path="/games" element={<Games />} />
-          <Route path="/neuroplasticity" element={<Neuroplasticity />} />
+            <Route path="/neuroplasticity" element={<Neuroplasticity />} />
+            <Route path="/learning-dashboard" element={
+              <Suspense fallback={<Loading />}>
+                <LearningDashboard />
+              </Suspense>
+            } />
           <Route path="/educational-dashboard" element={
             <div className="min-h-screen bg-gradient-card pb-20 pt-6">
               <div className="container mx-auto px-4 max-w-6xl">
