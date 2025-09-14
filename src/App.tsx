@@ -11,8 +11,6 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Loading } from "@/components/Loading";
 import { ModernEducationalDashboard } from '@/components/ModernEducationalDashboard';
 import Index from "./pages/Index";
-const ModernIndex = lazy(() => import("./pages/ModernIndex"));
-const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
 import Auth from "./pages/Auth";
 import Games from "./pages/Games";
 import GameMap from "./components/GameMap";
@@ -45,6 +43,10 @@ import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import DiagnosticTests from "./pages/DiagnosticTests";
 import ClinicalDashboard from "./pages/ClinicalDashboard";
 import NotFound from "./pages/NotFound";
+
+// Lazy loaded components
+const ModernIndex = lazy(() => import("./pages/ModernIndex"));
+const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
 
 const queryClient = new QueryClient();
 
