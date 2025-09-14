@@ -12,9 +12,7 @@ import { Loading } from "@/components/Loading";
 import { ModernEducationalDashboard } from '@/components/ModernEducationalDashboard';
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Games from "./pages/Games";
 import GameMap from "./components/GameMap";
-import Dashboard from "./pages/Dashboard";
 import Neuroplasticity from '@/pages/Neuroplasticity';
 import { DigitalNotebook } from '@/components/DigitalNotebook';
 import MindfulBreath from "./pages/games/MindfulBreath";
@@ -40,13 +38,15 @@ import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
 import AttentionSustained from "./pages/games/AttentionSustainedGame";
 import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
-import DiagnosticTests from "./pages/DiagnosticTests";
-import ClinicalDashboard from "./pages/ClinicalDashboard";
 import NotFound from "./pages/NotFound";
 
-// Lazy loaded components
+// Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Games = lazy(() => import("./pages/Games"));
+const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
+const DiagnosticTests = lazy(() => import("./pages/DiagnosticTests"));
 
 const queryClient = new QueryClient();
 
@@ -67,10 +67,18 @@ const App = () => (
               <Header />
               <main className="pb-20">
                 <Routes>
-                  <Route path="/" element={<ModernIndex />} />
+                  <Route path="/" element={
+                    <Suspense fallback={<Loading />}>
+                      <ModernIndex />
+                    </Suspense>
+                  } />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/game-map" element={<GameMap />} />
-                  <Route path="/games" element={<Games />} />
+                  <Route path="/games" element={
+                    <Suspense fallback={<Loading />}>
+                      <Games />
+                    </Suspense>
+                  } />
             <Route path="/neuroplasticity" element={<Neuroplasticity />} />
             <Route path="/learning-dashboard" element={
               <Suspense fallback={<Loading />}>
@@ -85,7 +93,11 @@ const App = () => (
             </div>
           } />
                   <Route path="/digital-notebook" element={<DigitalNotebook />} />
-                  <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
+                  <Route path="/diagnostic-tests" element={
+                    <Suspense fallback={<Loading />}>
+                      <DiagnosticTests />
+                    </Suspense>
+                  } />
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
                   <Route path="/games/caca-foco" element={<CacaFoco />} />
                   <Route path="/games/logica-rapida" element={<LogicaRapida />} />
@@ -109,8 +121,16 @@ const App = () => (
                   <Route path="/games/attention-sustained" element={<AttentionSustained />} />
                   <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibility />} />
                   <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
-                  <Route path="/clinical" element={<ClinicalDashboard />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/clinical" element={
+                    <Suspense fallback={<Loading />}>
+                      <ClinicalDashboard />
+                    </Suspense>
+                  } />
+                  <Route path="/dashboard" element={
+                    <Suspense fallback={<Loading />}>
+                      <Dashboard />
+                    </Suspense>
+                  } />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
