@@ -101,6 +101,39 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_notifications: {
+        Row: {
+          created_at: string
+          data: Json | null
+          id: string
+          message: string
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          message: string
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          id?: string
+          message?: string
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       admin_permissions: {
         Row: {
           expires_at: string | null
@@ -985,6 +1018,33 @@ export type Database = {
         }
         Relationships: []
       }
+      educator_students: {
+        Row: {
+          assigned_at: string
+          created_at: string
+          educator_id: string
+          id: string
+          notes: string | null
+          student_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          created_at?: string
+          educator_id: string
+          id?: string
+          notes?: string | null
+          student_id: string
+        }
+        Update: {
+          assigned_at?: string
+          created_at?: string
+          educator_id?: string
+          id?: string
+          notes?: string | null
+          student_id?: string
+        }
+        Relationships: []
+      }
       emergency_alerts: {
         Row: {
           ai_assessment: string | null
@@ -1450,46 +1510,58 @@ export type Database = {
       }
       learning_sessions: {
         Row: {
+          attention_metrics: Json | null
           completed: boolean
           completed_at: string | null
           created_at: string
+          error_patterns: Json | null
           game_type: string
           id: string
           improvements_noted: Json
           learning_indicators: Json
           level: number
           performance_data: Json
+          reaction_times: Json | null
           session_duration_seconds: number | null
+          stress_indicators: Json | null
           struggles_detected: Json
           trail_id: string
           user_id: string
         }
         Insert: {
+          attention_metrics?: Json | null
           completed?: boolean
           completed_at?: string | null
           created_at?: string
+          error_patterns?: Json | null
           game_type: string
           id?: string
           improvements_noted?: Json
           learning_indicators?: Json
           level?: number
           performance_data?: Json
+          reaction_times?: Json | null
           session_duration_seconds?: number | null
+          stress_indicators?: Json | null
           struggles_detected?: Json
           trail_id: string
           user_id: string
         }
         Update: {
+          attention_metrics?: Json | null
           completed?: boolean
           completed_at?: string | null
           created_at?: string
+          error_patterns?: Json | null
           game_type?: string
           id?: string
           improvements_noted?: Json
           learning_indicators?: Json
           level?: number
           performance_data?: Json
+          reaction_times?: Json | null
           session_duration_seconds?: number | null
+          stress_indicators?: Json | null
           struggles_detected?: Json
           trail_id?: string
           user_id?: string
@@ -3368,6 +3440,19 @@ export type Database = {
       get_current_user_role: {
         Args: Record<PropertyKey, never>
         Returns: Database["public"]["Enums"]["app_role"]
+      }
+      get_educator_students_stats: {
+        Args: { educator_uuid: string }
+        Returns: {
+          avg_accuracy: number
+          last_session_date: string
+          needs_attention: boolean
+          progress_trend: string
+          student_id: string
+          student_name: string
+          total_sessions: number
+          total_xp: number
+        }[]
       }
       get_public_doctor_profiles: {
         Args: Record<PropertyKey, never>

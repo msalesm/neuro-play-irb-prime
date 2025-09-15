@@ -47,6 +47,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Games = lazy(() => import("./pages/Games"));
 const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
 const DiagnosticTests = lazy(() => import("./pages/DiagnosticTests"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 const queryClient = new QueryClient();
 
@@ -124,6 +125,11 @@ const App = () => (
                   <Route path="/clinical" element={
                     <Suspense fallback={<Loading />}>
                       <ClinicalDashboard />
+                    </Suspense>
+                  } />
+                  <Route path="/admin" element={
+                    <Suspense fallback={<Loading />}>
+                      <AdminDashboard />
                     </Suspense>
                   } />
                   <Route path="/dashboard" element={

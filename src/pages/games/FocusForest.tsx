@@ -225,6 +225,43 @@ export default function FocusForest() {
 
       await saveGameSession(sessionData);
 
+      // Also save to educational system for learning analytics
+      try {
+        const { useEducationalSystem } = await import('@/hooks/useEducationalSystem');
+        const educationalSystem = useEducationalSystem();
+        
+        // Find or create attention trail
+        const attentionTrail = educationalSystem.getTrailByCategory('attention');
+        if (attentionTrail) {
+          await educationalSystem.recordLearningSession({
+            trail_id: attentionTrail.id,
+            game_type: 'focus_forest',
+            level: level + 1,
+            performance_data: {
+              accuracy: accuracy,
+              score: score,
+              hits: hits,
+              misses: misses,
+              consecutive_hits: maxConsecutiveHits,
+              difficulty: difficulty,
+              completion_time: Math.round(gameTime / 1000)
+            },
+            learning_indicators: {
+              attention_span: Math.round(gameTime / 1000),
+              focus_consistency: maxConsecutiveHits,
+              response_time_variance: calculateResponseTimeVariance(),
+              difficulty_adaptation: difficulty
+            },
+            struggles_detected: accuracy < 60 ? ['low_accuracy'] : [],
+            improvements_noted: maxConsecutiveHits > 5 ? ['good_focus'] : [],
+            session_duration_seconds: Math.round(gameTime / 1000),
+            completed: true
+          });
+        }
+      } catch (eduError) {
+        console.warn('Could not save to educational system:', eduError);
+      }
+
       toast({
         title: "🌳 Floresta cultivada!",
         description: `${treesGrown} árvores plantadas • ${accuracy.toFixed(1)}% precisão • Máximo ${maxConsecutiveHits} acertos consecutivos`,
@@ -239,6 +276,27 @@ export default function FocusForest() {
         variant: "destructive",
       });
     }
+  };
+
+  const calculateResponseTimeVariance = () => {
+    // Simple calculation based on hit sequence patterns
+    if (targetsHitSequence.length < 3) return 0;
+    
+    const hitTimes = targetsHitSequence.map((hit, index) => 
+      hit === 1 ? index * 100 : null
+    ).filter(time => time !== null);
+    
+    if (hitTimes.length < 2) return 0;
+    
+    const intervals = hitTimes.slice(1).map((time, index) => 
+      time - hitTimes[index]
+    );
+    
+    const avgInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
+    const variance = intervals.reduce((sum, interval) => 
+      sum + Math.pow(interval - avgInterval, 2), 0) / intervals.length;
+    
+    return Math.round(variance);
   };
 
   const accuracy = hits + misses > 0 ? (hits / (hits + misses) * 100) : 0;
