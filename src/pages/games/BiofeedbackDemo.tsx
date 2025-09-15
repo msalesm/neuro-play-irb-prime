@@ -252,23 +252,6 @@ function BiofeedbackDemoGame() {
                 </ul>
               </div>
             </div>
-                  <li>• Monitora padrões de erro (3+ erros em 10s)</li>
-                  <li>• Detecta cliques impulsivos (>3 por segundo)</li>
-                  <li>• Analisa tempo de resposta muito rápido (&lt;300ms)</li>
-                  <li>• Calcula energia emocional baseada no comportamento</li>
-                </ul>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-2">🧘‍♂️ Intervenção Automática</h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Ativa exercícios de respiração quando necessário</li>
-                  <li>• Padrões adaptativos baseados no nível de agitação</li>
-                  <li>• Reduz energia emocional após completar exercícios</li>
-                  <li>• Integra dados para educadores e análise</li>
-                </ul>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </main>

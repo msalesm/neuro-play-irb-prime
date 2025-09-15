@@ -33,7 +33,6 @@ import EmotionalWeather from "./pages/games/EmotionalWeather";
 import BalanceQuest from "./pages/games/BalanceQuest";
 import SensoryFlow from "./pages/games/SensoryFlow";
 import VisualSync from "./pages/games/VisualSync";
-const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
 const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
@@ -49,6 +48,7 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Games = lazy(() => import("./pages/Games"));
 const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
 const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
+const DiagnosticTests = lazy(() => import("./pages/DiagnosticTests"));
 
 const queryClient = new QueryClient();
 

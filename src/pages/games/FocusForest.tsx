@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useFocusForestStats } from "@/hooks/useFocusForestStats";
 import { useEducationalSystem } from "@/hooks/useEducationalSystem";
+import { withBiofeedback, useBiofeedbackIntegration } from '@/components/withBiofeedback';
 import { FocusForestStats } from "@/components/FocusForestStats";
 import { FocusForestAchievements } from "@/components/FocusForestAchievements";
 
@@ -39,7 +40,7 @@ const difficultyModifiers = {
   hard: { sizeMultiplier: 0.7, durationMultiplier: 0.8, name: 'Difícil' }
 };
 
-export default function FocusForest() {
+function FocusForestGame() {
   const { user } = useAuth();
   const { toast } = useToast();
   const { stats, achievements, loading, saveGameSession } = useFocusForestStats();
@@ -330,14 +331,7 @@ export default function FocusForest() {
         </Card>
       </div>
     );
-}
-
-// Export the biofeedback-enhanced version
-export default withBiofeedback(FocusForestGame, {
-  enableEnergyBar: true,
-  energyBarPosition: 'top-left',
-  autoTriggerBreathing: true,
-});
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-12">
@@ -594,3 +588,10 @@ export default withBiofeedback(FocusForestGame, {
     </div>
   );
 }
+
+// Export the biofeedback-enhanced version
+export default withBiofeedback(FocusForestGame, {
+  enableEnergyBar: true,
+  energyBarPosition: 'top-left',
+  autoTriggerBreathing: true,
+});
