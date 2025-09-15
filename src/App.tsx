@@ -33,6 +33,8 @@ import EmotionalWeather from "./pages/games/EmotionalWeather";
 import BalanceQuest from "./pages/games/BalanceQuest";
 import SensoryFlow from "./pages/games/SensoryFlow";
 import VisualSync from "./pages/games/VisualSync";
+const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
+const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
 import AttentionSustained from "./pages/games/AttentionSustainedGame";
@@ -46,8 +48,7 @@ const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Games = lazy(() => import("./pages/Games"));
 const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
-const DiagnosticTests = lazy(() => import("./pages/DiagnosticTests"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
 
 const queryClient = new QueryClient();
 
@@ -117,6 +118,8 @@ const App = () => (
                   <Route path="/games/balance-quest" element={<BalanceQuest />} />
                   <Route path="/games/sensory-flow" element={<SensoryFlow />} />
                   <Route path="/games/visual-sync" element={<VisualSync />} />
+                  <Route path="/games/biofeedback-demo" element={<BiofeedbackDemo />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/games/touch-mapper" element={<TouchMapper />} />
                   <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
                   <Route path="/games/attention-sustained" element={<AttentionSustained />} />

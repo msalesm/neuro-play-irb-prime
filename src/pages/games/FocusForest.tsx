@@ -44,12 +44,14 @@ export default function FocusForest() {
   const { toast } = useToast();
   const { stats, achievements, loading, saveGameSession } = useFocusForestStats();
   const { recordLearningSession, getTrailByCategory } = useEducationalSystem();
+  const biofeedback = useBiofeedbackIntegration();
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [level, setLevel] = useState(0);
   const [score, setScore] = useState(0);
   const [targets, setTargets] = useState<FocusTarget[]>([]);
   const [gameTime, setGameTime] = useState(0);
+  const [gameStartTime, setGameStartTime] = useState<number | null>(null);
   const [hits, setHits] = useState(0);
   const [misses, setMisses] = useState(0);
   const [treesGrown, setTreesGrown] = useState(0);
@@ -97,6 +99,15 @@ export default function FocusForest() {
             setMisses(m => m + 1);
             setTargetsHitSequence(prev => [...prev, 0]); // 0 = erro
             setConsecutiveHits(0); // Reset consecutive hits
+            
+            // Record missed target in biofeedback system  
+            const responseTime = gameStartTime ? Date.now() - gameStartTime : 0;
+            biofeedback.recordIncorrectAnswer(responseTime, { 
+              reason: 'timeout', 
+              level, 
+              difficulty 
+            });
+            
             return false;
           }
           return true;
@@ -184,6 +195,7 @@ export default function FocusForest() {
   const startGame = () => {
     setTargets([]);
     setIsPlaying(true);
+    setGameStartTime(Date.now());
     // Spawn initial target after a small delay to ensure game area is ready
     setTimeout(() => {
       spawnTarget();
@@ -318,7 +330,14 @@ export default function FocusForest() {
         </Card>
       </div>
     );
-  }
+}
+
+// Export the biofeedback-enhanced version
+export default withBiofeedback(FocusForestGame, {
+  enableEnergyBar: true,
+  energyBarPosition: 'top-left',
+  autoTriggerBreathing: true,
+});
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-12">
