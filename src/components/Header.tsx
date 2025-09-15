@@ -5,6 +5,7 @@ import { Brain, Gamepad2, Trophy, BarChart3, LogOut, Menu, X } from "lucide-reac
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import { AdminNavLink } from "@/components/AdminNavLink";
 
 export const Header = () => {
   const { user, signOut } = useAuth();
@@ -40,6 +41,7 @@ export const Header = () => {
           {/* Desktop Auth - Simplified */}
           <div className="flex items-center gap-4">
             <LanguageSelector />
+            <AdminNavLink />
             {user ? (
               <div className="flex items-center gap-3">
                 <span className="text-sm text-white/80 hidden md:block">

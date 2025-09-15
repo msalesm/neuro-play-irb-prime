@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 
+type ProgressTrend = 'excellent' | 'good' | 'average' | 'needs_improvement';
+type UserRole = 'admin' | 'moderator' | 'user' | 'educator';
+
 export interface StudentData {
   student_id: string;
   student_name: string;
@@ -10,7 +13,7 @@ export interface StudentData {
   total_xp: number;
   last_session_date: string | null;
   needs_attention: boolean;
-  progress_trend: 'excellent' | 'good' | 'average' | 'needs_improvement';
+  progress_trend: ProgressTrend;
 }
 
 export interface StudentDetail {
@@ -66,7 +69,7 @@ export function useAdminSystem() {
         .eq('user_id', user.id);
 
       if (roles) {
-        const userRoles = roles.map(r => r.role);
+        const userRoles = roles.map(r => r.role as UserRole);
         setIsAdmin(userRoles.includes('admin'));
         setIsEducator(userRoles.includes('admin') || userRoles.includes('educator'));
       }
@@ -86,7 +89,14 @@ export function useAdminSystem() {
         .rpc('get_educator_students_stats', { educator_uuid: user.id });
 
       if (studentsError) throw studentsError;
-      setStudents(studentsData || []);
+      
+      // Ensure correct typing for progress_trend
+      const typedStudentsData = (studentsData || []).map((student: any) => ({
+        ...student,
+        progress_trend: student.progress_trend as ProgressTrend
+      }));
+      
+      setStudents(typedStudentsData);
 
       // Fetch notifications
       const { data: notificationsData, error: notificationsError } = await supabase
@@ -147,7 +157,10 @@ export function useAdminSystem() {
       // Calculate performance metrics
       const totalXP = trails?.reduce((sum, trail) => sum + (trail.total_xp || 0), 0) || 0;
       const avgAccuracy = sessions?.length > 0 
-        ? sessions.reduce((sum, s) => sum + (s.performance_data?.accuracy || 0), 0) / sessions.length 
+        ? sessions.reduce((sum, s) => {
+            const performanceData = s.performance_data as any;
+            return sum + (performanceData?.accuracy || 0);
+          }, 0) / sessions.length 
         : 0;
       
       const categoryXP = trails?.reduce((acc, trail) => {
@@ -262,40 +275,58 @@ export function useAdminSystem() {
     if (!isAdmin) return [];
 
     try {
-      const { data, error } = await supabase
+      // Get basic user profiles first
+      const { data: profiles, error: profilesError } = await supabase
         .from('user_profiles')
-        .select(`
-          id,
-          name,
-          email,
-          created_at,
-          learning_trails!inner(total_xp, current_level),
-          learning_sessions!inner(performance_data, created_at)
-        `);
+        .select('id, name, email, created_at');
 
-      if (error) throw error;
+      if (profilesError) throw profilesError;
+      if (!profiles || !Array.isArray(profiles)) return [];
 
-      // Process data to match StudentData interface
-      const processedData: StudentData[] = data?.map(user => {
-        const sessions = user.learning_sessions || [];
-        const avgAccuracy = sessions.length > 0 
-          ? sessions.reduce((sum: number, s: any) => sum + (s.performance_data?.accuracy || 0), 0) / sessions.length 
+      // Get learning data for each user
+      const processedData: StudentData[] = [];
+      
+      for (const user of profiles) {
+        // Get learning trails
+        const { data: trails } = await supabase
+          .from('learning_trails')
+          .select('total_xp, current_level')
+          .eq('user_id', user.id);
+
+        // Get learning sessions
+        const { data: sessions } = await supabase
+          .from('learning_sessions')
+          .select('performance_data, created_at')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
+
+        const sessionsArray = sessions || [];
+        const trailsArray = trails || [];
+
+        const avgAccuracy = sessionsArray.length > 0 
+          ? sessionsArray.reduce((sum: number, s: any) => {
+              const performanceData = s.performance_data as any;
+              return sum + (performanceData?.accuracy || 0);
+            }, 0) / sessionsArray.length 
           : 0;
-        const totalXP = user.learning_trails?.reduce((sum: number, trail: any) => sum + (trail.total_xp || 0), 0) || 0;
 
-        return {
+        const totalXP = trailsArray.reduce((sum: number, trail: any) => sum + (trail.total_xp || 0), 0);
+
+        const progressTrend: ProgressTrend = avgAccuracy >= 80 ? 'excellent' : 
+                       avgAccuracy >= 70 ? 'good' : 
+                       avgAccuracy >= 60 ? 'average' : 'needs_improvement';
+
+        processedData.push({
           student_id: user.id,
           student_name: user.name || 'Sem nome',
-          total_sessions: sessions.length,
+          total_sessions: sessionsArray.length,
           avg_accuracy: Math.round(avgAccuracy),
           total_xp: totalXP,
-          last_session_date: sessions.length > 0 ? sessions[0].created_at : null,
+          last_session_date: sessionsArray.length > 0 ? sessionsArray[0].created_at : null,
           needs_attention: avgAccuracy < 60,
-          progress_trend: avgAccuracy >= 80 ? 'excellent' : 
-                         avgAccuracy >= 70 ? 'good' : 
-                         avgAccuracy >= 60 ? 'average' : 'needs_improvement'
-        };
-      }) || [];
+          progress_trend: progressTrend
+        });
+      }
 
       return processedData;
     } catch (error) {

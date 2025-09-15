@@ -3578,7 +3578,7 @@ export type Database = {
         | "modify_profiles"
         | "delete_profiles"
         | "full_admin_access"
-      app_role: "admin" | "moderator" | "user"
+      app_role: "admin" | "moderator" | "user" | "educator"
       clothing_category:
         | "dresses"
         | "tops"
@@ -3760,7 +3760,7 @@ export const Constants = {
         "delete_profiles",
         "full_admin_access",
       ],
-      app_role: ["admin", "moderator", "user"],
+      app_role: ["admin", "moderator", "user", "educator"],
       clothing_category: [
         "dresses",
         "tops",

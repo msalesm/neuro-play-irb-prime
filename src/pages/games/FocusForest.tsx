@@ -9,6 +9,7 @@ import { Play, Pause, RotateCcw, Trees, Star, Home, Target, Settings } from "luc
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useFocusForestStats } from "@/hooks/useFocusForestStats";
+import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 import { FocusForestStats } from "@/components/FocusForestStats";
 import { FocusForestAchievements } from "@/components/FocusForestAchievements";
 
@@ -42,6 +43,7 @@ export default function FocusForest() {
   const { user } = useAuth();
   const { toast } = useToast();
   const { stats, achievements, loading, saveGameSession } = useFocusForestStats();
+  const { recordLearningSession, getTrailByCategory } = useEducationalSystem();
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [level, setLevel] = useState(0);
@@ -226,14 +228,11 @@ export default function FocusForest() {
       await saveGameSession(sessionData);
 
       // Also save to educational system for learning analytics
-      try {
-        const { useEducationalSystem } = await import('@/hooks/useEducationalSystem');
-        const educationalSystem = useEducationalSystem();
-        
+      try {        
         // Find or create attention trail
-        const attentionTrail = educationalSystem.getTrailByCategory('attention');
+        const attentionTrail = getTrailByCategory('attention');
         if (attentionTrail) {
-          await educationalSystem.recordLearningSession({
+          await recordLearningSession({
             trail_id: attentionTrail.id,
             game_type: 'focus_forest',
             level: level + 1,

@@ -24,6 +24,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { LearningTrails } from '@/components/LearningTrails';
 import { OnboardingFlow } from '@/components/OnboardingFlow';
 import { LevelProgress } from '@/components/LevelProgress';
+import { AdminSystemDemo } from '@/components/AdminSystemDemo';
 import { supabase } from '@/integrations/supabase/client';
 
 export default function LearningDashboard() {
@@ -271,6 +272,11 @@ export default function LearningDashboard() {
 
           <TabsContent value="profile" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Admin System Demo */}
+              <div className="lg:col-span-2">
+                <AdminSystemDemo />
+              </div>
+              
               {/* Neurodiversity Profile */}
               <Card>
                 <CardHeader>
