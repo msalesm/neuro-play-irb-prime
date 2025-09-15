@@ -251,6 +251,47 @@ const PhonologicalProcessing = ({ className, animated }: { className?: string; a
   </svg>
 );
 
+// Focus Forest specific illustration
+const FocusForest = ({ className, animated }: { className?: string; animated?: boolean }) => (
+  <svg viewBox="0 0 120 120" className={className}>
+    <defs>
+      <linearGradient id="forestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#10B981" />
+        <stop offset="100%" stopColor="#059669" />
+      </linearGradient>
+      <radialGradient id="targetGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stopColor="#FFD93D" />
+        <stop offset="50%" stopColor="#FF6B6B" />
+        <stop offset="100%" stopColor="#8B5CF6" />
+      </radialGradient>
+    </defs>
+    
+    {/* Trees */}
+    <path d="M25,90 L25,70 L20,60 L15,70 L20,80 L30,80 L35,70 L30,60 L25,70" fill="url(#forestGrad)" />
+    <path d="M75,90 L75,70 L70,55 L65,65 L70,75 L80,75 L85,65 L80,55 L75,70" fill="url(#forestGrad)" />
+    <path d="M95,95 L95,80 L90,70 L85,80 L90,85 L100,85 L105,80 L100,70 L95,80" fill="url(#forestGrad)" />
+    
+    {/* Tree trunks */}
+    <rect x="22" y="80" width="6" height="15" fill="#8B4513" />
+    <rect x="72" y="75" width="6" height="20" fill="#8B4513" />
+    <rect x="92" y="85" width="6" height="15" fill="#8B4513" />
+    
+    {/* Target circles */}
+    <circle cx="60" cy="45" r="18" fill="none" stroke="url(#targetGrad)" strokeWidth="2" className={animated ? "animate-pulse" : ""} />
+    <circle cx="60" cy="45" r="12" fill="none" stroke="url(#targetGrad)" strokeWidth="2" />
+    <circle cx="60" cy="45" r="6" fill="url(#targetGrad)" opacity="0.7" className={animated ? "animate-ping" : ""} />
+    
+    {/* Biofeedback energy indicator */}
+    <path d="M40,25 Q50,15 60,25 Q70,15 80,25" stroke="#4ECDC4" strokeWidth="3" fill="none" className={animated ? "animate-pulse animation-delay-200" : ""} />
+    <circle cx="50" cy="20" r="2" fill="#4ECDC4" className={animated ? "animate-bounce" : ""} />
+    <circle cx="70" cy="20" r="2" fill="#4ECDC4" className={animated ? "animate-bounce animation-delay-300" : ""} />
+    
+    {/* Focus indicators */}
+    <circle cx="45" cy="60" r="3" fill="#FFD93D" opacity="0.8" className={animated ? "animate-ping animation-delay-100" : ""} />
+    <circle cx="75" cy="35" r="3" fill="#FF6B6B" opacity="0.8" className={animated ? "animate-ping animation-delay-400" : ""} />
+  </svg>
+);
+
 const illustrations = {
   'memoria-colorida': MemoriaColorida,
   'caca-foco': CacaFoco,
@@ -264,7 +305,7 @@ const illustrations = {
   'attention-sustained': AttentionSustained,
   'cognitive-flexibility': CognitiveFlexibility,
   'phonological-processing': PhonologicalProcessing,
-  'focus-forest': CacaFoco, // fallback
+  'focus-forest': FocusForest,
 };
 
 export function GameIllustration({ gameId, className = "w-16 h-16", animated = false }: GameIllustrationProps) {

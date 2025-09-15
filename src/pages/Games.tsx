@@ -144,6 +144,21 @@ const gamesList = [
       unlocked: true,
       type: 'basic'
     },
+    {
+      id: 'focus-forest',
+      title: 'Floresta do Foco',
+      category: 'Atenção & Biofeedback',
+      description: 'Desenvolva concentração e controle emocional através de um jogo de tiro ao alvo com sistema de biofeedback integrado.',
+      features: ['Biofeedback emocional', 'Exercícios de respiração', 'Progressão adaptativa', 'Análise comportamental'],
+      ageRange: '8-18 anos',
+      duration: '10-20 min',
+      players: '1 jogador',
+      status: 'Disponível',
+      color: 'bg-emerald-100 text-emerald-800',
+      gradient: 'from-emerald-400 to-green-600',
+      unlocked: true,
+      type: 'basic'
+    },
   
   // Jogos Diagnósticos
   {

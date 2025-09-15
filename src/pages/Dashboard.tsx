@@ -46,13 +46,30 @@ export default function Dashboard() {
 
       if (error) throw error;
       
-      setStats(data || {
-        total_stars: 0,
-        level: 1,
-        experience_points: 0,
-        current_streak: 0,
-        longest_streak: 0,
-      });
+      if (!data) {
+        // Criar registro inicial para o usuário
+        const initialStats = {
+          user_id: user?.id,
+          total_stars: 0,
+          level: 1,
+          experience_points: 0,
+          current_streak: 0,
+          longest_streak: 0,
+          last_activity_date: null
+        };
+
+        const { error: insertError } = await supabase
+          .from('user_gamification')
+          .insert(initialStats);
+
+        if (insertError) {
+          console.error('Error creating initial user stats:', insertError);
+        }
+
+        setStats(initialStats);
+      } else {
+        setStats(data);
+      }
     } catch (error) {
       console.error('Error fetching user stats:', error);
       setStats({
