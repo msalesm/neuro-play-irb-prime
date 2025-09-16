@@ -39,6 +39,8 @@ import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
 import AttentionSustained from "./pages/games/AttentionSustainedGame";
 import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
+import MemoryWorkload from "./pages/games/MemoryWorkload";
+import TheoryOfMind from "./pages/games/TheoryOfMind";
 import NotFound from "./pages/NotFound";
 
 // Lazy loaded components - Critical path optimization
@@ -125,6 +127,8 @@ const App = () => (
                   <Route path="/games/attention-sustained" element={<AttentionSustained />} />
                   <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibility />} />
                   <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
+                  <Route path="/games/memory-workload" element={<MemoryWorkload />} />
+                  <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
                   <Route path="/clinical" element={
                     <Suspense fallback={<Loading />}>
                       <ClinicalDashboard />

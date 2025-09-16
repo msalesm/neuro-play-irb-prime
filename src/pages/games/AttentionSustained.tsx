@@ -121,21 +121,24 @@ export const AttentionSustained: React.FC = () => {
     // Save behavioral metrics
     if (user?.id) {
       await saveBehavioralMetric({
-        gameType: 'attention_sustained',
+        metricType: 'sustained_attention',
+        category: 'attention',
+        value: attentionSpan / 100,
+        gameId: 'attention_sustained',
         sessionId: `attention-${Date.now()}`,
-        metrics: {
-          attentionSpan: attentionSpan / 100, // Normalize to 0-1
+        contextData: {
+          attentionSpan: attentionSpan / 100,
           vigilanceDecrement: vigilanceDecrement / 100,
           reactionTime: avgReactionTime,
           inhibitoryControl: 1 - (finalStats.falseAlarms / Math.max(finalStats.totalTrials, 1)),
-          workingMemory: finalStats.correctResponses / Math.max(finalStats.totalTrials, 1)
-        },
-        riskIndicators: {
-          tdahRisk: calculateTDAHRisk(finalStats, avgReactionTime, vigilanceDecrement),
-          teaRisk: calculateTEARisk(finalStats),
-          dislexiaRisk: 0.1 // Low relevance for this task
-        },
-        sessionDuration: sessionDuration / 1000
+          workingMemory: finalStats.correctResponses / Math.max(finalStats.totalTrials, 1),
+          riskIndicators: {
+            tdahRisk: calculateTDAHRisk(finalStats, avgReactionTime, vigilanceDecrement),
+            teaRisk: calculateTEARisk(finalStats),
+            dislexiaRisk: 0.1
+          },
+          sessionDuration: sessionDuration / 1000
+        }
       });
     }
   }, [gameTimer, taskTimer, startTime, reactionTimes, stats, user?.id, saveBehavioralMetric]);

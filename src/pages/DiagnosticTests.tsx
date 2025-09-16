@@ -7,6 +7,38 @@ import { useAuth } from "@/hooks/useAuth";
 
 const diagnosticTests = [
   {
+    id: 'memory-workload',
+    title: "Teste de Memória de Trabalho",
+    category: "Diagnóstico • TDAH",
+    description: "Avalie sua capacidade de reter e manipular informações na memória de trabalho.",
+    features: ["Sequência numérica", "Span de dígitos", "Manipulação mental", "Capacidade limitada"],
+    ageRange: "6-18 anos",
+    duration: "10-15 min",
+    players: "1 jogador",
+    status: "Diagnóstico",
+    color: "bg-purple-100 text-purple-800",
+    gradient: "from-purple-400 to-purple-600",
+    unlocked: true,
+    condition: "TDAH",
+    scientificBasis: "Teste de Span de Dígitos (WISC-V)"
+  },
+  {
+    id: 'theory-of-mind',
+    title: "Teoria da Mente",
+    category: "Diagnóstico • TEA",
+    description: "Teste sua capacidade de compreender pensamentos e sentimentos dos outros.",
+    features: ["Falsa crença", "Perspectiva visual", "Compreensão social", "Empatia cognitiva"],
+    ageRange: "4-16 anos",
+    duration: "15-20 min",
+    players: "1 jogador",
+    status: "Diagnóstico",
+    color: "bg-cyan-100 text-cyan-800",
+    gradient: "from-cyan-400 to-cyan-600",
+    unlocked: true,
+    condition: "TEA",
+    scientificBasis: "Teste de Sally-Anne e variações"
+  },
+  {
     id: 'attention-sustained',
     title: "Teste de Atenção Sustentada",
     category: "Diagnóstico • TDAH",

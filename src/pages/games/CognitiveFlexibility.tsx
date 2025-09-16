@@ -241,20 +241,23 @@ export const CognitiveFlexibility: React.FC = () => {
     // Save behavioral metrics
     if (user?.id) {
       await saveBehavioralMetric({
-        gameType: 'cognitive_flexibility',
+        metricType: 'cognitive_flexibility',
+        category: 'cognitive',
+        value: flexibilityScore / 100,
+        gameId: 'cognitive_flexibility',
         sessionId: `flexibility-${Date.now()}`,
-        metrics: {
+        contextData: {
           cognitiveFlexibility: flexibilityScore / 100,
           workingMemory: finalStats.correctResponses / finalStats.totalTrials,
           inhibitoryControl: 1 - (finalStats.perseverativeErrors / Math.max(finalStats.totalTrials, 1)),
-          reactionTime: avgReactionTime
-        },
-        riskIndicators: {
-          teaRisk: calculateTEARisk(finalStats),
-          tdahRisk: calculateTDAHRisk(finalStats),
-          dislexiaRisk: calculateDislexiaRisk(finalStats)
-        },
-        sessionDuration: (Date.now() - trialStartTime) / 1000
+          reactionTime: avgReactionTime,
+          riskIndicators: {
+            teaRisk: calculateTEARisk(finalStats),
+            tdahRisk: calculateTDAHRisk(finalStats),
+            dislexiaRisk: calculateDislexiaRisk(finalStats)
+          },
+          sessionDuration: (Date.now() - trialStartTime) / 1000
+        }
       });
     }
   }, [reactionTimes, stats, user?.id, saveBehavioralMetric, trialStartTime]);

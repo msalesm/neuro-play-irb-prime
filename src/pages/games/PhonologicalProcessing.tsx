@@ -282,20 +282,23 @@ export const PhonologicalProcessing: React.FC = () => {
     // Save behavioral metrics
     if (user?.id) {
       await saveBehavioralMetric({
-        gameType: 'phonological_processing',
+        metricType: 'phonological_processing',
+        category: 'language',
+        value: phonologicalScore / 100,
+        gameId: 'phonological_processing',
         sessionId: `phonological-${Date.now()}`,
-        metrics: {
+        contextData: {
           phonologicalProcessing: phonologicalScore / 100,
           sequentialProcessing: (segmentationAccuracy + blendingAccuracy) / 200,
-          rapidNaming: 1 - (avgReactionTime / 5000), // Normalized reaction time
-          workingMemory: manipulationAccuracy / 100
-        },
-        riskIndicators: {
-          dislexiaRisk: calculateDislexiaRisk(finalStats),
-          tdahRisk: calculateTDAHRisk(finalStats),
-          teaRisk: 0.1 // Low relevance for phonological tasks
-        },
-        sessionDuration: (Date.now() - taskStartTime) / 1000
+          rapidNaming: 1 - (avgReactionTime / 5000),
+          workingMemory: manipulationAccuracy / 100,
+          riskIndicators: {
+            dislexiaRisk: calculateDislexiaRisk(finalStats),
+            tdahRisk: calculateTDAHRisk(finalStats),
+            teaRisk: 0.1
+          },
+          sessionDuration: (Date.now() - taskStartTime) / 1000
+        }
       });
     }
   }, [reactionTimes, taskResults, stats, user?.id, saveBehavioralMetric, taskStartTime]);
