@@ -467,6 +467,45 @@ export type Database = {
         }
         Relationships: []
       }
+      behavioral_metrics: {
+        Row: {
+          category: string
+          context_data: Json | null
+          created_at: string
+          game_id: string | null
+          id: string
+          metric_type: string
+          session_id: string | null
+          timestamp: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          category: string
+          context_data?: Json | null
+          created_at?: string
+          game_id?: string | null
+          id?: string
+          metric_type: string
+          session_id?: string | null
+          timestamp?: string
+          user_id: string
+          value: number
+        }
+        Update: {
+          category?: string
+          context_data?: Json | null
+          created_at?: string
+          game_id?: string | null
+          id?: string
+          metric_type?: string
+          session_id?: string | null
+          timestamp?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
       behavioral_patterns: {
         Row: {
           confidence: number
@@ -888,6 +927,48 @@ export type Database = {
           completed_at?: string
           id?: string
           stars_earned?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      diagnostic_sessions: {
+        Row: {
+          behavioral_indicators: Json | null
+          completed_at: string | null
+          completion_status: string
+          created_at: string
+          duration_seconds: number | null
+          id: string
+          performance_metrics: Json | null
+          session_data: Json
+          started_at: string
+          test_type: string
+          user_id: string
+        }
+        Insert: {
+          behavioral_indicators?: Json | null
+          completed_at?: string | null
+          completion_status?: string
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          performance_metrics?: Json | null
+          session_data?: Json
+          started_at?: string
+          test_type: string
+          user_id: string
+        }
+        Update: {
+          behavioral_indicators?: Json | null
+          completed_at?: string | null
+          completion_status?: string
+          created_at?: string
+          duration_seconds?: number | null
+          id?: string
+          performance_metrics?: Json | null
+          session_data?: Json
+          started_at?: string
+          test_type?: string
           user_id?: string
         }
         Relationships: []

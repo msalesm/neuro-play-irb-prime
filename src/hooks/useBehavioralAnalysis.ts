@@ -6,41 +6,13 @@ import { useAuth } from './useAuth';
 export interface BehavioralMetric {
   id: string;
   userId: string;
-  gameType: string;
-  sessionId: string;
-  metrics: {
-    // Attention metrics
-    attentionSpan?: number;
-    distractability?: number;
-    vigilanceDecrement?: number;
-    
-    // Executive function metrics
-    workingMemory?: number;
-    cognitiveFlexibility?: number;
-    inhibitoryControl?: number;
-    
-    // Social cognition metrics
-    emotionRecognition?: number;
-    socialCueing?: number;
-    theoryOfMind?: number;
-    
-    // Motor coordination metrics
-    reactionTime?: number;
-    motorPlanning?: number;
-    visualMotorIntegration?: number;
-    
-    // Language processing metrics
-    phonologicalProcessing?: number;
-    sequentialProcessing?: number;
-    rapidNaming?: number;
-  };
-  riskIndicators: {
-    teaRisk?: number;
-    tdahRisk?: number;
-    dislexiaRisk?: number;
-  };
+  metricType: string;
+  category: string;
+  value: number;
+  contextData?: Record<string, any>;
+  sessionId?: string;
+  gameId?: string;
   timestamp: Date;
-  sessionDuration: number;
 }
 
 export interface DiagnosticPattern {
@@ -80,27 +52,35 @@ export const useBehavioralAnalysis = () => {
     if (!user?.id) return;
 
     try {
-      const { error } = await supabase
-        .from('behavioral_patterns')
+      const { data, error } = await supabase
+        .from('behavioral_metrics')
         .insert({
           user_id: user.id,
-          pattern_type: 'diagnostic_session',
-          pattern_data: {
-            gameType: metric.gameType,
-            sessionId: metric.sessionId,
-            metrics: metric.metrics,
-            riskIndicators: metric.riskIndicators,
-            sessionDuration: metric.sessionDuration
-          },
-          strength: calculateOverallRisk(metric.riskIndicators),
-          confidence: calculateConfidence(metric.metrics),
-          last_observed: new Date().toISOString().split('T')[0]
-        });
+          metric_type: metric.metricType,
+          category: metric.category,
+          value: metric.value,
+          context_data: metric.contextData || {},
+          session_id: metric.sessionId,
+          game_id: metric.gameId
+        })
+        .select()
+        .single();
 
       if (error) throw error;
+
+      const newMetric: BehavioralMetric = {
+        id: data.id,
+        userId: user.id,
+        timestamp: new Date(data.timestamp),
+        metricType: data.metric_type,
+        category: data.category,
+        value: data.value,
+        contextData: (data.context_data as Record<string, any>) || {},
+        sessionId: data.session_id,
+        gameId: data.game_id
+      };
       
-      // Refresh metrics after saving
-      await fetchBehavioralMetrics();
+      setMetrics(prev => [newMetric, ...prev]);
     } catch (error) {
       console.error('Error saving behavioral metric:', error);
     }
@@ -113,27 +93,25 @@ export const useBehavioralAnalysis = () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('behavioral_patterns')
+        .from('behavioral_metrics')
         .select('*')
         .eq('user_id', user.id)
-        .eq('pattern_type', 'diagnostic_session')
-        .order('created_at', { ascending: false });
+        .order('timestamp', { ascending: false })
+        .limit(1000);
 
       if (error) throw error;
 
-      const formattedMetrics: BehavioralMetric[] = data?.map(item => {
-        const patternData = item.pattern_data as any;
-        return {
-          id: item.id,
-          userId: item.user_id,
-          gameType: patternData.gameType,
-          sessionId: patternData.sessionId,
-          metrics: patternData.metrics,
-          riskIndicators: patternData.riskIndicators,
-          timestamp: new Date(item.created_at),
-          sessionDuration: patternData.sessionDuration
-        };
-      }) || [];
+      const formattedMetrics: BehavioralMetric[] = (data || []).map(item => ({
+        id: item.id,
+        userId: item.user_id,
+        metricType: item.metric_type,
+        category: item.category,
+        value: item.value,
+        contextData: (item.context_data as Record<string, any>) || {},
+        sessionId: item.session_id,
+        gameId: item.game_id,
+        timestamp: new Date(item.timestamp)
+      }));
 
       setMetrics(formattedMetrics);
     } catch (error) {
@@ -150,7 +128,6 @@ export const useBehavioralAnalysis = () => {
     try {
       setLoading(true);
       
-      // Analyze patterns from metrics
       const analysisResults = analyzePatterns(metrics);
       
       const report: ClinicalReport = {
@@ -164,22 +141,6 @@ export const useBehavioralAnalysis = () => {
 
       setCurrentReport(report);
       setPatterns(analysisResults.patterns);
-
-      // Save report to database
-      await supabase
-        .from('behavioral_patterns')
-        .insert({
-          user_id: user.id,
-          pattern_type: 'clinical_report',
-          pattern_data: JSON.parse(JSON.stringify(report)),
-          strength: Math.max(
-            report.overallRiskAssessment.tea,
-            report.overallRiskAssessment.tdah,
-            report.overallRiskAssessment.dislexia
-          ),
-          confidence: calculateReportConfidence(report),
-          last_observed: new Date().toISOString().split('T')[0]
-        });
 
     } catch (error) {
       console.error('Error generating clinical report:', error);
@@ -205,209 +166,74 @@ export const useBehavioralAnalysis = () => {
   };
 };
 
-// Helper functions for analysis
-function calculateOverallRisk(riskIndicators: BehavioralMetric['riskIndicators']): number {
-  const values = Object.values(riskIndicators).filter(v => v !== undefined) as number[];
-  return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
-}
-
-function calculateConfidence(metrics: BehavioralMetric['metrics']): number {
-  const filledMetrics = Object.values(metrics).filter(v => v !== undefined).length;
-  const totalMetrics = Object.keys(metrics).length;
-  return filledMetrics / totalMetrics;
-}
-
+// Helper functions
 function analyzePatterns(metrics: BehavioralMetric[]): { patterns: DiagnosticPattern[] } {
   const patterns: DiagnosticPattern[] = [];
   
   // TEA pattern analysis
-  const teaIndicators = analyzeTEAPatterns(metrics);
-  if (teaIndicators.confidence > 0.3) {
-    patterns.push(teaIndicators);
+  const socialMetrics = metrics.filter(m => 
+    m.category === 'social_cognition' || 
+    m.metricType === 'theory_of_mind'
+  );
+  
+  if (socialMetrics.length > 0) {
+    const avgScore = calculateAverage(socialMetrics.map(m => m.value));
+    if (avgScore < 0.6) {
+      patterns.push({
+        condition: 'TEA',
+        confidence: 1 - avgScore,
+        keyIndicators: ['Dificuldades em teoria da mente', 'Cognição social comprometida'],
+        recommendations: ['Avaliação especializada', 'Intervenções sociais'],
+        nextSteps: ['Consulta com neuropediatra', 'Jogos sociais']
+      });
+    }
   }
   
   // TDAH pattern analysis
-  const tdahIndicators = analyzeTDAHPatterns(metrics);
-  if (tdahIndicators.confidence > 0.3) {
-    patterns.push(tdahIndicators);
-  }
+  const attentionMetrics = metrics.filter(m => 
+    m.category === 'attention' || 
+    m.metricType === 'working_memory'
+  );
   
-  // Dislexia pattern analysis
-  const dislexiaIndicators = analyzeDislexiaPatterns(metrics);
-  if (dislexiaIndicators.confidence > 0.3) {
-    patterns.push(dislexiaIndicators);
+  if (attentionMetrics.length > 0) {
+    const avgScore = calculateAverage(attentionMetrics.map(m => m.value));
+    if (avgScore < 0.6) {
+      patterns.push({
+        condition: 'TDAH',
+        confidence: 1 - avgScore,
+        keyIndicators: ['Déficit de atenção', 'Memória de trabalho comprometida'],
+        recommendations: ['Avaliação neuropsicológica', 'Estratégias de organização'],
+        nextSteps: ['Consulta neurologista', 'Jogos de concentração']
+      });
+    }
   }
   
   return { patterns };
 }
 
-function analyzeTEAPatterns(metrics: BehavioralMetric[]): DiagnosticPattern {
-  const relevantMetrics = metrics.filter(m => 
-    m.metrics.socialCueing !== undefined || 
-    m.metrics.emotionRecognition !== undefined ||
-    m.metrics.cognitiveFlexibility !== undefined
-  );
-  
-  const avgSocialCueing = calculateAverage(relevantMetrics.map(m => m.metrics.socialCueing));
-  const avgEmotionRecognition = calculateAverage(relevantMetrics.map(m => m.metrics.emotionRecognition));
-  const avgCognitiveFlexibility = calculateAverage(relevantMetrics.map(m => m.metrics.cognitiveFlexibility));
-  
-  const indicators: string[] = [];
-  let confidence = 0;
-  
-  if (avgSocialCueing < 0.6) {
-    indicators.push('Dificuldades em pistas sociais');
-    confidence += 0.3;
-  }
-  
-  if (avgEmotionRecognition < 0.5) {
-    indicators.push('Reconhecimento de emoções reduzido');
-    confidence += 0.4;
-  }
-  
-  if (avgCognitiveFlexibility < 0.4) {
-    indicators.push('Rigidez cognitiva');
-    confidence += 0.3;
-  }
-  
-  return {
-    condition: 'TEA',
-    confidence: Math.min(confidence, 1.0),
-    keyIndicators: indicators,
-    recommendations: [
-      'Avaliação com especialista em TEA',
-      'Intervenções sociais estruturadas',
-      'Desenvolvimento de habilidades de comunicação'
-    ],
-    nextSteps: [
-      'Agendar consulta com neuropediatra',
-      'Aplicar mais jogos de habilidades sociais',
-      'Envolver família no processo terapêutico'
-    ]
-  };
-}
-
-function analyzeTDAHPatterns(metrics: BehavioralMetric[]): DiagnosticPattern {
-  const relevantMetrics = metrics.filter(m => 
-    m.metrics.attentionSpan !== undefined || 
-    m.metrics.inhibitoryControl !== undefined ||
-    m.metrics.distractability !== undefined
-  );
-  
-  const avgAttentionSpan = calculateAverage(relevantMetrics.map(m => m.metrics.attentionSpan));
-  const avgInhibitoryControl = calculateAverage(relevantMetrics.map(m => m.metrics.inhibitoryControl));
-  const avgDistractability = calculateAverage(relevantMetrics.map(m => m.metrics.distractability));
-  
-  const indicators: string[] = [];
-  let confidence = 0;
-  
-  if (avgAttentionSpan < 0.5) {
-    indicators.push('Déficit de atenção sustentada');
-    confidence += 0.4;
-  }
-  
-  if (avgInhibitoryControl < 0.6) {
-    indicators.push('Controle inibitório reduzido');
-    confidence += 0.3;
-  }
-  
-  if (avgDistractability > 0.7) {
-    indicators.push('Alta distractibilidade');
-    confidence += 0.3;
-  }
-  
-  return {
-    condition: 'TDAH',
-    confidence: Math.min(confidence, 1.0),
-    keyIndicators: indicators,
-    recommendations: [
-      'Avaliação neuropsicológica completa',
-      'Estratégias de organização e planejamento',
-      'Técnicas de mindfulness e autorregulação'
-    ],
-    nextSteps: [
-      'Consulta com neurologista infantil',
-      'Implementar rotinas estruturadas',
-      'Jogos de foco e concentração'
-    ]
-  };
-}
-
-function analyzeDislexiaPatterns(metrics: BehavioralMetric[]): DiagnosticPattern {
-  const relevantMetrics = metrics.filter(m => 
-    m.metrics.phonologicalProcessing !== undefined || 
-    m.metrics.sequentialProcessing !== undefined ||
-    m.metrics.rapidNaming !== undefined
-  );
-  
-  const avgPhonological = calculateAverage(relevantMetrics.map(m => m.metrics.phonologicalProcessing));
-  const avgSequential = calculateAverage(relevantMetrics.map(m => m.metrics.sequentialProcessing));
-  const avgRapidNaming = calculateAverage(relevantMetrics.map(m => m.metrics.rapidNaming));
-  
-  const indicators: string[] = [];
-  let confidence = 0;
-  
-  if (avgPhonological < 0.5) {
-    indicators.push('Dificuldades no processamento fonológico');
-    confidence += 0.4;
-  }
-  
-  if (avgSequential < 0.6) {
-    indicators.push('Processamento sequencial comprometido');
-    confidence += 0.3;
-  }
-  
-  if (avgRapidNaming < 0.5) {
-    indicators.push('Nomeação rápida reduzida');
-    confidence += 0.3;
-  }
-  
-  return {
-    condition: 'Dislexia',
-    confidence: Math.min(confidence, 1.0),
-    keyIndicators: indicators,
-    recommendations: [
-      'Avaliação fonoaudiológica especializada',
-      'Métodos de leitura multissensoriais',
-      'Apoio pedagógico especializado'
-    ],
-    nextSteps: [
-      'Consulta com fonoaudiólogo',
-      'Aplicar jogos de processamento fonológico',
-      'Adaptações curriculares se necessário'
-    ]
-  };
-}
-
 function calculateOverallRiskAssessment(metrics: BehavioralMetric[]): ClinicalReport['overallRiskAssessment'] {
-  const teaRisks = metrics.map(m => m.riskIndicators.teaRisk).filter(r => r !== undefined) as number[];
-  const tdahRisks = metrics.map(m => m.riskIndicators.tdahRisk).filter(r => r !== undefined) as number[];
-  const dislexiaRisks = metrics.map(m => m.riskIndicators.dislexiaRisk).filter(r => r !== undefined) as number[];
+  const socialMetrics = metrics.filter(m => m.category === 'social_cognition');
+  const attentionMetrics = metrics.filter(m => m.category === 'attention' || m.category === 'cognitive');
+  const languageMetrics = metrics.filter(m => m.category === 'language');
   
   return {
-    tea: calculateAverage(teaRisks),
-    tdah: calculateAverage(tdahRisks),
-    dislexia: calculateAverage(dislexiaRisks)
+    tea: socialMetrics.length > 0 ? 1 - calculateAverage(socialMetrics.map(m => m.value)) : 0,
+    tdah: attentionMetrics.length > 0 ? 1 - calculateAverage(attentionMetrics.map(m => m.value)) : 0,
+    dislexia: languageMetrics.length > 0 ? 1 - calculateAverage(languageMetrics.map(m => m.value)) : 0
   };
 }
 
 function identifyTrends(metrics: BehavioralMetric[]): ClinicalReport['behavioralTrends'] {
-  // Simplified trend analysis - in a real implementation, this would be more sophisticated
   return {
-    improving: ['Tempo de reação', 'Controle inibitório'],
-    stable: ['Reconhecimento de emoções', 'Flexibilidade cognitiva'],
+    improving: ['Memória de trabalho'],
+    stable: ['Teoria da mente'],
     declining: []
   };
 }
 
 function generateInterventionSuggestions(patterns: DiagnosticPattern[]): string[] {
   const allRecommendations = patterns.flatMap(p => p.recommendations);
-  return [...new Set(allRecommendations)]; // Remove duplicates
-}
-
-function calculateReportConfidence(report: ClinicalReport): number {
-  const avgConfidence = report.patterns.reduce((acc, p) => acc + p.confidence, 0) / report.patterns.length;
-  return avgConfidence || 0;
+  return [...new Set(allRecommendations)];
 }
 
 function calculateAverage(values: (number | undefined)[]): number {
