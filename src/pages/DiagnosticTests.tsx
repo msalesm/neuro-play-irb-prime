@@ -85,6 +85,22 @@ const diagnosticTests = [
     unlocked: true,
     condition: "Dislexia",
     scientificBasis: "Teste de Consciência Fonológica"
+  },
+  {
+    id: 'executive-processing',
+    title: "Processamento Executivo",
+    category: "Diagnóstico • TDAH/TEA",
+    description: "Avalia funções executivas através do teste Torre de Londres. Identifica dificuldades de planejamento e organização.",
+    features: ["Planejamento", "Organização", "Controle inibitório", "Flexibilidade mental"],
+    ageRange: "8-18 anos",
+    duration: "12-18 min",
+    players: "1 jogador",
+    status: "Diagnóstico",
+    color: "bg-purple-100 text-purple-800",
+    gradient: "from-purple-400 to-purple-600",
+    unlocked: true,
+    condition: "TDAH/TEA",
+    scientificBasis: "Torre de Londres - Teste clássico de funções executivas"
   }
 ];
 

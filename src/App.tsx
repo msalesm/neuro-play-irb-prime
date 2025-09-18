@@ -41,6 +41,10 @@ import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import MemoryWorkload from "./pages/games/MemoryWorkload";
 import TheoryOfMind from "./pages/games/TheoryOfMind";
+import ExecutiveProcessing from "./pages/games/ExecutiveProcessing";
+import ExecutiveProcessingGame from "./pages/games/ExecutiveProcessingGame";
+import EmotionLab from "./pages/games/EmotionLab";
+import SpatialArchitect from "./pages/games/SpatialArchitect";
 import NotFound from "./pages/NotFound";
 
 // Lazy loaded components - Critical path optimization
@@ -124,11 +128,20 @@ const App = () => (
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/games/touch-mapper" element={<TouchMapper />} />
                   <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
-                  <Route path="/games/attention-sustained" element={<AttentionSustained />} />
+          <Route path="/games/executive-processing" element={<ExecutiveProcessing />} />
+          <Route path="/games/executive-processing-game" element={<ExecutiveProcessingGame />} />
+          <Route path="/games/emotion-lab" element={<EmotionLab />} />
+          <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
+          <Route path="/games/attention-sustained" element={<AttentionSustained />} />
                   <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibility />} />
                   <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
                   <Route path="/games/memory-workload" element={<MemoryWorkload />} />
                   <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
+                  <Route path="/games/executive-processing" element={<ExecutiveProcessing />} />
+                  <Route path="/games/executive-processing-game" element={<ExecutiveProcessingGame />} />
+                  <Route path="/games/emotion-lab" element={<EmotionLab />} />
+                  <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
+                  <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
                   <Route path="/clinical" element={
                     <Suspense fallback={<Loading />}>
                       <ClinicalDashboard />

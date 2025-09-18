@@ -205,6 +205,36 @@ const gamesList = [
     gradient: "from-teal-400 to-teal-600",
     unlocked: true,
     type: "diagnostic"
+  },
+  {
+    id: 'emotion-lab',
+    title: "Laboratório das Emoções",
+    category: "Regulação Emocional & Social",
+    description: "Desenvolva reconhecimento e regulação emocional através de cenários interativos e exercícios de inteligência emocional.",
+    features: ["Reconhecimento facial", "Regulação emocional", "Situações sociais", "Inteligência emocional"],
+    ageRange: "6-16 anos",
+    duration: "10-20 min",
+    players: "1 jogador",
+    status: "Disponível",
+    color: "bg-pink-100 text-pink-800",
+    gradient: "from-pink-400 to-purple-600",
+    unlocked: true,
+    type: "basic"
+  },
+  {
+    id: 'spatial-architect',
+    title: "Arquiteto Espacial",
+    category: "Habilidades Visuoespaciais & Planejamento",
+    description: "Construa estruturas 3D, resolva quebra-cabeças de rotação e desenvolva habilidades visuoespaciais através de desafios arquitetônicos.",
+    features: ["Rotação mental", "Construção 3D", "Planejamento espacial", "Coordenação mão-olho"],
+    ageRange: "7-15 anos",
+    duration: "8-15 min",
+    players: "1 jogador",
+    status: "Disponível",
+    color: "bg-cyan-100 text-cyan-800",
+    gradient: "from-blue-400 to-green-500",
+    unlocked: true,
+    type: "basic"
   }
 ];
 
