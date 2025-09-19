@@ -5,10 +5,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
-import { Header } from "@/components/Header";
-import { BottomNavigation } from "@/components/BottomNavigation";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Loading } from "@/components/Loading";
+import { AppLayout } from "@/components/AppLayout";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ModernEducationalDashboard } from '@/components/ModernEducationalDashboard';
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -45,6 +46,7 @@ import ExecutiveProcessing from "./pages/games/ExecutiveProcessing";
 import ExecutiveProcessingGame from "./pages/games/ExecutiveProcessingGame";
 import EmotionLab from "./pages/games/EmotionLab";
 import SpatialArchitect from "./pages/games/SpatialArchitect";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 // Lazy loaded components - Critical path optimization
@@ -62,18 +64,17 @@ const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter 
-            future={{
-              v7_startTransition: true,
-              v7_relativeSplatPath: true,
-            }}
-          >
-            <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
-              <Header />
-              <main className="pb-20">
+        <LanguageProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter 
+              future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+              }}
+            >
+              <AppLayout>
                 <Routes>
                   <Route path="/" element={
                     <Suspense fallback={<Loading />}>
@@ -141,6 +142,7 @@ const App = () => (
                   <Route path="/games/executive-processing-game" element={<ExecutiveProcessingGame />} />
                   <Route path="/games/emotion-lab" element={<EmotionLab />} />
                   <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
+                  <Route path="/settings" element={<Settings />} />
                   <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
                   <Route path="/clinical" element={
                     <Suspense fallback={<Loading />}>
@@ -160,11 +162,11 @@ const App = () => (
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-              </main>
-              <BottomNavigation />
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
+                <FloatingActionButton />
+              </AppLayout>
+            </BrowserRouter>
+          </TooltipProvider>
+        </LanguageProvider>
       </AuthProvider>
     </QueryClientProvider>
   </ErrorBoundary>
