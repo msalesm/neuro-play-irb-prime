@@ -3512,9 +3512,55 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles_safe: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          created_at: string | null
+          id: string | null
+          is_public: boolean | null
+          name: string | null
+          reputation_score: number | null
+          state: string | null
+          updated_at: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_public?: boolean | null
+          name?: string | null
+          reputation_score?: number | null
+          state?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_public?: boolean | null
+          name?: string | null
+          reputation_score?: number | null
+          state?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      can_view_contact_info: {
+        Args: { _profile_user_id: string }
+        Returns: boolean
+      }
+      can_view_medical_data: {
+        Args: { _profile_user_id: string }
+        Returns: boolean
+      }
       can_view_sensitive_profile_data: {
         Args: { profile_user_id: string }
         Returns: boolean
@@ -3586,6 +3632,23 @@ export type Database = {
           status: string
           symptoms: string[]
           urgency_level: string
+        }[]
+      }
+      get_user_contact_info: {
+        Args: { _user_id: string }
+        Returns: {
+          address: Json
+          email: string
+          emergency_contact: Json
+          phone: string
+        }[]
+      }
+      get_user_medical_data: {
+        Args: { _user_id: string }
+        Returns: {
+          date_of_birth: string
+          medical_history_summary: string
+          medical_preferences: Json
         }[]
       }
       get_user_profiles_basic: {
