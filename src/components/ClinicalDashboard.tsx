@@ -11,6 +11,7 @@ import {
   TrendingUp, 
   TrendingDown, 
   AlertTriangle, 
+  AlertCircle,
   CheckCircle,
   FileText,
   Target,
@@ -29,16 +30,19 @@ export const ClinicalDashboard: React.FC = () => {
     currentReport, 
     patterns, 
     loading, 
+    loadingState,
+    error,
     generateClinicalReport 
   } = useBehavioralAnalysis();
 
   const [selectedPattern, setSelectedPattern] = useState<DiagnosticPattern | null>(null);
 
-  useEffect(() => {
-    if (user && metrics.length > 0 && !currentReport) {
-      generateClinicalReport();
-    }
-  }, [user, metrics, currentReport, generateClinicalReport]);
+  // Remover auto-geração - deixar o usuário clicar no botão
+  // useEffect(() => {
+  //   if (user && metrics.length > 0 && !currentReport) {
+  //     generateClinicalReport();
+  //   }
+  // }, [user, metrics, currentReport, generateClinicalReport]);
 
   if (!user) {
     return (
@@ -107,24 +111,93 @@ export const ClinicalDashboard: React.FC = () => {
               disabled={loading}
               className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
             >
-              <FileText className="w-4 h-4 mr-2" />
-              {loading ? 'Gerando...' : 'Gerar Relatório'}
+              {loading ? (
+                <>
+                  <Activity className="w-4 h-4 mr-2 animate-spin" />
+                  {loadingState === 'fetching' && 'Buscando...'}
+                  {loadingState === 'analyzing' && 'Analisando...'}
+                  {loadingState === 'generating' && 'Gerando...'}
+                </>
+              ) : (
+                <>
+                  <FileText className="w-4 h-4 mr-2" />
+                  Gerar Relatório
+                </>
+              )}
             </Button>
           </div>
         </div>
 
-      {loading && (
-        <Card className="backdrop-blur-sm bg-white/10 border-white/20">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-400"></div>
-              <span className="text-white">Analisando padrões comportamentais...</span>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+        {/* Loading State com mensagens detalhadas */}
+        {loading && (
+          <Card className="backdrop-blur-sm bg-white/10 border-white/20">
+            <CardContent className="p-8">
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <Activity className="w-12 h-12 animate-spin text-indigo-400" />
+                <div className="text-center space-y-2">
+                  <h3 className="font-semibold text-lg text-white">
+                    {loadingState === 'fetching' && '🔍 Buscando suas sessões de aprendizado...'}
+                    {loadingState === 'analyzing' && '📊 Analisando padrões comportamentais...'}
+                    {loadingState === 'generating' && '🤖 Gerando insights com IA...'}
+                  </h3>
+                  <p className="text-sm text-white/70">
+                    Isso pode levar alguns instantes
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-      {currentReport && (
+        {/* Mensagem de Erro */}
+        {error && !loading && (
+          <Alert className="bg-red-500/10 border-red-500/30 text-white">
+            <AlertTriangle className="h-4 w-4 text-red-400" />
+            <AlertTitle className="text-white">Erro ao Gerar Relatório</AlertTitle>
+            <AlertDescription className="space-y-2 text-white/80">
+              <p>{error}</p>
+              {error.includes('Nenhuma sessão') && (
+                <Button asChild variant="outline" size="sm" className="mt-2 bg-white/10 border-white/30 text-white hover:bg-white/20">
+                  <Link to="/games">
+                    Ir para Jogos de Diagnóstico
+                  </Link>
+                </Button>
+              )}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Mensagem quando não há dados */}
+        {!loading && !currentReport && !error && (
+          <Alert className="bg-indigo-500/10 border-indigo-500/30 text-white">
+            <Brain className="h-4 w-4 text-indigo-400" />
+            <AlertTitle className="text-white">Bem-vindo ao Painel Clínico</AlertTitle>
+            <AlertDescription className="space-y-3 text-white/80">
+              <p>
+                Para gerar seu relatório clínico personalizado, você precisa completar alguns jogos de diagnóstico.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Button asChild size="sm" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700">
+                  <Link to="/games">
+                    <Brain className="w-4 h-4 mr-2" />
+                    Explorar Jogos
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
+                  <Link to="/diagnostics">
+                    <Activity className="w-4 h-4 mr-2" />
+                    Testes Diagnósticos
+                  </Link>
+                </Button>
+              </div>
+              <p className="text-xs text-white/60">
+                💡 Recomendamos completar pelo menos 5 sessões de jogos diferentes para um relatório mais preciso.
+              </p>
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {currentReport && (
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4 bg-white/10 backdrop-blur-sm border-white/20">
             <TabsTrigger value="overview" className="text-white data-[state=active]:bg-white/20 data-[state=active]:text-white">Visão Geral</TabsTrigger>

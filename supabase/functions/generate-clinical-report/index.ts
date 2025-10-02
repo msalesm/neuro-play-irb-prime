@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.3";
 import { ReportRequest, ReportResponse } from "./types.ts";
-import { fetchSessionsData, fetchNeurodiversityProfile } from "./queries.ts";
+import { fetchSessionsData, fetchBehavioralMetricsData, fetchNeurodiversityProfile } from "./queries.ts";
 import { calculateMetrics, analyzeTemporalEvolution, analyzeBehavioralPatterns } from "./metrics.ts";
 import { generateAIPrompt } from "./ai-prompts.ts";
 import { buildReport } from "./report-builder.ts";
@@ -48,16 +48,28 @@ serve(async (req) => {
     console.log(`Generating ${reportType} report for user ${userId} from ${startDate} to ${endDate}`);
 
     // Step 1: Fetch all necessary data
-    const [sessionsData, neurodiversityProfile] = await Promise.all([
-      fetchSessionsData(supabase, userId, startDate, endDate),
-      fetchNeurodiversityProfile(supabase, userId)
-    ]);
+    let sessionsData;
+    let dataSource = 'learning_sessions';
+    
+    // Try learning_sessions first
+    console.log('🔍 Attempting to fetch learning_sessions...');
+    sessionsData = await fetchSessionsData(supabase, userId, startDate, endDate);
 
+    // If no learning_sessions, fallback to behavioral_metrics
     if (!sessionsData.sessions || sessionsData.sessions.length === 0) {
+      console.log('⚠️  No learning_sessions found, trying behavioral_metrics fallback...');
+      sessionsData = await fetchBehavioralMetricsData(supabase, userId, startDate, endDate);
+      dataSource = 'behavioral_metrics';
+    }
+
+    // If still no data, return informative error
+    if (!sessionsData.sessions || sessionsData.sessions.length === 0) {
+      console.log('❌ No data found in either learning_sessions or behavioral_metrics');
       return new Response(
         JSON.stringify({
           status: 'error',
-          message: 'No learning sessions found for the specified period'
+          message: 'Nenhum dado encontrado para gerar relatório. Complete alguns jogos de diagnóstico primeiro!',
+          suggestion: 'Jogue pelo menos 5 sessões de jogos diferentes para gerar um relatório completo.'
         }),
         {
           status: 404,
@@ -65,6 +77,10 @@ serve(async (req) => {
         }
       );
     }
+
+    console.log(`✅ Using ${dataSource} as data source (${sessionsData.sessions.length} sessions found)`);
+    
+    const neurodiversityProfile = await fetchNeurodiversityProfile(supabase, userId);
 
     // Step 2: Calculate metrics
     const generalMetrics = calculateMetrics(sessionsData);
@@ -177,12 +193,16 @@ serve(async (req) => {
     const response: ReportResponse = {
       reportId: savedReport.id,
       status: aiAnalysis ? 'success' : 'partial',
-      data: reportData,
+      data: {
+        ...reportData,
+        dataSource, // Include data source info
+        sessionsAnalyzed: sessionsData.sessions.length
+      },
       generatedAt: new Date().toISOString(),
       warning: aiAnalysis ? undefined : 'AI analysis unavailable'
     };
 
-    console.log(`Report ${savedReport.id} generated successfully`);
+    console.log(`✅ Report ${savedReport.id} generated successfully using ${dataSource}`);
 
     return new Response(
       JSON.stringify(response),

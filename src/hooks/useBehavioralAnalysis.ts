@@ -45,6 +45,8 @@ export const useBehavioralAnalysis = () => {
   const [metrics, setMetrics] = useState<BehavioralMetric[]>([]);
   const [currentReport, setCurrentReport] = useState<ClinicalReport | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState<'idle' | 'fetching' | 'analyzing' | 'generating'>('idle');
+  const [error, setError] = useState<string | null>(null);
   const [patterns, setPatterns] = useState<DiagnosticPattern[]>([]);
 
   // Save behavioral metric
@@ -127,6 +129,10 @@ export const useBehavioralAnalysis = () => {
 
     try {
       setLoading(true);
+      setLoadingState('fetching');
+      setError(null);
+      
+      console.log('🔍 Iniciando geração de relatório clínico...');
       
       // Define período de análise (últimos 3 meses)
       const endDate = new Date().toISOString().split('T')[0];
@@ -134,6 +140,8 @@ export const useBehavioralAnalysis = () => {
         .toISOString()
         .split('T')[0];
 
+      setLoadingState('analyzing');
+      
       // Chamar edge function
       const { data, error } = await supabase.functions.invoke(
         'generate-clinical-report',
@@ -148,12 +156,27 @@ export const useBehavioralAnalysis = () => {
       );
 
       if (error) {
+        console.error('❌ Edge function error:', error);
+        
+        // Mensagens específicas baseadas no tipo de erro
+        if (error.message?.includes('404') || error.message?.includes('No data')) {
+          setError('Nenhuma sessão encontrada. Complete alguns jogos de diagnóstico primeiro!');
+        } else if (error.message?.includes('401') || error.message?.includes('Unauthorized')) {
+          setError('Sessão expirada. Faça login novamente.');
+        } else {
+          setError('Erro ao gerar relatório. Tente novamente em alguns instantes.');
+        }
+        
         throw new Error(error.message || 'Failed to generate report');
       }
 
       if (data.status === 'error') {
-        throw new Error(data.error || 'Report generation failed');
+        console.error('❌ Report generation error:', data);
+        setError(data.message || 'Falha ao gerar relatório');
+        throw new Error(data.message || 'Report generation failed');
       }
+
+      setLoadingState('generating');
 
       // Converter dados da edge function para formato do componente
       const report: ClinicalReport = {
@@ -183,10 +206,19 @@ export const useBehavioralAnalysis = () => {
 
       setCurrentReport(report);
       setPatterns(report.patterns);
+      setLoadingState('idle');
 
-      console.log('Clinical report generated successfully:', data.reportId);
+      console.log('✅ Relatório clínico gerado com sucesso:', data.reportId);
+      console.log(`📊 Fonte de dados: ${data.data?.dataSource || 'unknown'}`);
+      console.log(`📈 Sessões analisadas: ${data.data?.sessionsAnalyzed || 0}`);
     } catch (error: any) {
-      console.error('Error generating clinical report:', error);
+      console.error('❌ Erro ao gerar relatório clínico:', error);
+      setLoadingState('idle');
+      
+      // Se não definiu erro específico ainda, definir genérico
+      if (!error) {
+        setError('Erro desconhecido ao gerar relatório');
+      }
     } finally {
       setLoading(false);
     }
@@ -203,6 +235,8 @@ export const useBehavioralAnalysis = () => {
     currentReport,
     patterns,
     loading,
+    loadingState,
+    error,
     saveBehavioralMetric,
     fetchBehavioralMetrics,
     generateClinicalReport

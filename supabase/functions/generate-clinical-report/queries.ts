@@ -81,6 +81,84 @@ export async function fetchSessionsData(
   };
 }
 
+export async function fetchBehavioralMetricsData(
+  supabase: SupabaseClient,
+  userId: string,
+  startDate: string,
+  endDate: string
+): Promise<SessionsQueryResult> {
+  console.log('📊 Fallback: Fetching behavioral_metrics data...');
+  
+  // Fetch behavioral metrics
+  const { data: metrics, error: metricsError } = await supabase
+    .from('behavioral_metrics')
+    .select('*')
+    .eq('user_id', userId)
+    .gte('timestamp', startDate)
+    .lte('timestamp', endDate)
+    .order('timestamp', { ascending: true });
+
+  if (metricsError) {
+    console.error('Error fetching behavioral metrics:', metricsError);
+    throw new Error('Failed to fetch behavioral metrics');
+  }
+
+  if (!metrics || metrics.length === 0) {
+    return { sessions: [], trailsData: {} };
+  }
+
+  console.log(`✅ Found ${metrics.length} behavioral metrics`);
+
+  // Group metrics by category and transform to session format
+  const sessionsByCategory = new Map<string, any[]>();
+  
+  metrics.forEach(metric => {
+    const category = metric.category || 'general';
+    if (!sessionsByCategory.has(category)) {
+      sessionsByCategory.set(category, []);
+    }
+    
+    sessionsByCategory.get(category)!.push({
+      id: metric.id,
+      user_id: metric.user_id,
+      trail_id: null,
+      created_at: metric.timestamp,
+      completed_at: metric.timestamp,
+      cognitive_category: category,
+      current_level: 1,
+      total_xp: Math.round(metric.value * 100),
+      performance_data: {
+        accuracy: metric.value,
+        score: Math.round(metric.value * 100),
+        metricType: metric.metric_type,
+        contextData: metric.context_data
+      },
+      struggles_detected: metric.value < 0.6 ? [metric.metric_type] : []
+    });
+  });
+
+  // Flatten sessions
+  const enrichedSessions = Array.from(sessionsByCategory.values()).flat();
+
+  // Create trails data summary
+  const trailsData: { [category: string]: any } = {};
+  sessionsByCategory.forEach((sessions, category) => {
+    const avgAccuracy = sessions.reduce((sum, s) => sum + s.performance_data.accuracy, 0) / sessions.length;
+    trailsData[category] = {
+      initialLevel: 1,
+      currentLevel: Math.min(Math.floor(avgAccuracy * 5) + 1, 10),
+      totalXP: Math.round(avgAccuracy * 100 * sessions.length)
+    };
+  });
+
+  console.log(`📈 Transformed to ${enrichedSessions.length} sessions across ${sessionsByCategory.size} categories`);
+
+  return {
+    sessions: enrichedSessions,
+    trailsData
+  };
+}
+
 export async function fetchNeurodiversityProfile(
   supabase: SupabaseClient,
   userId: string
