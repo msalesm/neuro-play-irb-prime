@@ -123,31 +123,74 @@ export const useBehavioralAnalysis = () => {
 
   // Generate clinical report
   const generateClinicalReport = useCallback(async () => {
-    if (!user?.id || metrics.length === 0) return;
+    if (!user?.id) return;
 
     try {
       setLoading(true);
       
-      const analysisResults = analyzePatterns(metrics);
-      
+      // Define período de análise (últimos 3 meses)
+      const endDate = new Date().toISOString().split('T')[0];
+      const startDate = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split('T')[0];
+
+      // Chamar edge function
+      const { data, error } = await supabase.functions.invoke(
+        'generate-clinical-report',
+        {
+          body: {
+            userId: user.id,
+            startDate,
+            endDate,
+            reportType: 'comprehensive'
+          }
+        }
+      );
+
+      if (error) {
+        throw new Error(error.message || 'Failed to generate report');
+      }
+
+      if (data.status === 'error') {
+        throw new Error(data.error || 'Report generation failed');
+      }
+
+      // Converter dados da edge function para formato do componente
       const report: ClinicalReport = {
         userId: user.id,
-        generatedAt: new Date(),
-        overallRiskAssessment: calculateOverallRiskAssessment(metrics),
-        patterns: analysisResults.patterns,
-        behavioralTrends: identifyTrends(metrics),
-        interventionSuggestions: generateInterventionSuggestions(analysisResults.patterns)
+        generatedAt: new Date(data.generatedAt),
+        overallRiskAssessment: {
+          tea: data.data.behavioral?.errorPatterns?.cognitive || 0,
+          tdah: data.data.behavioral?.errorPatterns?.attention || 0,
+          dislexia: data.data.behavioral?.errorPatterns?.impulsive || 0,
+        },
+        patterns: Object.entries(data.data.cognitiveScores || {}).map(
+          ([category, scores]: [string, any]) => ({
+            condition: category.toUpperCase() as 'TEA' | 'TDAH' | 'Dislexia',
+            confidence: Math.min((scores.improvement || 50) / 100, 1),
+            keyIndicators: [`Acurácia: ${scores.avgAccuracy?.toFixed(1) || 0}%`, `Nível: ${scores.currentLevel || 1}`],
+            recommendations: data.data.aiAnalysis?.recommendations || [],
+            nextSteps: ['Continuar praticando regularmente'],
+          })
+        ),
+        behavioralTrends: {
+          improving: data.data.aiAnalysis?.strengths || [],
+          stable: [],
+          declining: data.data.aiAnalysis?.areasOfConcern || [],
+        },
+        interventionSuggestions: data.data.aiAnalysis?.recommendations || [],
       };
 
       setCurrentReport(report);
-      setPatterns(analysisResults.patterns);
+      setPatterns(report.patterns);
 
-    } catch (error) {
+      console.log('Clinical report generated successfully:', data.reportId);
+    } catch (error: any) {
       console.error('Error generating clinical report:', error);
     } finally {
       setLoading(false);
     }
-  }, [user?.id, metrics]);
+  }, [user?.id]);
 
   useEffect(() => {
     if (user?.id) {

@@ -78,7 +78,7 @@ export function AppSidebar() {
     },
     {
       title: 'Dashboard Clínico',
-      path: '/clinical-dashboard',
+      path: '/clinical',
       icon: Stethoscope,
     },
   ];
