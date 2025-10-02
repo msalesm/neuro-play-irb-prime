@@ -3512,6 +3512,48 @@ export type Database = {
       }
     }
     Views: {
+      doctor_profiles_public: {
+        Row: {
+          approved: boolean | null
+          availability_status: string | null
+          bio: string | null
+          created_at: string | null
+          id: string | null
+          is_online: boolean | null
+          location_public: Json | null
+          photo_url: string | null
+          rating_avg: number | null
+          specialty: string | null
+          user_id: string | null
+        }
+        Insert: {
+          approved?: boolean | null
+          availability_status?: never
+          bio?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_online?: boolean | null
+          location_public?: never
+          photo_url?: string | null
+          rating_avg?: number | null
+          specialty?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          approved?: boolean | null
+          availability_status?: never
+          bio?: string | null
+          created_at?: string | null
+          id?: string | null
+          is_online?: boolean | null
+          location_public?: never
+          photo_url?: string | null
+          rating_avg?: number | null
+          specialty?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       public_profiles_safe: {
         Row: {
           avatar_url: string | null
@@ -3597,8 +3639,8 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_safe_public_profile: {
-        Args: { profile_id: string }
+      get_safe_public_profiles: {
+        Args: Record<PropertyKey, never>
         Returns: {
           avatar_url: string
           city: string
@@ -3609,12 +3651,14 @@ export type Database = {
           verified: boolean
         }[]
       }
-      get_safe_public_profiles: {
-        Args: Record<PropertyKey, never>
+      get_user_basic_profile: {
+        Args: { profile_user_id: string }
         Returns: {
           avatar_url: string
           city: string
+          created_at: string
           id: string
+          is_public: boolean
           name: string
           reputation_score: number
           state: string
@@ -3635,7 +3679,7 @@ export type Database = {
         }[]
       }
       get_user_contact_info: {
-        Args: { _user_id: string }
+        Args: { profile_user_id: string }
         Returns: {
           address: Json
           email: string
@@ -3644,7 +3688,7 @@ export type Database = {
         }[]
       }
       get_user_medical_data: {
-        Args: { _user_id: string }
+        Args: { profile_user_id: string }
         Returns: {
           date_of_birth: string
           medical_history_summary: string
@@ -3697,9 +3741,10 @@ export type Database = {
         }
         Returns: boolean
       }
-      search_doctors_secure: {
+      search_doctors_public: {
         Args: { p_city?: string; p_specialty?: string; p_state?: string }
         Returns: {
+          availability_status: string
           bio: string
           id: string
           location_city: string
