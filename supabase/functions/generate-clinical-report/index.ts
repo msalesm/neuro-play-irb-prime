@@ -168,18 +168,31 @@ serve(async (req) => {
       .insert({
         user_id: userId,
         report_type: reportType,
-        date_range_start: startDate,
-        date_range_end: endDate,
-        total_sessions: generalMetrics.totalSessions,
-        avg_accuracy: generalMetrics.avgAccuracy,
-        avg_reaction_time: generalMetrics.avgReactionTime,
-        cognitive_improvements: generalMetrics.cognitiveScores,
-        behavioral_patterns: behavioralPatterns,
-        ai_insights: aiAnalysis?.executiveSummary || null,
-        ai_recommendations: aiAnalysis?.recommendations || null,
-        risk_indicators: aiAnalysis?.areasOfConcern || null,
-        strengths_identified: aiAnalysis?.strengths || null,
-        status: 'finalized'
+        generated_date: new Date().toISOString().split('T')[0],
+        report_period_start: startDate,
+        report_period_end: endDate,
+        summary_insights: aiAnalysis?.executiveSummary || 
+          `Relatório gerado com ${generalMetrics.totalSessions} sessões. Acurácia média: ${generalMetrics.avgAccuracy?.toFixed(1)}%.`,
+        detailed_analysis: {
+          dataSource: dataSource,
+          sessionsAnalyzed: sessionsData.sessions.length,
+          totalSessions: generalMetrics.totalSessions,
+          avgAccuracy: generalMetrics.avgAccuracy,
+          avgReactionTime: generalMetrics.avgReactionTime,
+          cognitiveScores: generalMetrics.cognitiveScores,
+          behavioralPatterns: behavioralPatterns,
+          temporalEvolution: temporalEvolution,
+          aiAnalysis: aiAnalysis
+        },
+        progress_indicators: {
+          strengths: aiAnalysis?.strengths || [],
+          areasOfConcern: aiAnalysis?.areasOfConcern || [],
+          cognitiveImprovements: generalMetrics.cognitiveScores
+        },
+        intervention_recommendations: aiAnalysis?.recommendations || [],
+        alert_flags: aiAnalysis?.areasOfConcern || [],
+        generated_by_ai: aiAnalysis !== null,
+        reviewed_by_professional: false
       })
       .select()
       .single();
