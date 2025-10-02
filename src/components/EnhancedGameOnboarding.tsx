@@ -3,10 +3,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Checkbox } from '@/components/ui/checkbox';
 import { 
   Play, SkipForward, ChevronLeft, ChevronRight, 
   Target, Clock, Trophy, Brain, Lightbulb, 
-  CheckCircle, ArrowRight, Sparkles
+  CheckCircle, ArrowRight, Sparkles, Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -47,6 +48,7 @@ export function EnhancedGameOnboarding({
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [isVisible, setIsVisible] = useState(true);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
 
   const currentStepData = steps[currentStep];
   const progress = ((currentStep + 1) / steps.length) * 100;
@@ -56,9 +58,12 @@ export function EnhancedGameOnboarding({
     setCompletedSteps(prev => new Set(prev).add(currentStep));
     
     if (isLastStep) {
+      if (dontShowAgain) {
+        localStorage.setItem(`onboarding-${gameTitle}`, 'completed');
+      }
       setTimeout(() => {
         onComplete();
-      }, 500);
+      }, 300);
     } else {
       setCurrentStep(prev => prev + 1);
     }
@@ -71,6 +76,9 @@ export function EnhancedGameOnboarding({
   };
 
   const handleSkip = () => {
+    if (dontShowAgain) {
+      localStorage.setItem(`onboarding-${gameTitle}`, 'skipped');
+    }
     setIsVisible(false);
     setTimeout(onSkip, 300);
   };
@@ -205,7 +213,23 @@ export function EnhancedGameOnboarding({
           </div>
 
           {/* Footer */}
-          <div className="p-6 pt-0 border-t border-border/20">
+          <div className="p-6 pt-0 space-y-3">
+            {/* Don't show again option */}
+            <div className="flex items-center gap-2 px-2 pb-3 border-b border-border/20">
+              <Checkbox
+                id="dont-show"
+                checked={dontShowAgain}
+                onCheckedChange={(checked) => setDontShowAgain(checked as boolean)}
+              />
+              <label
+                htmlFor="dont-show"
+                className="text-xs text-muted-foreground cursor-pointer select-none"
+              >
+                Não mostrar este tutorial novamente
+              </label>
+            </div>
+
+            {/* Navigation */}
             <div className="flex items-center justify-between">
               <Button 
                 variant="ghost" 
@@ -233,12 +257,12 @@ export function EnhancedGameOnboarding({
 
               <Button 
                 onClick={handleNext}
-                className="gap-2"
+                className="gap-2 bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg transition-all"
               >
                 {isLastStep ? (
                   <>
-                    <CheckCircle className="w-4 h-4" />
-                    Começar Jogo
+                    <Zap className="w-4 h-4" />
+                    Começar!
                   </>
                 ) : (
                   <>

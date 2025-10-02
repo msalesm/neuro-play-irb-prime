@@ -5,9 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle, Plus } from "lucide-react";
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { DuolingoStreak } from "@/components/DuolingoStreak";
 
 interface UserStats {
   total_stars: number;
@@ -195,8 +195,17 @@ export default function Dashboard() {
           </Button>
         </div>
 
+        {/* Modern Streak Widget - Estilo Duolingo */}
+        <div className="mb-8">
+          <DuolingoStreak
+            currentStreak={stats?.current_streak || 0}
+            longestStreak={stats?.longest_streak || 0}
+            streakGoal={7}
+          />
+        </div>
+
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-50" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
@@ -228,30 +237,16 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-green-500/20 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20 opacity-50" />
-            <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white/80">Sequência Atual</CardTitle>
-              <Calendar className="h-4 w-4 text-white/60" />
-            </CardHeader>
-            <CardContent className="relative">
-              <div className="text-2xl font-bold text-green-400">{stats?.current_streak || 0}</div>
-              <p className="text-xs text-white/60">
-                Dias consecutivos jogando
-              </p>
-            </CardContent>
-          </Card>
-
           <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 opacity-50" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white/80">Melhor Sequência</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/80">Experiência Total</CardTitle>
               <Trophy className="h-4 w-4 text-white/60" />
             </CardHeader>
             <CardContent className="relative">
-              <div className="text-2xl font-bold text-purple-400">{stats?.longest_streak || 0}</div>
+              <div className="text-2xl font-bold text-purple-400">{stats?.experience_points || 0}</div>
               <p className="text-xs text-white/60">
-                Recorde pessoal
+                Pontos de experiência
               </p>
             </CardContent>
           </Card>

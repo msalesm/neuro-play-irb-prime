@@ -178,23 +178,71 @@ export const useBehavioralAnalysis = () => {
 
       setLoadingState('generating');
 
+      // Função para normalizar contadores de erro para percentual de risco (0-1)
+      const normalizeRiskScore = (errorCount: number, totalSessions: number = 10): number => {
+        // Normaliza: mais erros = maior risco, mas cap em 1.0 (100%)
+        // Assumindo média de 5 erros por sessão como baseline
+        const avgErrorsPerSession = errorCount / Math.max(totalSessions, 1);
+        const riskScore = Math.min(avgErrorsPerSession / 10, 1.0); // Cap em 1.0
+        return riskScore;
+      };
+
+      // Extrair métricas comportamentais
+      const totalSessions = data.data?.sessionsAnalyzed || data.data?.totalSessions || 10;
+      const errorPatterns = data.data.behavioral?.errorPatterns || {};
+      const cognitiveScores = data.data.cognitiveScores || {};
+      
+      // Calcular riscos baseados em padrões comportamentais e cognitivos
+      // TEA: dificuldades sociais, comunicação, padrões repetitivos
+      const socialScore = cognitiveScores['language']?.avgAccuracy || 70;
+      const teaRisk = normalizeRiskScore(errorPatterns.cognitive || 0, totalSessions) * 0.5 +
+                      (100 - socialScore) / 200; // Contribui 50% cada
+
+      // TDAH: atenção, impulsividade, hiperatividade
+      const attentionScore = cognitiveScores['attention']?.avgAccuracy || 70;
+      const tdahRisk = normalizeRiskScore(errorPatterns.attention || 0, totalSessions) * 0.6 +
+                       normalizeRiskScore(errorPatterns.impulsive || 0, totalSessions) * 0.4;
+
+      // Dislexia: processamento fonológico, leitura, escrita
+      const languageScore = cognitiveScores['language']?.avgAccuracy || 70;
+      const dislexiaRisk = normalizeRiskScore(errorPatterns.cognitive || 0, totalSessions) * 0.4 +
+                           (100 - languageScore) / 200;
+
       // Converter dados da edge function para formato do componente
       const report: ClinicalReport = {
         userId: user.id,
         generatedAt: new Date(data.generatedAt),
         overallRiskAssessment: {
-          tea: data.data.behavioral?.errorPatterns?.cognitive || 0,
-          tdah: data.data.behavioral?.errorPatterns?.attention || 0,
-          dislexia: data.data.behavioral?.errorPatterns?.impulsive || 0,
+          tea: Math.min(teaRisk, 1.0), // Garantir cap em 100%
+          tdah: Math.min(tdahRisk, 1.0),
+          dislexia: Math.min(dislexiaRisk, 1.0),
         },
-        patterns: Object.entries(data.data.cognitiveScores || {}).map(
-          ([category, scores]: [string, any]) => ({
-            condition: category.toUpperCase() as 'TEA' | 'TDAH' | 'Dislexia',
-            confidence: Math.min((scores.improvement || 50) / 100, 1),
-            keyIndicators: [`Acurácia: ${scores.avgAccuracy?.toFixed(1) || 0}%`, `Nível: ${scores.currentLevel || 1}`],
-            recommendations: data.data.aiAnalysis?.recommendations || [],
-            nextSteps: ['Continuar praticando regularmente'],
-          })
+        patterns: Object.entries(cognitiveScores).map(
+          ([category, scores]: [string, any]) => {
+            const categoryNames: { [key: string]: 'TEA' | 'TDAH' | 'Dislexia' } = {
+              'language': 'Dislexia',
+              'attention': 'TDAH',
+              'memory': 'TDAH',
+              'executive': 'TEA',
+              'logic': 'TEA',
+              'math': 'Dislexia'
+            };
+            
+            const accuracy = scores.avgAccuracy || 0;
+            const confidence = Math.max(0, Math.min(1, (100 - accuracy) / 100)); // 0-1 range
+            
+            return {
+              condition: categoryNames[category] || 'TEA',
+              confidence: confidence,
+              keyIndicators: [
+                `Acurácia: ${accuracy.toFixed(1)}%`, 
+                `Nível: ${scores.currentLevel || 1}`,
+                `Sessões: ${scores.sessionsCompleted || 0}`
+              ],
+              recommendations: data.data.aiAnalysis?.recommendations || ['Continue praticando regularmente'],
+              nextSteps: ['Consultar especialista se houver preocupações'],
+            };
+          }
         ),
         behavioralTrends: {
           improving: data.data.aiAnalysis?.strengths || [],
