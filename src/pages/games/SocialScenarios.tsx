@@ -8,6 +8,10 @@ import { Users, MessageCircle, Heart, Clock, ArrowRight, RotateCcw } from "lucid
 import { useSocialScenarios } from "@/hooks/useSocialScenarios";
 import { SocialScenariosProgress } from "@/components/SocialScenariosProgress";
 import { SocialScenariosAchievements } from "@/components/SocialScenariosAchievements";
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useSessionRecovery } from '@/hooks/useSessionRecovery';
+import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { GameExitButton } from '@/components/GameExitButton';
 
 const SocialScenarios = () => {
   const { user } = useAuth();
@@ -18,6 +22,24 @@ const SocialScenarios = () => {
   const [showResult, setShowResult] = useState(false);
   const [sessionStartTime, setSessionStartTime] = useState<number>(0);
   const [gameMode, setGameMode] = useState<'menu' | 'playing' | 'result'>('menu');
+
+  const {
+    currentSession,
+    isSaving,
+    startSession: startAutoSave,
+    updateSession: updateAutoSave,
+    completeSession: completeAutoSave,
+    abandonSession
+  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
+
+  const {
+    unfinishedSessions,
+    hasUnfinishedSessions,
+    resumeSession,
+    discardSession
+  } = useSessionRecovery('social_scenarios');
+
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
 
   const {
     scenarios,
@@ -46,14 +68,43 @@ const SocialScenarios = () => {
     );
   }
 
-  const startScenario = (scenario: any) => {
-    setCurrentScenario(scenario);
-    setCurrentChoices(scenario.choices || []);
-    setSelectedChoice(null);
-    setShowResult(false);
-    setSessionStartTime(Date.now());
-    setGameMode('playing');
+  const startScenario = async (scenario: any) => {
+    const sessionId = await startAutoSave('social_scenarios', 1, {
+      scenarioId: scenario.id,
+      difficulty: scenario.difficulty_level
+    });
+
+    if (sessionId) {
+      setCurrentScenario(scenario);
+      setCurrentChoices(scenario.choices || []);
+      setSelectedChoice(null);
+      setShowResult(false);
+      setSessionStartTime(Date.now());
+      setGameMode('playing');
+    }
   };
+
+  const handleResumeSession = async (session: any) => {
+    const scenario = scenarios.find(s => s.id === session.performance_data?.scenarioId);
+    if (scenario) {
+      await startAutoSave('social_scenarios', session.level, {
+        sessionId: session.id,
+        scenarioId: scenario.id,
+        difficulty: scenario.difficulty_level
+      });
+      
+      setCurrentScenario(scenario);
+      setCurrentChoices(scenario.choices || []);
+      setGameMode('menu');
+      setShowRecoveryModal(false);
+    }
+  };
+
+  useEffect(() => {
+    if (hasUnfinishedSessions && gameMode === 'menu' && !currentSession) {
+      setShowRecoveryModal(true);
+    }
+  }, [hasUnfinishedSessions, gameMode, currentSession]);
 
   const selectChoice = (choiceId: number) => {
     setSelectedChoice(choiceId);
@@ -84,6 +135,19 @@ const SocialScenarios = () => {
       scores,
       completionTime
     );
+
+    // Complete auto-save session
+    await completeAutoSave({
+      score: (scores.empathy + scores.assertiveness + scores.communication) * 10,
+      moves: 1,
+      correctMoves: 1,
+      additionalData: {
+        scenarioId: currentScenario.id,
+        selectedChoiceId: choiceId,
+        scores,
+        completionTime
+      }
+    });
 
     setGameMode('result');
   };
@@ -118,17 +182,42 @@ const SocialScenarios = () => {
   return (
     <div className="min-h-screen bg-gradient-primary">
       <div className="container mx-auto px-6 py-8">
+        <SessionRecoveryModal
+          open={showRecoveryModal}
+          sessions={unfinishedSessions}
+          onResume={handleResumeSession}
+          onDiscard={async (sessionId) => {
+            await discardSession(sessionId);
+            setShowRecoveryModal(false);
+          }}
+          onStartNew={() => setShowRecoveryModal(false)}
+        />
+        
         {/* Header */}
-        <div className="text-center mb-8">
-          <Badge className="bg-purple-100 text-purple-800 mb-4">
-            Social Skills
-          </Badge>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
-            Social Scenarios Simulator
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Pratique interações sociais em ambientes seguros e controlados
-          </p>
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-center flex-1">
+            <Badge className="bg-purple-100 text-purple-800 mb-4">
+              Social Skills
+            </Badge>
+            <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">
+              Social Scenarios Simulator
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Pratique interações sociais em ambientes seguros e controlados
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
+            <GameExitButton
+              variant="quit"
+              onExit={async () => {
+                await abandonSession();
+              }}
+              showProgress={gameMode === 'playing'}
+              currentProgress={selectedChoice ? 1 : 0}
+              totalProgress={1}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

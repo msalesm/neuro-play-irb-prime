@@ -6,6 +6,11 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCcw, Zap, Trophy, Clock, CheckCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useSessionRecovery } from '@/hooks/useSessionRecovery';
+import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { GameExitButton } from '@/components/GameExitButton';
+import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 
 type PatternType = 'sequence' | 'shape' | 'color' | 'number';
 type PatternItem = string | number;
@@ -49,7 +54,26 @@ const COLOR_PATTERNS = [
 
 export default function LogicaRapida() {
   const { user } = useAuth();
+  const { getTrailByCategory } = useEducationalSystem();
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'paused' | 'gameOver'>('idle');
+  
+  const {
+    currentSession,
+    isSaving,
+    startSession: startAutoSave,
+    updateSession: updateAutoSave,
+    completeSession: completeAutoSave,
+    abandonSession
+  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
+
+  const {
+    unfinishedSessions,
+    hasUnfinishedSessions,
+    resumeSession,
+    discardSession
+  } = useSessionRecovery('logic_game');
+
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [currentPattern, setCurrentPattern] = useState<Pattern | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<PatternItem | null>(null);
   const [stats, setStats] = useState<GameStats>({
@@ -117,13 +141,19 @@ export default function LogicaRapida() {
   }, []);
 
   // Start game
-  const startGame = useCallback(() => {
-    setGameState('playing');
-    setStats(prev => ({
-      ...prev,
-      timeLeft: Math.max(30, 60 - (prev.level * 3)), // Decreasing time per level
-      questionsInLevel: 0,
-    }));
+  const startGame = useCallback(async () => {
+    const logicTrail = getTrailByCategory('logic');
+    const sessionId = await startAutoSave('logic_game', stats.level, {
+      trailId: logicTrail?.id
+    });
+
+    if (sessionId) {
+      setGameState('playing');
+      setStats(prev => ({
+        ...prev,
+        timeLeft: Math.max(30, 60 - (prev.level * 3)),
+        questionsInLevel: 0,
+      }));
     
     const pattern = generatePattern(stats.level);
     setCurrentPattern(pattern);
@@ -132,19 +162,58 @@ export default function LogicaRapida() {
     setAnswerFeedback(null);
     
     // Start timer
-    const timer = setInterval(() => {
-      setStats(prev => {
-        if (prev.timeLeft <= 1) {
-          setGameState('gameOver');
-          if (timer) clearInterval(timer);
-          return { ...prev, timeLeft: 0 };
-        }
-        return { ...prev, timeLeft: prev.timeLeft - 1 };
-      });
-    }, 1000);
+      const timer = setInterval(() => {
+        setStats(prev => {
+          if (prev.timeLeft <= 1) {
+            setGameState('gameOver');
+            if (timer) clearInterval(timer);
+            
+            // Complete session on time out
+            completeAutoSave({
+              score: prev.score,
+              moves: prev.totalQuestions,
+              correctMoves: prev.correctAnswers,
+              accuracy: (prev.correctAnswers / prev.totalQuestions) * 100,
+              additionalData: {
+                level: prev.level,
+                reason: 'timeout'
+              }
+            });
+            
+            return { ...prev, timeLeft: 0 };
+          }
+          return { ...prev, timeLeft: prev.timeLeft - 1 };
+        });
+      }, 1000);
     
     setGameTimer(timer);
+    }
   }, [stats.level, generatePattern]);
+
+  const handleResumeSession = async (session: any) => {
+    setStats({
+      ...stats,
+      score: session.performance_data.score || 0,
+      level: session.level,
+      correctAnswers: session.performance_data.correctAnswers || 0,
+      totalQuestions: session.performance_data.totalQuestions || 0
+    });
+    
+    const logicTrail = getTrailByCategory('logic');
+    await startAutoSave('logic_game', session.level, {
+      sessionId: session.id,
+      trailId: logicTrail?.id
+    });
+
+    setGameState('idle');
+    setShowRecoveryModal(false);
+  };
+
+  useEffect(() => {
+    if (hasUnfinishedSessions && gameState === 'idle' && !currentSession) {
+      setShowRecoveryModal(true);
+    }
+  }, [hasUnfinishedSessions, gameState, currentSession]);
 
   // Handle answer selection
   const handleAnswer = (answer: PatternItem) => {
@@ -172,6 +241,18 @@ export default function LogicaRapida() {
     }
 
     setStats(newStats);
+
+    // Auto-save progress
+    updateAutoSave({
+      score: newStats.score,
+      moves: newStats.totalQuestions,
+      correctMoves: newStats.correctAnswers,
+      additionalData: {
+        level: newStats.level,
+        streak: newStats.streak,
+        timeLeft: newStats.timeLeft
+      }
+    });
 
     // Check level progression
     setTimeout(() => {
@@ -274,14 +355,31 @@ export default function LogicaRapida() {
   return (
     <div className="min-h-screen bg-gradient-card py-8">
       <div className="container mx-auto px-4 max-w-4xl">
+        <SessionRecoveryModal
+          open={showRecoveryModal}
+          sessions={unfinishedSessions}
+          onResume={handleResumeSession}
+          onDiscard={async (sessionId) => {
+            await discardSession(sessionId);
+            setShowRecoveryModal(false);
+          }}
+          onStartNew={() => setShowRecoveryModal(false)}
+        />
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Button variant="ghost" asChild className="gap-2">
-            <Link to="/games">
-              <ArrowLeft className="w-4 h-4" />
-              Voltar aos Jogos
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
+            <GameExitButton
+              variant="quit"
+              onExit={async () => {
+                await abandonSession();
+              }}
+              showProgress={gameState === 'playing'}
+              currentProgress={stats.questionsInLevel}
+              totalProgress={5}
+            />
+          </div>
           
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground">

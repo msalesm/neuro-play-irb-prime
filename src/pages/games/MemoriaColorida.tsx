@@ -6,6 +6,11 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCcw, Star, Trophy, Volume2, VolumeX } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useSessionRecovery } from '@/hooks/useSessionRecovery';
+import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { GameExitButton } from '@/components/GameExitButton';
+import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 
 type GameColor = 'red' | 'blue' | 'green' | 'yellow';
 
@@ -30,7 +35,26 @@ const COLOR_CONFIG = {
 
 export default function MemoriaColorida() {
   const { user } = useAuth();
+  const { getTrailByCategory } = useEducationalSystem();
   const [gameState, setGameState] = useState<'idle' | 'showing' | 'playing' | 'gameOver'>('idle');
+  
+  const {
+    currentSession,
+    isSaving,
+    startSession: startAutoSave,
+    updateSession: updateAutoSave,
+    completeSession: completeAutoSave,
+    abandonSession
+  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
+
+  const {
+    unfinishedSessions,
+    hasUnfinishedSessions,
+    resumeSession,
+    discardSession
+  } = useSessionRecovery('memory_game');
+
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [sequence, setSequence] = useState<GameColor[]>([]);
   const [playerSequence, setPlayerSequence] = useState<GameColor[]>([]);
   const [currentShowingIndex, setCurrentShowingIndex] = useState(-1);
@@ -47,15 +71,47 @@ export default function MemoriaColorida() {
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   // Start game - Classic Simon style: start with 1 color
-  const startGame = useCallback(() => {
-    const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-    const newSequence = [firstColor];
-    setSequence(newSequence);
-    setPlayerSequence([]);
-    setCurrentShowingIndex(-1);
-    setGameState('showing');
-    playSequence(newSequence);
-  }, []);
+  const startGame = useCallback(async () => {
+    const memoryTrail = getTrailByCategory('memory');
+    const sessionId = await startAutoSave('memory_game', stats.level, {
+      trailId: memoryTrail?.id
+    });
+
+    if (sessionId) {
+      const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const newSequence = [firstColor];
+      setSequence(newSequence);
+      setPlayerSequence([]);
+      setCurrentShowingIndex(-1);
+      setGameState('showing');
+      playSequence(newSequence);
+    }
+  }, [stats.level]);
+
+  const handleResumeSession = async (session: any) => {
+    setStats({
+      ...stats,
+      score: session.performance_data.score || 0,
+      level: session.level,
+      correctAnswers: session.performance_data.correctAnswers || 0,
+      totalAttempts: session.performance_data.totalAttempts || 0
+    });
+    
+    const memoryTrail = getTrailByCategory('memory');
+    await startAutoSave('memory_game', session.level, {
+      sessionId: session.id,
+      trailId: memoryTrail?.id
+    });
+
+    setGameState('idle');
+    setShowRecoveryModal(false);
+  };
+
+  useEffect(() => {
+    if (hasUnfinishedSessions && gameState === 'idle' && !currentSession) {
+      setShowRecoveryModal(true);
+    }
+  }, [hasUnfinishedSessions, gameState, currentSession]);
 
   // Play the sequence to user with clear pauses
   const playSequence = useCallback((seq: GameColor[]) => {
@@ -119,7 +175,7 @@ export default function MemoriaColorida() {
   };
 
   // Handle player input
-  const handleColorClick = (color: GameColor) => {
+  const handleColorClick = async (color: GameColor) => {
     if (gameState !== 'playing') return;
 
     const newPlayerSequence = [...playerSequence, color];
@@ -143,6 +199,18 @@ export default function MemoriaColorida() {
           level: stats.level + 1,
         };
         setStats(newStats);
+
+        // Auto-save progress
+        updateAutoSave({
+          score: newStats.score,
+          moves: newStats.totalAttempts,
+          correctMoves: newStats.correctAnswers,
+          additionalData: {
+            level: newStats.level,
+            streak: newStats.streak,
+            sequence_length: sequence.length
+          }
+        });
         
         // Increase speed slightly after level 3
         if (newStats.level > 3) {
@@ -162,11 +230,25 @@ export default function MemoriaColorida() {
       }
     } else {
       // Wrong answer
-      setStats(prev => ({
-        ...prev,
+      const finalStats = {
+        ...stats,
         streak: 0,
-        totalAttempts: prev.totalAttempts + 1,
-      }));
+        totalAttempts: stats.totalAttempts + 1,
+      };
+      setStats(finalStats);
+      
+      // Complete session on game over
+      await completeAutoSave({
+        score: finalStats.score,
+        moves: finalStats.totalAttempts,
+        correctMoves: finalStats.correctAnswers,
+        accuracy: (finalStats.correctAnswers / finalStats.totalAttempts) * 100,
+        additionalData: {
+          level: finalStats.level,
+          bestStreak: finalStats.bestStreak
+        }
+      });
+      
       setGameState('gameOver');
     }
   };
@@ -215,14 +297,31 @@ export default function MemoriaColorida() {
   return (
     <div className="min-h-screen bg-gradient-card py-8">
       <div className="container mx-auto px-4 max-w-4xl">
+        <SessionRecoveryModal
+          open={showRecoveryModal}
+          sessions={unfinishedSessions}
+          onResume={handleResumeSession}
+          onDiscard={async (sessionId) => {
+            await discardSession(sessionId);
+            setShowRecoveryModal(false);
+          }}
+          onStartNew={() => setShowRecoveryModal(false)}
+        />
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Button variant="ghost" asChild className="gap-2">
-            <Link to="/games">
-              <ArrowLeft className="w-4 h-4" />
-              Voltar aos Jogos
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
+            <GameExitButton
+              variant="quit"
+              onExit={async () => {
+                await abandonSession();
+              }}
+              showProgress={gameState === 'playing'}
+              currentProgress={playerSequence.length}
+              totalProgress={sequence.length}
+            />
+          </div>
           
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground">
