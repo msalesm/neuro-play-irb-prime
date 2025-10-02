@@ -22,47 +22,116 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { UnifiedScoreDisplay } from './UnifiedScoreDisplay';
+import { useEducationalSystem } from '@/hooks/useEducationalSystem';
+import { useAuth } from '@/hooks/useAuth';
 
 export function ModernEducationalDashboard() {
-  // Mock data for demonstration - this will be connected to real data later
-  const mockData = {
-    overallProgress: 68,
-    totalXP: 2450,
-    completedSessions: 23,
-    averageScore: 82,
-    currentStreak: 5,
+  const { user } = useAuth();
+  const { 
+    learningTrails, 
+    neurodiversityProfile, 
+    recentSessions, 
+    getOverallProgress,
+    loading 
+  } = useEducationalSystem();
+
+  if (loading) {
+    return (
+      <div className="space-y-6 animate-pulse">
+        <div className="h-48 bg-muted rounded-lg"></div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-32 bg-muted rounded-lg"></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Card className="p-8 text-center">
+        <h2 className="text-xl font-bold mb-4">Acesso Restrito</h2>
+        <p className="text-muted-foreground mb-4">Faça login para ver seu progresso</p>
+        <Button asChild>
+          <Link to="/auth">Fazer Login</Link>
+        </Button>
+      </Card>
+    );
+  }
+
+  // Calculate real stats
+  const overallProgress = getOverallProgress();
+  const totalXP = learningTrails.reduce((sum, trail) => sum + trail.total_xp, 0);
+  const completedSessions = recentSessions.length;
+  const averageScore = recentSessions.length > 0 
+    ? recentSessions.reduce((sum, s) => {
+        const perfData = s.performance_data as any;
+        return sum + (perfData?.accuracy || 0);
+      }, 0) / recentSessions.length
+    : 0;
+
+  // Calculate streak
+  const getStreakData = () => {
+    const today = new Date().toDateString();
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
     
-    learningTrails: [
-      { id: '1', name: 'Memória', progress: 75, level: 3, xp: 450, icon: '🧠', color: 'gradient-memory' },
-      { id: '2', name: 'Atenção', progress: 60, level: 2, xp: 380, icon: '🎯', color: 'gradient-focus' },
-      { id: '3', name: 'Lógica', progress: 85, level: 4, xp: 520, icon: '🧩', color: 'gradient-problem' },
-      { id: '4', name: 'Linguagem', progress: 45, level: 2, xp: 290, icon: '📚', color: 'gradient-language' },
-      { id: '5', name: 'Matemática', progress: 70, level: 3, xp: 410, icon: '🔢', color: 'gradient-math' },
-      { id: '6', name: 'Social', progress: 55, level: 2, xp: 310, icon: '👥', color: 'gradient-social' },
-    ],
+    const todaySessions = recentSessions.filter(s => 
+      new Date(s.created_at).toDateString() === today
+    );
+    const yesterdaySessions = recentSessions.filter(s => 
+      new Date(s.created_at).toDateString() === yesterday
+    );
     
-    recentActivities: [
-      { game: 'Memória Colorida', date: 'Hoje', score: 89, xp: 45 },
-      { game: 'Foco Floresta', date: 'Ontem', score: 76, xp: 38 },
-      { game: 'Lógica Rápida', date: '2 dias atrás', score: 92, xp: 52 },
-    ],
-    
-    achievements: [
-      { name: 'Primeiro Nível', icon: '🏆', earned: true },
-      { name: 'Concentração', icon: '🎯', earned: true },
-      { name: 'Memória Expert', icon: '🧠', earned: false },
-      { name: 'Social Star', icon: '⭐', earned: false },
-    ],
-    
-    neurodiversityProfile: {
-      detectedConditions: { 'TDAH': 65, 'Ansiedade': 30 },
-      adaptiveStrategies: {
-        'Pausas Frequentes': 'Recomendado para manter atenção',
-        'Feedback Visual': 'Ajuda na compreensão',
-        'Gamificação': 'Aumenta motivação'
-      }
-    }
+    return todaySessions.length > 0 ? 1 + (yesterdaySessions.length > 0 ? 1 : 0) : 0;
   };
+
+  const currentStreak = getStreakData();
+
+  // Map trails to display format
+  const trailIcons = {
+    memory: '🧠',
+    attention: '🎯',
+    logic: '🧩',
+    language: '📚',
+    math: '🔢',
+    executive: '⚙️',
+    social: '👥'
+  };
+
+  const trailColors = {
+    memory: 'gradient-memory',
+    attention: 'gradient-focus',
+    logic: 'gradient-problem',
+    language: 'gradient-language',
+    math: 'gradient-math',
+    executive: 'gradient-primary',
+    social: 'gradient-social'
+  };
+
+  const displayTrails = learningTrails.map(trail => ({
+    id: trail.id,
+    name: trail.cognitive_category.charAt(0).toUpperCase() + trail.cognitive_category.slice(1),
+    progress: Math.min(100, (trail.total_xp / (trail.current_level * 100)) * 100),
+    level: trail.current_level,
+    xp: trail.total_xp,
+    icon: trailIcons[trail.cognitive_category as keyof typeof trailIcons] || '🎮',
+    color: trailColors[trail.cognitive_category as keyof typeof trailColors] || 'gradient-primary'
+  }));
+
+  // Format recent activities
+  const recentActivities = recentSessions.slice(0, 3).map(session => {
+    const perfData = session.performance_data as any;
+    const daysAgo = Math.floor((Date.now() - new Date(session.created_at).getTime()) / 86400000);
+    let dateLabel = daysAgo === 0 ? 'Hoje' : daysAgo === 1 ? 'Ontem' : `${daysAgo} dias atrás`;
+    
+    return {
+      game: session.game_type,
+      date: dateLabel,
+      score: Math.round(perfData?.accuracy || 0),
+      xp: Math.round((perfData?.accuracy || 0) * 0.5) + 10
+    };
+  });
 
   return (
     <div className="space-y-6">
@@ -81,15 +150,15 @@ export function ModernEducationalDashboard() {
                 Descubra como seu cérebro está crescendo! 🌟
               </p>
               <div className="flex items-center gap-4 text-sm text-white/80">
-                <span>📚 {mockData.completedSessions} atividades</span>
-                <span>🔥 {mockData.currentStreak} dias seguidos</span>
-                <span>⚡ {mockData.totalXP} XP total</span>
+                <span>📚 {completedSessions} atividades</span>
+                <span>🔥 {currentStreak} dias seguidos</span>
+                <span>⚡ {totalXP} XP total</span>
               </div>
             </div>
             
             <div className="text-right">
               <div className="text-4xl font-bold mb-1">
-                {mockData.overallProgress}%
+                {Math.round(overallProgress)}%
               </div>
               <div className="text-white/80 text-sm">Progresso Geral</div>
             </div>
@@ -100,7 +169,7 @@ export function ModernEducationalDashboard() {
               <span>Seu progresso educacional</span>
               <span>Nível Hábil 🎓</span>
             </div>
-            <Progress value={mockData.overallProgress} className="h-3 bg-white/20" />
+            <Progress value={overallProgress} className="h-3 bg-white/20" />
           </div>
         </CardContent>
       </Card>
@@ -112,7 +181,7 @@ export function ModernEducationalDashboard() {
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
               <Brain className="w-6 h-6 text-primary" />
             </div>
-            <div className="text-2xl font-bold text-primary mb-1">{mockData.totalXP}</div>
+            <div className="text-2xl font-bold text-primary mb-1">{totalXP}</div>
             <div className="text-xs text-muted-foreground">Experiência Total</div>
           </CardContent>
         </Card>
@@ -122,7 +191,7 @@ export function ModernEducationalDashboard() {
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-yellow-100 flex items-center justify-center">
               <Trophy className="w-6 h-6 text-yellow-600" />
             </div>
-            <div className="text-2xl font-bold text-yellow-600 mb-1">{mockData.completedSessions}</div>
+            <div className="text-2xl font-bold text-yellow-600 mb-1">{completedSessions}</div>
             <div className="text-xs text-muted-foreground">Jogos Completados</div>
           </CardContent>
         </Card>
@@ -132,7 +201,7 @@ export function ModernEducationalDashboard() {
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-green-100 flex items-center justify-center">
               <Target className="w-6 h-6 text-green-600" />
             </div>
-            <div className="text-2xl font-bold text-green-600 mb-1">{mockData.averageScore}%</div>
+            <div className="text-2xl font-bold text-green-600 mb-1">{Math.round(averageScore)}%</div>
             <div className="text-xs text-muted-foreground">Desempenho Médio</div>
           </CardContent>
         </Card>
@@ -142,7 +211,7 @@ export function ModernEducationalDashboard() {
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-orange-100 flex items-center justify-center">
               <Calendar className="w-6 h-6 text-orange-600" />
             </div>
-            <div className="text-2xl font-bold text-orange-600 mb-1">{mockData.currentStreak}</div>
+            <div className="text-2xl font-bold text-orange-600 mb-1">{currentStreak}</div>
             <div className="text-xs text-muted-foreground">Dias Seguidos</div>
           </CardContent>
         </Card>
@@ -155,13 +224,14 @@ export function ModernEducationalDashboard() {
             <BookOpen className="w-5 h-5 text-primary" />
             Suas Trilhas de Aprendizado
             <Badge variant="secondary" className="ml-auto">
-              6 trilhas ativas
+              {learningTrails.length} trilhas ativas
             </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {mockData.learningTrails.map((trail) => (
+          {displayTrails.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {displayTrails.map((trail) => (
               <div
                 key={trail.id}
                 className="p-4 rounded-lg border border-border hover:border-primary/30 transition-smooth cursor-pointer group"
@@ -189,8 +259,14 @@ export function ModernEducationalDashboard() {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Brain className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+              <p className="text-muted-foreground">Comece jogando para iniciar suas trilhas!</p>
+            </div>
+          )}
           
           <div className="text-center pt-4">
             <Button variant="outline" asChild>
@@ -214,32 +290,52 @@ export function ModernEducationalDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
-              <h5 className="font-medium mb-3">Como você aprende melhor:</h5>
-              <div className="grid grid-cols-2 gap-3">
-                {Object.entries(mockData.neurodiversityProfile.detectedConditions).map(([condition, confidence]) => (
-                  <div key={condition} className="text-center p-3 bg-muted/30 rounded-lg">
-                    <div className="text-sm font-medium">{condition}</div>
-                    <div className="text-xs text-muted-foreground">{confidence}% detectado</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h5 className="font-medium mb-3">Estratégias personalizadas:</h5>
-              <div className="space-y-2">
-                {Object.entries(mockData.neurodiversityProfile.adaptiveStrategies).slice(0, 2).map(([strategy, description], index) => (
-                  <div key={index} className="flex items-start gap-2 text-sm p-2 bg-accent/20 rounded">
-                    <Lightbulb className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <div className="font-medium text-accent-foreground">{strategy}</div>
-                      <div className="text-xs text-accent-foreground/80">{description}</div>
+            {neurodiversityProfile ? (
+              <>
+                {neurodiversityProfile.detected_conditions && 
+                 Object.keys(neurodiversityProfile.detected_conditions as object).length > 0 ? (
+                  <div>
+                    <h5 className="font-medium mb-3">Como você aprende melhor:</h5>
+                    <div className="grid grid-cols-2 gap-3">
+                      {Object.entries(neurodiversityProfile.detected_conditions as object).map(([condition, confidence]) => (
+                        <div key={condition} className="text-center p-3 bg-muted/30 rounded-lg">
+                          <div className="text-sm font-medium capitalize">{condition}</div>
+                          <div className="text-xs text-muted-foreground">{Math.round(confidence as number)}% detectado</div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
+                ) : (
+                  <div className="text-center py-4">
+                    <Brain className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground">Continue jogando para descobrirmos seu perfil único!</p>
+                  </div>
+                )}
+
+                {neurodiversityProfile.adaptive_strategies && 
+                 Object.keys(neurodiversityProfile.adaptive_strategies as object).length > 0 && (
+                  <div>
+                    <h5 className="font-medium mb-3">Estratégias personalizadas:</h5>
+                    <div className="space-y-2">
+                      {Object.entries(neurodiversityProfile.adaptive_strategies as object).slice(0, 2).map(([strategy, description], index) => (
+                        <div key={index} className="flex items-start gap-2 text-sm p-2 bg-accent/20 rounded">
+                          <Lightbulb className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <div className="font-medium text-accent-foreground">{strategy}</div>
+                            <div className="text-xs text-accent-foreground/80">{String(description)}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-4">
+                <Brain className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">Seu perfil será criado conforme você joga!</p>
               </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
@@ -252,31 +348,43 @@ export function ModernEducationalDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {mockData.recentActivities.map((activity, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-smooth">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full gradient-playful flex items-center justify-center text-white text-sm font-bold">
-                      {activity.game.charAt(0)}
+            {recentActivities.length > 0 ? (
+              <>
+                <div className="space-y-3">
+                  {recentActivities.map((activity, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-smooth">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full gradient-playful flex items-center justify-center text-white text-sm font-bold">
+                          {activity.game.charAt(0)}
+                        </div>
+                        <div>
+                          <h5 className="font-medium text-sm">{activity.game}</h5>
+                          <p className="text-xs text-muted-foreground">{activity.date}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-medium">+{activity.xp} XP</div>
+                        <div className="text-xs text-muted-foreground">{activity.score}% precisão</div>
+                      </div>
                     </div>
-                    <div>
-                      <h5 className="font-medium text-sm">{activity.game}</h5>
-                      <p className="text-xs text-muted-foreground">{activity.date}</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-medium">+{activity.xp} XP</div>
-                    <div className="text-xs text-muted-foreground">{activity.score}% precisão</div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            <div className="mt-4 pt-4 border-t border-border text-center">
-              <Button variant="outline" size="sm">
-                Ver Histórico Completo
-              </Button>
-            </div>
+                <div className="mt-4 pt-4 border-t border-border text-center">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Total de {completedSessions} sessões completadas
+                  </p>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <Clock className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
+                <p className="text-muted-foreground">Nenhuma atividade recente</p>
+                <Button variant="outline" size="sm" className="mt-4" asChild>
+                  <Link to="/games">Começar a Jogar</Link>
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -287,40 +395,48 @@ export function ModernEducationalDashboard() {
           <CardTitle className="flex items-center gap-2">
             <Award className="w-5 h-5 text-yellow-500" />
             Suas Conquistas
-            <Badge variant="secondary" className="ml-auto">
-              2 de 4 desbloqueadas
-            </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {mockData.achievements.map((achievement, index) => (
-              <div
-                key={index}
-                className={`text-center p-4 rounded-lg border transition-smooth cursor-pointer ${
-                  achievement.earned 
-                    ? 'border-yellow-200 bg-yellow-50 hover:bg-yellow-100' 
-                    : 'border-muted bg-muted/20 opacity-60'
-                }`}
-              >
-                <div className={`text-2xl mb-2 ${achievement.earned ? '' : 'grayscale'}`}>
-                  {achievement.icon}
-                </div>
-                <div className="text-sm font-medium">{achievement.name}</div>
-                {achievement.earned && (
-                  <Badge variant="secondary" className="mt-1 text-xs">
-                    Conquistado!
-                  </Badge>
-                )}
+          <div className="text-center py-8">
+            <Trophy className="w-16 h-16 mx-auto mb-4 text-yellow-500" />
+            <h3 className="font-semibold mb-2">Sistema de Conquistas</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Complete desafios e desbloqueie conquistas especiais!
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="text-center p-4 rounded-lg border border-yellow-200 bg-yellow-50">
+                <div className="text-2xl mb-2">🏆</div>
+                <div className="text-sm font-medium">Primeiro Nível</div>
+                <Badge variant="secondary" className="mt-1 text-xs">
+                  {learningTrails.length > 0 ? 'Conquistado!' : 'Bloqueado'}
+                </Badge>
               </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-6">
-            <Button variant="outline">
-              <Trophy className="w-4 h-4 mr-2" />
-              Ver Todas as Conquistas
-            </Button>
+              
+              <div className={`text-center p-4 rounded-lg border ${completedSessions >= 5 ? 'border-blue-200 bg-blue-50' : 'border-muted bg-muted/20 opacity-60'}`}>
+                <div className={`text-2xl mb-2 ${completedSessions >= 5 ? '' : 'grayscale'}`}>🎯</div>
+                <div className="text-sm font-medium">5 Sessões</div>
+                <Badge variant="secondary" className="mt-1 text-xs">
+                  {completedSessions >= 5 ? 'Conquistado!' : `${completedSessions}/5`}
+                </Badge>
+              </div>
+              
+              <div className={`text-center p-4 rounded-lg border ${currentStreak >= 3 ? 'border-orange-200 bg-orange-50' : 'border-muted bg-muted/20 opacity-60'}`}>
+                <div className={`text-2xl mb-2 ${currentStreak >= 3 ? '' : 'grayscale'}`}>🔥</div>
+                <div className="text-sm font-medium">3 Dias Seguidos</div>
+                <Badge variant="secondary" className="mt-1 text-xs">
+                  {currentStreak >= 3 ? 'Conquistado!' : `${currentStreak}/3`}
+                </Badge>
+              </div>
+              
+              <div className={`text-center p-4 rounded-lg border ${totalXP >= 1000 ? 'border-purple-200 bg-purple-50' : 'border-muted bg-muted/20 opacity-60'}`}>
+                <div className={`text-2xl mb-2 ${totalXP >= 1000 ? '' : 'grayscale'}`}>⭐</div>
+                <div className="text-sm font-medium">1000 XP</div>
+                <Badge variant="secondary" className="mt-1 text-xs">
+                  {totalXP >= 1000 ? 'Conquistado!' : `${totalXP}/1000`}
+                </Badge>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
