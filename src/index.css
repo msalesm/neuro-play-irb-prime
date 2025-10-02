@@ -83,21 +83,14 @@ All colors MUST be HSL.
     --font-body: 'OpenDyslexic', 'Open Sans', system-ui, sans-serif;
     --font-dyslexic: 'OpenDyslexic', 'Open Sans', system-ui, sans-serif;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 15%;
+    --sidebar-primary: 213 85% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 213 85% 95%;
+    --sidebar-accent-foreground: 213 85% 20%;
+    --sidebar-border: 220 13% 88%;
+    --sidebar-ring: 213 85% 65%;
   }
 
   .dark {
@@ -130,6 +123,15 @@ All colors MUST be HSL.
     --border: 213 15% 18%;
     --input: 213 15% 18%;
     --ring: 213 85% 70%;
+
+    --sidebar-background: 213 25% 12%;
+    --sidebar-foreground: 213 20% 90%;
+    --sidebar-primary: 213 85% 70%;
+    --sidebar-primary-foreground: 213 28% 8%;
+    --sidebar-accent: 213 85% 20%;
+    --sidebar-accent-foreground: 213 85% 95%;
+    --sidebar-border: 213 15% 18%;
+    --sidebar-ring: 213 85% 70%;
   }
 }
 
