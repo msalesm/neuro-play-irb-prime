@@ -77,29 +77,29 @@ export const ClinicalDashboard: React.FC = () => {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto p-6 space-y-6 relative z-10">
-        <div className="flex items-center justify-between mb-8">
+      <div className="container mx-auto p-4 sm:p-6 space-y-6 relative z-10">
+        <div className="flex flex-col gap-4 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-2xl">
                 <Brain className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold text-white">
                 Painel 
                 <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                   Clínico
                 </span>
               </h1>
             </div>
-            <p className="text-white/70 mt-2">
-              Análise avançada de padrões comportamentais para diagnóstico de TEA, TDAH e Dislexia
+            <p className="text-white/70 text-sm sm:text-base">
+              Análise avançada de padrões comportamentais
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Button 
               variant="outline" 
               asChild
-              className="bg-white/10 border-white/30 text-white hover:bg-white/20 shadow-lg"
+              className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 shadow-lg"
             >
               <Link to="/dashboard">
                 <BarChart3 className="w-4 h-4 mr-2" />
@@ -109,7 +109,7 @@ export const ClinicalDashboard: React.FC = () => {
             <Button 
               onClick={generateClinicalReport} 
               disabled={loading}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
+              className="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
             >
               {loading ? (
                 <>
@@ -184,7 +184,7 @@ export const ClinicalDashboard: React.FC = () => {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="sm" className="bg-white/10 border-white/30 text-white hover:bg-white/20">
-                  <Link to="/diagnostics">
+                  <Link to="/diagnostic-tests">
                     <Activity className="w-4 h-4 mr-2" />
                     Testes Diagnósticos
                   </Link>
@@ -208,7 +208,7 @@ export const ClinicalDashboard: React.FC = () => {
 
           <TabsContent value="overview" className="space-y-6">
             {/* Risk Assessment Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden hover:bg-white/15 transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 opacity-50" />
                 <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
