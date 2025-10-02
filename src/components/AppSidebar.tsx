@@ -138,18 +138,18 @@ export function AppSidebar() {
   ];
 
   return (
-    <Sidebar className="border-r border-border/50">
-      <SidebarContent className="px-2">
+    <Sidebar className="bg-sidebar border-r border-sidebar-border">
+      <SidebarContent className="px-2 bg-sidebar">
         {/* Header */}
-        <div className="p-4 border-b border-border/20">
+        <div className="p-4 border-b border-sidebar-border">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <Brain className="w-5 h-5 text-white" />
             </div>
             {open && (
               <div className="flex flex-col">
-                <span className="font-semibold text-sm">NeuroPlay</span>
-                <span className="text-xs text-muted-foreground">Forge</span>
+                <span className="font-semibold text-sm text-sidebar-foreground">NeuroPlay</span>
+                <span className="text-xs text-sidebar-foreground/60">Forge</span>
               </div>
             )}
           </div>
@@ -159,7 +159,7 @@ export function AppSidebar() {
         {navigationGroups.map((group) => (
           <SidebarGroup key={group.id}>
             {open && (
-              <SidebarGroupLabel className="text-xs font-medium text-muted-foreground px-2 py-1">
+              <SidebarGroupLabel className="text-xs font-medium text-sidebar-foreground/60 px-2 py-1">
                 {group.label}
               </SidebarGroupLabel>
             )}
@@ -170,7 +170,7 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild>
                       <Link 
                         to={item.path}
-                        className={`${isActive(item.path) ? 'bg-accent text-accent-foreground' : ''}`}
+                        className={`text-sidebar-foreground ${isActive(item.path) ? 'bg-sidebar-accent text-sidebar-accent-foreground' : 'hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground'}`}
                       >
                         <item.icon className="w-4 h-4" />
                         {open && <span>{item.title}</span>}
@@ -185,14 +185,14 @@ export function AppSidebar() {
 
         {/* User Info */}
         {open && (
-          <div className="mt-auto p-4 border-t border-border/20">
+          <div className="mt-auto p-4 border-t border-sidebar-border">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                 <User className="w-4 h-4 text-primary-foreground" />
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="text-sm font-medium truncate">{user.email}</span>
-                <span className="text-xs text-muted-foreground">Usuário Ativo</span>
+                <span className="text-sm font-medium text-sidebar-foreground truncate">{user.email}</span>
+                <span className="text-xs text-sidebar-foreground/60">Usuário Ativo</span>
               </div>
             </div>
           </div>
