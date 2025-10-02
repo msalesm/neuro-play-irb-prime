@@ -62,10 +62,13 @@ export default function MemoryWorkload() {
     if (showingIndex < sequence.length) {
       setTimeout(() => {
         setShowingIndex(prev => prev + 1);
-      }, 1000);
+      }, 1200); // Aumentado para melhor memorização
     } else {
-      setGameState('input');
-      setTimeLeft(sequenceLength * 2000);
+      // Pausa de 800ms antes de permitir input
+      setTimeout(() => {
+        setGameState('input');
+        setTimeLeft(sequenceLength * 2000);
+      }, 800);
     }
   }, [showingIndex, sequence.length, sequenceLength]);
 
@@ -163,33 +166,55 @@ export default function MemoryWorkload() {
   const renderGrid = () => {
     const cells = [];
     for (let i = 0; i < GRID_SIZE; i++) {
-      const isSequenceItem = gameState === 'showing' && 
-        showingIndex > 0 && 
-        sequence.slice(0, showingIndex).some(item => item.position === i);
-      
-      const sequenceItem = sequence.find(item => item.position === i);
+      // Durante fase "showing": mostrar apenas a célula atual com cor e número
       const isCurrentShowing = gameState === 'showing' && 
         showingIndex > 0 && 
         sequence[showingIndex - 1]?.position === i;
+      
+      const sequenceItem = sequence.find(item => item.position === i);
+      
+      // Durante fase "input": verificar se o usuário já clicou nesta célula
+      const userClickIndex = userSequence.indexOf(i);
+      const wasClickedByUser = userClickIndex !== -1;
+
+      // Determinar estilo baseado na fase do jogo
+      let backgroundColor = '#f1f5f9'; // Cinza claro padrão
+      let borderColor = '#cbd5e1';
+      let showNumber = false;
+      let numberToShow = 0;
+
+      if (gameState === 'showing' && isCurrentShowing) {
+        // Fase de memorização: mostrar cor e número da sequência
+        backgroundColor = sequenceItem?.color || '#f1f5f9';
+        borderColor = sequenceItem?.color || '#cbd5e1';
+        showNumber = true;
+        numberToShow = showingIndex;
+      } else if (gameState === 'input' && wasClickedByUser) {
+        // Fase de input: células clicadas ficam verdes com número da ordem
+        backgroundColor = '#10b981'; // Verde
+        borderColor = '#059669';
+        showNumber = true;
+        numberToShow = userClickIndex + 1;
+      }
 
       cells.push(
         <div
           key={i}
           className={`
-            w-16 h-16 rounded-lg border-2 cursor-pointer transition-all duration-300
-            ${gameState === 'input' ? 'hover:scale-105' : ''}
-            ${isCurrentShowing ? 'animate-pulse scale-110' : ''}
-            ${isSequenceItem && !isCurrentShowing ? 'opacity-50' : ''}
+            w-16 h-16 rounded-lg border-2 transition-all duration-300 flex items-center justify-center
+            ${gameState === 'input' ? 'cursor-pointer hover:scale-110 hover:border-primary hover:shadow-lg' : 'cursor-default'}
+            ${isCurrentShowing ? 'animate-pulse scale-110 shadow-xl' : ''}
+            ${wasClickedByUser ? 'ring-2 ring-green-400' : ''}
           `}
           style={{
-            backgroundColor: isSequenceItem ? sequenceItem?.color : '#f1f5f9',
-            borderColor: isSequenceItem ? sequenceItem?.color : '#cbd5e1'
+            backgroundColor,
+            borderColor
           }}
           onClick={() => handleCellClick(i)}
         >
-          {gameState === 'showing' && isCurrentShowing && (
-            <div className="w-full h-full flex items-center justify-center text-white font-bold">
-              {sequence.findIndex(item => item.position === i) + 1}
+          {showNumber && (
+            <div className="text-2xl font-bold text-white drop-shadow-md">
+              {numberToShow}
             </div>
           )}
         </div>
@@ -257,9 +282,14 @@ export default function MemoryWorkload() {
             )}
             
             {gameState === 'input' && (
-              <div className="flex items-center justify-center gap-2 text-green-600">
-                <CheckCircle className="w-5 h-5" />
-                <span>Reproduza a sequência ({userSequence.length}/{sequence.length})</span>
+              <div className="space-y-2">
+                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold">
+                  <CheckCircle className="w-5 h-5" />
+                  <span>Clique nas células na ordem que foram mostradas</span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  Progresso: {userSequence.length}/{sequence.length} células clicadas
+                </div>
               </div>
             )}
             
