@@ -3512,48 +3512,6 @@ export type Database = {
       }
     }
     Views: {
-      doctor_profiles_public: {
-        Row: {
-          approved: boolean | null
-          availability_status: string | null
-          bio: string | null
-          created_at: string | null
-          id: string | null
-          is_online: boolean | null
-          location_public: Json | null
-          photo_url: string | null
-          rating_avg: number | null
-          specialty: string | null
-          user_id: string | null
-        }
-        Insert: {
-          approved?: boolean | null
-          availability_status?: never
-          bio?: string | null
-          created_at?: string | null
-          id?: string | null
-          is_online?: boolean | null
-          location_public?: never
-          photo_url?: string | null
-          rating_avg?: number | null
-          specialty?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          approved?: boolean | null
-          availability_status?: never
-          bio?: string | null
-          created_at?: string | null
-          id?: string | null
-          is_online?: boolean | null
-          location_public?: never
-          photo_url?: string | null
-          rating_avg?: number | null
-          specialty?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
       public_profiles_safe: {
         Row: {
           avatar_url: string | null
