@@ -320,7 +320,7 @@ export default function SpatialArchitect() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-6">
+          <div className="space-y-8 mb-6">
             {currentChallenge?.target && (
               <div className="text-center">
                 <h4 className="font-semibold mb-4 text-green-600">Objetivo:</h4>
@@ -328,11 +328,16 @@ export default function SpatialArchitect() {
               </div>
             )}
             
+            {!currentChallenge?.target && (
+              <div className="text-center">
+                <h4 className="font-semibold mb-4 text-blue-600">Padrão Base:</h4>
+                {renderPattern(currentChallenge.pattern, true)}
+              </div>
+            )}
+            
             <div className="text-center">
-              <h4 className="font-semibold mb-4 text-blue-600">
-                {currentChallenge?.target ? 'Sua Construção:' : 'Padrão Base:'}
-              </h4>
-              {currentChallenge?.target ? renderPattern(userPattern) : renderPattern(currentChallenge.pattern)}
+              <h4 className="font-semibold mb-4 text-primary">Sua Construção:</h4>
+              {renderPattern(userPattern)}
             </div>
           </div>
 
