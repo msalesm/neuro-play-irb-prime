@@ -22,10 +22,10 @@ export function SimonDisplay({
   const progress = sequenceLength > 0 ? (currentPosition / sequenceLength) * 100 : 0;
 
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
+    <div className="mt-8 w-full max-w-[280px] mx-auto">
       <div className={cn(
         'bg-gray-900 rounded-2xl p-6 shadow-2xl',
-        'border-4 border-gray-700 min-w-[200px]'
+        'border-4 border-gray-700'
       )}>
         {/* LED Indicators */}
         <div className="flex justify-center gap-2 mb-4">

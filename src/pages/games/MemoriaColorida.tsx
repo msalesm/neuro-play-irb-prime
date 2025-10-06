@@ -483,9 +483,9 @@ export default function MemoriaColorida() {
             )}
 
             {(gameState === 'showing' || gameState === 'playing' || (gameState === 'idle' && !showTutorial)) && (
-              <div className="flex justify-center items-center min-h-[500px] py-12">
+              <div className="flex flex-col items-center justify-center py-8 space-y-6">
                 {/* Simon Console - Classic Circular Layout */}
-                <div className="relative z-0">
+                <div className="relative">
                   {/* The 4-button grid */}
                   <div className={cn(
                     "grid grid-cols-2 gap-3 p-6 rounded-full",
@@ -533,17 +533,17 @@ export default function MemoriaColorida() {
                       />
                     </div>
                   </div>
-
-                  {/* Central Display */}
-                  <SimonDisplay
-                    level={stats.level}
-                    score={stats.score}
-                    gameState={gameState}
-                    currentPosition={playerSequence.length}
-                    sequenceLength={sequence.length}
-                    highScore={stats.highScore}
-                  />
                 </div>
+
+                {/* Central Display - Moved Below */}
+                <SimonDisplay
+                  level={stats.level}
+                  score={stats.score}
+                  gameState={gameState}
+                  currentPosition={playerSequence.length}
+                  sequenceLength={sequence.length}
+                  highScore={stats.highScore}
+                />
               </div>
             )}
 
