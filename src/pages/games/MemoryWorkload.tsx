@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Timer, RotateCcw, CheckCircle, AlertCircle } from 'lucide-react';
+import { Timer, RotateCcw, CheckCircle, AlertCircle, TrendingUp, Brain, Play } from 'lucide-react';
 import { toast } from 'sonner';
 import { useBehavioralAnalysis } from '@/hooks/useBehavioralAnalysis';
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useSessionRecovery } from '@/hooks/useSessionRecovery';
+import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { GameExitButton } from '@/components/GameExitButton';
 
 interface MemoryItem {
   id: string;
@@ -15,6 +19,9 @@ interface MemoryItem {
 
 const COLORS = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#FF9FF3'];
 const GRID_SIZE = 16; // 4x4 grid
+const SHOW_DURATION = 800; // Reduzido de 1200ms para 800ms
+const PAUSE_DURATION = 400; // Reduzido de 800ms para 400ms
+const FEEDBACK_DURATION = 1000; // Reduzido de 2000ms para 1000ms
 
 export default function MemoryWorkload() {
   const { saveBehavioralMetric } = useBehavioralAnalysis();
@@ -26,13 +33,40 @@ export default function MemoryWorkload() {
   const [currentStep, setCurrentStep] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
   const [showingIndex, setShowingIndex] = useState(0);
+  const [adaptiveMode, setAdaptiveMode] = useState(true);
+  const [consecutiveCorrect, setConsecutiveCorrect] = useState(0);
+  const [consecutiveErrors, setConsecutiveErrors] = useState(0);
+  const clickTimeRef = useRef<number>(0);
   const [sessionData, setSessionData] = useState({
     correctResponses: 0,
     totalResponses: 0,
     averageReactionTime: 0,
     maxLevel: 1,
-    errors: 0
+    errors: 0,
+    reactionTimes: [] as number[]
   });
+
+  // Auto-save integration
+  const { 
+    startSession, 
+    updateSession, 
+    completeSession, 
+    abandonSession,
+    currentSession,
+    isSaving 
+  } = useAutoSave({ 
+    saveInterval: 10000,
+    saveOnAction: true,
+    saveOnUnload: true 
+  });
+
+  // Session recovery
+  const { 
+    unfinishedSessions, 
+    loading: recoveryLoading,
+    resumeSession,
+    discardSession 
+  } = useSessionRecovery('memory-workload');
 
   const sequenceLength = Math.min(3 + level, 8);
 
@@ -55,25 +89,29 @@ export default function MemoryWorkload() {
     setCurrentStep(0);
     setShowingIndex(0);
     setGameState('showing');
-    setTimeLeft(sequenceLength * 1000);
+    setTimeLeft(sequenceLength * SHOW_DURATION);
+    clickTimeRef.current = Date.now();
   }, [generateSequence, sequenceLength]);
 
   const showSequence = useCallback(() => {
     if (showingIndex < sequence.length) {
       setTimeout(() => {
         setShowingIndex(prev => prev + 1);
-      }, 1200); // Aumentado para melhor memorização
+      }, SHOW_DURATION);
     } else {
-      // Pausa de 800ms antes de permitir input
       setTimeout(() => {
         setGameState('input');
-        setTimeLeft(sequenceLength * 2000);
-      }, 800);
+        setTimeLeft(sequenceLength * 1500); // Tempo adequado para input
+        clickTimeRef.current = Date.now();
+      }, PAUSE_DURATION);
     }
   }, [showingIndex, sequence.length, sequenceLength]);
 
   const handleCellClick = (position: number) => {
     if (gameState !== 'input') return;
+
+    const reactionTime = Date.now() - clickTimeRef.current;
+    clickTimeRef.current = Date.now();
 
     const newUserSequence = [...userSequence, position];
     setUserSequence(newUserSequence);
@@ -85,12 +123,34 @@ export default function MemoryWorkload() {
         const newScore = score + level * 10;
         setScore(newScore);
         
-        setSessionData(prev => ({
-          ...prev,
-          correctResponses: prev.correctResponses + 1,
-          totalResponses: prev.totalResponses + 1,
-          maxLevel: Math.max(prev.maxLevel, level)
-        }));
+        const newReactionTimes = [...sessionData.reactionTimes, reactionTime];
+        const avgReactionTime = newReactionTimes.reduce((a, b) => a + b, 0) / newReactionTimes.length;
+        
+        const newSessionData = {
+          ...sessionData,
+          correctResponses: sessionData.correctResponses + 1,
+          totalResponses: sessionData.totalResponses + 1,
+          maxLevel: Math.max(sessionData.maxLevel, level),
+          averageReactionTime: avgReactionTime,
+          reactionTimes: newReactionTimes
+        };
+        
+        setSessionData(newSessionData);
+        setConsecutiveCorrect(prev => prev + 1);
+        setConsecutiveErrors(0);
+
+        // Adaptive difficulty
+        let nextLevel = level;
+        if (adaptiveMode && consecutiveCorrect >= 2) {
+          nextLevel = level + 2; // Aumenta 2 níveis se acertar 3 seguidas
+          toast.success(`Excelente! Pulando para nível ${nextLevel}!`, { duration: 2000 });
+        } else if (adaptiveMode && consecutiveCorrect >= 1) {
+          nextLevel = level + 1; // Aumenta 1 nível
+          toast.success(`Nível ${level} completo! +${level * 10} pontos`);
+        } else {
+          toast.success(`Nível ${level} completo! +${level * 10} pontos`);
+          nextLevel = level + 1;
+        }
 
         // Save behavioral metric
         saveBehavioralMetric({
@@ -101,27 +161,49 @@ export default function MemoryWorkload() {
             level,
             sequenceLength,
             score: newScore,
-            accuracy: (sessionData.correctResponses + 1) / (sessionData.totalResponses + 1)
+            accuracy: newSessionData.correctResponses / newSessionData.totalResponses,
+            reactionTime,
+            avgReactionTime
           },
           gameId: 'memory-workload'
         });
 
-        toast.success(`Nível ${level} completo! +${level * 10} pontos`);
+        // Auto-save update
+        updateSession({
+          score: newScore,
+          level: nextLevel,
+          moves: newSessionData.totalResponses
+        });
+
         setTimeout(() => {
-          setLevel(prev => prev + 1);
+          setLevel(nextLevel);
           startRound();
-        }, 2000);
+        }, FEEDBACK_DURATION);
       } else {
         setCurrentStep(prev => prev + 1);
       }
     } else {
       // Wrong answer
       setGameState('feedback');
-      setSessionData(prev => ({
-        ...prev,
-        errors: prev.errors + 1,
-        totalResponses: prev.totalResponses + 1
-      }));
+      
+      const newSessionData = {
+        ...sessionData,
+        errors: sessionData.errors + 1,
+        totalResponses: sessionData.totalResponses + 1
+      };
+      
+      setSessionData(newSessionData);
+      setConsecutiveErrors(prev => prev + 1);
+      setConsecutiveCorrect(0);
+
+      // Adaptive difficulty
+      let nextLevel = level;
+      if (adaptiveMode && consecutiveErrors >= 1 && level > 1) {
+        nextLevel = Math.max(1, level - 1); // Diminui 1 nível após 2 erros
+        toast.error('Ajustando dificuldade...', { duration: 1500 });
+      } else {
+        toast.error('Sequência incorreta. Tente novamente!');
+      }
 
       // Save error metric
       saveBehavioralMetric({
@@ -138,13 +220,17 @@ export default function MemoryWorkload() {
         gameId: 'memory-workload'
       });
 
-      toast.error('Sequência incorreta. Tente novamente!');
+      // Auto-save update
+      updateSession({
+        score,
+        level: nextLevel,
+        moves: newSessionData.totalResponses
+      });
+
       setTimeout(() => {
-        if (level > 1) {
-          setLevel(prev => prev - 1);
-        }
+        setLevel(nextLevel);
         startRound();
-      }, 2000);
+      }, FEEDBACK_DURATION);
     }
   };
 
@@ -223,30 +309,125 @@ export default function MemoryWorkload() {
     return cells;
   };
 
+  const handleStartGame = async () => {
+    const sessionId = await startSession('memory-workload', level, {
+      adaptiveMode,
+      initialLevel: level
+    });
+    
+    if (sessionId) {
+      startRound();
+    }
+  };
+
+  const handleResumeSession = async (session: any) => {
+    const recoveredSession = await resumeSession(session.id);
+    if (recoveredSession) {
+      setLevel(recoveredSession.level || 1);
+      setScore(recoveredSession.performance_data?.score || 0);
+      setSessionData(prev => ({
+        ...prev,
+        ...recoveredSession.performance_data?.sessionData
+      }));
+      
+      await startSession('memory-workload', recoveredSession.level, recoveredSession.performance_data);
+      startRound();
+      toast.success('Sessão recuperada!');
+    }
+  };
+
   const accuracy = sessionData.totalResponses > 0 
     ? (sessionData.correctResponses / sessionData.totalResponses * 100).toFixed(1)
     : '0.0';
 
+  const avgReactionTime = sessionData.averageReactionTime > 0 
+    ? (sessionData.averageReactionTime / 1000).toFixed(2)
+    : '0.00';
+
+  // Render capacity graph (span visualization)
+  const renderCapacityGraph = () => {
+    const maxCapacity = 8;
+    return (
+      <div className="flex items-end gap-1 justify-center h-16">
+        {Array.from({ length: maxCapacity }).map((_, i) => {
+          const barLevel = i + 1;
+          const isReached = sessionData.maxLevel >= barLevel;
+          const isCurrent = level === barLevel;
+          
+          return (
+            <div
+              key={i}
+              className={`w-6 rounded-t transition-all duration-300 ${
+                isCurrent 
+                  ? 'bg-gradient-to-t from-blue-600 to-blue-400 animate-pulse' 
+                  : isReached 
+                    ? 'bg-gradient-to-t from-green-600 to-green-400' 
+                    : 'bg-gray-200'
+              }`}
+              style={{ 
+                height: `${((barLevel) / maxCapacity) * 100}%`,
+              }}
+              title={`Nível ${barLevel}`}
+            />
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-4">
-      <div className="max-w-4xl mx-auto">
-        <Card className="p-6 mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">Memória de Trabalho</h1>
-              <p className="text-gray-600">Memorize e reproduza a sequência de cores e posições</p>
+    <>
+      <SessionRecoveryModal
+        open={!recoveryLoading && unfinishedSessions.length > 0 && gameState === 'waiting'}
+        sessions={unfinishedSessions}
+        onResume={handleResumeSession}
+        onDiscard={discardSession}
+        onStartNew={handleStartGame}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-4">
+        <div className="max-w-4xl mx-auto">
+          {gameState !== 'waiting' && (
+            <div className="mb-4">
+              <GameExitButton 
+                onExit={async () => {
+                  await abandonSession();
+                  setGameState('waiting');
+                }}
+              />
             </div>
-            <div className="flex items-center gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">{score}</div>
-                <div className="text-sm text-gray-500">Pontos</div>
+          )}
+
+          <Card className="p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                  <Brain className="w-6 h-6 text-purple-600" />
+                  Memória de Trabalho
+                </h1>
+                <p className="text-gray-600">Memorize e reproduza a sequência</p>
+                {adaptiveMode && gameState !== 'waiting' && (
+                  <div className="flex items-center gap-1 mt-1 text-xs text-blue-600">
+                    <TrendingUp className="w-3 h-3" />
+                    <span>Modo Adaptativo Ativo</span>
+                  </div>
+                )}
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-indigo-600">{level}</div>
-                <div className="text-sm text-gray-500">Nível</div>
+              <div className="flex items-center gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">{score}</div>
+                  <div className="text-sm text-gray-500">Pontos</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-indigo-600">{level}</div>
+                  <div className="text-sm text-gray-500">Nível</div>
+                </div>
+                {isSaving && gameState !== 'waiting' && (
+                  <div className="text-xs text-gray-500 italic">
+                    💾 Salvando...
+                  </div>
+                )}
               </div>
             </div>
-          </div>
 
           {gameState !== 'waiting' && (
             <div className="mb-4">
@@ -263,33 +444,69 @@ export default function MemoryWorkload() {
 
           <div className="text-center mb-6">
             {gameState === 'waiting' && (
-              <div>
+              <div className="space-y-4">
                 <p className="mb-4 text-gray-600">
-                  Clique em "Iniciar" para começar. Memorize a sequência de cores e posições,
-                  depois reproduza clicando nas células na ordem correta.
+                  Memorize a sequência de cores e posições, depois reproduza clicando nas células na ordem correta.
                 </p>
-                <Button onClick={startRound} size="lg">
+                
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <h3 className="font-semibold text-blue-900 mb-2">💡 Como Jogar</h3>
+                  <ul className="text-sm text-blue-800 text-left space-y-1">
+                    <li>• Primeiro você verá uma sequência de cores piscando</li>
+                    <li>• Cada cor aparece em uma célula específica com um número</li>
+                    <li>• Depois, clique nas células na mesma ordem</li>
+                    <li>• O jogo ajusta automaticamente a dificuldade</li>
+                  </ul>
+                </div>
+
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <label className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={adaptiveMode}
+                      onChange={(e) => setAdaptiveMode(e.target.checked)}
+                      className="w-4 h-4"
+                    />
+                    <span>Modo Adaptativo (recomendado)</span>
+                  </label>
+                </div>
+                
+                <Button onClick={handleStartGame} size="lg" className="gap-2">
+                  <Play className="w-5 h-5" />
                   Iniciar Teste
                 </Button>
               </div>
             )}
             
             {gameState === 'showing' && (
-              <div className="flex items-center justify-center gap-2 text-blue-600">
-                <AlertCircle className="w-5 h-5" />
-                <span>Memorize a sequência... ({showingIndex}/{sequence.length})</span>
+              <div className="space-y-2">
+                <div className="flex items-center justify-center gap-2 text-blue-600 font-semibold">
+                  <AlertCircle className="w-5 h-5 animate-pulse" />
+                  <span>Memorize a sequência...</span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  {showingIndex}/{sequence.length} itens mostrados
+                </div>
+                <Progress 
+                  value={(showingIndex / sequence.length) * 100} 
+                  className="h-2 max-w-xs mx-auto"
+                />
               </div>
             )}
             
             {gameState === 'input' && (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-center justify-center gap-2 text-green-600 font-semibold">
                   <CheckCircle className="w-5 h-5" />
-                  <span>Clique nas células na ordem que foram mostradas</span>
+                  <span>Clique nas células na ordem correta</span>
                 </div>
-                <div className="text-sm text-gray-600">
-                  Progresso: {userSequence.length}/{sequence.length} células clicadas
+                <div className="text-sm text-gray-600 font-medium">
+                  Progresso: {userSequence.length}/{sequence.length} células
                 </div>
+                <Progress 
+                  value={(userSequence.length / sequence.length) * 100} 
+                  className="h-2 max-w-xs mx-auto"
+                />
               </div>
             )}
             
@@ -305,22 +522,38 @@ export default function MemoryWorkload() {
             {renderGrid()}
           </div>
 
-          <div className="grid grid-cols-3 gap-4 mt-6 text-center">
-            <div>
-              <div className="text-lg font-bold text-emerald-600">{accuracy}%</div>
-              <div className="text-sm text-gray-500">Precisão</div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-blue-600">{sessionData.maxLevel}</div>
-              <div className="text-sm text-gray-500">Nível Máximo</div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-red-600">{sessionData.errors}</div>
-              <div className="text-sm text-gray-500">Erros</div>
-            </div>
-          </div>
+          {gameState !== 'waiting' && (
+            <>
+              <div className="mb-6">
+                <div className="text-center mb-2 text-sm font-semibold text-gray-700">
+                  Capacidade de Memória (Span)
+                </div>
+                {renderCapacityGraph()}
+              </div>
+
+              <div className="grid grid-cols-4 gap-4 mt-6 text-center">
+                <div>
+                  <div className="text-lg font-bold text-emerald-600">{accuracy}%</div>
+                  <div className="text-sm text-gray-500">Precisão</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-blue-600">{sessionData.maxLevel}</div>
+                  <div className="text-sm text-gray-500">Span Máximo</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-orange-600">{avgReactionTime}s</div>
+                  <div className="text-sm text-gray-500">Tempo Médio</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-red-600">{sessionData.errors}</div>
+                  <div className="text-sm text-gray-500">Erros</div>
+                </div>
+              </div>
+            </>
+          )}
         </Card>
       </div>
     </div>
+    </>
   );
 }
