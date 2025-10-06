@@ -27,22 +27,47 @@ export class SimonSoundEngine {
   private audioContext: AudioContext | null = null;
   private masterGain: GainNode | null = null;
   private isEnabled: boolean = true;
+  private isInitialized: boolean = false;
 
   constructor() {
-    if (typeof window !== 'undefined' && !document.documentElement.classList.contains('reduced-sounds')) {
+    // Don't initialize AudioContext in constructor (mobile requirement)
+  }
+
+  private initAudioContext() {
+    if (this.isInitialized || typeof window === 'undefined') return;
+    
+    try {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       this.masterGain = this.audioContext.createGain();
       this.masterGain.connect(this.audioContext.destination);
       this.masterGain.gain.value = 0.3;
+      this.isInitialized = true;
+      
+      // Resume AudioContext if suspended (iOS requirement)
+      if (this.audioContext.state === 'suspended') {
+        this.audioContext.resume();
+      }
+    } catch (error) {
+      console.error('Failed to initialize audio:', error);
     }
   }
 
   setEnabled(enabled: boolean) {
     this.isEnabled = enabled;
+    if (enabled && !this.isInitialized) {
+      this.initAudioContext();
+    }
   }
 
   playColorTone(color: SimonColor, duration: number = 0.4) {
-    if (!this.isEnabled || !this.audioContext || !this.masterGain) return;
+    if (!this.isEnabled) return;
+    
+    // Initialize audio on first interaction (mobile requirement)
+    if (!this.isInitialized) {
+      this.initAudioContext();
+    }
+    
+    if (!this.audioContext || !this.masterGain) return;
 
     const oscillator = this.audioContext.createOscillator();
     const gainNode = this.audioContext.createGain();

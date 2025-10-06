@@ -475,7 +475,15 @@ export default function MemoriaColorida() {
                   </div>
                 </div>
                 
-                <Button onClick={startGame} size="lg" className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg">
+                <Button 
+                  onClick={() => {
+                    // Initialize audio on user interaction (mobile requirement)
+                    simonSoundEngine.setEnabled(true);
+                    startGame();
+                  }} 
+                  size="lg" 
+                  className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+                >
                   <Play className="w-5 h-5" />
                   Começar Jogo
                 </Button>
