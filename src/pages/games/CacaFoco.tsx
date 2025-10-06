@@ -18,6 +18,23 @@ type GameItem = {
   isTarget: boolean;
   x: number;
   y: number;
+  clicked?: boolean;
+  animate?: 'success' | 'error';
+};
+
+type Particle = {
+  id: string;
+  x: number;
+  y: number;
+  color: string;
+};
+
+type Confetti = {
+  id: string;
+  x: number;
+  y: number;
+  color: string;
+  delay: number;
 };
 
 interface GameStats {
@@ -69,6 +86,9 @@ export default function CacaFoco() {
   const [gameTimer, setGameTimer] = useState<NodeJS.Timeout | null>(null);
   const [startTime, setStartTime] = useState<number>(0);
   const [difficulty, setDifficulty] = useState(1);
+  const [particles, setParticles] = useState<Particle[]>([]);
+  const [confettiPieces, setConfettiPieces] = useState<Confetti[]>([]);
+  const [shakeGame, setShakeGame] = useState(false);
 
   // Generate game items based on difficulty
   const generateItems = useCallback((level: number, targetEmoji: string) => {
@@ -83,7 +103,9 @@ export default function CacaFoco() {
         emoji: targetEmoji,
         isTarget: true,
         x: Math.random() * 70 + 15, // More centered positioning
-        y: Math.random() * 60 + 20, 
+        y: Math.random() * 60 + 20,
+        animate: undefined,
+        clicked: false,
       });
     }
 
@@ -97,6 +119,8 @@ export default function CacaFoco() {
         isTarget: false,
         x: Math.random() * 70 + 15,
         y: Math.random() * 60 + 20,
+        animate: undefined,
+        clicked: false,
       });
     }
 
@@ -189,6 +213,57 @@ export default function CacaFoco() {
     }
   }, [hasUnfinishedSessions, gameState, currentSession]);
 
+  // Spawn particles on success
+  const spawnParticles = (x: number, y: number) => {
+    const newParticles: Particle[] = [];
+    const colors = ['#10b981', '#22c55e', '#84cc16', '#eab308'];
+    
+    for (let i = 0; i < 8; i++) {
+      newParticles.push({
+        id: `particle-${Date.now()}-${i}`,
+        x: x + (Math.random() - 0.5) * 20,
+        y: y + (Math.random() - 0.5) * 20,
+        color: colors[Math.floor(Math.random() * colors.length)],
+      });
+    }
+    
+    setParticles(prev => [...prev, ...newParticles]);
+    
+    // Remove particles after animation
+    setTimeout(() => {
+      setParticles(prev => prev.filter(p => !newParticles.find(np => np.id === p.id)));
+    }, 1000);
+  };
+
+  // Spawn confetti on level complete
+  const spawnConfetti = () => {
+    const newConfetti: Confetti[] = [];
+    const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
+    
+    for (let i = 0; i < 30; i++) {
+      newConfetti.push({
+        id: `confetti-${Date.now()}-${i}`,
+        x: Math.random() * 100,
+        y: -10,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        delay: Math.random() * 0.5,
+      });
+    }
+    
+    setConfettiPieces(newConfetti);
+    
+    // Remove confetti after animation
+    setTimeout(() => {
+      setConfettiPieces([]);
+    }, 3500);
+  };
+
+  // Trigger shake effect
+  const triggerShake = () => {
+    setShakeGame(true);
+    setTimeout(() => setShakeGame(false), 500);
+  };
+
   // Handle item click
   const handleItemClick = (item: GameItem) => {
     if (gameState !== 'playing') return;
@@ -204,20 +279,32 @@ export default function CacaFoco() {
       newStats.score = stats.score + (10 * stats.level);
       newStats.streak = stats.streak + 1;
       
+      // Spawn particles at click location
+      spawnParticles(item.x, item.y);
+      
       // Audio feedback
       audio.playSuccess('medium');
       if (newStats.streak > 2) {
         audio.playTick(); // Combo sound
       }
 
-      // Remove clicked target
-      const updatedItems = items.filter(i => i.id !== item.id);
+      // Remove clicked target with animation
+      const updatedItems = items.map(i => 
+        i.id === item.id ? { ...i, clicked: true, animate: 'success' as const } : i
+      );
       setItems(updatedItems);
+      
+      // Actually remove after animation
+      setTimeout(() => {
+        setItems(prev => prev.filter(i => i.id !== item.id));
+      }, 300);
 
       // Check if all targets found
-      const remainingTargets = updatedItems.filter(i => i.isTarget);
+      const remainingTargets = updatedItems.filter(i => i.isTarget && !i.clicked);
       if (remainingTargets.length === 0) {
-        // Level completed
+        // Level completed - spawn confetti!
+        spawnConfetti();
+        
         const completionTime = Date.now() - startTime;
         const timeBonus = Math.max(0, newStats.timeLeft * 5);
         
@@ -253,6 +340,21 @@ export default function CacaFoco() {
       newStats.score = Math.max(0, stats.score - 5);
       newStats.streak = 0;
       newStats.timeLeft = Math.max(1, stats.timeLeft - 2); // Time penalty
+      
+      // Trigger shake and mark item
+      triggerShake();
+      
+      const updatedItems = items.map(i => 
+        i.id === item.id ? { ...i, clicked: true, animate: 'error' as const } : i
+      );
+      setItems(updatedItems);
+      
+      // Remove error marker after animation
+      setTimeout(() => {
+        setItems(prev => prev.map(i => 
+          i.id === item.id ? { ...i, clicked: false, animate: undefined } : i
+        ));
+      }, 500);
       
       // Audio feedback for error
       audio.playError('soft');
@@ -395,37 +497,39 @@ export default function CacaFoco() {
 
         {/* Stats Panel */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-primary">{stats.level}</div>
+              <div className="text-xl font-bold text-primary animate-bounce-in">{stats.level}</div>
               <div className="text-xs text-muted-foreground">Nível</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-green-600">{stats.score}</div>
+              <div className={`text-xl font-bold text-green-600 ${stats.score > 0 ? 'animate-bounce-in' : ''}`}>{stats.score}</div>
               <div className="text-xs text-muted-foreground">Pontos</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-red-600">{stats.timeLeft}s</div>
+              <div className={`text-xl font-bold ${stats.timeLeft < 10 ? 'text-red-600 animate-pulse' : 'text-orange-600'}`}>{stats.timeLeft}s</div>
               <div className="text-xs text-muted-foreground">Tempo</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
               <div className="text-xl font-bold text-purple-600">{accuracy}%</div>
               <div className="text-xs text-muted-foreground">Precisão</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-yellow-600">{stats.streak}</div>
+              <div className={`text-xl font-bold text-yellow-600 ${stats.streak > 0 ? 'animate-pulse-success' : ''}`}>
+                {stats.streak > 0 ? '🔥 ' : ''}{stats.streak}
+              </div>
               <div className="text-xs text-muted-foreground">Sequência</div>
             </CardContent>
           </Card>
@@ -437,7 +541,7 @@ export default function CacaFoco() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="text-3xl">{currentTarget}</div>
+                  <div className="text-3xl animate-bounce-in">{currentTarget}</div>
                   <div>
                     <h3 className="font-semibold">Encontre este símbolo!</h3>
                     <p className="text-sm text-muted-foreground">
@@ -447,11 +551,20 @@ export default function CacaFoco() {
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-muted-foreground">Alvos restantes</div>
-                  <div className="text-2xl font-bold text-primary">
-                    {items.filter(i => i.isTarget).length}
+                  <div className="text-2xl font-bold text-primary animate-pulse">
+                    {items.filter(i => i.isTarget && !i.clicked).length}
                   </div>
                 </div>
               </div>
+              
+              {/* Combo Indicator */}
+              {stats.streak >= 3 && (
+                <div className="mt-4 text-center">
+                  <div className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full animate-pulse-success font-bold">
+                    🔥 COMBO x{stats.streak}! 🔥
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
@@ -494,20 +607,54 @@ export default function CacaFoco() {
             )}
 
             {(gameState === 'playing' && items.length > 0) && (
-              <div className="relative min-h-96 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border-2 border-dashed border-primary/30">
-                {items.map((item) => (
+              <div className={`relative min-h-96 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border-2 border-dashed border-primary/30 overflow-hidden ${shakeGame ? 'animate-shake' : ''}`}>
+                {/* Game Items */}
+                {items.map((item, index) => (
                   <button
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className="absolute text-2xl sm:text-3xl transition-all duration-200 hover:scale-125 cursor-pointer transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-white/50"
+                    disabled={item.clicked}
+                    className={`absolute text-2xl sm:text-3xl transition-all duration-200 cursor-pointer transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full 
+                      ${!item.clicked ? 'hover:scale-125 hover:bg-white/50' : ''} 
+                      ${item.animate === 'success' ? 'animate-pulse-success' : ''} 
+                      ${item.animate === 'error' ? 'animate-shake opacity-50' : ''}
+                      ${!item.animate && !item.clicked ? 'animate-bounce-in' : ''}`}
                     style={{
                       left: `${item.x}%`,
                       top: `${item.y}%`,
+                      animationDelay: `${index * 0.05}s`,
                     }}
                     aria-label={item.isTarget ? 'Alvo correto' : 'Distrator'}
                   >
                     {item.emoji}
                   </button>
+                ))}
+                
+                {/* Particles */}
+                {particles.map((particle) => (
+                  <div
+                    key={particle.id}
+                    className="absolute w-3 h-3 rounded-full animate-particle-float pointer-events-none"
+                    style={{
+                      left: `${particle.x}%`,
+                      top: `${particle.y}%`,
+                      backgroundColor: particle.color,
+                    }}
+                  />
+                ))}
+                
+                {/* Confetti */}
+                {confettiPieces.map((confetti) => (
+                  <div
+                    key={confetti.id}
+                    className="absolute w-2 h-4 animate-confetti-fall pointer-events-none"
+                    style={{
+                      left: `${confetti.x}%`,
+                      top: `${confetti.y}%`,
+                      backgroundColor: confetti.color,
+                      animationDelay: `${confetti.delay}s`,
+                    }}
+                  />
                 ))}
               </div>
             )}
