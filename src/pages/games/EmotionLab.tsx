@@ -140,13 +140,18 @@ export default function EmotionLab() {
   const currentScenario = emotionScenarios[currentScenarioIndex];
 
   const startGame = async () => {
-    const sessionId = await startAutoSave('emotion_lab', level, {
-      currentScenario: currentScenarioIndex
-    });
-
-    if (sessionId) {
-      setGameStarted(true);
+    // Try to start auto-save, but don't block game if it fails
+    try {
+      await startAutoSave('emotion_lab', level, {
+        currentScenario: currentScenarioIndex
+      });
+    } catch (error) {
+      console.error('Auto-save failed, continuing in offline mode:', error);
+      toast.warning('Jogando em modo offline - progresso não será salvo');
     }
+
+    // ALWAYS start the game, regardless of auto-save success
+    setGameStarted(true);
   };
 
   const handleResumeSession = async (session: any) => {

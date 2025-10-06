@@ -12,6 +12,7 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
+import { toast } from 'sonner';
 
 interface GameStats {
   level: number;
@@ -118,14 +119,19 @@ export default function SilabaMagica() {
 
   // Start game with auto-save
   const startGame = async () => {
-    const sessionId = await startAutoSave('syllable_magic', stats.level, {
-      gameMode,
-      currentLevel: stats.level
-    });
-
-    if (sessionId) {
-      generateChallenge();
+    // Try to start auto-save, but don't block game if it fails
+    try {
+      await startAutoSave('syllable_magic', stats.level, {
+        gameMode,
+        currentLevel: stats.level
+      });
+    } catch (error) {
+      console.error('Auto-save failed, continuing in offline mode:', error);
+      toast.warning('Jogando em modo offline - progresso não será salvo');
     }
+
+    // ALWAYS start the game, regardless of auto-save success
+    generateChallenge();
   };
 
   const handleResumeSession = async (session: any) => {

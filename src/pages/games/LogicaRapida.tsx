@@ -12,6 +12,7 @@ import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
 import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 import { useAudioEngine } from "@/hooks/useAudioEngine";
+import { toast } from 'sonner';
 
 type PatternType = 'sequence' | 'shape' | 'color' | 'number';
 type PatternItem = string | number;
@@ -144,18 +145,24 @@ export default function LogicaRapida() {
 
   // Start game
   const startGame = useCallback(async () => {
+    // Try to start auto-save, but don't block game if it fails
     const logicTrail = getTrailByCategory('logic');
-    const sessionId = await startAutoSave('logic_game', stats.level, {
-      trailId: logicTrail?.id
-    });
+    try {
+      await startAutoSave('logic_game', stats.level, {
+        trailId: logicTrail?.id
+      });
+    } catch (error) {
+      console.error('Auto-save failed, continuing in offline mode:', error);
+      toast.warning('Jogando em modo offline - progresso não será salvo');
+    }
 
-    if (sessionId) {
-      setGameState('playing');
-      setStats(prev => ({
-        ...prev,
-        timeLeft: Math.max(30, 60 - (prev.level * 3)),
-        questionsInLevel: 0,
-      }));
+    // ALWAYS start the game, regardless of auto-save success
+    setGameState('playing');
+    setStats(prev => ({
+      ...prev,
+      timeLeft: Math.max(30, 60 - (prev.level * 3)),
+      questionsInLevel: 0,
+    }));
     
     const pattern = generatePattern(stats.level);
     setCurrentPattern(pattern);
@@ -164,7 +171,7 @@ export default function LogicaRapida() {
     setAnswerFeedback(null);
     
     // Start timer
-      const timer = setInterval(() => {
+    const timer = setInterval(() => {
         setStats(prev => {
           if (prev.timeLeft <= 1) {
             setGameState('gameOver');
@@ -189,7 +196,6 @@ export default function LogicaRapida() {
       }, 1000);
     
     setGameTimer(timer);
-    }
   }, [stats.level, generatePattern]);
 
   const handleResumeSession = async (session: any) => {

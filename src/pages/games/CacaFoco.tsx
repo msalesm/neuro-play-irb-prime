@@ -11,6 +11,7 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
+import { toast } from 'sonner';
 
 type GameItem = {
   id: string;
@@ -153,12 +154,17 @@ export default function CacaFoco() {
 
   // Start game
   const startGame = useCallback(async () => {
-    const sessionId = await startAutoSave('caca_foco', stats.level, {
-      currentLevel: stats.level
-    });
+    // Try to start auto-save, but don't block game if it fails
+    try {
+      await startAutoSave('caca_foco', stats.level, {
+        currentLevel: stats.level
+      });
+    } catch (error) {
+      console.error('Auto-save failed, continuing in offline mode:', error);
+      toast.warning('Jogando em modo offline - progresso não será salvo');
+    }
 
-    if (!sessionId) return;
-
+    // ALWAYS start the game, regardless of auto-save success
     const newTarget = TARGET_EMOJIS[Math.floor(Math.random() * TARGET_EMOJIS.length)];
     setCurrentTarget(newTarget);
     
