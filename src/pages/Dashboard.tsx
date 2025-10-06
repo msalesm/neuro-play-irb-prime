@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle, Plus } from "lucide-react";
+import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle, Plus, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { DuolingoStreak } from "@/components/DuolingoStreak";
@@ -169,31 +169,100 @@ export default function Dashboard() {
                 Jogar Agora
               </Link>
             </Button>
-            <Button 
-              asChild
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
-            >
-              <Link to="/clinical">
-                <Brain className="w-4 h-4 mr-2" />
-                Análise Clínica
-              </Link>
-            </Button>
           </div>
         </div>
 
-        {/* Educational Dashboard Link */}
-        <div className="mb-8 flex justify-center">
-          <Button 
-            variant="outline" 
-            asChild
-            className="bg-white/10 border-white/30 text-white hover:bg-white/20 shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
-          >
-            <Link to="/educational-dashboard">
-              <Trophy className="w-4 h-4 mr-2" />
-              Meu Aprendizado
-            </Link>
-          </Button>
-        </div>
+        {/* Clinical Dashboard Card - Destaque Principal */}
+        <Card className="mb-8 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-md border-purple-400/40 shadow-2xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10" />
+          <CardHeader className="relative z-10">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <CardTitle className="text-2xl font-bold text-white flex items-center gap-2">
+                  <Activity className="h-6 w-6" />
+                  Painel Clínico
+                </CardTitle>
+                <p className="text-white/70 text-sm mt-1">
+                  Análise comportamental e identificação de padrões diagnósticos
+                </p>
+              </div>
+              <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 shadow-lg">
+                Inteligência Artificial
+              </Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6 relative z-10">
+            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/20">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Activity className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Análise Avançada com IA</h4>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    Complete os testes diagnósticos para gerar um relatório clínico detalhado. 
+                    Nossa IA analisa padrões comportamentais para identificar características do TEA, TDAH e Dislexia.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-lg p-4 backdrop-blur-sm border border-red-400/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 bg-red-500/30 rounded-full flex items-center justify-center">
+                    <AlertTriangle className="h-4 w-4 text-red-300" />
+                  </div>
+                  <h4 className="font-semibold text-white text-sm">TDAH</h4>
+                </div>
+                <p className="text-white/70 text-xs">Teste de Atenção Sustentada</p>
+              </div>
+              
+              <div className="bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 rounded-lg p-4 backdrop-blur-sm border border-indigo-400/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 bg-indigo-500/30 rounded-full flex items-center justify-center">
+                    <Brain className="h-4 w-4 text-indigo-300" />
+                  </div>
+                  <h4 className="font-semibold text-white text-sm">TEA</h4>
+                </div>
+                <p className="text-white/70 text-xs">Flexibilidade Cognitiva</p>
+              </div>
+              
+              <div className="bg-gradient-to-br from-teal-500/20 to-teal-600/20 rounded-lg p-4 backdrop-blur-sm border border-teal-400/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 bg-teal-500/30 rounded-full flex items-center justify-center">
+                    <Trophy className="h-4 w-4 text-teal-300" />
+                  </div>
+                  <h4 className="font-semibold text-white text-sm">Dislexia</h4>
+                </div>
+                <p className="text-white/70 text-xs">Processamento Fonológico</p>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-white/10">
+              <Button 
+                size="lg"
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                asChild
+              >
+                <Link to="/clinical-dashboard" className="flex items-center justify-center gap-2">
+                  <Activity className="h-5 w-5" />
+                  Acessar Painel Clínico Completo
+                </Link>
+              </Button>
+              <Button 
+                variant="outline"
+                className="w-full mt-3 bg-white/10 border-white/30 text-white hover:bg-white/20"
+                asChild
+              >
+                <Link to="/learning" className="flex items-center justify-center gap-2">
+                  <Trophy className="h-4 w-4" />
+                  Meu Aprendizado
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Modern Streak Widget - Estilo Duolingo */}
         <div className="mb-8">
@@ -253,53 +322,6 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Clinical Analysis Quick View */}
-          <Card className="lg:col-span-3 backdrop-blur-sm bg-white/10 border-white/20 mb-8 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-50" />
-            <CardHeader className="relative">
-              <CardTitle className="flex items-center justify-between">
-                <span className="flex items-center text-white">
-                  <Brain className="w-5 h-5 mr-2" />
-                  Análise Comportamental
-                </span>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  asChild
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-                >
-                  <Link to="/clinical">Ver Completo</Link>
-                </Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="relative">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-                  <Activity className="w-8 h-8 mx-auto mb-2 text-blue-400" />
-                  <h4 className="font-semibold mb-1 text-white">Jogos Diagnósticos</h4>
-                  <p className="text-sm text-white/70">Complete jogos para análise comportamental</p>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="mt-3 bg-white/10 border-white/30 text-white hover:bg-white/20" 
-                    asChild
-                  >
-                    <Link to="/games">Começar</Link>
-                  </Button>
-                </div>
-                <div className="text-center p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-                  <TrendingUp className="w-8 h-8 mx-auto mb-2 text-green-400" />
-                  <h4 className="font-semibold mb-1 text-white">Padrões Identificados</h4>
-                  <p className="text-sm text-white/70">Análise em tempo real dos seus resultados</p>
-                </div>
-                <div className="text-center p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-                  <AlertTriangle className="w-8 h-8 mx-auto mb-2 text-orange-400" />
-                  <h4 className="font-semibold mb-1 text-white">Relatórios Automáticos</h4>
-                  <p className="text-sm text-white/70">Relatórios detalhados baseados em IA</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Game Categories */}
           <Card className="lg:col-span-2 backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">

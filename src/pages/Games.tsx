@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2 } from "lucide-react";
+import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { GameIllustration } from "@/components/GameIllustration";
@@ -286,19 +286,69 @@ export default function Games() {
           <p className="text-xl text-white/70 max-w-3xl mx-auto text-balance mb-8">
             Desenvolva habilidades cognitivas através de jogos divertidos e envolventes.
           </p>
-          <div className="mt-6">
-            <Button 
-              variant="outline" 
-              asChild
-              className="bg-white/10 border-white/30 text-white hover:bg-white/20 shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
-            >
-              <Link to="/diagnostic-tests" className="flex items-center gap-2">
-                <Trophy className="h-4 w-4" />
-                Ver Testes Diagnósticos
-              </Link>
-            </Button>
-          </div>
         </div>
+
+        {/* Clinical Dashboard CTA Card */}
+        <Card className="mb-12 bg-gradient-to-br from-purple-600/30 to-blue-600/30 backdrop-blur-md border-purple-400/50 shadow-2xl overflow-hidden max-w-4xl mx-auto">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20" />
+          <CardContent className="p-8 relative z-10">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                  <Trophy className="h-10 w-10 text-white" />
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                  <h3 className="text-2xl font-bold text-white">Descubra Seu Perfil Cognitivo</h3>
+                  <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 shadow-lg">
+                    IA
+                  </Badge>
+                </div>
+                <p className="text-white/80 text-sm leading-relaxed mb-4">
+                  Complete os <strong>testes diagnósticos</strong> e receba uma análise clínica detalhada gerada por IA. 
+                  Identifique padrões de TEA, TDAH e Dislexia com precisão científica.
+                </p>
+                <div className="flex flex-wrap gap-2 justify-center md:justify-start text-xs text-white/70">
+                  <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
+                    <Target className="h-3 w-3" />
+                    <span>TDAH: Atenção Sustentada</span>
+                  </div>
+                  <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
+                    <Trophy className="h-3 w-3" />
+                    <span>TEA: Flexibilidade Cognitiva</span>
+                  </div>
+                  <div className="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full">
+                    <Target className="h-3 w-3" />
+                    <span>Dislexia: Processamento Fonológico</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-3">
+                <Button 
+                  size="lg"
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                  asChild
+                >
+                  <Link to="/clinical-dashboard" className="flex items-center gap-2">
+                    <Target className="h-5 w-5" />
+                    Acessar Painel Clínico
+                  </Link>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  asChild
+                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                >
+                  <Link to="/diagnostic-tests" className="flex items-center gap-2">
+                    <Play className="h-4 w-4" />
+                    Ver Testes Diagnósticos
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Seção de Jogos Básicos */}
         <div className="mb-16">

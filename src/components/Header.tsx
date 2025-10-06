@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { Link, useLocation } from "react-router-dom";
-import { Brain, Gamepad2, Trophy, BarChart3, LogOut, Menu, X } from "lucide-react";
+import { Brain, Gamepad2, Trophy, BarChart3, LogOut, Menu, X, Activity } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSelector } from "@/components/LanguageSelector";
@@ -41,7 +42,22 @@ export const Header = () => {
           {/* Desktop Auth - Simplified */}
           <div className="flex items-center gap-4">
             <LanguageSelector />
-            <AdminNavLink />
+          <AdminNavLink />
+          
+          <Link
+            to="/clinical-dashboard"
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors relative ${
+              location.pathname === '/clinical-dashboard'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+            }`}
+          >
+            <Activity className="h-5 w-5" />
+            <span className="font-medium">Painel Clínico</span>
+            <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 text-xs px-1.5 py-0.5 ml-1">
+              IA
+            </Badge>
+          </Link>
             {user ? (
               <div className="flex items-center gap-3">
                 <span className="text-sm text-white/80 hidden md:block">
