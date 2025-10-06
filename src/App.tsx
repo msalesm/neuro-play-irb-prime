@@ -67,7 +67,9 @@ const App = () => (
         <LanguageProvider>
           <TooltipProvider>
             <Toaster />
-            <Sonner />
+            <Sonner position="top-center" className="!z-[100]" toastOptions={{
+              className: '!z-[100]',
+            }} />
             <BrowserRouter 
               future={{
                 v7_startTransition: true,

@@ -493,9 +493,9 @@ export default function MemoriaColorida() {
             )}
 
             {(gameState === 'showing' || gameState === 'playing' || (gameState === 'idle' && !showTutorial)) && (
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center min-h-[450px] py-8">
                 {/* Simon Console - Classic Circular Layout */}
-                <div className="relative">
+                <div className="relative z-10">
                   {/* The 4-button grid */}
                   <div className={cn(
                     "grid grid-cols-2 gap-3 p-6 rounded-full",
@@ -616,7 +616,8 @@ export default function MemoriaColorida() {
         </Card>
 
         {/* Achievements */}
-        <SimonAchievements 
+        <div className="relative z-0">
+          <SimonAchievements
           stats={{
             level: stats.level,
             score: stats.score,
@@ -625,6 +626,7 @@ export default function MemoriaColorida() {
             perfectRounds: stats.perfectRounds
           }}
         />
+        </div>
 
         {/* Benefits */}
         <Card className="mt-8 bg-gray-800/50 border-gray-700">
