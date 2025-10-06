@@ -12,6 +12,7 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
+import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { toast } from 'sonner';
 
 interface GameStats {
@@ -74,6 +75,9 @@ export default function SilabaMagica() {
   const [currentChallenge, setCurrentChallenge] = useState<any>(null);
   const [selectedSyllables, setSelectedSyllables] = useState<string[]>([]);
   const [availableOptions, setAvailableOptions] = useState<string[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
   const [stats, setStats] = useState<GameStats>({
     level: 1,
     score: 0,
@@ -585,8 +589,58 @@ export default function SilabaMagica() {
           </CardContent>
         </Card>
 
+        {showResults && (
+          <GameResultsDashboard
+            gameType="syllable_magic"
+            gameTitle="Sílaba Mágica"
+            session={{
+              score: stats.score,
+              accuracy: stats.accuracy,
+              timeSpent: totalTime,
+              level: stats.level,
+              correctMoves: stats.correctMatches,
+              totalMoves: stats.totalAttempts,
+            }}
+            cognitiveMetrics={{
+              attention: Math.min(100, stats.accuracy),
+              memory: Math.min(100, stats.accuracy + 5),
+              flexibility: Math.min(100, stats.level * 9 + 35),
+              processing: Math.min(100, stats.accuracy + 15),
+              inhibition: Math.min(100, stats.accuracy - 5),
+            }}
+            insights={[
+              `Você desenvolveu ${stats.accuracy >= 85 ? 'excelente' : stats.accuracy >= 70 ? 'boa' : 'moderada'} consciência fonológica.`,
+              `Completou ${stats.correctMatches} palavras corretamente, fortalecendo habilidades de leitura.`,
+              `A segmentação silábica é essencial para decodificação de palavras em crianças com dislexia.`,
+            ]}
+            nextSteps={[
+              {
+                title: 'Próximo Nível',
+                description: 'Desafie-se com palavras mais complexas',
+                action: () => {
+                  setShowResults(false);
+                  setStats(prev => ({ ...prev, level: prev.level + 1 }));
+                  setGameState('idle');
+                }
+              },
+              {
+                title: 'Jogo de Fonemas',
+                description: 'Continue desenvolvendo consciência fonológica',
+                action: () => window.location.href = '/games/phonological-processing'
+              }
+            ]}
+            onClose={() => window.location.href = '/games'}
+            onPlayAgain={() => {
+              setShowResults(false);
+              setGameState('idle');
+              setSelectedSyllables([]);
+              setCurrentChallenge(null);
+            }}
+          />
+        )}
+
         {/* Back to Mode Selection */}
-        {gameState !== 'idle' && (
+        {gameState !== 'idle' && !showResults && (
           <div className="text-center mt-6">
             <Button
               variant="outline"

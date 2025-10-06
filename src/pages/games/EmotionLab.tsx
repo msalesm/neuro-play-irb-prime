@@ -11,6 +11,7 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
+import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -136,6 +137,9 @@ export default function EmotionLab() {
   });
   const [isComplete, setIsComplete] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
 
   const currentScenario = emotionScenarios[currentScenarioIndex];
 
@@ -312,7 +316,54 @@ export default function EmotionLab() {
     }
   };
 
-  if (isComplete) {
+  if (isComplete && showResults) {
+    const accuracy = (sessionData.totalCorrect / emotionScenarios.length) * 100;
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 p-4">
+        <GameResultsDashboard
+          gameType="emotion_lab"
+          gameTitle="Laboratório das Emoções"
+          session={{
+            score: score,
+            accuracy: accuracy,
+            timeSpent: totalTime,
+            level: level,
+            correctMoves: sessionData.totalCorrect,
+            totalMoves: emotionScenarios.length,
+          }}
+          cognitiveMetrics={{
+            attention: Math.min(100, accuracy + 10),
+            memory: Math.min(100, accuracy + 5),
+            flexibility: Math.min(100, accuracy + 15),
+            processing: Math.min(100, accuracy + 8),
+            inhibition: Math.min(100, accuracy + 3),
+          }}
+          insights={[
+            `Você desenvolveu habilidades de reconhecimento emocional (${sessionData.recognitionAccuracy}%).`,
+            `Aprendeu estratégias de regulação emocional (${sessionData.regulationStrategies}%).`,
+            `Compreensão de situações sociais: ${sessionData.situationUnderstanding}%.`,
+          ]}
+          nextSteps={[
+            {
+              title: 'Cenários Sociais',
+              description: 'Pratique habilidades sociais em contextos do dia a dia',
+              action: () => window.location.href = '/games/social-scenarios'
+            },
+            {
+              title: 'Jogar Novamente',
+              description: 'Reforce suas habilidades emocionais',
+              action: () => window.location.reload()
+            }
+          ]}
+          onClose={() => window.location.href = '/games'}
+          onPlayAgain={() => window.location.reload()}
+        />
+      </div>
+    );
+  }
+
+  if (isComplete && !showResults) {
     const accuracy = (sessionData.totalCorrect / emotionScenarios.length) * 100;
     
     return (
@@ -340,8 +391,8 @@ export default function EmotionLab() {
                 </div>
               </div>
             </div>
-            <Button onClick={() => window.history.back()}>
-              Voltar aos Jogos
+            <Button onClick={() => setShowResults(true)}>
+              Ver Resultados Detalhados
             </Button>
           </div>
         </Card>

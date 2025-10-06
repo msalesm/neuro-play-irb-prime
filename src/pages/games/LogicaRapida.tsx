@@ -10,6 +10,7 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
+import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 import { useAudioEngine } from "@/hooks/useAudioEngine";
 import { toast } from 'sonner';
@@ -92,6 +93,9 @@ export default function LogicaRapida() {
   const [gameTimer, setGameTimer] = useState<NodeJS.Timeout | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
   const [answerFeedback, setAnswerFeedback] = useState<'correct' | 'incorrect' | null>(null);
+  const [showResults, setShowResults] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
+  const [totalTime, setTotalTime] = useState(0);
 
   // Generate a pattern based on level
   const generatePattern = useCallback((level: number): Pattern => {
@@ -320,6 +324,15 @@ export default function LogicaRapida() {
     }
   };
 
+  // Show results
+  const showGameResults = () => {
+    setFinalScore(stats.score);
+    setTotalTime(60 - stats.timeLeft);
+    setShowResults(true);
+    setGameState('gameOver');
+    if (gameTimer) clearInterval(gameTimer);
+  };
+
   // Reset game
   const resetGame = () => {
     if (gameTimer) clearInterval(gameTimer);
@@ -328,6 +341,7 @@ export default function LogicaRapida() {
     setSelectedAnswer(null);
     setShowAnswer(false);
     setAnswerFeedback(null);
+    setShowResults(false);
     setStats({
       level: 1,
       score: 0,
@@ -583,12 +597,12 @@ export default function LogicaRapida() {
               </div>
             )}
 
-            {gameState === 'gameOver' && (
+            {gameState === 'gameOver' && !showResults && (
               <div className="text-center space-y-6">
                 <div className="space-y-2">
-                  <h2 className="text-xl font-bold">Fim de Jogo!</h2>
+                  <h2 className="text-xl font-bold">Tempo Esgotado!</h2>
                   <p className="text-muted-foreground">
-                    Você chegou ao nível {stats.level} com {stats.score} pontos
+                    Você completou {stats.totalQuestions} questões
                   </p>
                   <div className="flex justify-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
@@ -603,16 +617,65 @@ export default function LogicaRapida() {
                 </div>
                 
                 <div className="flex gap-4 justify-center">
-                  <Button onClick={startGame} className="gap-2">
+                  <Button onClick={() => setShowResults(true)} className="gap-2" variant="default">
+                    <Trophy className="w-4 h-4" />
+                    Ver Resultados
+                  </Button>
+                  <Button onClick={startGame} className="gap-2" variant="outline">
                     <Play className="w-4 h-4" />
                     Jogar Novamente
                   </Button>
-                  <Button variant="outline" onClick={resetGame} className="gap-2">
-                    <RotateCcw className="w-4 h-4" />
-                    Reiniciar
-                  </Button>
                 </div>
               </div>
+            )}
+
+            {showResults && (
+              <GameResultsDashboard
+                gameType="logic_game"
+                gameTitle="Lógica Rápida"
+                session={{
+                  score: stats.score,
+                  accuracy: accuracy,
+                  timeSpent: 60 - stats.timeLeft,
+                  level: stats.level,
+                  correctMoves: stats.correctAnswers,
+                  totalMoves: stats.totalQuestions,
+                }}
+                cognitiveMetrics={{
+                  attention: Math.min(100, accuracy - 5),
+                  memory: Math.min(100, accuracy + 10),
+                  flexibility: Math.min(100, stats.level * 10 + 30),
+                  processing: Math.min(100, accuracy + 20),
+                  inhibition: Math.min(100, accuracy),
+                }}
+                insights={[
+                  `Você demonstrou ${accuracy >= 80 ? 'excelente' : accuracy >= 60 ? 'bom' : 'moderado'} raciocínio lógico.`,
+                  `Completou ${stats.totalQuestions} questões no nível ${stats.level}.`,
+                  `Desenvolveu habilidades de resolução de problemas e reconhecimento de padrões.`,
+                ]}
+                nextSteps={[
+                  {
+                    title: 'Próximo Nível',
+                    description: 'Desafie-se com padrões mais complexos',
+                    action: () => {
+                      setShowResults(false);
+                      setStats(prev => ({ ...prev, level: Math.min(prev.level + 1, 10) }));
+                      startGame();
+                    }
+                  },
+                  {
+                    title: 'Treino de Flexibilidade',
+                    description: 'Experimente jogos que desenvolvem flexibilidade cognitiva',
+                    action: () => window.location.href = '/games'
+                  }
+                ]}
+                onClose={() => window.location.href = '/games'}
+                onPlayAgain={() => {
+                  setShowResults(false);
+                  resetGame();
+                  startGame();
+                }}
+              />
             )}
           </CardContent>
         </Card>

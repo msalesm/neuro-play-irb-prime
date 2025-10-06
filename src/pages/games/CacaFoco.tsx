@@ -11,6 +11,7 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
+import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { toast } from 'sonner';
 
 type GameItem = {
@@ -90,6 +91,8 @@ export default function CacaFoco() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [confettiPieces, setConfettiPieces] = useState<Confetti[]>([]);
   const [shakeGame, setShakeGame] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
 
   // Generate game items based on difficulty
   const generateItems = useCallback((level: number, targetEmoji: string) => {
@@ -403,11 +406,20 @@ export default function CacaFoco() {
     }
   };
 
+  // Show results
+  const showGameResults = () => {
+    setFinalScore(stats.score);
+    setShowResults(true);
+    setGameState('gameOver');
+    if (gameTimer) clearInterval(gameTimer);
+  };
+
   // Reset game
   const resetGame = () => {
     if (gameTimer) clearInterval(gameTimer);
     setGameState('idle');
     setItems([]);
+    setShowResults(false);
     setStats({
       level: 1,
       score: 0,
@@ -665,7 +677,7 @@ export default function CacaFoco() {
               </div>
             )}
 
-            {gameState === 'gameOver' && (
+            {gameState === 'gameOver' && !showResults && (
               <div className="text-center space-y-6">
                 <div className="space-y-2">
                   <h2 className="text-xl font-bold">
@@ -687,16 +699,65 @@ export default function CacaFoco() {
                 </div>
                 
                 <div className="flex gap-4 justify-center">
-                  <Button onClick={startGame} className="gap-2">
+                  <Button onClick={() => setShowResults(true)} className="gap-2" variant="default">
+                    <Trophy className="w-4 h-4" />
+                    Ver Resultados
+                  </Button>
+                  <Button onClick={startGame} className="gap-2" variant="outline">
                     <Play className="w-4 h-4" />
                     Jogar Novamente
                   </Button>
-                  <Button variant="outline" onClick={resetGame} className="gap-2">
-                    <RotateCcw className="w-4 h-4" />
-                    Reiniciar
-                  </Button>
                 </div>
               </div>
+            )}
+
+            {showResults && (
+              <GameResultsDashboard
+                gameType="caca_foco"
+                gameTitle="Caça ao Foco"
+                session={{
+                  score: stats.score,
+                  accuracy: accuracy,
+                  timeSpent: 40 - stats.timeLeft,
+                  level: stats.level,
+                  correctMoves: stats.correctClicks,
+                  totalMoves: stats.totalClicks,
+                }}
+                cognitiveMetrics={{
+                  attention: Math.min(100, accuracy + 10),
+                  memory: Math.min(100, (stats.streak * 10) + 50),
+                  flexibility: Math.min(100, stats.level * 8 + 40),
+                  processing: Math.min(100, accuracy + 5),
+                  inhibition: Math.min(100, accuracy + 15),
+                }}
+                insights={[
+                  `Você demonstrou ${accuracy >= 80 ? 'excelente' : accuracy >= 60 ? 'boa' : 'moderada'} atenção seletiva.`,
+                  `Sua sequência máxima foi de ${stats.streak} acertos consecutivos.`,
+                  `Atingiu o nível ${stats.level}, desenvolvendo controle inibitório e foco sustentado.`,
+                ]}
+                nextSteps={[
+                  {
+                    title: 'Aumentar Dificuldade',
+                    description: 'Tente níveis mais avançados para desafiar ainda mais sua atenção',
+                    action: () => {
+                      setShowResults(false);
+                      setStats(prev => ({ ...prev, level: prev.level + 1 }));
+                      startGame();
+                    }
+                  },
+                  {
+                    title: 'Treino de Memória',
+                    description: 'Experimente Memória Colorida para trabalhar memória de trabalho',
+                    action: () => window.location.href = '/games/memoria-colorida'
+                  }
+                ]}
+                onClose={() => window.location.href = '/games'}
+                onPlayAgain={() => {
+                  setShowResults(false);
+                  resetGame();
+                  startGame();
+                }}
+              />
             )}
           </CardContent>
         </Card>

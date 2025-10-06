@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAudioEngine } from "@/hooks/useAudioEngine";
-import { Users, MessageCircle, Heart, Clock, ArrowRight, RotateCcw } from "lucide-react";
+import { Users, MessageCircle, Heart, Clock, ArrowRight, RotateCcw, Trophy } from "lucide-react";
 import { useSocialScenarios } from "@/hooks/useSocialScenarios";
 import { SocialScenariosProgress } from "@/components/SocialScenariosProgress";
 import { SocialScenariosAchievements } from "@/components/SocialScenariosAchievements";
@@ -13,6 +13,7 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
+import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 
 const SocialScenarios = () => {
   const { user } = useAuth();
@@ -23,7 +24,10 @@ const SocialScenarios = () => {
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [sessionStartTime, setSessionStartTime] = useState<number>(0);
-  const [gameMode, setGameMode] = useState<'menu' | 'playing' | 'result'>('menu');
+  const [gameMode, setGameMode] = useState<'menu' | 'playing' | 'result' | 'dashboard'>('menu');
+  const [showResults, setShowResults] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
+  const [completionTime, setCompletionTime] = useState(0);
 
   const {
     currentSession,
@@ -362,7 +366,7 @@ const SocialScenarios = () => {
               </Card>
             )}
 
-            {gameMode === 'result' && currentScenario && (
+            {gameMode === 'result' && currentScenario && !showResults && (
               <Card className="p-8 bg-card border-0 shadow-card text-center">
                 <div className="space-y-6">
                   <div className="text-6xl">🎉</div>
@@ -379,21 +383,74 @@ const SocialScenarios = () => {
                   )}
                   
                   <div className="flex space-x-4 justify-center">
+                    <Button onClick={() => setShowResults(true)} variant="default">
+                      <Trophy className="mr-2 h-4 w-4" />
+                      Ver Resultados
+                    </Button>
                     <Button onClick={backToMenu} variant="outline">
                       <RotateCcw className="mr-2 h-4 w-4" />
                       Menu Principal
                     </Button>
-                    <Button onClick={() => {
-                      const nextScenario = scenarios.find(s => s.id !== currentScenario.id);
-                      if (nextScenario) startScenario(nextScenario);
-                      else backToMenu();
-                    }}>
-                      Próximo Cenário
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
                   </div>
                 </div>
               </Card>
+            )}
+
+            {showResults && currentScenario && (
+              <GameResultsDashboard
+                gameType="social_scenarios"
+                gameTitle="Cenários Sociais"
+                session={{
+                  score: finalScore,
+                  accuracy: 100,
+                  timeSpent: completionTime,
+                  level: currentScenario.difficulty_level === 'beginner' ? 1 : currentScenario.difficulty_level === 'intermediate' ? 2 : 3,
+                  correctMoves: 1,
+                  totalMoves: 1,
+                }}
+                cognitiveMetrics={{
+                  attention: 75,
+                  memory: 70,
+                  flexibility: 85,
+                  processing: 80,
+                  inhibition: 75,
+                }}
+                insights={[
+                  `Você praticou habilidades de ${currentScenario.skills_focus.join(', ')}.`,
+                  `Completou um cenário de nível ${currentScenario.difficulty_level}.`,
+                  `A prática de cenários sociais melhora a adaptação em situações reais.`,
+                ]}
+                nextSteps={[
+                  {
+                    title: 'Próximo Cenário',
+                    description: 'Continue praticando com mais desafios sociais',
+                    action: () => {
+                      const nextScenario = scenarios.find(s => s.id !== currentScenario.id);
+                      if (nextScenario) {
+                        setShowResults(false);
+                        startScenario(nextScenario);
+                      } else {
+                        backToMenu();
+                      }
+                    }
+                  },
+                  {
+                    title: 'Laboratório das Emoções',
+                    description: 'Desenvolva reconhecimento e regulação emocional',
+                    action: () => window.location.href = '/games/emotion-lab'
+                  }
+                ]}
+                onClose={() => {
+                  setShowResults(false);
+                  backToMenu();
+                }}
+                onPlayAgain={() => {
+                  setShowResults(false);
+                  const nextScenario = scenarios.find(s => s.id !== currentScenario.id);
+                  if (nextScenario) startScenario(nextScenario);
+                  else backToMenu();
+                }}
+              />
             )}
           </div>
 
