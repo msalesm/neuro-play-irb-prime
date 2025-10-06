@@ -8,6 +8,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Play, Pause, RotateCcw, Heart, Star, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useSessionRecovery } from '@/hooks/useSessionRecovery';
+import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { GameExitButton } from '@/components/GameExitButton';
 
 type BreathPhase = 'inhale' | 'hold' | 'exhale' | 'pause';
 
@@ -21,6 +25,24 @@ const breathingPatterns = [
 export default function MindfulBreath() {
   const { user } = useAuth();
   const { toast } = useToast();
+  
+  const {
+    currentSession,
+    isSaving,
+    startSession: startAutoSave,
+    updateSession: updateAutoSave,
+    completeSession: completeAutoSave,
+    abandonSession
+  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
+
+  const {
+    unfinishedSessions,
+    hasUnfinishedSessions,
+    resumeSession,
+    discardSession
+  } = useSessionRecovery('mindful_breath');
+
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentPhase, setCurrentPhase] = useState<BreathPhase>('inhale');
   const [timeLeft, setTimeLeft] = useState(4);
@@ -86,14 +108,54 @@ export default function MindfulBreath() {
     };
   }, [isPlaying, currentPhase, pattern]);
 
-  const startSession = () => {
-    setIsPlaying(true);
-    setCurrentPhase('inhale');
-    setTimeLeft(pattern.inhale);
+  const startSession = async () => {
+    const sessionId = await startAutoSave('mindful_breath', 1, {
+      patternName: pattern.name,
+      patternIndex: selectedPattern
+    });
+
+    if (sessionId) {
+      setIsPlaying(true);
+      setCurrentPhase('inhale');
+      setTimeLeft(pattern.inhale);
+    }
   };
+
+  const handleResumeSession = async (session: any) => {
+    setTotalCycles(session.performance_data.totalCycles || 0);
+    setSessionTime(session.performance_data.sessionTime || 0);
+    setSelectedPattern(session.performance_data.patternIndex || 0);
+    
+    await startAutoSave('mindful_breath', session.level, {
+      sessionId: session.id,
+      patternName: pattern.name,
+      patternIndex: selectedPattern
+    });
+
+    setShowRecoveryModal(false);
+  };
+
+  useEffect(() => {
+    if (hasUnfinishedSessions && !isPlaying && !currentSession) {
+      setShowRecoveryModal(true);
+    }
+  }, [hasUnfinishedSessions, isPlaying, currentSession]);
 
   const pauseSession = () => {
     setIsPlaying(false);
+    
+    // Auto-save when pausing
+    updateAutoSave({
+      score: totalCycles * 10,
+      moves: totalCycles,
+      correctMoves: totalCycles,
+      additionalData: {
+        sessionTime,
+        patternName: pattern.name,
+        currentPhase,
+        totalCycles
+      }
+    });
   };
 
   const resetSession = () => {
@@ -108,6 +170,19 @@ export default function MindfulBreath() {
     if (!user || totalCycles < 5) return; // Minimum 5 cycles to complete
     
     try {
+      // Complete auto-save session
+      await completeAutoSave({
+        score: totalCycles * 10,
+        moves: totalCycles,
+        correctMoves: totalCycles,
+        additionalData: {
+          sessionTime,
+          patternName: pattern.name,
+          totalCycles,
+          accuracy: 100
+        }
+      });
+
       // Record therapy session
       await supabase.from('therapy_sessions').insert({
         user_id: user.id,
@@ -200,8 +275,31 @@ export default function MindfulBreath() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12">
       <div className="container mx-auto px-6 max-w-4xl">
+        <SessionRecoveryModal
+          open={showRecoveryModal}
+          sessions={unfinishedSessions}
+          onResume={handleResumeSession}
+          onDiscard={async (sessionId) => {
+            await discardSession(sessionId);
+            setShowRecoveryModal(false);
+          }}
+          onStartNew={() => setShowRecoveryModal(false)}
+        />
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
+          <div className="flex gap-2">
+            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
+            <GameExitButton
+              variant="quit"
+              onExit={async () => {
+                await abandonSession();
+              }}
+              showProgress={isPlaying}
+              currentProgress={totalCycles}
+              totalProgress={10}
+            />
+          </div>
           <div>
             <h1 className="font-heading text-4xl font-bold mb-2 text-blue-900">
               MindfulBreath Adventures

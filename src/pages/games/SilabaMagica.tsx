@@ -8,6 +8,10 @@ import { ArrowLeft, Puzzle, Sparkles, Trophy, Volume2, VolumeX, Star } from "luc
 import { useAuth } from "@/hooks/useAuth";
 import { LevelProgress } from "@/components/LevelProgress";
 import { GameAchievements } from "@/components/GameAchievement";
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useSessionRecovery } from '@/hooks/useSessionRecovery';
+import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { GameExitButton } from '@/components/GameExitButton';
 
 interface GameStats {
   level: number;
@@ -46,6 +50,24 @@ type GameMode = 'split' | 'join';
 
 export default function SilabaMagica() {
   const { user } = useAuth();
+  
+  const {
+    currentSession,
+    isSaving,
+    startSession: startAutoSave,
+    updateSession: updateAutoSave,
+    completeSession: completeAutoSave,
+    abandonSession
+  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
+
+  const {
+    unfinishedSessions,
+    hasUnfinishedSessions,
+    resumeSession,
+    discardSession
+  } = useSessionRecovery('syllable_magic');
+
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'completed' | 'failed'>('idle');
   const [gameMode, setGameMode] = useState<GameMode>('split');
   const [currentChallenge, setCurrentChallenge] = useState<any>(null);
@@ -93,6 +115,43 @@ export default function SilabaMagica() {
       unlocked: false
     }
   ]);
+
+  // Start game with auto-save
+  const startGame = async () => {
+    const sessionId = await startAutoSave('syllable_magic', stats.level, {
+      gameMode,
+      currentLevel: stats.level
+    });
+
+    if (sessionId) {
+      generateChallenge();
+    }
+  };
+
+  const handleResumeSession = async (session: any) => {
+    setStats({
+      ...stats,
+      score: session.performance_data.score || 0,
+      level: session.level,
+      correctMatches: session.performance_data.correctMatches || 0,
+      totalAttempts: session.performance_data.totalAttempts || 0,
+      xp: session.performance_data.xp || 0
+    });
+    
+    await startAutoSave('syllable_magic', session.level, {
+      sessionId: session.id,
+      gameMode,
+      currentLevel: session.level
+    });
+
+    setShowRecoveryModal(false);
+  };
+
+  useEffect(() => {
+    if (hasUnfinishedSessions && gameState === 'idle' && !currentSession) {
+      setShowRecoveryModal(true);
+    }
+  }, [hasUnfinishedSessions, gameState, currentSession]);
 
   // Generate new challenge
   const generateChallenge = useCallback(() => {
@@ -169,6 +228,19 @@ export default function SilabaMagica() {
     // Calculate accuracy
     newStats.accuracy = newStats.totalAttempts > 0 ? (newStats.correctMatches / newStats.totalAttempts) * 100 : 100;
     
+    // Auto-save progress
+    updateAutoSave({
+      score: newStats.score,
+      moves: newStats.totalAttempts,
+      correctMoves: newStats.correctMatches,
+      additionalData: {
+        level: newStats.level,
+        xp: newStats.xp,
+        gameMode,
+        accuracy: newStats.accuracy
+      }
+    });
+    
     // Level progression
     const requiredXP = newStats.level * 100;
     if (newStats.xp >= requiredXP) {
@@ -240,14 +312,31 @@ export default function SilabaMagica() {
   return (
     <div className="min-h-screen bg-gradient-dislexia py-8">
       <div className="container mx-auto px-4 max-w-4xl">
+        <SessionRecoveryModal
+          open={showRecoveryModal}
+          sessions={unfinishedSessions}
+          onResume={handleResumeSession}
+          onDiscard={async (sessionId) => {
+            await discardSession(sessionId);
+            setShowRecoveryModal(false);
+          }}
+          onStartNew={() => setShowRecoveryModal(false)}
+        />
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Button variant="ghost" asChild className="gap-2">
-            <Link to="/games">
-              <ArrowLeft className="w-4 h-4" />
-              Voltar aos Jogos
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
+            <GameExitButton
+              variant="quit"
+              onExit={async () => {
+                await abandonSession();
+              }}
+              showProgress={gameState === 'playing'}
+              currentProgress={stats.correctMatches}
+              totalProgress={10}
+            />
+          </div>
           
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl font-bold font-heading text-white">
@@ -331,7 +420,7 @@ export default function SilabaMagica() {
                 </Button>
               </div>
               <div className="text-center mt-6">
-                <Button onClick={generateChallenge} size="lg" className="gap-2 gradient-dislexia text-white">
+                <Button onClick={startGame} size="lg" className="gap-2 gradient-dislexia text-white">
                   <Sparkles className="w-5 h-5" />
                   Começar Desafio
                 </Button>

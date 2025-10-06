@@ -7,6 +7,10 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCcw, Target, Trophy, Clock, Eye } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAudioEngine } from "@/hooks/useAudioEngine";
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { useSessionRecovery } from '@/hooks/useSessionRecovery';
+import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { GameExitButton } from '@/components/GameExitButton';
 
 type GameItem = {
   id: string;
@@ -32,6 +36,24 @@ const DISTRACTOR_EMOJIS = ['🔴', '🔵', '🟡', '🟢', '🟣', '🟠', '⚫'
 export default function CacaFoco() {
   const { user } = useAuth();
   const audio = useAudioEngine();
+  
+  const {
+    currentSession,
+    isSaving,
+    startSession: startAutoSave,
+    updateSession: updateAutoSave,
+    completeSession: completeAutoSave,
+    abandonSession
+  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
+
+  const {
+    unfinishedSessions,
+    hasUnfinishedSessions,
+    resumeSession,
+    discardSession
+  } = useSessionRecovery('caca_foco');
+
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'paused' | 'gameOver'>('idle');
   const [items, setItems] = useState<GameItem[]>([]);
   const [currentTarget, setCurrentTarget] = useState('🎯');
@@ -106,7 +128,13 @@ export default function CacaFoco() {
   }, []);
 
   // Start game
-  const startGame = useCallback(() => {
+  const startGame = useCallback(async () => {
+    const sessionId = await startAutoSave('caca_foco', stats.level, {
+      currentLevel: stats.level
+    });
+
+    if (!sessionId) return;
+
     const newTarget = TARGET_EMOJIS[Math.floor(Math.random() * TARGET_EMOJIS.length)];
     setCurrentTarget(newTarget);
     
@@ -137,6 +165,29 @@ export default function CacaFoco() {
     
     setGameTimer(timer);
   }, [stats.level]);
+
+  const handleResumeSession = async (session: any) => {
+    setStats({
+      ...stats,
+      score: session.performance_data.score || 0,
+      level: session.level,
+      correctClicks: session.performance_data.correctClicks || 0,
+      totalClicks: session.performance_data.totalClicks || 0
+    });
+    
+    await startAutoSave('caca_foco', session.level, {
+      sessionId: session.id,
+      currentLevel: session.level
+    });
+
+    setShowRecoveryModal(false);
+  };
+
+  useEffect(() => {
+    if (hasUnfinishedSessions && gameState === 'idle' && !currentSession) {
+      setShowRecoveryModal(true);
+    }
+  }, [hasUnfinishedSessions, gameState, currentSession]);
 
   // Handle item click
   const handleItemClick = (item: GameItem) => {
@@ -206,6 +257,19 @@ export default function CacaFoco() {
       // Audio feedback for error
       audio.playError('soft');
     }
+
+    // Auto-save progress
+    updateAutoSave({
+      score: newStats.score,
+      moves: newStats.totalClicks,
+      correctMoves: newStats.correctClicks,
+      additionalData: {
+        level: newStats.level,
+        timeLeft: newStats.timeLeft,
+        streak: newStats.streak,
+        accuracy
+      }
+    });
 
     setStats(newStats);
   };
@@ -280,14 +344,31 @@ export default function CacaFoco() {
   return (
     <div className="min-h-screen bg-gradient-card py-8">
       <div className="container mx-auto px-4 max-w-6xl">
+        <SessionRecoveryModal
+          open={showRecoveryModal}
+          sessions={unfinishedSessions}
+          onResume={handleResumeSession}
+          onDiscard={async (sessionId) => {
+            await discardSession(sessionId);
+            setShowRecoveryModal(false);
+          }}
+          onStartNew={() => setShowRecoveryModal(false)}
+        />
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <Button variant="ghost" asChild className="gap-2">
-            <Link to="/games">
-              <ArrowLeft className="w-4 h-4" />
-              Voltar aos Jogos
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
+            <GameExitButton
+              variant="quit"
+              onExit={async () => {
+                await abandonSession();
+              }}
+              showProgress={gameState === 'playing'}
+              currentProgress={stats.correctClicks}
+              totalProgress={stats.correctClicks + items.filter(i => i.isTarget).length}
+            />
+          </div>
           
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground">
