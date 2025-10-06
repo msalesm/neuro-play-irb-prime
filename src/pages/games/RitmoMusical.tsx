@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Play, Pause, RotateCcw, Music, Trophy, Volume2, VolumeX, Star, TrendingUp } from "lucide-react";
+import { ArrowLeft, Play, Pause, RotateCcw, Music, Trophy, Volume2, VolumeX, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { LevelProgress } from "@/components/LevelProgress";
 import { GameAchievements } from "@/components/GameAchievement";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 type BeatType = 'kick' | 'snare' | 'hihat' | 'crash';
 type Difficulty = 'easy' | 'medium' | 'hard';
@@ -74,6 +75,7 @@ export default function RitmoMusical() {
   });
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isListening, setIsListening] = useState(false);
+  const [achievementsOpen, setAchievementsOpen] = useState(false);
   const [achievements, setAchievements] = useState<any[]>([
     {
       id: 'first_perfect',
@@ -129,27 +131,160 @@ export default function RitmoMusical() {
     };
   }, []);
 
-  // Play sound
-  const playSound = useCallback((beatType: BeatType, duration: number = 0.1) => {
+  // Play sound with improved audio quality
+  const playSound = useCallback((beatType: BeatType, duration: number = 0.15) => {
     if (!soundEnabled || !audioContextRef.current || document.documentElement.classList.contains('reduced-sounds')) {
       return;
     }
 
     const ctx = audioContextRef.current;
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    oscillator.frequency.value = BEAT_SOUNDS[beatType].freq;
-    oscillator.type = beatType === 'kick' ? 'sine' : beatType === 'snare' ? 'square' : 'sawtooth';
     
-    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+    // Create compressor for better audio quality
+    const compressor = ctx.createDynamicsCompressor();
+    compressor.threshold.setValueAtTime(-50, ctx.currentTime);
+    compressor.knee.setValueAtTime(40, ctx.currentTime);
+    compressor.ratio.setValueAtTime(12, ctx.currentTime);
+    compressor.attack.setValueAtTime(0, ctx.currentTime);
+    compressor.release.setValueAtTime(0.25, ctx.currentTime);
+    compressor.connect(ctx.destination);
 
-    oscillator.start(ctx.currentTime);
-    oscillator.stop(ctx.currentTime + duration);
+    // Improved instrument sounds
+    if (beatType === 'kick') {
+      // Kick drum: Deep bass with pitch envelope
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+      
+      osc1.type = 'sine';
+      osc2.type = 'sine';
+      
+      // Pitch envelope for kick
+      osc1.frequency.setValueAtTime(150, ctx.currentTime);
+      osc1.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.05);
+      
+      osc2.frequency.setValueAtTime(80, ctx.currentTime);
+      osc2.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.05);
+      
+      gainNode.gain.setValueAtTime(0.9, ctx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+      
+      osc1.connect(gainNode);
+      osc2.connect(gainNode);
+      gainNode.connect(compressor);
+      
+      osc1.start(ctx.currentTime);
+      osc2.start(ctx.currentTime);
+      osc1.stop(ctx.currentTime + duration);
+      osc2.stop(ctx.currentTime + duration);
+      
+    } else if (beatType === 'snare') {
+      // Snare: Tone + noise
+      const osc = ctx.createOscillator();
+      const noise = ctx.createBufferSource();
+      const noiseFilter = ctx.createBiquadFilter();
+      const gainNode = ctx.createGain();
+      const noiseGain = ctx.createGain();
+      
+      // Create noise buffer
+      const bufferSize = ctx.sampleRate * 0.1;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      noise.buffer = buffer;
+      
+      // Tone component
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(200, ctx.currentTime);
+      
+      // Noise component with high-pass filter
+      noiseFilter.type = 'highpass';
+      noiseFilter.frequency.setValueAtTime(1000, ctx.currentTime);
+      
+      gainNode.gain.setValueAtTime(0.6, ctx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+      
+      noiseGain.gain.setValueAtTime(0.8, ctx.currentTime);
+      noiseGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+      
+      osc.connect(gainNode);
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      gainNode.connect(compressor);
+      noiseGain.connect(compressor);
+      
+      osc.start(ctx.currentTime);
+      noise.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + duration);
+      noise.stop(ctx.currentTime + 0.08);
+      
+    } else if (beatType === 'hihat') {
+      // Hi-hat: Filtered noise
+      const noise = ctx.createBufferSource();
+      const filter = ctx.createBiquadFilter();
+      const gainNode = ctx.createGain();
+      
+      const bufferSize = ctx.sampleRate * 0.05;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      noise.buffer = buffer;
+      
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(7000, ctx.currentTime);
+      filter.Q.setValueAtTime(1, ctx.currentTime);
+      
+      gainNode.gain.setValueAtTime(0.7, ctx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+      
+      noise.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(compressor);
+      
+      noise.start(ctx.currentTime);
+      noise.stop(ctx.currentTime + 0.05);
+      
+    } else if (beatType === 'crash') {
+      // Crash cymbal: Complex noise with reverb-like decay
+      const noise1 = ctx.createBufferSource();
+      const noise2 = ctx.createBufferSource();
+      const filter1 = ctx.createBiquadFilter();
+      const filter2 = ctx.createBiquadFilter();
+      const gainNode = ctx.createGain();
+      
+      const bufferSize = ctx.sampleRate * 0.5;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      noise1.buffer = buffer;
+      noise2.buffer = buffer;
+      
+      filter1.type = 'highpass';
+      filter1.frequency.setValueAtTime(3000, ctx.currentTime);
+      
+      filter2.type = 'bandpass';
+      filter2.frequency.setValueAtTime(8000, ctx.currentTime);
+      filter2.Q.setValueAtTime(0.5, ctx.currentTime);
+      
+      gainNode.gain.setValueAtTime(0.8, ctx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+      
+      noise1.connect(filter1);
+      noise2.connect(filter2);
+      filter1.connect(gainNode);
+      filter2.connect(gainNode);
+      gainNode.connect(compressor);
+      
+      noise1.start(ctx.currentTime);
+      noise2.start(ctx.currentTime);
+      noise1.stop(ctx.currentTime + 0.4);
+      noise2.stop(ctx.currentTime + 0.4);
+    }
   }, [soundEnabled]);
 
   // Generate rhythm pattern
@@ -585,19 +720,19 @@ export default function RitmoMusical() {
 
                 {gameState === 'listening' && (
                   <div className="text-center space-y-6">
-                    <Badge variant="outline" className="text-lg p-3">
+                    <Badge variant="outline" className="text-lg p-3 mb-6">
                       🎧 Ouça o padrão...
                     </Badge>
                     
-                    {/* Pattern Visualization */}
-                    <div className="flex justify-center gap-3 flex-wrap">
+                    {/* Minimal Pattern Indicators - Fixed Position */}
+                    <div className="flex justify-center gap-3 flex-wrap min-h-[80px] items-center">
                       {pattern.map((beat, index) => (
                         <div
                           key={beat.id}
                           className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl border-4 transition-all duration-200 ${
                             index === currentBeatIndex && isListening
-                              ? `${BEAT_SOUNDS[beat.type].color} border-white scale-125 shadow-lg`
-                              : `${BEAT_SOUNDS[beat.type].color} border-gray-300`
+                              ? `${BEAT_SOUNDS[beat.type].color} border-primary shadow-[0_0_20px_rgba(var(--primary),0.5)]`
+                              : `${BEAT_SOUNDS[beat.type].color} border-muted-foreground/30 opacity-70`
                           }`}
                         >
                           {beat.type === 'kick' ? '🥁' : 
@@ -722,26 +857,43 @@ export default function RitmoMusical() {
             </Card>
           </div>
 
-          {/* Achievements Sidebar */}
+          {/* Achievements Sidebar - Collapsible */}
           <div className="lg:col-span-1">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Trophy className="w-5 h-5 text-yellow-500" />
-                  Conquistas
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <GameAchievements 
-                  achievements={achievements} 
-                  onAchievementComplete={(achievementId) => {
-                    setAchievements(prev => prev.map(a => 
-                      a.id === achievementId ? { ...a, justUnlocked: false } : a
-                    ));
-                  }}
-                />
-              </CardContent>
-            </Card>
+            <Collapsible open={achievementsOpen} onOpenChange={setAchievementsOpen}>
+              <Card>
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+                    <CardTitle className="flex items-center justify-between text-lg">
+                      <div className="flex items-center gap-2">
+                        <Trophy className="w-5 h-5 text-yellow-500" />
+                        Conquistas
+                        <Badge variant="secondary" className="ml-2">
+                          {achievements.filter(a => a.unlocked).length}/{achievements.length}
+                        </Badge>
+                      </div>
+                      {achievementsOpen ? (
+                        <ChevronUp className="w-4 h-4" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4" />
+                      )}
+                    </CardTitle>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <CardContent>
+                    <GameAchievements 
+                      achievements={achievements} 
+                      onAchievementComplete={(achievementId) => {
+                        setAchievements(prev => prev.map(a => 
+                          a.id === achievementId ? { ...a, justUnlocked: false } : a
+                        ));
+                        setAchievementsOpen(true); // Auto-expand on unlock
+                      }}
+                    />
+                  </CardContent>
+                </CollapsibleContent>
+              </Card>
+            </Collapsible>
           </div>
         </div>
 
