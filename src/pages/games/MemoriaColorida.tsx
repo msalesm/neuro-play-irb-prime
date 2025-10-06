@@ -98,45 +98,8 @@ export default function MemoriaColorida() {
     }
   }, [hasUnfinishedSessions, gameState, currentSession]);
 
-  const startGame = useCallback(async () => {
-    const memoryTrail = getTrailByCategory('memory');
-    const sessionId = await startAutoSave('memoria_colorida_v2', stats.level, {
-      trailId: memoryTrail?.id
-    });
-
-    if (sessionId) {
-      const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-      const newSequence = [firstColor];
-      setSequence(newSequence);
-      setPlayerSequence([]);
-      setCurrentShowingIndex(-1);
-      setGameState('showing');
-      setShowTutorial(false);
-      playSequence(newSequence);
-      toast.success("🎮 Jogo iniciado! Observe a sequência.");
-    }
-  }, [stats.level]);
-
-  const handleResumeSession = async (session: any) => {
-    setStats({
-      ...stats,
-      score: session.performance_data.score || 0,
-      level: session.level,
-      correctAnswers: session.performance_data.correctAnswers || 0,
-      totalAttempts: session.performance_data.totalAttempts || 0
-    });
-    
-    const memoryTrail = getTrailByCategory('memory');
-    await startAutoSave('memoria_colorida_v2', session.level, {
-      sessionId: session.id,
-      trailId: memoryTrail?.id
-    });
-
-    setGameState('idle');
-    setShowRecoveryModal(false);
-  };
-
   const playSequence = useCallback((seq: SimonColor[]) => {
+    console.log('🎵 Tocando sequência:', seq);
     let index = 0;
     setCurrentShowingIndex(0);
     
@@ -168,6 +131,74 @@ export default function MemoriaColorida() {
     
     setTimeout(showNext, 500);
   }, [gameSpeed]);
+
+  const startGame = useCallback(async () => {
+    try {
+      console.log('🎮 Iniciando jogo...');
+      const memoryTrail = getTrailByCategory('memory');
+      console.log('📚 Trilha encontrada:', memoryTrail);
+      
+      const sessionId = await startAutoSave('memoria_colorida_v2', stats.level, {
+        trailId: memoryTrail?.id
+      });
+      console.log('💾 Sessão criada:', sessionId);
+
+      if (sessionId) {
+        const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const newSequence = [firstColor];
+        setSequence(newSequence);
+        setPlayerSequence([]);
+        setCurrentShowingIndex(-1);
+        setGameState('showing');
+        setShowTutorial(false);
+        playSequence(newSequence);
+        toast.success("🎮 Jogo iniciado! Observe a sequência.");
+      } else {
+        console.error('❌ Falha ao criar sessão');
+        toast.error("Erro ao iniciar jogo. Tentando novamente...");
+        // Fallback: permitir jogar mesmo sem sessão
+        const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const newSequence = [firstColor];
+        setSequence(newSequence);
+        setPlayerSequence([]);
+        setCurrentShowingIndex(-1);
+        setGameState('showing');
+        setShowTutorial(false);
+        playSequence(newSequence);
+      }
+    } catch (error) {
+      console.error('❌ Erro ao iniciar jogo:', error);
+      toast.error("Erro ao iniciar. Jogando sem salvar progresso.");
+      // Fallback: permitir jogar mesmo com erro
+      const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+      const newSequence = [firstColor];
+      setSequence(newSequence);
+      setPlayerSequence([]);
+      setCurrentShowingIndex(-1);
+      setGameState('showing');
+      setShowTutorial(false);
+      playSequence(newSequence);
+    }
+  }, [stats.level, getTrailByCategory, startAutoSave, playSequence]);
+
+  const handleResumeSession = async (session: any) => {
+    setStats({
+      ...stats,
+      score: session.performance_data.score || 0,
+      level: session.level,
+      correctAnswers: session.performance_data.correctAnswers || 0,
+      totalAttempts: session.performance_data.totalAttempts || 0
+    });
+    
+    const memoryTrail = getTrailByCategory('memory');
+    await startAutoSave('memoria_colorida_v2', session.level, {
+      sessionId: session.id,
+      trailId: memoryTrail?.id
+    });
+
+    setGameState('idle');
+    setShowRecoveryModal(false);
+  };
 
   const handleColorClick = async (color: SimonColor) => {
     if (gameState !== 'playing') return;
