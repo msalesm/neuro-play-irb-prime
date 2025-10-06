@@ -91,20 +91,18 @@ export function SimonButton({
       onClick={handleClick}
       disabled={isDisabled}
       className={cn(
-        'relative w-full h-full bg-gradient-to-br transition-all duration-200',
+        'relative w-full h-full bg-gradient-to-br transition-all duration-150',
         'border-4 shadow-inner overflow-hidden',
         positionStyles[position],
         style.border,
         isActive ? [
           style.active,
           style.glow,
-          'scale-[1.02] brightness-125 shadow-2xl',
+          'scale-[1.02] brightness-125',
         ] : style.base,
         isPressed && 'scale-[0.98]',
-        !isDisabled && !isActive && 'hover:brightness-110 hover:scale-[1.01] cursor-pointer',
-        isDisabled && 'opacity-50 cursor-not-allowed',
-        // Idle pulse animation
-        !isActive && !isDisabled && 'animate-[pulse_3s_ease-in-out_infinite]'
+        !isDisabled && !isActive && 'hover:brightness-110 cursor-pointer',
+        isDisabled && 'opacity-50 cursor-not-allowed'
       )}
       aria-label={`${style.name} - ${style.freq}`}
     >

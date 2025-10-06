@@ -152,10 +152,8 @@ export default function MemoriaColorida() {
         setGameState('showing');
         setShowTutorial(false);
         playSequence(newSequence);
-        toast.success("🎮 Jogo iniciado! Observe a sequência.");
       } else {
         console.error('❌ Falha ao criar sessão');
-        toast.error("Erro ao iniciar jogo. Tentando novamente...");
         // Fallback: permitir jogar mesmo sem sessão
         const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
         const newSequence = [firstColor];
@@ -230,7 +228,6 @@ export default function MemoriaColorida() {
         if (newStats.score > newStats.highScore) {
           setStats(prev => ({ ...prev, highScore: newStats.score }));
           localStorage.setItem('simon_high_score', newStats.score.toString());
-          toast.success("🏆 Novo recorde!");
         }
 
         // Auto-save progress
@@ -247,21 +244,16 @@ export default function MemoriaColorida() {
         
         // Play success sound
         simonSoundEngine.playSuccessSound();
-        toast.success(`✅ Nível ${stats.level} completo!`);
 
         // Increase speed progressively
         if (newStats.level > 3 && newStats.level % 3 === 0) {
           const newSpeed = Math.max(400, gameSpeed - 100);
           setGameSpeed(newSpeed);
-          if (newSpeed < gameSpeed) {
-            toast.info("⚡ Velocidade aumentada!");
-          }
         }
 
         // Victory fanfare on level milestones
         if (newStats.level % 5 === 0) {
           simonSoundEngine.playVictoryFanfare();
-          toast.success(`🎉 Incrível! Nível ${newStats.level} alcançado!`);
         }
 
         // Add next color to sequence
@@ -278,7 +270,6 @@ export default function MemoriaColorida() {
     } else {
       // Wrong answer - Game Over
       simonSoundEngine.playErrorSound();
-      toast.error("❌ Sequência incorreta!");
 
       const finalStats = {
         ...stats,
@@ -398,7 +389,6 @@ export default function MemoriaColorida() {
               size="sm"
               onClick={() => {
                 setSoundEnabled(!soundEnabled);
-                toast.info(soundEnabled ? "🔇 Som desativado" : "🔊 Som ativado");
               }}
               className="gap-2 bg-gray-800 border-gray-700 text-gray-300"
             >
@@ -493,9 +483,9 @@ export default function MemoriaColorida() {
             )}
 
             {(gameState === 'showing' || gameState === 'playing' || (gameState === 'idle' && !showTutorial)) && (
-              <div className="flex justify-center items-center min-h-[450px] py-8">
+              <div className="flex justify-center items-center min-h-[500px] py-12">
                 {/* Simon Console - Classic Circular Layout */}
-                <div className="relative z-10">
+                <div className="relative z-0">
                   {/* The 4-button grid */}
                   <div className={cn(
                     "grid grid-cols-2 gap-3 p-6 rounded-full",
