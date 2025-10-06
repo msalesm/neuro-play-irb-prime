@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCcw, Target, Trophy, Clock, Eye } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useAudioEngine } from "@/hooks/useAudioEngine";
 
 type GameItem = {
   id: string;
@@ -30,6 +31,7 @@ const DISTRACTOR_EMOJIS = ['🔴', '🔵', '🟡', '🟢', '🟣', '🟠', '⚫'
 
 export default function CacaFoco() {
   const { user } = useAuth();
+  const audio = useAudioEngine();
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'paused' | 'gameOver'>('idle');
   const [items, setItems] = useState<GameItem[]>([]);
   const [currentTarget, setCurrentTarget] = useState('🎯');
@@ -150,6 +152,12 @@ export default function CacaFoco() {
       newStats.correctClicks = stats.correctClicks + 1;
       newStats.score = stats.score + (10 * stats.level);
       newStats.streak = stats.streak + 1;
+      
+      // Audio feedback
+      audio.playSuccess('medium');
+      if (newStats.streak > 2) {
+        audio.playTick(); // Combo sound
+      }
 
       // Remove clicked target
       const updatedItems = items.filter(i => i.id !== item.id);
@@ -169,6 +177,10 @@ export default function CacaFoco() {
         if (newStats.streak >= 3) {
           newStats.level = Math.min(newStats.level + 1, 15);
           newStats.streak = 0;
+          audio.playLevelUp();
+          audio.speak('Nível aumentado!', { rate: 1.2 });
+        } else {
+          audio.playAchievement();
         }
         
         setStats(newStats);
@@ -190,6 +202,9 @@ export default function CacaFoco() {
       newStats.score = Math.max(0, stats.score - 5);
       newStats.streak = 0;
       newStats.timeLeft = Math.max(1, stats.timeLeft - 2); // Time penalty
+      
+      // Audio feedback for error
+      audio.playError('soft');
     }
 
     setStats(newStats);

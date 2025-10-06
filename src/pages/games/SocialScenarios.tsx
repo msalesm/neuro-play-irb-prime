@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAudioEngine } from "@/hooks/useAudioEngine";
 import { Users, MessageCircle, Heart, Clock, ArrowRight, RotateCcw } from "lucide-react";
 import { useSocialScenarios } from "@/hooks/useSocialScenarios";
 import { SocialScenariosProgress } from "@/components/SocialScenariosProgress";
@@ -16,6 +17,7 @@ import { GameExitButton } from '@/components/GameExitButton';
 const SocialScenarios = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const audio = useAudioEngine();
   const [currentScenario, setCurrentScenario] = useState<any>(null);
   const [currentChoices, setCurrentChoices] = useState<any[]>([]);
   const [selectedChoice, setSelectedChoice] = useState<number | null>(null);
@@ -81,6 +83,9 @@ const SocialScenarios = () => {
       setShowResult(false);
       setSessionStartTime(Date.now());
       setGameMode('playing');
+      
+      // Narrate scenario
+      audio.speak(`${scenario.title}. ${scenario.description}`, { rate: 0.9 });
     }
   };
 
@@ -109,6 +114,15 @@ const SocialScenarios = () => {
   const selectChoice = (choiceId: number) => {
     setSelectedChoice(choiceId);
     setShowResult(true);
+    
+    // Play feedback sound
+    audio.playSuccess('medium');
+    
+    // Narrate consequence
+    const selectedChoiceData = currentChoices.find(c => c.id === choiceId);
+    if (selectedChoiceData?.consequence) {
+      audio.speak(selectedChoiceData.consequence, { rate: 0.9 });
+    }
     
     setTimeout(() => {
       handleScenarioComplete(choiceId);
@@ -148,6 +162,10 @@ const SocialScenarios = () => {
         completionTime
       }
     });
+
+    // Completion sound
+    audio.playAchievement();
+    audio.speak('Cenário concluído! Parabéns!', { rate: 1.0 });
 
     setGameMode('result');
   };

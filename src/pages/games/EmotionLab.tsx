@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Heart, Smile, Frown, Meh, Angry, Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { useBehavioralAnalysis } from '@/hooks/useBehavioralAnalysis';
+import { useAudioEngine } from '@/hooks/useAudioEngine';
 
 interface EmotionScenario {
   id: string;
@@ -95,6 +96,7 @@ const emotionScenarios: EmotionScenario[] = [
 
 export default function EmotionLab() {
   const { saveBehavioralMetric } = useBehavioralAnalysis();
+  const audio = useAudioEngine();
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -132,10 +134,21 @@ export default function EmotionLab() {
                                               currentScenario.type === 'regulation' ? 'regulationStrategies' : 
                                               'situationUnderstanding'] + 1
       }));
+      
+      // Audio feedback
+      audio.playSuccess('high');
+      audio.speak(`Correto! Você ganhou ${points} pontos!`, { rate: 1.0 });
       toast.success(`Correto! +${points} pontos`);
     } else {
+      audio.playError('soft');
+      audio.speak('Não foi dessa vez, mas continue tentando!', { rate: 0.9 });
       toast.error("Não foi dessa vez, mas continue tentando!");
     }
+    
+    // Narrate explanation after feedback
+    setTimeout(() => {
+      audio.speak(currentScenario.explanation, { rate: 0.85 });
+    }, 2000);
 
     // Save behavioral data
     await saveBehavioralMetric({
@@ -161,6 +174,8 @@ export default function EmotionLab() {
       // Level up every 2 correct answers
       if (sessionData.totalCorrect % 2 === 0 && sessionData.totalCorrect > 0) {
         setLevel(prev => prev + 1);
+        audio.playLevelUp();
+        audio.speak('Nível aumentado!', { rate: 1.1, pitch: 1.2 });
         toast.success("Nível aumentado! 🎉");
       }
     } else {
@@ -170,6 +185,10 @@ export default function EmotionLab() {
 
   const completeGame = async () => {
     setIsComplete(true);
+    
+    // Completion audio
+    audio.playAchievement();
+    audio.speak('Laboratório concluído! Parabéns pelo seu trabalho!', { rate: 0.9 });
     
     const accuracy = (sessionData.totalCorrect / emotionScenarios.length) * 100;
     const emotionalIntelligenceScore = Math.round(

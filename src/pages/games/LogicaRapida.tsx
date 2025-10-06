@@ -11,6 +11,7 @@ import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
 import { useEducationalSystem } from "@/hooks/useEducationalSystem";
+import { useAudioEngine } from "@/hooks/useAudioEngine";
 
 type PatternType = 'sequence' | 'shape' | 'color' | 'number';
 type PatternItem = string | number;
@@ -55,6 +56,7 @@ const COLOR_PATTERNS = [
 export default function LogicaRapida() {
   const { user } = useAuth();
   const { getTrailByCategory } = useEducationalSystem();
+  const audio = useAudioEngine();
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'paused' | 'gameOver'>('idle');
   
   const {
@@ -225,6 +227,15 @@ export default function LogicaRapida() {
     const isCorrect = answer === currentPattern?.correctAnswer;
     setAnswerFeedback(isCorrect ? 'correct' : 'incorrect');
     
+    // Audio feedback
+    if (isCorrect) {
+      audio.playSuccess('medium');
+      audio.speak('Correto!', { rate: 1.1 });
+    } else {
+      audio.playError('soft');
+      audio.speak('Tente novamente', { rate: 0.9 });
+    }
+    
     const newStats = {
       ...stats,
       totalQuestions: stats.totalQuestions + 1,
@@ -260,6 +271,8 @@ export default function LogicaRapida() {
         // Level completed
         if (newStats.streak >= 3) {
           // Level up
+          audio.playLevelUp();
+          audio.speak('Nível aumentado! Parabéns!', { rate: 1.0 });
           setStats(prev => ({ 
             ...prev, 
             level: Math.min(prev.level + 1, 10),
