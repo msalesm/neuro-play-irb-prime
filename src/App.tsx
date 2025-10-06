@@ -11,6 +11,7 @@ import { AppLayout } from "@/components/AppLayout";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ModernEducationalDashboard } from '@/components/ModernEducationalDashboard';
+import { AudioEngineDemo } from '@/components/AudioEngineDemo';
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import GameMap from "./components/GameMap";
@@ -104,6 +105,7 @@ const App = () => (
             </div>
           } />
                   <Route path="/digital-notebook" element={<DigitalNotebook />} />
+                  <Route path="/audio-demo" element={<AudioEngineDemo />} />
                   <Route path="/diagnostic-tests" element={
                     <Suspense fallback={<Loading />}>
                       <DiagnosticTests />

@@ -9,6 +9,7 @@ import { useAutoSave } from '@/hooks/useAutoSave';
 import { useSessionRecovery } from '@/hooks/useSessionRecovery';
 import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
 import { GameExitButton } from '@/components/GameExitButton';
+import { useAudioEngine } from '@/hooks/useAudioEngine';
 
 interface MemoryItem {
   id: string;
@@ -25,6 +26,7 @@ const FEEDBACK_DURATION = 1000; // Reduzido de 2000ms para 1000ms
 
 export default function MemoryWorkload() {
   const { saveBehavioralMetric } = useBehavioralAnalysis();
+  const audio = useAudioEngine();
   const [gameState, setGameState] = useState<'waiting' | 'showing' | 'input' | 'feedback'>('waiting');
   const [level, setLevel] = useState(1);
   const [score, setScore] = useState(0);
@@ -95,6 +97,9 @@ export default function MemoryWorkload() {
 
   const showSequence = useCallback(() => {
     if (showingIndex < sequence.length) {
+      // Play tick sound when showing each item
+      audio.playTick();
+      
       setTimeout(() => {
         setShowingIndex(prev => prev + 1);
       }, SHOW_DURATION);
@@ -103,9 +108,12 @@ export default function MemoryWorkload() {
         setGameState('input');
         setTimeLeft(sequenceLength * 1500); // Tempo adequado para input
         clickTimeRef.current = Date.now();
+        
+        // Play hint sound to indicate input phase
+        audio.playHint();
       }, PAUSE_DURATION);
     }
-  }, [showingIndex, sequence.length, sequenceLength]);
+  }, [showingIndex, sequence.length, sequenceLength, audio]);
 
   const handleCellClick = (position: number) => {
     if (gameState !== 'input') return;
@@ -139,15 +147,19 @@ export default function MemoryWorkload() {
         setConsecutiveCorrect(prev => prev + 1);
         setConsecutiveErrors(0);
 
-        // Adaptive difficulty
+        // Adaptive difficulty and audio feedback
         let nextLevel = level;
         if (adaptiveMode && consecutiveCorrect >= 2) {
           nextLevel = level + 2; // Aumenta 2 níveis se acertar 3 seguidas
+          audio.playAchievement();
+          audio.speak('Excelente! Pulando de nível!');
           toast.success(`Excelente! Pulando para nível ${nextLevel}!`, { duration: 2000 });
         } else if (adaptiveMode && consecutiveCorrect >= 1) {
           nextLevel = level + 1; // Aumenta 1 nível
+          audio.playLevelUp();
           toast.success(`Nível ${level} completo! +${level * 10} pontos`);
         } else {
+          audio.playSuccess('high');
           toast.success(`Nível ${level} completo! +${level * 10} pontos`);
           nextLevel = level + 1;
         }
@@ -196,12 +208,15 @@ export default function MemoryWorkload() {
       setConsecutiveErrors(prev => prev + 1);
       setConsecutiveCorrect(0);
 
-      // Adaptive difficulty
+      // Adaptive difficulty and audio feedback
       let nextLevel = level;
       if (adaptiveMode && consecutiveErrors >= 1 && level > 1) {
         nextLevel = Math.max(1, level - 1); // Diminui 1 nível após 2 erros
+        audio.playError('soft');
+        audio.speak('Vamos tentar algo mais fácil');
         toast.error('Ajustando dificuldade...', { duration: 1500 });
       } else {
+        audio.playError('soft');
         toast.error('Sequência incorreta. Tente novamente!');
       }
 
@@ -316,6 +331,7 @@ export default function MemoryWorkload() {
     });
     
     if (sessionId) {
+      audio.speak('Vamos começar! Memorize a sequência de cores e posições.');
       startRound();
     }
   };
