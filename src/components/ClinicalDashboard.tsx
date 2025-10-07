@@ -22,6 +22,7 @@ import {
 import { useBehavioralAnalysis, DiagnosticPattern } from '@/hooks/useBehavioralAnalysis';
 import { useAuth } from '@/hooks/useAuth';
 import { Link } from 'react-router-dom';
+import { BehavioralReportDisclaimer } from '@/components/BehavioralReportDisclaimer';
 
 export const ClinicalDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -56,10 +57,10 @@ export const ClinicalDashboard: React.FC = () => {
     );
   }
 
-  const getRiskLevel = (score: number) => {
-    if (score < 0.3) return { level: 'Baixo', color: 'bg-green-500', variant: 'default' as const };
+  const getBehavioralFrequency = (score: number) => {
+    if (score < 0.3) return { level: 'Ocasional', color: 'bg-green-500', variant: 'default' as const };
     if (score < 0.6) return { level: 'Moderado', color: 'bg-yellow-500', variant: 'secondary' as const };
-    return { level: 'Alto', color: 'bg-red-500', variant: 'destructive' as const };
+    return { level: 'Frequente', color: 'bg-orange-500', variant: 'outline' as const };
   };
 
   const getConfidenceColor = (confidence: number) => {
@@ -78,6 +79,9 @@ export const ClinicalDashboard: React.FC = () => {
       </div>
 
       <div className="container mx-auto p-4 sm:p-6 space-y-6 relative z-10">
+        {/* Disclaimer persistente */}
+        <BehavioralReportDisclaimer className="mb-6" />
+
         <div className="flex flex-col gap-4 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-4">
@@ -85,14 +89,14 @@ export const ClinicalDashboard: React.FC = () => {
                 <Brain className="h-6 w-6 text-white" />
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white">
-                Painel 
+                Painel de 
                 <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                  Clínico
+                  Observação Comportamental
                 </span>
               </h1>
             </div>
             <p className="text-white/70 text-sm sm:text-base">
-              Análise avançada de padrões comportamentais
+              Análise de padrões comportamentais observados durante atividades
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
@@ -207,20 +211,21 @@ export const ClinicalDashboard: React.FC = () => {
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            {/* Risk Assessment Cards */}
+            {/* Behavioral Pattern Frequency Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden hover:bg-white/15 transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 opacity-50" />
                 <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-white/80">Risco TEA</CardTitle>
+                  <CardTitle className="text-sm font-medium text-white/80">Padrões de Comunicação Social</CardTitle>
                   <Brain className="h-4 w-4 text-white/60" />
                 </CardHeader>
                 <CardContent className="relative">
                   <div className="text-2xl font-bold mb-2 text-white">
                     {(currentReport.overallRiskAssessment.tea * 100).toFixed(1)}%
                   </div>
-                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.tea).variant} className="mb-3">
-                    {getRiskLevel(currentReport.overallRiskAssessment.tea).level}
+                  <p className="text-xs text-white/60 mb-2">das sessões apresentaram estes padrões</p>
+                  <Badge variant={getBehavioralFrequency(currentReport.overallRiskAssessment.tea).variant} className="mb-3">
+                    {getBehavioralFrequency(currentReport.overallRiskAssessment.tea).level}
                   </Badge>
                   <Progress 
                     value={currentReport.overallRiskAssessment.tea * 100} 
@@ -232,15 +237,16 @@ export const ClinicalDashboard: React.FC = () => {
               <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden hover:bg-white/15 transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-red-500/20 opacity-50" />
                 <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-white/80">Risco TDAH</CardTitle>
+                  <CardTitle className="text-sm font-medium text-white/80">Padrões de Atenção Sustentada</CardTitle>
                   <Activity className="h-4 w-4 text-white/60" />
                 </CardHeader>
                 <CardContent className="relative">
                   <div className="text-2xl font-bold mb-2 text-white">
                     {(currentReport.overallRiskAssessment.tdah * 100).toFixed(1)}%
                   </div>
-                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.tdah).variant} className="mb-3">
-                    {getRiskLevel(currentReport.overallRiskAssessment.tdah).level}
+                  <p className="text-xs text-white/60 mb-2">das sessões apresentaram estes padrões</p>
+                  <Badge variant={getBehavioralFrequency(currentReport.overallRiskAssessment.tdah).variant} className="mb-3">
+                    {getBehavioralFrequency(currentReport.overallRiskAssessment.tdah).level}
                   </Badge>
                   <Progress 
                     value={currentReport.overallRiskAssessment.tdah * 100} 
@@ -252,15 +258,16 @@ export const ClinicalDashboard: React.FC = () => {
               <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden hover:bg-white/15 transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 opacity-50" />
                 <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-white/80">Risco Dislexia</CardTitle>
+                  <CardTitle className="text-sm font-medium text-white/80">Padrões de Processamento Fonológico</CardTitle>
                   <FileText className="h-4 w-4 text-white/60" />
                 </CardHeader>
                 <CardContent className="relative">
                   <div className="text-2xl font-bold mb-2 text-white">
                     {(currentReport.overallRiskAssessment.dislexia * 100).toFixed(1)}%
                   </div>
-                  <Badge variant={getRiskLevel(currentReport.overallRiskAssessment.dislexia).variant} className="mb-3">
-                    {getRiskLevel(currentReport.overallRiskAssessment.dislexia).level}
+                  <p className="text-xs text-white/60 mb-2">das sessões apresentaram estes padrões</p>
+                  <Badge variant={getBehavioralFrequency(currentReport.overallRiskAssessment.dislexia).variant} className="mb-3">
+                    {getBehavioralFrequency(currentReport.overallRiskAssessment.dislexia).level}
                   </Badge>
                   <Progress 
                     value={currentReport.overallRiskAssessment.dislexia * 100} 
@@ -332,7 +339,7 @@ export const ClinicalDashboard: React.FC = () => {
                     <CardTitle className="flex items-center justify-between">
                       {pattern.condition}
                       <Badge 
-                        variant={getRiskLevel(pattern.confidence).variant}
+                        variant={getBehavioralFrequency(pattern.confidence).variant}
                         className={getConfidenceColor(pattern.confidence)}
                       >
                         {(pattern.confidence * 100).toFixed(1)}%

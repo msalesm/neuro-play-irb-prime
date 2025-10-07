@@ -8,14 +8,14 @@ import { useAuth } from "@/hooks/useAuth";
 const diagnosticTests = [
   {
     id: 'memory-workload',
-    title: "Teste de Memória de Trabalho",
-    category: "Diagnóstico • TDAH",
-    description: "Avalie sua capacidade de reter e manipular informações na memória de trabalho.",
+    title: "Observação de Memória de Trabalho",
+    category: "Observação • Atenção",
+    description: "Observe padrões de retenção e manipulação de informações na memória de trabalho.",
     features: ["Sequência numérica", "Span de dígitos", "Manipulação mental", "Capacidade limitada"],
     ageRange: "6-18 anos",
     duration: "10-15 min",
     players: "1 jogador",
-    status: "Diagnóstico",
+    status: "Observação",
     color: "bg-purple-100 text-purple-800",
     gradient: "from-purple-400 to-purple-600",
     unlocked: true,
@@ -25,13 +25,13 @@ const diagnosticTests = [
   {
     id: 'theory-of-mind',
     title: "Teoria da Mente",
-    category: "Diagnóstico • TEA",
-    description: "Teste sua capacidade de compreender pensamentos e sentimentos dos outros.",
+    category: "Observação • Social",
+    description: "Observe padrões de compreensão de pensamentos e sentimentos dos outros.",
     features: ["Falsa crença", "Perspectiva visual", "Compreensão social", "Empatia cognitiva"],
     ageRange: "4-16 anos",
     duration: "15-20 min",
     players: "1 jogador",
-    status: "Diagnóstico",
+    status: "Observação",
     color: "bg-cyan-100 text-cyan-800",
     gradient: "from-cyan-400 to-cyan-600",
     unlocked: true,
@@ -40,14 +40,14 @@ const diagnosticTests = [
   },
   {
     id: 'attention-sustained',
-    title: "Teste de Atenção Sustentada",
-    category: "Diagnóstico • TDAH",
-    description: "Avaliação científica da capacidade de manter atenção focada. Identifica déficits característicos do TDAH.",
+    title: "Observação de Atenção Sustentada",
+    category: "Observação • Atenção",
+    description: "Observe padrões de capacidade de manter atenção focada durante períodos prolongados.",
     features: ["Vigilância sustentada", "Tempo de reação", "Controle inibitório", "Declínio da atenção"],
     ageRange: "6-18 anos",
     duration: "8-12 min",
     players: "1 jogador",
-    status: "Diagnóstico",
+    status: "Observação",
     color: "bg-red-100 text-red-800",
     gradient: "from-red-400 to-red-600",
     unlocked: true,
@@ -57,13 +57,13 @@ const diagnosticTests = [
   {
     id: 'cognitive-flexibility',
     title: "Flexibilidade Cognitiva",
-    category: "Diagnóstico • TEA",
-    description: "Teste baseado no Wisconsin Card Sorting. Detecta rigidez cognitiva e dificuldades executivas típicas do TEA.",
+    category: "Observação • Executiva",
+    description: "Atividade baseada no Wisconsin Card Sorting para observar padrões de adaptação e flexibilidade cognitiva.",
     features: ["Mudança de regras", "Adaptabilidade", "Função executiva", "Perseveração"],
     ageRange: "8-18 anos",
     duration: "10-15 min",
     players: "1 jogador",
-    status: "Diagnóstico",
+    status: "Observação",
     color: "bg-indigo-100 text-indigo-800",
     gradient: "from-indigo-400 to-indigo-600",
     unlocked: true,
@@ -73,13 +73,13 @@ const diagnosticTests = [
   {
     id: 'phonological-processing',
     title: "Processamento Fonológico",
-    category: "Diagnóstico • Dislexia",
-    description: "Avalia habilidades de consciência fonológica. Principal indicador de risco para dificuldades de leitura.",
+    category: "Observação • Linguagem",
+    description: "Observe padrões de habilidades de consciência fonológica e processamento de sons da fala.",
     features: ["Rimas", "Segmentação", "Síntese", "Manipulação fonêmica"],
     ageRange: "5-16 anos",
     duration: "6-10 min",
     players: "1 jogador",
-    status: "Diagnóstico",
+    status: "Observação",
     color: "bg-teal-100 text-teal-800",
     gradient: "from-teal-400 to-teal-600",
     unlocked: true,
@@ -89,13 +89,13 @@ const diagnosticTests = [
   {
     id: 'executive-processing',
     title: "Processamento Executivo",
-    category: "Diagnóstico • TDAH/TEA",
-    description: "Avalia funções executivas através do teste Torre de Londres. Identifica dificuldades de planejamento e organização.",
+    category: "Observação • Executiva",
+    description: "Atividade baseada na Torre de Londres para observar padrões de planejamento e organização.",
     features: ["Planejamento", "Organização", "Controle inibitório", "Flexibilidade mental"],
     ageRange: "8-18 anos",
     duration: "12-18 min",
     players: "1 jogador",
-    status: "Diagnóstico",
+    status: "Observação",
     color: "bg-purple-100 text-purple-800",
     gradient: "from-purple-400 to-purple-600",
     unlocked: true,
@@ -116,7 +116,7 @@ export default function DiagnosticTests() {
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground">
-              Para acessar os testes diagnósticos, você precisa fazer login.
+              Para acessar as atividades de observação, você precisa fazer login.
             </p>
             <Button asChild>
               <Link to="/auth">Fazer Login</Link>
@@ -144,32 +144,35 @@ export default function DiagnosticTests() {
               <ClipboardCheck className="h-8 w-8 text-white" />
             </div>
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-white">
-              Testes 
+              Atividades de 
               <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-                Diagnósticos
+                Observação Comportamental
               </span>
             </h1>
           </div>
           <p className="text-xl text-white/70 max-w-4xl mx-auto text-balance mb-8">
-            Avaliações científicas validadas para identificação precoce de TEA, TDAH e Dislexia. 
-            Ferramentas profissionais baseadas em protocolos clínicos reconhecidos.
+            Atividades baseadas em protocolos científicos para observação de padrões comportamentais 
+            em áreas cognitivas específicas. Não constituem diagnóstico clínico.
           </p>
           
           {/* Warning Notice */}
           <div className="max-w-3xl mx-auto mb-12">
             <Card className="backdrop-blur-sm bg-yellow-500/10 border-yellow-500/30">
               <CardContent className="p-6">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-yellow-100">
-                    <p className="font-semibold mb-2">Importante:</p>
-                    <p className="text-left">
-                      Estes testes fornecem indicadores de risco, mas não constituem diagnóstico definitivo. 
-                      Os resultados devem ser interpretados por profissionais qualificados e complementados 
-                      com avaliação clínica completa.
-                    </p>
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-yellow-100">
+                      <p className="font-semibold mb-2">⚠️ Importante: Não é diagnóstico clínico</p>
+                      <p className="text-left mb-2">
+                        Estas atividades observam <strong>padrões comportamentais</strong> durante tarefas específicas, 
+                        mas <strong>NÃO constituem diagnóstico</strong> de qualquer condição.
+                      </p>
+                      <p className="text-left">
+                        Os resultados devem ser interpretados <strong>exclusivamente por profissionais qualificados</strong> 
+                        (psicólogos, neurologistas, psicopedagogos) e complementados com avaliação clínica completa.
+                      </p>
+                    </div>
                   </div>
-                </div>
               </CardContent>
             </Card>
           </div>
@@ -254,13 +257,13 @@ export default function DiagnosticTests() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           <Card className="p-6 backdrop-blur-sm bg-white/10 border-white/20">
             <CardHeader>
-              <h3 className="font-heading text-xl font-bold text-white">Como Funcionam os Testes</h3>
+              <h3 className="font-heading text-xl font-bold text-white">Como Funcionam as Atividades</h3>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-white/70">
-              <p>• Cada teste avalia funções cognitivas específicas</p>
-              <p>• Algoritmos baseados em pesquisa científica</p>
-              <p>• Resultados com indicadores de risco padronizados</p>
-              <p>• Relatórios detalhados para profissionais</p>
+              <p>• Cada atividade observa funções cognitivas específicas</p>
+              <p>• Baseadas em protocolos de pesquisa científica</p>
+              <p>• Resultados mostram padrões comportamentais observados</p>
+              <p>• Relatórios para interpretação profissional</p>
             </CardContent>
           </Card>
 
@@ -269,10 +272,10 @@ export default function DiagnosticTests() {
               <h3 className="font-heading text-xl font-bold text-white">Próximos Passos</h3>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-white/70">
-              <p>• Realize os testes em ambiente tranquilo</p>
-              <p>• Compartilhe resultados com profissionais</p>
-              <p>• Acesse o painel clínico para análise detalhada</p>
-              <p>• Continue com jogos terapêuticos personalizados</p>
+              <p>• Realize as atividades em ambiente tranquilo</p>
+              <p>• Compartilhe relatórios com profissionais qualificados</p>
+              <p>• Acesse o painel de observação para análise detalhada</p>
+              <p>• Continue com atividades terapêuticas personalizadas</p>
             </CardContent>
           </Card>
         </div>
@@ -282,10 +285,10 @@ export default function DiagnosticTests() {
           <Card className="max-w-2xl mx-auto p-8 backdrop-blur-sm bg-gradient-to-br from-purple-500/10 to-blue-500/10 border-white/20">
             <CardContent>
               <h3 className="font-heading text-2xl font-bold mb-4 text-white">
-                Análise Profissional Completa
+                Relatório de Padrões Comportamentais
               </h3>
               <p className="text-white/70 mb-6">
-                Acesse relatórios detalhados e ferramentas de análise no painel clínico
+                Acesse relatórios detalhados de padrões observados no painel de observação comportamental
               </p>
               <Button 
                 size="lg" 
@@ -294,7 +297,7 @@ export default function DiagnosticTests() {
               >
                 <Link to="/clinical" className="flex items-center gap-2">
                   <ClipboardCheck className="h-5 w-5" />
-                  Acessar Painel Clínico
+                  Acessar Painel de Observação
                 </Link>
               </Button>
             </CardContent>
