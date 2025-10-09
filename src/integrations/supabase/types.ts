@@ -2820,7 +2820,7 @@ export type Database = {
           subscription_end: string | null
           subscription_tier: string | null
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
@@ -2833,7 +2833,7 @@ export type Database = {
           subscription_end?: string | null
           subscription_tier?: string | null
           updated_at?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -2846,7 +2846,7 @@ export type Database = {
           subscription_end?: string | null
           subscription_tier?: string | null
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -3732,6 +3732,39 @@ export type Database = {
           reputation_score?: number | null
           state?: string | null
           updated_at?: string | null
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
+      public_user_profiles_safe: {
+        Row: {
+          avatar_url: string | null
+          city: string | null
+          created_at: string | null
+          id: string | null
+          name: string | null
+          reputation_score: number | null
+          state: string | null
+          verified: boolean | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string | null
+          id?: string | null
+          name?: string | null
+          reputation_score?: number | null
+          state?: string | null
+          verified?: boolean | null
+        }
+        Update: {
+          avatar_url?: string | null
+          city?: string | null
+          created_at?: string | null
+          id?: string | null
+          name?: string | null
+          reputation_score?: number | null
+          state?: string | null
           verified?: boolean | null
         }
         Relationships: []
