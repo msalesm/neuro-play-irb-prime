@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Brain, Mail, Lock, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { signInSchema, signUpSchema } from '@/lib/validation';
+import { z } from 'zod';
 
 export default function Auth() {
   const { user, signIn, signUp, loading } = useAuth();
@@ -37,20 +39,43 @@ export default function Auth() {
     e.preventDefault();
     setIsLoading(true);
 
-    const { error } = await signIn(loginForm.email, loginForm.password);
-    
-    if (error) {
-      toast({
-        title: "Erro ao fazer login",
-        description: error.message,
-        variant: "destructive",
+    try {
+      // Validate inputs
+      const validatedData = signInSchema.parse({
+        email: loginForm.email.trim(),
+        password: loginForm.password
       });
-    } else {
-      toast({
-        title: "Login realizado com sucesso!",
-        description: "Bem-vindo ao GameNeuro",
-      });
+
+      const { error } = await signIn(validatedData.email, validatedData.password);
+      
+      if (error) {
+        toast({
+          title: "Erro ao fazer login",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Login realizado com sucesso!",
+          description: "Bem-vindo ao GameNeuro",
+        });
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Erro de validação",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Erro ao fazer login",
+          description: "Ocorreu um erro inesperado",
+          variant: "destructive",
+        });
+      }
     }
+    
     setIsLoading(false);
   };
 
@@ -58,20 +83,48 @@ export default function Auth() {
     e.preventDefault();
     setIsLoading(true);
 
-    const { error } = await signUp(signupForm.email, signupForm.password, signupForm.name);
-    
-    if (error) {
-      toast({
-        title: "Erro ao criar conta",
-        description: error.message,
-        variant: "destructive",
+    try {
+      // Validate inputs
+      const validatedData = signUpSchema.parse({
+        email: signupForm.email.trim(),
+        password: signupForm.password,
+        name: signupForm.name.trim()
       });
-    } else {
-      toast({
-        title: "Conta criada com sucesso!",
-        description: "Verifique seu email para ativar a conta",
-      });
+
+      const { error } = await signUp(
+        validatedData.email,
+        validatedData.password,
+        validatedData.name
+      );
+      
+      if (error) {
+        toast({
+          title: "Erro ao criar conta",
+          description: error.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Conta criada com sucesso!",
+          description: "Verifique seu email para ativar a conta",
+        });
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Erro de validação",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Erro ao criar conta",
+          description: "Ocorreu um erro inesperado",
+          variant: "destructive",
+        });
+      }
     }
+    
     setIsLoading(false);
   };
 

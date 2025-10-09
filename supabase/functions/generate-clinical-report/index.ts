@@ -5,6 +5,7 @@ import { fetchSessionsData, fetchBehavioralMetricsData, fetchNeurodiversityProfi
 import { calculateMetrics, analyzeTemporalEvolution, analyzeBehavioralPatterns } from "./metrics.ts";
 import { generateAIPrompt } from "./ai-prompts.ts";
 import { buildReport } from "./report-builder.ts";
+import { validateReportRequest } from "./validation.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -36,14 +37,27 @@ serve(async (req) => {
       throw new Error('Unauthorized');
     }
 
-    // Parse request body
+    // Parse and validate request body
     const requestBody: ReportRequest = await req.json();
-    const { userId, startDate, endDate, reportType } = requestBody;
-
-    // Validate that user can only generate their own reports
-    if (userId !== user.id) {
-      throw new Error('Unauthorized: Cannot generate reports for other users');
+    
+    // Server-side validation
+    const validationResult = validateReportRequest(requestBody, user.id);
+    if (!validationResult.valid) {
+      console.error('Validation errors:', validationResult.errors);
+      return new Response(
+        JSON.stringify({
+          status: 'error',
+          message: 'Validation failed',
+          errors: validationResult.errors
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      );
     }
+
+    const { userId, startDate, endDate, reportType } = requestBody;
 
     console.log(`Generating ${reportType} report for user ${userId} from ${startDate} to ${endDate}`);
 
