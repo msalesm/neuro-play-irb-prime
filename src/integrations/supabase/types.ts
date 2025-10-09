@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -3595,6 +3595,19 @@ export type Database = {
           rating_avg: number
           specialty: string
           user_id: string
+        }[]
+      }
+      get_public_profiles_safe: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          avatar_url: string
+          city: string
+          created_at: string
+          id: string
+          name: string
+          reputation_score: number
+          state: string
+          verified: boolean
         }[]
       }
       get_safe_public_profiles: {
