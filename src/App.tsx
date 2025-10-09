@@ -48,6 +48,7 @@ import ExecutiveProcessingGame from "./pages/games/ExecutiveProcessingGame";
 import EmotionLab from "./pages/games/EmotionLab";
 import SpatialArchitect from "./pages/games/SpatialArchitect";
 import Settings from "./pages/Settings";
+import PixelPlatformer from "./pages/PixelPlatformer";
 import NotFound from "./pages/NotFound";
 
 // Lazy loaded components - Critical path optimization
@@ -146,6 +147,7 @@ const App = () => (
                   <Route path="/games/executive-processing-game" element={<ExecutiveProcessingGame />} />
                   <Route path="/games/emotion-lab" element={<EmotionLab />} />
                   <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
+                  <Route path="/games/pixel-platformer" element={<PixelPlatformer />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
                   <Route path="/clinical" element={
