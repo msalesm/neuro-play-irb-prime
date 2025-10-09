@@ -126,6 +126,10 @@ export default function ProgressTrail({ games, trackColor, trackName }: Progress
               asChild
               className="min-w-[120px]"
               style={!game.completed ? { backgroundColor: trackColor } : {}}
+              onClick={() => {
+                console.log(`🎮 Clicando em jogo: ${game.name} (ID: ${game.id})`);
+                console.log(`📍 Navegando para: /games/${game.id}`);
+              }}
             >
               <Link to={`/games/${game.id}`} className="flex items-center gap-2">
                 {game.completed ? (
