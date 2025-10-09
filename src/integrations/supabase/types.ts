@@ -335,6 +335,65 @@ export type Database = {
         }
         Relationships: []
       }
+      analysis_results: {
+        Row: {
+          abcde_scores: Json | null
+          clinical_recommendations: string[] | null
+          confidence_calibrated: number | null
+          created_at: string
+          hanseniase_probability: number | null
+          heatmap_url: string | null
+          id: string
+          image_id: string
+          melanoma_probability: number | null
+          model_metadata: Json | null
+          predicted_class: string
+          triage_level: string | null
+          triage_recommendation: string | null
+          user_id: string | null
+        }
+        Insert: {
+          abcde_scores?: Json | null
+          clinical_recommendations?: string[] | null
+          confidence_calibrated?: number | null
+          created_at?: string
+          hanseniase_probability?: number | null
+          heatmap_url?: string | null
+          id?: string
+          image_id: string
+          melanoma_probability?: number | null
+          model_metadata?: Json | null
+          predicted_class: string
+          triage_level?: string | null
+          triage_recommendation?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          abcde_scores?: Json | null
+          clinical_recommendations?: string[] | null
+          confidence_calibrated?: number | null
+          created_at?: string
+          hanseniase_probability?: number | null
+          heatmap_url?: string | null
+          id?: string
+          image_id?: string
+          melanoma_probability?: number | null
+          model_metadata?: Json | null
+          predicted_class?: string
+          triage_level?: string | null
+          triage_recommendation?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_results_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "medical_images"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       appointments: {
         Row: {
           created_at: string
@@ -544,6 +603,72 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      clinical_labels: {
+        Row: {
+          agrees_with_ai: boolean | null
+          clinician_name: string | null
+          clinician_specialty: string | null
+          confidence_level: string | null
+          confirmed_diagnosis: string
+          created_at: string
+          disagreement_reason: string | null
+          id: string
+          image_id: string
+          labeled_by: string
+          notes: string | null
+          result_id: string | null
+          supporting_evidence: string | null
+          updated_at: string
+        }
+        Insert: {
+          agrees_with_ai?: boolean | null
+          clinician_name?: string | null
+          clinician_specialty?: string | null
+          confidence_level?: string | null
+          confirmed_diagnosis: string
+          created_at?: string
+          disagreement_reason?: string | null
+          id?: string
+          image_id: string
+          labeled_by: string
+          notes?: string | null
+          result_id?: string | null
+          supporting_evidence?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agrees_with_ai?: boolean | null
+          clinician_name?: string | null
+          clinician_specialty?: string | null
+          confidence_level?: string | null
+          confirmed_diagnosis?: string
+          created_at?: string
+          disagreement_reason?: string | null
+          id?: string
+          image_id?: string
+          labeled_by?: string
+          notes?: string | null
+          result_id?: string | null
+          supporting_evidence?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_labels_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "medical_images"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_labels_result_id_fkey"
+            columns: ["result_id"]
+            isOneToOne: false
+            referencedRelation: "analysis_results"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       clinical_reports: {
         Row: {
@@ -1872,6 +1997,66 @@ export type Database = {
           symptoms?: string[] | null
           updated_at?: string
           urgency_level?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      medical_images: {
+        Row: {
+          age: number | null
+          confirmation_method: string | null
+          confirmed_diagnosis: string | null
+          consent_given: boolean
+          created_at: string
+          data_source: string | null
+          duration_days: number | null
+          fitzpatrick_type: number | null
+          id: string
+          image_type: string
+          image_url: string
+          location_anatomic: string | null
+          patient_id: string | null
+          sex: string | null
+          symptoms: string[] | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          age?: number | null
+          confirmation_method?: string | null
+          confirmed_diagnosis?: string | null
+          consent_given?: boolean
+          created_at?: string
+          data_source?: string | null
+          duration_days?: number | null
+          fitzpatrick_type?: number | null
+          id?: string
+          image_type: string
+          image_url: string
+          location_anatomic?: string | null
+          patient_id?: string | null
+          sex?: string | null
+          symptoms?: string[] | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          age?: number | null
+          confirmation_method?: string | null
+          confirmed_diagnosis?: string | null
+          consent_given?: boolean
+          created_at?: string
+          data_source?: string | null
+          duration_days?: number | null
+          fitzpatrick_type?: number | null
+          id?: string
+          image_type?: string
+          image_url?: string
+          location_anatomic?: string | null
+          patient_id?: string | null
+          sex?: string | null
+          symptoms?: string[] | null
+          updated_at?: string
           user_id?: string | null
         }
         Relationships: []
@@ -3559,6 +3744,10 @@ export type Database = {
       }
       can_view_medical_data: {
         Args: { _profile_user_id: string }
+        Returns: boolean
+      }
+      can_view_public_profiles: {
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       can_view_sensitive_profile_data: {
