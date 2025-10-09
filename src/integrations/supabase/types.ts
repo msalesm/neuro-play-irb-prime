@@ -3736,39 +3736,6 @@ export type Database = {
         }
         Relationships: []
       }
-      public_user_profiles_safe: {
-        Row: {
-          avatar_url: string | null
-          city: string | null
-          created_at: string | null
-          id: string | null
-          name: string | null
-          reputation_score: number | null
-          state: string | null
-          verified: boolean | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          city?: string | null
-          created_at?: string | null
-          id?: string | null
-          name?: string | null
-          reputation_score?: number | null
-          state?: string | null
-          verified?: boolean | null
-        }
-        Update: {
-          avatar_url?: string | null
-          city?: string | null
-          created_at?: string | null
-          id?: string | null
-          name?: string | null
-          reputation_score?: number | null
-          state?: string | null
-          verified?: boolean | null
-        }
-        Relationships: []
-      }
     }
     Functions: {
       can_view_contact_info: {

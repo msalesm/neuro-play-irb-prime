@@ -118,14 +118,14 @@ export function useAdminSystem() {
 
   const getStudentDetail = async (studentId: string): Promise<StudentDetail | null> => {
     try {
-      // Fetch student profile
-      const { data: profile, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', studentId)
-        .single();
+      // Fetch student profile - use get_user_basic_profile for secure access
+      const { data: profileData, error: profileError } = await supabase
+        .rpc('get_user_basic_profile', { profile_user_id: studentId });
 
       if (profileError) throw profileError;
+      if (!profileData || profileData.length === 0) return null;
+      
+      const profile = profileData[0];
 
       // Fetch learning trails
       const { data: trails, error: trailsError } = await supabase
@@ -181,7 +181,7 @@ export function useAdminSystem() {
       return {
         id: profile.id,
         name: profile.name || 'Sem nome',
-        email: profile.email || '',
+        email: '', // Email not exposed through get_user_basic_profile for security
         created_at: profile.created_at,
         learning_trails: trails || [],
         recent_sessions: sessions || [],
@@ -275,18 +275,17 @@ export function useAdminSystem() {
     if (!isAdmin) return [];
 
     try {
-      // Get basic user profiles first
-      const { data: profiles, error: profilesError } = await supabase
-        .from('user_profiles')
-        .select('id, name, email, created_at');
+      // Get basic user profiles using secure RPC - admins can view basic profiles
+      const { data: profilesData, error: profilesError } = await supabase
+        .rpc('get_user_profiles_basic');
 
       if (profilesError) throw profilesError;
-      if (!profiles || !Array.isArray(profiles)) return [];
+      if (!profilesData || !Array.isArray(profilesData)) return [];
 
       // Get learning data for each user
       const processedData: StudentData[] = [];
       
-      for (const user of profiles) {
+      for (const user of profilesData) {
         // Get learning trails
         const { data: trails } = await supabase
           .from('learning_trails')
