@@ -45,9 +45,9 @@ export const Header = () => {
           <AdminNavLink />
           
           <Link
-            to="/clinical-dashboard"
+            to="/clinical"
             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors relative ${
-              location.pathname === '/clinical-dashboard'
+              location.pathname === '/clinical'
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground hover:bg-accent'
             }`}

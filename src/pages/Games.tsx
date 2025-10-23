@@ -325,12 +325,12 @@ export default function Games() {
                 </div>
               </div>
               <div className="flex flex-col gap-3">
-                <Button 
+                <Button
                   size="lg"
                   className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
                   asChild
                 >
-                  <Link to="/clinical-dashboard" className="flex items-center gap-2">
+                  <Link to="/clinical" className="flex items-center gap-2">
                     <Target className="h-5 w-5" />
                     Acessar Painel Clínico
                   </Link>
