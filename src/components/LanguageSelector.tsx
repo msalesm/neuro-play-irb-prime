@@ -24,7 +24,7 @@ export function LanguageSelector() {
           {languages.find(lang => lang.code === language)?.flag}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="z-50 bg-background border shadow-lg">
         {languages.map((lang) => (
           <DropdownMenuItem 
             key={lang.code}

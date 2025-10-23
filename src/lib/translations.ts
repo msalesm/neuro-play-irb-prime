@@ -8,7 +8,9 @@ export const translations = {
       learning: 'Aprendizado',
       clinical: 'Clínico',
       today: 'Hoje',
-      tests: 'Testes'
+      tests: 'Testes',
+      diagnosticTests: 'Avaliações Diagnósticas',
+      myProgress: 'Meu Progresso'
     },
     
     // Hero Section
@@ -126,7 +128,9 @@ export const translations = {
       learning: 'Apprendimento',
       clinical: 'Clinico',
       today: 'Oggi',
-      tests: 'Test'
+      tests: 'Test',
+      diagnosticTests: 'Valutazioni Diagnostiche',
+      myProgress: 'I Miei Progressi'
     },
     
     // Hero Section
