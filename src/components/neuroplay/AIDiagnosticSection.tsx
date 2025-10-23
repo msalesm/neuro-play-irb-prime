@@ -1,6 +1,8 @@
 import { Brain, Activity, Target, Clock, Zap, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const metrics = [
   { label: 'Velocidade de reação', value: '285ms', icon: Zap, color: 'text-yellow-500' },
@@ -29,6 +31,13 @@ export function AIDiagnosticSection() {
             <p className="text-xl text-muted-foreground mb-8">
               A IA analisa mais de 50 variáveis durante o jogo para criar um perfil cognitivo completo e personalizado
             </p>
+
+            <Link to="/cognitive-diagnostic">
+              <Button size="lg" className="mb-6">
+                <Brain className="w-5 h-5 mr-2" />
+                Fazer Diagnóstico Agora
+              </Button>
+            </Link>
 
             {/* Example Result */}
             <Card className="border-2 border-primary/20 bg-primary/5">

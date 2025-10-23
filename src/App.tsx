@@ -55,6 +55,7 @@ import NotFound from "./pages/NotFound";
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
+const CognitiveDiagnostic = lazy(() => import("./pages/CognitiveDiagnostic"));
 const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Games = lazy(() => import("./pages/Games"));
@@ -93,6 +94,11 @@ const App = () => (
                     </Suspense>
                   } />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/cognitive-diagnostic" element={
+                    <Suspense fallback={<Loading />}>
+                      <CognitiveDiagnostic />
+                    </Suspense>
+                  } />
                   <Route path="/game-map" element={<GameMap />} />
                   <Route path="/games" element={
                     <Suspense fallback={<Loading />}>
