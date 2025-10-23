@@ -4,4 +4,4 @@ project_id = "skwpuolpkgntqdmgzwlr"
 verify_jwt = true
 
 [functions.cognitive-analysis]
-verify_jwt = false
+verify_jwt = true
