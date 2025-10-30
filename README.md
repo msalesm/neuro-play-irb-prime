@@ -1,8 +1,53 @@
 # 🧠 NeuroPlay
 
-**Jogos cognitivos divertidos para crianças e jovens neurodiversos**
+**Plataforma completa de jogos cognitivos, triagem e intervenção para neurodiversidade**
 
-NeuroPlay é um aplicativo de jogos educativos curtos (1-3 minutos) criado especificamente para apoiar o desenvolvimento de crianças com **Dislexia**, **TDAH** e **TEA** (Transtorno do Espectro Autista).
+NeuroPlay é um aplicativo educativo que combina jogos terapêuticos curtos (1-3 minutos) com um sistema completo de **triagem gamificada**, **Planos Educacionais Individualizados (PEI)** e **capacitação docente** - em conformidade com a **Lei 14.254/21**.
+
+---
+
+## 🎓 **Neuro Play EDU** - Sistema de Triagem e Intervenção
+
+### Funcionalidades Principais:
+
+#### 1️⃣ **Triagem Gamificada** (`/screening`)
+Identificação precoce através de jogos científicos validados:
+- **Dislexia**: Processamento fonológico e consciência fonêmica (10-15 min)
+- **TDAH**: Atenção sustentada e controle inibitório (10-15 min)  
+- **TEA**: Cognição social e teoria da mente (10-15 min)
+
+**Resultados instantâneos com:**
+- ✅ Score e percentil
+- ✅ Recomendação de ação
+- ✅ PEI automático (percentil < 40)
+
+#### 2️⃣ **PEI Inteligente** (`/pei`)
+Plano Educacional Individualizado gerado por IA:
+- 🎯 Objetivos personalizados
+- 📚 Atividades adaptativas
+- 💡 Recomendações pedagógicas
+- ✏️ Editável pelo professor
+- 📊 Acompanhamento de progresso
+
+#### 3️⃣ **Painel do Professor** (`/teacher-dashboard`)
+Dashboard completo para gestão:
+- 📊 Métricas agregadas (triagens, PEIs, risco)
+- 🔍 Busca e filtros por estudante/tipo
+- 📈 Acompanhamento de progresso
+- 🔗 Acesso rápido aos PEIs
+
+#### 4️⃣ **Capacitação Docente** (`/training`)
+6 módulos gamificados de formação:
+- 📚 Fundamentos (Dislexia, TDAH, TEA)
+- 🎯 Intervenções e estratégias práticas
+- 🏆 Certificação digital (score >= 80%)
+- 📊 Ranking de professores
+
+**📖 Documentação Completa:**
+- [Sistema Completo](docs/NEUROPLAY_EDU_COMPLETE.md) - Documentação técnica detalhada
+- [Guia Rápido](docs/QUICK_START.md) - Início em 5 minutos
+
+---
 
 ## 🎯 Módulos de Jogos
 
@@ -60,11 +105,21 @@ npm run dev
 
 ## 🎮 Como Usar
 
+### Para Jogos Terapêuticos:
 1. **Criar Conta**: Registre-se gratuitamente
 2. **Escolher Módulo**: Selecione baseado na neurodiversidade
 3. **Jogar**: Complete minigames de 1-3 minutos
 4. **Acompanhar**: Veja o progresso no dashboard
 5. **Recompensar**: Desbloqueie conquistas e itens
+
+### Para Triagem e PEI (Professores):
+1. **Realizar Triagem**: Acompanhe estudante no jogo (10-15 min)
+2. **Ver Resultados**: Receba score, percentil e recomendações
+3. **Acessar PEI**: Revise plano gerado automaticamente (se necessário)
+4. **Monitorar Progresso**: Use o Painel do Professor
+5. **Capacitar-se**: Complete módulos de formação docente
+
+📘 **Guia Detalhado**: Consulte [QUICK_START.md](docs/QUICK_START.md)
 
 ## 🧬 Base Científica
 
@@ -78,17 +133,24 @@ O NeuroPlay é baseado em:
 
 ## 👨‍👩‍👧‍👦 Para Pais e Educadores
 
-### Relatórios Incluem:
+### Relatórios de Jogos Incluem:
 - Tempo de jogo e frequência
 - Pontuações e melhorias
 - Áreas de maior dificuldade
 - Sugestões de atividades complementares
+
+### Sistema de Triagem Oferece:
+- ✅ Identificação precoce baseada em jogos
+- ✅ Relatórios com percentis e recomendações
+- ✅ PEI automático para intervenção
+- ✅ Conformidade com Lei 14.254/21
 
 ### Dicas de Uso:
 - **Consistência**: 10-15 minutos diários
 - **Horário Fixo**: Mesmo período todos os dias  
 - **Acompanhamento**: Celebre as conquistas
 - **Paciência**: Cada criança tem seu ritmo
+- **Triagem**: Realize triagens semestrais para acompanhamento
 
 ## 🤝 Contribuindo
 

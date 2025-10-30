@@ -3163,6 +3163,51 @@ export type Database = {
         }
         Relationships: []
       }
+      teacher_training_progress: {
+        Row: {
+          answers: Json
+          attempts: number
+          certificate_url: string | null
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          id: string
+          module_id: string
+          score: number
+          time_spent_seconds: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          attempts?: number
+          certificate_url?: string | null
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          module_id: string
+          score?: number
+          time_spent_seconds?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          attempts?: number
+          certificate_url?: string | null
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          module_id?: string
+          score?: number
+          time_spent_seconds?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       therapy_sessions: {
         Row: {
           ai_notes: Json | null
