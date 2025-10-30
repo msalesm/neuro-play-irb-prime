@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Heart, ArrowLeft } from 'lucide-react';
 import { useScreening } from '@/hooks/useScreening';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface Question {
   id: number;
@@ -100,6 +102,7 @@ const questions: Question[] = [
 
 export default function TEAScreening() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { startScreening, saveScreening, loading } = useScreening();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -109,8 +112,13 @@ export default function TEAScreening() {
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
+    if (!user) {
+      toast.error('Você precisa estar logado para realizar a triagem');
+      navigate('/auth');
+      return;
+    }
     startScreening('tea');
-  }, []);
+  }, [user, navigate]);
 
   const handleStart = () => {
     setStarted(true);

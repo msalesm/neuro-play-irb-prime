@@ -52,8 +52,13 @@ export function useScreening() {
   };
 
   const saveScreening = async (score: number, duration: number, gameData: any) => {
-    if (!user || !currentScreening) {
-      toast.error('Erro ao salvar triagem');
+    if (!user) {
+      toast.error('Você precisa estar logado para salvar a triagem');
+      return null;
+    }
+
+    if (!currentScreening) {
+      toast.error('Nenhuma triagem em andamento');
       return null;
     }
 
@@ -62,21 +67,36 @@ export function useScreening() {
       const percentile = calculatePercentile(score, currentScreening.type);
       const recommendedAction = getRecommendation(percentile, currentScreening.type);
 
+      console.log('Salvando triagem:', {
+        user_id: user.id,
+        type: currentScreening.type,
+        score: Number(score),
+        percentile: Number(percentile),
+        duration: Number(duration),
+      });
+
       const { data, error } = await supabase
         .from('screenings')
         .insert({
           user_id: user.id,
           type: currentScreening.type,
-          score,
-          percentile,
-          duration,
+          score: Number(score),
+          percentile: Number(percentile),
+          duration: Number(duration),
           game_data: gameData,
           recommended_action: recommendedAction,
         })
         .select()
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Erro do Supabase:', error);
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error('Nenhum dado retornado após inserção');
+      }
 
       const result: ScreeningResult = {
         id: data.id,
@@ -99,8 +119,9 @@ export function useScreening() {
       toast.success('Triagem concluída com sucesso!');
       return result;
     } catch (error: any) {
-      console.error('Error saving screening:', error);
-      toast.error('Erro ao salvar triagem');
+      console.error('Erro ao salvar triagem:', error);
+      const errorMessage = error?.message || error?.error_description || 'Erro desconhecido ao salvar triagem';
+      toast.error(`Erro: ${errorMessage}`);
       return null;
     } finally {
       setLoading(false);
@@ -115,7 +136,7 @@ export function useScreening() {
       const activities = generateActivities(result);
       const recommendations = generateRecommendations(result);
 
-      await supabase.from('pei_plans').insert({
+      const { error } = await supabase.from('pei_plans').insert({
         user_id: user.id,
         screening_id: screeningId,
         objectives,
@@ -124,8 +145,14 @@ export function useScreening() {
         ai_generated: true,
         progress: 0,
       });
+
+      if (error) {
+        console.error('Erro ao gerar PEI:', error);
+      } else {
+        console.log('PEI gerado com sucesso');
+      }
     } catch (error) {
-      console.error('Error generating PEI:', error);
+      console.error('Erro ao gerar PEI:', error);
     }
   };
 

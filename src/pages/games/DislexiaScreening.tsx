@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { BookOpen, ArrowLeft } from 'lucide-react';
 import { useScreening } from '@/hooks/useScreening';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
 interface Question {
@@ -76,6 +77,7 @@ const questions: Question[] = [
 
 export default function DislexiaScreening() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { startScreening, saveScreening, loading } = useScreening();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
@@ -85,8 +87,13 @@ export default function DislexiaScreening() {
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
+    if (!user) {
+      toast.error('Você precisa estar logado para realizar a triagem');
+      navigate('/auth');
+      return;
+    }
     startScreening('dislexia');
-  }, []);
+  }, [user, navigate]);
 
   const handleStart = () => {
     setStarted(true);

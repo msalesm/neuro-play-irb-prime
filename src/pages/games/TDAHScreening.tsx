@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Zap, ArrowLeft, Circle } from 'lucide-react';
 import { useScreening } from '@/hooks/useScreening';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface Trial {
   id: number;
@@ -15,6 +17,7 @@ interface Trial {
 
 export default function TDAHScreening() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { startScreening, saveScreening, loading } = useScreening();
   const [started, setStarted] = useState(false);
   const [currentTrial, setCurrentTrial] = useState(0);
@@ -29,8 +32,13 @@ export default function TDAHScreening() {
   const [sessionStartTime, setSessionStartTime] = useState<number>(0);
 
   useEffect(() => {
+    if (!user) {
+      toast.error('Você precisa estar logado para realizar a triagem');
+      navigate('/auth');
+      return;
+    }
     startScreening('tdah');
-  }, []);
+  }, [user, navigate]);
 
   function generateTrials(): Trial[] {
     const trials: Trial[] = [];
