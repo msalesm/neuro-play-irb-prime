@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { 
   Home, Gamepad2, FileText, GraduationCap, Settings, 
   User, Trophy, TrendingUp, Brain, Stethoscope,
-  ChevronRight, Circle, Play, BookOpen
+  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -62,6 +62,24 @@ export function AppSidebar() {
     },
   ];
 
+  const neuroPlayEduNavigation = [
+    {
+      title: 'Triagem Gamificada',
+      path: '/screening',
+      icon: ClipboardCheck,
+    },
+    {
+      title: 'Painel do Professor',
+      path: '/teacher-dashboard',
+      icon: Users,
+    },
+    {
+      title: 'Capacitação Docente',
+      path: '/training',
+      icon: School,
+    },
+  ];
+
   const gamesNavigation = [
     {
       title: t('nav.games'),
@@ -114,6 +132,11 @@ export function AppSidebar() {
       id: 'main',
       label: 'Principal',
       items: mainNavigation,
+    },
+    {
+      id: 'neuroplay-edu',
+      label: 'Neuro Play EDU',
+      items: neuroPlayEduNavigation,
     },
     {
       id: 'games',
