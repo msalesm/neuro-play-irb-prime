@@ -52,6 +52,13 @@ import Settings from "./pages/Settings";
 import PixelPlatformer from "./pages/PixelPlatformer";
 import NotFound from "./pages/NotFound";
 
+// Screening pages
+import ScreeningSelection from "./pages/ScreeningSelection";
+import DislexiaScreening from "./pages/games/DislexiaScreening";
+import TDAHScreening from "./pages/games/TDAHScreening";
+import TEAScreening from "./pages/games/TEAScreening";
+import ScreeningResult from "./pages/ScreeningResult";
+
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -179,6 +186,12 @@ const App = () => (
                       <Dashboard />
                     </Suspense>
                   } />
+                  {/* Screening Routes - Neuro Play EDU */}
+                  <Route path="/screening" element={<ScreeningSelection />} />
+                  <Route path="/screening/dislexia" element={<DislexiaScreening />} />
+                  <Route path="/screening/tdah" element={<TDAHScreening />} />
+                  <Route path="/screening/tea" element={<TEAScreening />} />
+                  <Route path="/screening/result" element={<ScreeningResult />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
