@@ -20,73 +20,178 @@ export default function NeuroPlayIndex() {
       {/* How It Works */}
       <HowItWorksSection />
 
-      {/* Neuro Play EDU - Screening Section */}
-      <section className="container max-w-6xl mx-auto px-4 py-16">
-        <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
-          <CardHeader className="relative">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-3 rounded-lg bg-gradient-to-r from-primary to-primary/60 text-white">
+      {/* Neuro Play EDU - Complete Platform Section */}
+      <section className="container max-w-7xl mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">Neuro Play EDU</h2>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            Plataforma completa de identificação, intervenção e capacitação para neurodiversidade - em conformidade com a Lei 14.254/21
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {/* Triagem Gamificada */}
+          <Card className="border-2 border-primary/20 hover:border-primary/40 transition-all overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:blur-3xl transition-all" />
+            <CardHeader className="relative">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white w-fit mb-3">
                 <ClipboardCheck className="h-6 w-6" />
               </div>
-              <div>
-                <CardTitle className="text-2xl">Neuro Play EDU</CardTitle>
-                <CardDescription>Triagem Gamificada - Lei 14.254/21</CardDescription>
+              <CardTitle className="text-xl">Triagem Gamificada</CardTitle>
+              <CardDescription>Identificação precoce através de jogos validados</CardDescription>
+            </CardHeader>
+            <CardContent className="relative space-y-4">
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-blue-500/10 text-blue-500 mt-0.5">
+                    <Target className="h-3 w-3" />
+                  </div>
+                  <span><strong>Dislexia:</strong> Processamento fonológico e leitura</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-blue-500/10 text-blue-500 mt-0.5">
+                    <Zap className="h-3 w-3" />
+                  </div>
+                  <span><strong>TDAH:</strong> Atenção sustentada e controle inibitório</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-blue-500/10 text-blue-500 mt-0.5">
+                    <Heart className="h-3 w-3" />
+                  </div>
+                  <span><strong>TEA:</strong> Cognição social e teoria da mente</span>
+                </li>
+              </ul>
+              <div className="pt-2">
+                <p className="text-xs text-muted-foreground mb-3">
+                  ⏱️ 10-15 minutos por módulo | 📊 Relatórios instantâneos | 🎯 Baseado em percentis
+                </p>
+                <Button asChild className="w-full" size="lg">
+                  <Link to="/screening">
+                    Iniciar Triagem
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Link>
+                </Button>
               </div>
-            </div>
+            </CardContent>
+          </Card>
+
+          {/* PEI Inteligente */}
+          <Card className="border-2 border-green-500/20 hover:border-green-500/40 transition-all overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-2xl group-hover:blur-3xl transition-all" />
+            <CardHeader className="relative">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-green-500 to-green-600 text-white w-fit mb-3">
+                <Brain className="h-6 w-6" />
+              </div>
+              <CardTitle className="text-xl">PEI Inteligente</CardTitle>
+              <CardDescription>Plano Educacional Individualizado com IA</CardDescription>
+            </CardHeader>
+            <CardContent className="relative space-y-4">
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-green-500/10 text-green-500 mt-0.5">
+                    <Lightbulb className="h-3 w-3" />
+                  </div>
+                  <span><strong>Objetivos personalizados</strong> baseados na triagem</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-green-500/10 text-green-500 mt-0.5">
+                    <Puzzle className="h-3 w-3" />
+                  </div>
+                  <span><strong>Atividades adaptativas</strong> com progressão gradual</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-green-500/10 text-green-500 mt-0.5">
+                    <BarChart3 className="h-3 w-3" />
+                  </div>
+                  <span><strong>Monitoramento contínuo</strong> de progresso</span>
+                </li>
+              </ul>
+              <div className="pt-2">
+                <p className="text-xs text-muted-foreground mb-3">
+                  🤖 Gerado por IA | ✏️ Editável pelo professor | 📈 Acompanhamento em tempo real
+                </p>
+                <Button asChild variant="outline" className="w-full" size="lg">
+                  <Link to="/teacher-dashboard">
+                    Gerenciar PEIs
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Capacitação Docente */}
+          <Card className="border-2 border-purple-500/20 hover:border-purple-500/40 transition-all overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:blur-3xl transition-all" />
+            <CardHeader className="relative">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 text-white w-fit mb-3">
+                <School className="h-6 w-6" />
+              </div>
+              <CardTitle className="text-xl">Capacitação Docente</CardTitle>
+              <CardDescription>Formação gamificada em neurodiversidade</CardDescription>
+            </CardHeader>
+            <CardContent className="relative space-y-4">
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-purple-500/10 text-purple-500 mt-0.5">
+                    <Type className="h-3 w-3" />
+                  </div>
+                  <span><strong>6 módulos especializados</strong> em dislexia, TDAH e TEA</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-purple-500/10 text-purple-500 mt-0.5">
+                    <Gamepad2 className="h-3 w-3" />
+                  </div>
+                  <span><strong>Quizzes interativos</strong> com explicações detalhadas</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="p-1 rounded bg-purple-500/10 text-purple-500 mt-0.5">
+                    <Rainbow className="h-3 w-3" />
+                  </div>
+                  <span><strong>Certificados digitais</strong> e ranking de desempenho</span>
+                </li>
+              </ul>
+              <div className="pt-2">
+                <p className="text-xs text-muted-foreground mb-3">
+                  🎓 30 questões por módulo | 🏆 Sistema de pontuação | 📜 Certificação automática
+                </p>
+                <Button asChild variant="outline" className="w-full" size="lg">
+                  <Link to="/training">
+                    Iniciar Capacitação
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Access Panel */}
+        <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background">
+          <CardHeader>
+            <CardTitle className="text-center">Acesso Rápido - Painel do Professor</CardTitle>
+            <CardDescription className="text-center">
+              Gerencie triagens, visualize PEIs e acompanhe o progresso de todos os alunos
+            </CardDescription>
           </CardHeader>
-          <CardContent className="relative space-y-4">
-            <p className="text-muted-foreground">
-              Identificação precoce de sinais de <strong>Dislexia, TDAH e TEA</strong> através de jogos validados cientificamente. 
-              Gere relatórios automáticos e Planos Educacionais Individualizados (PEI) com IA.
-            </p>
-            <div className="grid md:grid-cols-3 gap-4 pt-4">
-              <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
-                  <Target className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-sm">Triagem Rápida</h4>
-                  <p className="text-xs text-muted-foreground">10-15 minutos por módulo</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-green-500/10 text-green-500">
-                  <Brain className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-sm">PEI Automático</h4>
-                  <p className="text-xs text-muted-foreground">Gerado por IA pedagógica</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-purple-500/10 text-purple-500">
-                  <BarChart3 className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-sm">Dashboard Analítico</h4>
-                  <p className="text-xs text-muted-foreground">Métricas e percentis</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button asChild size="lg" className="flex-1">
+          <CardContent>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild size="lg" className="min-w-[200px]">
                 <Link to="/screening">
-                  <ClipboardCheck className="h-4 w-4 mr-2" />
-                  Triagem
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                  <ClipboardCheck className="h-5 w-5 mr-2" />
+                  Nova Triagem
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="flex-1">
+              <Button asChild size="lg" variant="outline" className="min-w-[200px]">
                 <Link to="/teacher-dashboard">
-                  <Users className="h-4 w-4 mr-2" />
-                  Painel
+                  <Users className="h-5 w-5 mr-2" />
+                  Painel do Professor
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="flex-1">
+              <Button asChild size="lg" variant="outline" className="min-w-[200px]">
                 <Link to="/training">
-                  <School className="h-4 w-4 mr-2" />
-                  Capacitação
+                  <School className="h-5 w-5 mr-2" />
+                  Minha Capacitação
                 </Link>
               </Button>
             </div>
