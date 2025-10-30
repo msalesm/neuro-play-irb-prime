@@ -31,6 +31,7 @@ import {
   Eye,
   Download,
   BarChart3,
+  GraduationCap,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -189,16 +190,24 @@ export default function TeacherDashboard() {
         </Button>
 
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-lg bg-gradient-to-r from-primary to-primary/60 text-white">
-              <Users className="h-6 w-6" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-primary to-primary/60 text-white">
+                <Users className="h-6 w-6" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold">Painel do Professor</h1>
+                <p className="text-muted-foreground">
+                  Acompanhamento de triagens e planos educacionais
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold">Painel do Professor</h1>
-              <p className="text-muted-foreground">
-                Acompanhamento de triagens e planos educacionais
-              </p>
-            </div>
+            <Button asChild variant="outline">
+              <Link to="/training">
+                <GraduationCap className="h-4 w-4 mr-2" />
+                Capacitação
+              </Link>
+            </Button>
           </div>
         </div>
 

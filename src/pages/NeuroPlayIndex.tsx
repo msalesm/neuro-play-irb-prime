@@ -73,14 +73,20 @@ export default function NeuroPlayIndex() {
               <Button asChild size="lg" className="flex-1">
                 <Link to="/screening">
                   <ClipboardCheck className="h-4 w-4 mr-2" />
-                  Iniciar Triagem
+                  Triagem
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="flex-1">
                 <Link to="/teacher-dashboard">
                   <Users className="h-4 w-4 mr-2" />
-                  Painel do Professor
+                  Painel
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="flex-1">
+                <Link to="/training">
+                  <School className="h-4 w-4 mr-2" />
+                  Capacitação
                 </Link>
               </Button>
             </div>
