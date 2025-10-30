@@ -58,6 +58,8 @@ import DislexiaScreening from "./pages/games/DislexiaScreening";
 import TDAHScreening from "./pages/games/TDAHScreening";
 import TEAScreening from "./pages/games/TEAScreening";
 import ScreeningResult from "./pages/ScreeningResult";
+import PEIView from "./pages/PEIView";
+import TeacherDashboard from "./pages/TeacherDashboard";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -192,6 +194,8 @@ const App = () => (
                   <Route path="/screening/tdah" element={<TDAHScreening />} />
                   <Route path="/screening/tea" element={<TEAScreening />} />
                   <Route path="/screening/result" element={<ScreeningResult />} />
+                  <Route path="/pei" element={<PEIView />} />
+                  <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

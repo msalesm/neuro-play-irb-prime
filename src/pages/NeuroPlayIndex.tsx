@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Brain, Gamepad2, Target, Puzzle, Type, Lightbulb, Zap, Rainbow, BarChart3, School, Heart, ArrowRight, ClipboardCheck } from 'lucide-react';
+import { Brain, Gamepad2, Target, Puzzle, Type, Lightbulb, Zap, Rainbow, BarChart3, School, Heart, ArrowRight, ClipboardCheck, Users } from 'lucide-react';
 import { NeuralHero } from '@/components/neuroplay/NeuralHero';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { HowItWorksSection } from '@/components/neuroplay/HowItWorksSection';
@@ -69,13 +69,21 @@ export default function NeuroPlayIndex() {
                 </div>
               </div>
             </div>
-            <Button asChild size="lg" className="w-full md:w-auto">
-              <Link to="/screening">
-                <ClipboardCheck className="h-4 w-4 mr-2" />
-                Iniciar Triagem
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button asChild size="lg" className="flex-1">
+                <Link to="/screening">
+                  <ClipboardCheck className="h-4 w-4 mr-2" />
+                  Iniciar Triagem
+                  <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="flex-1">
+                <Link to="/teacher-dashboard">
+                  <Users className="h-4 w-4 mr-2" />
+                  Painel do Professor
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </section>

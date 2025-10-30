@@ -193,13 +193,21 @@ export default function ScreeningResultPage() {
                 ? 'Um Plano Educacional Individualizado (PEI) foi gerado automaticamente com sugestões de atividades e estratégias pedagógicas.'
                 : 'Continue acompanhando o desenvolvimento através de novas triagens periódicas.'}
             </p>
-            {result.percentile < 20 && (
-              <Alert>
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription className="ml-2">
-                  <strong>Importante:</strong> Recomendamos compartilhar este resultado com a equipe pedagógica e os pais/responsáveis para avaliação detalhada.
-                </AlertDescription>
-              </Alert>
+            {result.percentile < 40 && (
+              <>
+                <Alert>
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription className="ml-2">
+                    <strong>Importante:</strong> Recomendamos compartilhar este resultado com a equipe pedagógica e os pais/responsáveis para avaliação detalhada.
+                  </AlertDescription>
+                </Alert>
+                <Button asChild variant="outline" className="w-full">
+                  <Link to={`/pei?screening=${result.id}`}>
+                    <FileText className="h-4 w-4 mr-2" />
+                    Visualizar PEI Gerado
+                  </Link>
+                </Button>
+              </>
             )}
           </CardContent>
         </Card>
