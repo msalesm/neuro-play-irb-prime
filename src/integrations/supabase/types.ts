@@ -227,6 +227,75 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_performance_metrics: {
+        Row: {
+          accuracy: number | null
+          ai_precision: number | null
+          analysis_type: string
+          average_confidence: number | null
+          average_model_agreement: number | null
+          confirmed_cases: number
+          created_at: string
+          f1_score: number | null
+          false_negatives: number
+          false_positives: number
+          id: string
+          metadata: Json | null
+          period_end: string
+          period_start: string
+          sensitivity: number | null
+          specificity: number | null
+          total_cases: number
+          true_negatives: number
+          true_positives: number
+          updated_at: string
+        }
+        Insert: {
+          accuracy?: number | null
+          ai_precision?: number | null
+          analysis_type: string
+          average_confidence?: number | null
+          average_model_agreement?: number | null
+          confirmed_cases?: number
+          created_at?: string
+          f1_score?: number | null
+          false_negatives?: number
+          false_positives?: number
+          id?: string
+          metadata?: Json | null
+          period_end: string
+          period_start: string
+          sensitivity?: number | null
+          specificity?: number | null
+          total_cases?: number
+          true_negatives?: number
+          true_positives?: number
+          updated_at?: string
+        }
+        Update: {
+          accuracy?: number | null
+          ai_precision?: number | null
+          analysis_type?: string
+          average_confidence?: number | null
+          average_model_agreement?: number | null
+          confirmed_cases?: number
+          created_at?: string
+          f1_score?: number | null
+          false_negatives?: number
+          false_positives?: number
+          id?: string
+          metadata?: Json | null
+          period_end?: string
+          period_start?: string
+          sensitivity?: number | null
+          specificity?: number | null
+          total_cases?: number
+          true_negatives?: number
+          true_positives?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ai_predictions: {
         Row: {
           confidence_score: number
@@ -392,6 +461,13 @@ export type Database = {
             referencedRelation: "medical_images"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "analysis_results_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "validated_dermatology_dataset"
+            referencedColumns: ["image_id"]
+          },
         ]
       }
       appointments: {
@@ -441,7 +517,7 @@ export type Database = {
           action: string
           created_at: string
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           new_data: Json | null
           old_data: Json | null
           record_id: string | null
@@ -453,7 +529,7 @@ export type Database = {
           action: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           new_data?: Json | null
           old_data?: Json | null
           record_id?: string | null
@@ -465,7 +541,7 @@ export type Database = {
           action?: string
           created_at?: string
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           new_data?: Json | null
           old_data?: Json | null
           record_id?: string | null
@@ -607,15 +683,27 @@ export type Database = {
       clinical_labels: {
         Row: {
           agrees_with_ai: boolean | null
+          anatomical_location_precise: string | null
+          clinical_confidence_score: number | null
           clinician_name: string | null
           clinician_specialty: string | null
           confidence_level: string | null
           confirmed_diagnosis: string
           created_at: string
+          dermoscopy_findings: string | null
+          dermoscopy_performed: boolean | null
+          differential_diagnoses: string[] | null
           disagreement_reason: string | null
+          fitzpatrick_type: string | null
+          follow_up_interval_months: number | null
+          follow_up_required: boolean | null
+          histopathology_date: string | null
+          histopathology_result: string | null
           id: string
           image_id: string
+          labeled_at: string | null
           labeled_by: string
+          lesion_size_mm: number | null
           notes: string | null
           result_id: string | null
           supporting_evidence: string | null
@@ -623,15 +711,27 @@ export type Database = {
         }
         Insert: {
           agrees_with_ai?: boolean | null
+          anatomical_location_precise?: string | null
+          clinical_confidence_score?: number | null
           clinician_name?: string | null
           clinician_specialty?: string | null
           confidence_level?: string | null
           confirmed_diagnosis: string
           created_at?: string
+          dermoscopy_findings?: string | null
+          dermoscopy_performed?: boolean | null
+          differential_diagnoses?: string[] | null
           disagreement_reason?: string | null
+          fitzpatrick_type?: string | null
+          follow_up_interval_months?: number | null
+          follow_up_required?: boolean | null
+          histopathology_date?: string | null
+          histopathology_result?: string | null
           id?: string
           image_id: string
+          labeled_at?: string | null
           labeled_by: string
+          lesion_size_mm?: number | null
           notes?: string | null
           result_id?: string | null
           supporting_evidence?: string | null
@@ -639,15 +739,27 @@ export type Database = {
         }
         Update: {
           agrees_with_ai?: boolean | null
+          anatomical_location_precise?: string | null
+          clinical_confidence_score?: number | null
           clinician_name?: string | null
           clinician_specialty?: string | null
           confidence_level?: string | null
           confirmed_diagnosis?: string
           created_at?: string
+          dermoscopy_findings?: string | null
+          dermoscopy_performed?: boolean | null
+          differential_diagnoses?: string[] | null
           disagreement_reason?: string | null
+          fitzpatrick_type?: string | null
+          follow_up_interval_months?: number | null
+          follow_up_required?: boolean | null
+          histopathology_date?: string | null
+          histopathology_result?: string | null
           id?: string
           image_id?: string
+          labeled_at?: string | null
           labeled_by?: string
+          lesion_size_mm?: number | null
           notes?: string | null
           result_id?: string | null
           supporting_evidence?: string | null
@@ -660,6 +772,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "medical_images"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_labels_image_id_fkey"
+            columns: ["image_id"]
+            isOneToOne: false
+            referencedRelation: "validated_dermatology_dataset"
+            referencedColumns: ["image_id"]
           },
           {
             foreignKeyName: "clinical_labels_result_id_fkey"
@@ -912,7 +1031,7 @@ export type Database = {
           structured_iv: string
           transcript_ciphertext: string
           transcript_iv: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
@@ -923,7 +1042,7 @@ export type Database = {
           structured_iv: string
           transcript_ciphertext: string
           transcript_iv: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -934,7 +1053,7 @@ export type Database = {
           structured_iv?: string
           transcript_ciphertext?: string
           transcript_iv?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -2019,7 +2138,7 @@ export type Database = {
           sex: string | null
           symptoms: string[] | null
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           age?: number | null
@@ -2038,7 +2157,7 @@ export type Database = {
           sex?: string | null
           symptoms?: string[] | null
           updated_at?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           age?: number | null
@@ -2057,7 +2176,7 @@ export type Database = {
           sex?: string | null
           symptoms?: string[] | null
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -2373,6 +2492,56 @@ export type Database = {
           },
         ]
       }
+      pei_plans: {
+        Row: {
+          activities: string
+          ai_generated: boolean | null
+          created_at: string | null
+          id: string
+          objectives: string
+          progress: number | null
+          recommendations: string
+          screening_id: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          activities: string
+          ai_generated?: boolean | null
+          created_at?: string | null
+          id?: string
+          objectives: string
+          progress?: number | null
+          recommendations: string
+          screening_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          activities?: string
+          ai_generated?: boolean | null
+          created_at?: string | null
+          id?: string
+          objectives?: string
+          progress?: number | null
+          recommendations?: string
+          screening_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pei_plans_screening_id_fkey"
+            columns: ["screening_id"]
+            isOneToOne: false
+            referencedRelation: "screenings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_comments: {
         Row: {
           content: string
@@ -2466,6 +2635,90 @@ export type Database = {
           stripe_subscription_id?: string | null
           tier?: Database["public"]["Enums"]["premium_tier"]
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      rate_limit_tracking: {
+        Row: {
+          endpoint: string
+          request_count: number | null
+          user_id: string
+          window_start: string
+        }
+        Insert: {
+          endpoint: string
+          request_count?: number | null
+          user_id: string
+          window_start?: string
+        }
+        Update: {
+          endpoint?: string
+          request_count?: number | null
+          user_id?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          file_url: string | null
+          generated_at: string | null
+          id: string
+          metadata: Json | null
+          report_type: string
+          user_id: string
+        }
+        Insert: {
+          file_url?: string | null
+          generated_at?: string | null
+          id?: string
+          metadata?: Json | null
+          report_type: string
+          user_id: string
+        }
+        Update: {
+          file_url?: string | null
+          generated_at?: string | null
+          id?: string
+          metadata?: Json | null
+          report_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      screenings: {
+        Row: {
+          created_at: string | null
+          duration: number | null
+          game_data: Json | null
+          id: string
+          percentile: number | null
+          recommended_action: string | null
+          score: number
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration?: number | null
+          game_data?: Json | null
+          id?: string
+          percentile?: number | null
+          recommended_action?: string | null
+          score?: number
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          duration?: number | null
+          game_data?: Json | null
+          id?: string
+          percentile?: number | null
+          recommended_action?: string | null
+          score?: number
+          type?: string
           user_id?: string
         }
         Relationships: []
@@ -2871,6 +3124,42 @@ export type Database = {
           recorded_at?: string
           services?: Json
           status?: string
+        }
+        Relationships: []
+      }
+      teacher_training: {
+        Row: {
+          certificate_url: string | null
+          completed_at: string | null
+          id: string
+          module_name: string
+          score: number | null
+          started_at: string | null
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          certificate_url?: string | null
+          completed_at?: string | null
+          id?: string
+          module_name: string
+          score?: number | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          certificate_url?: string | null
+          completed_at?: string | null
+          id?: string
+          module_name?: string
+          score?: number | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -3703,11 +3992,9 @@ export type Database = {
           city: string | null
           created_at: string | null
           id: string | null
-          is_public: boolean | null
           name: string | null
           reputation_score: number | null
           state: string | null
-          updated_at: string | null
           verified: boolean | null
         }
         Insert: {
@@ -3715,11 +4002,9 @@ export type Database = {
           city?: string | null
           created_at?: string | null
           id?: string | null
-          is_public?: boolean | null
           name?: string | null
           reputation_score?: number | null
           state?: string | null
-          updated_at?: string | null
           verified?: boolean | null
         }
         Update: {
@@ -3727,17 +4012,70 @@ export type Database = {
           city?: string | null
           created_at?: string | null
           id?: string | null
-          is_public?: boolean | null
           name?: string | null
           reputation_score?: number | null
           state?: string | null
-          updated_at?: string | null
           verified?: boolean | null
+        }
+        Relationships: []
+      }
+      validated_dermatology_dataset: {
+        Row: {
+          abcde_scores: Json | null
+          age: number | null
+          agrees_with_ai: boolean | null
+          anatomical_location_precise: string | null
+          clinical_confidence_level: string | null
+          clinical_confidence_score: number | null
+          clinician_specialty: string | null
+          confidence_calibrated: number | null
+          confirmed_diagnosis: string | null
+          dermoscopy_findings: string | null
+          dermoscopy_performed: boolean | null
+          differential_diagnoses: string[] | null
+          disagreement_reason: string | null
+          duration_days: number | null
+          fitzpatrick_type: string | null
+          hanseniase_probability: number | null
+          histopathology_date: string | null
+          histopathology_result: string | null
+          image_date: string | null
+          image_id: string | null
+          image_type: string | null
+          image_url: string | null
+          lesion_size_mm: number | null
+          location_anatomic: string | null
+          melanoma_probability: number | null
+          model_metadata: Json | null
+          predicted_class: string | null
+          sex: string | null
+          symptoms: string[] | null
+          validation_date: string | null
         }
         Relationships: []
       }
     }
     Functions: {
+      calculate_ai_performance_metrics: {
+        Args: {
+          p_analysis_type: string
+          p_period_end: string
+          p_period_start: string
+        }
+        Returns: {
+          accuracy: number
+          ai_precision: number
+          confirmed_cases: number
+          f1_score: number
+          false_negatives: number
+          false_positives: number
+          sensitivity: number
+          specificity: number
+          total_cases: number
+          true_negatives: number
+          true_positives: number
+        }[]
+      }
       can_view_contact_info: {
         Args: { _profile_user_id: string }
         Returns: boolean
@@ -3746,16 +4084,17 @@ export type Database = {
         Args: { _profile_user_id: string }
         Returns: boolean
       }
-      can_view_public_profiles: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      can_view_public_profiles: { Args: never; Returns: boolean }
       can_view_sensitive_profile_data: {
         Args: { profile_user_id: string }
         Returns: boolean
       }
+      check_analysis_rate_limit: {
+        Args: { _user_id: string }
+        Returns: boolean
+      }
       get_current_user_role: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: Database["public"]["Enums"]["app_role"]
       }
       get_educator_students_stats: {
@@ -3772,7 +4111,7 @@ export type Database = {
         }[]
       }
       get_public_doctor_profiles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           approved: boolean
           bio: string
@@ -3786,8 +4125,8 @@ export type Database = {
           user_id: string
         }[]
       }
-      get_public_profiles_safe: {
-        Args: Record<PropertyKey, never>
+      get_public_profile_safe: {
+        Args: { profile_id: string }
         Returns: {
           avatar_url: string
           city: string
@@ -3800,10 +4139,11 @@ export type Database = {
         }[]
       }
       get_safe_public_profiles: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           avatar_url: string
           city: string
+          created_at: string
           id: string
           name: string
           reputation_score: number
@@ -3856,7 +4196,7 @@ export type Database = {
         }[]
       }
       get_user_profiles_basic: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           created_at: string
           email: string
@@ -3868,7 +4208,7 @@ export type Database = {
         }[]
       }
       get_user_profiles_contact: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           address: Json
           created_at: string
@@ -3915,10 +4255,7 @@ export type Database = {
           user_id: string
         }[]
       }
-      update_trending_topics: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      update_trending_topics: { Args: never; Returns: undefined }
     }
     Enums: {
       admin_permission:
