@@ -15,10 +15,10 @@ export const Header = () => {
   const { t } = useLanguage();
 
   const navigation = [
-    { name: t('nav.games'), href: '/games', icon: Gamepad2 },
-    { name: t('nav.diagnosticTests'), href: '/diagnostic-tests', icon: Trophy },
-    { name: t('nav.clinical'), href: '/clinical', icon: Brain },
-    { name: t('nav.myProgress'), href: '/dashboard', icon: BarChart3 },
+    { name: 'Triagens', href: '/diagnostico-completo', icon: Trophy },
+    { name: 'Dashboard', href: '/dashboard-pais', icon: BarChart3 },
+    { name: 'Jogos', href: '/games', icon: Gamepad2 },
+    { name: 'Capacitação', href: '/capacitacao-pais', icon: Brain },
   ];
 
   const isActive = (path: string) => location.pathname.startsWith(path);

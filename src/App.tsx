@@ -59,7 +59,7 @@ import TDAHScreening from "./pages/games/TDAHScreening";
 import TEAScreening from "./pages/games/TEAScreening";
 import ScreeningResult from "./pages/ScreeningResult";
 import PEIView from "./pages/PEIView";
-import TeacherDashboard from "./pages/TeacherDashboard";
+import CapacitacaoPais from "./pages/CapacitacaoPais";
 import TeacherTraining from "./pages/TeacherTraining";
 import TrainingModule from "./pages/TrainingModule";
 
@@ -205,7 +205,7 @@ const App = () => (
                   <Route path="/screening/tea" element={<TEAScreening />} />
                   <Route path="/screening/result" element={<ScreeningResult />} />
                   <Route path="/pei" element={<PEIView />} />
-                  <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+                  <Route path="/capacitacao-pais" element={<CapacitacaoPais />} />
                   <Route path="/training" element={<TeacherTraining />} />
                   <Route path="/training/:moduleId" element={<TrainingModule />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
