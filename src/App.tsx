@@ -63,6 +63,11 @@ import TeacherDashboard from "./pages/TeacherDashboard";
 import TeacherTraining from "./pages/TeacherTraining";
 import TrainingModule from "./pages/TrainingModule";
 
+// Neuro Play v2.0 pages
+import NeuroPlayV2 from "./pages/NeuroPlayV2";
+import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
+import DashboardPais from "./pages/DashboardPais";
+
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -99,6 +104,9 @@ const App = () => (
                       <NeuroPlayIndex />
                     </Suspense>
                   } />
+                  <Route path="/v2" element={<NeuroPlayV2 />} />
+                  <Route path="/diagnostico-completo" element={<DiagnosticoCompleto />} />
+                  <Route path="/dashboard-pais" element={<DashboardPais />} />
                   <Route path="/old-home" element={
                     <Suspense fallback={<Loading />}>
                       <ModernIndex />
