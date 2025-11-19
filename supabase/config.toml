@@ -1,7 +1,1 @@
-project_id = "skwpuolpkgntqdmgzwlr"
-
-[functions.generate-clinical-report]
-verify_jwt = true
-
-[functions.cognitive-analysis]
-verify_jwt = true
+project_id = "wzazjftrtakwugdgfcko"
