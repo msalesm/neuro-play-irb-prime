@@ -39,6 +39,8 @@ const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
 import AttentionSustained from "./pages/games/AttentionSustainedGame";
+import AttentionSustainedAdaptive from "./pages/games/AttentionSustainedAdaptive";
+import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
 import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import MemoryWorkload from "./pages/games/MemoryWorkload";
