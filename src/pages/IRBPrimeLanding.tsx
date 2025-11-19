@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import irbPrimeLogoWhite from '@/assets/irb-prime-logo-white.png';
+import irbPrimeCareLogo from '@/assets/irb-prime-care-logo.png';
 import heroImage from '@/assets/hero-children-learning.jpg';
 import childFocused from '@/assets/child-focused-learning.jpg';
 import groupTherapy from '@/assets/group-therapy-session.jpg';
@@ -15,7 +15,7 @@ export default function IRBPrimeLanding() {
       {/* Header - Gradiente Azul IRB */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-[#0a1e35] via-[#004a5a] to-[#005a70] shadow-lg">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <img src={irbPrimeLogoWhite} alt="IRB Prime Care" className="h-14 hover-scale" />
+          <img src={irbPrimeCareLogo} alt="IRB Prime Care" className="h-14 hover-scale" />
           <nav className="hidden md:flex items-center gap-8">
             <a href="#sobre" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Sobre</a>
             <a href="#beneficios" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Benefícios</a>
@@ -251,7 +251,7 @@ export default function IRBPrimeLanding() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-3">
-              <img src={irbPrimeLogoWhite} alt="IRB Prime Care" className="h-10" />
+              <img src={irbPrimeCareLogo} alt="IRB Prime Care" className="h-10" />
               <span className="text-sm text-white/80">© 2024 IRB Prime Care. Todos os direitos reservados.</span>
             </div>
             <div className="flex gap-6 text-sm text-white/80">
