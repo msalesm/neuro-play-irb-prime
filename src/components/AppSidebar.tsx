@@ -104,7 +104,7 @@ export function AppSidebar() {
   const learningNavigation = [
     {
       title: t('nav.learning'),
-      path: '/educational-dashboard',
+      path: '/learning-dashboard',
       icon: GraduationCap,
     },
     {
