@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Brain, Gamepad2, LineChart, Heart, Users, CheckCircle, Target, Award, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import irbPrimeLogo from '@/assets/irb-prime-logo.png';
+import irbPrimeCareLogo from '@/assets/irb-prime-care-logo.png';
 
 export default function IRBPrimeLanding() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function IRBPrimeLanding() {
       {/* Header/Navigation */}
       <header className="fixed top-0 w-full z-50 bg-background/95 backdrop-blur border-b border-border">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <img src={irbPrimeLogo} alt="IRB Prime Care" className="h-10" />
+          <img src={irbPrimeCareLogo} alt="IRB Prime Care" className="h-12" />
           <nav className="hidden md:flex items-center gap-6">
             <a href="#sobre" className="text-sm text-muted-foreground hover:text-primary transition-colors">Sobre</a>
             <a href="#beneficios" className="text-sm text-muted-foreground hover:text-primary transition-colors">Benefícios</a>
@@ -340,7 +340,7 @@ export default function IRBPrimeLanding() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-3">
-              <img src={irbPrimeLogo} alt="IRB Prime Care" className="h-8" />
+              <img src={irbPrimeCareLogo} alt="IRB Prime Care" className="h-8" />
               <span className="text-sm text-muted-foreground">© 2024 IRB Prime Care. Todos os direitos reservados.</span>
             </div>
             <div className="flex gap-6 text-sm text-muted-foreground">
