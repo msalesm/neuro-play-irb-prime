@@ -134,7 +134,7 @@ export default function DislexiaScreening() {
       },
     };
 
-    const result = await saveScreening(score, duration, gameData);
+    const result = await saveScreening({ score, duration, gameData });
     
     if (result) {
       navigate('/screening/result', { state: { result } });

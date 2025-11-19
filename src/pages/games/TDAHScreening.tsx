@@ -146,7 +146,7 @@ export default function TDAHScreening() {
       omissionErrors: goTrials.length - goCorrect,
     };
 
-    const result = await saveScreening(score, duration, gameData);
+    const result = await saveScreening({ score, duration, gameData });
     
     if (result) {
       navigate('/screening/result', { state: { result } });

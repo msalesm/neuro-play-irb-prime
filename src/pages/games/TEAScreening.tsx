@@ -159,7 +159,7 @@ export default function TEAScreening() {
       },
     };
 
-    const result = await saveScreening(score, duration, gameData);
+    const result = await saveScreening({ score, duration, gameData });
     
     if (result) {
       navigate('/screening/result', { state: { result } });
