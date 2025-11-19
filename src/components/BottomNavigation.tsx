@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Gamepad2, Calendar, FileText, GraduationCap } from 'lucide-react';
+import { Gamepad2, FileText, GraduationCap, ClipboardCheck } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -15,14 +15,14 @@ export function BottomNavigation() {
       icon: Gamepad2,
     },
     {
-      name: t('nav.today'),
-      path: '/dashboard',
-      icon: Calendar,
-    },
-    {
       name: t('nav.tests'),
       path: '/diagnostic-tests',
       icon: FileText,
+    },
+    {
+      name: 'Triagem',
+      path: '/screening',
+      icon: ClipboardCheck,
     },
     {
       name: t('nav.learning'),
