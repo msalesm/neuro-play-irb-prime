@@ -220,11 +220,7 @@ serve(async (req) => {
     const response: ReportResponse = {
       reportId: savedReport.id,
       status: aiAnalysis ? 'success' : 'partial',
-      data: {
-        ...reportData,
-        dataSource, // Include data source info
-        sessionsAnalyzed: sessionsData.sessions.length
-      },
+      data: reportData,
       generatedAt: new Date().toISOString(),
       warning: aiAnalysis ? undefined : 'AI analysis unavailable'
     };
