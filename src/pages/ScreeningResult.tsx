@@ -131,7 +131,7 @@ export default function ScreeningResultPage() {
           <Info className="h-4 w-4" />
           <AlertDescription className="ml-2">
             <strong className="font-semibold">Recomendação:</strong>
-            <p className="mt-1">{result.recommendedAction}</p>
+            <p className="mt-1">{result.recommended_action}</p>
           </AlertDescription>
         </Alert>
 

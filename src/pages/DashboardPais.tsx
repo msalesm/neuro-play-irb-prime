@@ -66,8 +66,8 @@ export default function DashboardPais() {
       const { data: profile, error } = await supabase
         .from('user_profiles')
         .select('*')
-        .eq('id', user?.id)
-        .single();
+        .eq('user_id', user?.id)
+        .maybeSingle();
 
       if (error) throw error;
 
@@ -109,7 +109,7 @@ export default function DashboardPais() {
       if (sessionsError) throw sessionsError;
       
       // Transform sessions data to match our interface
-      const transformedSessions: SessionData[] = (sessionsData || []).map(session => ({
+      const transformedSessions: SessionData[] = (sessionsData || []).map((session: any) => ({
         id: session.id,
         game_type: session.game_type,
         duration: session.session_duration_seconds || 0,

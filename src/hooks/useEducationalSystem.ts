@@ -25,8 +25,13 @@ export function useEducationalSystem() {
     loading,
     trails,
     profile,
-    startTrail: async () => {},
-    updateProgress: async () => {},
-    assessNeurodiversity: async () => {},
+    startTrail: async (_trail: any) => {},
+    updateProgress: async (_progress: any) => {},
+    assessNeurodiversity: async (_data: any) => {},
+    learningTrails: trails,
+    neurodiversityProfile: profile,
+    recentSessions: [],
+    recordLearningSession: async (_data: any) => {},
+    getTrailByCategory: (_category: string) => null,
   };
 }

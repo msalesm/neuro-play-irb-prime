@@ -5,8 +5,9 @@ export function useBehavioralAnalysis() {
 
   return {
     loading,
-    trackEvent: async () => {},
+    trackEvent: async (_event: any) => {},
     getMetrics: () => [],
     getPatterns: () => [],
+    saveBehavioralMetric: async (_metric: any) => {},
   };
 }
