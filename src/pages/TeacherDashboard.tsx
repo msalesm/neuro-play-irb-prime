@@ -203,9 +203,9 @@ export default function TeacherDashboard() {
               </div>
             </div>
             <Button asChild variant="outline">
-              <Link to="/training">
+              <Link to="/parent-training">
                 <GraduationCap className="h-4 w-4 mr-2" />
-                Capacitação
+                Capacitação dos Pais
               </Link>
             </Button>
           </div>
