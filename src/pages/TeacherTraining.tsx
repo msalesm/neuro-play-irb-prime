@@ -16,15 +16,14 @@ import {
   Target,
   Info,
 } from 'lucide-react';
-import { useTeacherTraining } from '@/hooks/useTeacherTraining';
+import { useParentTraining } from '@/hooks/useParentTraining';
 import { useAuth } from '@/hooks/useAuth';
 import { trainingModules } from '@/data/trainingModules';
-import { TeacherRanking } from '@/components/TeacherRanking';
 
-export default function TeacherTraining() {
+export default function ParentTraining() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { trainings, loading, getCompletedModules, getTotalScore } = useTeacherTraining();
+  const { trainings, loading, getCompletedModules, getTotalScore } = useParentTraining();
 
   useEffect(() => {
     if (!user) {
@@ -65,8 +64,8 @@ export default function TeacherTraining() {
               <GraduationCap className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">Capacitação Docente</h1>
-              <p className="text-muted-foreground">Lei 14.254/21 - Formação Continuada</p>
+              <h1 className="text-3xl font-bold">Capacitação dos Pais</h1>
+              <p className="text-muted-foreground">Apoie o desenvolvimento do seu filho</p>
             </div>
           </div>
         </div>
@@ -74,8 +73,8 @@ export default function TeacherTraining() {
         <Alert className="mb-8 border-primary/20 bg-primary/5">
           <Info className="h-4 w-4" />
           <AlertDescription>
-            Complete os módulos de capacitação para receber certificados digitais e aprimorar suas
-            práticas pedagógicas no atendimento a estudantes com Dislexia, TDAH e TEA.
+            Complete os módulos de capacitação para aprender estratégias eficazes de apoio ao desenvolvimento
+            cognitivo e emocional de crianças com Dislexia, TDAH e TEA.
           </AlertDescription>
         </Alert>
 
@@ -210,11 +209,6 @@ export default function TeacherTraining() {
           })}
         </div>
 
-        {/* Ranking de Professores */}
-        <div className="mb-8">
-          <TeacherRanking />
-        </div>
-
         {completedModules.length === trainingModules.length && (
           <Card className="mt-8 border-2 border-primary/20 bg-gradient-to-br from-primary/10 to-background">
             <CardHeader>
@@ -223,25 +217,25 @@ export default function TeacherTraining() {
                 <div>
                   <CardTitle>Parabéns! Capacitação Completa</CardTitle>
                   <CardDescription>
-                    Você concluiu todos os módulos de capacitação docente
+                    Você concluiu todos os módulos de capacitação
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground mb-4">
-                Você está preparado para identificar, apoiar e incluir estudantes com Dislexia, TDAH
-                e TEA, conforme estabelece a Lei 14.254/21.
+                Você está preparado para apoiar o desenvolvimento do seu filho com estratégias
+                baseadas em evidências científicas.
               </p>
               <div className="flex gap-3">
                 <Button asChild>
-                  <Link to="/teacher-dashboard">
-                    Ver Alunos
+                  <Link to="/dashboard">
+                    Ir para Dashboard
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
-                  <Link to="/screening">
-                    Fazer Triagem
+                  <Link to="/games">
+                    Explorar Jogos
                   </Link>
                 </Button>
               </div>

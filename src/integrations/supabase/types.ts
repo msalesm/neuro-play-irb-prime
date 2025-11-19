@@ -416,6 +416,158 @@ export type Database = {
           },
         ]
       }
+      parent_training: {
+        Row: {
+          certificate_url: string | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          module_name: string
+          progress_data: Json | null
+          score: number | null
+          started_at: string | null
+          status: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          certificate_url?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          module_name: string
+          progress_data?: Json | null
+          score?: number | null
+          started_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          certificate_url?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          module_name?: string
+          progress_data?: Json | null
+          score?: number | null
+          started_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pei_plans: {
+        Row: {
+          accommodations: Json | null
+          created_at: string | null
+          goals: Json | null
+          id: string
+          progress_notes: Json | null
+          screening_id: string
+          status: string | null
+          strategies: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          accommodations?: Json | null
+          created_at?: string | null
+          goals?: Json | null
+          id?: string
+          progress_notes?: Json | null
+          screening_id: string
+          status?: string | null
+          strategies?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          accommodations?: Json | null
+          created_at?: string | null
+          goals?: Json | null
+          id?: string
+          progress_notes?: Json | null
+          screening_id?: string
+          status?: string | null
+          strategies?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pei_plans_screening_id_fkey"
+            columns: ["screening_id"]
+            isOneToOne: false
+            referencedRelation: "screenings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          role: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          role?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          role?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      screenings: {
+        Row: {
+          created_at: string | null
+          duration: number | null
+          id: string
+          percentile: number | null
+          recommended_action: string | null
+          score: number
+          test_data: Json | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          duration?: number | null
+          id?: string
+          percentile?: number | null
+          recommended_action?: string | null
+          score: number
+          test_data?: Json | null
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          duration?: number | null
+          id?: string
+          percentile?: number | null
+          recommended_action?: string | null
+          score?: number
+          test_data?: Json | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
