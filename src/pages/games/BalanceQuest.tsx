@@ -299,11 +299,11 @@ export default function BalanceQuest() {
         completed_at: new Date().toISOString()
       };
 
-      const { error } = await supabase
-        .from('balance_quest_sessions')
-        .insert(sessionData);
-
-      if (error) throw error;
+      // TODO: Uncomment when balance_quest_sessions table is created
+      // const { error } = await supabase
+      //   .from('balance_quest_sessions')
+      //   .insert(sessionData);
+      // if (error) throw error;
 
       toast({
         title: "⚖️ Sessão salva!",

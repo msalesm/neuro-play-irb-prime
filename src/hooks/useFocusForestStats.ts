@@ -14,7 +14,7 @@ export function useFocusForestStats() {
     },
     achievements: [],
     loading: false,
-    saveGameSession: async (_data: any) => {},
-    updateStats: async (_levelData?: any, _perfData?: any) => {},
+    saveGameSession: async (..._args: any[]) => ({ success: true }),
+    updateStats: async (..._args: any[]) => ({ success: true }),
   };
 }

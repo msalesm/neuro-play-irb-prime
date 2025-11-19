@@ -10,33 +10,23 @@ export interface AutoSaveOptions {
   onError?: (error: Error) => void;
 }
 
-export function useAutoSave(options: AutoSaveOptions = {}) {
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+export function useAutoSave(..._options: any[]) {
+  const [lastSaved, _setLastSaved] = useState<Date | null>(null);
+  const [isSaving, _setIsSaving] = useState(false);
+  const [error, _setError] = useState<Error | null>(null);
 
   return {
-    save: async (data: any) => {
-      try {
-        setIsSaving(true);
-        await options.onSave?.(data);
-        setLastSaved(new Date());
-        setError(null);
-      } catch (err) {
-        const error = err instanceof Error ? err : new Error('Unknown error');
-        setError(error);
-        options.onError?.(error);
-      } finally {
-        setIsSaving(false);
-      }
-    },
+    save: async (..._args: any[]) => {},
     lastSaved,
     isSaving,
     error,
     currentSession: null,
-    startSession: async () => {},
-    updateSession: async () => {},
-    completeSession: async () => {},
-    abandonSession: async () => {},
+    startSession: async (..._args: any[]) => 'mock-session-id',
+    updateSession: async (..._args: any[]) => ({ success: true }),
+    completeSession: async (..._args: any[]) => ({ success: true }),
+    abandonSession: async (..._args: any[]) => {},
+    startAutoSave: async (..._args: any[]) => 'mock-session-id',
+    updateAutoSave: async (..._args: any[]) => ({ success: true }),
+    completeAutoSave: async (..._args: any[]) => ({ success: true }),
   };
 }

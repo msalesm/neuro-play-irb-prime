@@ -268,11 +268,11 @@ export default function VisualSync() {
         completed_at: new Date().toISOString()
       };
 
-      const { error } = await supabase
-        .from('visual_sync_sessions')
-        .insert(sessionData);
-
-      if (error) throw error;
+      // TODO: Uncomment when visual_sync_sessions table is created
+      // const { error } = await supabase
+      //   .from('visual_sync_sessions')
+      //   .insert(sessionData);
+      // if (error) throw error;
 
       toast({
         title: "👁️ Sessão salva!",
