@@ -49,6 +49,7 @@ import EmotionLab from "./pages/games/EmotionLab";
 import SpatialArchitect from "./pages/games/SpatialArchitect";
 import FocoRapido from "./pages/games/FocoRapido";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 import PixelPlatformer from "./pages/PixelPlatformer";
 import NotFound from "./pages/NotFound";
 
@@ -176,6 +177,7 @@ const App = () => (
                   <Route path="/games/foco-rapido" element={<FocoRapido />} />
                   <Route path="/games/pixel-platformer" element={<PixelPlatformer />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
                   <Route path="/clinical" element={
                     <Suspense fallback={<Loading />}>
