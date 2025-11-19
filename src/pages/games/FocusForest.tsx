@@ -326,34 +326,19 @@ function FocusForestGame() {
 
       // Also save to educational system for learning analytics
       try {        
-        // Find or create attention trail
-        const attentionTrail = getTrailByCategory('attention');
-        if (attentionTrail) {
-          await recordLearningSession({
-            trail_id: attentionTrail.id,
-            game_type: 'focus_forest',
-            level: level + 1,
-            performance_data: {
-              accuracy: accuracy,
-              score: score,
-              hits: hits,
-              misses: misses,
-              consecutive_hits: maxConsecutiveHits,
-              difficulty: difficulty,
-              completion_time: Math.round(gameTime / 1000)
-            },
-            learning_indicators: {
-              attention_span: Math.round(gameTime / 1000),
-              focus_consistency: maxConsecutiveHits,
-              response_time_variance: calculateResponseTimeVariance(),
-              difficulty_adaptation: difficulty
-            },
-            struggles_detected: accuracy < 60 ? ['low_accuracy'] : [],
-            improvements_noted: maxConsecutiveHits > 5 ? ['good_focus'] : [],
-            session_duration_seconds: Math.round(gameTime / 1000),
-            completed: true
-          });
-        }
+        await recordLearningSession(
+          'focus_forest',
+          Math.round(gameTime / 1000),
+          {
+            accuracy: accuracy,
+            score: score,
+            hits: hits,
+            misses: misses,
+            consecutive_hits: maxConsecutiveHits,
+            difficulty: difficulty,
+            completion_time: Math.round(gameTime / 1000)
+          }
+        );
       } catch (eduError) {
         console.warn('Could not save to educational system:', eduError);
       }
