@@ -17,21 +17,25 @@ export interface NeurodiversityProfile {
 }
 
 export function useEducationalSystem() {
-  const [loading, setLoading] = useState(false);
-  const [trails, setTrails] = useState<LearningTrail[]>([]);
-  const [profile, setProfile] = useState<NeurodiversityProfile | null>(null);
+  const [loading, _setLoading] = useState(false);
+  const [trails, _setTrails] = useState<LearningTrail[]>([]);
+  const [profile, _setProfile] = useState<NeurodiversityProfile | null>(null);
 
   return {
     loading,
     trails,
     profile,
-    startTrail: async (_trail: any) => {},
-    updateProgress: async (_progress: any) => {},
-    assessNeurodiversity: async (_data: any) => {},
+    startTrail: async (..._args: any[]) => {},
+    updateProgress: async (..._args: any[]) => {},
+    assessNeurodiversity: async (..._args: any[]) => {},
     learningTrails: trails,
     neurodiversityProfile: profile,
     recentSessions: [],
-    recordLearningSession: async (_data: any) => {},
-    getTrailByCategory: (_category: string) => null,
+    recordLearningSession: async (..._args: any[]) => {},
+    getTrailByCategory: (..._args: any[]) => null,
+    showFeedback: async (..._args: any[]) => {},
+    recordProgress: async (..._args: any[]) => ({ success: true }),
+    getStrengths: () => [],
+    getWeaknesses: () => [],
   };
 }

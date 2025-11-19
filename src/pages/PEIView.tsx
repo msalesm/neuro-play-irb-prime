@@ -59,14 +59,14 @@ export default function PEIView() {
   const handleSave = async () => {
     if (!currentPlan) return;
 
-    const success = await updatePEI(currentPlan.id, {
+    const result = await updatePEI(currentPlan.id, {
       objectives: editedObjectives,
       activities: editedActivities,
       recommendations: editedRecommendations,
       progress: editedProgress,
     });
 
-    if (success) {
+    if (result?.success) {
       setIsEditing(false);
     }
   };

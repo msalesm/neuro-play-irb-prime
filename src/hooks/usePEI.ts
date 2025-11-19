@@ -3,9 +3,9 @@ export function usePEI() {
     loading: false,
     peiPlan: null,
     createPlan: async (_screeningId: string) => ({ success: true }),
-    updatePlan: async (_id: string, _data: any) => {},
+    updatePlan: async (_id: string, _data: any) => ({ success: true }),
     currentPlan: null,
     getPEIByScreening: async (_screeningId: string) => null,
-    updatePEI: async (_id: string, _data: any) => {},
+    updatePEI: async (_id: string, _data: any) => ({ success: true }),
   };
 }

@@ -1,4 +1,4 @@
-export function useSocialScenarios() {
+export function useSocialScenarios(..._args: any[]) {
   return {
     progress: {
       scenariosCompleted: 0,
@@ -11,7 +11,7 @@ export function useSocialScenarios() {
     achievements: [],
     unlockedAchievements: [],
     loading: false,
-    completeSession: async (_data: any) => {},
-    updateProgress: async (_scenarioId: string) => {},
+    completeSession: async (..._args: any[]) => ({ success: true }),
+    updateProgress: async (..._args: any[]) => ({ success: true }),
   };
 }

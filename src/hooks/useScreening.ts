@@ -12,9 +12,11 @@ export function useScreening() {
   return {
     loading: false,
     screenings: [],
-    submitScreening: async (_type: string, _data: any, _score: number) => ({ success: true }),
+    submitScreening: async (..._args: any[]) => {
+      return { success: true, id: 'mock-id' };
+    },
     getScreening: async (_id: string) => null,
     startScreening: async (_type: string) => ({ success: true }),
-    saveScreening: async (_data: any) => {},
+    saveScreening: async (_data: any) => ({ success: true }),
   };
 }

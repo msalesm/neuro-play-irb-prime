@@ -671,10 +671,9 @@ export default function SocialCompass() {
             </Card>
 
             {/* Progress */}
-            <SocialScenariosProgress 
-              userProgress={userProgress} 
-              totalSessions={userSessions.length} 
-            />
+      <div className="grid grid-cols-1 gap-4">
+        {/* Progress placeholder */}
+      </div>
 
             {/* Achievements */}
             <SocialScenariosAchievements 
