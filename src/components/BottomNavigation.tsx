@@ -1,39 +1,40 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Gamepad2, Calendar, ClipboardCheck, Home, Users } from 'lucide-react';
+import { Gamepad2, Calendar, FileText, GraduationCap } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export function BottomNavigation() {
   const { user } = useAuth();
   const location = useLocation();
+  const { t } = useLanguage();
   
   const navigationItems = [
     {
-      name: 'Início',
-      path: '/',
-      icon: Home,
-    },
-    {
-      name: 'Triagens',
-      path: '/diagnostico-completo',
-      icon: ClipboardCheck,
-    },
-    {
-      name: 'Jogos',
+      name: t('nav.games'),
       path: '/games',
       icon: Gamepad2,
     },
     {
-      name: 'Dashboard',
-      path: '/dashboard-pais',
-      icon: Users,
+      name: t('nav.today'),
+      path: '/dashboard',
+      icon: Calendar,
+    },
+    {
+      name: t('nav.tests'),
+      path: '/diagnostic-tests',
+      icon: FileText,
+    },
+    {
+      name: t('nav.learning'),
+      path: '/educational-dashboard',
+      icon: GraduationCap,
     },
   ];
 
   if (!user) return null;
 
   const isActive = (path: string) => {
-    if (path === '/' && location.pathname === '/') return true;
-    if (path === '/') return false;
+    if (path === '/dashboard' && location.pathname === '/') return true;
     return location.pathname.startsWith(path);
   };
 

@@ -147,37 +147,36 @@ export default function DiagnosticoCompleto() {
         </Card>
 
         {/* Tests Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
           {diagnosticTests.map((test) => {
             const Icon = test.icon;
             return (
-              <Card key={test.id} className="p-4 md:p-6 hover:shadow-lg transition-shadow">
-                <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl ${test.bgColor} flex items-center justify-center mb-3 md:mb-4`}>
-                  <Icon className={`w-7 h-7 md:w-8 md:h-8 ${test.color}`} />
+              <Card key={test.id} className="p-6 hover:shadow-lg transition-shadow">
+                <div className={`w-16 h-16 rounded-2xl ${test.bgColor} flex items-center justify-center mb-4`}>
+                  <Icon className={`w-8 h-8 ${test.color}`} />
                 </div>
                 
-                <h3 className="text-xl md:text-2xl font-bold mb-2">{test.title}</h3>
-                <p className="text-xs md:text-sm text-muted-foreground font-medium mb-2 md:mb-3">{test.subtitle}</p>
-                <p className="text-sm md:text-base text-muted-foreground mb-3 md:mb-4 line-clamp-2">{test.description}</p>
+                <h3 className="text-2xl font-bold mb-2">{test.title}</h3>
+                <p className="text-sm text-muted-foreground font-medium mb-3">{test.subtitle}</p>
+                <p className="text-muted-foreground mb-4">{test.description}</p>
                 
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                   <Clock className="w-4 h-4" />
                   <span>{test.duration}</span>
                 </div>
                 
-                <div className="space-y-1.5 md:space-y-2 mb-4 md:mb-6">
-                  <p className="text-xs md:text-sm font-semibold">O que avaliamos:</p>
+                <div className="space-y-2 mb-6">
+                  <p className="text-sm font-semibold">O que avaliamos:</p>
                   {test.features.map((feature, idx) => (
                     <div key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span className="text-xs md:text-sm text-muted-foreground">{feature}</span>
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-muted-foreground">{feature}</span>
                     </div>
                   ))}
                 </div>
                 
                 <Button 
                   className="w-full" 
-                  size="sm"
                   onClick={() => navigate(test.path)}
                 >
                   Iniciar Triagem

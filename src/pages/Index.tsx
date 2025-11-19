@@ -37,74 +37,74 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12 px-4 md:px-0">
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             <Card className="group hover:shadow-glow transition-all duration-300 border-primary/20">
-              <CardHeader className="pb-3">
-                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                  <Brain className="w-7 h-7 md:w-8 md:h-8 text-primary" />
+              <CardHeader>
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Brain className="w-8 h-8 text-primary" />
                 </div>
-                <CardTitle className="text-xl md:text-2xl">Triagem TEA</CardTitle>
-                <CardDescription className="text-sm">Transtorno do Espectro Autista</CardDescription>
+                <CardTitle className="text-2xl">Triagem TEA</CardTitle>
+                <CardDescription>Transtorno do Espectro Autista</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 md:space-y-4">
-                <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
                   Avaliação de habilidades sociais, comunicação e padrões comportamentais
                 </p>
-                <Button asChild className="w-full" size="sm">
-                  <Link to="/diagnostico-completo" className="flex items-center justify-center gap-2">
+                <Button asChild className="w-full">
+                  <Link to="/diagnostico-completo">
                     Iniciar Triagem
-                    <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="group hover:shadow-glow transition-all duration-300 border-secondary/20">
-              <CardHeader className="pb-3">
-                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                  <Target className="w-7 h-7 md:w-8 md:h-8 text-secondary" />
+              <CardHeader>
+                <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Target className="w-8 h-8 text-secondary" />
                 </div>
-                <CardTitle className="text-xl md:text-2xl">Triagem TDAH</CardTitle>
-                <CardDescription className="text-sm">Déficit de Atenção e Hiperatividade</CardDescription>
+                <CardTitle className="text-2xl">Triagem TDAH</CardTitle>
+                <CardDescription>Déficit de Atenção e Hiperatividade</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 md:space-y-4">
-                <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
                   Avaliação de atenção, impulsividade e controle executivo
                 </p>
-                <Button asChild className="w-full" variant="secondary" size="sm">
-                  <Link to="/diagnostico-completo" className="flex items-center justify-center gap-2">
+                <Button asChild className="w-full" variant="secondary">
+                  <Link to="/diagnostico-completo">
                     Iniciar Triagem
-                    <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="group hover:shadow-glow transition-all duration-300 border-accent/20">
-              <CardHeader className="pb-3">
-                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                  <BookOpen className="w-7 h-7 md:w-8 md:h-8 text-accent" />
+              <CardHeader>
+                <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <BookOpen className="w-8 h-8 text-accent" />
                 </div>
-                <CardTitle className="text-xl md:text-2xl">Triagem Dislexia</CardTitle>
-                <CardDescription className="text-sm">Dificuldades de Leitura</CardDescription>
+                <CardTitle className="text-2xl">Triagem Dislexia</CardTitle>
+                <CardDescription>Dificuldades de Leitura</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 md:space-y-4">
-                <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
+              <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground">
                   Avaliação de processamento fonológico e habilidades de leitura
                 </p>
-                <Button asChild className="w-full" variant="outline" size="sm">
-                  <Link to="/diagnostico-completo" className="flex items-center justify-center gap-2">
+                <Button asChild className="w-full" variant="outline">
+                  <Link to="/diagnostico-completo">
                     Iniciar Triagem
-                    <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                    <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
               </CardContent>
             </Card>
           </div>
 
-          <div className="text-center px-4 md:px-0">
-            <Button asChild size="lg" className="shadow-soft w-full sm:w-auto">
-              <Link to="/diagnostico-completo" className="flex items-center justify-center gap-2">
+          <div className="text-center">
+            <Button asChild size="lg" className="shadow-soft">
+              <Link to="/diagnostico-completo" className="flex items-center gap-2">
                 Ver Todos os Testes
                 <ArrowRight className="w-4 h-4" />
               </Link>
