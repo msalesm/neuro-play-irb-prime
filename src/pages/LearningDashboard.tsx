@@ -204,11 +204,11 @@ export default function LearningDashboard() {
                           <div>
                             <div className="font-medium">{session.game_type}</div>
                             <div className="text-sm text-muted-foreground">
-                              {t('dashboard.level')} {session.level}
+                              {Math.round(session.duration / 60)}min • {session.score}% acurácia
                             </div>
                           </div>
                           <Badge className="bg-green-100 text-green-800">
-                            +{Math.floor(Math.random() * 100) + 50} XP
+                            +{Math.floor(session.score / 10)} XP
                           </Badge>
                         </div>
                       ))}
