@@ -3,6 +3,9 @@ import { useState } from 'react';
 export interface AutoSaveOptions {
   enabled?: boolean;
   debounceMs?: number;
+  saveInterval?: number;
+  saveOnUnload?: boolean;
+  saveOnAction?: boolean;
   onSave?: (data: any) => Promise<void>;
   onError?: (error: Error) => void;
 }
@@ -30,5 +33,10 @@ export function useAutoSave(options: AutoSaveOptions = {}) {
     lastSaved,
     isSaving,
     error,
+    currentSession: null,
+    startSession: async () => {},
+    updateSession: async () => {},
+    completeSession: async () => {},
+    abandonSession: async () => {},
   };
 }
