@@ -132,14 +132,6 @@ const App = () => (
                 <LearningDashboard />
               </Suspense>
             } />
-          <Route path="/educational-dashboard" element={
-            <div className="min-h-screen bg-gradient-card pb-20 pt-6">
-              <div className="container mx-auto px-4 max-w-6xl">
-                <ModernEducationalDashboard />
-              </div>
-            </div>
-          } />
-                  <Route path="/digital-notebook" element={<DigitalNotebook />} />
                   <Route path="/audio-demo" element={<AudioEngineDemo />} />
                   <Route path="/diagnostic-tests" element={
                     <Suspense fallback={<Loading />}>
