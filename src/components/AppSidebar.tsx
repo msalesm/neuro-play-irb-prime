@@ -62,20 +62,20 @@ export function AppSidebar() {
     },
   ];
 
-  const parentNavigation = [
+  const neuroPlayEduNavigation = [
     {
-      title: 'Triagens Diagnósticas',
-      path: '/diagnostico-completo',
+      title: 'Triagem Gamificada',
+      path: '/screening',
       icon: ClipboardCheck,
     },
     {
-      title: 'Dashboard da Família',
-      path: '/dashboard-pais',
+      title: 'Painel do Professor',
+      path: '/teacher-dashboard',
       icon: Users,
     },
     {
-      title: 'Capacitação para Pais',
-      path: '/capacitacao-pais',
+      title: 'Capacitação Docente',
+      path: '/training',
       icon: School,
     },
   ];
@@ -134,9 +134,9 @@ export function AppSidebar() {
       items: mainNavigation,
     },
     {
-      id: 'parent-area',
-      label: 'Área dos Pais',
-      items: parentNavigation,
+      id: 'neuroplay-edu',
+      label: 'Neuro Play EDU',
+      items: neuroPlayEduNavigation,
     },
     {
       id: 'games',
