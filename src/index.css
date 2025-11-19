@@ -9,47 +9,49 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Accessible, neurodiversity-friendly color palette */
-    --background: 213 27% 98%;
-    --foreground: 213 28% 15%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 15%;
 
-    --card: 213 25% 97%;
-    --card-foreground: 213 28% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 15%;
 
-    --popover: 213 25% 97%;
-    --popover-foreground: 213 28% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 15%;
 
-    /* Calming primary - soft blue for trust and calm */
-    --primary: 213 85% 65%;
+    /* IRB Prime Brand Colors - Blue Primary */
+    --primary: 210 100% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 213 85% 75%;
+    --primary-glow: 210 100% 55%;
 
-    /* Gentle secondary - soft purple for creativity */
-    --secondary: 270 25% 88%;
-    --secondary-foreground: 270 15% 25%;
+    /* IRB Prime Brand Colors - Pink Secondary */
+    --secondary: 340 85% 50%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Warm accent - earth tone for grounding */
-    --muted: 45 25% 94%;
-    --muted-foreground: 45 15% 45%;
+    /* Soft muted tones */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    /* Therapeutic accent - gentle green for growth */
-    --accent: 150 40% 85%;
-    --accent-foreground: 150 35% 25%;
+    /* IRB Prime Brand Colors - Pink Accent */
+    --accent: 340 85% 50%;
+    --accent-foreground: 0 0% 100%;
 
     /* Soft warning - coral for gentle alerts */
     --destructive: 15 85% 70%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 213 15% 90%;
-    --input: 213 15% 92%;
-    --ring: 213 85% 65%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 210 100% 45%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
-    /* Custom design tokens for NeuroPlay */
-    --gradient-hero: linear-gradient(135deg, hsl(213 85% 65%), hsl(270 70% 75%), hsl(150 60% 70%));
-    --gradient-card: linear-gradient(145deg, hsl(213 25% 97%), hsl(213 20% 95%));
-    --gradient-accent: linear-gradient(120deg, hsl(150 40% 85%), hsl(180 35% 82%));
-    --gradient-playful: linear-gradient(45deg, hsl(280 80% 75%), hsl(200 90% 70%), hsl(120 60% 75%));
+    /* Custom design tokens for IRB Prime */
+    --gradient-hero: linear-gradient(135deg, hsl(210 100% 45%), hsl(340 85% 50%));
+    --gradient-card: linear-gradient(145deg, hsl(210 20% 97%), hsl(210 15% 95%));
+    --gradient-accent: linear-gradient(120deg, hsl(340 85% 50%), hsl(340 75% 60%));
+    --shadow-elegant: 0 10px 30px -10px hsl(210 100% 45% / 0.3);
+    --shadow-glow: 0 0 40px hsl(210 100% 55% / 0.4);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* Neurodiversity-specific color systems */
     /* TDAH - Orange/Red energetic colors */
