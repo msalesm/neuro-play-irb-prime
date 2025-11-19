@@ -69,6 +69,7 @@ import TrainingModule from "./pages/TrainingModule";
 import NeuroPlayV2 from "./pages/NeuroPlayV2";
 import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
 import DashboardPais from "./pages/DashboardPais";
+import IRBPrimeLanding from "./pages/IRBPrimeLanding";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -101,7 +102,8 @@ const App = () => (
             >
               <AppLayout>
                 <Routes>
-                  <Route path="/" element={
+                  <Route path="/" element={<IRBPrimeLanding />} />
+                  <Route path="/neuroplay" element={
                     <Suspense fallback={<Loading />}>
                       <NeuroPlayIndex />
                     </Suspense>
