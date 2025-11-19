@@ -22,7 +22,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEducationalSystem } from '@/hooks/useEducationalSystem';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LearningTrails from '@/components/LearningTrails';
-import OnboardingFlow from '@/components/OnboardingFlow';
 import { LevelProgress } from '@/components/LevelProgress';
 import { AdminSystemDemo } from '@/components/AdminSystemDemo';
 import { supabase } from '@/integrations/supabase/client';
@@ -31,7 +30,6 @@ export default function LearningDashboard() {
   const { user } = useAuth();
   const { t } = useLanguage();
   const { learningTrails, neurodiversityProfile, recentSessions } = useEducationalSystem();
-  const [showOnboarding, setShowOnboarding] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [weeklyStats, setWeeklyStats] = useState({
     gamesPlayed: 12,
@@ -53,23 +51,10 @@ export default function LearningDashboard() {
       .from('user_profiles')
       .select('*')
       .eq('id', user.id)
-      .single();
+      .maybeSingle();
 
-    // For now, show onboarding for first-time users
-    if (!profile || learningTrails.length === 0) {
-      setShowOnboarding(true);
-    }
     setUserProfile(profile);
   };
-
-  const handleOnboardingComplete = () => {
-    setShowOnboarding(false);
-    setUserProfile(prev => ({ ...prev, onboarding_completed: true }));
-  };
-
-  if (showOnboarding) {
-    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
-  }
 
   if (!user) {
     return (
