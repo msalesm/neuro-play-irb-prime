@@ -51,7 +51,7 @@ export function useTeacherTraining() {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('teacher_training')
+        .from('parent_training')
         .select('*')
         .eq('user_id', user.id)
         .order('started_at', { ascending: false });
@@ -95,7 +95,7 @@ export function useTeacherTraining() {
       }
 
       const { data, error } = await supabase
-        .from('teacher_training')
+        .from('parent_training')
         .insert({
           user_id: user.id,
           module_name: moduleName,
@@ -124,7 +124,7 @@ export function useTeacherTraining() {
       const certificateUrl = await generateCertificate(trainingId, score);
 
       const { error } = await supabase
-        .from('teacher_training')
+        .from('parent_training')
         .update({
           status: 'concluido',
           score,
