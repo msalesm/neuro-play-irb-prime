@@ -20,7 +20,7 @@ export function BottomNavigation() {
       icon: FileText,
     },
     {
-      name: 'Triagem',
+      name: t('nav.screening'),
       path: '/screening',
       icon: ClipboardCheck,
     },
