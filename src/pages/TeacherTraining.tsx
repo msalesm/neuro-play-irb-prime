@@ -51,7 +51,7 @@ export default function ParentTraining() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background pb-32">
       <div className="container max-w-6xl mx-auto px-4 py-8">
         <Button variant="ghost" size="sm" onClick={() => navigate('/')} className="mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />

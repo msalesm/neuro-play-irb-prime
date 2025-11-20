@@ -209,7 +209,7 @@ export default function AdminDashboard() {
   const unreadNotifications = notifications.filter(n => !n.read_at).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-6 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-6 pb-32">
       <div className="container mx-auto px-4 space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
