@@ -8,6 +8,8 @@ import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users, Activity, Aler
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { DuolingoStreak } from "@/components/DuolingoStreak";
+import { AIRecommendations } from "@/components/AIRecommendations";
+import { useNavigate } from "react-router-dom";
 
 interface UserStats {
   total_stars: number;
@@ -28,9 +30,11 @@ interface RecentActivity {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
   const [loading, setLoading] = useState(true);
+  const [firstChildProfileId, setFirstChildProfileId] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -57,6 +61,11 @@ export default function Dashboard() {
         .eq('parent_user_id', user?.id);
 
       const profileIds = profiles?.map(p => p.id) || [];
+      
+      // Store first profile ID for recommendations
+      if (profiles && profiles.length > 0) {
+        setFirstChildProfileId(profiles[0].id);
+      }
 
       // Get real game session stats
       let totalSessions = 0;
@@ -433,6 +442,19 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {/* AI Recommendations Section */}
+        {firstChildProfileId && (
+          <div className="mt-8">
+            <AIRecommendations 
+              childProfileId={firstChildProfileId}
+              onGameSelect={(gameId) => {
+                // Navigate to games page
+                navigate('/games');
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

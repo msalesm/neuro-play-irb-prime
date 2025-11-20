@@ -55,6 +55,13 @@ interface CognitiveMetrics {
   inhibition: number;
 }
 
+interface AIInsight {
+  type: 'strength' | 'improvement' | 'recommendation';
+  title: string;
+  description: string;
+  actionable?: boolean;
+}
+
 export interface GameResultsDashboardProps {
   gameType: string;
   gameTitle: string;
@@ -66,6 +73,7 @@ export interface GameResultsDashboardProps {
   cognitiveMetrics?: CognitiveMetrics;
   onClose?: () => void;
   onPlayAgain?: () => void;
+  aiInsights?: AIInsight[];
 }
 
 export const GameResultsDashboard = ({
@@ -77,8 +85,81 @@ export const GameResultsDashboard = ({
   historicalData = [],
   cognitiveMetrics,
   onClose,
-  onPlayAgain
+  onPlayAgain,
+  aiInsights = []
 }: GameResultsDashboardProps) => {
+  // Generate actionable insights based on session data
+  const generatedInsights: AIInsight[] = aiInsights.length > 0 ? aiInsights : generateInsights(session);
+
+  function generateInsights(sessionData: SessionMetrics): AIInsight[] {
+    const insights: AIInsight[] = [];
+
+    // Strength identification
+    if (sessionData.accuracy >= 85) {
+      insights.push({
+        type: 'strength',
+        title: 'Excelente Precisão!',
+        description: `Você acertou ${sessionData.accuracy.toFixed(0)}% das tentativas. Continue praticando para manter esse nível.`,
+        actionable: true
+      });
+    }
+
+    if (sessionData.reactionTimeAvg && sessionData.reactionTimeAvg < 1000) {
+      insights.push({
+        type: 'strength',
+        title: 'Velocidade de Processamento Acima da Média',
+        description: `Seu tempo de reação médio foi de ${sessionData.reactionTimeAvg}ms, indicando ótima velocidade cognitiva.`,
+        actionable: false
+      });
+    }
+
+    // Improvement areas
+    if (sessionData.accuracy < 60) {
+      insights.push({
+        type: 'improvement',
+        title: 'Precisão Precisa de Atenção',
+        description: 'Pratique mais vezes este jogo em um nível mais fácil para fortalecer os fundamentos.',
+        actionable: true
+      });
+    }
+
+    if (sessionData.hintsUsed && sessionData.hintsUsed > 3) {
+      insights.push({
+        type: 'improvement',
+        title: 'Trabalhar Autonomia',
+        description: `Você usou ${sessionData.hintsUsed} dicas. Tente completar a próxima sessão com menos ajuda.`,
+        actionable: true
+      });
+    }
+
+    if (sessionData.timeSpent > 600) {
+      insights.push({
+        type: 'improvement',
+        title: 'Atenção Sustentada',
+        description: 'Sessões mais curtas (5-10 minutos) podem ajudar a manter o foco.',
+        actionable: true
+      });
+    }
+
+    // Recommendations
+    if (sessionData.accuracy >= 85 && sessionData.reactionTimeAvg && sessionData.reactionTimeAvg < 1500) {
+      insights.push({
+        type: 'recommendation',
+        title: 'Pronto para Avançar!',
+        description: 'Seu desempenho excelente indica que você pode tentar um nível de dificuldade maior.',
+        actionable: true
+      });
+    } else if (sessionData.accuracy >= 70 && sessionData.accuracy < 85) {
+      insights.push({
+        type: 'recommendation',
+        title: 'Continue Praticando Este Nível',
+        description: 'Você está progredindo bem. Mais algumas sessões e estará pronto para o próximo desafio.',
+        actionable: false
+      });
+    }
+
+    return insights;
+  }
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -240,8 +321,58 @@ export const GameResultsDashboard = ({
             </Card>
           )}
 
-          {/* Insights Educacionais */}
-          {insights.length > 0 && (
+          {/* Insights Acionáveis por IA */}
+          {generatedInsights.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Brain className="w-5 h-5" />
+                  Insights Inteligentes
+                </CardTitle>
+                <CardDescription>
+                  Análise automática do seu desempenho com recomendações práticas
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {generatedInsights.map((insight, index) => {
+                  const isStrength = insight.type === 'strength';
+                  const isImprovement = insight.type === 'improvement';
+                  const isRecommendation = insight.type === 'recommendation';
+                  
+                  return (
+                    <div 
+                      key={index}
+                      className={cn(
+                        "flex items-start gap-3 p-4 rounded-lg border-l-4 animate-fade-in",
+                        isStrength && "bg-green-50 border-green-500 dark:bg-green-950/20",
+                        isImprovement && "bg-orange-50 border-orange-500 dark:bg-orange-950/20",
+                        isRecommendation && "bg-blue-50 border-blue-500 dark:bg-blue-950/20"
+                      )}
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      <div className="mt-0.5">
+                        {isStrength && <Trophy className="w-5 h-5 text-green-600" />}
+                        {isImprovement && <Target className="w-5 h-5 text-orange-600" />}
+                        {isRecommendation && <TrendingUp className="w-5 h-5 text-blue-600" />}
+                      </div>
+                      <div className="flex-1 space-y-1">
+                        <p className="font-semibold text-sm">{insight.title}</p>
+                        <p className="text-sm text-muted-foreground">{insight.description}</p>
+                        {insight.actionable && (
+                          <Badge variant="secondary" className="text-xs mt-2">
+                            Ação recomendada
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Legacy insights support */}
+          {insights.length > 0 && generatedInsights.length === 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
