@@ -10,7 +10,8 @@ export const translations = {
       today: 'Hoje',
       tests: 'Testes',
       diagnosticTests: 'Avaliações Diagnósticas',
-      myProgress: 'Meu Progresso'
+      myProgress: 'Meu Progresso',
+      screening: 'Triagem'
     },
     
     // Hero Section
@@ -130,7 +131,8 @@ export const translations = {
       today: 'Oggi',
       tests: 'Test',
       diagnosticTests: 'Valutazioni Diagnostiche',
-      myProgress: 'I Miei Progressi'
+      myProgress: 'I Miei Progressi',
+      screening: 'Screening'
     },
     
     // Hero Section
