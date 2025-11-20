@@ -162,6 +162,157 @@ export const generateNeurodiversityPDF = () => {
     yPosition += 5;
   });
 
+  // New page for roadmap
+  doc.addPage();
+  yPosition = 20;
+
+  // Roadmap Section
+  addText('Roadmap de Implementação - Fase 2.0', 16, true, '#0a1e35');
+  addText('Desenvolvimento Acelerado por IA - Implementação em Dias', 12, false, '#005a70');
+  yPosition += 5;
+
+  const roadmapIntro = 'Utilizando ferramentas de desenvolvimento assistido por IA, a NeuroPlay 2.0 pode ser implementada de forma extremamente ágil. Abaixo está o cronograma de implementação por sprints:';
+  addText(roadmapIntro, 10, false, '#666666');
+  yPosition += 5;
+
+  const roadmapSprints = [
+    {
+      title: 'Sprint 1 (Dias 1-3): Sistema de Conquistas e Gamificação Avançada',
+      items: [
+        '• Implementação de sistema de badges progressivos com 5 níveis',
+        '• Avatar evolutivo que cresce conforme o progresso da criança',
+        '• Sistema de streaks diários inspirado em Duolingo',
+        '• Recompensas personalizadas baseadas no perfil neurodivergente',
+        '• Dashboard gamificado para pais visualizarem conquistas'
+      ]
+    },
+    {
+      title: 'Sprint 2 (Dias 4-7): Chatbot Terapêutico com IA',
+      items: [
+        '• Assistente virtual inteligente para check-ins emocionais diários',
+        '• Sistema de detecção de padrões comportamentais em tempo real',
+        '• Coaching automatizado para pais em momentos críticos',
+        '• Integração com Lovable AI (Google Gemini 2.5 Flash)',
+        '• Histórico conversacional e insights terapêuticos'
+      ]
+    },
+    {
+      title: 'Sprint 3 (Dias 8-10): Jogos Cooperativos Parent-Child',
+      items: [
+        '• 3 jogos multiplayer que exigem colaboração pais-filhos',
+        '• Sistema de sincronização em tempo real via Supabase Realtime',
+        '• Métricas de qualidade da interação familiar',
+        '• Recomendações de atividades baseadas no desempenho conjunto',
+        '• Celebração de conquistas compartilhadas'
+      ]
+    },
+    {
+      title: 'Sprint 4 (Dias 11-14): Análise Preditiva e Alertas Inteligentes',
+      items: [
+        '• IA para identificar padrões que antecedem crises comportamentais',
+        '• Sistema de alertas preventivos para pais e terapeutas',
+        '• Recomendações proativas de intervenção',
+        '• Dashboard preditivo com indicadores de risco',
+        '• Integração com relatórios clínicos existentes'
+      ]
+    },
+    {
+      title: 'Sprint 5 (Dias 15-18): Biofeedback e Monitoramento Sensorial',
+      items: [
+        '• Integração básica com sensores de frequência cardíaca',
+        '• Detecção de sobrecarga sensorial durante jogos',
+        '• Ajuste automático de dificuldade baseado em biofeedback',
+        '• Exercícios de autorregulação guiados por IA',
+        '• Alertas de necessidade de pausa sensorial'
+      ]
+    },
+    {
+      title: 'Sprint 6 (Dias 19-21): Microlearning para Pais',
+      items: [
+        '• 30 módulos curtos de 2-3 minutos cada',
+        '• Sistema de notificações push inteligentes',
+        '• Quizzes interativos com gamificação',
+        '• Certificação digital progressiva',
+        '• Conteúdo personalizado baseado no perfil do filho'
+      ]
+    },
+    {
+      title: 'Sprint 7 (Dias 22-25): Integração Escolar e Relatórios Multiusuário',
+      items: [
+        '• Portal para professores com acesso limitado',
+        '• Compartilhamento seguro de PEI com escolas',
+        '• Relatórios automáticos de progresso para educadores',
+        '• Sistema de comunicação tripartite (pais-terapeutas-escola)',
+        '• Exportação de dados para sistemas escolares'
+      ]
+    },
+    {
+      title: 'Sprint 8 (Dias 26-30): Melhorias de Acessibilidade e UX',
+      items: [
+        '• Modo de alto contraste e ajustes de fonte',
+        '• Navegação por voz e comandos de acessibilidade',
+        '• Suporte a leitores de tela',
+        '• Modo de baixa estimulação sensorial',
+        '• Customização completa da interface por perfil'
+      ]
+    }
+  ];
+
+  roadmapSprints.forEach(sprint => {
+    if (yPosition > 230) {
+      doc.addPage();
+      yPosition = 20;
+    }
+    addText(sprint.title, 11, true, '#005a70');
+    sprint.items.forEach(item => {
+      addText(item, 9, false, '#666666');
+    });
+    yPosition += 3;
+  });
+
+  // Add implementation methodology
+  if (yPosition > 240) {
+    doc.addPage();
+    yPosition = 20;
+  }
+  yPosition += 5;
+  addText('Metodologia de Implementação Acelerada', 14, true, '#0a1e35');
+  yPosition += 5;
+
+  const methodology = [
+    {
+      title: 'Desenvolvimento Assistido por IA',
+      description: 'Utilização de plataformas como Lovable AI para geração automática de código frontend e backend, reduzindo o tempo de desenvolvimento em até 80%.'
+    },
+    {
+      title: 'Infraestrutura Serverless',
+      description: 'Supabase + Edge Functions eliminam necessidade de DevOps complexo, permitindo deploy instantâneo e escalabilidade automática.'
+    },
+    {
+      title: 'Integração Nativa de IA',
+      description: 'Google Gemini 2.5 integrado via Lovable AI Gateway permite implementação de chatbots e análise preditiva sem configuração de API keys.'
+    },
+    {
+      title: 'Prototipagem Rápida',
+      description: 'Cada sprint termina com versão funcional testável, permitindo feedback contínuo de terapeutas e pais durante o desenvolvimento.'
+    }
+  ];
+
+  methodology.forEach(method => {
+    if (yPosition > 240) {
+      doc.addPage();
+      yPosition = 20;
+    }
+    addText(method.title, 11, true, '#005a70');
+    addText(method.description, 9, false, '#666666');
+    yPosition += 3;
+  });
+
+  yPosition += 5;
+  addText('Conclusão', 14, true, '#0a1e35');
+  const conclusion = 'Com desenvolvimento assistido por IA e infraestrutura moderna serverless, a NeuroPlay 2.0 pode evoluir de plataforma básica para solução clínica completa em apenas 30 dias. Esta velocidade de implementação, anteriormente impossível, permite iteração rápida baseada em feedback clínico real e validação terapêutica contínua.';
+  addText(conclusion, 10, false, '#666666');
+
   // Footer
   const totalPages = doc.getNumberOfPages();
   for (let i = 1; i <= totalPages; i++) {
