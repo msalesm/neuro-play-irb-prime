@@ -157,7 +157,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-background to-secondary/20 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-background to-secondary/20 pb-32">
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Welcome Card */}
         <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
