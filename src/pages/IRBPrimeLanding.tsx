@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles } from 'lucide-react';
+import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import irbPrimeCareLogo from '@/assets/irb-prime-care-logo.png';
 import heroImage from '@/assets/hero-children-learning.jpg';
@@ -119,6 +119,238 @@ export default function IRBPrimeLanding() {
                 className="w-full h-auto"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Plataforma Completa - O que desenvolvemos */}
+      <section id="funcionalidades" className="py-20 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-4xl mx-auto mb-16">
+            <h2 className="text-4xl font-bold text-[#0a1e35] mb-6">
+              Plataforma Completa para o Desenvolvimento Cognitivo
+            </h2>
+            <p className="text-xl text-gray-600 leading-relaxed">
+              A NeuroPlay é uma plataforma clínica-terapêutica completa desenvolvida em parceria com IRB Prime Care, 
+              oferecendo tecnologia de ponta para crianças neurodiversas, seus pais e profissionais de saúde.
+            </p>
+          </div>
+
+          {/* Módulos Principais */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <Gamepad2 className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Jogos Terapêuticos</h3>
+                <p className="text-gray-600 mb-4">
+                  15+ jogos cognitivos baseados em neurociência para desenvolvimento de: atenção sustentada, 
+                  controle inibitório, memória de trabalho, flexibilidade cognitiva, consciência fonológica e processamento emocional.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Dificuldade adaptativa por IA</li>
+                  <li>• Coleta de métricas em tempo real</li>
+                  <li>• Perfil de sensibilidade sensorial</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <FileText className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Testes Diagnósticos</h3>
+                <p className="text-gray-600 mb-4">
+                  Digitalização de testes clínicos autorizados para triagem de TEA, TDAH e Dislexia. 
+                  Fluxos guiados com algoritmos de identificação de risco e recomendações de intervenção.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• SNAP-IV e ASRS para TDAH</li>
+                  <li>• Triagem para TEA</li>
+                  <li>• Pré-indicadores de Dislexia</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <BarChart3 className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Relatórios Clínicos com IA</h3>
+                <p className="text-gray-600 mb-4">
+                  Sistema de análise em tempo real que agrega dados de jogos, testes e educação parental. 
+                  Gera insights clínicos, detecta padrões e emite alertas de regressão.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Perfil cognitivo e emocional</li>
+                  <li>• Detecção de padrões</li>
+                  <li>• Exportação para PDF</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <BookOpen className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Educação para Pais</h3>
+                <p className="text-gray-600 mb-4">
+                  Módulo completo de alfabetização terapêutica: compreensão de TEA/TDAH/Dislexia, 
+                  estratégias de intervenção domiciliar, manejo comportamental e interpretação de relatórios.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Vídeos curtos e práticos</li>
+                  <li>• Quizzes e certificados</li>
+                  <li>• Trilhas personalizadas</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <Target className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">PEI Inteligente</h3>
+                <p className="text-gray-600 mb-4">
+                  Plano Educacional Individualizado gerado por IA com base nos resultados de triagem. 
+                  Define metas, estratégias, acomodações e acompanhamento de progresso.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Geração automática por IA</li>
+                  <li>• Metas personalizadas</li>
+                  <li>• Notas de progresso</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <Users className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Dashboard Clínico</h3>
+                <p className="text-gray-600 mb-4">
+                  Interface profissional para terapeutas e profissionais de saúde com visão completa do progresso, 
+                  histórico de sessões e recomendações de intervenção.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Controle de acesso baseado em roles</li>
+                  <li>• Métricas agregadas</li>
+                  <li>• Integração IRB Prime</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Nossa Abordagem à Neurodiversidade */}
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-[#0a1e35] mb-4">
+                Nossa Abordagem à <span className="text-[#005a70]">Neurodiversidade</span>
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Celebramos a neurodiversidade e acreditamos que cada criança tem seu próprio ritmo e potencial único. 
+                Nossa plataforma foi desenvolvida para atender especificamente três condições do neurodesenvolvimento:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <Card className="border-2 border-[#005a70]/20 shadow-lg bg-white">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Brain className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-[#0a1e35] mb-3">TEA</h3>
+                  <p className="text-sm font-semibold text-[#005a70] mb-3">Transtorno do Espectro Autista</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    Jogos para desenvolvimento de habilidades sociais, processamento emocional, teoria da mente 
+                    e comunicação. Ambiente controlado com ajustes sensoriais individualizados.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 border-[#005a70]/20 shadow-lg bg-white">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Zap className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-[#0a1e35] mb-3">TDAH</h3>
+                  <p className="text-sm font-semibold text-[#005a70] mb-3">Déficit de Atenção e Hiperatividade</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    Treinamento de atenção sustentada, controle inibitório, memória de trabalho e função executiva. 
+                    Sistema de recompensas imediatas e feedback constante.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 border-[#005a70]/20 shadow-lg bg-white">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <BookOpen className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-[#0a1e35] mb-3">Dislexia</h3>
+                  <p className="text-sm font-semibold text-[#005a70] mb-3">Dificuldade de Leitura e Escrita</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    Exercícios de consciência fonológica, processamento fonológico, reconhecimento de padrões 
+                    e decodificação. Apresentação multissensorial adaptada.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Diferenciais da Nossa Abordagem */}
+            <Card className="border-none shadow-xl bg-gradient-to-br from-[#0a1e35] to-[#005a70] text-white">
+              <CardContent className="p-10">
+                <h3 className="text-2xl font-bold mb-6 text-center">Diferenciais da Nossa Abordagem</h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="flex gap-4">
+                    <Shield className="w-6 h-6 flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-2">Conformidade Legal (LGPD e Lei 14.254/21)</h4>
+                      <p className="text-white/80 text-sm">
+                        Plataforma desenvolvida em conformidade com a Lei Brasileira de Proteção de Dados e 
+                        Lei Federal 14.254/21 que instituiu a Política Nacional de Prevenção de Dificuldades de Aprendizagem.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <Brain className="w-6 h-6 flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-2">Base Neurocientífica</h4>
+                      <p className="text-white/80 text-sm">
+                        Todos os jogos são fundamentados em evidências da neurociência cognitiva e validados 
+                        por profissionais de saúde especializados em neurodesenvolvimento.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <Target className="w-6 h-6 flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-2">Adaptação Individual</h4>
+                      <p className="text-white/80 text-sm">
+                        IA analisa o desempenho em tempo real e ajusta automaticamente a dificuldade, 
+                        estímulos sensoriais e tipo de feedback para cada criança.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <Heart className="w-6 h-6 flex-shrink-0 mt-1" />
+                    <div>
+                      <h4 className="font-semibold mb-2">Abordagem Humanizada</h4>
+                      <p className="text-white/80 text-sm">
+                        Celebramos a neurodiversidade como uma variação natural. Nosso foco é desenvolver 
+                        habilidades e fortalecer potenciais únicos de cada criança.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
