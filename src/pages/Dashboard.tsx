@@ -4,12 +4,13 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Trophy, Star, Calendar, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle, Plus, BookOpen } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Trophy, Star, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { DuolingoStreak } from "@/components/DuolingoStreak";
 import { AIRecommendations } from "@/components/AIRecommendations";
-import { useNavigate } from "react-router-dom";
+import { AchievementsList } from "@/components/AchievementsList";
+import { TemporalEvolutionCharts } from "@/components/TemporalEvolutionCharts";
 
 interface UserStats {
   total_stars: number;
@@ -45,7 +46,6 @@ export default function Dashboard() {
 
   const fetchUserStats = async () => {
     try {
-      // Get gamification stats
       const { data: gamificationData, error: gamificationError } = await supabase
         .from('user_gamification')
         .select('*')
@@ -54,7 +54,6 @@ export default function Dashboard() {
 
       if (gamificationError) throw gamificationError;
       
-      // Get child profiles for this parent
       const { data: profiles } = await supabase
         .from('child_profiles')
         .select('id')
@@ -62,12 +61,10 @@ export default function Dashboard() {
 
       const profileIds = profiles?.map(p => p.id) || [];
       
-      // Store first profile ID for recommendations
       if (profiles && profiles.length > 0) {
         setFirstChildProfileId(profiles[0].id);
       }
 
-      // Get real game session stats
       let totalSessions = 0;
       let totalScore = 0;
       let avgAccuracy = 0;
@@ -96,7 +93,6 @@ export default function Dashboard() {
         last_activity_date: null
       };
 
-      // Enhance with real data
       setStats({
         ...initialStats,
         total_sessions: totalSessions,
@@ -109,22 +105,12 @@ export default function Dashboard() {
           .from('user_gamification')
           .insert(initialStats);
 
-        if (insertError) {
-          console.error('Error creating initial user stats:', insertError);
-        }
+        if (insertError) console.error('Error creating gamification:', insertError);
       }
     } catch (error) {
-      console.error('Error fetching user stats:', error);
-      setStats({
-        total_stars: 0,
-        level: 1,
-        experience_points: 0,
-        current_streak: 0,
-        longest_streak: 0,
-        total_sessions: 0,
-        total_score: 0,
-        avg_accuracy: 0
-      });
+      console.error('Error fetching stats:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -132,7 +118,7 @@ export default function Dashboard() {
     try {
       const { data, error } = await supabase
         .from('user_activities')
-        .select('activity_type, created_at, topic_name')
+        .select('*')
         .eq('user_id', user?.id)
         .order('created_at', { ascending: false })
         .limit(5);
@@ -141,187 +127,115 @@ export default function Dashboard() {
       setRecentActivities(data || []);
     } catch (error) {
       console.error('Error fetching activities:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  if (!user) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-card flex items-center justify-center p-6">
-        <Card className="max-w-md">
+      <div className="min-h-screen flex items-center justify-center">
+        <Card>
           <CardHeader>
-            <h1 className="text-2xl font-bold text-center">Acesso Restrito</h1>
+            <CardTitle>Carregando...</CardTitle>
           </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground">
-              Para acessar o dashboard, você precisa fazer login.
-            </p>
-            <Link to="/auth" className="text-primary hover:underline">
-              Fazer Login
-            </Link>
+          <CardContent>
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+            </div>
           </CardContent>
         </Card>
       </div>
     );
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-card flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  const nextLevelXP = (stats?.level || 1) * 100;
-  const currentXP = stats?.experience_points || 0;
-  const progressToNext = ((currentXP % 100) / 100) * 100;
+  const currentXP = (stats?.experience_points || 0) % 100;
+  const progressToNext = (currentXP / 100) * 100;
 
   const gameCategories = [
-    { name: 'Respiração', icon: Heart, color: 'text-green-600', played: 3 },
-    { name: 'Foco', icon: Brain, color: 'text-blue-600', played: 5 },
-    { name: 'Social', icon: Users, color: 'text-purple-600', played: 1 },
+    { name: "Atenção", progress: 45, icon: Heart, color: "text-red-500" },
+    { name: "Memória", progress: 60, icon: Brain, color: "text-blue-500" },
+    { name: "Linguagem", progress: 35, icon: Users, color: "text-green-500" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 text-white py-12 pb-24 relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-3/4 -right-4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Header */}
-        <div className="mb-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div>
-            <h1 className="font-heading text-4xl font-bold mb-4 text-white">
-              Olá, {user.user_metadata?.name || user.email?.split('@')[0]}! 👋
-            </h1>
-            <p className="text-xl text-white/70">
-              Continue sua jornada de desenvolvimento pessoal
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button 
-              variant="outline" 
-              asChild
-              className="bg-white/10 border-white/30 text-white hover:bg-white/20 shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
-            >
-              <Link to="/games">
-                <Plus className="w-4 h-4 mr-2" />
-                Jogar Agora
-              </Link>
-            </Button>
-          </div>
-        </div>
-
-        {/* Clinical Dashboard Card - Destaque Principal */}
-        <Card className="mb-8 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-md border-purple-400/40 shadow-2xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10" />
-          <CardHeader className="relative z-10">
-            <div className="flex items-center justify-between flex-wrap gap-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-background to-secondary/20">
+      <div className="container mx-auto px-4 py-8 space-y-8">
+        {/* Welcome Card */}
+        <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-50" />
+          <CardHeader className="relative">
+            <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-2xl font-bold text-white flex items-center gap-2">
-                  <Activity className="h-6 w-6" />
-                  Painel Clínico
+                <CardTitle className="text-3xl font-bold text-white mb-2">
+                  Bem-vindo de volta! 👋
                 </CardTitle>
-                <p className="text-white/70 text-sm mt-1">
-                  Análise comportamental e identificação de padrões diagnósticos
+                <p className="text-white/80">
+                  Continue sua jornada de aprendizado
                 </p>
               </div>
-              <Badge className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0 shadow-lg">
-                Inteligência Artificial
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-6 relative z-10">
-            <div className="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/20">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Activity className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-white mb-2">Análise Avançada com IA</h4>
-                  <p className="text-white/80 text-sm leading-relaxed">
-                    Complete os testes diagnósticos para gerar um relatório clínico detalhado. 
-                    Nossa IA analisa padrões comportamentais para identificar características do TEA, TDAH e Dislexia.
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-gradient-to-br from-red-500/20 to-red-600/20 rounded-lg p-4 backdrop-blur-sm border border-red-400/30">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 bg-red-500/30 rounded-full flex items-center justify-center">
-                    <AlertTriangle className="h-4 w-4 text-red-300" />
-                  </div>
-                  <h4 className="font-semibold text-white text-sm">TDAH</h4>
-                </div>
-                <p className="text-white/70 text-xs">Teste de Atenção Sustentada</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-indigo-500/20 to-indigo-600/20 rounded-lg p-4 backdrop-blur-sm border border-indigo-400/30">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 bg-indigo-500/30 rounded-full flex items-center justify-center">
-                    <Brain className="h-4 w-4 text-indigo-300" />
-                  </div>
-                  <h4 className="font-semibold text-white text-sm">TEA</h4>
-                </div>
-                <p className="text-white/70 text-xs">Flexibilidade Cognitiva</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-teal-500/20 to-teal-600/20 rounded-lg p-4 backdrop-blur-sm border border-teal-400/30">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-8 h-8 bg-teal-500/30 rounded-full flex items-center justify-center">
-                    <Trophy className="h-4 w-4 text-teal-300" />
-                  </div>
-                  <h4 className="font-semibold text-white text-sm">Dislexia</h4>
-                </div>
-                <p className="text-white/70 text-xs">Processamento Fonológico</p>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-white/10">
-              <Button
-                size="lg"
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
-                asChild
-              >
-                <Link to="/clinical" className="flex items-center justify-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  Acessar Painel Clínico Completo
+              <Button variant="secondary" asChild>
+                <Link to="/profile">
+                  <Users className="w-4 h-4 mr-2" />
+                  Perfil
                 </Link>
               </Button>
-              <Button 
-                variant="outline"
-                className="w-full mt-3 bg-white/10 border-white/30 text-white hover:bg-white/20"
-                asChild
-              >
-                <Link to="/learning" className="flex items-center justify-center gap-2">
-                  <Trophy className="h-4 w-4" />
-                  Meu Aprendizado
+            </div>
+          </CardHeader>
+        </Card>
+
+        {/* Quick Actions */}
+        <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-50" />
+          <CardHeader className="relative">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-white">Ações Rápidas</CardTitle>
+              {stats && stats.total_sessions && stats.total_sessions > 0 && (
+                <Badge variant="secondary">
+                  {stats.total_sessions} sessões completadas
+                </Badge>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent className="relative">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Button variant="default" size="lg" className="h-24" asChild>
+                <Link to="/games">
+                  <div className="text-center">
+                    <Activity className="w-8 h-8 mx-auto mb-2" />
+                    <div>Jogar Agora</div>
+                  </div>
+                </Link>
+              </Button>
+              
+              <Button variant="outline" size="lg" className="h-24 bg-white/10 border-white/20 text-white hover:bg-white/20" asChild>
+                <Link to="/diagnostico-completo">
+                  <div className="text-center">
+                    <AlertTriangle className="w-8 h-8 mx-auto mb-2" />
+                    <div>Avaliação</div>
+                  </div>
+                </Link>
+              </Button>
+              
+              <Button variant="outline" size="lg" className="h-24 bg-white/10 border-white/20 text-white hover:bg-white/20" asChild>
+                <Link to="/learning">
+                  <div className="text-center">
+                    <Trophy className="w-8 h-8 mx-auto mb-2" />
+                    <div>Conquistas</div>
+                  </div>
                 </Link>
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        {/* Modern Streak Widget - Estilo Duolingo */}
-        <div className="mb-8">
-          <DuolingoStreak
-            currentStreak={stats?.current_streak || 0}
-            longestStreak={stats?.longest_streak || 0}
-            streakGoal={7}
-          />
-        </div>
+        <DuolingoStreak
+          currentStreak={stats?.current_streak || 0}
+          longestStreak={stats?.longest_streak || 0}
+          streakGoal={7}
+        />
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 relative overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-50" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-white/80">Nível Atual</CardTitle>
@@ -338,38 +252,32 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-yellow-500/20 relative overflow-hidden">
+          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all">
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 opacity-50" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white/80">Estrelas Coletadas</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/80">Estrelas</CardTitle>
               <Star className="h-4 w-4 text-yellow-400" />
             </CardHeader>
             <CardContent className="relative">
               <div className="text-2xl font-bold text-yellow-400">{stats?.total_stars || 0}</div>
-              <p className="text-xs text-white/60">
-                Total de conquistas
-              </p>
+              <p className="text-xs text-white/60">Conquistas</p>
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 relative overflow-hidden">
+          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 opacity-50" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white/80">Experiência Total</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/80">Experiência</CardTitle>
               <Trophy className="h-4 w-4 text-white/60" />
             </CardHeader>
             <CardContent className="relative">
               <div className="text-2xl font-bold text-purple-400">{stats?.experience_points || 0}</div>
-              <p className="text-xs text-white/60">
-                Pontos de experiência
-              </p>
+              <p className="text-xs text-white/60">Pontos</p>
             </CardContent>
           </Card>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-          {/* Game Categories */}
           <Card className="lg:col-span-2 backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-blue-500/10 opacity-50" />
             <CardHeader className="relative">
@@ -380,27 +288,24 @@ export default function Dashboard() {
                 const Icon = category.icon;
                 return (
                   <div key={category.name} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                        <Icon className={`h-5 w-5 ${category.color}`} />
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className={`p-2 rounded-lg bg-white/10 ${category.color}`}>
+                        <Icon className="w-6 h-6" />
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-white">{category.name}</h4>
-                        <p className="text-sm text-white/70">
-                          {category.played} jogos concluídos
-                        </p>
+                      <div className="flex-1">
+                        <div className="flex justify-between mb-2">
+                          <span className="text-sm font-medium text-white">{category.name}</span>
+                          <span className="text-sm text-white/70">{category.progress}%</span>
+                        </div>
+                        <Progress value={category.progress} className="h-2 bg-white/20" />
                       </div>
                     </div>
-                    <Badge className="bg-white/20 text-white border-white/30">
-                      Nível {Math.floor(category.played / 2) + 1}
-                    </Badge>
                   </div>
                 );
               })}
             </CardContent>
           </Card>
 
-          {/* Recent Activities */}
           <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-50" />
             <CardHeader className="relative">
@@ -419,9 +324,7 @@ export default function Dashboard() {
                            activity.activity_type}
                         </p>
                         {activity.topic_name && (
-                          <p className="text-xs text-white/70">
-                            {activity.topic_name}
-                          </p>
+                          <p className="text-xs text-white/70">{activity.topic_name}</p>
                         )}
                         <p className="text-xs text-white/60">
                           {new Date(activity.created_at).toLocaleDateString('pt-BR')}
@@ -443,15 +346,18 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* AI Recommendations Section */}
         {firstChildProfileId && (
-          <div className="mt-8">
+          <div className="space-y-6">
             <AIRecommendations 
               childProfileId={firstChildProfileId}
-              onGameSelect={(gameId) => {
-                // Navigate to games page
-                navigate('/games');
-              }}
+              onGameSelect={() => navigate('/games')}
+            />
+            
+            <AchievementsList userId={user?.id || ''} />
+            
+            <TemporalEvolutionCharts 
+              childProfileId={firstChildProfileId}
+              timeRange="month"
             />
           </div>
         )}

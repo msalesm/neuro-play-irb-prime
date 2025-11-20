@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string
+          icon: string
+          id: string
+          key: string
+          name: string
+          rarity: string
+          required_value: number
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description: string
+          icon: string
+          id?: string
+          key: string
+          name: string
+          rarity?: string
+          required_value: number
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string
+          icon?: string
+          id?: string
+          key?: string
+          name?: string
+          rarity?: string
+          required_value?: number
+        }
+        Relationships: []
+      }
       adaptive_progress: {
         Row: {
           ai_insights: Json | null
@@ -239,6 +275,70 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "game_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cooperative_sessions: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          game_id: string
+          guest_profile_id: string | null
+          host_profile_id: string
+          id: string
+          session_code: string
+          session_data: Json | null
+          started_at: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          game_id: string
+          guest_profile_id?: string | null
+          host_profile_id: string
+          id?: string
+          session_code: string
+          session_data?: Json | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          game_id?: string
+          guest_profile_id?: string | null
+          host_profile_id?: string
+          id?: string
+          session_code?: string
+          session_data?: Json | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cooperative_sessions_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "cognitive_games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cooperative_sessions_guest_profile_id_fkey"
+            columns: ["guest_profile_id"]
+            isOneToOne: false
+            referencedRelation: "child_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cooperative_sessions_host_profile_id_fkey"
+            columns: ["host_profile_id"]
+            isOneToOne: false
+            referencedRelation: "child_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -594,6 +694,33 @@ export type Database = {
           score?: number
           test_data?: Json | null
           type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_achievements: {
+        Row: {
+          achievement_key: string
+          completed: boolean | null
+          id: string
+          progress: number | null
+          unlocked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          achievement_key: string
+          completed?: boolean | null
+          id?: string
+          progress?: number | null
+          unlocked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          achievement_key?: string
+          completed?: boolean | null
+          id?: string
+          progress?: number | null
+          unlocked_at?: string | null
           user_id?: string
         }
         Relationships: []
