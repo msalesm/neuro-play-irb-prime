@@ -120,6 +120,240 @@ export const translations = {
     }
   },
   
+  en: {
+    // Navigation
+    nav: {
+      home: 'Home',
+      games: 'Games',
+      dashboard: 'Dashboard',
+      learning: 'Learning',
+      clinical: 'Clinical',
+      today: 'Today',
+      tests: 'Tests',
+      diagnosticTests: 'Diagnostic Assessments',
+      myProgress: 'My Progress',
+      screening: 'Screening'
+    },
+    
+    // Hero Section
+    hero: {
+      title: 'NeuroPlay',
+      subtitle: 'Therapeutic Games for Neurodiversity',
+      description: 'Develop your cognitive skills through personalized therapeutic games based on scientific evidence.',
+      cta: 'Explore Games',
+      validation: 'Scientific Validation',
+      ageRange: '6-99 years',
+      categories: '15+ categories',
+      evidenceBased: 'Evidence-based',
+      startJourney: 'Start Journey',
+      cognitiveDescription: 'Develop your cognitive skills through personalized therapeutic games.',
+      continueDevelopment: 'Continue your cognitive development'
+    },
+    
+    educational: {
+      title: 'Advanced Educational System',
+      subtitle: 'Personalized learning with pedagogical feedback',
+      features: {
+        unifiedScoring: {
+          title: 'Unified XP System',
+          description: 'Consistent scoring across all games with clear progression'
+        },
+        pedagogicalFeedback: {
+          title: 'Educational Feedback',
+          description: 'Detailed explanations about concepts and learning strategies'
+        },
+        adaptiveLearning: {
+          title: 'Adaptive Learning',
+          description: 'Difficulty automatically adjusted based on performance'
+        },
+        progressTracking: {
+          title: 'Progress Tracking',
+          description: 'Detailed visualization of cognitive development'
+        }
+      }
+    },
+    
+    clinical: {
+      title: 'Advanced Clinical Dashboard',
+      subtitle: 'AI-powered behavioral analysis system for early identification of ASD, ADHD, and Dyslexia',
+      diagnosticTests: 'Diagnostic Assessments',
+      behavioralAnalysis: 'Behavioral Analysis',
+      automaticReports: 'Automatic Reports',
+      accessPanel: 'Access Clinical Panel'
+    },
+    
+    games: {
+      focusForest: 'Focus Forest',
+      memoriaColorida: 'Colorful Memory',
+      logicaRapida: 'Quick Logic',
+      ritmoMusical: 'Musical Rhythm',
+      aventuraNumeros: 'Numbers Adventure',
+      socialScenarios: 'Social Scenarios',
+      popular: 'Popular',
+      difficulty: {
+        easy: 'Easy',
+        intermediate: 'Intermediate',
+        hard: 'Hard',
+        adaptive: 'Adaptive',
+        challenging: 'Challenging'
+      },
+      descriptions: {
+        focusForest: 'Develop your sustained attention',
+        memoriaColorida: 'Strengthen your visual memory',
+        logicaRapida: 'Speed up your logical reasoning',
+        ritmoMusical: 'Synchronize with the rhythm',
+        aventuraNumeros: 'Explore the world of mathematics',
+        socialScenarios: 'Develop social skills'
+      },
+      subtitles: {
+        sustainedAttention: 'Sustained Attention',
+        visualMemory: 'Visual Memory',
+        reasoning: 'Reasoning'
+      },
+      dailyGame: {
+        title: 'Your Daily Game',
+        uniqueLine: 'Unique line',
+        play: 'PLAY',
+        focusCapacity: 'Develop your focus capacity',
+        logicalThinking: 'Speed up your logical thinking'
+      }
+    },
+    
+    common: {
+      start: 'Start',
+      continue: 'Continue',
+      complete: 'Complete',
+      next: 'Next',
+      previous: 'Previous',
+      save: 'Save',
+      cancel: 'Cancel',
+      loading: 'Loading...',
+      error: 'Error',
+      success: 'Success!',
+      myLearning: 'My Learning',
+      viewAll: 'View All Games',
+      newFeature: 'New',
+      hello: 'Hello'
+    }
+  },
+  
+  es: {
+    // Navigation
+    nav: {
+      home: 'Inicio',
+      games: 'Juegos',
+      dashboard: 'Panel',
+      learning: 'Aprendizaje',
+      clinical: 'Clínico',
+      today: 'Hoy',
+      tests: 'Pruebas',
+      diagnosticTests: 'Evaluaciones Diagnósticas',
+      myProgress: 'Mi Progreso',
+      screening: 'Evaluación'
+    },
+    
+    // Hero Section
+    hero: {
+      title: 'NeuroPlay',
+      subtitle: 'Juegos Terapéuticos para la Neurodiversidad',
+      description: 'Desarrolla tus habilidades cognitivas a través de juegos terapéuticos personalizados basados en evidencia científica.',
+      cta: 'Explorar Juegos',
+      validation: 'Validación Científica',
+      ageRange: '6-99 años',
+      categories: '15+ categorías',
+      evidenceBased: 'Basado en evidencia',
+      startJourney: 'Comenzar Viaje',
+      cognitiveDescription: 'Desarrolla tus habilidades cognitivas a través de juegos terapéuticos personalizados.',
+      continueDevelopment: 'Continúa tu desarrollo cognitivo'
+    },
+    
+    educational: {
+      title: 'Sistema Educativo Avanzado',
+      subtitle: 'Aprendizaje personalizado con retroalimentación pedagógica',
+      features: {
+        unifiedScoring: {
+          title: 'Sistema de XP Unificado',
+          description: 'Puntuación consistente en todos los juegos con progresión clara'
+        },
+        pedagogicalFeedback: {
+          title: 'Retroalimentación Educativa',
+          description: 'Explicaciones detalladas sobre conceptos y estrategias de aprendizaje'
+        },
+        adaptiveLearning: {
+          title: 'Aprendizaje Adaptativo',
+          description: 'Dificultad ajustada automáticamente según el rendimiento'
+        },
+        progressTracking: {
+          title: 'Seguimiento de Progreso',
+          description: 'Visualización detallada del desarrollo cognitivo'
+        }
+      }
+    },
+    
+    clinical: {
+      title: 'Panel Clínico Avanzado',
+      subtitle: 'Sistema de análisis conductual con IA para identificación temprana de TEA, TDAH y Dislexia',
+      diagnosticTests: 'Evaluaciones Diagnósticas',
+      behavioralAnalysis: 'Análisis Conductual',
+      automaticReports: 'Informes Automáticos',
+      accessPanel: 'Acceder al Panel Clínico'
+    },
+    
+    games: {
+      focusForest: 'Bosque del Enfoque',
+      memoriaColorida: 'Memoria Colorida',
+      logicaRapida: 'Lógica Rápida',
+      ritmoMusical: 'Ritmo Musical',
+      aventuraNumeros: 'Aventura de Números',
+      socialScenarios: 'Escenarios Sociales',
+      popular: 'Popular',
+      difficulty: {
+        easy: 'Fácil',
+        intermediate: 'Intermedio',
+        hard: 'Difícil',
+        adaptive: 'Adaptable',
+        challenging: 'Desafiante'
+      },
+      descriptions: {
+        focusForest: 'Desarrolla tu atención sostenida',
+        memoriaColorida: 'Fortalece tu memoria visual',
+        logicaRapida: 'Acelera tu razonamiento lógico',
+        ritmoMusical: 'Sincroniza con el ritmo',
+        aventuraNumeros: 'Explora el mundo de las matemáticas',
+        socialScenarios: 'Desarrolla habilidades sociales'
+      },
+      subtitles: {
+        sustainedAttention: 'Atención Sostenida',
+        visualMemory: 'Memoria Visual',
+        reasoning: 'Razonamiento'
+      },
+      dailyGame: {
+        title: 'Tu Juego Diario',
+        uniqueLine: 'Línea única',
+        play: 'JUGAR',
+        focusCapacity: 'Desarrolla tu capacidad de enfoque',
+        logicalThinking: 'Acelera tu pensamiento lógico'
+      }
+    },
+    
+    common: {
+      start: 'Comenzar',
+      continue: 'Continuar',
+      complete: 'Completar',
+      next: 'Siguiente',
+      previous: 'Anterior',
+      save: 'Guardar',
+      cancel: 'Cancelar',
+      loading: 'Cargando...',
+      error: 'Error',
+      success: '¡Éxito!',
+      myLearning: 'Mi Aprendizaje',
+      viewAll: 'Ver Todos los Juegos',
+      newFeature: 'Nuevo',
+      hello: 'Hola'
+    }
+  },
+  
   it: {
     // Navigation
     nav: {

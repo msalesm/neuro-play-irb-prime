@@ -129,7 +129,7 @@ export default function ModernIndex() {
           <Button 
             variant="outline" 
             asChild
-            className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+            className="bg-card/50 border-border text-foreground hover:bg-accent"
           >
             <Link to="/educational-dashboard">
               <BookOpen className="w-4 h-4 mr-2" />
@@ -170,7 +170,7 @@ export default function ModernIndex() {
         <div className="text-center pb-8">
           <Button 
             variant="outline" 
-            className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+            className="bg-card/50 border-border text-foreground hover:bg-accent"
             asChild
           >
             <Link to="/games">

@@ -338,7 +338,7 @@ export default function Games() {
                 <Button 
                   variant="outline" 
                   asChild
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                  className="bg-card/50 border-border text-foreground hover:bg-accent"
                 >
                   <Link to="/diagnostic-tests" className="flex items-center gap-2">
                     <Play className="h-4 w-4" />

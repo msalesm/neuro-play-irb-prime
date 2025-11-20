@@ -327,7 +327,7 @@ export default function Neuroplasticity() {
         </p>
         <Button 
           variant="outline" 
-          className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+          className="bg-card/50 border-border text-foreground hover:bg-accent"
           asChild
         >
           <Link to="/games">

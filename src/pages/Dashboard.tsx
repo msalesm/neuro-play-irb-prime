@@ -157,7 +157,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-background to-secondary/20">
+    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-background to-secondary/20 pb-24">
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Welcome Card */}
         <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
@@ -206,7 +206,7 @@ export default function Dashboard() {
                 </Link>
               </Button>
               
-              <Button variant="outline" size="lg" className="h-24 bg-white/10 border-white/20 text-white hover:bg-white/20" asChild>
+              <Button variant="outline" size="lg" className="h-24 bg-card/50 border-border text-foreground hover:bg-accent" asChild>
                 <Link to="/diagnostico-completo">
                   <div className="text-center">
                     <AlertTriangle className="w-8 h-8 mx-auto mb-2" />
@@ -215,7 +215,7 @@ export default function Dashboard() {
                 </Link>
               </Button>
               
-              <Button variant="outline" size="lg" className="h-24 bg-white/10 border-white/20 text-white hover:bg-white/20" asChild>
+              <Button variant="outline" size="lg" className="h-24 bg-card/50 border-border text-foreground hover:bg-accent" asChild>
                 <Link to="/learning">
                   <div className="text-center">
                     <Trophy className="w-8 h-8 mx-auto mb-2" />
