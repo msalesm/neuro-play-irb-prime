@@ -15,6 +15,9 @@ interface UserStats {
   experience_points: number;
   current_streak: number;
   longest_streak: number;
+  total_sessions?: number;
+  total_score?: number;
+  avg_accuracy?: number;
 }
 
 interface RecentActivity {
@@ -38,26 +41,61 @@ export default function Dashboard() {
 
   const fetchUserStats = async () => {
     try {
-      const { data, error } = await supabase
+      // Get gamification stats
+      const { data: gamificationData, error: gamificationError } = await supabase
         .from('user_gamification')
         .select('*')
         .eq('user_id', user?.id)
         .maybeSingle();
 
-      if (error) throw error;
+      if (gamificationError) throw gamificationError;
       
-      if (!data) {
-        // Criar registro inicial para o usuário
-        const initialStats = {
-          user_id: user?.id,
-          total_stars: 0,
-          level: 1,
-          experience_points: 0,
-          current_streak: 0,
-          longest_streak: 0,
-          last_activity_date: null
-        };
+      // Get child profiles for this parent
+      const { data: profiles } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', user?.id);
 
+      const profileIds = profiles?.map(p => p.id) || [];
+
+      // Get real game session stats
+      let totalSessions = 0;
+      let totalScore = 0;
+      let avgAccuracy = 0;
+
+      if (profileIds.length > 0) {
+        const { data: sessions } = await supabase
+          .from('game_sessions')
+          .select('score, accuracy_percentage, completed')
+          .in('child_profile_id', profileIds)
+          .eq('completed', true);
+
+        if (sessions && sessions.length > 0) {
+          totalSessions = sessions.length;
+          totalScore = sessions.reduce((sum, s) => sum + (s.score || 0), 0);
+          avgAccuracy = sessions.reduce((sum, s) => sum + (s.accuracy_percentage || 0), 0) / sessions.length;
+        }
+      }
+
+      const initialStats = gamificationData || {
+        user_id: user?.id,
+        total_stars: 0,
+        level: 1,
+        experience_points: 0,
+        current_streak: 0,
+        longest_streak: 0,
+        last_activity_date: null
+      };
+
+      // Enhance with real data
+      setStats({
+        ...initialStats,
+        total_sessions: totalSessions,
+        total_score: totalScore,
+        avg_accuracy: Math.round(avgAccuracy)
+      });
+
+      if (!gamificationData) {
         const { error: insertError } = await supabase
           .from('user_gamification')
           .insert(initialStats);
@@ -65,10 +103,6 @@ export default function Dashboard() {
         if (insertError) {
           console.error('Error creating initial user stats:', insertError);
         }
-
-        setStats(initialStats);
-      } else {
-        setStats(data);
       }
     } catch (error) {
       console.error('Error fetching user stats:', error);
@@ -78,6 +112,9 @@ export default function Dashboard() {
         experience_points: 0,
         current_streak: 0,
         longest_streak: 0,
+        total_sessions: 0,
+        total_score: 0,
+        avg_accuracy: 0
       });
     }
   };

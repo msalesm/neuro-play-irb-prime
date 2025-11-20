@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,226 +12,191 @@ serve(async (req) => {
   }
 
   try {
-    // Verify authentication
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      console.error('No authorization header provided');
-      return new Response(
-        JSON.stringify({ success: false, error: 'Autenticação necessária. Faça login para continuar.' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
+    const { sessionId } = await req.json();
+    console.log('Analyzing session:', sessionId);
 
-    const supabaseClient = createClient(
+    const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-    if (userError || !user) {
-      console.error('Authentication failed:', userError);
-      return new Response(
-        JSON.stringify({ success: false, error: 'Token inválido ou expirado. Faça login novamente.' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    const { data: session, error: sessionError } = await supabase
+      .from('game_sessions')
+      .select('*, cognitive_games(*), child_profiles(*)')
+      .eq('id', sessionId)
+      .single();
+
+    if (sessionError) {
+      console.error('Session fetch error:', sessionError);
+      throw sessionError;
     }
 
-    console.log('Authenticated user:', user.id);
+    console.log('Session data loaded:', session.id);
 
-    const { performanceData, userAge, userProfile } = await req.json();
-    
-    console.log('Starting cognitive analysis for user:', { userAge, userProfile, gamesCount: performanceData?.length });
+    const analysis = {
+      attention_score: calculateAttentionScore(session),
+      memory_score: calculateMemoryScore(session),
+      processing_speed: session.avg_reaction_time_ms,
+      accuracy: session.accuracy_percentage,
+      consistency: calculateConsistency(session),
+      improvement_areas: identifyImprovementAreas(session),
+      strengths: identifyStrengths(session),
+      timestamp: new Date().toISOString()
+    };
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    console.log('Analysis computed:', analysis);
+
+    const { error: progressError } = await supabase
+      .from('adaptive_progress')
+      .update({
+        ai_insights: analysis,
+        updated_at: new Date().toISOString()
+      })
+      .eq('child_profile_id', session.child_profile_id)
+      .eq('game_id', session.game_id);
+
+    if (progressError) {
+      console.error('Progress update error:', progressError);
     }
 
-    // Build analysis prompt
-    const prompt = buildAnalysisPrompt(performanceData, userAge, userProfile);
+    const recommendations = generateRecommendations(session, analysis);
     
-    console.log('Calling Lovable AI for cognitive analysis...');
+    if (recommendations.length > 0) {
+      console.log('Creating recommendations:', recommendations.length);
+      
+      for (const rec of recommendations) {
+        await supabase.from('ai_recommendations').insert({
+          child_profile_id: session.child_profile_id,
+          title: rec.title,
+          description: rec.description,
+          recommendation_type: rec.type,
+          reasoning: rec.reasoning,
+          priority: rec.priority,
+          status: 'pending',
+          recommended_games: rec.games || [],
+          valid_until: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        });
+      }
+    }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "system",
-            content: `Você é um psicólogo especializado em neuropsicologia infantil e avaliação cognitiva. 
-Sua especialidade é analisar dados de desempenho em jogos cognitivos e gerar relatórios diagnósticos precisos e empáticos.
-Você trabalha com crianças e adolescentes neurodivergentes (TDAH, TEA, Dislexia).
+    console.log('Analysis complete');
 
-IMPORTANTE: Seja sempre empático, positivo e focado nas potencialidades. Evite linguagem técnica demais.
-Destaque os pontos fortes antes de mencionar áreas de desenvolvimento.`
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "generate_cognitive_report",
-              description: "Gera um relatório cognitivo estruturado baseado na análise dos dados de desempenho",
-              parameters: {
-                type: "object",
-                properties: {
-                  overallScore: {
-                    type: "number",
-                    description: "Pontuação geral de 0 a 100"
-                  },
-                  cognitiveProfile: {
-                    type: "object",
-                    properties: {
-                      attention: { type: "number", description: "Score de atenção (0-100)" },
-                      memory: { type: "number", description: "Score de memória (0-100)" },
-                      language: { type: "number", description: "Score de linguagem (0-100)" },
-                      logic: { type: "number", description: "Score de lógica (0-100)" },
-                      emotion: { type: "number", description: "Score de inteligência emocional (0-100)" },
-                      coordination: { type: "number", description: "Score de coordenação (0-100)" }
-                    },
-                    required: ["attention", "memory", "language", "logic", "emotion", "coordination"]
-                  },
-                  strengths: {
-                    type: "array",
-                    items: { type: "string" },
-                    description: "Lista de 3-5 pontos fortes identificados"
-                  },
-                  areasForImprovement: {
-                    type: "array",
-                    items: { type: "string" },
-                    description: "Lista de 2-4 áreas que precisam de atenção"
-                  },
-                  recommendations: {
-                    type: "array",
-                    items: { type: "string" },
-                    description: "Lista de 3-5 recomendações práticas"
-                  },
-                  detailedAnalysis: {
-                    type: "string",
-                    description: "Análise detalhada em 2-3 parágrafos, empática e clara"
-                  },
-                  suggestedGames: {
-                    type: "array",
-                    items: { type: "string" },
-                    description: "Lista de jogos recomendados para desenvolvimento"
-                  }
-                },
-                required: ["overallScore", "cognitiveProfile", "strengths", "areasForImprovement", "recommendations", "detailedAnalysis", "suggestedGames"],
-                additionalProperties: false
-              }
-            }
-          }
-        ],
-        tool_choice: { type: "function", function: { name: "generate_cognitive_report" } }
-      }),
+    return new Response(JSON.stringify({ 
+      success: true, 
+      analysis,
+      recommendations: recommendations.length 
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
-
-    if (!response.ok) {
-      if (response.status === 429) {
-        console.error('Rate limit exceeded');
-        return new Response(
-          JSON.stringify({ error: "Limite de requisições atingido. Tente novamente em alguns instantes." }), 
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-      if (response.status === 402) {
-        console.error('Payment required');
-        return new Response(
-          JSON.stringify({ error: "Créditos insuficientes. Por favor, adicione créditos ao workspace." }), 
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      throw new Error("Erro ao processar análise cognitiva");
-    }
-
-    const data = await response.json();
-    console.log('AI response received successfully');
-
-    // Extract tool call result
-    const toolCall = data.choices[0].message.tool_calls?.[0];
-    if (!toolCall) {
-      throw new Error("AI não retornou análise estruturada");
-    }
-
-    const report = JSON.parse(toolCall.function.arguments);
-    console.log('Cognitive report generated:', { overallScore: report.overallScore });
-
-    return new Response(
-      JSON.stringify({ 
-        success: true,
-        report: {
-          ...report,
-          generatedAt: new Date().toISOString()
-        }
-      }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-
-  } catch (error) {
-    console.error('Error in cognitive-analysis function:', error);
-    return new Response(
-      JSON.stringify({ 
-        error: error instanceof Error ? error.message : "Erro desconhecido",
-        success: false
-      }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+  } catch (error: any) {
+    console.error('Error in cognitive-analysis:', error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 });
 
-function buildAnalysisPrompt(performanceData: any[], userAge?: number, userProfile?: string): string {
-  let prompt = `Analise o desempenho cognitivo baseado nos seguintes dados de jogos:\n\n`;
+function calculateAttentionScore(session: any): number {
+  const baseScore = session.accuracy_percentage || 0;
+  const durationFactor = Math.min(session.duration_seconds / 300, 1);
+  const pausePenalty = Math.max(0, 1 - (session.pause_count || 0) * 0.05);
+  return Math.round(baseScore * durationFactor * pausePenalty);
+}
+
+function calculateMemoryScore(session: any): number {
+  if (!session.total_attempts) return 0;
+  const accuracyScore = (session.correct_attempts / session.total_attempts) * 100;
+  const consistencyBonus = calculateConsistency(session) / 100;
+  return Math.round(accuracyScore * (0.8 + consistencyBonus * 0.2));
+}
+
+function calculateConsistency(session: any): number {
+  if (!session.fastest_reaction_time_ms || !session.slowest_reaction_time_ms) return 50;
+  const variance = session.slowest_reaction_time_ms - session.fastest_reaction_time_ms;
+  const avgReaction = session.avg_reaction_time_ms || 1000;
+  const consistencyScore = Math.max(0, 100 - (variance / avgReaction) * 100);
+  return Math.round(consistencyScore);
+}
+
+function identifyImprovementAreas(session: any): string[] {
+  const areas: string[] = [];
   
-  if (userAge) {
-    prompt += `Idade do usuário: ${userAge} anos\n`;
+  if ((session.accuracy_percentage || 0) < 70) {
+    areas.push('Precisão - praticar mais para melhorar a taxa de acerto');
   }
   
-  if (userProfile) {
-    prompt += `Perfil: ${userProfile}\n`;
+  if ((session.avg_reaction_time_ms || 0) > 2000) {
+    areas.push('Velocidade de processamento - treinar para respostas mais rápidas');
   }
   
-  prompt += `\nDados de Desempenho:\n`;
-  
-  performanceData.forEach((game, index) => {
-    prompt += `\n${index + 1}. ${game.gameName}:\n`;
-    if (game.metrics.reactionTime) {
-      prompt += `   - Tempo de reação: ${game.metrics.reactionTime}ms\n`;
-    }
-    if (game.metrics.accuracy !== undefined) {
-      prompt += `   - Precisão: ${game.metrics.accuracy}%\n`;
-    }
-    if (game.metrics.consistency !== undefined) {
-      prompt += `   - Consistência: ${game.metrics.consistency}%\n`;
-    }
-    if (game.metrics.focusTime) {
-      prompt += `   - Tempo de foco: ${game.metrics.focusTime}s\n`;
-    }
-    if (game.metrics.correctAnswers !== undefined && game.metrics.totalAttempts !== undefined) {
-      prompt += `   - Acertos: ${game.metrics.correctAnswers}/${game.metrics.totalAttempts}\n`;
-    }
-  });
+  if ((session.help_requests || 0) > 3) {
+    areas.push('Autonomia - reduzir dependência de ajuda');
+  }
 
-  prompt += `\n\nCom base nestes dados, gere um relatório cognitivo completo e estruturado usando a função generate_cognitive_report.
-  
-DIRETRIZES IMPORTANTES:
-1. Seja empático e positivo
-2. Destaque os pontos fortes primeiro
-3. Use linguagem clara e acessível para famílias
-4. Forneça recomendações práticas e específicas
-5. Considere o perfil neurodivergente ao fazer sugestões
-6. Os scores devem ser baseados nos dados, não arbitrários`;
+  if ((session.pause_count || 0) > 5) {
+    areas.push('Atenção sustentada - trabalhar foco prolongado');
+  }
 
-  return prompt;
+  return areas;
+}
+
+function identifyStrengths(session: any): string[] {
+  const strengths: string[] = [];
+  
+  if ((session.accuracy_percentage || 0) >= 85) {
+    strengths.push('Excelente precisão nas respostas');
+  }
+  
+  if ((session.avg_reaction_time_ms || 0) < 1000) {
+    strengths.push('Velocidade de processamento acima da média');
+  }
+  
+  if ((session.help_requests || 0) === 0) {
+    strengths.push('Alta autonomia - completou sem ajuda');
+  }
+
+  if ((session.pause_count || 0) <= 1) {
+    strengths.push('Ótima atenção sustentada');
+  }
+
+  return strengths;
+}
+
+function generateRecommendations(session: any, analysis: any): any[] {
+  const recommendations = [];
+  
+  if ((session.accuracy_percentage || 0) < 60) {
+    recommendations.push({
+      title: 'Praticar Fundamentos',
+      description: 'Recomendado repetir este jogo em nível mais fácil para reforçar conceitos básicos',
+      type: 'difficulty_adjustment',
+      reasoning: `Precisão de ${Math.round(session.accuracy_percentage || 0)}% indica necessidade de reforço`,
+      priority: 8,
+      games: [session.cognitive_games?.game_id]
+    });
+  }
+  
+  if ((session.accuracy_percentage || 0) >= 85 && (session.avg_reaction_time_ms || 9999) < 1500) {
+    recommendations.push({
+      title: 'Avançar para Próximo Nível',
+      description: 'Performance excelente! Recomendado aumentar dificuldade para continuar progredindo',
+      type: 'difficulty_advancement',
+      reasoning: `Precisão de ${Math.round(session.accuracy_percentage || 0)}% e tempo médio de ${session.avg_reaction_time_ms}ms`,
+      priority: 7,
+      games: [session.cognitive_games?.game_id]
+    });
+  }
+  
+  if ((session.pause_count || 0) > 5 || (session.duration_seconds || 0) > 900) {
+    recommendations.push({
+      title: 'Sessões Mais Curtas',
+      description: 'Recomendado fazer sessões de 5-10 minutos para manter o foco',
+      type: 'session_duration',
+      reasoning: `${session.pause_count || 0} pausas em ${Math.round((session.duration_seconds || 0) / 60)} minutos indica fadiga`,
+      priority: 6
+    });
+  }
+
+  return recommendations;
 }

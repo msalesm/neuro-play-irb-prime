@@ -174,9 +174,9 @@ export default function MemorySequenceBuilder() {
       });
 
       recordMetric({
-        event_type: 'incorrect',
-        reaction_time_ms: reactionTime,
-        event_data: { 
+        eventType: 'incorrect',
+        reactionTimeMs: reactionTime,
+        eventData: { 
           expected: expectedColor.id, 
           got: color.id,
           position: newUserSeq.length,
@@ -196,9 +196,9 @@ export default function MemorySequenceBuilder() {
       setTotalAttempts(prev => prev + 1);
 
       recordMetric({
-        event_type: 'correct',
-        reaction_time_ms: reactionTime,
-        event_data: { sequence_length: sequence.length, round },
+        eventType: 'correct',
+        reactionTimeMs: reactionTime,
+        eventData: { sequence_length: sequence.length, round },
       });
 
       toast.success(`🎯 Perfeito! +${points} pontos!`);

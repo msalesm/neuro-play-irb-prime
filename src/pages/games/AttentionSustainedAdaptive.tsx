@@ -141,9 +141,9 @@ export default function AttentionSustainedAdaptive() {
       setObjects(prev => prev.filter(o => o.id !== obj.id));
       
       recordMetric({
-        event_type: 'correct',
-        reaction_time_ms: reactionTime,
-        event_data: { object_name: obj.name, round },
+        eventType: 'correct',
+        reactionTimeMs: reactionTime,
+        eventData: { object_name: obj.name, round },
       });
 
       toast.success(`+${10 * currentDifficulty} pontos!`);
@@ -163,9 +163,9 @@ export default function AttentionSustainedAdaptive() {
       });
 
       recordMetric({
-        event_type: 'incorrect',
-        reaction_time_ms: reactionTime,
-        event_data: { object_name: obj.name, round },
+        eventType: 'incorrect',
+        reactionTimeMs: reactionTime,
+        eventData: { object_name: obj.name, round },
       });
 
       toast.error('❌ Não é o alvo!');
