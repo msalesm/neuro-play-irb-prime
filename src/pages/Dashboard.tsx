@@ -159,22 +159,22 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/20 via-background to-secondary/20 pb-32">
       <div className="container mx-auto px-4 py-8 space-y-8">
-        {/* Welcome Card */}
-        <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
+        {/* Welcome Card - Primary Hero */}
+        <Card className="backdrop-blur-sm bg-card/80 border-border shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-50" />
           <CardHeader className="relative">
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-3xl font-bold text-white mb-2">
+                <CardTitle className="text-3xl md:text-4xl font-bold text-foreground mb-2">
                   Bem-vindo de volta! 👋
                 </CardTitle>
-                <p className="text-white/80">
+                <p className="text-muted-foreground text-base md:text-lg">
                   Continue sua jornada de aprendizado
                 </p>
               </div>
-              <Button variant="secondary" asChild>
+              <Button variant="secondary" asChild aria-label="Ir para perfil">
                 <Link to="/profile">
-                  <Users className="w-4 h-4 mr-2" />
+                  <Users className="w-4 h-4 mr-2" aria-hidden="true" />
                   Perfil
                 </Link>
               </Button>
@@ -182,14 +182,14 @@ export default function Dashboard() {
           </CardHeader>
         </Card>
 
-        {/* Quick Actions */}
-        <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-50" />
+        {/* Quick Actions - Secondary CTA Section */}
+        <Card className="backdrop-blur-sm bg-card/60 border-border shadow-lg relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
           <CardHeader className="relative">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-white">Ações Rápidas</CardTitle>
+              <CardTitle className="text-foreground text-xl">Ações Rápidas</CardTitle>
               {stats && stats.total_sessions && stats.total_sessions > 0 && (
-                <Badge variant="secondary">
+                <Badge variant="secondary" aria-label={`${stats.total_sessions} sessões completadas`}>
                   {stats.total_sessions} sessões completadas
                 </Badge>
               )}
@@ -197,28 +197,46 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent className="relative">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button variant="default" size="lg" className="h-24" asChild>
+              <Button 
+                variant="default" 
+                size="lg" 
+                className="h-24 shadow-md hover:shadow-lg transition-shadow" 
+                asChild
+                aria-label="Jogar agora"
+              >
                 <Link to="/games">
                   <div className="text-center">
-                    <Activity className="w-8 h-8 mx-auto mb-2" />
+                    <Activity className="w-8 h-8 mx-auto mb-2" aria-hidden="true" />
                     <div>Jogar Agora</div>
                   </div>
                 </Link>
               </Button>
               
-              <Button variant="outline" size="lg" className="h-24 bg-card/50 border-border text-foreground hover:bg-accent" asChild>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="h-24 bg-card/50 border-border text-foreground hover:bg-accent hover:shadow-md transition-shadow" 
+                asChild
+                aria-label="Fazer avaliação diagnóstica"
+              >
                 <Link to="/diagnostico-completo">
                   <div className="text-center">
-                    <AlertTriangle className="w-8 h-8 mx-auto mb-2" />
+                    <AlertTriangle className="w-8 h-8 mx-auto mb-2" aria-hidden="true" />
                     <div>Avaliação</div>
                   </div>
                 </Link>
               </Button>
               
-              <Button variant="outline" size="lg" className="h-24 bg-card/50 border-border text-foreground hover:bg-accent" asChild>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="h-24 bg-card/50 border-border text-foreground hover:bg-accent hover:shadow-md transition-shadow" 
+                asChild
+                aria-label="Ver minhas conquistas"
+              >
                 <Link to="/learning">
                   <div className="text-center">
-                    <Trophy className="w-8 h-8 mx-auto mb-2" />
+                    <Trophy className="w-8 h-8 mx-auto mb-2" aria-hidden="true" />
                     <div>Conquistas</div>
                   </div>
                 </Link>
@@ -233,55 +251,55 @@ export default function Dashboard() {
           streakGoal={7}
         />
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-50" />
+        {/* Stats Grid - Subtle Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" role="region" aria-label="Estatísticas do usuário">
+          <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white/80">Nível Atual</CardTitle>
-              <TrendingUp className="h-4 w-4 text-white/60" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Nível Atual</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             </CardHeader>
             <CardContent className="relative">
-              <div className="text-2xl font-bold text-white">{stats?.level || 1}</div>
+              <div className="text-2xl font-bold text-foreground">{stats?.level || 1}</div>
               <div className="space-y-2">
-                <Progress value={progressToNext} className="h-2 bg-white/20" />
-                <p className="text-xs text-white/60">
+                <Progress value={progressToNext} className="h-2 bg-muted" aria-label={`Progresso: ${currentXP % 100} de 100 XP`} />
+                <p className="text-xs text-muted-foreground">
                   {currentXP % 100}/100 XP para próximo nível
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 opacity-50" />
+          <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-orange-500/5" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white/80">Estrelas</CardTitle>
-              <Star className="h-4 w-4 text-yellow-400" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Estrelas</CardTitle>
+              <Star className="h-4 w-4 text-yellow-500" aria-hidden="true" />
             </CardHeader>
             <CardContent className="relative">
-              <div className="text-2xl font-bold text-yellow-400">{stats?.total_stars || 0}</div>
-              <p className="text-xs text-white/60">Conquistas</p>
+              <div className="text-2xl font-bold text-yellow-500">{stats?.total_stars || 0}</div>
+              <p className="text-xs text-muted-foreground">Conquistas</p>
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 opacity-50" />
+          <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-white/80">Experiência</CardTitle>
-              <Trophy className="h-4 w-4 text-white/60" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Experiência</CardTitle>
+              <Trophy className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             </CardHeader>
             <CardContent className="relative">
               <div className="text-2xl font-bold text-purple-400">{stats?.experience_points || 0}</div>
-              <p className="text-xs text-white/60">Pontos</p>
+              <p className="text-xs text-muted-foreground">Pontos</p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <Card className="lg:col-span-2 backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-blue-500/10 opacity-50" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-2 backdrop-blur-sm bg-card/50 border-border relative overflow-hidden shadow-md" role="region" aria-label="Progresso por categoria">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5" />
             <CardHeader className="relative">
-              <CardTitle className="text-white">Progresso por Categoria</CardTitle>
+              <CardTitle className="text-foreground text-lg">Progresso por Categoria</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6 relative">
               {gameCategories.map((category) => {
@@ -289,15 +307,19 @@ export default function Dashboard() {
                 return (
                   <div key={category.name} className="flex items-center justify-between">
                     <div className="flex items-center gap-3 flex-1">
-                      <div className={`p-2 rounded-lg bg-white/10 ${category.color}`}>
+                      <div className={`p-2 rounded-lg bg-muted ${category.color}`} aria-hidden="true">
                         <Icon className="w-6 h-6" />
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between mb-2">
-                          <span className="text-sm font-medium text-white">{category.name}</span>
-                          <span className="text-sm text-white/70">{category.progress}%</span>
+                          <span className="text-sm font-medium text-foreground">{category.name}</span>
+                          <span className="text-sm text-muted-foreground">{category.progress}%</span>
                         </div>
-                        <Progress value={category.progress} className="h-2 bg-white/20" />
+                        <Progress 
+                          value={category.progress} 
+                          className="h-2 bg-muted" 
+                          aria-label={`Progresso em ${category.name}: ${category.progress}%`}
+                        />
                       </div>
                     </div>
                   </div>
@@ -306,27 +328,27 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-white/10 border-white/20 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-50" />
+          <Card className="backdrop-blur-sm bg-card/40 border-border/50 relative overflow-hidden" role="region" aria-label="Atividade recente">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5" />
             <CardHeader className="relative">
-              <CardTitle className="text-white">Atividade Recente</CardTitle>
+              <CardTitle className="text-foreground text-base">Atividade Recente</CardTitle>
             </CardHeader>
             <CardContent className="relative">
               {recentActivities.length > 0 ? (
                 <div className="space-y-4">
                   {recentActivities.map((activity, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full mt-2" />
+                      <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full mt-2" aria-hidden="true" />
                       <div>
-                        <p className="text-sm font-medium text-white">
+                        <p className="text-sm font-medium text-foreground">
                           {activity.activity_type === 'game_completed' ? 'Jogo concluído' :
                            activity.activity_type === 'achievement_earned' ? 'Conquista desbloqueada' :
                            activity.activity_type}
                         </p>
                         {activity.topic_name && (
-                          <p className="text-xs text-white/70">{activity.topic_name}</p>
+                          <p className="text-xs text-muted-foreground">{activity.topic_name}</p>
                         )}
-                        <p className="text-xs text-white/60">
+                        <p className="text-xs text-muted-foreground">
                           {new Date(activity.created_at).toLocaleDateString('pt-BR')}
                         </p>
                       </div>
@@ -334,10 +356,10 @@ export default function Dashboard() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-white/70 text-center py-4">
+                <p className="text-sm text-muted-foreground text-center py-4">
                   Nenhuma atividade recente.
                   <br />
-                  <Link to="/games" className="text-purple-400 hover:underline">
+                  <Link to="/games" className="text-primary hover:underline" aria-label="Começar a jogar agora">
                     Comece jogando agora!
                   </Link>
                 </p>

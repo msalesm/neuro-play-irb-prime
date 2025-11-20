@@ -39,7 +39,11 @@ export function BottomNavigation() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border">
+    <nav 
+      className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border"
+      role="navigation"
+      aria-label="Navegação principal"
+    >
       <div className="flex justify-around items-center py-2">
         {navigationItems.map((item) => {
           const Icon = item.icon;
@@ -54,8 +58,10 @@ export function BottomNavigation() {
                   ? 'text-primary'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
+              aria-label={item.name}
+              aria-current={active ? 'page' : undefined}
             >
-              <Icon className={`h-6 w-6 mb-1 ${active ? 'text-primary' : ''}`} />
+              <Icon className={`h-6 w-6 mb-1 ${active ? 'text-primary' : ''}`} aria-hidden="true" />
               <span className={`text-xs font-medium ${active ? 'text-primary' : ''}`}>
                 {item.name}
               </span>
