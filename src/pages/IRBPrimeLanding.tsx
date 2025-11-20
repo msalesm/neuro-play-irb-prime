@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield } from 'lucide-react';
+import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import irbPrimeCareLogo from '@/assets/irb-prime-care-logo.png';
 import heroImage from '@/assets/hero-children-learning.jpg';
 import childFocused from '@/assets/child-focused-learning.jpg';
 import groupTherapy from '@/assets/group-therapy-session.jpg';
+import { generateNeurodiversityPDF } from '@/lib/pdfGenerator';
 
 export default function IRBPrimeLanding() {
   const navigate = useNavigate();
@@ -348,6 +349,18 @@ export default function IRBPrimeLanding() {
                       </p>
                     </div>
                   </div>
+                </div>
+                
+                {/* Download Button */}
+                <div className="mt-8 text-center">
+                  <Button
+                    onClick={generateNeurodiversityPDF}
+                    size="lg"
+                    className="bg-white text-[#0a1e35] hover:bg-white/90 font-semibold"
+                  >
+                    <Download className="mr-2 h-5 w-5" />
+                    Baixar Paper em PDF
+                  </Button>
                 </div>
               </CardContent>
             </Card>
