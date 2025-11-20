@@ -101,6 +101,26 @@ export const translations = {
       }
     },
     
+    // Dashboard
+    dashboard: {
+      learningCenter: 'Centro de Aprendizagem',
+      trackProgress: 'Acompanhe seu progresso e conquistas',
+      totalXP: 'XP Total',
+      averageLevel: 'Nível Médio',
+      dayStreak: 'Dias Seguidos',
+      newAchievements: 'Novas Conquistas',
+      accessRestricted: 'Acesso Restrito',
+      loginRequired: 'Por favor, faça login para acessar o painel de aprendizagem',
+      login: 'Fazer Login',
+      quickAccess: 'Acesso Rápido',
+      learningTrails: 'Trilhas de Aprendizagem',
+      recentActivities: 'Atividades Recentes',
+      noActivities: 'Nenhuma atividade recente',
+      weeklyProgress: 'Progresso Semanal',
+      viewDetails: 'Ver Detalhes',
+      continueTrail: 'Continuar Trilha'
+    },
+    
     // Common
     common: {
       start: 'Começar',
@@ -219,6 +239,26 @@ export const translations = {
       }
     },
     
+    // Dashboard
+    dashboard: {
+      learningCenter: 'Learning Center',
+      trackProgress: 'Track your progress and achievements',
+      totalXP: 'Total XP',
+      averageLevel: 'Average Level',
+      dayStreak: 'Day Streak',
+      newAchievements: 'New Achievements',
+      accessRestricted: 'Access Restricted',
+      loginRequired: 'Please log in to access the learning dashboard',
+      login: 'Log In',
+      quickAccess: 'Quick Access',
+      learningTrails: 'Learning Trails',
+      recentActivities: 'Recent Activities',
+      noActivities: 'No recent activities',
+      weeklyProgress: 'Weekly Progress',
+      viewDetails: 'View Details',
+      continueTrail: 'Continue Trail'
+    },
+    
     common: {
       start: 'Start',
       continue: 'Continue',
@@ -334,6 +374,26 @@ export const translations = {
         focusCapacity: 'Desarrolla tu capacidad de enfoque',
         logicalThinking: 'Acelera tu pensamiento lógico'
       }
+    },
+    
+    // Dashboard
+    dashboard: {
+      learningCenter: 'Centro de Aprendizaje',
+      trackProgress: 'Sigue tu progreso y logros',
+      totalXP: 'XP Total',
+      averageLevel: 'Nivel Promedio',
+      dayStreak: 'Días Consecutivos',
+      newAchievements: 'Nuevos Logros',
+      accessRestricted: 'Acceso Restringido',
+      loginRequired: 'Por favor, inicia sesión para acceder al panel de aprendizaje',
+      login: 'Iniciar Sesión',
+      quickAccess: 'Acceso Rápido',
+      learningTrails: 'Rutas de Aprendizaje',
+      recentActivities: 'Actividades Recientes',
+      noActivities: 'Sin actividades recientes',
+      weeklyProgress: 'Progreso Semanal',
+      viewDetails: 'Ver Detalles',
+      continueTrail: 'Continuar Ruta'
     },
     
     common: {
