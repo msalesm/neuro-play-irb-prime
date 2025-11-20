@@ -38,24 +38,24 @@ export function MobileMenu() {
       ],
     },
     {
-      title: 'Avaliação',
+      title: 'Acompanhamento Terapêutico',
       items: [
-        { title: 'Dashboard Clínico', path: '/clinical', icon: Stethoscope },
-        { title: 'Neuroplasticidade', path: '/neuroplasticity', icon: Brain },
+        { title: 'Painel Clínico', path: '/clinical', icon: Stethoscope },
+        { title: 'Evolução Cognitiva', path: '/neuroplasticity', icon: Brain },
       ],
     },
     {
-      title: 'Neuro Play EDU',
+      title: 'Educação & Capacitação',
       items: [
-        { title: 'Painel do Professor', path: '/teacher-dashboard', icon: Users },
-        { title: 'Capacitação Docente', path: '/training', icon: School },
+        { title: 'Educação Parental', path: '/learning-dashboard', icon: Users },
+        { title: 'Capacitação Docente', path: '/teacher-training', icon: School },
       ],
     },
     {
       title: 'Configurações',
       items: [
+        { title: 'Perfil da Criança', path: '/profile', icon: User },
         { title: 'Configurações', path: '/settings', icon: Settings },
-        { title: 'Perfil', path: '/profile', icon: User },
       ],
     },
   ];
