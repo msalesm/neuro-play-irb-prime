@@ -335,7 +335,7 @@ export default function LearningDashboard() {
                   {t('dashboard.playGames')}
                 </a>
               </Button>
-              <Button variant="outline" className="border-white text-white hover:bg-white/10" asChild>
+              <Button variant="outline" className="border-border text-foreground hover:bg-accent" asChild>
                 <a href="/diagnostic-tests" className="flex items-center gap-2">
                   <Brain className="w-4 h-4" />
                   {t('dashboard.takeAssessment')}

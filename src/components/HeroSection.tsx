@@ -54,7 +54,7 @@ export const HeroSection = () => {
           <Button 
             variant="outline" 
             size="lg"
-            className="border-white text-white hover:bg-white/10 text-lg px-8 py-4 transition-smooth"
+            className="border-border text-foreground hover:bg-accent text-lg px-8 py-4 transition-smooth"
           >
             Validação Científica
           </Button>

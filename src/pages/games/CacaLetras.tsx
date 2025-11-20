@@ -233,7 +233,7 @@ export default function CacaLetras() {
               variant="outline"
               size="sm"
               onClick={() => setSoundEnabled(!soundEnabled)}
-              className="gap-2 border-white/20 text-white hover:bg-white/10"
+              className="gap-2 border-border text-foreground hover:bg-accent"
             >
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
             </Button>

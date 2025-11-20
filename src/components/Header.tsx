@@ -67,7 +67,7 @@ export const Header = () => {
                   variant="outline"
                   size="sm"
                   onClick={signOut}
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                  className="bg-card/50 border-border text-foreground hover:bg-accent"
                 >
                   <LogOut className="h-4 w-4 md:mr-2" />
                   <span className="hidden md:inline">Sair</span>
@@ -78,7 +78,7 @@ export const Header = () => {
                 variant="outline" 
                 size="sm" 
                 asChild 
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                className="bg-card/50 border-border text-foreground hover:bg-accent"
               >
                 <Link to="/auth">Entrar</Link>
               </Button>

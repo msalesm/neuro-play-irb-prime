@@ -170,7 +170,7 @@ export const ScientificValidation = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-white text-white hover:bg-white/10"
+              className="border-border text-foreground hover:bg-accent"
             >
               Participar Pesquisa
             </Button>

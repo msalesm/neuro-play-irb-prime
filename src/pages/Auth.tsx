@@ -157,17 +157,17 @@ export default function Auth() {
           </p>
         </div>
 
-        <Card className="backdrop-blur-md bg-white/10 border-white/20 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300">
+        <Card className="backdrop-blur-md bg-card/80 border-border shadow-2xl hover:shadow-primary/25 transition-all duration-300">
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-white/20 backdrop-blur-sm">
-              <TabsTrigger value="login" className="text-white data-[state=active]:bg-white/30 data-[state=active]:text-white">Entrar</TabsTrigger>
-              <TabsTrigger value="signup" className="text-white data-[state=active]:bg-white/30 data-[state=active]:text-white">Criar Conta</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-muted backdrop-blur-sm">
+              <TabsTrigger value="login">Entrar</TabsTrigger>
+              <TabsTrigger value="signup">Criar Conta</TabsTrigger>
             </TabsList>
 
             <TabsContent value="login">
               <CardHeader>
-                <CardTitle className="text-white text-center">Bem-vindo de volta</CardTitle>
-                <CardDescription className="text-white/70 text-center">
+                <CardTitle className="text-foreground text-center">Bem-vindo de volta</CardTitle>
+                <CardDescription className="text-muted-foreground text-center">
                   Entre na sua conta para continuar sua jornada terapêutica
                 </CardDescription>
               </CardHeader>
@@ -181,7 +181,7 @@ export default function Auth() {
                         id="email"
                         type="email"
                         placeholder="seu@email.com"
-                        className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/50 focus:bg-white/30 focus:border-white/50"
+                        className="pl-10 bg-card border-border text-foreground placeholder:text-muted-foreground focus:bg-accent"
                         value={loginForm.email}
                         onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
                         required
@@ -189,14 +189,14 @@ export default function Auth() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-white/80">Senha</Label>
+                    <Label htmlFor="password" className="text-foreground">Senha</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/60" />
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="password"
                         type="password"
                         placeholder="••••••••"
-                        className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/50 focus:bg-white/30 focus:border-white/50"
+                        className="pl-10 bg-card border-border text-foreground placeholder:text-muted-foreground focus:bg-accent"
                         value={loginForm.password}
                         onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                         required
@@ -231,7 +231,7 @@ export default function Auth() {
                         id="name"
                         type="text"
                         placeholder="Seu nome"
-                        className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/50 focus:bg-white/30 focus:border-white/50"
+                        className="pl-10 bg-card border-border text-foreground placeholder:text-muted-foreground focus:bg-accent"
                         value={signupForm.name}
                         onChange={(e) => setSignupForm({ ...signupForm, name: e.target.value })}
                         required
@@ -239,14 +239,14 @@ export default function Auth() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-white/80">Email</Label>
+                    <Label htmlFor="signup-email" className="text-foreground">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/60" />
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signup-email"
                         type="email"
                         placeholder="seu@email.com"
-                        className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/50 focus:bg-white/30 focus:border-white/50"
+                        className="pl-10 bg-card border-border text-foreground placeholder:text-muted-foreground focus:bg-accent"
                         value={signupForm.email}
                         onChange={(e) => setSignupForm({ ...signupForm, email: e.target.value })}
                         required
@@ -254,14 +254,14 @@ export default function Auth() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-white/80">Senha</Label>
+                    <Label htmlFor="signup-password" className="text-foreground">Senha</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/60" />
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="signup-password"
                         type="password"
                         placeholder="••••••••"
-                        className="pl-10 bg-white/20 border-white/30 text-white placeholder:text-white/50 focus:bg-white/30 focus:border-white/50"
+                        className="pl-10 bg-card border-border text-foreground placeholder:text-muted-foreground focus:bg-accent"
                         value={signupForm.password}
                         onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
                         required
