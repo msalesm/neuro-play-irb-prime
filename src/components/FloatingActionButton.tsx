@@ -63,7 +63,7 @@ export function FloatingActionButton({
   const toggleFAB = () => setIsOpen(!isOpen);
 
   return (
-    <div className={cn("fixed bottom-6 right-6 z-50", className)}>
+    <div className={cn("fixed bottom-6 right-6 z-50", className)} role="group" aria-label="Ações rápidas">
       {/* Action buttons */}
       {isOpen && (
         <div className="absolute bottom-16 right-0 space-y-3 animate-fade-in">
@@ -73,18 +73,22 @@ export function FloatingActionButton({
               className="flex items-center gap-3 animate-fade-in"
               style={{ animationDelay: `${index * 50}ms` }}
             >
-              <span className="bg-black/80 text-white px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap">
+              <span 
+                className="bg-black/80 text-white px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap"
+                id={`fab-label-${action.id}`}
+              >
                 {action.label}
               </span>
               
               {action.href ? (
-                <Link to={action.href}>
+                <Link to={action.href} aria-label={action.label}>
                   <Button
                     size="sm"
                     className={cn(
                       "w-10 h-10 rounded-full shadow-lg hover-scale",
                       action.color || "bg-primary hover:bg-primary/90"
                     )}
+                    aria-describedby={`fab-label-${action.id}`}
                   >
                     {action.icon}
                   </Button>
@@ -97,6 +101,8 @@ export function FloatingActionButton({
                     "w-10 h-10 rounded-full shadow-lg hover-scale",
                     action.color || "bg-primary hover:bg-primary/90"
                   )}
+                  aria-label={action.label}
+                  aria-describedby={`fab-label-${action.id}`}
                 >
                   {action.icon}
                 </Button>
@@ -115,11 +121,13 @@ export function FloatingActionButton({
           "bg-gradient-primary hover:shadow-glow",
           isOpen && "rotate-45"
         )}
+        aria-label={isOpen ? "Fechar menu de ações" : "Abrir menu de ações"}
+        aria-expanded={isOpen}
       >
         {isOpen ? (
-          <X className="w-6 h-6" />
+          <X className="w-6 h-6" aria-hidden="true" />
         ) : (
-          <Plus className="w-6 h-6" />
+          <Plus className="w-6 h-6" aria-hidden="true" />
         )}
       </Button>
     </div>
