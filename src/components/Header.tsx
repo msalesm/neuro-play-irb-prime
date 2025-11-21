@@ -44,10 +44,10 @@ export const Header = () => {
             </span>
           </Link>
 
-          {/* Desktop Auth - Simplified */}
-          <div className="flex items-center gap-4">
+          {/* Desktop Navigation & Actions */}
+          <div className="hidden md:flex items-center gap-3">
             <LanguageSelector />
-          <AdminNavLink />
+            <AdminNavLink />
           
           <Link
             to="/clinical"
@@ -92,7 +92,50 @@ export const Header = () => {
               </Button>
             )}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden p-2 text-white hover:bg-white/10 rounded-lg"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" aria-hidden="true" />
+            ) : (
+              <Menu className="h-6 w-6" aria-hidden="true" />
+            )}
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 space-y-2">
+            <div className="flex items-center justify-center gap-4 pb-3 border-b border-white/10">
+              <LanguageSelector />
+            </div>
+            
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={closeMobileMenu}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                    isActive(item.href)
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-white/80 hover:bg-white/10'
+                  }`}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                >
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                  <span className="font-medium">{item.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </header>
   );
