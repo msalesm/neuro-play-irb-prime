@@ -40,6 +40,8 @@ export default function ScreeningResultPage() {
         return Zap;
       case 'tea':
         return Heart;
+      default:
+        return FileText;
     }
   };
 
@@ -51,6 +53,8 @@ export default function ScreeningResultPage() {
         return 'from-yellow-500 to-orange-500';
       case 'tea':
         return 'from-purple-500 to-pink-500';
+      default:
+        return 'from-gray-500 to-slate-500';
     }
   };
 
@@ -62,6 +66,8 @@ export default function ScreeningResultPage() {
         return 'Triagem de TDAH';
       case 'tea':
         return 'Triagem de TEA';
+      default:
+        return 'Resultado da Triagem';
     }
   };
 
