@@ -22,7 +22,6 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -58,6 +57,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // IRB Prime Care Brand
+        irb: {
+          petrol: "hsl(var(--irb-petrol))",
+          blue: "hsl(var(--irb-blue))",
+          gold: "hsl(var(--irb-gold))",
+        },
       },
       fontFamily: {
         'heading': ['Open Sans', 'system-ui', 'sans-serif'],
@@ -69,11 +74,16 @@ export default {
         'gradient-card': 'var(--gradient-card)',
         'gradient-accent': 'var(--gradient-accent)',
         'gradient-playful': 'var(--gradient-playful)',
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-gold': 'var(--gradient-gold)',
+        'gradient-therapeutic': 'var(--gradient-therapeutic)',
       },
       boxShadow: {
         'soft': 'var(--shadow-soft)',
         'card': 'var(--shadow-card)',
         'glow': 'var(--shadow-glow)',
+        'medium': 'var(--shadow-medium)',
+        'strong': 'var(--shadow-strong)',
       },
       transitionTimingFunction: {
         'smooth': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
