@@ -172,99 +172,6 @@ export type Database = {
           },
         ]
       }
-      audit_logs: {
-        Row: {
-          action: string
-          id: string
-          ip_address: unknown
-          resource_id: string | null
-          resource_type: string
-          timestamp: string | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        Insert: {
-          action: string
-          id?: string
-          ip_address?: unknown
-          resource_id?: string | null
-          resource_type: string
-          timestamp?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          action?: string
-          id?: string
-          ip_address?: unknown
-          resource_id?: string | null
-          resource_type?: string
-          timestamp?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "audit_logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      child_access: {
-        Row: {
-          access_level: string
-          child_id: string
-          expires_at: string | null
-          granted_at: string | null
-          granted_by: string
-          id: string
-          professional_id: string
-        }
-        Insert: {
-          access_level: string
-          child_id: string
-          expires_at?: string | null
-          granted_at?: string | null
-          granted_by: string
-          id?: string
-          professional_id: string
-        }
-        Update: {
-          access_level?: string
-          child_id?: string
-          expires_at?: string | null
-          granted_at?: string | null
-          granted_by?: string
-          id?: string
-          professional_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "child_access_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "children"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "child_access_granted_by_fkey"
-            columns: ["granted_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "child_access_professional_id_fkey"
-            columns: ["professional_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       child_profiles: {
         Row: {
           cognitive_baseline: Json | null
@@ -306,59 +213,6 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
-      }
-      children: {
-        Row: {
-          avatar_url: string | null
-          birth_date: string
-          consent_data_usage: boolean | null
-          consent_research: boolean | null
-          created_at: string | null
-          gender: string | null
-          id: string
-          name: string
-          neurodevelopmental_conditions: Json | null
-          parent_id: string
-          sensory_profile: Json | null
-          updated_at: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          birth_date: string
-          consent_data_usage?: boolean | null
-          consent_research?: boolean | null
-          created_at?: string | null
-          gender?: string | null
-          id?: string
-          name: string
-          neurodevelopmental_conditions?: Json | null
-          parent_id: string
-          sensory_profile?: Json | null
-          updated_at?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          birth_date?: string
-          consent_data_usage?: boolean | null
-          consent_research?: boolean | null
-          created_at?: string | null
-          gender?: string | null
-          id?: string
-          name?: string
-          neurodevelopmental_conditions?: Json | null
-          parent_id?: string
-          sensory_profile?: Json | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "children_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       cognitive_games: {
         Row: {
@@ -485,60 +339,6 @@ export type Database = {
             columns: ["host_profile_id"]
             isOneToOne: false
             referencedRelation: "child_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      data_consents: {
-        Row: {
-          child_id: string | null
-          consent_given: boolean
-          consent_type: string
-          consent_version: string
-          consented_at: string | null
-          id: string
-          ip_address: unknown
-          revoked_at: string | null
-          user_agent: string | null
-          user_id: string
-        }
-        Insert: {
-          child_id?: string | null
-          consent_given: boolean
-          consent_type: string
-          consent_version: string
-          consented_at?: string | null
-          id?: string
-          ip_address?: unknown
-          revoked_at?: string | null
-          user_agent?: string | null
-          user_id: string
-        }
-        Update: {
-          child_id?: string | null
-          consent_given?: boolean
-          consent_type?: string
-          consent_version?: string
-          consented_at?: string | null
-          id?: string
-          ip_address?: unknown
-          revoked_at?: string | null
-          user_agent?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "data_consents_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "children"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "data_consents_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -844,8 +644,6 @@ export type Database = {
           email: string | null
           full_name: string | null
           id: string
-          professional_registration: string | null
-          role: string | null
           updated_at: string | null
         }
         Insert: {
@@ -853,8 +651,6 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id: string
-          professional_registration?: string | null
-          role?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -862,8 +658,6 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
-          professional_registration?: string | null
-          role?: string | null
           updated_at?: string | null
         }
         Relationships: []

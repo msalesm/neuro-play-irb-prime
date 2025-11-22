@@ -80,7 +80,6 @@ const Games = lazy(() => import("./pages/Games"));
 const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
 const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
 const DiagnosticTests = lazy(() => import("./pages/DiagnosticTests"));
-const Onboarding = lazy(() => import("./pages/Onboarding"));
 
 const queryClient = new QueryClient();
 
@@ -117,11 +116,6 @@ const App = () => (
                     </Suspense>
                   } />
                   <Route path="/auth" element={<Auth />} />
-                  <Route path="/onboarding" element={
-                    <Suspense fallback={<Loading />}>
-                      <Onboarding />
-                    </Suspense>
-                  } />
                   <Route path="/cognitive-diagnostic" element={
                     <Suspense fallback={<Loading />}>
                       <CognitiveDiagnostic />
