@@ -63,6 +63,7 @@ import PEIView from "./pages/PEIView";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import ParentTraining from "./pages/TeacherTraining";
 import TrainingModule from "./pages/TrainingModule";
+import TherapeuticChatPage from "./pages/TherapeuticChatPage";
 
 // Neuro Play v2.0 pages
 import NeuroPlayV2 from "./pages/NeuroPlayV2";
@@ -205,6 +206,7 @@ const App = () => (
           <Route path="/parent-training" element={<ParentTraining />} />
           <Route path="/training" element={<ParentTraining />} />
                   <Route path="/training/:moduleId" element={<TrainingModule />} />
+                  <Route path="/chat" element={<TherapeuticChatPage />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
