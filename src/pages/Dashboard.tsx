@@ -234,7 +234,7 @@ export default function Dashboard() {
                 asChild
                 aria-label="Ver minhas conquistas"
               >
-                <Link to="/learning">
+                <Link to="/learning-dashboard">
                   <div className="text-center">
                     <Trophy className="w-8 h-8 mx-auto mb-2" aria-hidden="true" />
                     <div>Conquistas</div>
