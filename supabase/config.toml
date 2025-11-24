@@ -2,3 +2,6 @@ project_id = "wzazjftrtakwugdgfcko"
 
 [functions.therapeutic-chat]
 verify_jwt = false
+
+[functions.aggregate-metrics]
+verify_jwt = false

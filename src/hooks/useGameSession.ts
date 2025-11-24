@@ -23,12 +23,97 @@ export function useGameSession(gameId: string, childProfileId?: string) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [currentDifficulty, setCurrentDifficulty] = useState(1);
+  const [recoveredSession, setRecoveredSession] = useState<any>(null);
+
+  // Check for interrupted sessions on mount
+  useEffect(() => {
+    if (user && gameId) {
+      checkForInterruptedSession();
+    }
+  }, [user, gameId]);
 
   useEffect(() => {
     if (childProfileId && gameId) {
       loadRecommendedDifficulty();
     }
   }, [childProfileId, gameId]);
+
+  const checkForInterruptedSession = async () => {
+    try {
+      const { data: gameData } = await supabase
+        .from('cognitive_games')
+        .select('id')
+        .eq('game_id', gameId)
+        .single();
+
+      if (!gameData) return;
+
+      let profileId = childProfileId;
+      if (!profileId && user) {
+        const { data: profiles } = await supabase
+          .from('child_profiles')
+          .select('id')
+          .eq('parent_user_id', user.id)
+          .limit(1)
+          .single();
+        profileId = profiles?.id;
+      }
+
+      if (!profileId) return;
+
+      // Find incomplete sessions from last 24 hours
+      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      
+      const { data: incompleteSessions } = await supabase
+        .from('game_sessions')
+        .select('*')
+        .eq('child_profile_id', profileId)
+        .eq('game_id', gameData.id)
+        .eq('completed', false)
+        .gte('started_at', oneDayAgo)
+        .order('started_at', { ascending: false })
+        .limit(1);
+
+      if (incompleteSessions && incompleteSessions.length > 0) {
+        setRecoveredSession(incompleteSessions[0]);
+      }
+    } catch (error) {
+      console.error('Error checking for interrupted session:', error);
+    }
+  };
+
+  const resumeSession = useCallback((session: any) => {
+    setSessionId(session.id);
+    setIsActive(true);
+    setCurrentDifficulty(session.difficulty_level || 1);
+    setRecoveredSession(null);
+    
+    toast({
+      title: "Sessão Recuperada",
+      description: "Continuando de onde você parou",
+    });
+    
+    return session.session_data || {};
+  }, [toast]);
+
+  const discardRecoveredSession = useCallback(async () => {
+    if (recoveredSession) {
+      try {
+        await supabase
+          .from('game_sessions')
+          .update({
+            completed: true,
+            quit_reason: 'session_abandoned',
+            completed_at: new Date().toISOString()
+          })
+          .eq('id', recoveredSession.id);
+        
+        setRecoveredSession(null);
+      } catch (error) {
+        console.error('Error discarding session:', error);
+      }
+    }
+  }, [recoveredSession]);
 
   const loadRecommendedDifficulty = async () => {
     try {
@@ -263,6 +348,9 @@ export function useGameSession(gameId: string, childProfileId?: string) {
     updateSession,
     isActive,
     currentDifficulty,
-    recordMetric
+    recordMetric,
+    recoveredSession,
+    resumeSession,
+    discardRecoveredSession
   };
 }
