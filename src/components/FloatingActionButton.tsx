@@ -39,7 +39,7 @@ export function FloatingActionButton({
       id: 'achievements',
       label: 'Conquistas',
       icon: <Trophy className="w-4 h-4" />,
-      href: '/achievements',
+      href: '/learning-dashboard',
       color: 'bg-yellow-500 hover:bg-yellow-600'
     },
     {
