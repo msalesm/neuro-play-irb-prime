@@ -5,9 +5,10 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Send, Bot, User, Sparkles, Heart, Brain, RotateCcw } from 'lucide-react';
+import { MessageCircle, Send, Bot, User, Sparkles, Heart, Brain, RotateCcw, FileDown } from 'lucide-react';
 import { useTherapeuticChat } from '@/hooks/useTherapeuticChat';
 import { useUserRole } from '@/hooks/useUserRole';
+import { useBehavioralReport } from '@/hooks/useBehavioralReport';
 import ChatInsights from './ChatInsights';
 import EmotionalCheckInScheduler from './EmotionalCheckInScheduler';
 
@@ -32,6 +33,8 @@ export default function TherapeuticChat({
     clearConversation,
     childProfile 
   } = useTherapeuticChat({ childProfileId, contextType });
+  
+  const { generatePDF, generating } = useBehavioralReport(childProfileId);
   
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -177,15 +180,27 @@ export default function TherapeuticChat({
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle>Conversa</CardTitle>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearConversation}
-                  className="gap-2"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                  Nova conversa
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={generatePDF}
+                    disabled={generating}
+                    className="gap-2"
+                  >
+                    <FileDown className="h-4 w-4" />
+                    {generating ? 'Gerando...' : 'Exportar PDF'}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearConversation}
+                    className="gap-2"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                    Nova conversa
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4 p-6 pt-0">
