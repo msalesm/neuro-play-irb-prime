@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle2 } from 'lucide-react';
+import { RoleSelectionStep } from './steps/RoleSelectionStep';
 import { UserDataStep } from './steps/UserDataStep';
 import { TermsStep } from './steps/TermsStep';
 import { ConsentsStep } from './steps/ConsentsStep';
@@ -12,21 +13,24 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 export type OnboardingData = {
-  // Step 1: User Data
+  // Step 1: Role Selection
+  selectedRole: 'parent' | 'therapist' | 'user' | 'admin' | null;
+  
+  // Step 2: User Data
   fullName: string;
   email: string;
   phone: string;
   
-  // Step 2: Terms (just acceptance)
+  // Step 3: Terms (just acceptance)
   termsAccepted: boolean;
   privacyAccepted: boolean;
   
-  // Step 3: Consents (LGPD granular)
+  // Step 4: Consents (LGPD granular)
   consentAnonymousData: boolean;
   consentResearch: boolean;
   consentClinicalSharing: boolean;
   
-  // Step 4: Child Profile
+  // Step 5: Child Profile (only for parents)
   childName: string;
   childBirthDate: string;
   childGender: string;
@@ -46,10 +50,11 @@ export type OnboardingData = {
 };
 
 const STEPS = [
-  { id: 1, title: 'Dados Pessoais', description: 'Informações básicas' },
-  { id: 2, title: 'Termos de Uso', description: 'Aceite os termos' },
-  { id: 3, title: 'Consentimentos LGPD', description: 'Suas escolhas de privacidade' },
-  { id: 4, title: 'Perfil da Criança', description: 'Configuração terapêutica' },
+  { id: 1, title: 'Seu Perfil', description: 'Como você usará a plataforma' },
+  { id: 2, title: 'Dados Pessoais', description: 'Informações básicas' },
+  { id: 3, title: 'Termos de Uso', description: 'Aceite os termos' },
+  { id: 4, title: 'Consentimentos LGPD', description: 'Suas escolhas de privacidade' },
+  { id: 5, title: 'Perfil da Criança', description: 'Configuração terapêutica' },
 ];
 
 export function OnboardingWizard() {
@@ -58,6 +63,7 @@ export function OnboardingWizard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [data, setData] = useState<OnboardingData>({
+    selectedRole: null,
     fullName: '',
     email: '',
     phone: '',
@@ -87,13 +93,19 @@ export function OnboardingWizard() {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return data.fullName && data.email && data.phone;
+        return data.selectedRole !== null;
       case 2:
-        return data.termsAccepted && data.privacyAccepted;
+        return data.fullName && data.email && data.phone;
       case 3:
-        return true; // Consents are optional
+        return data.termsAccepted && data.privacyAccepted;
       case 4:
-        return data.childName && data.childBirthDate;
+        return true; // Consents are optional
+      case 5:
+        // Child profile only required for parents
+        if (data.selectedRole === 'parent') {
+          return data.childName && data.childBirthDate;
+        }
+        return true;
       default:
         return false;
     }
@@ -118,6 +130,18 @@ export function OnboardingWizard() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Usuário não autenticado');
+
+      // Save user role
+      if (data.selectedRole) {
+        const { error: roleError } = await supabase
+          .from('user_roles')
+          .insert({
+            user_id: user.id,
+            role: data.selectedRole,
+          });
+
+        if (roleError) throw roleError;
+      }
 
       // Update profile
       const { error: profileError } = await supabase
@@ -146,25 +170,44 @@ export function OnboardingWizard() {
         });
       }
 
-      // Create child profile
-      const { error: childError } = await supabase
-        .from('children')
-        .insert({
-          parent_id: user.id,
-          name: data.childName,
-          birth_date: data.childBirthDate,
-          gender: data.childGender || null,
-          avatar_url: data.childAvatar ? JSON.stringify(data.childAvatar) : null,
-          neurodevelopmental_conditions: data.diagnosedConditions,
-          sensory_profile: data.sensoryProfile,
-          consent_data_usage: data.consentAnonymousData,
-          consent_research: data.consentResearch,
-        });
+      // Create child profile (only for parents)
+      if (data.selectedRole === 'parent') {
+        const { error: childError } = await supabase
+          .from('children')
+          .insert({
+            parent_id: user.id,
+            name: data.childName,
+            birth_date: data.childBirthDate,
+            gender: data.childGender || null,
+            avatar_url: data.childAvatar ? JSON.stringify(data.childAvatar) : null,
+            neurodevelopmental_conditions: data.diagnosedConditions,
+            sensory_profile: data.sensoryProfile,
+            consent_data_usage: data.consentAnonymousData,
+            consent_research: data.consentResearch,
+          });
 
-      if (childError) throw childError;
+        if (childError) throw childError;
+      }
 
       toast.success('Perfil criado com sucesso!');
-      navigate('/dashboard');
+      
+      // Navigate based on role
+      switch (data.selectedRole) {
+        case 'parent':
+          navigate('/dashboard');
+          break;
+        case 'therapist':
+          navigate('/therapist/patients');
+          break;
+        case 'user': // teacher
+          navigate('/teacher/classes');
+          break;
+        case 'admin':
+          navigate('/admin/dashboard');
+          break;
+        default:
+          navigate('/dashboard');
+      }
     } catch (error: any) {
       console.error('Erro ao finalizar onboarding:', error);
       toast.error(error.message || 'Erro ao salvar dados');
@@ -176,13 +219,26 @@ export function OnboardingWizard() {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <UserDataStep data={data} updateData={updateData} />;
+        return <RoleSelectionStep data={data} updateData={updateData} />;
       case 2:
-        return <TermsStep data={data} updateData={updateData} />;
+        return <UserDataStep data={data} updateData={updateData} />;
       case 3:
-        return <ConsentsStep data={data} updateData={updateData} />;
+        return <TermsStep data={data} updateData={updateData} />;
       case 4:
-        return <ChildProfileStep data={data} updateData={updateData} />;
+        return <ConsentsStep data={data} updateData={updateData} />;
+      case 5:
+        // Only show child profile for parents
+        if (data.selectedRole === 'parent') {
+          return <ChildProfileStep data={data} updateData={updateData} />;
+        }
+        return (
+          <div className="text-center py-12">
+            <h3 className="text-xl font-semibold text-irb-petrol mb-2">Pronto para começar!</h3>
+            <p className="text-muted-foreground">
+              Clique em Finalizar para acessar sua área profissional.
+            </p>
+          </div>
+        );
       default:
         return null;
     }
@@ -198,7 +254,7 @@ export function OnboardingWizard() {
                 Bem-vindo à NeuroPlay
               </CardTitle>
               <CardDescription className="text-base mt-1">
-                Configure seu perfil terapêutico em 4 etapas
+                Configure seu perfil terapêutico em {data.selectedRole === 'parent' ? '5' : '4'} etapas
               </CardDescription>
             </div>
             <div className="text-right">
