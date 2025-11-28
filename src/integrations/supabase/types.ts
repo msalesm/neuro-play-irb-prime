@@ -360,6 +360,66 @@ export type Database = {
           },
         ]
       }
+      clinical_reports: {
+        Row: {
+          alert_flags: Json | null
+          created_at: string
+          detailed_analysis: Json | null
+          generated_by_ai: boolean | null
+          generated_date: string
+          id: string
+          intervention_recommendations: Json | null
+          progress_indicators: Json | null
+          report_period_end: string
+          report_period_start: string
+          report_type: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewed_by_professional: boolean | null
+          summary_insights: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          alert_flags?: Json | null
+          created_at?: string
+          detailed_analysis?: Json | null
+          generated_by_ai?: boolean | null
+          generated_date?: string
+          id?: string
+          intervention_recommendations?: Json | null
+          progress_indicators?: Json | null
+          report_period_end: string
+          report_period_start: string
+          report_type: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewed_by_professional?: boolean | null
+          summary_insights?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          alert_flags?: Json | null
+          created_at?: string
+          detailed_analysis?: Json | null
+          generated_by_ai?: boolean | null
+          generated_date?: string
+          id?: string
+          intervention_recommendations?: Json | null
+          progress_indicators?: Json | null
+          report_period_end?: string
+          report_period_start?: string
+          report_type?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewed_by_professional?: boolean | null
+          summary_insights?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       cognitive_games: {
         Row: {
           active: boolean | null

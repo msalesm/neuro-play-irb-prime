@@ -102,70 +102,109 @@ export default function DashboardPais() {
   const loadChildData = async (childId: string) => {
     setLoading(true);
     try {
-      // Load sessions
-      const { data: sessionsData, error: sessionsError } = await supabase
-        .from('learning_sessions')
-        .select('*')
-        .eq('user_id', childId)
+      // Load sessions from game_sessions table (real data)
+      const { data: gameSessionsData, error: gameSessionsError } = await supabase
+        .from('game_sessions')
+        .select(`
+          id,
+          game_id,
+          score,
+          accuracy_percentage,
+          avg_reaction_time_ms,
+          duration_seconds,
+          created_at,
+          completed,
+          session_data,
+          cognitive_games (
+            name,
+            game_id
+          )
+        `)
+        .eq('child_profile_id', childId)
+        .eq('completed', true)
         .order('created_at', { ascending: false })
-        .limit(10);
+        .limit(20);
 
-      if (sessionsError) throw sessionsError;
+      if (gameSessionsError) {
+        console.error('Error loading game sessions:', gameSessionsError);
+      }
       
-      // Transform sessions data to match our interface
-      const transformedSessions: SessionData[] = (sessionsData || []).map((session: any) => ({
+      // Transform game sessions to match SessionData interface
+      const transformedSessions: SessionData[] = (gameSessionsData || []).map((session: any) => ({
         id: session.id,
-        game_type: session.game_type,
-        duration: session.session_duration_seconds || 0,
-        score: (session.performance_data as any)?.score || 0,
+        game_type: session.cognitive_games?.name || session.cognitive_games?.game_id || 'Jogo',
+        duration: session.duration_seconds || 0,
+        score: session.score || 0,
         created_at: session.created_at,
-        performance_data: session.performance_data
+        performance_data: {
+          score: session.score,
+          accuracy: session.accuracy_percentage,
+          reactionTime: session.avg_reaction_time_ms,
+          ...session.session_data
+        }
       }));
       
       setSessions(transformedSessions);
 
-      // Calculate cognitive scores from session performance data
+      // Calculate cognitive scores from real session data
       if (transformedSessions.length > 0) {
-        const avgScores = {
-          attention: 0,
-          memory: 0,
-          language: 0,
-          logic: 0,
-          emotion: 0,
-          coordination: 0
+        const domainScores: Record<string, number[]> = {
+          attention: [],
+          memory: [],
+          language: [],
+          logic: [],
+          emotion: [],
+          coordination: []
         };
 
-        // Simple scoring based on performance
         transformedSessions.forEach(session => {
-          const perfData = session.performance_data as any;
-          const accuracy = perfData?.accuracy || 0;
+          const accuracy = session.performance_data?.accuracy || 0;
+          const gameType = session.game_type.toLowerCase();
           
           // Map game types to cognitive domains
-          if (session.game_type.includes('atencao') || session.game_type.includes('foco')) {
-            avgScores.attention += accuracy;
-          } else if (session.game_type.includes('memoria')) {
-            avgScores.memory += accuracy;
-          } else if (session.game_type.includes('linguagem') || session.game_type.includes('leitura')) {
-            avgScores.language += accuracy;
-          } else if (session.game_type.includes('logica') || session.game_type.includes('raciocinio')) {
-            avgScores.logic += accuracy;
-          } else if (session.game_type.includes('emocao') || session.game_type.includes('social')) {
-            avgScores.emotion += accuracy;
-          } else if (session.game_type.includes('coordenacao') || session.game_type.includes('motor')) {
-            avgScores.coordination += accuracy;
+          if (gameType.includes('atenção') || gameType.includes('foco') || gameType.includes('attention')) {
+            domainScores.attention.push(accuracy);
+          }
+          if (gameType.includes('memória') || gameType.includes('memory')) {
+            domainScores.memory.push(accuracy);
+          }
+          if (gameType.includes('linguagem') || gameType.includes('leitura') || gameType.includes('language') || gameType.includes('phonological')) {
+            domainScores.language.push(accuracy);
+          }
+          if (gameType.includes('lógica') || gameType.includes('raciocínio') || gameType.includes('logic') || gameType.includes('executive')) {
+            domainScores.logic.push(accuracy);
+          }
+          if (gameType.includes('emoção') || gameType.includes('social') || gameType.includes('emotion')) {
+            domainScores.emotion.push(accuracy);
+          }
+          if (gameType.includes('coordenação') || gameType.includes('motor') || gameType.includes('spatial')) {
+            domainScores.coordination.push(accuracy);
           }
         });
 
-        // Average and normalize to 0-100
-        const sessionCount = transformedSessions.length;
-        setCognitiveScores({
-          attention: Math.min(100, Math.round((avgScores.attention / sessionCount) * 10)),
-          memory: Math.min(100, Math.round((avgScores.memory / sessionCount) * 10)),
-          language: Math.min(100, Math.round((avgScores.language / sessionCount) * 10)),
-          logic: Math.min(100, Math.round((avgScores.logic / sessionCount) * 10)),
-          emotion: Math.min(100, Math.round((avgScores.emotion / sessionCount) * 10)),
-          coordination: Math.min(100, Math.round((avgScores.coordination / sessionCount) * 10))
-        });
+        // Calculate averages
+        const scores: CognitiveScores = {
+          attention: domainScores.attention.length > 0
+            ? Math.round(domainScores.attention.reduce((a, b) => a + b, 0) / domainScores.attention.length)
+            : 0,
+          memory: domainScores.memory.length > 0
+            ? Math.round(domainScores.memory.reduce((a, b) => a + b, 0) / domainScores.memory.length)
+            : 0,
+          language: domainScores.language.length > 0
+            ? Math.round(domainScores.language.reduce((a, b) => a + b, 0) / domainScores.language.length)
+            : 0,
+          logic: domainScores.logic.length > 0
+            ? Math.round(domainScores.logic.reduce((a, b) => a + b, 0) / domainScores.logic.length)
+            : 0,
+          emotion: domainScores.emotion.length > 0
+            ? Math.round(domainScores.emotion.reduce((a, b) => a + b, 0) / domainScores.emotion.length)
+            : 0,
+          coordination: domainScores.coordination.length > 0
+            ? Math.round(domainScores.coordination.reduce((a, b) => a + b, 0) / domainScores.coordination.length)
+            : 0
+        };
+
+        setCognitiveScores(scores);
       }
     } catch (error) {
       console.error('Error loading child data:', error);
