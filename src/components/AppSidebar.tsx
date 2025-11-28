@@ -180,7 +180,7 @@ export function AppSidebar() {
     items: homeNavigation,
   });
 
-  // Show Parents section if user is a parent
+  // Show Parents section if user is a parent or no role defined
   if (role === 'parent' || !role) {
     navigationGroups.push({
       id: 'parents',
@@ -198,8 +198,8 @@ export function AppSidebar() {
     });
   }
 
-  // Show School section if user is a teacher
-  if (role === 'parent' || !role) { // Teachers can also be parents
+  // Show School section if user is a teacher or no role defined
+  if (role === 'parent' || !role) {
     navigationGroups.push({
       id: 'teacher',
       label: 'Escola',
