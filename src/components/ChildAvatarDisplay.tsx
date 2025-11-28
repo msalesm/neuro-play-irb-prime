@@ -1,5 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { EvolutionaryAvatar } from "./EvolutionaryAvatar";
 
 interface AvatarData {
   id: string;
@@ -12,6 +13,9 @@ interface ChildAvatarDisplayProps {
   avatar?: AvatarData | string;
   name?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  level?: number;
+  equippedAccessories?: string[];
+  showEffects?: boolean;
   className?: string;
 }
 
@@ -26,6 +30,9 @@ export const ChildAvatarDisplay = ({
   avatar, 
   name = 'Criança',
   size = 'md',
+  level,
+  equippedAccessories,
+  showEffects = false,
   className 
 }: ChildAvatarDisplayProps) => {
   // Parse avatar if it's a string
@@ -38,6 +45,20 @@ export const ChildAvatarDisplay = ({
     }
   } else if (avatar) {
     avatarData = avatar;
+  }
+
+  // If we have level and avatar data, use EvolutionaryAvatar
+  if (level && avatarData) {
+    return (
+      <EvolutionaryAvatar
+        avatar={avatarData}
+        level={level}
+        equippedAccessories={equippedAccessories}
+        size={size}
+        showEffects={showEffects}
+        className={className}
+      />
+    );
   }
 
   const initials = name

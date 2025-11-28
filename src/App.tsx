@@ -51,6 +51,7 @@ import FocoRapido from "./pages/games/FocoRapido";
 import CognitiveAnalysisDemo from "./pages/CognitiveAnalysisDemo";
 import SistemaPlanetaAzul from "./pages/SistemaPlanetaAzul";
 import PlanetaDetalhes from "./pages/PlanetaDetalhes";
+import AvatarEvolutionPage from "./pages/AvatarEvolutionPage";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import PixelPlatformer from "./pages/PixelPlatformer";
@@ -146,6 +147,7 @@ const App = () => (
                   <Route path="/cognitive-analysis-demo" element={<CognitiveAnalysisDemo />} />
                   <Route path="/sistema-planeta-azul" element={<SistemaPlanetaAzul />} />
                   <Route path="/planeta/:planetaId" element={<PlanetaDetalhes />} />
+                  <Route path="/avatar-evolution" element={<AvatarEvolutionPage />} />
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
                   <Route path="/games/caca-foco" element={<CacaFoco />} />
                   <Route path="/games/logica-rapida" element={<LogicaRapida />} />
