@@ -360,6 +360,45 @@ export type Database = {
           },
         ]
       }
+      class_students: {
+        Row: {
+          child_id: string
+          class_id: string
+          enrolled_at: string | null
+          id: string
+          notes: string | null
+        }
+        Insert: {
+          child_id: string
+          class_id: string
+          enrolled_at?: string | null
+          id?: string
+          notes?: string | null
+        }
+        Update: {
+          child_id?: string
+          class_id?: string
+          enrolled_at?: string | null
+          id?: string
+          notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_students_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "school_classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clinical_reports: {
         Row: {
           alert_flags: Json | null
@@ -927,6 +966,139 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      school_classes: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          grade_level: string | null
+          id: string
+          name: string
+          school_year: string | null
+          teacher_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          grade_level?: string | null
+          id?: string
+          name: string
+          school_year?: string | null
+          teacher_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          grade_level?: string | null
+          id?: string
+          name?: string
+          school_year?: string | null
+          teacher_id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      school_communications: {
+        Row: {
+          child_id: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string
+          priority: string | null
+          recipient_role: string
+          sender_id: string
+          sender_role: string
+          subject: string
+        }
+        Insert: {
+          child_id: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          priority?: string | null
+          recipient_role: string
+          sender_id: string
+          sender_role: string
+          subject: string
+        }
+        Update: {
+          child_id?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          priority?: string | null
+          recipient_role?: string
+          sender_id?: string
+          sender_role?: string
+          subject?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "school_communications_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      school_occurrences: {
+        Row: {
+          child_id: string
+          created_at: string | null
+          description: string
+          follow_up_needed: boolean | null
+          id: string
+          intervention_taken: string | null
+          occurred_at: string
+          occurrence_type: string
+          severity: string | null
+          teacher_id: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          child_id: string
+          created_at?: string | null
+          description: string
+          follow_up_needed?: boolean | null
+          id?: string
+          intervention_taken?: string | null
+          occurred_at: string
+          occurrence_type: string
+          severity?: string | null
+          teacher_id: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          child_id?: string
+          created_at?: string | null
+          description?: string
+          follow_up_needed?: boolean | null
+          id?: string
+          intervention_taken?: string | null
+          occurred_at?: string
+          occurrence_type?: string
+          severity?: string | null
+          teacher_id?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "school_occurrences_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       screenings: {
         Row: {

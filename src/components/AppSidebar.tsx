@@ -6,6 +6,7 @@ import {
   ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Sidebar,
@@ -29,6 +30,7 @@ import {
 
 export function AppSidebar() {
   const { user } = useAuth();
+  const { role } = useUserRole();
   const { t } = useLanguage();
   const location = useLocation();
   const { open } = useSidebar();
@@ -77,6 +79,14 @@ export function AppSidebar() {
       title: 'Meus Pacientes',
       path: '/therapist/patients',
       icon: Users,
+    },
+  ];
+
+  const teacherNavigation = [
+    {
+      title: 'Minhas Turmas',
+      path: '/teacher/classes',
+      icon: School,
     },
   ];
 
@@ -155,6 +165,11 @@ export function AppSidebar() {
       id: 'therapist',
       label: 'Terapeuta',
       items: therapistNavigation,
+    },
+    {
+      id: 'teacher',
+      label: 'Professor',
+      items: teacherNavigation,
     },
     {
       id: 'neuroplay-edu',
