@@ -51,110 +51,27 @@ export function AppSidebar() {
     );
   };
 
-  const mainNavigation = [
+  // Home - Criança/Usuário Principal
+  const homeNavigation = [
     {
-      title: t('nav.home'),
-      path: '/',
-      icon: Home,
-    },
-    {
-      title: t('nav.today'),
-      path: '/dashboard',
-      icon: TrendingUp,
-    },
-    {
-      title: 'Sistema Planeta Azul',
+      title: 'Sistema de Planetas',
       path: '/sistema-planeta-azul',
       icon: Sparkles,
     },
     {
-      title: 'Educação Parental',
-      path: '/training',
-      icon: BookOpen,
-    },
-  ];
-
-  const therapistNavigation = [
-    {
-      title: 'Meus Pacientes',
-      path: '/therapist/patients',
-      icon: Users,
-    },
-  ];
-
-  const teacherNavigation = [
-    {
-      title: 'Minhas Turmas',
-      path: '/teacher/classes',
-      icon: School,
-    },
-  ];
-
-  const adminNavigation = [
-    {
-      title: 'Dashboard Geral',
-      path: '/admin/network',
-      icon: BarChart3,
-    },
-  ];
-
-  const neuroPlayEduNavigation = [
-    {
-      title: 'Triagem Gamificada',
-      path: '/screening',
-      icon: ClipboardCheck,
+      title: 'Missão do Dia',
+      path: '/dashboard',
+      icon: Trophy,
     },
     {
-      title: 'Painel do Professor',
-      path: '/teacher-dashboard',
-      icon: Users,
-    },
-    {
-      title: 'Capacitação Docente',
-      path: '/training',
-      icon: School,
-    },
-  ];
-
-  const gamesNavigation = [
-    {
-      title: t('nav.games'),
+      title: 'Jogos Cognitivos',
       path: '/games',
       icon: Gamepad2,
     },
-  ];
-
-  const assessmentNavigation = [
     {
-      title: t('nav.tests'),
-      path: '/diagnostic-tests',
-      icon: FileText,
-    },
-    {
-      title: 'Dashboard Clínico',
-      path: '/clinical',
-      icon: Stethoscope,
-    },
-  ];
-
-  const learningNavigation = [
-    {
-      title: t('nav.learning'),
+      title: 'Progresso',
       path: '/learning-dashboard',
-      icon: GraduationCap,
-    },
-    {
-      title: 'Neuroplasticidade',
-      path: '/neuroplasticity',
-      icon: Brain,
-    },
-  ];
-
-  const settingsNavigation = [
-    {
-      title: 'Configurações',
-      path: '/settings',
-      icon: Settings,
+      icon: TrendingUp,
     },
     {
       title: 'Perfil',
@@ -163,53 +80,148 @@ export function AppSidebar() {
     },
   ];
 
-  const navigationGroups = [
+  // Pais
+  const parentsNavigation = [
     {
-      id: 'main',
-      label: 'Principal',
-      items: mainNavigation,
+      title: 'Dashboard',
+      path: '/dashboard',
+      icon: Home,
     },
     {
+      title: 'Microlearning',
+      path: '/training',
+      icon: BookOpen,
+    },
+    {
+      title: 'Atividades Parent-Child',
+      path: '/parent-child-activities',
+      icon: Users,
+    },
+  ];
+
+  // Terapeuta
+  const therapistNavigation = [
+    {
+      title: 'Pacientes',
+      path: '/therapist/patients',
+      icon: Users,
+    },
+    {
+      title: 'Relatórios',
+      path: '/clinical',
+      icon: FileText,
+    },
+    {
+      title: 'PEI Inteligente',
+      path: '/pei',
+      icon: Brain,
+    },
+    {
+      title: 'Jogos Terapêuticos',
+      path: '/games',
+      icon: Gamepad2,
+    },
+  ];
+
+  // Escola
+  const teacherNavigation = [
+    {
+      title: 'Turmas',
+      path: '/teacher/classes',
+      icon: School,
+    },
+    {
+      title: 'PEI Escolar',
+      path: '/teacher-dashboard',
+      icon: GraduationCap,
+    },
+    {
+      title: 'Estratégias',
+      path: '/teacher-training',
+      icon: BookOpen,
+    },
+  ];
+
+  // Gestor Público
+  const adminNavigation = [
+    {
+      title: 'Dashboard Geral',
+      path: '/admin/network',
+      icon: BarChart3,
+    },
+    {
+      title: 'Mapas de Risco',
+      path: '/admin/risk-maps',
+      icon: TrendingUp,
+    },
+    {
+      title: 'Gestão de Rede',
+      path: '/admin/network-management',
+      icon: Settings,
+    },
+  ];
+
+  // Configurações (para todos)
+  const settingsNavigation = [
+    {
+      title: 'Configurações',
+      path: '/settings',
+      icon: Settings,
+    },
+  ];
+
+  // Organize navigation groups based on role
+  const navigationGroups = [];
+
+  // Always show Home section
+  navigationGroups.push({
+    id: 'home',
+    label: 'Home',
+    items: homeNavigation,
+  });
+
+  // Show Parents section if user is a parent
+  if (role === 'parent' || !role) {
+    navigationGroups.push({
+      id: 'parents',
+      label: 'Pais',
+      items: parentsNavigation,
+    });
+  }
+
+  // Show Therapist section if user is a therapist
+  if (role === 'therapist') {
+    navigationGroups.push({
       id: 'therapist',
       label: 'Terapeuta',
       items: therapistNavigation,
-    },
-    {
+    });
+  }
+
+  // Show School section if user is a teacher
+  if (role === 'parent' || !role) { // Teachers can also be parents
+    navigationGroups.push({
       id: 'teacher',
-      label: 'Professor',
+      label: 'Escola',
       items: teacherNavigation,
-    },
-    {
+    });
+  }
+
+  // Show Admin section if user is admin
+  if (role === 'admin') {
+    navigationGroups.push({
       id: 'admin',
-      label: 'Administração',
+      label: 'Gestor Público',
       items: adminNavigation,
-    },
-    {
-      id: 'neuroplay-edu',
-      label: 'Neuro Play EDU',
-      items: neuroPlayEduNavigation,
-    },
-    {
-      id: 'games',
-      label: 'Jogos',
-      items: gamesNavigation,
-    },
-    {
-      id: 'assessment',
-      label: 'Avaliação',
-      items: assessmentNavigation,
-    },
-    {
-      id: 'learning',
-      label: 'Aprendizado',
-      items: learningNavigation,
-    },
-    {
-      id: 'settings',
-      label: 'Configurações',
-      items: settingsNavigation,
-    },
-  ];
+    });
+  }
+
+  // Always show Settings
+  navigationGroups.push({
+    id: 'settings',
+    label: 'Configurações',
+    items: settingsNavigation,
+  });
 
   return (
     <Sidebar className="bg-sidebar border-r border-sidebar-border">
