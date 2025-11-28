@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { 
   Home, Gamepad2, FileText, GraduationCap, Settings, 
   User, Trophy, TrendingUp, Brain, Stethoscope,
-  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles
+  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -90,6 +90,14 @@ export function AppSidebar() {
     },
   ];
 
+  const adminNavigation = [
+    {
+      title: 'Dashboard Geral',
+      path: '/admin/network',
+      icon: BarChart3,
+    },
+  ];
+
   const neuroPlayEduNavigation = [
     {
       title: 'Triagem Gamificada',
@@ -170,6 +178,11 @@ export function AppSidebar() {
       id: 'teacher',
       label: 'Professor',
       items: teacherNavigation,
+    },
+    {
+      id: 'admin',
+      label: 'Administração',
+      items: adminNavigation,
     },
     {
       id: 'neuroplay-edu',
