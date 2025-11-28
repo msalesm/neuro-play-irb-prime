@@ -256,10 +256,18 @@ export default function DashboardPais() {
                       </p>
                     </div>
                   </div>
-                  <Button onClick={generateReport}>
-                    <Download className="w-4 h-4 mr-2" />
-                    Gerar Relatório
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate('/avatar-evolution')}
+                    >
+                      ✨ Customizar Avatar
+                    </Button>
+                    <Button onClick={generateReport}>
+                      <Download className="w-4 h-4 mr-2" />
+                      Gerar Relatório
+                    </Button>
+                  </div>
                 </div>
               </Card>
             )}
