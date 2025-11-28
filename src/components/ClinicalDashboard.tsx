@@ -12,11 +12,16 @@ import {
   Users,
   BarChart3,
   CheckCircle,
-  Clock
+  Clock,
+  Download,
+  Calendar
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
+import { useClinicalReports } from '@/hooks/useClinicalReports';
+import { ClinicalReportCard } from './ClinicalReportCard';
+import { toast } from 'sonner';
 
 interface ClinicalStats {
   totalSessions: number;
@@ -27,6 +32,8 @@ interface ClinicalStats {
 
 export default function ClinicalDashboard() {
   const { user } = useAuth();
+  const [childId, setChildId] = useState<string | null>(null);
+  const { reports, loading: reportsLoading, generating, generateReport } = useClinicalReports(childId || undefined);
   const [stats, setStats] = useState<ClinicalStats>({
     totalSessions: 0,
     completedTests: 0,
@@ -43,6 +50,18 @@ export default function ClinicalDashboard() {
 
   const fetchClinicalData = async () => {
     try {
+      // Get first child
+      const { data: children } = await supabase
+        .from('children')
+        .select('id')
+        .eq('parent_id', user?.id)
+        .limit(1)
+        .single();
+
+      if (children) {
+        setChildId(children.id);
+      }
+
       const { data: profiles } = await supabase
         .from('child_profiles')
         .select('id')
@@ -77,6 +96,22 @@ export default function ClinicalDashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGenerateReport = async () => {
+    if (!childId) {
+      toast.error('Nenhum perfil de criança encontrado');
+      return;
+    }
+
+    const endDate = new Date().toISOString().split('T')[0];
+    const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+    await generateReport({
+      startDate,
+      endDate,
+      reportType: 'comprehensive'
+    });
   };
 
   if (!user) {
@@ -257,73 +292,100 @@ export default function ClinicalDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-foreground">Análise Comportamental com IA</CardTitle>
-                  <Badge variant="outline" className="bg-purple-50 border-purple-200 text-purple-700">
-                    <Brain className="w-3 h-3 mr-1" aria-hidden="true" />
-                    Em Desenvolvimento
-                  </Badge>
+                  <Button
+                    onClick={handleGenerateReport}
+                    disabled={generating || stats.totalSessions === 0}
+                    className="bg-gradient-to-r from-purple-500 to-blue-500"
+                  >
+                    {generating ? (
+                      <>
+                        <Clock className="w-4 h-4 mr-2 animate-spin" />
+                        Analisando...
+                      </>
+                    ) : (
+                      <>
+                        <Brain className="w-4 h-4 mr-2" />
+                        Gerar Análise de IA
+                      </>
+                    )}
+                  </Button>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-lg">
-                  <AlertCircle className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-foreground">
-                      Análise automática em breve
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      O sistema de análise comportamental com IA está sendo desenvolvido para fornecer 
-                      insights automáticos sobre TEA, TDAH e Dislexia baseados nos padrões de jogo 
-                      e resultados dos testes diagnósticos.
-                    </p>
+              <CardContent className="space-y-4">
+                {stats.totalSessions === 0 ? (
+                  <div className="flex items-start gap-3 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                    <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-amber-900">
+                        Nenhuma sessão de jogo encontrada
+                      </p>
+                      <p className="text-sm text-amber-700">
+                        Complete pelo menos 5 sessões de jogos diferentes para gerar uma análise completa com IA.
+                      </p>
+                      <Button variant="outline" size="sm" asChild className="mt-2">
+                        <Link to="/games">
+                          Jogar Agora
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="flex items-start gap-3 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                    <Brain className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium text-blue-900">
+                        Sistema de Análise de IA Ativo
+                      </p>
+                      <p className="text-sm text-blue-700">
+                        Com {stats.totalSessions} sessões completadas, você pode gerar um relatório clínico 
+                        completo com análise comportamental automatizada por IA usando Google Gemini.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="reports" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-foreground">Relatórios Disponíveis</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start" 
-                    asChild
-                    aria-label="Ver histórico de avaliações diagnósticas"
+            {reportsLoading ? (
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    <span className="text-muted-foreground">Carregando relatórios...</span>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : reports.length > 0 ? (
+              <div className="grid gap-4">
+                {reports.map(report => (
+                  <ClinicalReportCard
+                    key={report.id}
+                    report={report}
+                    onView={() => toast.info('Visualização detalhada em desenvolvimento')}
+                    onDownload={() => toast.info('Download de PDF em desenvolvimento')}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="p-8 text-center">
+                  <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold mb-2">Nenhum relatório gerado ainda</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Complete jogos e gere seu primeiro relatório clínico com análise de IA
+                  </p>
+                  <Button
+                    onClick={handleGenerateReport}
+                    disabled={generating || stats.totalSessions === 0}
                   >
-                    <Link to="/diagnostic-tests">
-                      <FileText className="w-4 h-4 mr-2" aria-hidden="true" />
-                      Histórico de Avaliações Diagnósticas
-                    </Link>
+                    <Brain className="w-4 h-4 mr-2" />
+                    Gerar Primeiro Relatório
                   </Button>
-                  
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start" 
-                    asChild
-                    aria-label="Ver progresso de jogos e sessões"
-                  >
-                    <Link to="/dashboard">
-                      <Activity className="w-4 h-4 mr-2" aria-hidden="true" />
-                      Progresso de Jogos e Sessões
-                    </Link>
-                  </Button>
-                  
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start"
-                    disabled
-                    aria-label="Relatório de análise comportamental (em breve)"
-                  >
-                    <Clock className="w-4 h-4 mr-2" aria-hidden="true" />
-                    Relatório de Análise Comportamental (Em breve)
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
         </Tabs>
       </div>
