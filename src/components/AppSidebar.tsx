@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { 
   Home, Gamepad2, FileText, GraduationCap, Settings, 
-  User, Trophy, TrendingUp, Brain, Stethoscope,
+  User, Trophy, TrendingUp, Brain, Stethoscope, Heart,
   ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -96,6 +96,11 @@ export function AppSidebar() {
       title: 'Atividades Parent-Child',
       path: '/parent-child-activities',
       icon: Users,
+    },
+    {
+      title: 'Histórico Emocional',
+      path: '/emotional-history',
+      icon: Heart,
     },
   ];
 
