@@ -137,7 +137,7 @@ export function AppSidebar() {
     },
     {
       title: 'Estratégias',
-      path: '/teacher-training',
+      path: '/training',
       icon: BookOpen,
     },
   ];
