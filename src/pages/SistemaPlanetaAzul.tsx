@@ -12,6 +12,7 @@ import type { Planeta } from '@/types/planeta';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { usePlanetProgress } from '@/hooks/usePlanetProgress';
 
 type ViewMode = 'mapa' | 'grid';
 
@@ -22,6 +23,8 @@ export default function SistemaPlanetaAzul() {
   const [selectedPlanet, setSelectedPlanet] = useState<Planeta | null>(null);
   const [childAvatar, setChildAvatar] = useState<string | null>(null);
   const [childName, setChildName] = useState<string>('Explorador');
+  const [childId, setChildId] = useState<string | null>(null);
+  const { progress } = usePlanetProgress(childId);
 
   useEffect(() => {
     if (user) {
@@ -33,7 +36,7 @@ export default function SistemaPlanetaAzul() {
     try {
       const { data: children, error } = await supabase
         .from('children')
-        .select('name, avatar_url')
+        .select('id, name, avatar_url')
         .eq('parent_id', user?.id)
         .limit(1)
         .single();
@@ -41,6 +44,7 @@ export default function SistemaPlanetaAzul() {
       if (error) throw error;
 
       if (children) {
+        setChildId(children.id);
         setChildName(children.name || 'Explorador');
         setChildAvatar(children.avatar_url);
       }
@@ -49,10 +53,17 @@ export default function SistemaPlanetaAzul() {
     }
   };
 
+  // Calculate progress from real data
   const totalMissoes = planetas.reduce((acc, p) => acc + p.totalMissoes, 0);
-  const missoesCompletas = planetas.reduce((acc, p) => acc + p.progressoAtual, 0);
-  const planetasCompletos = planetas.filter(p => p.progressoAtual === p.totalMissoes).length;
-  const progressoGeral = (missoesCompletas / totalMissoes) * 100;
+  const missoesCompletas = Object.values(progress).reduce(
+    (acc, p) => acc + p.jogosCompletados.length, 
+    0
+  );
+  const planetasCompletos = planetas.filter(p => {
+    const planetProgress = progress[p.id];
+    return planetProgress && planetProgress.jogosCompletados.length >= p.totalMissoes;
+  }).length;
+  const progressoGeral = totalMissoes > 0 ? (missoesCompletas / totalMissoes) * 100 : 0;
 
   const handlePlanetClick = (planeta: Planeta) => {
     setSelectedPlanet(planeta);
