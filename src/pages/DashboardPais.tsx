@@ -293,6 +293,57 @@ export default function DashboardPais() {
               </Card>
             </div>
 
+            {/* Quick Actions */}
+            <Card className="p-6 mb-8">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-primary" />
+                Ações Rápidas
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Button
+                  variant="outline"
+                  className="h-auto py-4 flex flex-col items-center gap-2 hover:bg-primary/10 hover:border-primary"
+                  onClick={() => navigate('/sistema-planeta-azul')}
+                >
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0a1e35] to-[#005a70] flex items-center justify-center text-2xl">
+                    🪐
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold">Sistema Planeta Azul</p>
+                    <p className="text-xs text-muted-foreground">Explore universos terapêuticos</p>
+                  </div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="h-auto py-4 flex flex-col items-center gap-2 hover:bg-secondary/10 hover:border-secondary"
+                  onClick={() => navigate('/games')}
+                >
+                  <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center">
+                    <Brain className="w-6 h-6 text-secondary" />
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold">Jogos Cognitivos</p>
+                    <p className="text-xs text-muted-foreground">Praticar habilidades</p>
+                  </div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="h-auto py-4 flex flex-col items-center gap-2 hover:bg-accent/10 hover:border-accent"
+                  onClick={() => navigate('/diagnostic-tests')}
+                >
+                  <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
+                    <CheckCircle2 className="w-6 h-6 text-accent" />
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold">Testes Diagnósticos</p>
+                    <p className="text-xs text-muted-foreground">Avaliações completas</p>
+                  </div>
+                </Button>
+              </div>
+            </Card>
+
             {/* Main Content Tabs */}
             <Tabs defaultValue="cognitive" className="space-y-6">
               <TabsList className="grid w-full grid-cols-3">
