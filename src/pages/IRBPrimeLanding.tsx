@@ -22,6 +22,13 @@ export default function IRBPrimeLanding() {
             <a href="#beneficios" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Benefícios</a>
             <a href="#funcionalidades" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Funcionalidades</a>
             <Button 
+              onClick={() => navigate('/sistema-planeta-azul')}
+              variant="ghost"
+              className="text-white hover:bg-white/10"
+            >
+              🪐 Sistema Planeta Azul
+            </Button>
+            <Button 
               onClick={() => navigate('/auth')} 
               className="bg-white text-[#0a1e35] hover:bg-white/90 font-semibold px-6"
             >
@@ -61,6 +68,13 @@ export default function IRBPrimeLanding() {
               </Button>
               <Button 
                 size="lg" 
+                onClick={() => navigate('/sistema-planeta-azul')} 
+                className="text-lg px-8 h-14 bg-gradient-to-r from-[#c7923e] to-[#d4a54f] hover:opacity-90 text-white"
+              >
+                🪐 Sistema Planeta Azul
+              </Button>
+              <Button 
+                size="lg" 
                 variant="outline" 
                 onClick={() => navigate('/games')} 
                 className="text-lg px-8 h-14 border-[#005a70] text-[#005a70] hover:bg-[#005a70]/10"
@@ -77,6 +91,126 @@ export default function IRBPrimeLanding() {
               alt="Crianças aprendendo com jogos educativos" 
               className="w-full h-auto"
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Sistema Planeta Azul - Destaque Especial */}
+      <section className="py-20 bg-gradient-to-b from-[#0a1e35] via-[#005a70] to-[#0a1e35] relative overflow-hidden">
+        {/* Animated stars background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-5xl mx-auto">
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 overflow-hidden shadow-2xl hover-scale">
+              <div className="h-2 bg-gradient-to-r from-[#c7923e] via-white to-[#c7923e]" />
+              <CardContent className="p-8 md:p-12">
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  {/* Left side - Info */}
+                  <div className="space-y-6">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c7923e]/20 text-[#c7923e] text-sm font-medium">
+                      <Sparkles className="w-4 h-4" />
+                      Novidade NeuroPlay 2.0
+                    </div>
+                    
+                    <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+                      Sistema Planeta Azul
+                    </h2>
+                    
+                    <p className="text-white/80 text-lg leading-relaxed">
+                      Explore universos terapêuticos interativos! Cada planeta representa um diagnóstico específico 
+                      com jogos personalizados, missões e recompensas. Uma jornada gamificada de desenvolvimento cognitivo.
+                    </p>
+
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 text-white/90">
+                        <div className="w-8 h-8 rounded-full bg-[#c7923e]/20 flex items-center justify-center flex-shrink-0">
+                          <CheckCircle className="w-5 h-5 text-[#c7923e]" />
+                        </div>
+                        <span>5 Planetas temáticos (TEA, TDAH, Dislexia, Regulação, FE)</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-white/90">
+                        <div className="w-8 h-8 rounded-full bg-[#c7923e]/20 flex items-center justify-center flex-shrink-0">
+                          <CheckCircle className="w-5 h-5 text-[#c7923e]" />
+                        </div>
+                        <span>19+ jogos cognitivos adaptativos</span>
+                      </div>
+                      <div className="flex items-center gap-3 text-white/90">
+                        <div className="w-8 h-8 rounded-full bg-[#c7923e]/20 flex items-center justify-center flex-shrink-0">
+                          <CheckCircle className="w-5 h-5 text-[#c7923e]" />
+                        </div>
+                        <span>Sistema de missões e recompensas</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                      <Button 
+                        size="lg"
+                        onClick={() => navigate('/sistema-planeta-azul')}
+                        className="bg-[#c7923e] hover:bg-[#c7923e]/90 text-white font-semibold px-8"
+                      >
+                        🪐 Explorar Sistema Planeta Azul
+                      </Button>
+                      <Button 
+                        size="lg"
+                        variant="outline"
+                        onClick={() => navigate('/dashboard-pais')}
+                        className="border-white/30 text-white hover:bg-white/10"
+                      >
+                        Ver Dashboard
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Right side - Visual */}
+                  <div className="relative">
+                    <div className="relative w-full aspect-square max-w-sm mx-auto">
+                      {/* Central sun/star */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#c7923e] to-yellow-500 animate-pulse shadow-2xl" />
+                      </div>
+                      
+                      {/* Orbiting planets */}
+                      {[
+                        { emoji: '🌟', color: '#7C3AED', delay: '0s', radius: '35%' },
+                        { emoji: '🌀', color: '#EF4444', delay: '0.5s', radius: '45%' },
+                        { emoji: '💡', color: '#F59E0B', delay: '1s', radius: '55%' },
+                        { emoji: '🌊', color: '#10B981', delay: '1.5s', radius: '40%' },
+                        { emoji: '⚙️', color: '#3B82F6', delay: '2s', radius: '50%' },
+                      ].map((planet, idx) => (
+                        <div
+                          key={idx}
+                          className="absolute inset-0 animate-[spin_10s_linear_infinite]"
+                          style={{ animationDelay: planet.delay }}
+                        >
+                          <div
+                            className="absolute left-1/2 top-0 w-16 h-16 -ml-8 rounded-full flex items-center justify-center text-2xl shadow-xl border-2 border-white/20"
+                            style={{
+                              backgroundColor: `${planet.color}80`,
+                              transform: `translateY(${planet.radius})`,
+                            }}
+                          >
+                            {planet.emoji}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
