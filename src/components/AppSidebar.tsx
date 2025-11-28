@@ -72,6 +72,14 @@ export function AppSidebar() {
     },
   ];
 
+  const therapistNavigation = [
+    {
+      title: 'Meus Pacientes',
+      path: '/therapist/patients',
+      icon: Users,
+    },
+  ];
+
   const neuroPlayEduNavigation = [
     {
       title: 'Triagem Gamificada',
@@ -142,6 +150,11 @@ export function AppSidebar() {
       id: 'main',
       label: 'Principal',
       items: mainNavigation,
+    },
+    {
+      id: 'therapist',
+      label: 'Terapeuta',
+      items: therapistNavigation,
     },
     {
       id: 'neuroplay-edu',
