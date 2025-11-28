@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { 
   Home, Gamepad2, FileText, GraduationCap, Settings, 
   User, Trophy, TrendingUp, Brain, Stethoscope,
-  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School
+  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -59,6 +59,11 @@ export function AppSidebar() {
       title: t('nav.today'),
       path: '/dashboard',
       icon: TrendingUp,
+    },
+    {
+      title: 'Sistema Planeta Azul',
+      path: '/sistema-planeta-azul',
+      icon: Sparkles,
     },
   ];
 
