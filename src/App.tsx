@@ -74,6 +74,8 @@ import TeacherClasses from "./pages/TeacherClasses";
 import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
 import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
+import AdminRiskMaps from "./pages/AdminRiskMaps";
+import ParentChildActivities from "./pages/ParentChildActivities";
 
 // Neuro Play v2.0 pages
 import NeuroPlayV2 from "./pages/NeuroPlayV2";
@@ -230,6 +232,10 @@ const App = () => (
           <Route path="/teacher/classes" element={<TeacherClasses />} />
           <Route path="/teacher/class/:classId" element={<TeacherClassView />} />
           <Route path="/teacher/student/:studentId" element={<TeacherStudentView />} />
+          <Route path="/admin/risk-maps" element={<AdminRiskMaps />} />
+          <Route path="/parent-child-activities" element={<ParentChildActivities />} />
+          <Route path="/pei" element={<PEIView />} />
+          <Route path="/pei/:patientId" element={<PEIView />} />
           
           {/* Admin Routes */}
           <Route path="/admin/network" element={<AdminNetworkDashboard />} />
