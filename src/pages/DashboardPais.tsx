@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Progress } from '@/components/ui/progress';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
+import { AvatarSelectionModal } from '@/components/AvatarSelectionModal';
+import { DailyMissionCard } from '@/components/DailyMissionCard';
+import { useDailyMissions } from '@/hooks/useDailyMissions';
+import { BadgeUnlockModal } from '@/components/BadgeUnlockModal';
 
 interface ChildProfile {
   id: string;
@@ -49,12 +53,40 @@ export default function DashboardPais() {
   const [sessions, setSessions] = useState<SessionData[]>([]);
   const [cognitiveScores, setCognitiveScores] = useState<CognitiveScores | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+  const { missions, loading: missionsLoading } = useDailyMissions(selectedChild);
+  const [showBadgeModal, setShowBadgeModal] = useState(false);
+  const [unlockedBadge, setUnlockedBadge] = useState<{
+    name: string;
+    description: string;
+    icon: string;
+  } | null>(null);
 
   useEffect(() => {
     if (user) {
       loadChildren();
+      checkAvatarSelection();
     }
   }, [user]);
+
+  const checkAvatarSelection = async () => {
+    try {
+      const { data: childData, error } = await supabase
+        .from('children')
+        .select('id, avatar_url')
+        .eq('parent_id', user?.id)
+        .limit(1)
+        .single();
+
+      if (error) throw error;
+
+      if (childData && !childData.avatar_url) {
+        setShowAvatarModal(true);
+      }
+    } catch (error) {
+      console.error('Error checking avatar:', error);
+    }
+  };
 
   useEffect(() => {
     if (selectedChild) {
@@ -251,7 +283,63 @@ export default function DashboardPais() {
 
   return (
     <ModernPageLayout>
+      <AvatarSelectionModal
+        open={showAvatarModal}
+        onComplete={() => {
+          setShowAvatarModal(false);
+          loadChildren();
+        }}
+        childId={selectedChild || undefined}
+      />
+
+      <BadgeUnlockModal
+        open={showBadgeModal}
+        onClose={() => setShowBadgeModal(false)}
+        badgeName={unlockedBadge?.name || ''}
+        badgeDescription={unlockedBadge?.description || ''}
+        badgeIcon={unlockedBadge?.icon || '🏆'}
+      />
+
       <div className="container mx-auto px-4 py-8">
+        {/* Daily Missions Section */}
+        {!loading && selectedChild && (
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <Sparkles className="w-6 h-6 text-[#c7923e]" />
+              <h2 className="text-2xl font-bold">Missões do Dia</h2>
+            </div>
+            
+            {missionsLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[1, 2, 3].map(i => (
+                  <Card key={i} className="animate-pulse">
+                    <CardContent className="p-6 h-64" />
+                  </Card>
+                ))}
+              </div>
+            ) : missions.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {missions.map((mission, index) => (
+                  <DailyMissionCard
+                    key={index}
+                    jogo={mission.jogo}
+                    planetaNome={mission.planeta.nome}
+                    planetaCor={mission.planeta.cor}
+                    planetaIcone={mission.planeta.icone}
+                    recomendadoPorIA={mission.recomendadoPorIA}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Card>
+                <CardContent className="p-6 text-center text-muted-foreground">
+                  Nenhuma missão disponível hoje. Complete jogos para desbloquear novas missões!
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
+
         {/* Header */}
         <div className="mb-8">
           <Button 
