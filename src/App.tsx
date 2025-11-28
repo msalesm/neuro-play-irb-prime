@@ -48,6 +48,7 @@ import ExecutiveProcessingGame from "./pages/games/ExecutiveProcessingGame";
 import EmotionLab from "./pages/games/EmotionLab";
 import SpatialArchitect from "./pages/games/SpatialArchitect";
 import FocoRapido from "./pages/games/FocoRapido";
+import CognitiveAnalysisDemo from "./pages/CognitiveAnalysisDemo";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import PixelPlatformer from "./pages/PixelPlatformer";
@@ -140,6 +141,7 @@ const App = () => (
                       <DiagnosticTests />
                     </Suspense>
                   } />
+                  <Route path="/cognitive-analysis-demo" element={<CognitiveAnalysisDemo />} />
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
                   <Route path="/games/caca-foco" element={<CacaFoco />} />
                   <Route path="/games/logica-rapida" element={<LogicaRapida />} />

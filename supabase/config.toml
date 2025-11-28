@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.aggregate-metrics]
 verify_jwt = false
+
+[functions.cognitive-analysis]
+verify_jwt = false
