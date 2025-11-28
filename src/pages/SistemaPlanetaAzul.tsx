@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,13 +9,45 @@ import { planetas } from '@/data/planetas';
 import { Sparkles, Map, Grid3x3, Trophy, Rocket, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { Planeta } from '@/types/planeta';
+import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 type ViewMode = 'mapa' | 'grid';
 
 export default function SistemaPlanetaAzul() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [viewMode, setViewMode] = useState<ViewMode>('mapa');
   const [selectedPlanet, setSelectedPlanet] = useState<Planeta | null>(null);
+  const [childAvatar, setChildAvatar] = useState<string | null>(null);
+  const [childName, setChildName] = useState<string>('Explorador');
+
+  useEffect(() => {
+    if (user) {
+      loadChildData();
+    }
+  }, [user]);
+
+  const loadChildData = async () => {
+    try {
+      const { data: children, error } = await supabase
+        .from('children')
+        .select('name, avatar_url')
+        .eq('parent_id', user?.id)
+        .limit(1)
+        .single();
+
+      if (error) throw error;
+
+      if (children) {
+        setChildName(children.name || 'Explorador');
+        setChildAvatar(children.avatar_url);
+      }
+    } catch (error) {
+      console.error('Error loading child data:', error);
+    }
+  };
 
   const totalMissoes = planetas.reduce((acc, p) => acc + p.totalMissoes, 0);
   const missoesCompletas = planetas.reduce((acc, p) => acc + p.progressoAtual, 0);
@@ -54,14 +86,25 @@ export default function SistemaPlanetaAzul() {
       <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Header */}
         <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate('/dashboard-pais')}
-            className="mb-4 text-white hover:bg-white/10"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar ao Dashboard
-          </Button>
+          <div className="flex justify-between items-center mb-4">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/dashboard-pais')}
+              className="text-white hover:bg-white/10"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar ao Dashboard
+            </Button>
+            
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+              <ChildAvatarDisplay
+                avatar={childAvatar}
+                name={childName}
+                size="md"
+              />
+              <span className="text-white font-semibold">{childName}</span>
+            </div>
+          </div>
 
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
             <div>
