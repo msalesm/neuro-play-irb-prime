@@ -1,40 +1,55 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { usePEI } from '@/hooks/usePEI';
+import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Slider } from '@/components/ui/slider';
-import {
-  ArrowLeft,
-  Brain,
-  Target,
-  BookOpen,
-  Lightbulb,
-  Save,
-  Sparkles,
-  TrendingUp,
-  CheckCircle2,
-  Clock,
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { 
+  Brain, Target, Lightbulb, ClipboardCheck, 
+  Plus, Save, TrendingUp, AlertCircle, ArrowLeft 
 } from 'lucide-react';
-import { usePEI } from '@/hooks/usePEI';
-import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
+
+interface PEIGoal {
+  id: string;
+  area: string;
+  objective: string;
+  strategies: string[];
+  timeline: string;
+  progress: number;
+  status: 'active' | 'completed' | 'pending';
+}
+
+interface PEIAccommodation {
+  id: string;
+  type: string;
+  description: string;
+  context: string;
+}
 
 export default function PEIView() {
-  const navigate = useNavigate();
+  const { patientId } = useParams();
   const [searchParams] = useSearchParams();
   const screeningId = searchParams.get('screening');
   const { user } = useAuth();
-  const { currentPlan, loading, getPEIByScreening, updatePEI } = usePEI();
-
+  const navigate = useNavigate();
+  const { currentPlan, loading, getPEIByScreening, updatePEI, createPlan } = usePEI();
+  
+  const [goals, setGoals] = useState<PEIGoal[]>([]);
+  const [accommodations, setAccommodations] = useState<PEIAccommodation[]>([]);
+  const [newGoal, setNewGoal] = useState({
+    area: '',
+    objective: '',
+    strategies: '',
+    timeline: ''
+  });
   const [isEditing, setIsEditing] = useState(false);
-  const [editedObjectives, setEditedObjectives] = useState('');
-  const [editedActivities, setEditedActivities] = useState('');
-  const [editedRecommendations, setEditedRecommendations] = useState('');
-  const [editedProgress, setEditedProgress] = useState(0);
 
   useEffect(() => {
     if (!user) {
@@ -43,298 +58,391 @@ export default function PEIView() {
     }
 
     if (screeningId) {
-      getPEIByScreening(screeningId);
+      loadPEI();
     }
   }, [user, screeningId]);
 
-  useEffect(() => {
-    if (currentPlan) {
-      setEditedObjectives(currentPlan.objectives);
-      setEditedActivities(currentPlan.activities);
-      setEditedRecommendations(currentPlan.recommendations);
-      setEditedProgress(currentPlan.progress);
-    }
-  }, [currentPlan]);
+  const loadPEI = async () => {
+    if (!screeningId) return;
 
-  const handleSave = async () => {
-    if (!currentPlan) return;
-
-    const result = await updatePEI(currentPlan.id, {
-      objectives: editedObjectives,
-      activities: editedActivities,
-      recommendations: editedRecommendations,
-      progress: editedProgress,
-    });
-
-    if (result?.success) {
-      setIsEditing(false);
+    const plan = await getPEIByScreening(screeningId);
+    
+    if (plan) {
+      // Load goals and accommodations from plan with type safety
+      const planGoals = Array.isArray(plan.goals) ? (plan.goals as unknown as PEIGoal[]) : [];
+      const planAccommodations = Array.isArray(plan.accommodations) ? (plan.accommodations as unknown as PEIAccommodation[]) : [];
+      
+      setGoals(planGoals);
+      setAccommodations(planAccommodations);
+    } else if (user) {
+      await createPlan(screeningId, user.id);
     }
   };
 
-  const handleCancel = () => {
-    if (currentPlan) {
-      setEditedObjectives(currentPlan.objectives);
-      setEditedActivities(currentPlan.activities);
-      setEditedRecommendations(currentPlan.recommendations);
-      setEditedProgress(currentPlan.progress);
+  const handleAddGoal = async () => {
+    if (!newGoal.area || !newGoal.objective) {
+      toast.error('Preencha pelo menos a área e o objetivo');
+      return;
     }
+
+    const goal: PEIGoal = {
+      id: Date.now().toString(),
+      area: newGoal.area,
+      objective: newGoal.objective,
+      strategies: newGoal.strategies.split('\n').filter(s => s.trim()),
+      timeline: newGoal.timeline,
+      progress: 0,
+      status: 'pending'
+    };
+
+    const updatedGoals = [...goals, goal];
+    setGoals(updatedGoals);
+
+    if (currentPlan) {
+      await updatePEI(currentPlan.id, { goals: updatedGoals });
+    }
+
+    setNewGoal({ area: '', objective: '', strategies: '', timeline: '' });
+    toast.success('Meta adicionada ao PEI');
+  };
+
+  const handleSavePEI = async () => {
+    if (!currentPlan) return;
+
+    await updatePEI(currentPlan.id, { 
+      goals,
+      accommodations 
+    });
+    
     setIsEditing(false);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'default';
+      case 'completed': return 'secondary';
+      case 'pending': return 'outline';
+      default: return 'default';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'active': return 'Em Progresso';
+      case 'completed': return 'Concluída';
+      case 'pending': return 'Pendente';
+      default: return status;
+    }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-background/95 flex items-center justify-center">
-        <div className="text-center">
-          <Brain className="h-12 w-12 animate-pulse text-primary mx-auto mb-4" />
-          <p className="text-muted-foreground">Carregando PEI...</p>
+      <ModernPageLayout>
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center py-8 text-muted-foreground">Carregando PEI...</div>
         </div>
-      </div>
-    );
-  }
-
-  if (!currentPlan) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-background/95 flex items-center justify-center p-4">
-        <Card className="max-w-md w-full">
-          <CardHeader>
-            <CardTitle>PEI não encontrado</CardTitle>
-            <CardDescription>
-              Nenhum Plano Educacional Individualizado foi encontrado para esta triagem.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button asChild className="w-full">
-              <Link to="/screening">Voltar para Triagens</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      </ModernPageLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background pb-32">
-      <div className="container max-w-5xl mx-auto px-4 py-8">
-        <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mb-6">
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Voltar
-        </Button>
-
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-lg bg-gradient-to-r from-primary to-primary/60 text-white">
-              <Brain className="h-6 w-6" />
-            </div>
+    <ModernPageLayout>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
             <div>
-              <h1 className="text-3xl font-bold">Plano Educacional Individualizado</h1>
-              <p className="text-muted-foreground">Lei 14.254/21 - PEI Personalizado</p>
+              <h1 className="text-3xl font-bold mb-2">PEI Inteligente</h1>
+              <p className="text-muted-foreground">Plano Educacional Individualizado baseado em dados cognitivos</p>
             </div>
           </div>
-
           <div className="flex gap-2">
-            {currentPlan.aiGenerated && (
-              <Badge variant="outline" className="gap-1">
-                <Sparkles className="h-3 w-3" />
-                Gerado por IA
-              </Badge>
-            )}
-            <Badge
-              variant={
-                currentPlan.status === 'ativo'
-                  ? 'default'
-                  : currentPlan.status === 'concluido'
-                  ? 'secondary'
-                  : 'outline'
-              }
-            >
-              {currentPlan.status.charAt(0).toUpperCase() + currentPlan.status.slice(1)}
-            </Badge>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-4 mb-6">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-primary" />
-                Progresso
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-primary mb-2">{currentPlan.progress}%</div>
-              <Progress value={currentPlan.progress} className="h-2" />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary" />
-                Criado em
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                {new Date(currentPlan.createdAt).toLocaleDateString('pt-BR')}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-primary" />
-                Status
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm capitalize">{currentPlan.status}</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {isEditing && (
-          <Alert className="mb-6">
-            <Lightbulb className="h-4 w-4" />
-            <AlertDescription>
-              Você está editando o PEI. As alterações serão salvas quando você clicar em "Salvar
-              Alterações".
-            </AlertDescription>
-          </Alert>
-        )}
-
-        <Tabs defaultValue="objectives" className="mb-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="objectives">
-              <Target className="h-4 w-4 mr-2" />
-              Objetivos
-            </TabsTrigger>
-            <TabsTrigger value="activities">
-              <BookOpen className="h-4 w-4 mr-2" />
-              Atividades
-            </TabsTrigger>
-            <TabsTrigger value="recommendations">
-              <Lightbulb className="h-4 w-4 mr-2" />
-              Recomendações
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="objectives">
-            <Card>
-              <CardHeader>
-                <CardTitle>Objetivos Pedagógicos</CardTitle>
-                <CardDescription>
-                  Metas específicas para o desenvolvimento do estudante
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {isEditing ? (
-                  <Textarea
-                    value={editedObjectives}
-                    onChange={(e) => setEditedObjectives(e.target.value)}
-                    rows={10}
-                    className="font-mono text-sm"
-                  />
-                ) : (
-                  <div className="prose prose-sm max-w-none">
-                    <p className="whitespace-pre-wrap">{currentPlan.objectives}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="activities">
-            <Card>
-              <CardHeader>
-                <CardTitle>Atividades Sugeridas</CardTitle>
-                <CardDescription>
-                  Exercícios e práticas recomendadas para alcançar os objetivos
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {isEditing ? (
-                  <Textarea
-                    value={editedActivities}
-                    onChange={(e) => setEditedActivities(e.target.value)}
-                    rows={10}
-                    className="font-mono text-sm"
-                  />
-                ) : (
-                  <div className="prose prose-sm max-w-none">
-                    <p className="whitespace-pre-wrap">{currentPlan.activities}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="recommendations">
-            <Card>
-              <CardHeader>
-                <CardTitle>Recomendações Pedagógicas</CardTitle>
-                <CardDescription>
-                  Orientações para professores e equipe educacional
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {isEditing ? (
-                  <Textarea
-                    value={editedRecommendations}
-                    onChange={(e) => setEditedRecommendations(e.target.value)}
-                    rows={10}
-                    className="font-mono text-sm"
-                  />
-                ) : (
-                  <div className="prose prose-sm max-w-none">
-                    <p className="whitespace-pre-wrap">{currentPlan.recommendations}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-
-        {isEditing && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="text-sm">Atualizar Progresso</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span>Progresso: {editedProgress}%</span>
-                </div>
-                <Slider
-                  value={[editedProgress]}
-                  onValueChange={(value) => setEditedProgress(value[0])}
-                  max={100}
-                  step={5}
-                  className="w-full"
-                />
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        <div className="flex gap-3">
-          {isEditing ? (
-            <>
-              <Button variant="outline" onClick={handleCancel} className="flex-1">
-                Cancelar
-              </Button>
-              <Button onClick={handleSave} className="flex-1">
+            <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
+              {isEditing ? 'Cancelar' : 'Editar PEI'}
+            </Button>
+            {isEditing && (
+              <Button onClick={handleSavePEI}>
                 <Save className="h-4 w-4 mr-2" />
                 Salvar Alterações
               </Button>
-            </>
-          ) : (
-            <Button onClick={() => setIsEditing(true)} className="w-full">
-              Editar PEI
-            </Button>
-          )}
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Metas Ativas</CardTitle>
+                <Target className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {goals.filter(g => g.status === 'active').length}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Progresso Médio</CardTitle>
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {goals.length > 0 
+                    ? Math.round(goals.reduce((sum, g) => sum + g.progress, 0) / goals.length)
+                    : 0}%
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Acomodações</CardTitle>
+                <Lightbulb className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{accommodations.length}</div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Status</CardTitle>
+                <ClipboardCheck className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <Badge variant={currentPlan?.status === 'active' ? 'default' : 'secondary'}>
+                  {currentPlan?.status === 'active' ? 'Ativo' : 'Inativo'}
+                </Badge>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Tabs defaultValue="goals" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="goals">Metas e Objetivos</TabsTrigger>
+              <TabsTrigger value="accommodations">Acomodações</TabsTrigger>
+              <TabsTrigger value="strategies">Estratégias</TabsTrigger>
+              <TabsTrigger value="progress">Notas de Progresso</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="goals" className="space-y-4">
+              <div className="space-y-4">
+                {goals.length === 0 ? (
+                  <Card>
+                    <CardContent className="py-8 text-center text-muted-foreground">
+                      Nenhuma meta cadastrada ainda. Adicione a primeira meta abaixo.
+                    </CardContent>
+                  </Card>
+                ) : (
+                  goals.map(goal => (
+                    <Card key={goal.id}>
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Brain className="h-4 w-4 text-primary" />
+                              <CardTitle className="text-base">{goal.area}</CardTitle>
+                              <Badge variant={getStatusColor(goal.status)}>
+                                {getStatusLabel(goal.status)}
+                              </Badge>
+                            </div>
+                            <CardDescription>{goal.objective}</CardDescription>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {goal.strategies.length > 0 && (
+                          <div>
+                            <h4 className="text-sm font-semibold mb-2">Estratégias:</h4>
+                            <ul className="space-y-1">
+                              {goal.strategies.map((strategy, idx) => (
+                                <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
+                                  <span className="text-primary mt-1">•</span>
+                                  <span>{strategy}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        <div className="flex items-center justify-between">
+                          <div className="text-sm">
+                            <span className="text-muted-foreground">Prazo: </span>
+                            <span className="font-medium">{goal.timeline || 'Não definido'}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm font-medium">{goal.progress}%</div>
+                            <div className="w-32 h-2 bg-muted rounded-full overflow-hidden">
+                              <div 
+                                className="h-full bg-primary transition-all"
+                                style={{ width: `${goal.progress}%` }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </div>
+
+              {isEditing && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Plus className="h-5 w-5" />
+                      Adicionar Nova Meta
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="area">Área de Desenvolvimento</Label>
+                      <Input
+                        id="area"
+                        placeholder="Ex: Atenção, Linguagem, Social..."
+                        value={newGoal.area}
+                        onChange={(e) => setNewGoal({ ...newGoal, area: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="objective">Objetivo</Label>
+                      <Textarea
+                        id="objective"
+                        placeholder="Descreva o objetivo de forma clara e mensurável"
+                        value={newGoal.objective}
+                        onChange={(e) => setNewGoal({ ...newGoal, objective: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="strategies">Estratégias (uma por linha)</Label>
+                      <Textarea
+                        id="strategies"
+                        placeholder="Liste as estratégias que serão utilizadas"
+                        value={newGoal.strategies}
+                        onChange={(e) => setNewGoal({ ...newGoal, strategies: e.target.value })}
+                        rows={4}
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="timeline">Prazo</Label>
+                      <Input
+                        id="timeline"
+                        placeholder="Ex: 3 meses, 6 semanas..."
+                        value={newGoal.timeline}
+                        onChange={(e) => setNewGoal({ ...newGoal, timeline: e.target.value })}
+                      />
+                    </div>
+
+                    <Button onClick={handleAddGoal} className="w-full">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Adicionar Meta ao PEI
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+
+            <TabsContent value="accommodations" className="space-y-4">
+              {accommodations.length === 0 ? (
+                <Card>
+                  <CardContent className="py-8 text-center text-muted-foreground">
+                    Nenhuma acomodação cadastrada ainda.
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {accommodations.map(acc => (
+                    <Card key={acc.id}>
+                      <CardHeader>
+                        <div className="flex items-center gap-2">
+                          <Lightbulb className="h-4 w-4 text-primary" />
+                          <CardTitle className="text-base">{acc.type}</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <p className="text-sm">{acc.description}</p>
+                        <div className="flex items-start gap-2 text-xs text-muted-foreground">
+                          <AlertCircle className="h-3 w-3 mt-0.5" />
+                          <span>{acc.context}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+
+              {isEditing && (
+                <Button className="w-full">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Adicionar Acomodação
+                </Button>
+              )}
+            </TabsContent>
+
+            <TabsContent value="strategies">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Estratégias Terapêuticas Consolidadas</CardTitle>
+                  <CardDescription>
+                    Compilação de todas as estratégias recomendadas baseadas no perfil cognitivo
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {currentPlan?.strategies && Array.isArray(currentPlan.strategies) && currentPlan.strategies.length > 0 ? (
+                    <ul className="space-y-2">
+                      {currentPlan.strategies.map((strategy: any, idx: number) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-primary mt-1">•</span>
+                          <span className="text-sm">{strategy}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      Nenhuma estratégia consolidada ainda.
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="progress">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Notas de Progresso</CardTitle>
+                  <CardDescription>
+                    Registro de observações e evolução ao longo do tempo
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {currentPlan?.progress_notes && Array.isArray(currentPlan.progress_notes) && currentPlan.progress_notes.length > 0 ? (
+                    <div className="space-y-4">
+                      {currentPlan.progress_notes.map((note: any, idx: number) => (
+                        <div key={idx} className="border-l-2 border-primary pl-4 py-2">
+                          <p className="text-sm text-muted-foreground">{note.date}</p>
+                          <p className="text-sm mt-1">{note.note}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      Nenhuma nota de progresso registrada ainda.
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
-    </div>
+    </ModernPageLayout>
   );
 }
