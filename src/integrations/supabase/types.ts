@@ -213,6 +213,135 @@ export type Database = {
           },
         ]
       }
+      behavioral_insights: {
+        Row: {
+          child_profile_id: string | null
+          created_at: string | null
+          description: string
+          id: string
+          insight_type: string
+          severity: string
+          status: string | null
+          supporting_data: Json | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          child_profile_id?: string | null
+          created_at?: string | null
+          description: string
+          id?: string
+          insight_type: string
+          severity?: string
+          status?: string | null
+          supporting_data?: Json | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          child_profile_id?: string | null
+          created_at?: string | null
+          description?: string
+          id?: string
+          insight_type?: string
+          severity?: string
+          status?: string | null
+          supporting_data?: Json | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "behavioral_insights_child_profile_id_fkey"
+            columns: ["child_profile_id"]
+            isOneToOne: false
+            referencedRelation: "child_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_conversations: {
+        Row: {
+          behavioral_tags: string[] | null
+          child_profile_id: string | null
+          context_type: string
+          created_at: string | null
+          id: string
+          sentiment_score: number | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          behavioral_tags?: string[] | null
+          child_profile_id?: string | null
+          context_type?: string
+          created_at?: string | null
+          id?: string
+          sentiment_score?: number | null
+          title?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          behavioral_tags?: string[] | null
+          child_profile_id?: string | null
+          context_type?: string
+          created_at?: string | null
+          id?: string
+          sentiment_score?: number | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_conversations_child_profile_id_fkey"
+            columns: ["child_profile_id"]
+            isOneToOne: false
+            referencedRelation: "child_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          role: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          role: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "chat_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       child_access: {
         Row: {
           access_level: string
@@ -638,6 +767,60 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      emotional_checkins: {
+        Row: {
+          child_profile_id: string | null
+          completed_at: string | null
+          conversation_id: string | null
+          created_at: string | null
+          emotions_detected: string[] | null
+          id: string
+          mood_rating: number | null
+          notes: string | null
+          scheduled_for: string
+          user_id: string
+        }
+        Insert: {
+          child_profile_id?: string | null
+          completed_at?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          emotions_detected?: string[] | null
+          id?: string
+          mood_rating?: number | null
+          notes?: string | null
+          scheduled_for: string
+          user_id: string
+        }
+        Update: {
+          child_profile_id?: string | null
+          completed_at?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          emotions_detected?: string[] | null
+          id?: string
+          mood_rating?: number | null
+          notes?: string | null
+          scheduled_for?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emotional_checkins_child_profile_id_fkey"
+            columns: ["child_profile_id"]
+            isOneToOne: false
+            referencedRelation: "child_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "emotional_checkins_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "chat_conversations"
             referencedColumns: ["id"]
           },
         ]
