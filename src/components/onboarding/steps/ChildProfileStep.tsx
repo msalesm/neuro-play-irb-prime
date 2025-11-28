@@ -5,6 +5,7 @@ import { Baby, Calendar, Users, Brain, Volume2, Sun, Hand, Eye } from 'lucide-re
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
+import { AvatarSelection } from '@/components/AvatarSelection';
 
 type Props = {
   data: OnboardingData;
@@ -45,6 +46,14 @@ export function ChildProfileStep({ data, updateData }: Props) {
         <p className="text-sm text-muted-foreground">
           Configure o perfil terapêutico individual para personalização dos jogos e atividades.
         </p>
+      </div>
+
+      {/* Avatar Selection */}
+      <div className="pb-6 border-b">
+        <AvatarSelection
+          onSelect={(avatar) => updateData({ childAvatar: avatar })}
+          selectedAvatar={data.childAvatar}
+        />
       </div>
 
       {/* Basic Info */}

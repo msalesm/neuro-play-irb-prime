@@ -13,12 +13,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Progress } from '@/components/ui/progress';
+import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 
 interface ChildProfile {
   id: string;
   name: string;
   age: number;
   profile?: string;
+  avatar_url?: string;
 }
 
 interface SessionData {
@@ -62,32 +64,34 @@ export default function DashboardPais() {
 
   const loadChildren = async () => {
     try {
-      // For now, load user's own profile as the child
-      const { data: profile, error } = await supabase
-        .from('user_profiles')
+      // Load children from children table
+      const { data: childrenData, error } = await supabase
+        .from('children')
         .select('*')
-        .eq('user_id', user?.id)
-        .maybeSingle();
+        .eq('parent_id', user?.id);
 
       if (error) throw error;
 
-      if (profile) {
-        // Calculate age from date_of_birth if available
-        let calculatedAge = 0;
-        if (profile.date_of_birth) {
-          const birthDate = new Date(profile.date_of_birth);
-          const today = new Date();
-          calculatedAge = today.getFullYear() - birthDate.getFullYear();
-        }
+      if (childrenData && childrenData.length > 0) {
+        const childProfiles: ChildProfile[] = childrenData.map((child: any) => {
+          // Calculate age from birth_date
+          let calculatedAge = 0;
+          if (child.birth_date) {
+            const birthDate = new Date(child.birth_date);
+            const today = new Date();
+            calculatedAge = today.getFullYear() - birthDate.getFullYear();
+          }
 
-        const childProfile: ChildProfile = {
-          id: profile.id,
-          name: profile.name || 'Sem nome',
-          age: calculatedAge,
-          profile: undefined
-        };
-        setChildren([childProfile]);
-        setSelectedChild(profile.id);
+          return {
+            id: child.id,
+            name: child.name || 'Sem nome',
+            age: calculatedAge,
+            profile: undefined,
+            avatar_url: child.avatar_url
+          };
+        });
+        setChildren(childProfiles);
+        setSelectedChild(childProfiles[0].id);
       }
     } catch (error) {
       console.error('Error loading children:', error);
@@ -239,9 +243,11 @@ export default function DashboardPais() {
               <Card className="p-6 mb-8">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
-                      <Heart className="w-8 h-8 text-primary" />
-                    </div>
+                    <ChildAvatarDisplay
+                      avatar={selectedChildData.avatar_url}
+                      name={selectedChildData.name}
+                      size="xl"
+                    />
                     <div>
                       <h2 className="text-2xl font-bold">{selectedChildData.name}</h2>
                       <p className="text-muted-foreground">

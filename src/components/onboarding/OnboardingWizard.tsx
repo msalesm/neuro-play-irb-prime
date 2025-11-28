@@ -30,6 +30,12 @@ export type OnboardingData = {
   childName: string;
   childBirthDate: string;
   childGender: string;
+  childAvatar?: {
+    id: string;
+    name: string;
+    emoji: string;
+    category: 'animals' | 'robots' | 'heroes';
+  };
   diagnosedConditions: string[];
   sensoryProfile: {
     soundSensitivity: number;
@@ -148,6 +154,7 @@ export function OnboardingWizard() {
           name: data.childName,
           birth_date: data.childBirthDate,
           gender: data.childGender || null,
+          avatar_url: data.childAvatar ? JSON.stringify(data.childAvatar) : null,
           neurodevelopmental_conditions: data.diagnosedConditions,
           sensory_profile: data.sensoryProfile,
           consent_data_usage: data.consentAnonymousData,
