@@ -301,46 +301,7 @@ export default function DashboardPais() {
       />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Daily Missions Section */}
-        {!loading && selectedChild && (
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Sparkles className="w-6 h-6 text-[#c7923e]" />
-              <h2 className="text-2xl font-bold">Missões do Dia</h2>
-            </div>
-            
-            {missionsLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {[1, 2, 3].map(i => (
-                  <Card key={i} className="animate-pulse">
-                    <CardContent className="p-6 h-64" />
-                  </Card>
-                ))}
-              </div>
-            ) : missions.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {missions.map((mission, index) => (
-                  <DailyMissionCard
-                    key={index}
-                    jogo={mission.jogo}
-                    planetaNome={mission.planeta.nome}
-                    planetaCor={mission.planeta.cor}
-                    planetaIcone={mission.planeta.icone}
-                    recomendadoPorIA={mission.recomendadoPorIA}
-                  />
-                ))}
-              </div>
-            ) : (
-              <Card>
-                <CardContent className="p-6 text-center text-muted-foreground">
-                  Nenhuma missão disponível hoje. Complete jogos para desbloquear novas missões!
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        )}
-
-        {/* Header */}
+        {/* Header with Child Selection */}
         <div className="mb-8">
           <Button 
             variant="ghost" 
@@ -399,91 +360,236 @@ export default function DashboardPais() {
               </Card>
             )}
 
-            {/* Quick Stats */}
-            <div className="grid md:grid-cols-4 gap-6 mb-8">
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <Activity className="w-8 h-8 text-primary" />
-                  <span className="text-3xl font-bold">{totalSessions}</span>
-                </div>
-                <p className="text-sm text-muted-foreground">Sessões Completadas</p>
-              </Card>
+            {/* Main Dashboard Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              {/* Left Column - Main Content */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Current Planet */}
+                <Card className="border-l-4 border-l-[#005a70]">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Sparkles className="w-5 h-5 text-[#005a70]" />
+                      <h3 className="text-lg font-semibold">Planeta Atual</h3>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#005a70]/20 to-[#0a1e35]/20 flex items-center justify-center text-3xl">
+                        🌍
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-lg">Planeta Aurora</h4>
+                        <p className="text-sm text-muted-foreground">Foco em Atenção e Cognição Social</p>
+                        <Progress value={65} className="mt-2" />
+                      </div>
+                      <Button onClick={() => navigate('/sistema-planeta-azul')}>
+                        Explorar
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
 
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <Target className="w-8 h-8 text-secondary" />
-                  <span className="text-3xl font-bold">{avgScore}</span>
-                </div>
-                <p className="text-sm text-muted-foreground">Pontuação Média</p>
-              </Card>
+                {/* Daily Mission */}
+                {!missionsLoading && missions.length > 0 && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <Target className="w-5 h-5 text-[#c7923e]" />
+                      <h3 className="text-lg font-semibold">Missão do Dia</h3>
+                    </div>
+                    <DailyMissionCard
+                      jogo={missions[0].jogo}
+                      planetaNome={missions[0].planeta.nome}
+                      planetaCor={missions[0].planeta.cor}
+                      planetaIcone={missions[0].planeta.icone}
+                      recomendadoPorIA={missions[0].recomendadoPorIA}
+                    />
+                  </div>
+                )}
 
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <Clock className="w-8 h-8 text-accent" />
-                  <span className="text-3xl font-bold">{totalHours}h</span>
-                </div>
-                <p className="text-sm text-muted-foreground">Tempo de Prática</p>
-              </Card>
+                {/* Quick Report */}
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Brain className="w-5 h-5 text-[#0a1e35]" />
+                      <h3 className="text-lg font-semibold">Relatório Rápido</h3>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-muted-foreground">
+                          <strong className="text-foreground">Atenção:</strong> Melhora de 15% nas últimas 3 sessões. Continue com exercícios de foco.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <TrendingUp className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-muted-foreground">
+                          <strong className="text-foreground">Memória de Trabalho:</strong> Progresso constante. Recomendado aumentar dificuldade.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-[#c7923e] mt-0.5 flex-shrink-0" />
+                        <p className="text-sm text-muted-foreground">
+                          <strong className="text-foreground">Flexibilidade Cognitiva:</strong> Área que precisa mais prática. Veja jogos recomendados.
+                        </p>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      className="w-full mt-4"
+                      onClick={() => navigate('/clinical-dashboard')}
+                    >
+                      Ver Relatório Completo
+                    </Button>
+                  </CardContent>
+                </Card>
 
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <TrendingUp className="w-8 h-8 text-primary" />
-                  <span className="text-3xl font-bold">+{Math.round(avgScore * 0.15)}</span>
-                </div>
-                <p className="text-sm text-muted-foreground">Melhoria Geral</p>
-              </Card>
-            </div>
-
-            {/* Quick Actions */}
-            <Card className="p-6 mb-8">
-              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-primary" />
-                Ações Rápidas
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Button
-                  variant="outline"
-                  className="h-auto py-4 flex flex-col items-center gap-2 hover:bg-primary/10 hover:border-primary"
-                  onClick={() => navigate('/sistema-planeta-azul')}
-                >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0a1e35] to-[#005a70] flex items-center justify-center text-2xl">
-                    🪐
-                  </div>
-                  <div className="text-center">
-                    <p className="font-semibold">Sistema Planeta Azul</p>
-                    <p className="text-xs text-muted-foreground">Explore universos terapêuticos</p>
-                  </div>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  className="h-auto py-4 flex flex-col items-center gap-2 hover:bg-secondary/10 hover:border-secondary"
-                  onClick={() => navigate('/games')}
-                >
-                  <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <Brain className="w-6 h-6 text-secondary" />
-                  </div>
-                  <div className="text-center">
-                    <p className="font-semibold">Jogos Cognitivos</p>
-                    <p className="text-xs text-muted-foreground">Praticar habilidades</p>
-                  </div>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  className="h-auto py-4 flex flex-col items-center gap-2 hover:bg-accent/10 hover:border-accent"
-                  onClick={() => navigate('/diagnostic-tests')}
-                >
-                  <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
-                    <CheckCircle2 className="w-6 h-6 text-accent" />
-                  </div>
-                  <div className="text-center">
-                    <p className="font-semibold">Testes Diagnósticos</p>
-                    <p className="text-xs text-muted-foreground">Avaliações completas</p>
-                  </div>
-                </Button>
+                {/* Weekly History */}
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Calendar className="w-5 h-5 text-[#005a70]" />
+                      <h3 className="text-lg font-semibold">Histórico Semanal</h3>
+                    </div>
+                    <div className="space-y-3">
+                      {sessions.length > 0 ? (
+                        sessions.slice(0, 5).map((session, index) => (
+                          <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                            <div className="flex items-center gap-3">
+                              <Brain className="w-4 h-4 text-muted-foreground" />
+                              <div>
+                                <p className="font-medium text-sm">{session.game_type}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {new Date(session.created_at).toLocaleDateString('pt-BR')}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Award className="w-4 h-4 text-[#c7923e]" />
+                              <span className="font-semibold text-sm">{session.score}%</span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          Nenhuma sessão registrada ainda
+                        </p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </Card>
+
+              {/* Right Column - Recommendations & Actions */}
+              <div className="space-y-6">
+                {/* AI Recommendations */}
+                <Card className="border-l-4 border-l-[#c7923e]">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Sparkles className="w-5 h-5 text-[#c7923e]" />
+                      <h3 className="text-lg font-semibold">Recomendações IA</h3>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="p-3 rounded-lg bg-[#c7923e]/10 border border-[#c7923e]/20">
+                        <p className="text-sm font-medium mb-1">Foco em Atenção Sustentada</p>
+                        <p className="text-xs text-muted-foreground">
+                          Baseado no perfil, jogos de atenção terão melhor resultado nas manhãs
+                        </p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-[#005a70]/10 border border-[#005a70]/20">
+                        <p className="text-sm font-medium mb-1">Sessões Mais Curtas</p>
+                        <p className="text-xs text-muted-foreground">
+                          Melhor desempenho em sessões de 10-15 minutos
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Microlearning */}
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Brain className="w-5 h-5 text-[#0a1e35]" />
+                      <h3 className="text-lg font-semibold">Microlearning</h3>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="p-4 rounded-lg bg-gradient-to-br from-[#005a70]/10 to-[#0a1e35]/10 border border-border">
+                        <p className="font-medium mb-2 text-sm">Como Apoiar a Atenção em Casa</p>
+                        <p className="text-xs text-muted-foreground mb-3">
+                          Aprenda técnicas práticas para melhorar a atenção no dia a dia
+                        </p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Clock className="w-3 h-3" />
+                          <span>5 minutos</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      className="w-full mt-4"
+                      onClick={() => navigate('/training')}
+                    >
+                      Ver Mais Conteúdos
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Parent-Child Activity */}
+                <Card className="border-l-4 border-l-[#005a70]">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Heart className="w-5 h-5 text-[#005a70]" />
+                      <h3 className="text-lg font-semibold">Atividade Parent-Child</h3>
+                    </div>
+                    <div className="p-4 rounded-lg bg-gradient-to-br from-[#005a70]/10 to-[#c7923e]/10 border border-border">
+                      <p className="font-medium mb-2 text-sm">🎮 Jogo Cooperativo: Quebra-Cabeça Mágico</p>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        Trabalhem juntos para completar desafios e fortalecer o vínculo
+                      </p>
+                      <Button size="sm" className="w-full" onClick={() => navigate('/games')}>
+                        Jogar Juntos
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 gap-3">
+                  <Card>
+                    <CardContent className="p-4 text-center">
+                      <Award className="w-6 h-6 text-[#c7923e] mx-auto mb-2" />
+                      <p className="text-2xl font-bold">{totalSessions}</p>
+                      <p className="text-xs text-muted-foreground">Sessões</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-4 text-center">
+                      <Target className="w-6 h-6 text-[#005a70] mx-auto mb-2" />
+                      <p className="text-2xl font-bold">{avgScore}%</p>
+                      <p className="text-xs text-muted-foreground">Média</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Gamification */}
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Award className="w-5 h-5 text-[#c7923e]" />
+                      <h3 className="text-lg font-semibold">Badges Familiares</h3>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                      {['🏆', '⭐', '🎯', '💎', '🔥', '🌟'].map((badge, i) => (
+                        <div 
+                          key={i}
+                          className="aspect-square rounded-lg bg-gradient-to-br from-[#c7923e]/20 to-[#005a70]/20 flex items-center justify-center text-2xl hover:scale-110 transition-transform cursor-pointer border border-border"
+                        >
+                          {badge}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
 
             {/* Main Content Tabs */}
             <Tabs defaultValue="cognitive" className="space-y-6">
