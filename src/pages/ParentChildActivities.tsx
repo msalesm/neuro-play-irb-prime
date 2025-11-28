@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { useCooperativeActivities } from '@/hooks/useCooperativeActivities';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,98 +25,28 @@ interface CooperativeActivity {
 export default function ParentChildActivities() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [activities, setActivities] = useState<CooperativeActivity[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { 
+    activities: realActivities, 
+    loading, 
+    isActivityCompleted, 
+    getActivityStars 
+  } = useCooperativeActivities(user?.id);
+  
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
+  // Map real activities with completion status
+  const activities: CooperativeActivity[] = realActivities.map(activity => ({
+    ...activity,
+    completed: isActivityCompleted(activity.game_id),
+    stars: isActivityCompleted(activity.game_id) ? getActivityStars(activity.game_id) : undefined
+  }));
+
+  // Fallback mock data if no real activities
   useEffect(() => {
-    loadActivities();
-  }, []);
-
-  const loadActivities = async () => {
-    try {
-      setLoading(true);
-      
-      // Mock activities for now - will be replaced with real data
-      const mockActivities: CooperativeActivity[] = [
-        {
-          id: '1',
-          name: 'Construção Cooperativa',
-          description: 'Construam juntos estruturas usando blocos virtuais, desenvolvendo comunicação e trabalho em equipe.',
-          category: 'Criatividade',
-          duration: 15,
-          ageRange: '5-10 anos',
-          bondingFocus: 'Comunicação e colaboração',
-          difficulty: 2,
-          completed: false
-        },
-        {
-          id: '2',
-          name: 'Caça ao Tesouro Emocional',
-          description: 'Explorem juntos um mapa emocional, identificando e nomeando sentimentos ao longo do caminho.',
-          category: 'Emocional',
-          duration: 20,
-          ageRange: '6-12 anos',
-          bondingFocus: 'Inteligência emocional e expressão',
-          difficulty: 3,
-          completed: true,
-          stars: 5
-        },
-        {
-          id: '3',
-          name: 'Ritmo em Dupla',
-          description: 'Criem padrões rítmicos juntos, alternando turnos e sincronizando movimentos.',
-          category: 'Musical',
-          duration: 10,
-          ageRange: '5-15 anos',
-          bondingFocus: 'Sincronização e atenção compartilhada',
-          difficulty: 1,
-          completed: false
-        },
-        {
-          id: '4',
-          name: 'Histórias Compartilhadas',
-          description: 'Construam uma história colaborativa, alternando quem adiciona cada parte da narrativa.',
-          category: 'Linguagem',
-          duration: 20,
-          ageRange: '7-14 anos',
-          bondingFocus: 'Criatividade narrativa e escuta ativa',
-          difficulty: 2,
-          completed: false
-        },
-        {
-          id: '5',
-          name: 'Desafio de Memória Cooperativa',
-          description: 'Trabalhem juntos para lembrar sequências cada vez mais longas, apoiando um ao outro.',
-          category: 'Cognitivo',
-          duration: 15,
-          ageRange: '6-12 anos',
-          bondingFocus: 'Suporte mútuo e celebração de conquistas',
-          difficulty: 3,
-          completed: false
-        },
-        {
-          id: '6',
-          name: 'Quebra-Cabeça em Dupla',
-          description: 'Resolvam quebra-cabeças complexos juntos, cada um controlando metade das peças.',
-          category: 'Lógica',
-          duration: 25,
-          ageRange: '8-16 anos',
-          bondingFocus: 'Paciência e resolução conjunta de problemas',
-          difficulty: 4,
-          completed: true,
-          stars: 4
-        }
-      ];
-
-      setActivities(mockActivities);
-    } catch (error: any) {
-      console.error('Error loading activities:', error);
-      toast.error('Erro ao carregar atividades');
-    } finally {
-      setLoading(false);
+    if (!loading && activities.length === 0) {
+      // Show message that activities will be available soon
     }
-  };
+  }, [loading, activities.length]);
 
   const startActivity = (activityId: string) => {
     toast.success('Iniciando atividade cooperativa...', {

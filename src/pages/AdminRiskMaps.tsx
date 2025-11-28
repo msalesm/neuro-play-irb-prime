@@ -39,26 +39,134 @@ export default function AdminRiskMaps() {
 
       if (schoolsError) throw schoolsError;
 
-      // Group by region and calculate risk metrics
+      // Fetch all classes for these schools
+      const schoolIds = schools?.map(s => s.id) || [];
+      const { data: classes, error: classesError } = await supabase
+        .from('school_classes')
+        .select('id, school_id')
+        .in('school_id', schoolIds);
+
+      if (classesError) throw classesError;
+
+      // Fetch all students from these classes
+      const classIds = classes?.map(c => c.id) || [];
+      const { data: students, error: studentsError } = await supabase
+        .from('class_students')
+        .select('child_id, class_id')
+        .in('class_id', classIds);
+
+      if (studentsError) throw studentsError;
+
+      // Fetch children data with conditions
+      const childIds = students?.map(s => s.child_id) || [];
+      const { data: children, error: childrenError } = await supabase
+        .from('children')
+        .select('id, neurodevelopmental_conditions')
+        .in('id', childIds);
+
+      if (childrenError) throw childrenError;
+
+      // Fetch child profiles for performance data
+      const { data: profiles, error: profilesError } = await supabase
+        .from('child_profiles')
+        .select('id, diagnosed_conditions')
+        .in('id', childIds);
+
+      if (profilesError) throw profilesError;
+
+      // Fetch game sessions for risk calculation
+      const profileIds = profiles?.map(p => p.id) || [];
+      const { data: sessions, error: sessionsError } = await supabase
+        .from('game_sessions')
+        .select('child_profile_id, accuracy_percentage, completed')
+        .in('child_profile_id', profileIds)
+        .eq('completed', true);
+
+      if (sessionsError) throw sessionsError;
+
+      // Build region map with real data
       const regionMap = new Map<string, RegionRisk>();
 
       for (const school of schools || []) {
         const region = school.region || 'Não especificado';
         
+        // Get classes for this school
+        const schoolClasses = classes?.filter(c => c.school_id === school.id) || [];
+        const schoolClassIds = schoolClasses.map(c => c.id);
+        
+        // Get students in these classes
+        const schoolStudents = students?.filter(s => schoolClassIds.includes(s.class_id)) || [];
+        const schoolChildIds = schoolStudents.map(s => s.child_id);
+        
+        // Get children with conditions
+        const schoolChildren = children?.filter(c => schoolChildIds.includes(c.id)) || [];
+        
+        // Calculate performance metrics
+        const childProfilesInSchool = profiles?.filter(p => schoolChildIds.includes(p.id)) || [];
+        const profileIdsInSchool = childProfilesInSchool.map(p => p.id);
+        const schoolSessions = sessions?.filter(s => profileIdsInSchool.includes(s.child_profile_id)) || [];
+        
+        // Calculate average accuracy
+        const avgAccuracy = schoolSessions.length > 0
+          ? schoolSessions.reduce((sum, s) => sum + (s.accuracy_percentage || 0), 0) / schoolSessions.length
+          : 0;
+        
+        // Calculate high risk count (children with accuracy < 60%)
+        const childPerformance = new Map<string, number[]>();
+        schoolSessions.forEach(s => {
+          if (!childPerformance.has(s.child_profile_id)) {
+            childPerformance.set(s.child_profile_id, []);
+          }
+          childPerformance.get(s.child_profile_id)!.push(s.accuracy_percentage || 0);
+        });
+        
+        let highRiskCount = 0;
+        childPerformance.forEach(accuracies => {
+          const avgChildAccuracy = accuracies.reduce((a, b) => a + b, 0) / accuracies.length;
+          if (avgChildAccuracy < 60) highRiskCount++;
+        });
+        
+        // Determine primary diagnosis
+        const diagnosisCounts = new Map<string, number>();
+        schoolChildren.forEach(child => {
+          const conditions = (child.neurodevelopmental_conditions as any)?.conditions || [];
+          conditions.forEach((cond: string) => {
+            diagnosisCounts.set(cond, (diagnosisCounts.get(cond) || 0) + 1);
+          });
+        });
+        
+        let primaryDiagnosis = 'N/A';
+        let maxCount = 0;
+        diagnosisCounts.forEach((count, diagnosis) => {
+          if (count > maxCount) {
+            maxCount = count;
+            primaryDiagnosis = diagnosis;
+          }
+        });
+
+        const totalChildren = schoolChildren.length;
+        const riskPercentage = totalChildren > 0 ? (highRiskCount / totalChildren) * 100 : 0;
+
         if (!regionMap.has(region)) {
           regionMap.set(region, {
             region,
-            totalChildren: school.total_students || 0,
-            highRiskCount: Math.floor((school.total_students || 0) * 0.15), // Mock: 15% high risk
-            riskPercentage: 15,
-            primaryDiagnosis: 'TDAH',
-            avgAccuracy: 72
+            totalChildren,
+            highRiskCount,
+            riskPercentage,
+            primaryDiagnosis,
+            avgAccuracy: Math.round(avgAccuracy)
           });
         } else {
           const current = regionMap.get(region)!;
-          current.totalChildren += school.total_students || 0;
-          current.highRiskCount += Math.floor((school.total_students || 0) * 0.15);
-          current.riskPercentage = (current.highRiskCount / current.totalChildren) * 100;
+          const combinedTotal = current.totalChildren + totalChildren;
+          current.totalChildren = combinedTotal;
+          current.highRiskCount += highRiskCount;
+          current.riskPercentage = combinedTotal > 0 
+            ? (current.highRiskCount / combinedTotal) * 100 
+            : 0;
+          current.avgAccuracy = Math.round(
+            ((current.avgAccuracy * (combinedTotal - totalChildren)) + (avgAccuracy * totalChildren)) / combinedTotal
+          );
         }
       }
 
