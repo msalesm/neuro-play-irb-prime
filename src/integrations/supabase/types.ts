@@ -318,7 +318,7 @@ export type Database = {
           id: string
           name: string
           neurodevelopmental_conditions: Json | null
-          parent_id: string
+          parent_id: string | null
           sensory_profile: Json | null
           updated_at: string | null
         }
@@ -332,7 +332,7 @@ export type Database = {
           id?: string
           name: string
           neurodevelopmental_conditions?: Json | null
-          parent_id: string
+          parent_id?: string | null
           sensory_profile?: Json | null
           updated_at?: string | null
         }
@@ -346,7 +346,7 @@ export type Database = {
           id?: string
           name?: string
           neurodevelopmental_conditions?: Json | null
-          parent_id?: string
+          parent_id?: string | null
           sensory_profile?: Json | null
           updated_at?: string | null
         }

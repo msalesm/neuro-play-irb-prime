@@ -8,8 +8,9 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Search, UserCircle, TrendingUp, AlertCircle, Calendar } from 'lucide-react';
+import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
+import { AddPatientModal } from '@/components/AddPatientModal';
 
 interface Patient {
   id: string;
@@ -29,6 +30,7 @@ export default function TherapistPatients() {
   const [filteredPatients, setFilteredPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -139,7 +141,7 @@ export default function TherapistPatients() {
           </p>
         </div>
 
-        {/* Search & Filters */}
+        {/* Search & Actions */}
         <Card className="mb-6">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -154,6 +156,10 @@ export default function TherapistPatients() {
               </div>
               <Button variant="outline">
                 Filtros
+              </Button>
+              <Button onClick={() => setShowAddModal(true)}>
+                <Plus className="w-4 h-4 mr-2" />
+                Adicionar Paciente
               </Button>
             </div>
           </CardContent>
@@ -235,6 +241,13 @@ export default function TherapistPatients() {
           </Card>
         )}
       </div>
+
+      {/* Add Patient Modal */}
+      <AddPatientModal
+        open={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={loadPatients}
+      />
     </ModernPageLayout>
   );
 }
