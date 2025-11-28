@@ -65,6 +65,11 @@ export function AppSidebar() {
       path: '/sistema-planeta-azul',
       icon: Sparkles,
     },
+    {
+      title: 'Educação Parental',
+      path: '/training',
+      icon: BookOpen,
+    },
   ];
 
   const neuroPlayEduNavigation = [
