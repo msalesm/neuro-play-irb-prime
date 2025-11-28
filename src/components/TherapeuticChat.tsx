@@ -1,200 +1,45 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { MessageCircle, Send, Bot, User, Sparkles, Heart, Brain } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
+import { MessageCircle, Send, Bot, User, Sparkles, Heart, Brain, RotateCcw } from 'lucide-react';
+import { useTherapeuticChat } from '@/hooks/useTherapeuticChat';
+import { useUserRole } from '@/hooks/useUserRole';
+import ChatInsights from './ChatInsights';
+import EmotionalCheckInScheduler from './EmotionalCheckInScheduler';
 
 interface TherapeuticChatProps {
   childProfileId?: string;
   variant?: 'full' | 'compact';
+  contextType?: 'general' | 'emotional_checkin' | 'coaching' | 'progress_review';
 }
 
-export default function TherapeuticChat({ childProfileId, variant = 'full' }: TherapeuticChatProps) {
-  const { user } = useAuth();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: 'Olá! 👋 Sou seu assistente terapêutico do NeuroPlay. Estou aqui para apoiar você no desenvolvimento cognitivo e emocional. Como posso ajudar hoje?',
-      timestamp: new Date(),
-    },
-  ]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [childProfile, setChildProfile] = useState<any>(null);
-  const [userRole, setUserRole] = useState<string>('user');
+export default function TherapeuticChat({ 
+  childProfileId, 
+  variant = 'full',
+  contextType = 'general' 
+}: TherapeuticChatProps) {
+  const { role: userRole } = useUserRole();
+  const { 
+    messages, 
+    input, 
+    setInput, 
+    isLoading, 
+    sendMessage,
+    clearConversation,
+    childProfile 
+  } = useTherapeuticChat({ childProfileId, contextType });
+  
   const scrollRef = useRef<HTMLDivElement>(null);
-  const abortControllerRef = useRef<AbortController | null>(null);
-
-  useEffect(() => {
-    if (childProfileId) {
-      fetchChildProfile();
-    }
-    fetchUserRole();
-  }, [childProfileId]);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
-
-  const fetchChildProfile = async () => {
-    if (!childProfileId || !user) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('child_profiles')
-        .select('*')
-        .eq('id', childProfileId)
-        .eq('parent_user_id', user.id)
-        .single();
-
-      if (error) throw error;
-      setChildProfile(data);
-    } catch (error) {
-      console.error('Error fetching child profile:', error);
-    }
-  };
-
-  const fetchUserRole = async () => {
-    if (!user) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
-
-      if (!error && data?.role) {
-        setUserRole(data.role);
-      }
-    } catch (error) {
-      console.error('Error fetching user role:', error);
-    }
-  };
-
-  const sendMessage = async () => {
-    if (!input.trim() || isLoading) return;
-
-    const userMessage: Message = {
-      role: 'user',
-      content: input,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
-
-    try {
-      abortControllerRef.current = new AbortController();
-
-      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/therapeutic-chat`;
-      
-      const response = await fetch(CHAT_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-        body: JSON.stringify({
-          messages: messages.map(m => ({ role: m.role, content: m.content })).concat([
-            { role: userMessage.role, content: userMessage.content }
-          ]),
-          childProfile,
-          userRole,
-        }),
-        signal: abortControllerRef.current.signal,
-      });
-
-      if (response.status === 429) {
-        toast.error('Limite de requisições atingido. Tente novamente em alguns instantes.');
-        setMessages((prev) => prev.slice(0, -1));
-        return;
-      }
-
-      if (response.status === 402) {
-        toast.error('Créditos insuficientes. Entre em contato com o suporte.');
-        setMessages((prev) => prev.slice(0, -1));
-        return;
-      }
-
-      if (!response.ok || !response.body) {
-        throw new Error('Failed to start stream');
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let textBuffer = '';
-      let assistantContent = '';
-
-      // Add empty assistant message
-      setMessages((prev) => [...prev, { role: 'assistant', content: '', timestamp: new Date() }]);
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        textBuffer += decoder.decode(value, { stream: true });
-
-        let newlineIndex: number;
-        while ((newlineIndex = textBuffer.indexOf('\n')) !== -1) {
-          let line = textBuffer.slice(0, newlineIndex);
-          textBuffer = textBuffer.slice(newlineIndex + 1);
-
-          if (line.endsWith('\r')) line = line.slice(0, -1);
-          if (line.startsWith(':') || line.trim() === '') continue;
-          if (!line.startsWith('data: ')) continue;
-
-          const jsonStr = line.slice(6).trim();
-          if (jsonStr === '[DONE]') break;
-
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content;
-            if (content) {
-              assistantContent += content;
-              setMessages((prev) => {
-                const newMessages = [...prev];
-                const lastMessage = newMessages[newMessages.length - 1];
-                if (lastMessage.role === 'assistant') {
-                  lastMessage.content = assistantContent;
-                }
-                return newMessages;
-              });
-            }
-          } catch (error) {
-            textBuffer = line + '\n' + textBuffer;
-            break;
-          }
-        }
-      }
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
-        console.log('Request aborted');
-      } else {
-        console.error('Chat error:', error);
-        toast.error('Erro ao enviar mensagem. Tente novamente.');
-        setMessages((prev) => prev.slice(0, -1));
-      }
-    } finally {
-      setIsLoading(false);
-      abortControllerRef.current = null;
-    }
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -295,7 +140,7 @@ export default function TherapeuticChat({ childProfileId, variant = 'full' }: Th
   }
 
   return (
-    <div className="container max-w-5xl mx-auto p-6 space-y-6">
+    <div className="container max-w-7xl mx-auto p-6 space-y-6">
       <div className="text-center space-y-2">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
           <MessageCircle className="h-5 w-5" />
@@ -306,8 +151,8 @@ export default function TherapeuticChat({ childProfileId, variant = 'full' }: Th
           </Badge>
         </div>
         <p className="text-muted-foreground">
-          {userRole === 'parent' && 'Apoio especializado para pais e responsáveis'}
-          {userRole === 'therapist' && 'Suporte clínico para profissionais de saúde mental'}
+          {userRole === 'parent' && 'Apoio especializado para pais e responsáveis com análise de padrões comportamentais'}
+          {userRole === 'therapist' && 'Suporte clínico para profissionais de saúde mental com insights automáticos'}
           {!userRole || (userRole !== 'parent' && userRole !== 'therapist') && 'Orientação sobre desenvolvimento cognitivo e neurociência infantil'}
         </p>
       </div>
@@ -326,8 +171,24 @@ export default function TherapeuticChat({ childProfileId, variant = 'full' }: Th
         ))}
       </div>
 
-      <Card className="h-[600px] flex flex-col">
-        <CardContent className="flex-1 flex flex-col gap-4 p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="h-[600px] flex flex-col">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle>Conversa</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearConversation}
+                  className="gap-2"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  Nova conversa
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 flex flex-col gap-4 p-6 pt-0">
           <ScrollArea className="flex-1 pr-4" ref={scrollRef}>
             <div className="space-y-6">
               {messages.map((message, index) => (
@@ -393,8 +254,18 @@ export default function TherapeuticChat({ childProfileId, variant = 'full' }: Th
               <Send className="h-5 w-5" />
             </Button>
           </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </div>
+        
+        <div className="lg:col-span-1 space-y-6">
+          <EmotionalCheckInScheduler 
+            childProfileId={childProfileId}
+            onStartCheckIn={() => setInput('Olá! Gostaria de fazer meu check-in emocional diário.')}
+          />
+          <ChatInsights childProfileId={childProfileId} />
+        </div>
+      </div>
     </div>
   );
 }
