@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Gamepad2, FileText, GraduationCap, ClipboardCheck } from 'lucide-react';
+import { Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -9,6 +9,11 @@ export function BottomNavigation() {
   const { t } = useLanguage();
   
   const navigationItems = [
+    {
+      name: 'Planeta Azul',
+      path: '/sistema-planeta-azul',
+      icon: Sparkles,
+    },
     {
       name: t('nav.games'),
       path: '/games',
