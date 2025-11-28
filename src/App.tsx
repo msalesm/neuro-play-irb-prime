@@ -73,6 +73,7 @@ import TherapistDashboard from "./pages/TherapistDashboard";
 import TeacherClasses from "./pages/TeacherClasses";
 import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
+import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
 
 // Neuro Play v2.0 pages
 import NeuroPlayV2 from "./pages/NeuroPlayV2";
@@ -221,12 +222,17 @@ const App = () => (
                   <Route path="/training/:moduleId" element={<TrainingModule />} />
                   <Route path="/chat" element={<TherapeuticChatPage />} />
                   
-                  {/* Therapist Routes */}
+          {/* Therapist Routes */}
           <Route path="/therapist/patients" element={<TherapistPatients />} />
           <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
+          
+          {/* Teacher Routes */}
           <Route path="/teacher/classes" element={<TeacherClasses />} />
           <Route path="/teacher/class/:classId" element={<TeacherClassView />} />
           <Route path="/teacher/student/:studentId" element={<TeacherStudentView />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/network" element={<AdminNetworkDashboard />} />
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

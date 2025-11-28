@@ -848,6 +848,103 @@ export type Database = {
         }
         Relationships: []
       }
+      licenses: {
+        Row: {
+          created_at: string | null
+          features: Json | null
+          id: string
+          is_active: boolean | null
+          license_type: string
+          max_students: number
+          max_teachers: number
+          school_id: string | null
+          updated_at: string | null
+          valid_from: string
+          valid_until: string
+        }
+        Insert: {
+          created_at?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          license_type: string
+          max_students: number
+          max_teachers: number
+          school_id?: string | null
+          updated_at?: string | null
+          valid_from: string
+          valid_until: string
+        }
+        Update: {
+          created_at?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          license_type?: string
+          max_students?: number
+          max_teachers?: number
+          school_id?: string | null
+          updated_at?: string | null
+          valid_from?: string
+          valid_until?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "licenses_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      network_reports: {
+        Row: {
+          generated_at: string | null
+          generated_by: string | null
+          id: string
+          metrics: Json
+          period_end: string
+          period_start: string
+          region: string | null
+          report_type: string
+          report_url: string | null
+          school_id: string | null
+        }
+        Insert: {
+          generated_at?: string | null
+          generated_by?: string | null
+          id?: string
+          metrics?: Json
+          period_end: string
+          period_start: string
+          region?: string | null
+          report_type: string
+          report_url?: string | null
+          school_id?: string | null
+        }
+        Update: {
+          generated_at?: string | null
+          generated_by?: string | null
+          id?: string
+          metrics?: Json
+          period_end?: string
+          period_start?: string
+          region?: string | null
+          report_type?: string
+          report_url?: string | null
+          school_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "network_reports_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       parent_training: {
         Row: {
           certificate_url: string | null
@@ -974,6 +1071,7 @@ export type Database = {
           grade_level: string | null
           id: string
           name: string
+          school_id: string | null
           school_year: string | null
           teacher_id: string
           updated_at: string | null
@@ -984,6 +1082,7 @@ export type Database = {
           grade_level?: string | null
           id?: string
           name: string
+          school_id?: string | null
           school_year?: string | null
           teacher_id: string
           updated_at?: string | null
@@ -994,11 +1093,20 @@ export type Database = {
           grade_level?: string | null
           id?: string
           name?: string
+          school_id?: string | null
           school_year?: string | null
           teacher_id?: string
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "school_classes_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       school_communications: {
         Row: {
@@ -1099,6 +1207,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      schools: {
+        Row: {
+          active: boolean | null
+          address: string | null
+          city: string | null
+          code: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string | null
+          id: string
+          name: string
+          principal_name: string | null
+          region: string | null
+          state: string | null
+          total_students: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          address?: string | null
+          city?: string | null
+          code?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          name: string
+          principal_name?: string | null
+          region?: string | null
+          state?: string | null
+          total_students?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          address?: string | null
+          city?: string | null
+          code?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          id?: string
+          name?: string
+          principal_name?: string | null
+          region?: string | null
+          state?: string | null
+          total_students?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       screenings: {
         Row: {
