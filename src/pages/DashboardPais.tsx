@@ -18,6 +18,7 @@ import { AvatarSelectionModal } from '@/components/AvatarSelectionModal';
 import { DailyMissionCard } from '@/components/DailyMissionCard';
 import { useDailyMissions } from '@/hooks/useDailyMissions';
 import { BadgeUnlockModal } from '@/components/BadgeUnlockModal';
+import { AIGameRecommendations } from '@/components/AIGameRecommendations';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 import { TourAchievementsPanel } from '@/components/TourAchievementsPanel';
 
@@ -491,6 +492,13 @@ export default function DashboardPais() {
                       planetaIcone={missions[0].planeta.icone}
                       recomendadoPorIA={missions[0].recomendadoPorIA}
                     />
+                  </div>
+                )}
+
+                {/* AI Game Recommendations */}
+                {selectedChild && (
+                  <div data-tour="ai-recommendations">
+                    <AIGameRecommendations childProfileId={selectedChild} />
                   </div>
                 )}
 
