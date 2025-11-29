@@ -140,18 +140,12 @@ export default function LogicaRapida() {
 
   // Start game
   const startGame = useCallback(async () => {
-    // Try to start auto-save, but don't block game if it fails
-    const logicTrail = getTrailByCategory('logic');
     try {
-      await startAutoSave('logic_game', stats.level, {
-        trailId: logicTrail?.id
-      });
+      await startSession({ score: 0, level: stats.level }, stats.level);
     } catch (error) {
-      console.error('Auto-save failed, continuing in offline mode:', error);
-      toast.warning('Jogando em modo offline - progresso não será salvo');
+      console.error('Session start failed:', error);
+      toast.warning('Erro ao iniciar sessão');
     }
-
-    // ALWAYS start the game, regardless of auto-save success
     setGameState('playing');
     setStats(prev => ({
       ...prev,
@@ -172,17 +166,16 @@ export default function LogicaRapida() {
             setGameState('gameOver');
             if (timer) clearInterval(timer);
             
-            // Complete session on time out
-            completeAutoSave({
-              score: prev.score,
-              moves: prev.totalQuestions,
-              correctMoves: prev.correctAnswers,
-              accuracy: (prev.correctAnswers / prev.totalQuestions) * 100,
-              additionalData: {
-                level: prev.level,
-                reason: 'timeout'
-              }
-            });
+            // Complete session on timeout
+            if (isActive) {
+              endSession({
+                score: prev.score,
+                moves: prev.totalQuestions,
+                correctMoves: prev.correctAnswers,
+                accuracy: (prev.correctAnswers / prev.totalQuestions) * 100,
+                timeSpent: (60 - prev.timeLeft)
+              });
+            }
             
             return { ...prev, timeLeft: 0 };
           }
@@ -196,27 +189,21 @@ export default function LogicaRapida() {
   const handleResumeSession = async (session: any) => {
     setStats({
       ...stats,
-      score: session.performance_data.score || 0,
-      level: session.level,
-      correctAnswers: session.performance_data.correctAnswers || 0,
-      totalQuestions: session.performance_data.totalQuestions || 0
+      score: session.session_data?.score || 0,
+      level: session.difficulty_level || 1,
+      correctAnswers: session.correct_attempts || 0,
+      totalQuestions: session.total_attempts || 0
     });
     
-    const logicTrail = getTrailByCategory('logic');
-    await startAutoSave('logic_game', session.level, {
-      sessionId: session.id,
-      trailId: logicTrail?.id
-    });
-
+    await resumeSession(session.id);
     setGameState('idle');
-    setShowRecoveryModal(false);
   };
 
   useEffect(() => {
-    if (hasUnfinishedSessions && gameState === 'idle' && !currentSession) {
-      setShowRecoveryModal(true);
+    if (recoveredSession && gameState === 'idle') {
+      handleResumeSession(recoveredSession);
     }
-  }, [hasUnfinishedSessions, gameState, currentSession]);
+  }, [recoveredSession, gameState]);
 
   // Handle answer selection
   const handleAnswer = (answer: PatternItem) => {
@@ -254,17 +241,16 @@ export default function LogicaRapida() {
 
     setStats(newStats);
 
-    // Auto-save progress
-    updateAutoSave({
-      score: newStats.score,
-      moves: newStats.totalQuestions,
-      correctMoves: newStats.correctAnswers,
-      additionalData: {
-        level: newStats.level,
-        streak: newStats.streak,
-        timeLeft: newStats.timeLeft
-      }
-    });
+    // Update session progress
+    if (isActive) {
+      updateSession({
+        score: newStats.score,
+        moves: newStats.totalQuestions,
+        correctMoves: newStats.correctAnswers,
+        accuracy: (newStats.correctAnswers / newStats.totalQuestions) * 100,
+        timeSpent: (60 - newStats.timeLeft)
+      });
+    }
 
     // Check level progression
     setTimeout(() => {
@@ -379,25 +365,37 @@ export default function LogicaRapida() {
   return (
     <div className="min-h-screen bg-gradient-card py-8">
       <div className="container mx-auto px-4 max-w-4xl">
-        <SessionRecoveryModal
-          open={showRecoveryModal}
-          sessions={unfinishedSessions}
-          onResume={handleResumeSession}
-          onDiscard={async (sessionId) => {
-            await discardSession(sessionId);
-            setShowRecoveryModal(false);
-          }}
-          onStartNew={() => setShowRecoveryModal(false)}
-        />
+        {recoveredSession && gameState === 'idle' && (
+          <Card className="mb-6">
+            <CardContent className="p-4 flex items-center justify-between">
+              <p className="text-sm">Continuar sessão anterior?</p>
+              <div className="flex gap-2">
+                <Button size="sm" onClick={() => handleResumeSession(recoveredSession)}>
+                  Continuar
+                </Button>
+                <Button size="sm" variant="outline" onClick={discardRecoveredSession}>
+                  Descartar
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex gap-2">
-            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
             <GameExitButton
               variant="quit"
               onExit={async () => {
-                await abandonSession();
+                if (isActive) {
+                  await endSession({
+                    score: stats.score,
+                    moves: stats.totalQuestions,
+                    correctMoves: stats.correctAnswers,
+                    accuracy,
+                    timeSpent: (60 - stats.timeLeft)
+                  });
+                }
               }}
               showProgress={gameState === 'playing'}
               currentProgress={stats.questionsInLevel}
