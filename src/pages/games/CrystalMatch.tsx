@@ -5,6 +5,7 @@ import { useGameSession } from '@/hooks/useGameSession';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { hapticsEngine } from '@/lib/haptics';
@@ -19,10 +20,11 @@ export default function CrystalMatch() {
   const [gameStarted, setGameStarted] = useState(false);
   const [childProfileId, setChildProfileId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isAdminMode, setIsAdminMode] = useState(false);
   
   const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || undefined);
 
-  // Load child profile from database
+  // Load child profile from database or enable admin mode
   useEffect(() => {
     if (user) {
       loadChildProfile();
@@ -36,6 +38,14 @@ export default function CrystalMatch() {
     try {
       setIsLoading(true);
       setError(null);
+      
+      // Check if user is admin
+      const { data: roles } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user?.id);
+
+      const isAdmin = roles?.some(r => r.role === 'admin');
       
       // First check localStorage
       const storedId = localStorage.getItem('selectedChildProfile');
@@ -55,15 +65,17 @@ export default function CrystalMatch() {
 
       if (profileError) {
         console.error('Error loading profile:', profileError);
-        setError('Erro ao carregar perfil da criança');
-        setIsLoading(false);
-        return;
       }
 
       if (profiles?.id) {
         setChildProfileId(profiles.id);
         localStorage.setItem('selectedChildProfile', profiles.id);
         setIsLoading(false);
+      } else if (isAdmin) {
+        // Admin mode: allow playing without child profile
+        setIsAdminMode(true);
+        setIsLoading(false);
+        toast.success('Modo Admin: Jogando sem perfil de criança');
       } else {
         setError('Perfil da criança não encontrado. Por favor, crie um perfil primeiro.');
         setIsLoading(false);
@@ -76,7 +88,7 @@ export default function CrystalMatch() {
   };
 
   useEffect(() => {
-    if (childProfileId && !error) {
+    if ((childProfileId || isAdminMode) && !error) {
       initializeGame();
     }
 
@@ -85,7 +97,7 @@ export default function CrystalMatch() {
         appRef.current.destroy(true, { children: true, texture: true });
       }
     };
-  }, [childProfileId, error]);
+  }, [childProfileId, isAdminMode, error]);
 
   const initializeGame = async () => {
     if (!containerRef.current) {
@@ -131,7 +143,9 @@ export default function CrystalMatch() {
   const handleGameStart = async () => {
     setGameStarted(true);
     hapticsEngine.trigger('tap');
-    await startSession();
+    if (!isAdminMode) {
+      await startSession();
+    }
   };
 
   const handleMove = async (correct: boolean) => {
@@ -139,10 +153,12 @@ export default function CrystalMatch() {
       hapticsEngine.trigger('success');
     }
     
-    await updateSession({
-      score: gameRef.current?.score || 0,
-      moves: gameRef.current?.moves || 0,
-    });
+    if (!isAdminMode) {
+      await updateSession({
+        score: gameRef.current?.score || 0,
+        moves: gameRef.current?.moves || 0,
+      });
+    }
   };
 
   const handleScore = (points: number) => {
@@ -152,13 +168,15 @@ export default function CrystalMatch() {
   const handleGameOver = async (finalScore: number, totalMoves: number) => {
     hapticsEngine.trigger('achievement');
     
-    await endSession({
-      score: finalScore,
-      accuracy: finalScore > 0 ? 100 : 0,
-      timeSpent: 0,
-    });
+    if (!isAdminMode) {
+      await endSession({
+        score: finalScore,
+        accuracy: finalScore > 0 ? 100 : 0,
+        timeSpent: 0,
+      });
+    }
 
-    toast.success(`Jogo finalizado! Pontuação: ${finalScore}`);
+    toast.success(`Jogo finalizado! Pontuação: ${finalScore}${isAdminMode ? ' (Modo Admin - sem salvar progresso)' : ''}`);
   };
 
   const handleRestart = () => {
@@ -204,6 +222,11 @@ export default function CrystalMatch() {
           <p className="text-white/70">
             Combine 3 ou mais cristais para pontuar!
           </p>
+          {isAdminMode && (
+            <Badge className="mt-2 bg-[#c7923e] text-white">
+              🛡️ Modo Admin - Teste sem perfil
+            </Badge>
+          )}
         </div>
 
         {/* Error State */}
