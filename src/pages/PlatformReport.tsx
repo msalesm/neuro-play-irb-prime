@@ -32,12 +32,12 @@ export default function PlatformReport() {
       status: 'Implementado'
     },
     {
-      title: '✅ Relatórios Clínicos com IA (Google Gemini 2.5 Pro)',
+      title: '✅ Relatórios Clínicos com IA',
       description: 'Análise clínica automatizada via IA gerando perfil cognitivo e recomendações terapêuticas.',
       status: 'Implementado'
     },
     {
-      title: '✅ Chatbot Terapêutico com IA (Lovable AI)',
+      title: '✅ Chatbot Terapêutico com IA',
       description: 'Assistente conversacional para check-ins emocionais e detecção de padrões comportamentais.',
       status: 'Implementado'
     },
