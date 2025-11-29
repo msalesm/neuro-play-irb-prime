@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CosmicSequenceGame } from '@/components/CosmicSequenceGame';
 import { GameExitButton } from '@/components/GameExitButton';
 import { useGameSession } from '@/hooks/useGameSession';
+import { HapticProvider } from '@/contexts/HapticContext';
 import { Brain, Target, Sparkles, Zap } from 'lucide-react';
 
 export default function CosmicSequence() {
@@ -91,7 +92,8 @@ export default function CosmicSequence() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-fuchsia-950 overflow-hidden">
+    <HapticProvider childProfileId={childProfileId}>
+      <div className="relative min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-fuchsia-950 overflow-hidden">
       {/* Animated Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
@@ -147,6 +149,7 @@ export default function CosmicSequence() {
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </HapticProvider>
   );
 }

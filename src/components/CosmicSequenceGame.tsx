@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Trophy, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useHaptic } from '@/contexts/HapticContext';
 
 interface GameState {
   state: 'MENU' | 'PRESENTING' | 'RECALL' | 'ROUND_COMPLETE' | 'GAME_OVER';
@@ -84,6 +85,7 @@ export const CosmicSequenceGame = ({
   onCorrectTap, 
   onWrongTap 
 }: CosmicSequenceGameProps) => {
+  const { hapticFeedback } = useHaptic();
   const [gameState, setGameState] = useState<GameState>({
     state: 'MENU',
     score: 0,
@@ -152,7 +154,7 @@ export const CosmicSequenceGame = ({
         const obj = gameObjects.find(o => o.id === objectId);
         if (obj) {
           playTone(obj.frequency, speed / 1000);
-          vibrate(50); // Short vibration for each light in sequence
+          hapticFeedback('sequence');
         }
         
         setTimeout(() => {
@@ -201,7 +203,7 @@ export const CosmicSequenceGame = ({
       const obj = gameObjects.find(o => o.id === objectId);
       if (obj) {
         playTone(obj.frequency, 0.2);
-        vibrate(30); // Light vibration for correct tap
+        hapticFeedback('tap');
       }
       
       setActiveObject(objectId);
@@ -228,7 +230,7 @@ export const CosmicSequenceGame = ({
           const newSequence = generateSequence(nextRound);
           
           // Success vibration pattern
-          vibrate([50, 100, 50, 100, 100]);
+          hapticFeedback('success');
           
           setGameState({
             state: 'PRESENTING',
@@ -252,8 +254,8 @@ export const CosmicSequenceGame = ({
     } else {
       onWrongTap?.();
       
-      // Error feedback: longer vibration
-      vibrate([100, 50, 100]); // Pattern: vibrate-pause-vibrate
+      // Error feedback
+      hapticFeedback('error');
       
       setGameState(prev => ({
         ...prev,
