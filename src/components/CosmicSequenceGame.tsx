@@ -21,10 +21,55 @@ interface CosmicSequenceGameProps {
 }
 
 const gameObjects = [
-  { id: 0, color: 'from-green-400 to-emerald-600', glowColor: 'rgba(34, 197, 94, 0.6)' },
-  { id: 1, color: 'from-purple-400 to-fuchsia-600', glowColor: 'rgba(192, 38, 211, 0.6)' },
-  { id: 2, color: 'from-orange-400 to-amber-600', glowColor: 'rgba(251, 146, 60, 0.6)' },
+  { 
+    id: 0, 
+    color: 'from-green-400 to-emerald-600', 
+    glowColor: 'rgba(34, 197, 94, 0.6)',
+    frequency: 329.63 // E4
+  },
+  { 
+    id: 1, 
+    color: 'from-purple-400 to-fuchsia-600', 
+    glowColor: 'rgba(192, 38, 211, 0.6)',
+    frequency: 392.00 // G4
+  },
+  { 
+    id: 2, 
+    color: 'from-orange-400 to-amber-600', 
+    glowColor: 'rgba(251, 146, 60, 0.6)',
+    frequency: 523.25 // C5
+  },
 ];
+
+// Audio context for sound generation
+let audioContext: AudioContext | null = null;
+
+const initAudio = () => {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+  }
+  return audioContext;
+};
+
+const playTone = (frequency: number, duration: number = 0.3) => {
+  const ctx = initAudio();
+  if (!ctx) return;
+
+  const oscillator = ctx.createOscillator();
+  const gainNode = ctx.createGain();
+
+  oscillator.connect(gainNode);
+  gainNode.connect(ctx.destination);
+
+  oscillator.frequency.value = frequency;
+  oscillator.type = 'sine';
+
+  gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+
+  oscillator.start(ctx.currentTime);
+  oscillator.stop(ctx.currentTime + duration);
+};
 
 export const CosmicSequenceGame = ({ 
   onGameStart, 
@@ -51,15 +96,15 @@ export const CosmicSequenceGame = ({
   }, []);
 
   const getAnimationSpeed = useCallback((round: number) => {
-    const baseSpeed = 800;
-    const roundSpeedBonus = Math.min(round * 50, 300);
-    return Math.max(baseSpeed - roundSpeedBonus, 400);
+    const baseSpeed = 1000;
+    const roundSpeedBonus = Math.min(round * 40, 250);
+    return Math.max(baseSpeed - roundSpeedBonus, 600);
   }, []);
 
   const getSequenceDelay = useCallback((round: number) => {
-    const baseDelay = 600;
-    const roundDelayReduction = Math.min(round * 30, 200);
-    return Math.max(baseDelay - roundDelayReduction, 300);
+    const baseDelay = 800;
+    const roundDelayReduction = Math.min(round * 35, 250);
+    return Math.max(baseDelay - roundDelayReduction, 400);
   }, []);
 
   const generateSequence = useCallback((round: number) => {
@@ -93,7 +138,15 @@ export const CosmicSequenceGame = ({
 
     const showNext = () => {
       if (index < sequence.length) {
-        setActiveObject(sequence[index]);
+        const objectId = sequence[index];
+        setActiveObject(objectId);
+        
+        // Play sound for this object
+        const obj = gameObjects.find(o => o.id === objectId);
+        if (obj) {
+          playTone(obj.frequency, speed / 1000);
+        }
+        
         setTimeout(() => {
           setActiveObject(null);
           index++;
@@ -135,8 +188,15 @@ export const CosmicSequenceGame = ({
 
     if (objectId === expectedId) {
       onCorrectTap?.();
+      
+      // Play sound for correct tap
+      const obj = gameObjects.find(o => o.id === objectId);
+      if (obj) {
+        playTone(obj.frequency, 0.2);
+      }
+      
       setActiveObject(objectId);
-      setTimeout(() => setActiveObject(null), 200);
+      setTimeout(() => setActiveObject(null), 300);
 
       const newPlayerSequence = [...gameState.playerSequence, objectId];
       const newScore = gameState.score + 10;
@@ -308,7 +368,12 @@ export const CosmicSequenceGame = ({
             }}
             whileTap={{ scale: gameState.state === 'RECALL' ? 1.1 : 1 }}
             animate={{
-              opacity: activeObject === obj.id ? 1 : (gameState.state === 'RECALL' ? 0.7 : 0.5),
+              opacity: activeObject === obj.id ? 1 : (gameState.state === 'RECALL' ? 0.8 : 0.6),
+              scale: activeObject === obj.id ? 1.25 : 1,
+            }}
+            transition={{
+              duration: 0.2,
+              ease: "easeInOut"
             }}
           />
         ))}

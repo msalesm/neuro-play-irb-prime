@@ -14,7 +14,7 @@ export default function CosmicSequence() {
     endSession,
     updateSession,
     recordMetric,
-  } = useGameSession(childProfileId, 'cosmic-sequence');
+  } = useGameSession('cosmic-sequence', childProfileId || undefined);
 
   const [totalTaps, setTotalTaps] = useState(0);
   const [correctTaps, setCorrectTaps] = useState(0);
