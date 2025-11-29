@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Brain, TrendingUp, Award, Calendar, Download, 
   ArrowLeft, Heart, Target, Sparkles, Activity,
-  Clock, CheckCircle2, AlertCircle, FileText
+  Clock, CheckCircle2, AlertCircle, FileText, BookOpen
 } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { useAuth } from '@/hooks/useAuth';
@@ -18,6 +18,7 @@ import { AvatarSelectionModal } from '@/components/AvatarSelectionModal';
 import { DailyMissionCard } from '@/components/DailyMissionCard';
 import { useDailyMissions } from '@/hooks/useDailyMissions';
 import { BadgeUnlockModal } from '@/components/BadgeUnlockModal';
+import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 
 interface ChildProfile {
   id: string;
@@ -283,6 +284,8 @@ export default function DashboardPais() {
 
   return (
     <ModernPageLayout>
+      <PlatformOnboarding pageName="dashboard-pais" />
+      
       <AvatarSelectionModal
         open={showAvatarModal}
         onComplete={() => {
@@ -328,20 +331,33 @@ export default function DashboardPais() {
           <>
             {/* Child Selector */}
             {selectedChildData && (
-              <Card className="p-6 mb-8">
+              <Card className="p-6 mb-8" data-tour="avatar-card">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-4">
-                    <ChildAvatarDisplay
-                      avatar={selectedChildData.avatar_url}
-                      name={selectedChildData.name}
-                      size="xl"
-                    />
+                    <div className="relative">
+                      <ChildAvatarDisplay
+                        avatar={selectedChildData.avatar_url}
+                        name={selectedChildData.name}
+                        size="xl"
+                      />
+                      <div className="absolute -bottom-2 -right-2 bg-[#c7923e] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold border-2 border-background">
+                        5
+                      </div>
+                    </div>
                     <div>
                       <h2 className="text-2xl font-bold">{selectedChildData.name}</h2>
                       <p className="text-muted-foreground">
                         {selectedChildData.age} anos
                         {selectedChildData.profile && ` • ${selectedChildData.profile}`}
                       </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs bg-[#005a70]/10 text-[#005a70] px-2 py-1 rounded-full">
+                          Nível 5
+                        </span>
+                        <span className="text-xs bg-[#c7923e]/10 text-[#c7923e] px-2 py-1 rounded-full">
+                          🏆 12 Conquistas
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-2 flex-wrap">
@@ -358,6 +374,13 @@ export default function DashboardPais() {
                       <FileText className="w-4 h-4 mr-2" />
                       Relatório Plataforma
                     </Button>
+                    <Button 
+                      variant="outline"
+                      onClick={() => navigate('/platform-manual')}
+                    >
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Manual
+                    </Button>
                     <Button onClick={generateReport}>
                       <Download className="w-4 h-4 mr-2" />
                       Gerar Relatório Clínico
@@ -367,12 +390,39 @@ export default function DashboardPais() {
               </Card>
             )}
 
+            {/* Emotional Check-in Card */}
+            <Card className="mb-8 border-l-4 border-l-[#c7923e]" data-tour="emotional-checkin">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#c7923e]/20 to-red-500/20 flex items-center justify-center text-3xl">
+                      ❤️
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">Como está se sentindo hoje?</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Faça um check-in emocional rápido - leva apenas 2 minutos
+                      </p>
+                    </div>
+                  </div>
+                  <Button 
+                    size="lg"
+                    className="bg-gradient-to-r from-[#c7923e] to-red-500"
+                    onClick={() => navigate('/therapeutic-chat')}
+                  >
+                    <Heart className="w-5 h-5 mr-2" />
+                    Registrar Emoções
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Main Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
               {/* Left Column - Main Content */}
               <div className="lg:col-span-2 space-y-6">
                 {/* Current Planet */}
-                <Card className="border-l-4 border-l-[#005a70]">
+                <Card className="border-l-4 border-l-[#005a70]" data-tour="current-planet">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Sparkles className="w-5 h-5 text-[#005a70]" />
@@ -396,7 +446,7 @@ export default function DashboardPais() {
 
                 {/* Daily Mission */}
                 {!missionsLoading && missions.length > 0 && (
-                  <div>
+                  <div data-tour="daily-mission">
                     <div className="flex items-center gap-3 mb-4">
                       <Target className="w-5 h-5 text-[#c7923e]" />
                       <h3 className="text-lg font-semibold">Missão do Dia</h3>
@@ -412,7 +462,7 @@ export default function DashboardPais() {
                 )}
 
                 {/* Quick Report */}
-                <Card>
+                <Card data-tour="quick-report">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Brain className="w-5 h-5 text-[#0a1e35]" />

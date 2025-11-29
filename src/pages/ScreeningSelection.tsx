@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { BookOpen, Zap, Heart, ArrowLeft, Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 
 export default function ScreeningSelection() {
   const screenings = [
@@ -36,7 +37,9 @@ export default function ScreeningSelection() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background pb-32">
+    <>
+      <PlatformOnboarding pageName="screening" />
+      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background pb-32">
       <div className="container max-w-6xl mx-auto px-4 py-8">
         <Button
           variant="ghost"
@@ -125,5 +128,6 @@ export default function ScreeningSelection() {
         </Card>
       </div>
     </div>
+    </>
   );
 }

@@ -102,6 +102,11 @@ export function AppSidebar() {
       path: '/emotional-history',
       icon: Heart,
     },
+    {
+      title: 'Manual da Plataforma',
+      path: '/platform-manual',
+      icon: BookOpen,
+    },
   ];
 
   // Terapeuta

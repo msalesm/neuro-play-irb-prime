@@ -13,6 +13,7 @@ import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { usePlanetProgress } from '@/hooks/usePlanetProgress';
+import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 
 type ViewMode = 'mapa' | 'grid';
 
@@ -70,7 +71,9 @@ export default function SistemaPlanetaAzul() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a1e35] via-[#005a70] to-[#0a1e35] relative overflow-hidden">
+    <>
+      <PlatformOnboarding pageName="sistema-planeta-azul" />
+      <div className="min-h-screen bg-gradient-to-b from-[#0a1e35] via-[#005a70] to-[#0a1e35] relative overflow-hidden">
       {/* Animated stars background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(100)].map((_, i) => (
@@ -242,6 +245,7 @@ export default function SistemaPlanetaAzul() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              data-tour="planets"
             >
               {planetas.map((planeta, index) => (
                 <motion.div
@@ -292,5 +296,6 @@ export default function SistemaPlanetaAzul() {
         </Card>
       </div>
     </div>
+    </>
   );
 }
