@@ -59,7 +59,7 @@ export function ConsentsStep({ data, updateData }: Props) {
                 <h4 className="font-semibold text-irb-petrol">Pesquisa Científica</h4>
                 <p className="text-sm text-muted-foreground mt-1">
                   Permitir uso de dados anonimizados para estudos científicos sobre neurodiversidade, 
-                  aprendizagem e desenvolvimento infantil conduzidos pela IRB Prime e parceiros acadêmicos.
+                  aprendizagem e desenvolvimento infantil conduzidos por parceiros acadêmicos.
                 </p>
               </div>
               <div className="flex items-center space-x-3">
@@ -87,7 +87,7 @@ export function ConsentsStep({ data, updateData }: Props) {
               <div>
                 <h4 className="font-semibold text-irb-petrol">Compartilhamento Clínico Facilitado</h4>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Permitir compartilhamento automático de relatórios e progresso com profissionais da rede IRB Prime 
+                  Permitir compartilhamento automático de relatórios e progresso com profissionais de saúde autorizados 
                   (você ainda controlará quais profissionais têm acesso).
                 </p>
               </div>
@@ -99,7 +99,7 @@ export function ConsentsStep({ data, updateData }: Props) {
                   className="border-irb-blue data-[state=checked]:bg-irb-blue"
                 />
                 <Label htmlFor="clinicalSharing" className="text-sm font-medium cursor-pointer">
-                  Sim, autorizo compartilhamento com rede IRB Prime
+                  Sim, autorizo compartilhamento com profissionais autorizados
                 </Label>
               </div>
             </div>

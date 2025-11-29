@@ -233,7 +233,7 @@ export default function PlatformReport() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-lg text-muted-foreground">
-                  <strong className="text-foreground">NeuroPlay 2.0</strong> é uma plataforma clínico-terapêutica completa em parceria com <strong className="text-foreground">IRB Prime</strong>, 
+                  <strong className="text-foreground">NeuroPlay 2.0</strong> é uma plataforma clínico-terapêutica completa baseada em evidências científicas, 
                   desenvolvida para atendimento de crianças neurodivergentes (TEA, TDAH, Dislexia, Discalculia, DLD).
                 </p>
                 

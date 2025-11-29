@@ -36,7 +36,7 @@ export default function OnboardingFlow({ onComplete, userName = "usuário" }: On
   const steps: OnboardingStep[] = [
     {
       title: "Bem-vindo à NeuroPlay!",
-      description: "Uma plataforma clínica-terapêutica para desenvolvimento cognitivo e emocional infantil, desenvolvida em parceria com IRB Prime.",
+      description: "Uma plataforma clínica-terapêutica para desenvolvimento cognitivo e emocional infantil baseada em evidências científicas.",
       icon: <Sparkles className="w-12 h-12" />,
       color: "text-primary",
       tips: [
