@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  Home, Brain, Settings, User, 
-  Users, TrendingUp, Menu, Sparkles, Gamepad2,
-  FileText, BookOpen, Trophy, BarChart3, MessageSquare
+  Home, Brain, Stethoscope, Settings, User, 
+  Users, School, TrendingUp, Menu, Sparkles, Gamepad2,
+  FileText, ClipboardCheck, GraduationCap, Heart, BookOpen,
+  Trophy, BarChart3
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
-import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -22,6 +23,7 @@ export function MobileMenu() {
   const { user } = useAuth();
   const { role } = useUserRole();
   const location = useLocation();
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
 
   if (!user) return null;
@@ -31,35 +33,45 @@ export function MobileMenu() {
     return location.pathname.startsWith(path) && path !== '/';
   };
 
-  // ROLE BADGE MAP
-  const roleBadges: Record<string, { label: string; color: string }> = {
-    parent: { label: 'Pais', color: 'bg-blue-500' },
-    therapist: { label: 'Terapeuta', color: 'bg-purple-500' },
-    admin: { label: 'Gestor', color: 'bg-orange-500' },
-  };
-
-  const currentRoleBadge = role ? roleBadges[role] : null;
-
-  // ESTRUTURA DE MENU
   const menuSections = [
     {
       title: 'Principal',
       items: [
         { title: 'Sistema de Planetas', path: '/sistema-planeta-azul', icon: Sparkles },
+        { title: 'Missão do Dia', path: '/dashboard', icon: Trophy },
         { title: 'Jogos Cognitivos', path: '/games', icon: Gamepad2 },
+        { title: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
+      ],
+    },
+    {
+      title: 'Planetas Terapêuticos',
+      items: [
+        { title: 'Aurora (TEA)', path: '/planeta/aurora', icon: Sparkles },
+        { title: 'Vortex (TDAH)', path: '/planeta/vortex', icon: Sparkles },
+        { title: 'Lumen (Dislexia)', path: '/planeta/lumen', icon: Sparkles },
+        { title: 'Calm (Regulação)', path: '/planeta/calm', icon: Sparkles },
+        { title: 'Order (Executivas)', path: '/planeta/order', icon: Sparkles },
+      ],
+    },
+    {
+      title: 'Avaliação & Triagem',
+      items: [
+        { title: 'Testes Diagnósticos', path: '/diagnostic-tests', icon: FileText },
+        { title: 'Triagem TUNP', path: '/screening', icon: ClipboardCheck },
       ],
     },
   ];
 
-  // ADICIONA MENU POR ROLE
-  if (role === 'parent') {
+  // Adiciona seções baseadas no papel do usuário
+  if (role === 'parent' || !role) {
     menuSections.push({
       title: 'Pais',
       items: [
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
-        { title: 'Chat Terapêutico', path: '/therapeutic-chat', icon: MessageSquare },
         { title: 'Microlearning', path: '/training', icon: BookOpen },
-        { title: 'Manual', path: '/platform-manual', icon: FileText },
+        { title: 'Atividades Parent-Child', path: '/parent-child-activities', icon: Users },
+        { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
+        { title: 'Manual da Plataforma', path: '/platform-manual', icon: BookOpen },
       ],
     });
   }
@@ -68,10 +80,20 @@ export function MobileMenu() {
     menuSections.push({
       title: 'Terapeuta',
       items: [
-        { title: 'Meus Pacientes', path: '/therapist/patients', icon: Users },
-        { title: 'Relatórios Clínicos', path: '/clinical', icon: FileText },
+        { title: 'Pacientes', path: '/therapist/patients', icon: Users },
+        { title: 'Relatórios', path: '/clinical', icon: FileText },
         { title: 'PEI Inteligente', path: '/pei', icon: Brain },
-        { title: 'Chat Terapêutico', path: '/therapeutic-chat', icon: MessageSquare },
+      ],
+    });
+  }
+
+  if (role === 'parent' || !role) {
+    menuSections.push({
+      title: 'Escola',
+      items: [
+        { title: 'Turmas', path: '/teacher/classes', icon: School },
+        { title: 'PEI Escolar', path: '/teacher-dashboard', icon: GraduationCap },
+        { title: 'Estratégias', path: '/training', icon: BookOpen },
       ],
     });
   }
@@ -80,16 +102,15 @@ export function MobileMenu() {
     menuSections.push({
       title: 'Gestor Público',
       items: [
-        { title: 'Dashboard Rede', path: '/admin/network', icon: BarChart3 },
+        { title: 'Dashboard Geral', path: '/admin/network', icon: BarChart3 },
         { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
         { title: 'Mapas de Risco', path: '/admin/risk-maps', icon: TrendingUp },
       ],
     });
   }
 
-  // CONFIGURAÇÕES (todos)
   menuSections.push({
-    title: 'Conta',
+    title: 'Configurações',
     items: [
       { title: 'Perfil', path: '/profile', icon: User },
       { title: 'Configurações', path: '/settings', icon: Settings },
@@ -110,16 +131,9 @@ export function MobileMenu() {
       </SheetTrigger>
       <SheetContent side="left" className="w-[280px] p-0">
         <SheetHeader className="p-6 pb-4 border-b">
-          <SheetTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Brain className="h-5 w-5 text-primary" />
-              <span>NeuroPlay 2.0</span>
-            </div>
-            {currentRoleBadge && (
-              <Badge className={`${currentRoleBadge.color} text-white text-xs`}>
-                {currentRoleBadge.label}
-              </Badge>
-            )}
+          <SheetTitle className="flex items-center gap-2">
+            <Brain className="h-5 w-5 text-primary" />
+            Menu
           </SheetTitle>
         </SheetHeader>
         <ScrollArea className="h-[calc(100vh-80px)]">
