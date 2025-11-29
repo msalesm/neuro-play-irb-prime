@@ -99,6 +99,17 @@ export const planetas: Planeta[] = [
         novo: true
       },
       {
+        id: 'crystal-match',
+        nome: 'Crystal Match',
+        descricao: 'Combine 3 ou mais cristais para pontuar - trabalha atenção visual e planejamento',
+        duracao: 10,
+        dificuldade: 2,
+        rota: '/games/crystal-match',
+        icone: '💎',
+        completado: false,
+        novo: true
+      },
+      {
         id: 'attention-sustained',
         nome: 'Missão Cronometrada',
         descricao: 'Complete tarefas mantendo foco por períodos crescentes - 6 fases progressivas',
@@ -145,7 +156,7 @@ export const planetas: Planeta[] = [
     tamanho: 'grande',
     desbloqueado: true,
     progressoAtual: 0,
-    totalMissoes: 5
+    totalMissoes: 6
   },
   {
     id: 'lumen',
