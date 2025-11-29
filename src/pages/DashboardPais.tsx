@@ -94,9 +94,22 @@ export default function DashboardPais() {
 
   useEffect(() => {
     if (user) {
+      setLoading(true);
       loadChildren();
     }
   }, [user]);
+
+  // Reset loading when navigating back
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && loading) {
+        setLoading(false);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [loading]);
 
   useEffect(() => {
     if (selectedChild) {
