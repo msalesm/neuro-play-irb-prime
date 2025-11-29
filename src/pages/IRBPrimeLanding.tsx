@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield, Download, MapPin, Activity } from 'lucide-react';
+import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield, Download } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import irbPrimeCareLogo from '@/assets/irb-prime-care-logo.png';
 import heroImage from '@/assets/hero-children-learning.jpg';
 import childFocused from '@/assets/child-focused-learning.jpg';
 import groupTherapy from '@/assets/group-therapy-session.jpg';
@@ -12,13 +13,10 @@ export default function IRBPrimeLanding() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header - Gradiente Azul */}
+      {/* Header - Gradiente Azul IRB */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-[#0a1e35] via-[#004a5a] to-[#005a70] shadow-lg">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Brain className="w-8 h-8 text-[#c7923e]" />
-            <span className="text-2xl font-bold text-white">NeuroPlay</span>
-          </div>
+          <img src={irbPrimeCareLogo} alt="IRB Prime Care" className="h-14 hover-scale" />
           <nav className="hidden md:flex items-center gap-8">
             <a href="#sobre" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Sobre</a>
             <a href="#beneficios" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Benefícios</a>
@@ -46,7 +44,7 @@ export default function IRBPrimeLanding() {
           <div className="text-center max-w-5xl mx-auto mb-16 animate-fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#005a70]/10 text-[#005a70] text-sm font-medium mb-6">
               <Sparkles className="w-4 h-4" />
-              Plataforma Terapêutica Completa
+              IRB Prime Care - Excelência em Saúde
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold text-[#0a1e35] mb-6 leading-tight">
@@ -57,7 +55,7 @@ export default function IRBPrimeLanding() {
             
             <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto mb-8">
               Plataforma de jogos terapêuticos inteligentes para desenvolvimento cognitivo de crianças com TEA, TDAH e Dislexia. 
-              Tecnologia adaptativa validada cientificamente em parceria com IRB Prime Care para validação clínica.
+              Mais do que tecnologia, oferecemos cuidado, compromisso e resultado.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -603,269 +601,6 @@ export default function IRBPrimeLanding() {
         </div>
       </section>
 
-      {/* Personas - Storytelling com Dashboards */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0a1e35] mb-4">
-              Para Cada Jornada, Uma História
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Três perspectivas, um objetivo comum: transformar o desenvolvimento infantil
-            </p>
-          </div>
-
-          {/* Pais - Sofia's Story */}
-          <div className="max-w-6xl mx-auto mb-20 animate-fade-in">
-            <Card className="overflow-hidden border-none shadow-2xl hover-scale">
-              <div className="grid md:grid-cols-2 gap-0">
-                <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 p-8 md:p-12 flex flex-col justify-center">
-                  <div className="inline-flex items-center gap-2 mb-4 text-purple-700">
-                    <Heart className="w-5 h-5" />
-                    <span className="text-sm font-bold uppercase tracking-wider">Para Pais</span>
-                  </div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-[#0a1e35] mb-4">
-                    "Finalmente entendo o progresso do meu filho"
-                  </h3>
-                  <p className="text-gray-600 text-lg mb-6 leading-relaxed">
-                    Sofia, mãe de Lucas (8 anos, TEA), estava perdida entre relatórios técnicos e recomendações conflitantes. 
-                    Com o <strong>Dashboard dos Pais</strong>, ela acompanha em tempo real as conquistas de Lucas, 
-                    recebe orientações personalizadas e celebra cada progresso com dados claros e acionáveis.
-                  </p>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-purple-700 flex-shrink-0" />
-                      <span className="text-sm">Missões diárias personalizadas</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-purple-700 flex-shrink-0" />
-                      <span className="text-sm">Histórico de evolução semanal</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-purple-700 flex-shrink-0" />
-                      <span className="text-sm">Recomendações de IA personalizadas</span>
-                    </div>
-                  </div>
-                  <Button 
-                    className="mt-6 bg-purple-600 hover:bg-purple-700 w-fit"
-                    onClick={() => navigate('/dashboard-pais')}
-                  >
-                    Ver Dashboard dos Pais
-                  </Button>
-                </div>
-
-                {/* Dashboard Preview */}
-                <div className="bg-gradient-to-br from-purple-900 to-pink-900 p-8 flex items-center justify-center">
-                  <div className="w-full max-w-md space-y-4">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-white/80 text-sm font-medium">Missão de Hoje</span>
-                        <span className="text-[#c7923e] text-xs font-bold">75%</span>
-                      </div>
-                      <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                        <div className="h-full bg-[#c7923e] rounded-full w-3/4" />
-                      </div>
-                    </div>
-                    
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="text-white/80 text-sm mb-2">🌟 Conquista Recente</div>
-                      <div className="text-white font-bold">Planeta Aurora: Nível 3 completado!</div>
-                    </div>
-
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="text-white/80 text-sm mb-2">📊 Esta Semana</div>
-                      <div className="grid grid-cols-3 gap-3 text-center">
-                        <div>
-                          <div className="text-[#c7923e] font-bold text-xl">12</div>
-                          <div className="text-white/60 text-xs">Jogos</div>
-                        </div>
-                        <div>
-                          <div className="text-[#c7923e] font-bold text-xl">87%</div>
-                          <div className="text-white/60 text-xs">Precisão</div>
-                        </div>
-                        <div>
-                          <div className="text-[#c7923e] font-bold text-xl">45min</div>
-                          <div className="text-white/60 text-xs">Tempo</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          {/* Terapeuta - Dr. Carla's Story */}
-          <div className="max-w-6xl mx-auto mb-20 animate-fade-in">
-            <Card className="overflow-hidden border-none shadow-2xl hover-scale">
-              <div className="grid md:grid-cols-2 gap-0">
-                {/* Dashboard Preview */}
-                <div className="bg-gradient-to-br from-blue-900 to-cyan-900 p-8 flex items-center justify-center order-2 md:order-1">
-                  <div className="w-full max-w-md space-y-4">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="text-white/80 text-sm mb-3">👥 Pacientes Ativos</div>
-                      <div className="space-y-2">
-                        {['Lucas M.', 'Ana P.', 'João S.'].map((name) => (
-                          <div key={name} className="flex items-center justify-between bg-white/5 rounded p-2">
-                            <span className="text-white text-sm font-medium">{name}</span>
-                            <Activity className="w-4 h-4 text-emerald-400" />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="text-white/80 text-sm mb-2">🎯 Alertas de IA</div>
-                      <div className="bg-amber-500/20 border border-amber-500/30 rounded p-2">
-                        <div className="text-amber-200 text-xs font-medium">
-                          Ana P.: Queda de 15% na atenção sustentada
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="text-white/80 text-sm mb-2">📈 Evolução Geral</div>
-                      <div className="flex items-end gap-1 h-16">
-                        {[60, 70, 65, 80, 85, 90, 95].map((height, i) => (
-                          <div 
-                            key={i}
-                            className="flex-1 bg-[#c7923e] rounded-t"
-                            style={{ height: `${height}%` }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 p-8 md:p-12 flex flex-col justify-center order-1 md:order-2">
-                  <div className="inline-flex items-center gap-2 mb-4 text-blue-700">
-                    <Target className="w-5 h-5" />
-                    <span className="text-sm font-bold uppercase tracking-wider">Para Terapeutas</span>
-                  </div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-[#0a1e35] mb-4">
-                    "Dados objetivos que transformam minha prática"
-                  </h3>
-                  <p className="text-gray-600 text-lg mb-6 leading-relaxed">
-                    Dra. Carla, psicóloga especializada em TEA, atendia 15 crianças por semana sem dados consistentes. 
-                    Com o <strong>Painel do Terapeuta</strong>, ela monitora todos os pacientes em uma única interface, 
-                    recebe alertas preditivos de regressão e gera relatórios clínicos completos em segundos.
-                  </p>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-blue-700 flex-shrink-0" />
-                      <span className="text-sm">Gestão completa de pacientes</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-blue-700 flex-shrink-0" />
-                      <span className="text-sm">Alertas preditivos com IA</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-blue-700 flex-shrink-0" />
-                      <span className="text-sm">Relatórios clínicos automáticos</span>
-                    </div>
-                  </div>
-                  <Button 
-                    className="mt-6 bg-blue-600 hover:bg-blue-700 w-fit"
-                    onClick={() => navigate('/therapist/patients')}
-                  >
-                    Ver Painel do Terapeuta
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          {/* Gestor Público - Maria's Story */}
-          <div className="max-w-6xl mx-auto animate-fade-in">
-            <Card className="overflow-hidden border-none shadow-2xl hover-scale">
-              <div className="grid md:grid-cols-2 gap-0">
-                <div className="bg-gradient-to-br from-emerald-500/20 to-teal-500/20 p-8 md:p-12 flex flex-col justify-center">
-                  <div className="inline-flex items-center gap-2 mb-4 text-emerald-700">
-                    <MapPin className="w-5 h-5" />
-                    <span className="text-sm font-bold uppercase tracking-wider">Para Gestores Públicos</span>
-                  </div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-[#0a1e35] mb-4">
-                    "Transformando dados em políticas públicas"
-                  </h3>
-                  <p className="text-gray-600 text-lg mb-6 leading-relaxed">
-                    Maria, coordenadora de saúde municipal, precisava justificar investimentos em neurodiversidade. 
-                    Com o <strong>Dashboard de Rede</strong>, ela monitora indicadores regionais, identifica áreas de risco 
-                    e demonstra o impacto das intervenções com dados epidemiológicos agregados e anonimizados.
-                  </p>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-                      <span className="text-sm">Mapas de risco por região</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-                      <span className="text-sm">Indicadores epidemiológicos</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-emerald-700 flex-shrink-0" />
-                      <span className="text-sm">Relatórios de impacto para gestão</span>
-                    </div>
-                  </div>
-                  <Button 
-                    className="mt-6 bg-emerald-600 hover:bg-emerald-700 w-fit"
-                    onClick={() => navigate('/admin/network')}
-                  >
-                    Ver Dashboard de Rede
-                  </Button>
-                </div>
-
-                {/* Dashboard Preview */}
-                <div className="bg-gradient-to-br from-emerald-900 to-teal-900 p-8 flex items-center justify-center">
-                  <div className="w-full max-w-md space-y-4">
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="text-white/80 text-sm mb-3">🗺️ Cobertura Regional</div>
-                      <div className="grid grid-cols-3 gap-2">
-                        {['Norte', 'Centro', 'Sul'].map((region) => (
-                          <div key={region} className="bg-white/5 rounded p-2 text-center">
-                            <div className="text-[#c7923e] font-bold text-lg">
-                              {region === 'Norte' ? '72%' : region === 'Centro' ? '85%' : '68%'}
-                            </div>
-                            <div className="text-white/60 text-xs">{region}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="text-white/80 text-sm mb-2">📊 Indicadores Chave</div>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-white/70">Crianças atendidas</span>
-                          <span className="text-white font-bold">1.247</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-white/70">Escolas integradas</span>
-                          <span className="text-white font-bold">32</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-white/70">Taxa de adesão</span>
-                          <span className="text-[#c7923e] font-bold">87%</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                      <div className="text-white/80 text-sm mb-2">⚠️ Áreas de Atenção</div>
-                      <div className="bg-red-500/20 border border-red-500/30 rounded p-2">
-                        <div className="text-red-200 text-xs">
-                          Zona Leste: aumento de 12% em casos de TDAH
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Final */}
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
@@ -895,11 +630,8 @@ export default function IRBPrimeLanding() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-3">
-              <Brain className="w-8 h-8 text-[#c7923e]" />
-              <div>
-                <span className="font-bold text-lg">NeuroPlay</span>
-                <p className="text-sm text-white/80">© 2024 Todos os direitos reservados.</p>
-              </div>
+              <img src={irbPrimeCareLogo} alt="IRB Prime Care" className="h-10" />
+              <span className="text-sm text-white/80">© 2024 IRB Prime Care. Todos os direitos reservados.</span>
             </div>
             <div className="flex gap-6 text-sm text-white/80">
               <a href="#" className="hover:text-white transition-colors">Política de Privacidade</a>

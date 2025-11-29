@@ -88,7 +88,6 @@ import NeuroPlayV2 from "./pages/NeuroPlayV2";
 import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
 import DashboardPais from "./pages/DashboardPais";
 import IRBPrimeLanding from "./pages/IRBPrimeLanding";
-import NeuroPlayLanding from "./pages/NeuroPlayLanding";
 import Home from "./pages/Home";
 import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
 import AchievementsPage from "./pages/AchievementsPage";
@@ -124,9 +123,8 @@ const App = () => (
             >
               <AppLayout>
                 <Routes>
-  <Route path="/" element={<IRBPrimeLanding />} />
-  <Route path="/landing" element={<NeuroPlayLanding />} />
-                  <Route path="/home" element={<Home />} />
+                  <Route path="/" element={<Home />} />
+                  <Route path="/landing" element={<IRBPrimeLanding />} />
                   <Route path="/onboarding" element={<OnboardingWizard />} />
                   <Route path="/neuroplay" element={
                     <Suspense fallback={<Loading />}>
@@ -242,7 +240,6 @@ const App = () => (
                   
           {/* Therapist Routes */}
           <Route path="/therapist/patients" element={<TherapistPatients />} />
-          <Route path="/therapist/dashboard" element={<TherapistPatients />} />
           <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
           
           {/* Teacher Routes */}
