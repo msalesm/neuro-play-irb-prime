@@ -160,7 +160,7 @@ export default function TherapeuticChat({
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3" data-tour="quick-actions">
         {quickActions.map((action, index) => (
           <Button
             key={index}
@@ -176,7 +176,7 @@ export default function TherapeuticChat({
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="h-[600px] flex flex-col">
+          <Card className="h-[600px] flex flex-col" data-tour="chat-messages">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle>Conversa</CardTitle>
@@ -205,7 +205,7 @@ export default function TherapeuticChat({
             </CardHeader>
             <CardContent className="flex-1 flex flex-col gap-4 p-6 pt-0">
           <ScrollArea className="flex-1 pr-4" ref={scrollRef}>
-            <div className="space-y-6">
+            <div className="space-y-6" data-tour="insights">
               {messages.map((message, index) => (
                 <div
                   key={index}
