@@ -67,7 +67,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
 export default function AdminNetworkDashboard() {
   const { user } = useAuth();
-  const { isAdmin } = useUserRole();
+  const { isAdmin, loading: roleLoading } = useUserRole();
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState<NetworkMetrics>({
     totalSchools: 0,
@@ -160,6 +160,16 @@ export default function AdminNetworkDashboard() {
     }
   };
 
+  if (roleLoading || loading) {
+    return (
+      <ModernPageLayout>
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
+        </div>
+      </ModernPageLayout>
+    );
+  }
+
   if (!isAdmin) {
     return (
       <ModernPageLayout>
@@ -173,16 +183,6 @@ export default function AdminNetworkDashboard() {
               </p>
             </CardContent>
           </Card>
-        </div>
-      </ModernPageLayout>
-    );
-  }
-
-  if (loading) {
-    return (
-      <ModernPageLayout>
-        <div className="flex items-center justify-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
         </div>
       </ModernPageLayout>
     );
