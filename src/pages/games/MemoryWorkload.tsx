@@ -5,11 +5,10 @@ import { Progress } from '@/components/ui/progress';
 import { Timer, RotateCcw, CheckCircle, AlertCircle, TrendingUp, Brain, Play } from 'lucide-react';
 import { toast } from 'sonner';
 import { useBehavioralAnalysis } from '@/hooks/useBehavioralAnalysis';
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { useAudioEngine } from '@/hooks/useAudioEngine';
+import { supabase } from '@/integrations/supabase/client';
 
 interface MemoryItem {
   id: string;
@@ -47,28 +46,36 @@ export default function MemoryWorkload() {
     errors: 0,
     reactionTimes: [] as number[]
   });
+  const [childProfileId, setChildProfileId] = useState<string | null>(null);
 
-  // Auto-save integration
-  const { 
-    startSession, 
-    updateSession, 
-    completeSession, 
-    abandonSession,
-    currentSession,
-    isSaving 
-  } = useAutoSave({ 
-    saveInterval: 10000,
-    saveOnAction: true,
-    saveOnUnload: true 
-  });
-
-  // Session recovery
-  const { 
-    unfinishedSessions, 
-    loading: recoveryLoading,
+  const {
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recordMetric,
+    recoveredSession,
     resumeSession,
-    discardSession 
-  } = useSessionRecovery('memory-workload');
+    discardRecoveredSession
+  } = useGameSession('memory-workload', childProfileId || undefined);
+
+  // Get child profile ID
+  useEffect(() => {
+    const loadChildProfile = async () => {
+      if (!user) return;
+      const { data: profiles } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', user.id)
+        .limit(1)
+        .single();
+      if (profiles) {
+        setChildProfileId(profiles.id);
+      }
+    };
+    loadChildProfile();
+  }, [user]);
 
   const sequenceLength = Math.min(3 + level, 8);
 

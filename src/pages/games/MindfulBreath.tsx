@@ -8,9 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Play, Pause, RotateCcw, Heart, Star, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 
 type BreathPhase = 'inhale' | 'hold' | 'exhale' | 'pause';

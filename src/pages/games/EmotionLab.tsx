@@ -7,13 +7,12 @@ import { Heart, Smile, Frown, Meh, Angry, Star, ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { useBehavioralAnalysis } from '@/hooks/useBehavioralAnalysis';
 import { useAudioEngine } from '@/hooks/useAudioEngine';
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 interface EmotionScenario {
   id: string;
@@ -105,24 +104,36 @@ export default function EmotionLab() {
   const { user } = useAuth();
   const { saveBehavioralMetric } = useBehavioralAnalysis();
   const audio = useAudioEngine();
+  const [childProfileId, setChildProfileId] = useState<string | null>(null);
   
   const {
-    currentSession,
-    isSaving,
-    startSession: startAutoSave,
-    updateSession: updateAutoSave,
-    completeSession: completeAutoSave,
-    abandonSession
-  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
-
-  const {
-    unfinishedSessions,
-    hasUnfinishedSessions,
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recordMetric,
+    recoveredSession,
     resumeSession,
-    discardSession
-  } = useSessionRecovery('emotion_lab');
+    discardRecoveredSession
+  } = useGameSession('emotion-lab', childProfileId || undefined);
 
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+  // Get child profile ID
+  useEffect(() => {
+    const loadChildProfile = async () => {
+      if (!user) return;
+      const { data: profiles } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', user.id)
+        .limit(1)
+        .single();
+      if (profiles) {
+        setChildProfileId(profiles.id);
+      }
+    };
+    loadChildProfile();
+  }, [user]);
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);

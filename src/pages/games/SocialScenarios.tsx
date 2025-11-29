@@ -9,11 +9,10 @@ import { Users, MessageCircle, Heart, Clock, ArrowRight, RotateCcw, Trophy } fro
 import { useSocialScenarios } from "@/hooks/useSocialScenarios";
 import { SocialScenariosProgress } from "@/components/SocialScenariosProgress";
 import { SocialScenariosAchievements } from "@/components/SocialScenariosAchievements";
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { GameResultsDashboard } from '@/components/GameResultsDashboard';
+import { supabase } from '@/integrations/supabase/client';
 
 const SocialScenarios = () => {
   const { user } = useAuth();
