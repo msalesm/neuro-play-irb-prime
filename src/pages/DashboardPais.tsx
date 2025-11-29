@@ -143,9 +143,13 @@ export default function DashboardPais() {
         setChildren(childProfiles);
         setSelectedChild(childProfiles[0].id);
       }
+
+      // Mesmo sem crianças, encerramos o loading para mostrar o estado vazio
+      setLoading(false);
     } catch (error) {
       console.error('Error loading children:', error);
       toast.error('Erro ao carregar perfis');
+      setLoading(false);
     }
   };
 

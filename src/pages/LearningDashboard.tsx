@@ -323,21 +323,25 @@ export default function LearningDashboard() {
         </Tabs>
 
         {/* Quick Actions */}
-        <Card className="p-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <h3 className="text-xl font-bold mb-2">{t('dashboard.readyToPlay')}</h3>
-              <p className="opacity-90">{t('dashboard.continueJourney')}</p>
+        <Card className="p-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white overflow-hidden">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="text-center md:text-left">
+              <h3 className="text-xl font-bold mb-2 break-words">{t('dashboard.readyToPlay')}</h3>
+              <p className="opacity-90 break-words">{t('dashboard.continueJourney')}</p>
             </div>
-            <div className="flex gap-3">
-              <Button variant="secondary" asChild>
-                <Link to="/games" className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+              <Button variant="secondary" className="w-full sm:w-auto" asChild>
+                <Link to="/games" className="flex items-center justify-center gap-2">
                   <Gamepad2 className="w-4 h-4" />
                   {t('dashboard.playGames')}
                 </Link>
               </Button>
-              <Button variant="outline" className="border-border text-foreground hover:bg-accent" asChild>
-                <Link to="/diagnostic-tests" className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto border-border text-foreground bg-background/90 hover:bg-accent"
+                asChild
+              >
+                <Link to="/diagnostic-tests" className="flex items-center justify-center gap-2">
                   <Brain className="w-4 h-4" />
                   {t('dashboard.takeAssessment')}
                 </Link>

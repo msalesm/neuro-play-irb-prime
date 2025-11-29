@@ -118,7 +118,11 @@ export const translations = {
       noActivities: 'Nenhuma atividade recente',
       weeklyProgress: 'Progresso Semanal',
       viewDetails: 'Ver Detalhes',
-      continueTrail: 'Continuar Trilha'
+      continueTrail: 'Continuar Trilha',
+      readyToPlay: 'Pronto para jogar',
+      continueJourney: 'Continue a jornada de aprendizagem',
+      playGames: 'Jogar jogos',
+      takeAssessment: 'Fazer avaliação'
     },
     
     // Common
@@ -256,7 +260,11 @@ export const translations = {
       noActivities: 'No recent activities',
       weeklyProgress: 'Weekly Progress',
       viewDetails: 'View Details',
-      continueTrail: 'Continue Trail'
+      continueTrail: 'Continue Trail',
+      readyToPlay: 'Ready to play',
+      continueJourney: 'Continue your journey',
+      playGames: 'Play games',
+      takeAssessment: 'Take assessment'
     },
     
     common: {
@@ -393,7 +401,11 @@ export const translations = {
       noActivities: 'Sin actividades recientes',
       weeklyProgress: 'Progreso Semanal',
       viewDetails: 'Ver Detalles',
-      continueTrail: 'Continuar Ruta'
+      continueTrail: 'Continuar Ruta',
+      readyToPlay: 'Listo para jugar',
+      continueJourney: 'Continúa tu viaje de aprendizaje',
+      playGames: 'Jugar juegos',
+      takeAssessment: 'Hacer evaluación'
     },
     
     common: {
