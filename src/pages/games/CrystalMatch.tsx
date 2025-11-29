@@ -324,6 +324,9 @@ class Game {
   private scoreDisplay: PIXI.Text | null;
   private selectionHighlight: PIXI.Graphics | null;
   private isCheckingForCascadingMatches: boolean;
+  private comboCount: number;
+  private comboDisplay: PIXI.Text | null;
+  private comboContainer: PIXI.Container | null;
   private callbacks: {
     onStart: () => void;
     onMove: (correct: boolean) => void;
@@ -355,6 +358,9 @@ class Game {
     this.isCheckingForCascadingMatches = false;
     this.callbacks = callbacks;
     this.usePowerUpCallback = null;
+    this.comboCount = 0;
+    this.comboDisplay = null;
+    this.comboContainer = null;
   }
 
   setPowerUpCallback(callback: (row: number, col: number) => void) {
@@ -812,6 +818,7 @@ class Game {
     this.grid = [];
     this.gems = [];
     this.selectedGem = null;
+    this.comboCount = 0;
     this.boardOffset.x = (this.app.screen.width - this.gridSize * this.cellSize) / 2;
     this.boardOffset.y = 120;
 
@@ -991,6 +998,10 @@ class Game {
           this.moves--;
           this.updateUI();
           this.callbacks.onMove(true);
+          // Resetar combo em nova jogada manual
+          if (this.comboCount > 0) {
+            this.resetCombo();
+          }
           this.matchesFound(matches);
         } else {
           this.callbacks.onMove(false);
@@ -1081,10 +1092,23 @@ class Game {
   }
 
   matchesFound(matches: Array<{ row: number; col: number }>) {
-    const points = matches.length * 10;
+    // Incrementar combo
+    this.comboCount++;
+    
+    // Calcular multiplicador baseado no combo
+    const comboMultiplier = Math.min(this.comboCount, 10); // Máximo 10x
+    const basePoints = matches.length * 10;
+    const points = basePoints * comboMultiplier;
+    
     this.score += points;
     this.updateUI();
     this.callbacks.onScore(points);
+    
+    // Mostrar combo visual
+    if (this.comboCount > 1) {
+      this.showComboDisplay();
+    }
+    
     this.updateMatches(matches);
 
     if (matches.length >= 4 && matches.length < 6) {
@@ -1105,7 +1129,151 @@ class Game {
       setTimeout(() => {
         this.dropGems();
       }, 300);
-    }, 600); // Tempo aumentado para as animações completas
+    }, 600);
+  }
+
+  showComboDisplay() {
+    // Remover combo display anterior se existir
+    if (this.comboContainer) {
+      this.app.stage.removeChild(this.comboContainer);
+    }
+
+    this.comboContainer = new PIXI.Container();
+    
+    // Fundo do combo
+    const comboBg = new PIXI.Graphics();
+    comboBg.beginFill(0x000000, 0.7);
+    comboBg.drawRoundedRect(-120, -40, 240, 80, 15);
+    comboBg.endFill();
+    
+    // Borda brilhante
+    const border = new PIXI.Graphics();
+    const borderColor = this.comboCount >= 5 ? 0xff00ff : this.comboCount >= 3 ? 0xffd700 : 0x00ffff;
+    border.lineStyle(4, borderColor);
+    border.drawRoundedRect(-120, -40, 240, 80, 15);
+    
+    // Texto COMBO
+    const comboLabel = new PIXI.Text('COMBO', {
+      fontSize: 20,
+      fill: 0xffffff,
+      fontWeight: 'bold',
+    });
+    comboLabel.anchor.set(0.5);
+    comboLabel.y = -15;
+    
+    // Número do combo
+    const comboNumber = new PIXI.Text(`x${this.comboCount}`, {
+      fontSize: 36,
+      fill: borderColor,
+      fontWeight: 'bold',
+      stroke: 0x000000,
+    });
+    comboNumber.anchor.set(0.5);
+    comboNumber.y = 15;
+    
+    this.comboContainer.addChild(comboBg);
+    this.comboContainer.addChild(border);
+    this.comboContainer.addChild(comboLabel);
+    this.comboContainer.addChild(comboNumber);
+    
+    // Posicionar no centro superior da tela
+    this.comboContainer.x = this.app.screen.width / 2;
+    this.comboContainer.y = 80;
+    
+    this.app.stage.addChild(this.comboContainer);
+    
+    // Criar efeitos de partículas ao redor do combo
+    this.createComboParticles();
+    
+    // Animação de entrada
+    this.comboContainer.scale.set(0);
+    let scale = 0;
+    const animateIn = () => {
+      scale += 0.15;
+      if (scale > 1.2) scale = 1.2;
+      this.comboContainer!.scale.set(scale);
+      
+      if (scale < 1.2) {
+        requestAnimationFrame(animateIn);
+      } else {
+        // Bounce back
+        let bounceScale = 1.2;
+        const bounce = () => {
+          bounceScale -= 0.05;
+          if (bounceScale < 1) bounceScale = 1;
+          this.comboContainer!.scale.set(bounceScale);
+          
+          if (bounceScale > 1) {
+            requestAnimationFrame(bounce);
+          }
+        };
+        bounce();
+      }
+    };
+    animateIn();
+  }
+
+  createComboParticles() {
+    if (!this.comboContainer) return;
+    
+    const centerX = this.comboContainer.x;
+    const centerY = this.comboContainer.y;
+    const particleColor = this.comboCount >= 5 ? 0xff00ff : this.comboCount >= 3 ? 0xffd700 : 0x00ffff;
+    
+    for (let i = 0; i < 16; i++) {
+      const particle = new PIXI.Graphics();
+      particle.beginFill(particleColor);
+      particle.drawStar(0, 0, 4, 6, 3);
+      particle.endFill();
+      
+      const angle = (Math.PI * 2 * i) / 16;
+      const radius = 80;
+      particle.x = centerX + Math.cos(angle) * radius;
+      particle.y = centerY + Math.sin(angle) * radius;
+      
+      this.app.stage.addChild(particle);
+      
+      let life = 1.0;
+      let rotation = 0;
+      const animateParticle = () => {
+        rotation += 0.2;
+        life -= 0.03;
+        particle.rotation = rotation;
+        particle.alpha = life;
+        particle.scale.set(life * 1.5);
+        
+        if (life > 0) {
+          requestAnimationFrame(animateParticle);
+        } else {
+          this.app.stage.removeChild(particle);
+        }
+      };
+      animateParticle();
+    }
+  }
+
+  resetCombo() {
+    this.comboCount = 0;
+    
+    // Fade out do combo display
+    if (this.comboContainer) {
+      let alpha = 1;
+      let scale = 1;
+      const fadeOut = () => {
+        alpha -= 0.05;
+        scale += 0.05;
+        this.comboContainer!.alpha = alpha;
+        this.comboContainer!.scale.set(scale);
+        
+        if (alpha > 0) {
+          requestAnimationFrame(fadeOut);
+        } else {
+          this.app.stage.removeChild(this.comboContainer!);
+          this.comboContainer = null;
+        }
+      };
+      fadeOut();
+    }
   }
 
   updateMatches(matches: Array<{ row: number; col: number }>) {
@@ -1489,6 +1657,14 @@ class Game {
       this.matchesFound(matches);
       return;
     }
+    
+    // Resetar combo quando não há mais matches
+    if (this.comboCount > 0) {
+      setTimeout(() => {
+        this.resetCombo();
+      }, 1000);
+    }
+    
     this.movingGems = Math.max(0, this.movingGems - 1);
   }
 }
