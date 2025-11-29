@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -49,6 +50,32 @@ export default function Settings() {
 
   const childProfileId = localStorage.getItem('selectedChildProfile');
 
+  // Load settings from database
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const { data: { user: currentUser } } = await supabase.auth.getUser();
+        if (!currentUser) return;
+
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .select('preferences')
+          .eq('user_id', currentUser.id)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (data?.preferences && typeof data.preferences === 'object') {
+          setSettings(prev => ({ ...prev, ...(data.preferences as Record<string, any>) }));
+        }
+      } catch (error) {
+        console.error('Error loading settings:', error);
+      }
+    };
+
+    loadSettings();
+  }, []);
+
   const updateSetting = (key: string, value: boolean | string) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
@@ -56,6 +83,52 @@ export default function Settings() {
   const handleRestartMobileTour = () => {
     localStorage.removeItem('neuroplay-mobile-tour-completed');
     toast.success('Tour reiniciado! Recarregue a página para ver o tour novamente.');
+  };
+
+  const handleSaveSettings = async () => {
+    try {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) {
+        toast.error('Usuário não autenticado');
+        return;
+      }
+
+      const { error } = await supabase
+        .from('user_profiles')
+        .upsert({
+          user_id: currentUser.id,
+          preferences: settings,
+          updated_at: new Date().toISOString(),
+        });
+
+      if (error) throw error;
+
+      toast.success('Configurações salvas com sucesso!');
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast.error('Erro ao salvar configurações');
+    }
+  };
+
+  const handleResetSettings = () => {
+    setSettings({
+      dyslexicFont: false,
+      highContrast: false,
+      reduceMotion: false,
+      largeText: false,
+      soundEffects: true,
+      backgroundMusic: false,
+      visualEffects: true,
+      gameReminders: true,
+      progressUpdates: true,
+      achievementAlerts: true,
+      dataCollection: true,
+      shareProgress: false,
+      analyticsOptIn: true,
+      theme: 'auto',
+      colorScheme: 'default'
+    });
+    toast.success('Configurações restauradas para o padrão');
   };
 
   return (
@@ -367,8 +440,12 @@ export default function Settings() {
 
           {/* Save Button */}
           <div className="flex justify-end gap-4">
-            <Button variant="outline">Resetar Padrões</Button>
-            <Button>Salvar Configurações</Button>
+            <Button variant="outline" onClick={handleResetSettings}>
+              Resetar Padrões
+            </Button>
+            <Button onClick={handleSaveSettings}>
+              Salvar Configurações
+            </Button>
           </div>
         </div>
         </div>
