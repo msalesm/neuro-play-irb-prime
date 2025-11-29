@@ -13,9 +13,7 @@ import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 import { withBiofeedback, useBiofeedbackIntegration } from '@/components/withBiofeedback';
 import { FocusForestStats } from "@/components/FocusForestStats";
 import { FocusForestAchievements } from "@/components/FocusForestAchievements";
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { GameProgressBar } from '@/components/GameProgressBar';
 
@@ -53,22 +51,15 @@ function FocusForestGame() {
   const biofeedback = useBiofeedbackIntegration();
   
   const {
-    currentSession,
-    isSaving,
-    startSession: startAutoSave,
-    updateSession: updateAutoSave,
-    completeSession: completeAutoSave,
-    abandonSession
-  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
-
-  const {
-    unfinishedSessions,
-    hasUnfinishedSessions,
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recoveredSession,
     resumeSession,
-    discardSession
-  } = useSessionRecovery('focus_forest');
-
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+    discardRecoveredSession
+  } = useGameSession('focus-forest');
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [level, setLevel] = useState(0);
