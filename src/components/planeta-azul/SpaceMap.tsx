@@ -1,6 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Lock } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 import type { Planeta } from '@/types/planeta';
 
 interface SpaceMapProps {
@@ -90,45 +92,46 @@ export function SpaceMap({ planetas, onPlanetClick, selectedPlanetId }: SpaceMap
   };
 
   return (
-    <div className="relative w-full h-[600px] rounded-xl overflow-hidden shadow-2xl">
+    <div className="relative w-full h-[600px] md:h-[600px] h-[500px] rounded-xl overflow-hidden shadow-2xl">
       <canvas 
         ref={canvasRef} 
         className="absolute inset-0 w-full h-full"
       />
 
       {/* Planetas */}
-      {planetas.map((planeta) => {
-        const size = getPlanetSize(planeta.tamanho);
-        const isSelected = selectedPlanetId === planeta.id;
-        const isHovered = hoveredPlanetId === planeta.id;
+      <div className="md:block hidden">
+        {planetas.map((planeta) => {
+          const size = getPlanetSize(planeta.tamanho);
+          const isSelected = selectedPlanetId === planeta.id;
+          const isHovered = hoveredPlanetId === planeta.id;
 
-        return (
-          <motion.div
-            key={planeta.id}
-            className="absolute cursor-pointer"
-            style={{
-              left: `${planeta.posicao.x}%`,
-              top: `${planeta.posicao.y}%`,
-              transform: 'translate(-50%, -50%)',
-            }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ 
-              scale: isSelected ? 1.2 : isHovered ? 1.1 : 1,
-              opacity: 1 
-            }}
-            transition={{ 
-              duration: 0.5,
-              delay: planetas.indexOf(planeta) * 0.1
-            }}
-            whileHover={{ scale: 1.15 }}
-            onClick={() => {
-              onPlanetClick(planeta);
-              // Navigate to planet details on double click or after a short delay
-              setTimeout(() => navigate(`/planeta/${planeta.id}`), 300);
-            }}
-            onMouseEnter={() => setHoveredPlanetId(planeta.id)}
-            onMouseLeave={() => setHoveredPlanetId(null)}
-          >
+          return (
+            <motion.div
+              key={planeta.id}
+              className="absolute cursor-pointer"
+              style={{
+                left: `${planeta.posicao.x}%`,
+                top: `${planeta.posicao.y}%`,
+                transform: 'translate(-50%, -50%)',
+              }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ 
+                scale: isSelected ? 1.2 : isHovered ? 1.1 : 1,
+                opacity: 1 
+              }}
+              transition={{ 
+                duration: 0.5,
+                delay: planetas.indexOf(planeta) * 0.1
+              }}
+              whileHover={{ scale: 1.15 }}
+              onClick={() => {
+                onPlanetClick(planeta);
+                // Navigate to planet details on double click or after a short delay
+                setTimeout(() => navigate(`/planeta/${planeta.id}`), 300);
+              }}
+              onMouseEnter={() => setHoveredPlanetId(planeta.id)}
+              onMouseLeave={() => setHoveredPlanetId(null)}
+            >
             <div className="relative">
               {/* Planeta Glow */}
               <div 
@@ -192,6 +195,73 @@ export function SpaceMap({ planetas, onPlanetClick, selectedPlanetId }: SpaceMap
           </motion.div>
         );
       })}
+      </div>
+
+      {/* Mobile Grid View */}
+      <div className="md:hidden grid grid-cols-2 gap-4 p-4">
+        {planetas.map((planeta, idx) => {
+          const size = getPlanetSize(planeta.tamanho);
+          const isSelected = selectedPlanetId === planeta.id;
+
+          return (
+            <motion.div
+              key={planeta.id}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: idx * 0.1 }}
+              onClick={() => {
+                onPlanetClick(planeta);
+                setTimeout(() => navigate(`/planeta/${planeta.id}`), 300);
+              }}
+              className="cursor-pointer"
+            >
+              <div className="relative bg-background/90 backdrop-blur-sm rounded-xl p-4 border-2 transition-all"
+                style={{
+                  borderColor: isSelected ? planeta.cor : 'rgba(255,255,255,0.1)',
+                  transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                }}
+              >
+                {/* Planet Icon */}
+                <div className="flex justify-center mb-3">
+                  <div
+                    className="w-20 h-20 rounded-full flex items-center justify-center text-3xl shadow-lg border-4"
+                    style={{
+                      backgroundColor: `${planeta.cor}80`,
+                      borderColor: planeta.desbloqueado ? planeta.cor : 'rgba(255,255,255,0.2)',
+                      filter: planeta.desbloqueado ? 'none' : 'grayscale(80%)',
+                    }}
+                  >
+                    {planeta.icone}
+                  </div>
+                </div>
+
+                {/* Planet Name */}
+                <h3 className="text-center font-bold text-sm mb-2">{planeta.nome}</h3>
+
+                {/* Progress */}
+                {planeta.desbloqueado && (
+                  <div className="space-y-1">
+                    <Progress 
+                      value={(planeta.progressoAtual / planeta.totalMissoes) * 100} 
+                      className="h-1.5"
+                    />
+                    <p className="text-xs text-center text-muted-foreground">
+                      {planeta.progressoAtual}/{planeta.totalMissoes} missões
+                    </p>
+                  </div>
+                )}
+
+                {!planeta.desbloqueado && (
+                  <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+                    <Lock className="w-3 h-3" />
+                    <span>Bloqueado</span>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
 
       {/* Legend */}
       <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">

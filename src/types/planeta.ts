@@ -24,6 +24,7 @@ export interface JogoPlaneta {
   rota: string;
   icone: string;
   completado: boolean;
+  novo?: boolean;
 }
 
 export interface MissaoSemanal {
