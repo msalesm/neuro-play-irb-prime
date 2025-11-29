@@ -1478,6 +1478,27 @@ export type Database = {
         }
         Relationships: []
       }
+      tour_completions: {
+        Row: {
+          completed_at: string | null
+          id: string
+          tour_name: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          id?: string
+          tour_name: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          id?: string
+          tour_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_key: string
