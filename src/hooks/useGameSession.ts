@@ -17,7 +17,7 @@ interface SessionData {
   [key: string]: any;
 }
 
-export function useGameSession(gameId: string, childProfileId?: string) {
+export function useGameSession(gameId: string, childProfileId?: string, isTestMode: boolean = false) {
   const { user } = useAuth();
   const { toast } = useToast();
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -141,6 +141,13 @@ export function useGameSession(gameId: string, childProfileId?: string) {
   };
 
   const startSession = useCallback(async (data?: SessionData, initialDifficulty?: number) => {
+    // Test mode: skip database operations
+    if (isTestMode) {
+      setSessionId('test-session');
+      setIsActive(true);
+      return { success: true, sessionId: 'test-session' };
+    }
+
     if (!user) {
       toast({
         title: "Erro",
@@ -222,6 +229,13 @@ export function useGameSession(gameId: string, childProfileId?: string) {
   }, [user, gameId, childProfileId, currentDifficulty, toast]);
 
   const endSession = useCallback(async (data?: SessionData) => {
+    // Test mode: skip database operations
+    if (isTestMode) {
+      setIsActive(false);
+      setSessionId(null);
+      return { success: true };
+    }
+
     if (!sessionId || !isActive) {
       return { success: false };
     }
@@ -293,6 +307,11 @@ export function useGameSession(gameId: string, childProfileId?: string) {
   }, [sessionId, isActive, toast]);
 
   const updateSession = useCallback(async (data: SessionData) => {
+    // Test mode: skip database operations
+    if (isTestMode) {
+      return { success: true };
+    }
+
     if (!sessionId || !isActive) {
       return { success: false };
     }

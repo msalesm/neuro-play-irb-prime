@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as PIXI from 'pixi.js';
 import { useGameSession } from '@/hooks/useGameSession';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
+import { useGameProfile } from '@/hooks/useGameProfile';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
@@ -12,83 +11,18 @@ import { hapticsEngine } from '@/lib/haptics';
 
 export default function CrystalMatch() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { childProfileId, isTestMode, loading, user } = useGameProfile();
+  const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || undefined, isTestMode);
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<PIXI.Application | null>(null);
   const gameRef = useRef<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [gameStarted, setGameStarted] = useState(false);
-  const [childProfileId, setChildProfileId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isAdminMode, setIsAdminMode] = useState(false);
-  
-  const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || undefined);
 
-  // Load child profile from database or enable admin mode
-  useEffect(() => {
-    if (user) {
-      loadChildProfile();
-    } else {
-      setError('Você precisa estar logado para jogar');
-      setIsLoading(false);
-    }
-  }, [user]);
-
-  const loadChildProfile = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      
-      // Check if user is admin
-      const { data: roles } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user?.id);
-
-      const isAdmin = roles?.some(r => r.role === 'admin');
-      
-      // First check localStorage
-      const storedId = localStorage.getItem('selectedChildProfile');
-      if (storedId) {
-        setChildProfileId(storedId);
-        setIsLoading(false);
-        return;
-      }
-
-      // If not in localStorage, fetch from database
-      const { data: profiles, error: profileError } = await supabase
-        .from('child_profiles')
-        .select('id')
-        .eq('parent_user_id', user?.id)
-        .limit(1)
-        .maybeSingle();
-
-      if (profileError) {
-        console.error('Error loading profile:', profileError);
-      }
-
-      if (profiles?.id) {
-        setChildProfileId(profiles.id);
-        localStorage.setItem('selectedChildProfile', profiles.id);
-        setIsLoading(false);
-      } else if (isAdmin) {
-        // Admin mode: allow playing without child profile
-        setIsAdminMode(true);
-        setIsLoading(false);
-        toast.success('Modo Admin: Jogando sem perfil de criança');
-      } else {
-        setError('Perfil da criança não encontrado. Por favor, crie um perfil primeiro.');
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error('Error loading child profile:', error);
-      setError('Erro ao carregar perfil da criança');
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
-    if ((childProfileId || isAdminMode) && !error) {
+    if (!loading && !error) {
       initializeGame();
     }
 
@@ -97,12 +31,11 @@ export default function CrystalMatch() {
         appRef.current.destroy(true, { children: true, texture: true });
       }
     };
-  }, [childProfileId, isAdminMode, error]);
+  }, [loading, error]);
 
   const initializeGame = async () => {
     if (!containerRef.current) {
       setError('Container não encontrado');
-      setIsLoading(false);
       return;
     }
 
@@ -131,21 +64,16 @@ export default function CrystalMatch() {
       app.ticker.add((ticker) => {
         game.update(ticker.deltaTime);
       });
-
-      setIsLoading(false);
     } catch (error) {
       console.error('Error initializing game:', error);
       setError('Erro ao inicializar o jogo. Por favor, tente novamente.');
-      setIsLoading(false);
     }
   };
 
   const handleGameStart = async () => {
     setGameStarted(true);
     hapticsEngine.trigger('tap');
-    if (!isAdminMode) {
-      await startSession();
-    }
+    await startSession();
   };
 
   const handleMove = async (correct: boolean) => {
@@ -153,12 +81,10 @@ export default function CrystalMatch() {
       hapticsEngine.trigger('success');
     }
     
-    if (!isAdminMode) {
-      await updateSession({
-        score: gameRef.current?.score || 0,
-        moves: gameRef.current?.moves || 0,
-      });
-    }
+    await updateSession({
+      score: gameRef.current?.score || 0,
+      moves: gameRef.current?.moves || 0,
+    });
   };
 
   const handleScore = (points: number) => {
@@ -168,15 +94,14 @@ export default function CrystalMatch() {
   const handleGameOver = async (finalScore: number, totalMoves: number) => {
     hapticsEngine.trigger('achievement');
     
-    if (!isAdminMode) {
-      await endSession({
-        score: finalScore,
-        accuracy: finalScore > 0 ? 100 : 0,
-        timeSpent: 0,
-      });
-    }
+    await endSession({
+      score: finalScore,
+      accuracy: finalScore > 0 ? 100 : 0,
+      timeSpent: 0,
+    });
 
-    toast.success(`Jogo finalizado! Pontuação: ${finalScore}${isAdminMode ? ' (Modo Admin - sem salvar progresso)' : ''}`);
+    const modeText = isTestMode ? ' (Modo Teste)' : '';
+    toast.success(`Jogo finalizado! Pontuação: ${finalScore}${modeText}`);
   };
 
   const handleRestart = () => {
@@ -222,9 +147,9 @@ export default function CrystalMatch() {
           <p className="text-white/70">
             Combine 3 ou mais cristais para pontuar!
           </p>
-          {isAdminMode && (
+          {isTestMode && (
             <Badge className="mt-2 bg-[#c7923e] text-white">
-              🛡️ Modo Admin - Teste sem perfil
+              🎮 Modo Teste - Sem salvar progresso
             </Badge>
           )}
         </div>
@@ -266,7 +191,7 @@ export default function CrystalMatch() {
 
             {/* Game Container */}
             <div className="flex justify-center items-center">
-              {isLoading ? (
+              {loading ? (
                 <div className="text-white text-center py-12">
                   <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
                   <p>Carregando jogo...</p>

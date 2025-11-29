@@ -1,8 +1,20 @@
 import { StackTowerGame } from '@/components/StackTowerGame';
 import { GameExitButton } from '@/components/GameExitButton';
-import { Trophy, Target, Zap, Timer } from 'lucide-react';
+import { Trophy, Target, Zap } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { useGameProfile } from '@/hooks/useGameProfile';
 
 export default function StackTower() {
+  const { isTestMode, loading } = useGameProfile();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-vortex-900 via-vortex-800 to-vortex-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-vortex-400" />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-vortex-900 via-vortex-800 to-vortex-900 relative overflow-hidden">
       {/* Background Effects */}
@@ -15,6 +27,11 @@ export default function StackTower() {
       <div className="absolute top-20 left-1/2 -translate-x-1/2 z-10 text-center">
         <h1 className="text-3xl font-bold text-white mb-2">Torre Perfeita</h1>
         <p className="text-white/80 text-sm">Planeta Vortex - Foco e Precisão</p>
+        {isTestMode && (
+          <Badge className="mt-2 bg-[#c7923e] text-white">
+            🎮 Modo Teste
+          </Badge>
+        )}
       </div>
 
       {/* Game Stats */}

@@ -3,20 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { CosmicSequenceGame } from '@/components/CosmicSequenceGame';
 import { GameExitButton } from '@/components/GameExitButton';
 import { useGameSession } from '@/hooks/useGameSession';
+import { useGameProfile } from '@/hooks/useGameProfile';
 import { HapticProvider } from '@/contexts/HapticContext';
 import { Brain, Target, Sparkles, Zap } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 
 export default function CosmicSequence() {
   const navigate = useNavigate();
-  const childProfileId = localStorage.getItem('selectedChildProfile');
+  const { childProfileId, isTestMode, loading } = useGameProfile();
   
   const {
     startSession,
     endSession,
     updateSession,
     recordMetric,
-  } = useGameSession('cosmic-sequence', childProfileId || undefined);
+  } = useGameSession('cosmic-sequence', childProfileId || undefined, isTestMode);
 
   const [totalTaps, setTotalTaps] = useState(0);
   const [correctTaps, setCorrectTaps] = useState(0);
@@ -24,17 +26,13 @@ export default function CosmicSequence() {
   const [reactionTimes, setReactionTimes] = useState<number[]>([]);
   const [lastTapTime, setLastTapTime] = useState(0);
 
-  // Check if child profile is loaded
-  useEffect(() => {
-    if (!childProfileId) {
-      toast.error('Perfil não encontrado. Retornando ao Sistema Planeta Azul...', {
-        duration: 3000,
-      });
-      setTimeout(() => {
-        navigate('/sistema-planeta-azul');
-      }, 3000);
-    }
-  }, [childProfileId, navigate]);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-fuchsia-950">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400" />
+      </div>
+    );
+  }
 
   const handleGameStart = async () => {
     await startSession({ score: 0 });
@@ -125,6 +123,11 @@ export default function CosmicSequence() {
           <Brain className="w-5 h-5 text-purple-400" />
           Sequência Cósmica
         </h2>
+        {isTestMode && (
+          <Badge className="mb-2 bg-[#c7923e] text-white">
+            🎮 Modo Teste
+          </Badge>
+        )}
         <p className="text-sm text-gray-300 mb-3">
           Jogo de memória e sequenciamento para fortalecer atenção visual e padrões.
         </p>
