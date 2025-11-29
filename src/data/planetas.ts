@@ -15,6 +15,17 @@ export const planetas: Planeta[] = [
     ],
     jogos: [
       {
+        id: 'cosmic-sequence',
+        nome: 'Sequência Cósmica',
+        descricao: 'Observe e repita sequências de luzes - trabalha memória e padrões visuais',
+        duracao: 5,
+        dificuldade: 2,
+        rota: '/games/cosmic-sequence',
+        icone: '✨',
+        completado: false,
+        novo: true
+      },
+      {
         id: 'emotion-lab',
         nome: 'Laboratório de Emoções',
         descricao: 'Identifique e compreenda diferentes emoções através de expressões faciais',
@@ -53,16 +64,6 @@ export const planetas: Planeta[] = [
         rota: '/games/theory-of-mind',
         icone: '🧠',
         completado: false
-      },
-      {
-        id: 'cosmic-sequence',
-        nome: 'Sequência Cósmica',
-        descricao: 'Observe e repita sequências de luzes - trabalha memória e padrões visuais',
-        duracao: 5,
-        dificuldade: 2,
-        rota: '/games/cosmic-sequence',
-        icone: '✨',
-        completado: false
       }
     ],
     recompensa: 'Dissipar a névoa sensorial e revelar auroras deslumbrantes',
@@ -86,6 +87,17 @@ export const planetas: Planeta[] = [
       'Gestão do Tempo'
     ],
     jogos: [
+      {
+        id: 'stack-tower',
+        nome: 'Torre Perfeita',
+        descricao: 'Construa a torre mais alta praticando timing perfeito e controle de impulsos',
+        duracao: 5,
+        dificuldade: 2,
+        rota: '/games/stack-tower',
+        icone: '🏗️',
+        completado: false,
+        novo: true
+      },
       {
         id: 'attention-sustained',
         nome: 'Missão Cronometrada',
@@ -124,16 +136,6 @@ export const planetas: Planeta[] = [
         dificuldade: 2,
         rota: '/games/foco-rapido-phases',
         icone: '⚡',
-        completado: false
-      },
-      {
-        id: 'stack-tower',
-        nome: 'Torre Perfeita',
-        descricao: 'Construa a torre mais alta praticando timing perfeito e controle de impulsos',
-        duracao: 5,
-        dificuldade: 2,
-        rota: '/games/stack-tower',
-        icone: '🏗️',
         completado: false
       }
     ],

@@ -252,7 +252,14 @@ export default function PlanetaDetalhes() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 + idx * 0.1 }}
                   >
-                    <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300">
+                    <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 relative">
+                      {jogo.novo && (
+                        <Badge 
+                          className="absolute -top-2 -right-2 h-6 px-2 text-xs bg-gradient-to-r from-amber-500 to-orange-500 border-0 shadow-lg animate-pulse z-10"
+                        >
+                          🌟 NOVO
+                        </Badge>
+                      )}
                       <CardContent className="p-4">
                         <div className="flex items-start gap-4">
                           <div 

@@ -114,13 +114,20 @@ export function PlanetCard({ planeta, onClick }: PlanetCardProps) {
                 key={jogo.id}
                 variant="ghost"
                 size="sm"
-                className="h-auto py-2 px-2 flex flex-col items-start gap-1 hover:bg-secondary/50"
+                className="h-auto py-2 px-2 flex flex-col items-start gap-1 hover:bg-secondary/50 relative"
                 onClick={(e) => {
                   e.stopPropagation();
                   if (planeta.desbloqueado) navigate(jogo.rota);
                 }}
                 disabled={!planeta.desbloqueado}
               >
+                {jogo.novo && (
+                  <Badge 
+                    className="absolute -top-1 -right-1 h-5 px-1.5 text-[10px] bg-gradient-to-r from-amber-500 to-orange-500 border-0 shadow-lg animate-pulse"
+                  >
+                    NOVO
+                  </Badge>
+                )}
                 <div className="flex items-center gap-1 w-full">
                   <span className="text-base">{jogo.icone}</span>
                   {jogo.completado && (
