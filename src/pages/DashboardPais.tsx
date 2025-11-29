@@ -112,9 +112,10 @@ export default function DashboardPais() {
     if (!selectedChild) return;
     
     try {
+      // Check if child has avatar customization data
       const { data: childData, error } = await supabase
-        .from('children')
-        .select('id, avatar_url')
+        .from('child_profiles')
+        .select('id')
         .eq('id', selectedChild)
         .maybeSingle();
 
@@ -123,7 +124,8 @@ export default function DashboardPais() {
         return;
       }
 
-      if (childData && !childData.avatar_url) {
+      // Always show avatar modal on first visit if no avatar selected yet
+      if (childData && !selectedChildData?.avatar_url) {
         setTimeout(() => {
           setShowAvatarModal(true);
         }, 500);
@@ -141,11 +143,11 @@ export default function DashboardPais() {
 
   const loadChildren = async () => {
     try {
-      // Load children from children table
+      // Load children from child_profiles table (correct table for all app queries)
       const { data: childrenData, error } = await supabase
-        .from('children')
-        .select('id, name, birth_date, avatar_url')
-        .eq('parent_id', user?.id);
+        .from('child_profiles')
+        .select('id, name, date_of_birth, diagnosed_conditions')
+        .eq('parent_user_id', user?.id);
 
       if (error) {
         console.error('Error loading children:', error?.message || error);
@@ -156,10 +158,10 @@ export default function DashboardPais() {
 
       if (childrenData && childrenData.length > 0) {
         const childProfiles: ChildProfile[] = childrenData.map((child: any) => {
-          // Calculate age from birth_date
+          // Calculate age from date_of_birth
           let calculatedAge = 0;
-          if (child.birth_date) {
-            const birthDate = new Date(child.birth_date);
+          if (child.date_of_birth) {
+            const birthDate = new Date(child.date_of_birth);
             const today = new Date();
             calculatedAge = today.getFullYear() - birthDate.getFullYear();
           }
@@ -168,8 +170,8 @@ export default function DashboardPais() {
             id: child.id,
             name: child.name || 'Sem nome',
             age: calculatedAge,
-            profile: undefined,
-            avatar_url: child.avatar_url
+            profile: child.diagnosed_conditions?.[0],
+            avatar_url: undefined // child_profiles doesn't store avatar_url directly
           };
         });
         setChildren(childProfiles);
