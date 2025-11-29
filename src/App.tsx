@@ -242,6 +242,7 @@ const App = () => (
                   
           {/* Therapist Routes */}
           <Route path="/therapist/patients" element={<TherapistPatients />} />
+          <Route path="/therapist/dashboard" element={<TherapistPatients />} />
           <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
           
           {/* Teacher Routes */}
