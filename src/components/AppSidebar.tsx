@@ -160,6 +160,11 @@ export function AppSidebar() {
       icon: BarChart3,
     },
     {
+      title: 'Gerenciar Usuários',
+      path: '/admin/users',
+      icon: Users,
+    },
+    {
       title: 'Mapas de Risco',
       path: '/admin/risk-maps',
       icon: TrendingUp,
