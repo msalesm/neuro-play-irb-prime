@@ -426,32 +426,50 @@ export default function DashboardPais() {
               </Card>
             )}
 
-            {/* Emotional Check-in Card */}
-            <Card className="mb-8 border-l-4 border-l-[#c7923e]" data-tour="emotional-checkin">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between flex-wrap gap-4">
+            {/* Quick Actions */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/sistema-planeta-azul')}>
+                <CardContent className="p-6">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#c7923e]/20 to-red-500/20 flex items-center justify-center text-3xl">
-                      ❤️
+                    <div className="w-12 h-12 rounded-full bg-[#005a70]/10 flex items-center justify-center">
+                      <Sparkles className="w-6 h-6 text-[#005a70]" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">Como está se sentindo hoje?</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Faça um check-in emocional rápido - leva apenas 2 minutos
-                      </p>
+                      <h3 className="font-semibold">Sistema Planeta Azul</h3>
+                      <p className="text-sm text-muted-foreground">Universo de jogos terapêuticos</p>
                     </div>
                   </div>
-                  <Button 
-                    size="lg"
-                    className="bg-gradient-to-r from-[#c7923e] to-red-500"
-                     onClick={() => navigate('/chat')}
-                  >
-                    <Heart className="w-5 h-5 mr-2" />
-                    Chat Terapêutico
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/parent-activities')}>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-red-500" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Atividades Cooperativas</h3>
+                      <p className="text-sm text-muted-foreground">Jogos para pais e filhos</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/chat')}>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-[#c7923e]/10 flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-[#c7923e]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Chat Terapêutico</h3>
+                      <p className="text-sm text-muted-foreground">Acompanhamento emocional</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Main Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
