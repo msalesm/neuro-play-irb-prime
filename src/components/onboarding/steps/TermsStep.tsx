@@ -30,7 +30,7 @@ export function TermsStep({ data, updateData }: Props) {
             <div className="text-sm space-y-3 pr-4">
               <p className="font-semibold text-irb-petrol">1. Natureza do Serviço</p>
               <p>
-                A NeuroPlay IRB Prime é uma plataforma de apoio terapêutico e educacional desenvolvida em parceria com a IRB Prime Care. 
+                A NeuroPlay é uma plataforma de apoio terapêutico e educacional baseada em evidências científicas. 
                 Não substitui diagnóstico, tratamento ou acompanhamento profissional especializado.
               </p>
               
@@ -48,7 +48,7 @@ export function TermsStep({ data, updateData }: Props) {
               
               <p className="font-semibold text-irb-petrol">4. Propriedade Intelectual</p>
               <p>
-                Todo o conteúdo da plataforma é propriedade da IRB Prime Care e seus parceiros, protegido por direitos autorais.
+                Todo o conteúdo da plataforma é propriedade da NeuroPlay e seus parceiros, protegido por direitos autorais.
               </p>
             </div>
           </ScrollArea>

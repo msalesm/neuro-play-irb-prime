@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Stethoscope, Brain, Target, TrendingUp, ArrowRight, GraduationCap, Zap, BookOpen, BarChart3 } from "lucide-react";
+import { Stethoscope, Brain, Target, TrendingUp, ArrowRight, GraduationCap, Zap, BookOpen, BarChart3, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -20,6 +20,162 @@ const Index = () => {
       <AccessibilityControls />
       <NeuroPlayHero />
       <MVPGameModules />
+      
+      {/* Sistema Planeta Azul - Feature Highlight */}
+      <section className="py-24 bg-gradient-to-br from-primary via-secondary to-primary relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          {[...Array(30)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            />
+          ))}
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-accent text-accent-foreground border-accent/50">
+              Novo • Sistema Planeta Azul 🪐
+            </Badge>
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Universo Terapêutico Gamificado
+            </h2>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto">
+              Explore 5 planetas temáticos com jogos adaptativos, missões e avatares evolutivos
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 transition-all">
+              <CardHeader className="text-center">
+                <div className="text-4xl mb-4">🌟</div>
+                <CardTitle className="text-white">Planeta Aurora</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80 text-sm text-center">
+                  TEA - Teoria da Mente, flexibilidade cognitiva e regulação sensorial
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 transition-all">
+              <CardHeader className="text-center">
+                <div className="text-4xl mb-4">🌀</div>
+                <CardTitle className="text-white">Planeta Vortex</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80 text-sm text-center">
+                  TDAH - Atenção sustentada, controle inibitório e memória de trabalho
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 transition-all">
+              <CardHeader className="text-center">
+                <div className="text-4xl mb-4">💡</div>
+                <CardTitle className="text-white">Planeta Lumen</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-white/80 text-sm text-center">
+                  Dislexia - Consciência fonológica, leitura e processamento linguístico
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {user && (
+            <div className="text-center mt-12">
+              <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 shadow-glow">
+                <Link to="/sistema-planeta-azul" className="flex items-center gap-2">
+                  🪐 Explorar Sistema Planeta Azul
+                </Link>
+              </Button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Advanced Features Section */}
+      <section className="py-24 bg-gradient-to-br from-background to-muted/30">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+              Funcionalidades Avançadas
+            </Badge>
+            <h2 className="text-4xl font-bold mb-6">
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Tecnologia de Ponta para Desenvolvimento Cognitivo
+              </span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Plataforma completa com IA, gamificação e análise comportamental em tempo real
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card className="shadow-card hover:shadow-glow transition-all duration-300">
+              <CardHeader className="text-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-6 h-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Avatar Evolutivo</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center">
+                  Personagem que evolui com o progresso da criança, desbloqueando novos acessórios e níveis
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-card hover:shadow-glow transition-all duration-300">
+              <CardHeader className="text-center">
+                <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Award className="w-6 h-6 text-secondary" />
+                </div>
+                <CardTitle className="text-lg">Sistema de Missões</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center">
+                  Desafios diários e semanais que mantêm o engajamento e motivação constantes
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-card hover:shadow-glow transition-all duration-300">
+              <CardHeader className="text-center">
+                <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Brain className="w-6 h-6 text-accent" />
+                </div>
+                <CardTitle className="text-lg">Chatbot Terapêutico</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center">
+                  Assistente IA para check-ins emocionais e orientações personalizadas para pais
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-card hover:shadow-glow transition-all duration-300">
+              <CardHeader className="text-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <BarChart3 className="w-6 h-6 text-primary" />
+                </div>
+                <CardTitle className="text-lg">Análise Preditiva</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground text-center">
+                  IA detecta padrões comportamentais e antecipa necessidades de intervenção
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
       
       {/* Educational System Section */}
       <section className="py-24 bg-gradient-to-br from-primary/5 to-secondary/10">

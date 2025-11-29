@@ -43,7 +43,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               <SidebarTrigger className="hover:bg-accent hover:text-accent-foreground" />
               
               <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                <span>NeuroPlay IRB Prime</span>
+                <span>NeuroPlay</span>
                 <span>•</span>
                 <span>Plataforma de Desenvolvimento Cognitivo</span>
               </div>

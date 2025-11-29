@@ -26,7 +26,7 @@ export function SpaceMap({ planetas, onPlanetClick, selectedPlanetId }: SpaceMap
     canvas.height = canvas.offsetHeight;
 
     // Clear canvas
-    ctx.fillStyle = 'rgba(10, 30, 53, 0.95)'; // Azul petróleo IRB Prime
+    ctx.fillStyle = 'rgba(10, 30, 53, 0.95)'; // Azul petróleo
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw stars
@@ -47,7 +47,7 @@ export function SpaceMap({ planetas, onPlanetClick, selectedPlanetId }: SpaceMap
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       
-      ctx.strokeStyle = 'rgba(0, 90, 112, 0.3)'; // Azul médio IRB Prime
+      ctx.strokeStyle = 'rgba(0, 90, 112, 0.3)'; // Azul médio
       ctx.lineWidth = 1;
       ctx.setLineDash([5, 5]);
 
@@ -64,7 +64,7 @@ export function SpaceMap({ planetas, onPlanetClick, selectedPlanetId }: SpaceMap
     drawOrbitalPaths();
 
     // Draw connection lines between planets
-    ctx.strokeStyle = 'rgba(199, 146, 62, 0.2)'; // Dourado IRB Prime
+    ctx.strokeStyle = 'rgba(199, 146, 62, 0.2)'; // Dourado
     ctx.lineWidth = 2;
     for (let i = 0; i < planetas.length - 1; i++) {
       const from = planetas[i];
