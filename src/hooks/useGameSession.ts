@@ -155,10 +155,14 @@ export function useGameSession(gameId: string, childProfileId?: string) {
         .from('cognitive_games')
         .select('id')
         .eq('game_id', gameId)
-        .single();
+        .maybeSingle();
 
-      if (gameError || !gameData) {
-        throw new Error('Jogo não encontrado');
+      if (gameError) {
+        throw new Error(`Erro ao buscar jogo: ${gameError.message}`);
+      }
+
+      if (!gameData) {
+        throw new Error(`Jogo "${gameId}" não encontrado no sistema`);
       }
 
       let profileId = childProfileId;

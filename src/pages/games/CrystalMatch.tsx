@@ -88,34 +88,44 @@ export default function CrystalMatch() {
   }, [childProfileId, error]);
 
   const initializeGame = async () => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) {
+      setError('Container não encontrado');
+      setIsLoading(false);
+      return;
+    }
 
-    const app = new PIXI.Application();
-    await app.init({
-      width: Math.min(window.innerWidth - 32, 600),
-      height: Math.min(window.innerHeight - 200, 800),
-      backgroundColor: 0x1a1a2e,
-      antialias: true,
-    });
+    try {
+      const app = new PIXI.Application();
+      await app.init({
+        width: Math.min(window.innerWidth - 32, 600),
+        height: Math.min(window.innerHeight - 200, 800),
+        backgroundColor: 0x1a1a2e,
+        antialias: true,
+      });
 
-    containerRef.current.appendChild(app.canvas);
-    appRef.current = app;
+      containerRef.current.appendChild(app.canvas);
+      appRef.current = app;
 
-    const game = new Game(app, {
-      onStart: handleGameStart,
-      onMove: handleMove,
-      onScore: handleScore,
-      onGameOver: handleGameOver,
-    });
+      const game = new Game(app, {
+        onStart: handleGameStart,
+        onMove: handleMove,
+        onScore: handleScore,
+        onGameOver: handleGameOver,
+      });
 
-    await game.setup();
-    gameRef.current = game;
+      await game.setup();
+      gameRef.current = game;
 
-    app.ticker.add((ticker) => {
-      game.update(ticker.deltaTime);
-    });
+      app.ticker.add((ticker) => {
+        game.update(ticker.deltaTime);
+      });
 
-    setIsLoading(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error initializing game:', error);
+      setError('Erro ao inicializar o jogo. Por favor, tente novamente.');
+      setIsLoading(false);
+    }
   };
 
   const handleGameStart = async () => {
