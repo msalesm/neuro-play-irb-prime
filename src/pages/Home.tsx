@@ -15,7 +15,13 @@ export default function Home() {
 
     // If not authenticated, show landing page
     if (!user) {
-      navigate('/auth', { replace: true });
+      navigate('/landing', { replace: true });
+      return;
+    }
+
+    // If user has no role, redirect to onboarding
+    if (!role) {
+      navigate('/onboarding', { replace: true });
       return;
     }
 

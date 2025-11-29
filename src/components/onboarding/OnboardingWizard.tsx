@@ -194,7 +194,7 @@ export function OnboardingWizard() {
       // Navigate based on role
       switch (data.selectedRole) {
         case 'parent':
-          navigate('/dashboard');
+          navigate('/dashboard-pais');
           break;
         case 'therapist':
           navigate('/therapist/patients');
@@ -203,10 +203,10 @@ export function OnboardingWizard() {
           navigate('/teacher/classes');
           break;
         case 'admin':
-          navigate('/admin/dashboard');
+          navigate('/admin/network');
           break;
         default:
-          navigate('/dashboard');
+          navigate('/dashboard-pais');
       }
     } catch (error: any) {
       console.error('Erro ao finalizar onboarding:', error);
