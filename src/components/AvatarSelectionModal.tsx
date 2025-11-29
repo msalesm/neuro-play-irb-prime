@@ -25,8 +25,13 @@ export const AvatarSelectionModal = ({ open, onComplete, childId }: AvatarSelect
   const [saving, setSaving] = useState(false);
 
   const handleSave = async () => {
-    if (!selectedAvatar || !childId) {
+    if (!selectedAvatar) {
       toast.error('Selecione um avatar primeiro');
+      return;
+    }
+
+    if (!childId) {
+      toast.error('ID da criança não encontrado');
       return;
     }
 
@@ -39,13 +44,16 @@ export const AvatarSelectionModal = ({ open, onComplete, childId }: AvatarSelect
         })
         .eq('id', childId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
-      toast.success('Avatar selecionado com sucesso!');
+      toast.success('Avatar selecionado com sucesso! 🎉');
       onComplete();
     } catch (error) {
       console.error('Error saving avatar:', error);
-      toast.error('Erro ao salvar avatar');
+      toast.error('Erro ao salvar avatar. Tente novamente.');
     } finally {
       setSaving(false);
     }
