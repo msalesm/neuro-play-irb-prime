@@ -5,9 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Play, RotateCcw, Volume2, VolumeX, Trophy, Info } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 import { SimonButton } from "@/components/games/SimonButton";
@@ -37,20 +35,16 @@ export default function MemoriaColorida() {
   const [showTutorial, setShowTutorial] = useState(true);
   
   const {
-    currentSession,
-    isSaving,
-    startSession: startAutoSave,
-    updateSession: updateAutoSave,
-    completeSession: completeAutoSave,
-    abandonSession
-  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
-
-  const {
-    unfinishedSessions,
-    hasUnfinishedSessions,
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recordMetric,
+    recoveredSession,
     resumeSession,
-    discardSession
-  } = useSessionRecovery('memoria_colorida_v2');
+    discardRecoveredSession
+  } = useGameSession('memoria-colorida');
 
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [sequence, setSequence] = useState<SimonColor[]>([]);
@@ -93,10 +87,10 @@ export default function MemoriaColorida() {
 
   // Session recovery
   useEffect(() => {
-    if (hasUnfinishedSessions && gameState === 'idle' && !currentSession) {
+    if (recoveredSession && gameState === 'idle' && !isActive) {
       setShowRecoveryModal(true);
     }
-  }, [hasUnfinishedSessions, gameState, currentSession]);
+  }, [recoveredSession, gameState, isActive]);
 
   const playSequence = useCallback((seq: SimonColor[]) => {
     console.log('🎵 Tocando sequência:', seq);
@@ -135,15 +129,14 @@ export default function MemoriaColorida() {
   const startGame = useCallback(async () => {
     try {
       console.log('🎮 Iniciando jogo...');
-      const memoryTrail = getTrailByCategory('memory');
-      console.log('📚 Trilha encontrada:', memoryTrail);
       
-      const sessionId = await startAutoSave('memoria_colorida_v2', stats.level, {
-        trailId: memoryTrail?.id
-      });
-      console.log('💾 Sessão criada:', sessionId);
+      const result = await startSession({
+        score: 0
+      }, stats.level);
+      
+      console.log('💾 Sessão criada:', result);
 
-      if (sessionId) {
+      if (result.success) {
         const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
         const newSequence = [firstColor];
         setSequence(newSequence);
@@ -177,21 +170,17 @@ export default function MemoriaColorida() {
       setShowTutorial(false);
       playSequence(newSequence);
     }
-  }, [stats.level, getTrailByCategory, startAutoSave, playSequence]);
+  }, [stats.level, startSession, playSequence]);
 
   const handleResumeSession = async (session: any) => {
+    const recoveredData = resumeSession(session);
+    
     setStats({
       ...stats,
-      score: session.performance_data.score || 0,
-      level: session.level,
-      correctAnswers: session.performance_data.correctAnswers || 0,
-      totalAttempts: session.performance_data.totalAttempts || 0
-    });
-    
-    const memoryTrail = getTrailByCategory('memory');
-    await startAutoSave('memoria_colorida_v2', session.level, {
-      sessionId: session.id,
-      trailId: memoryTrail?.id
+      score: recoveredData.score || 0,
+      level: session.difficulty_level || 1,
+      correctAnswers: recoveredData.correctMoves || 0,
+      totalAttempts: recoveredData.totalMoves || 0
     });
 
     setGameState('idle');
@@ -231,15 +220,11 @@ export default function MemoriaColorida() {
         }
 
         // Auto-save progress
-        updateAutoSave({
+        await updateSession({
           score: newStats.score,
-          moves: newStats.totalAttempts,
           correctMoves: newStats.correctAnswers,
-          additionalData: {
-            level: newStats.level,
-            streak: newStats.streak,
-            sequence_length: sequence.length
-          }
+          totalMoves: newStats.totalAttempts,
+          reactionTimes: []
         });
         
         // Play success sound
@@ -279,16 +264,12 @@ export default function MemoriaColorida() {
       setStats(finalStats);
       
       // Complete session
-      await completeAutoSave({
+      await endSession({
         score: finalStats.score,
-        moves: finalStats.totalAttempts,
         correctMoves: finalStats.correctAnswers,
+        totalMoves: finalStats.totalAttempts,
         accuracy: (finalStats.correctAnswers / finalStats.totalAttempts) * 100,
-        additionalData: {
-          level: finalStats.level,
-          bestStreak: finalStats.bestStreak,
-          perfectRounds: finalStats.perfectRounds
-        }
+        timeSpent: 0
       });
       
       setGameState('gameOver');
@@ -342,25 +323,48 @@ export default function MemoriaColorida() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-8">
       <div className="container mx-auto px-4 max-w-6xl">
-        <SessionRecoveryModal
-          open={showRecoveryModal}
-          sessions={unfinishedSessions}
-          onResume={handleResumeSession}
-          onDiscard={async (sessionId) => {
-            await discardSession(sessionId);
-            setShowRecoveryModal(false);
-          }}
-          onStartNew={() => setShowRecoveryModal(false)}
-        />
+        {recoveredSession && (
+          <Card className="bg-yellow-900/20 border-yellow-700/50 mb-8">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-yellow-200 font-medium">Sessão anterior encontrada</p>
+                  <p className="text-yellow-300/70 text-sm">Score: {recoveredSession.score}</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleResumeSession(recoveredSession)}
+                    className="bg-yellow-700/30 border-yellow-600"
+                  >
+                    Retomar
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={discardRecoveredSession}
+                    className="bg-gray-700/30 border-gray-600"
+                  >
+                    Descartar
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex gap-2 items-center">
-            {isSaving && <Badge variant="outline" className="bg-blue-500/20 text-blue-300">💾 Salvando...</Badge>}
             <GameExitButton
               variant="quit"
               onExit={async () => {
-                await abandonSession();
+                if (isActive) {
+                  await endSession({
+                    quitReason: 'user_quit'
+                  });
+                }
               }}
               showProgress={gameState === 'playing'}
               currentProgress={playerSequence.length}
