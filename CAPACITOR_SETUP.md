@@ -8,6 +8,7 @@ Este guia explica como transformar o NeuroPlay em aplicativo nativo para iOS e A
 2. **Plugin Haptics** - Feedback háptico nativo (funciona no iPhone!)
 3. **Sistema híbrido** - Detecta automaticamente web vs nativo
 4. **Hot-reload ativo** - Testa mudanças direto no dispositivo
+5. **Ícones e Splash Screens customizados** - Branding IRB Prime consistente
 
 ## 🚀 Como testar no seu iPhone ou Android
 
@@ -20,6 +21,39 @@ Este guia explica como transformar o NeuroPlay em aplicativo nativo para iOS e A
 ```bash
 npm install
 ```
+
+### Passo 2.5: Gerar ícones e splash screens customizados
+
+**IMPORTANTE:** Antes de adicionar as plataformas, gere os assets customizados do NeuroPlay!
+
+1. **Preparar imagens fonte** (já incluídas em `resources/`):
+   - `resources/icon.png` - Ícone do app (mínimo 1024x1024px, PNG com fundo)
+   - `resources/splash.png` - Splash screen (mínimo 2732x2732px, PNG)
+
+2. **Instalar ferramenta de assets:**
+```bash
+npm install @capacitor/assets --save-dev
+```
+
+3. **Gerar todos os tamanhos automaticamente:**
+```bash
+npx capacitor-assets generate
+```
+
+Isso criará automaticamente:
+- **iOS:** Ícones em todos os tamanhos (20x20 até 1024x1024)
+- **Android:** Ícones adaptive, mipmap, e splash screens
+- **Todos otimizados** para cada densidade de tela
+
+4. **Personalizar ícone/splash (opcional):**
+   - Substitua `resources/icon.png` pelo logo final do NeuroPlay
+   - Substitua `resources/splash.png` por imagem de splash personalizada
+   - Re-execute `npx capacitor-assets generate`
+
+**Dica:** Para splash screen com logo centralizado em fundo sólido:
+- Use imagem 2732x2732px
+- Logo centralizado com área segura de 1200x1200px
+- Fundo cor `#0a1e35` (petróleo azul IRB Prime)
 
 ### Passo 3: Adicionar plataformas nativas
 
