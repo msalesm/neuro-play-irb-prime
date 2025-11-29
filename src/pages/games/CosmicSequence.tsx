@@ -5,6 +5,7 @@ import { GameExitButton } from '@/components/GameExitButton';
 import { useGameSession } from '@/hooks/useGameSession';
 import { HapticProvider } from '@/contexts/HapticContext';
 import { Brain, Target, Sparkles, Zap } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function CosmicSequence() {
   const navigate = useNavigate();
@@ -22,6 +23,18 @@ export default function CosmicSequence() {
   const [wrongTaps, setWrongTaps] = useState(0);
   const [reactionTimes, setReactionTimes] = useState<number[]>([]);
   const [lastTapTime, setLastTapTime] = useState(0);
+
+  // Check if child profile is loaded
+  useEffect(() => {
+    if (!childProfileId) {
+      toast.error('Perfil não encontrado. Retornando ao Sistema Planeta Azul...', {
+        duration: 3000,
+      });
+      setTimeout(() => {
+        navigate('/sistema-planeta-azul');
+      }, 3000);
+    }
+  }, [childProfileId, navigate]);
 
   const handleGameStart = async () => {
     await startSession({ score: 0 });

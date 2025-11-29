@@ -168,13 +168,13 @@ export function useGameSession(gameId: string, childProfileId?: string) {
           .select('id')
           .eq('parent_user_id', user.id)
           .limit(1)
-          .single();
+          .maybeSingle();
         
         profileId = profiles?.id;
       }
 
       if (!profileId) {
-        throw new Error('Perfil da criança não encontrado');
+        throw new Error('Perfil da criança não encontrado. Por favor, complete o cadastro do perfil da criança primeiro.');
       }
 
       const { count } = await supabase

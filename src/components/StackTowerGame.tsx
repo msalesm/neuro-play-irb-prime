@@ -25,12 +25,13 @@ export function StackTowerGame() {
   const [isPaused, setIsPaused] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   
+  const childProfileId = localStorage.getItem('selectedChildProfile');
   const {
     startSession,
     updateSession,
     endSession,
     isActive
-  } = useGameSession('stack-tower');
+  } = useGameSession('stack-tower', childProfileId || undefined);
 
   useEffect(() => {
     if (!containerRef.current) return;
