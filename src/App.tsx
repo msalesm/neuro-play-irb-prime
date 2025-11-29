@@ -39,11 +39,8 @@ import CrystalMatch from "./pages/games/CrystalMatch";
 const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
-import AttentionSustained from "./pages/games/AttentionSustainedGame";
-import AttentionSustainedAdaptive from "./pages/games/AttentionSustainedAdaptive";
 import AttentionSustainedPhases from "./pages/games/AttentionSustainedPhases";
 import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
-import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
 import CognitiveFlexibilityPhases from "./pages/games/CognitiveFlexibilityPhases";
 import ExecutiveProcessingPhases from "./pages/games/ExecutiveProcessingPhases";
 import FocusForestPhases from "./pages/games/FocusForestPhases";
@@ -51,8 +48,6 @@ import FocoRapidoPhases from "./pages/games/FocoRapidoPhases";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import MemoryWorkload from "./pages/games/MemoryWorkload";
 import TheoryOfMind from "./pages/games/TheoryOfMind";
-import ExecutiveProcessing from "./pages/games/ExecutiveProcessing";
-import ExecutiveProcessingGame from "./pages/games/ExecutiveProcessingGame";
 import EmotionLab from "./pages/games/EmotionLab";
 import SpatialArchitect from "./pages/games/SpatialArchitect";
 import FocoRapido from "./pages/games/FocoRapido";
@@ -62,7 +57,6 @@ import PlanetaDetalhes from "./pages/PlanetaDetalhes";
 import AvatarEvolutionPage from "./pages/AvatarEvolutionPage";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
-import PixelPlatformer from "./pages/PixelPlatformer";
 import NotFound from "./pages/NotFound";
 
 // Screening pages
@@ -203,30 +197,19 @@ const App = () => (
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/games/touch-mapper" element={<TouchMapper />} />
                   <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
-          <Route path="/games/executive-processing" element={<ExecutiveProcessing />} />
-          <Route path="/games/executive-processing-game" element={<ExecutiveProcessingGame />} />
+          {/* Jogos com sistema de fases */}
           <Route path="/games/executive-processing-phases" element={<ExecutiveProcessingPhases />} />
-          <Route path="/games/executive-processing-play" element={<ExecutiveProcessing />} />
+          <Route path="/games/attention-sustained-phases" element={<AttentionSustainedPhases />} />
+          <Route path="/games/focus-forest-phases" element={<FocusForestPhases />} />
+          <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
+          <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
+          
+          {/* Jogos standalone */}
+          <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
+          <Route path="/games/memory-workload" element={<MemoryWorkload />} />
+          <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
           <Route path="/games/emotion-lab" element={<EmotionLab />} />
           <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
-          <Route path="/games/attention-sustained" element={<AttentionSustained />} />
-          <Route path="/games/attention-sustained-phases" element={<AttentionSustainedPhases />} />
-          <Route path="/games/attention-sustained-play" element={<AttentionSustained />} />
-          <Route path="/games/focus-forest-phases" element={<FocusForestPhases />} />
-          <Route path="/games/focus-forest-play" element={<FocusForest />} />
-          <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
-          <Route path="/games/foco-rapido-play" element={<FocoRapido />} />
-          <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibilityPhases />} />
-          <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibility />} />
-                  <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
-                  <Route path="/games/memory-workload" element={<MemoryWorkload />} />
-                  <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
-                  <Route path="/games/executive-processing" element={<ExecutiveProcessing />} />
-                  <Route path="/games/executive-processing-game" element={<ExecutiveProcessingGame />} />
-                  <Route path="/games/emotion-lab" element={<EmotionLab />} />
-                  <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
-                  <Route path="/games/foco-rapido" element={<FocoRapido />} />
-                  <Route path="/games/pixel-platformer" element={<PixelPlatformer />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/diagnostic-tests" element={<DiagnosticTests />} />

@@ -93,7 +93,7 @@ export function MobileMenu() {
       items: [
         { title: 'Turmas', path: '/teacher/classes', icon: School },
         { title: 'PEI Escolar', path: '/teacher-dashboard', icon: GraduationCap },
-        { title: 'Estratégias', path: '/teacher-training', icon: BookOpen },
+        { title: 'Estratégias', path: '/training', icon: BookOpen },
       ],
     });
   }
