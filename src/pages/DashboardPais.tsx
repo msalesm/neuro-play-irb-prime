@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   Brain, TrendingUp, Award, Calendar, Download, 
   ArrowLeft, Heart, Target, Sparkles, Activity,
-  Clock, CheckCircle2, AlertCircle, FileText, BookOpen
+  Clock, CheckCircle2, AlertCircle, FileText, BookOpen, Trophy
 } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { useAuth } from '@/hooks/useAuth';
@@ -21,6 +21,7 @@ import { BadgeUnlockModal } from '@/components/BadgeUnlockModal';
 import { AIGameRecommendations } from '@/components/AIGameRecommendations';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 import { TourAchievementsPanel } from '@/components/TourAchievementsPanel';
+import { useAchievementSystem } from "@/hooks/useAchievementSystem";
 
 interface ChildProfile {
   id: string;
@@ -58,6 +59,7 @@ export default function DashboardPais() {
   const [loading, setLoading] = useState(true);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const { missions, loading: missionsLoading } = useDailyMissions(selectedChild);
+  const { badgeProgress, avatarEvolution, getBadgeIcon, getBadgeColor } = useAchievementSystem(user?.id);
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [unlockedBadge, setUnlockedBadge] = useState<{
     name: string;
@@ -494,6 +496,46 @@ export default function DashboardPais() {
                     />
                   </div>
                 )}
+
+                {/* Achievement System Preview */}
+                <Card>
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold flex items-center gap-2">
+                        <Trophy className="w-5 h-5" />
+                        Sistema de Conquistas
+                      </h3>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to="/achievements">Ver Tudo</Link>
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Badge Preview */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">Badge Atual</span>
+                          <span className="text-2xl">{getBadgeIcon(badgeProgress.level)}</span>
+                        </div>
+                        <div className={`p-3 rounded-lg bg-gradient-to-br ${getBadgeColor(badgeProgress.level)}`}>
+                          <p className="text-white font-semibold capitalize">{badgeProgress.level}</p>
+                          <p className="text-white/80 text-xs">{badgeProgress.current} conquistas</p>
+                        </div>
+                      </div>
+
+                      {/* Avatar Preview */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">Avatar</span>
+                          <Sparkles className="w-4 h-4 text-purple-500" />
+                        </div>
+                        <div className="p-3 rounded-lg bg-gradient-to-br from-purple-100 to-pink-100">
+                          <p className="text-purple-900 font-semibold">Estágio {avatarEvolution.stage}/5</p>
+                          <p className="text-purple-700 text-xs">{avatarEvolution.xp} XP</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
 
                 {/* AI Game Recommendations */}
                 {selectedChild && (

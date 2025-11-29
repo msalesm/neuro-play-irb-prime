@@ -93,6 +93,7 @@ import DashboardPais from "./pages/DashboardPais";
 import IRBPrimeLanding from "./pages/IRBPrimeLanding";
 import Home from "./pages/Home";
 import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
+import AchievementsPage from "./pages/AchievementsPage";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -169,6 +170,9 @@ const App = () => (
                   <Route path="/sistema-planeta-azul" element={<SistemaPlanetaAzul />} />
                   <Route path="/planeta/:planetaId" element={<PlanetaDetalhes />} />
                   <Route path="/avatar-evolution" element={<AvatarEvolutionPage />} />
+                  <Route path="/therapeutic-chat" element={<TherapeuticChatPage />} />
+                  <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
+                  <Route path="/achievements" element={<AchievementsPage />} />
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
                   <Route path="/games/caca-foco" element={<CacaFoco />} />
                   <Route path="/games/logica-rapida" element={<LogicaRapida />} />
