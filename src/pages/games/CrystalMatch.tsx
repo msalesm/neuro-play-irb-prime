@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as PIXI from 'pixi.js';
 import { useGameSession } from '@/hooks/useGameSession';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
@@ -9,23 +11,58 @@ import { hapticsEngine } from '@/lib/haptics';
 
 export default function CrystalMatch() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const containerRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<PIXI.Application | null>(null);
   const gameRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [gameStarted, setGameStarted] = useState(false);
+  const [childProfileId, setChildProfileId] = useState<string | null>(null);
   
-  const childProfileId = localStorage.getItem('selectedChildProfile');
-  const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || '');
+  const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || undefined);
+
+  // Load child profile from database
+  useEffect(() => {
+    if (user) {
+      loadChildProfile();
+    }
+  }, [user]);
+
+  const loadChildProfile = async () => {
+    try {
+      // First check localStorage
+      const storedId = localStorage.getItem('selectedChildProfile');
+      if (storedId) {
+        setChildProfileId(storedId);
+        return;
+      }
+
+      // If not in localStorage, fetch from database
+      const { data: profiles } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', user?.id)
+        .limit(1)
+        .maybeSingle();
+
+      if (profiles?.id) {
+        setChildProfileId(profiles.id);
+        localStorage.setItem('selectedChildProfile', profiles.id);
+      } else {
+        toast.error('Perfil da criança não encontrado');
+        navigate('/dashboard-pais');
+      }
+    } catch (error) {
+      console.error('Error loading child profile:', error);
+      toast.error('Erro ao carregar perfil da criança');
+      navigate('/dashboard-pais');
+    }
+  };
 
   useEffect(() => {
-    if (!childProfileId) {
-      toast.error('Perfil da criança não encontrado');
-      navigate('/sistema-planeta-azul');
-      return;
+    if (childProfileId) {
+      initializeGame();
     }
-
-    initializeGame();
 
     return () => {
       if (appRef.current) {
