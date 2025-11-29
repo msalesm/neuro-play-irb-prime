@@ -82,6 +82,7 @@ import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
 import AdminRiskMaps from "./pages/AdminRiskMaps";
 import ParentChildActivities from "./pages/ParentChildActivities";
 import CooperativePuzzle from "./pages/games/CooperativePuzzle";
+import RiskAnalysisPage from "./pages/RiskAnalysisPage";
 import EmotionalHistoryDashboard from "./pages/EmotionalHistoryDashboard";
 import PlatformReport from "./pages/PlatformReport";
 import PlatformManual from "./pages/PlatformManual";
@@ -263,6 +264,7 @@ const App = () => (
           <Route path="/parent-child-activities" element={<ParentChildActivities />} />
           <Route path="/parent-activities" element={<ParentChildActivities />} />
           <Route path="/games/cooperative-puzzle" element={<CooperativePuzzle />} />
+          <Route path="/risk-analysis" element={<RiskAnalysisPage />} />
           <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
           <Route path="/platform-report" element={<PlatformReport />} />
           <Route path="/platform-manual" element={<PlatformManual />} />
