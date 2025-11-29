@@ -382,6 +382,9 @@ class Game {
       }
     }
 
+    // Efeito visual de explosão
+    this.createBombEffect(row, col);
+
     if (matches.length > 0) {
       this.score += matches.length * 20;
       this.updateUI();
@@ -390,13 +393,78 @@ class Game {
     }
   }
 
+  createBombEffect(row: number, col: number) {
+    const centerX = this.boardOffset.x + col * this.cellSize + this.cellSize / 2;
+    const centerY = this.boardOffset.y + row * this.cellSize + this.cellSize / 2;
+
+    // Criar múltiplas partículas de explosão
+    for (let i = 0; i < 20; i++) {
+      const particle = new PIXI.Graphics();
+      particle.beginFill(0xff4500 + Math.random() * 0x00aa00); // Tons de laranja/vermelho
+      particle.drawCircle(0, 0, 3 + Math.random() * 5);
+      particle.endFill();
+      
+      particle.x = centerX;
+      particle.y = centerY;
+      
+      const angle = (Math.PI * 2 * i) / 20;
+      const speed = 3 + Math.random() * 5;
+      const vx = Math.cos(angle) * speed;
+      const vy = Math.sin(angle) * speed;
+      
+      this.gameContainer!.addChild(particle);
+
+      let life = 1.0;
+      const animateParticle = () => {
+        particle.x += vx;
+        particle.y += vy;
+        life -= 0.03;
+        particle.alpha = life;
+        particle.scale.set(life);
+
+        if (life > 0) {
+          requestAnimationFrame(animateParticle);
+        } else {
+          this.gameContainer!.removeChild(particle);
+        }
+      };
+      animateParticle();
+    }
+
+    // Onda de choque
+    const shockwave = new PIXI.Graphics();
+    shockwave.lineStyle(4, 0xff6600);
+    shockwave.drawCircle(0, 0, 10);
+    shockwave.x = centerX;
+    shockwave.y = centerY;
+    this.gameContainer!.addChild(shockwave);
+
+    let radius = 10;
+    const animateShockwave = () => {
+      radius += 8;
+      shockwave.alpha -= 0.08;
+      shockwave.clear();
+      shockwave.lineStyle(4, 0xff6600);
+      shockwave.drawCircle(0, 0, radius);
+
+      if (shockwave.alpha > 0) {
+        requestAnimationFrame(animateShockwave);
+      } else {
+        this.gameContainer!.removeChild(shockwave);
+      }
+    };
+    animateShockwave();
+  }
+
   activateLightning(row: number, col: number) {
     const matches: Array<{ row: number; col: number }> = [];
     
     const rowCount = this.grid[row].filter(cell => cell !== null).length;
     const colCount = this.grid.filter(r => r[col] !== null).length;
 
-    if (rowCount >= colCount) {
+    const isHorizontal = rowCount >= colCount;
+
+    if (isHorizontal) {
       for (let c = 0; c < this.gridSize; c++) {
         if (this.grid[row][c]) {
           matches.push({ row, col: c });
@@ -410,6 +478,9 @@ class Game {
       }
     }
 
+    // Efeito visual de raio
+    this.createLightningEffect(row, col, isHorizontal);
+
     if (matches.length > 0) {
       this.score += matches.length * 15;
       this.updateUI();
@@ -418,9 +489,96 @@ class Game {
     }
   }
 
+  createLightningEffect(row: number, col: number, isHorizontal: boolean) {
+    const startX = this.boardOffset.x + (isHorizontal ? 0 : col * this.cellSize + this.cellSize / 2);
+    const startY = this.boardOffset.y + (isHorizontal ? row * this.cellSize + this.cellSize / 2 : 0);
+    const endX = this.boardOffset.x + (isHorizontal ? this.gridSize * this.cellSize : col * this.cellSize + this.cellSize / 2);
+    const endY = this.boardOffset.y + (isHorizontal ? row * this.cellSize + this.cellSize / 2 : this.gridSize * this.cellSize);
+
+    // Raio principal
+    const lightning = new PIXI.Graphics();
+    lightning.lineStyle(6, 0xffff00);
+    lightning.moveTo(startX, startY);
+    
+    if (isHorizontal) {
+      let currentX = startX;
+      const segments = 8;
+      const segmentLength = (endX - startX) / segments;
+      
+      for (let i = 0; i < segments; i++) {
+        currentX += segmentLength;
+        const offsetY = startY + (Math.random() - 0.5) * 20;
+        lightning.lineTo(currentX, offsetY);
+      }
+    } else {
+      let currentY = startY;
+      const segments = 8;
+      const segmentLength = (endY - startY) / segments;
+      
+      for (let i = 0; i < segments; i++) {
+        currentY += segmentLength;
+        const offsetX = startX + (Math.random() - 0.5) * 20;
+        lightning.lineTo(offsetX, currentY);
+      }
+    }
+    
+    this.gameContainer!.addChild(lightning);
+
+    // Brilhos ao longo do raio
+    for (let i = 0; i < 10; i++) {
+      const sparkle = new PIXI.Graphics();
+      sparkle.beginFill(0xffffff);
+      sparkle.drawStar(0, 0, 4, 8, 3);
+      sparkle.endFill();
+      
+      if (isHorizontal) {
+        sparkle.x = startX + Math.random() * (endX - startX);
+        sparkle.y = startY + (Math.random() - 0.5) * 30;
+      } else {
+        sparkle.x = startX + (Math.random() - 0.5) * 30;
+        sparkle.y = startY + Math.random() * (endY - startY);
+      }
+      
+      this.gameContainer!.addChild(sparkle);
+
+      let rotation = 0;
+      let alpha = 1;
+      const animateSparkle = () => {
+        rotation += 0.2;
+        alpha -= 0.05;
+        sparkle.rotation = rotation;
+        sparkle.alpha = alpha;
+
+        if (alpha > 0) {
+          requestAnimationFrame(animateSparkle);
+        } else {
+          this.gameContainer!.removeChild(sparkle);
+        }
+      };
+      animateSparkle();
+    }
+
+    // Fade do raio
+    let alpha = 1;
+    const fadeLightning = () => {
+      alpha -= 0.1;
+      lightning.alpha = alpha;
+
+      if (alpha > 0) {
+        requestAnimationFrame(fadeLightning);
+      } else {
+        this.gameContainer!.removeChild(lightning);
+      }
+    };
+    fadeLightning();
+  }
+
   activateRainbow(row: number, col: number) {
     const gem = this.gems[row][col];
     if (!gem) return;
+
+    // Efeito visual de arco-íris
+    this.createRainbowEffect(row, col);
 
     const rainbowType = '🌈';
     (gem as any).userData.type = rainbowType;
@@ -433,7 +591,108 @@ class Game {
       if (matches.length > 0) {
         this.matchesFound(matches);
       }
-    }, 300);
+    }, 800);
+  }
+
+  createRainbowEffect(row: number, col: number) {
+    const centerX = this.boardOffset.x + col * this.cellSize + this.cellSize / 2;
+    const centerY = this.boardOffset.y + row * this.cellSize + this.cellSize / 2;
+    
+    const rainbowColors = [0xff0000, 0xff7f00, 0xffff00, 0x00ff00, 0x0000ff, 0x4b0082, 0x9400d3];
+
+    // Círculos expansivos coloridos
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        const circle = new PIXI.Graphics();
+        circle.lineStyle(3, rainbowColors[i % rainbowColors.length]);
+        circle.drawCircle(0, 0, 10);
+        circle.x = centerX;
+        circle.y = centerY;
+        this.gameContainer!.addChild(circle);
+
+        let radius = 10;
+        let alpha = 1;
+        const animateCircle = () => {
+          radius += 6;
+          alpha -= 0.04;
+          circle.alpha = alpha;
+          circle.clear();
+          circle.lineStyle(3, rainbowColors[i % rainbowColors.length]);
+          circle.drawCircle(0, 0, radius);
+
+          if (alpha > 0) {
+            requestAnimationFrame(animateCircle);
+          } else {
+            this.gameContainer!.removeChild(circle);
+          }
+        };
+        animateCircle();
+      }, i * 100);
+    }
+
+    // Partículas de brilho coloridas
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => {
+        const sparkle = new PIXI.Graphics();
+        sparkle.beginFill(rainbowColors[i % rainbowColors.length]);
+        sparkle.drawStar(0, 0, 5, 10, 4);
+        sparkle.endFill();
+        
+        sparkle.x = centerX;
+        sparkle.y = centerY;
+        
+        const angle = (Math.PI * 2 * i) / 30;
+        const speed = 2 + Math.random() * 3;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        
+        this.gameContainer!.addChild(sparkle);
+
+        let life = 1.0;
+        let rotation = 0;
+        const animateSparkle = () => {
+          sparkle.x += vx;
+          sparkle.y += vy;
+          rotation += 0.1;
+          life -= 0.02;
+          sparkle.rotation = rotation;
+          sparkle.alpha = life;
+          sparkle.scale.set(life * 1.5);
+
+          if (life > 0) {
+            requestAnimationFrame(animateSparkle);
+          } else {
+            this.gameContainer!.removeChild(sparkle);
+          }
+        };
+        animateSparkle();
+      }, i * 20);
+    }
+
+    // Pulso de luz central
+    const glow = new PIXI.Graphics();
+    glow.beginFill(0xffffff, 0.6);
+    glow.drawCircle(0, 0, this.cellSize / 2);
+    glow.endFill();
+    glow.x = centerX;
+    glow.y = centerY;
+    this.gameContainer!.addChild(glow);
+
+    let scale = 1;
+    let alpha = 0.6;
+    const animateGlow = () => {
+      scale += 0.1;
+      alpha -= 0.04;
+      glow.scale.set(scale);
+      glow.alpha = alpha;
+
+      if (alpha > 0) {
+        requestAnimationFrame(animateGlow);
+      } else {
+        this.gameContainer!.removeChild(glow);
+      }
+    };
+    animateGlow();
   }
 
   findRainbowMatches(row: number, col: number): Array<{ row: number; col: number }> {
