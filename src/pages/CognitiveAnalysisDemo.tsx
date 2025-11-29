@@ -79,7 +79,7 @@ export default function CognitiveAnalysisDemo() {
             Análise Cognitiva com IA
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Demonstração do sistema de análise cognitiva usando Lovable AI (gemini-2.5-pro) para gerar insights personalizados
+            Demonstração do sistema de análise cognitiva com IA para gerar insights personalizados
           </p>
         </div>
 
@@ -199,7 +199,7 @@ export default function CognitiveAnalysisDemo() {
               <div className="text-center space-y-2">
                 <h3 className="text-xl font-semibold">Analisando Padrões Cognitivos...</h3>
                 <p className="text-sm text-muted-foreground">
-                  Lovable AI (gemini-2.5-pro) está processando os dados de performance
+                  Sistema de IA processando dados de performance
                 </p>
               </div>
             </CardContent>

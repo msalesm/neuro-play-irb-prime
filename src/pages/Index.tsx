@@ -250,9 +250,16 @@ const Index = () => {
                   <CardTitle className="text-lg">Chatbot Terapêutico</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground text-center">
+                  <p className="text-sm text-muted-foreground text-center mb-4">
                     Assistente IA para check-ins emocionais e orientações personalizadas para pais
                   </p>
+                  {user && (
+                    <Button asChild size="sm" className="w-full">
+                      <Link to="/chat">
+                        Acessar Chat
+                      </Link>
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>

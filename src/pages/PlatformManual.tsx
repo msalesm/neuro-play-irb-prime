@@ -91,7 +91,7 @@ export default function PlatformManual() {
       items: [
         {
           question: 'Como funciona o chatbot?',
-          answer: 'Assistente conversacional usando Google Gemini via Lovable AI. Oferece check-ins emocionais diários, coaching parental e interpretação de resultados. Todas as conversas são salvas.',
+          answer: 'Assistente conversacional com IA. Oferece check-ins emocionais diários, coaching parental e interpretação de resultados. Todas as conversas são salvas.',
         },
         {
           question: 'A IA detecta padrões automaticamente?',
@@ -108,7 +108,7 @@ export default function PlatformManual() {
       items: [
         {
           question: 'Quais tipos de relatórios existem?',
-          answer: '1) Relatórios Clínicos IA (perfil cognitivo 6 domínios, análise via Gemini 2.5 Pro), 2) Relatórios Comportamentais (conversas + insights + check-ins), 3) Histórico Emocional (gráficos evolução), 4) Relatório da Plataforma (benchmark competitivo).',
+          answer: '1) Relatórios Clínicos IA (perfil cognitivo 6 domínios, análise automatizada), 2) Relatórios Comportamentais (conversas + insights + check-ins), 3) Histórico Emocional (gráficos evolução), 4) Relatório da Plataforma (funcionalidades implementadas).',
         },
         {
           question: 'Posso exportar relatórios?',

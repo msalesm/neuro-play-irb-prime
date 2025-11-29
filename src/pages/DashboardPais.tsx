@@ -436,10 +436,10 @@ export default function DashboardPais() {
                   <Button 
                     size="lg"
                     className="bg-gradient-to-r from-[#c7923e] to-red-500"
-                    onClick={() => navigate('/therapeutic-chat')}
+                     onClick={() => navigate('/chat')}
                   >
                     <Heart className="w-5 h-5 mr-2" />
-                    Registrar Emoções
+                    Chat Terapêutico
                   </Button>
                 </div>
               </CardContent>
