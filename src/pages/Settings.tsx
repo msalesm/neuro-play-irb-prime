@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { HapticProvider } from '@/contexts/HapticContext';
+import { HapticSettings } from '@/components/HapticSettings';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from 'sonner';
 
@@ -45,6 +47,8 @@ export default function Settings() {
     colorScheme: 'default'
   });
 
+  const childProfileId = localStorage.getItem('selectedChildProfile');
+
   const updateSetting = (key: string, value: boolean | string) => {
     setSettings(prev => ({ ...prev, [key]: value }));
   };
@@ -55,7 +59,8 @@ export default function Settings() {
   };
 
   return (
-    <ModernPageLayout background="minimal">
+    <HapticProvider childProfileId={childProfileId}>
+      <ModernPageLayout background="minimal">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="flex items-center gap-4 mb-8">
           <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
@@ -323,6 +328,9 @@ export default function Settings() {
             </CardContent>
           </Card>
 
+          {/* Haptic Feedback Settings */}
+          <HapticSettings />
+
           {/* Tutorials and Help */}
           {isMobile && (
             <Card className="bg-card/50 backdrop-blur-sm border-border/50">
@@ -363,7 +371,8 @@ export default function Settings() {
             <Button>Salvar Configurações</Button>
           </div>
         </div>
-      </div>
-    </ModernPageLayout>
+        </div>
+      </ModernPageLayout>
+    </HapticProvider>
   );
 }
