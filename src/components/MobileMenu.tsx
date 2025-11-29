@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, Brain, Stethoscope, Settings, User, 
-  Users, School, TrendingUp, Menu, X 
+  Users, School, TrendingUp, Menu, Sparkles, Gamepad2,
+  FileText, ClipboardCheck, GraduationCap, Heart, BookOpen,
+  Trophy, BarChart3
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,6 +21,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 export function MobileMenu() {
   const { user } = useAuth();
+  const { role } = useUserRole();
   const location = useLocation();
   const { t } = useLanguage();
   const [open, setOpen] = useState(false);
@@ -33,32 +37,85 @@ export function MobileMenu() {
     {
       title: 'Principal',
       items: [
-        { title: t('nav.home'), path: '/', icon: Home },
-        { title: t('nav.today'), path: '/dashboard', icon: TrendingUp },
+        { title: 'Sistema de Planetas', path: '/sistema-planeta-azul', icon: Sparkles },
+        { title: 'Missão do Dia', path: '/dashboard', icon: Trophy },
+        { title: 'Jogos Cognitivos', path: '/games', icon: Gamepad2 },
+        { title: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
       ],
     },
     {
-      title: 'Acompanhamento Terapêutico',
+      title: 'Planetas Terapêuticos',
       items: [
-        { title: 'Painel Clínico', path: '/clinical', icon: Stethoscope },
-        { title: 'Evolução Cognitiva', path: '/neuroplasticity', icon: Brain },
+        { title: 'Aurora (TEA)', path: '/planeta/aurora', icon: Sparkles },
+        { title: 'Vortex (TDAH)', path: '/planeta/vortex', icon: Sparkles },
+        { title: 'Lumen (Dislexia)', path: '/planeta/lumen', icon: Sparkles },
+        { title: 'Calm (Regulação)', path: '/planeta/calm', icon: Sparkles },
+        { title: 'Order (Executivas)', path: '/planeta/order', icon: Sparkles },
       ],
     },
     {
-      title: 'Educação & Capacitação',
+      title: 'Avaliação & Triagem',
       items: [
-        { title: 'Educação Parental', path: '/learning-dashboard', icon: Users },
-        { title: 'Capacitação Docente', path: '/teacher-training', icon: School },
-      ],
-    },
-    {
-      title: 'Configurações',
-      items: [
-        { title: 'Perfil da Criança', path: '/profile', icon: User },
-        { title: 'Configurações', path: '/settings', icon: Settings },
+        { title: 'Testes Diagnósticos', path: '/diagnostic-tests', icon: FileText },
+        { title: 'Triagem TUNP', path: '/screening', icon: ClipboardCheck },
       ],
     },
   ];
+
+  // Adiciona seções baseadas no papel do usuário
+  if (role === 'parent' || !role) {
+    menuSections.push({
+      title: 'Pais',
+      items: [
+        { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
+        { title: 'Microlearning', path: '/training', icon: BookOpen },
+        { title: 'Atividades Parent-Child', path: '/parent-child-activities', icon: Users },
+        { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
+        { title: 'Manual da Plataforma', path: '/platform-manual', icon: BookOpen },
+      ],
+    });
+  }
+
+  if (role === 'therapist') {
+    menuSections.push({
+      title: 'Terapeuta',
+      items: [
+        { title: 'Pacientes', path: '/therapist/patients', icon: Users },
+        { title: 'Relatórios', path: '/clinical', icon: FileText },
+        { title: 'PEI Inteligente', path: '/pei', icon: Brain },
+      ],
+    });
+  }
+
+  if (role === 'parent' || !role) {
+    menuSections.push({
+      title: 'Escola',
+      items: [
+        { title: 'Turmas', path: '/teacher/classes', icon: School },
+        { title: 'PEI Escolar', path: '/teacher-dashboard', icon: GraduationCap },
+        { title: 'Estratégias', path: '/teacher-training', icon: BookOpen },
+      ],
+    });
+  }
+
+  if (role === 'admin') {
+    menuSections.push({
+      title: 'Gestor Público',
+      items: [
+        { title: 'Dashboard Geral', path: '/admin/network', icon: BarChart3 },
+        { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
+        { title: 'Mapas de Risco', path: '/admin/risk-maps', icon: TrendingUp },
+      ],
+    });
+  }
+
+  menuSections.push({
+    title: 'Configurações',
+    items: [
+      { title: 'Perfil', path: '/profile', icon: User },
+      { title: 'Configurações', path: '/settings', icon: Settings },
+    ],
+  });
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
