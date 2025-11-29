@@ -6,9 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCcw, Zap, Trophy, Clock, CheckCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { useEducationalSystem } from "@/hooks/useEducationalSystem";
@@ -62,22 +60,15 @@ export default function LogicaRapida() {
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'paused' | 'gameOver'>('idle');
   
   const {
-    currentSession,
-    isSaving,
-    startSession: startAutoSave,
-    updateSession: updateAutoSave,
-    completeSession: completeAutoSave,
-    abandonSession
-  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
-
-  const {
-    unfinishedSessions,
-    hasUnfinishedSessions,
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recoveredSession,
     resumeSession,
-    discardSession
-  } = useSessionRecovery('logic_game');
-
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+    discardRecoveredSession
+  } = useGameSession('logica-rapida');
   const [currentPattern, setCurrentPattern] = useState<Pattern | null>(null);
   const [selectedAnswer, setSelectedAnswer] = useState<PatternItem | null>(null);
   const [stats, setStats] = useState<GameStats>({

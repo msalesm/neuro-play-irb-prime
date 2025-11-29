@@ -8,9 +8,7 @@ import { ArrowLeft, Puzzle, Sparkles, Trophy, Volume2, VolumeX, Star } from "luc
 import { useAuth } from "@/hooks/useAuth";
 import { LevelProgress } from "@/components/LevelProgress";
 import { GameAchievements } from "@/components/GameAchievement";
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { toast } from 'sonner';
@@ -54,22 +52,15 @@ export default function SilabaMagica() {
   const { user } = useAuth();
   
   const {
-    currentSession,
-    isSaving,
-    startSession: startAutoSave,
-    updateSession: updateAutoSave,
-    completeSession: completeAutoSave,
-    abandonSession
-  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
-
-  const {
-    unfinishedSessions,
-    hasUnfinishedSessions,
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recoveredSession,
     resumeSession,
-    discardSession
-  } = useSessionRecovery('syllable_magic');
-
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+    discardRecoveredSession
+  } = useGameSession('silaba-magica');
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'completed' | 'failed'>('idle');
   const [gameMode, setGameMode] = useState<GameMode>('split');
   const [currentChallenge, setCurrentChallenge] = useState<any>(null);

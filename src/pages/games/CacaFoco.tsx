@@ -7,9 +7,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCcw, Target, Trophy, Clock, Eye } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAudioEngine } from "@/hooks/useAudioEngine";
-import { useAutoSave } from '@/hooks/useAutoSave';
-import { useSessionRecovery } from '@/hooks/useSessionRecovery';
-import { SessionRecoveryModal } from '@/components/SessionRecoveryModal';
+import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { toast } from 'sonner';
@@ -57,22 +55,15 @@ export default function CacaFoco() {
   const audio = useAudioEngine();
   
   const {
-    currentSession,
-    isSaving,
-    startSession: startAutoSave,
-    updateSession: updateAutoSave,
-    completeSession: completeAutoSave,
-    abandonSession
-  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
-
-  const {
-    unfinishedSessions,
-    hasUnfinishedSessions,
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recoveredSession,
     resumeSession,
-    discardSession
-  } = useSessionRecovery('caca_foco');
-
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+    discardRecoveredSession
+  } = useGameSession('caca-foco');
   const [gameState, setGameState] = useState<'idle' | 'playing' | 'paused' | 'gameOver'>('idle');
   const [items, setItems] = useState<GameItem[]>([]);
   const [currentTarget, setCurrentTarget] = useState('🎯');
