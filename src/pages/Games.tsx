@@ -6,6 +6,7 @@ import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen 
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { GameIllustration } from "@/components/GameIllustration";
+import { PlatformOnboarding } from "@/components/PlatformOnboarding";
 
 const gamesList = [
   // Jogos Básicos
@@ -262,13 +263,15 @@ export default function Games() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-12 pb-32 relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-3/4 -right-4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl" />
-      </div>
+    <>
+      <PlatformOnboarding pageName="games" />
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-12 pb-32 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 -left-4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-3/4 -right-4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl" />
+        </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
@@ -351,16 +354,17 @@ export default function Games() {
         </Card>
 
         {/* Seção de Jogos Básicos */}
-        <div className="mb-16">
+        <div className="mb-16" data-tour="game-categories">
           <h2 className="text-3xl font-bold mb-8 text-center">
             <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
               Jogos Disponíveis
             </span>
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {gamesList.filter(game => game.type === 'basic').map((game) => (
+            {gamesList.filter(game => game.type === 'basic').map((game, index) => (
               <Card 
                 key={game.id}
+                data-tour={index === 0 ? "game-card" : undefined}
                 className={`p-6 border-white/20 backdrop-blur-sm bg-white/10 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2 group relative overflow-hidden ${
                   !game.unlocked ? 'opacity-75' : ''
                 }`}
@@ -435,6 +439,7 @@ export default function Games() {
         </div>
 
       </div>
-    </div>
+      </div>
+    </>
   );
-}
+};
