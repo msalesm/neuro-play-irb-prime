@@ -6,7 +6,10 @@ import { Link } from "react-router-dom";
 import { Play, RotateCcw, Volume2, VolumeX, Trophy, Info } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameSession } from '@/hooks/useGameSession';
+import { useGameHistory } from '@/hooks/useGameHistory';
+import { useEnhancedFeedback } from '@/hooks/useEnhancedFeedback';
 import { GameExitButton } from '@/components/GameExitButton';
+import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 import { SimonButton } from "@/components/games/SimonButton";
 import { SimonDisplay } from "@/components/games/SimonDisplay";
@@ -14,6 +17,7 @@ import { SimonAchievements } from "@/components/games/SimonAchievements";
 import { simonSoundEngine, SimonColor } from "@/lib/simonSounds";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { supabase } from '@/integrations/supabase/client';
 
 interface GameStats {
   level: number;
@@ -31,8 +35,9 @@ const COLORS: SimonColor[] = ['red', 'blue', 'green', 'yellow'];
 export default function MemoriaColorida() {
   const { user } = useAuth();
   const { getTrailByCategory } = useEducationalSystem();
-  const [gameState, setGameState] = useState<'idle' | 'showing' | 'playing' | 'gameOver'>('idle');
+  const [gameState, setGameState] = useState<'idle' | 'showing' | 'playing' | 'gameOver' | 'results'>('idle');
   const [showTutorial, setShowTutorial] = useState(true);
+  const [childProfileId, setChildProfileId] = useState<string | null>(null);
   
   const {
     sessionId,
@@ -44,7 +49,37 @@ export default function MemoriaColorida() {
     recoveredSession,
     resumeSession,
     discardRecoveredSession
-  } = useGameSession('memoria-colorida');
+  } = useGameSession('memoria-colorida', childProfileId || undefined);
+
+  const { 
+    evolution, 
+    getTrend, 
+    totalSessions 
+  } = useGameHistory('memoria-colorida', childProfileId);
+
+  const {
+    isGenerating,
+    therapeuticInsights,
+    recommendations,
+    generateEnhancedFeedback
+  } = useEnhancedFeedback();
+
+  // Get child profile ID
+  useEffect(() => {
+    const loadChildProfile = async () => {
+      if (!user) return;
+      const { data: profiles } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', user.id)
+        .limit(1)
+        .single();
+      if (profiles) {
+        setChildProfileId(profiles.id);
+      }
+    };
+    loadChildProfile();
+  }, [user]);
 
   const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [sequence, setSequence] = useState<SimonColor[]>([]);
