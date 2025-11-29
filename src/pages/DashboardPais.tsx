@@ -119,8 +119,8 @@ export default function DashboardPais() {
         .eq('parent_id', user?.id);
 
       if (error) {
-        console.error('Error loading children:', error);
-        toast.error('Erro ao carregar perfis das crianças');
+        console.error('Error loading children:', error?.message || error);
+        toast.error(`Erro ao carregar perfis das crianças: ${error?.message || 'erro desconhecido'}`);
         setLoading(false);
         return;
       }
@@ -149,9 +149,9 @@ export default function DashboardPais() {
 
       // Mesmo sem crianças, encerramos o loading para mostrar o estado vazio
       setLoading(false);
-    } catch (error) {
-      console.error('Error loading children:', error);
-      toast.error('Erro ao carregar perfis');
+    } catch (error: any) {
+      console.error('Error loading children (exception):', error?.message || error);
+      toast.error(`Erro ao carregar perfis das crianças: ${error?.message || 'erro desconhecido'}`);
       setLoading(false);
     }
   };
