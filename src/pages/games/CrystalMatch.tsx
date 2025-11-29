@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as PIXI from 'pixi.js';
 import { useGameSession } from '@/hooks/useGameSession';
-import { useGameProfile } from '@/hooks/useGameProfile';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, RotateCcw, Bomb, Zap, Sparkles } from 'lucide-react';
@@ -13,8 +13,8 @@ type PowerUpType = 'bomb' | 'lightning' | 'rainbow' | null;
 
 export default function CrystalMatch() {
   const navigate = useNavigate();
-  const { childProfileId, isTestMode, loading, user } = useGameProfile();
-  const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || undefined, isTestMode);
+  const { user } = useAuth();
+  const { startSession, endSession, updateSession } = useGameSession('crystal-match', undefined, true);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<PIXI.Application | null>(null);
@@ -26,7 +26,7 @@ export default function CrystalMatch() {
 
 
   useEffect(() => {
-    if (!loading && !error) {
+    if (!error) {
       initializeGame();
     }
 
@@ -35,7 +35,7 @@ export default function CrystalMatch() {
         appRef.current.destroy(true, { children: true, texture: true });
       }
     };
-  }, [loading, error]);
+  }, [error]);
 
   const initializeGame = async () => {
     if (!containerRef.current) {
@@ -107,8 +107,7 @@ export default function CrystalMatch() {
       timeSpent: 0,
     });
 
-    const modeText = isTestMode ? ' (Modo Teste)' : '';
-    toast.success(`Jogo finalizado! Pontuação: ${finalScore}${modeText}`);
+    toast.success(`Jogo finalizado! Pontuação: ${finalScore}`);
   };
 
   const handleRestart = () => {
@@ -190,11 +189,6 @@ export default function CrystalMatch() {
           <p className="text-white/70">
             Combine 3 ou mais cristais para pontuar!
           </p>
-          {isTestMode && (
-            <Badge className="mt-2 bg-[#c7923e] text-white">
-              🎮 Modo Teste - Sem salvar progresso
-            </Badge>
-          )}
         </div>
 
         {/* Error State */}
@@ -277,17 +271,10 @@ export default function CrystalMatch() {
 
             {/* Game Container */}
             <div className="flex justify-center items-center">
-              {loading ? (
-                <div className="text-white text-center py-12">
-                  <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
-                  <p>Carregando jogo...</p>
-                </div>
-              ) : (
-                <div
-                  ref={containerRef}
-                  className="rounded-lg overflow-hidden shadow-2xl border-4 border-purple-500/30"
-                />
-              )}
+              <div
+                ref={containerRef}
+                className="rounded-lg overflow-hidden shadow-2xl border-4 border-purple-500/30"
+              />
             </div>
 
             {/* Game Info */}
