@@ -84,7 +84,7 @@ export function AppSidebar() {
   const parentsNavigation = [
     {
       title: 'Dashboard',
-      path: '/dashboard',
+      path: '/dashboard-pais',
       icon: Home,
     },
     {
