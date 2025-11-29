@@ -1,11 +1,13 @@
 import { createContext, useContext, ReactNode } from 'react';
-import { useHapticFeedback, HapticIntensity } from '@/hooks/useHapticFeedback';
+import { useHapticFeedback } from '@/hooks/useHapticFeedback';
+import type { HapticIntensity } from '@/lib/haptics';
 
 interface HapticContextType {
   intensity: HapticIntensity;
   setIntensity: (intensity: HapticIntensity) => Promise<void>;
   isSupported: boolean;
-  hapticFeedback: (type: 'success' | 'error' | 'tap' | 'sequence' | 'achievement' | 'warning') => void;
+  isNative: boolean;
+  hapticFeedback: (type: 'success' | 'error' | 'tap' | 'sequence' | 'achievement' | 'warning') => Promise<void>;
   vibrate: (pattern: number | number[]) => void;
 }
 

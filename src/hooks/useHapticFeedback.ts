@@ -1,65 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-
-export type HapticIntensity = 'off' | 'light' | 'medium' | 'strong';
-
-export interface HapticPattern {
-  success: number | number[];
-  error: number | number[];
-  tap: number | number[];
-  sequence: number | number[];
-  achievement: number | number[];
-  warning: number | number[];
-}
-
-const HAPTIC_PATTERNS: Record<HapticIntensity, HapticPattern> = {
-  off: {
-    success: 0,
-    error: 0,
-    tap: 0,
-    sequence: 0,
-    achievement: 0,
-    warning: 0,
-  },
-  light: {
-    success: [30, 50, 30],
-    error: [50, 30, 50],
-    tap: 20,
-    sequence: 30,
-    achievement: [40, 60, 40, 60, 80],
-    warning: [60, 40, 60],
-  },
-  medium: {
-    success: [50, 70, 50, 70, 100],
-    error: [100, 50, 100],
-    tap: 40,
-    sequence: 50,
-    achievement: [60, 80, 60, 80, 120],
-    warning: [80, 60, 80],
-  },
-  strong: {
-    success: [80, 100, 80, 100, 150],
-    error: [150, 80, 150],
-    tap: 60,
-    sequence: 80,
-    achievement: [100, 120, 100, 120, 200],
-    warning: [120, 80, 120],
-  },
-};
+import { hapticsEngine, type HapticIntensity, type HapticPattern } from '@/lib/haptics';
 
 export function useHapticFeedback(childProfileId?: string | null) {
-  const [intensity, setIntensity] = useState<HapticIntensity>('medium');
-  const [isSupported, setIsSupported] = useState(false);
+  const [intensity, setIntensityState] = useState<HapticIntensity>('medium');
+  const [isSupported] = useState(hapticsEngine.isHapticsSupported());
+  const [isNative] = useState(hapticsEngine.isNativeApp());
 
+  // Sync intensity with haptics engine
   useEffect(() => {
-    // Check if Vibration API is supported
-    // Note: iOS Safari does NOT support the Vibration API
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const hasVibrationAPI = 'vibrate' in navigator;
-    
-    setIsSupported(hasVibrationAPI && !isIOS);
-  }, []);
+    hapticsEngine.setIntensity(intensity);
+  }, [intensity]);
 
+  // Load saved settings from database
   useEffect(() => {
     if (!childProfileId) return;
 
@@ -77,7 +30,8 @@ export function useHapticFeedback(childProfileId?: string | null) {
           const profile = data.sensory_profile as any;
           const savedIntensity = profile.haptic_intensity as HapticIntensity;
           if (savedIntensity && ['off', 'light', 'medium', 'strong'].includes(savedIntensity)) {
-            setIntensity(savedIntensity);
+            setIntensityState(savedIntensity);
+            hapticsEngine.setIntensity(savedIntensity);
           }
         }
       } catch (error) {
@@ -90,25 +44,23 @@ export function useHapticFeedback(childProfileId?: string | null) {
 
   const vibrate = useCallback((pattern: number | number[]) => {
     if (!isSupported || intensity === 'off') return;
-    
-    try {
-      navigator.vibrate(pattern);
-    } catch (error) {
-      console.error('Vibration error:', error);
-    }
+    hapticsEngine.vibratePattern(pattern);
   }, [isSupported, intensity]);
 
-  const hapticFeedback = useCallback((type: keyof HapticPattern) => {
-    const pattern = HAPTIC_PATTERNS[intensity][type];
-    if (pattern) {
-      vibrate(pattern);
-    }
-  }, [intensity, vibrate]);
+  const hapticFeedback = useCallback(async (type: keyof HapticPattern) => {
+    if (!isSupported || intensity === 'off') return;
+    await hapticsEngine.trigger(type);
+  }, [isSupported, intensity]);
 
   const updateIntensity = useCallback(async (newIntensity: HapticIntensity) => {
-    setIntensity(newIntensity);
+    setIntensityState(newIntensity);
+    hapticsEngine.setIntensity(newIntensity);
 
-    if (!childProfileId) return;
+    if (!childProfileId) {
+      // Still test the haptic even without a profile
+      await hapticsEngine.trigger('tap');
+      return;
+    }
 
     try {
       const { data: currentData } = await supabase
@@ -131,19 +83,19 @@ export function useHapticFeedback(childProfileId?: string | null) {
 
       if (error) throw error;
 
-      // Test vibration with new intensity
-      hapticFeedback('tap');
+      // Test haptic with new intensity
+      await hapticsEngine.trigger('tap');
     } catch (error) {
       console.error('Error updating haptic intensity:', error);
     }
-  }, [childProfileId, hapticFeedback]);
+  }, [childProfileId]);
 
   return {
     intensity,
     setIntensity: updateIntensity,
     isSupported,
+    isNative,
     hapticFeedback,
     vibrate,
-    patterns: HAPTIC_PATTERNS[intensity],
   };
 }
