@@ -130,6 +130,10 @@ export function MobileTour() {
         tooltip: {
           borderRadius: 12,
           padding: 20,
+          transform: 'translate3d(0, 0, 0)',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+          WebkitFontSmoothing: 'antialiased',
         },
         buttonNext: {
           backgroundColor: 'hsl(var(--primary))',
