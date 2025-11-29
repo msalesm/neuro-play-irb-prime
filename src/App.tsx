@@ -40,6 +40,7 @@ import AttentionSustained from "./pages/games/AttentionSustainedGame";
 import AttentionSustainedAdaptive from "./pages/games/AttentionSustainedAdaptive";
 import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
 import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
+import CognitiveFlexibilityPhases from "./pages/games/CognitiveFlexibilityPhases";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import MemoryWorkload from "./pages/games/MemoryWorkload";
 import TheoryOfMind from "./pages/games/TheoryOfMind";
@@ -191,7 +192,8 @@ const App = () => (
           <Route path="/games/emotion-lab" element={<EmotionLab />} />
           <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
           <Route path="/games/attention-sustained" element={<AttentionSustained />} />
-                  <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibility />} />
+          <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibilityPhases />} />
+          <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibility />} />
                   <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
                   <Route path="/games/memory-workload" element={<MemoryWorkload />} />
                   <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
