@@ -243,7 +243,7 @@ export function AppSidebar() {
       <SidebarContent className="px-2 bg-sidebar">
         {/* Header */}
         <div className="p-4 border-b border-sidebar-border">
-          <div className="flex items-center gap-3">
+          <Link to="/landing" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
               <Brain className="w-5 h-5 text-white" />
             </div>
@@ -253,7 +253,7 @@ export function AppSidebar() {
                 <span className="text-xs text-sidebar-foreground/60">Forge</span>
               </div>
             )}
-          </div>
+          </Link>
         </div>
 
         {/* Navigation Groups */}
