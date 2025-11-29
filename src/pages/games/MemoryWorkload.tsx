@@ -9,6 +9,7 @@ import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
 import { useAudioEngine } from '@/hooks/useAudioEngine';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 
 interface MemoryItem {
   id: string;
@@ -24,6 +25,7 @@ const PAUSE_DURATION = 400; // Reduzido de 800ms para 400ms
 const FEEDBACK_DURATION = 1000; // Reduzido de 2000ms para 1000ms
 
 export default function MemoryWorkload() {
+  const { user } = useAuth();
   const { saveBehavioralMetric } = useBehavioralAnalysis();
   const audio = useAudioEngine();
   const [gameState, setGameState] = useState<'waiting' | 'showing' | 'input' | 'feedback'>('waiting');
@@ -332,31 +334,25 @@ export default function MemoryWorkload() {
   };
 
   const handleStartGame = async () => {
-    const sessionId = await startSession('memory-workload', level, {
-      adaptiveMode,
-      initialLevel: level
-    });
-    
-    if (sessionId) {
-      audio.speak('Vamos começar! Memorize a sequência de cores e posições.');
-      startRound();
+    if (!childProfileId) {
+      toast.error('Perfil da criança não encontrado');
+      return;
     }
+
+    await startSession();
+    audio.speak('Vamos começar! Memorize a sequência de cores e posições.');
+    startRound();
   };
 
-  const handleResumeSession = async (session: any) => {
-    const recoveredSession = await resumeSession(session.id);
-    if (recoveredSession) {
-      setLevel(recoveredSession.level || 1);
-      setScore(recoveredSession.performance_data?.score || 0);
-      setSessionData(prev => ({
-        ...prev,
-        ...recoveredSession.performance_data?.sessionData
-      }));
-      
-      await startSession('memory-workload', recoveredSession.level, recoveredSession.performance_data);
-      startRound();
-      toast.success('Sessão recuperada!');
-    }
+  const handleResumeSession = async () => {
+    if (!recoveredSession) return;
+    
+    setLevel(recoveredSession.difficulty_level || 1);
+    setScore(recoveredSession.score || 0);
+    
+    await resumeSession(recoveredSession);
+    startRound();
+    toast.success('Sessão recuperada!');
   };
 
   const accuracy = sessionData.totalResponses > 0 
@@ -400,21 +396,26 @@ export default function MemoryWorkload() {
 
   return (
     <>
-      <SessionRecoveryModal
-        open={!recoveryLoading && unfinishedSessions.length > 0 && gameState === 'waiting'}
-        sessions={unfinishedSessions}
-        onResume={handleResumeSession}
-        onDiscard={discardSession}
-        onStartNew={handleStartGame}
-      />
+      {recoveredSession && gameState === 'waiting' && (
+        <Card className="max-w-md mx-auto mb-4 p-4">
+          <h3 className="font-bold mb-2">Sessão não concluída encontrada</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Deseja continuar de onde parou?
+          </p>
+          <div className="flex gap-2">
+            <Button onClick={handleResumeSession} size="sm">Continuar</Button>
+            <Button onClick={discardRecoveredSession} size="sm" variant="outline">Descartar</Button>
+          </div>
+        </Card>
+      )}
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-4">
         <div className="max-w-4xl mx-auto">
           {gameState !== 'waiting' && (
             <div className="mb-4">
               <GameExitButton 
-                onExit={async () => {
-                  await abandonSession();
+                onExit={() => {
                   setGameState('waiting');
+                  window.location.href = '/games';
                 }}
               />
             </div>
@@ -444,11 +445,6 @@ export default function MemoryWorkload() {
                   <div className="text-2xl font-bold text-indigo-600">{level}</div>
                   <div className="text-sm text-gray-500">Nível</div>
                 </div>
-                {isSaving && gameState !== 'waiting' && (
-                  <div className="text-xs text-gray-500 italic">
-                    💾 Salvando...
-                  </div>
-                )}
               </div>
             </div>
 

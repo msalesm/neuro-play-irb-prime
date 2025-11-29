@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/GameExitButton';
+import { GameResultsDashboard } from '@/components/GameResultsDashboard';
 
 type BreathPhase = 'inhale' | 'hold' | 'exhale' | 'pause';
 
@@ -23,24 +24,35 @@ const breathingPatterns = [
 export default function MindfulBreath() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const [childProfileId, setChildProfileId] = useState<string | null>(null);
   
   const {
-    currentSession,
-    isSaving,
-    startSession: startAutoSave,
-    updateSession: updateAutoSave,
-    completeSession: completeAutoSave,
-    abandonSession
-  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recoveredSession,
+    resumeSession: resumeGameSession,
+    discardRecoveredSession
+  } = useGameSession('mindful-breath', childProfileId || undefined);
 
-  const {
-    unfinishedSessions,
-    hasUnfinishedSessions,
-    resumeSession,
-    discardSession
-  } = useSessionRecovery('mindful_breath');
-
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+  // Get child profile ID
+  useEffect(() => {
+    const loadChildProfile = async () => {
+      if (!user) return;
+      const { data: profiles } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', user.id)
+        .limit(1)
+        .single();
+      if (profiles) {
+        setChildProfileId(profiles.id);
+      }
+    };
+    loadChildProfile();
+  }, [user]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentPhase, setCurrentPhase] = useState<BreathPhase>('inhale');
   const [timeLeft, setTimeLeft] = useState(4);
@@ -106,54 +118,39 @@ export default function MindfulBreath() {
     };
   }, [isPlaying, currentPhase, pattern]);
 
-  const startSession = async () => {
-    const sessionId = await startAutoSave('mindful_breath', 1, {
-      patternName: pattern.name,
-      patternIndex: selectedPattern
-    });
-
-    if (sessionId) {
-      setIsPlaying(true);
-      setCurrentPhase('inhale');
-      setTimeLeft(pattern.inhale);
+  const startBreathingSession = async () => {
+    if (!childProfileId) {
+      toast({ title: 'Erro', description: 'Perfil da criança não encontrado', variant: 'destructive' });
+      return;
     }
+
+    await startSession();
+    setIsPlaying(true);
+    setCurrentPhase('inhale');
+    setTimeLeft(pattern.inhale);
   };
 
-  const handleResumeSession = async (session: any) => {
-    setTotalCycles(session.performance_data.totalCycles || 0);
-    setSessionTime(session.performance_data.sessionTime || 0);
-    setSelectedPattern(session.performance_data.patternIndex || 0);
+  const handleResumeSession = async () => {
+    if (!recoveredSession) return;
     
-    await startAutoSave('mindful_breath', session.level, {
-      sessionId: session.id,
-      patternName: pattern.name,
-      patternIndex: selectedPattern
-    });
-
-    setShowRecoveryModal(false);
+    setTotalCycles(recoveredSession.correct_attempts || 0);
+    setSessionTime(recoveredSession.duration_seconds || 0);
+    
+    await resumeGameSession(recoveredSession);
+    setIsPlaying(true);
   };
 
-  useEffect(() => {
-    if (hasUnfinishedSessions && !isPlaying && !currentSession) {
-      setShowRecoveryModal(true);
-    }
-  }, [hasUnfinishedSessions, isPlaying, currentSession]);
-
-  const pauseSession = () => {
+  const pauseSession = async () => {
     setIsPlaying(false);
     
-    // Auto-save when pausing
-    updateAutoSave({
-      score: totalCycles * 10,
-      moves: totalCycles,
-      correctMoves: totalCycles,
-      additionalData: {
-        sessionTime,
-        patternName: pattern.name,
-        currentPhase,
-        totalCycles
-      }
-    });
+    // Update session when pausing
+    if (isActive) {
+      await updateSession({
+        score: totalCycles * 10,
+        timeSpent: sessionTime,
+        moves: totalCycles,
+      });
+    }
   };
 
   const resetSession = () => {
@@ -164,22 +161,19 @@ export default function MindfulBreath() {
     setSessionTime(0);
   };
 
-  const completeSession = async () => {
+  const completeBreathingSession = async () => {
     if (!user || totalCycles < 5) return; // Minimum 5 cycles to complete
     
     try {
-      // Complete auto-save session
-      await completeAutoSave({
-        score: totalCycles * 10,
-        moves: totalCycles,
-        correctMoves: totalCycles,
-        additionalData: {
-          sessionTime,
-          patternName: pattern.name,
-          totalCycles,
-          accuracy: 100
-        }
-      });
+      // End game session
+      if (isActive) {
+        await endSession({
+          score: totalCycles * 10,
+          accuracy: 100,
+          timeSpent: sessionTime,
+          moves: totalCycles,
+        });
+      }
 
       // TODO: Uncomment when therapy_sessions table is created
       // await supabase.from('therapy_sessions').insert({
@@ -273,26 +267,25 @@ export default function MindfulBreath() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12">
       <div className="container mx-auto px-6 max-w-4xl">
-        <SessionRecoveryModal
-          open={showRecoveryModal}
-          sessions={unfinishedSessions}
-          onResume={handleResumeSession}
-          onDiscard={async (sessionId) => {
-            await discardSession(sessionId);
-            setShowRecoveryModal(false);
-          }}
-          onStartNew={() => setShowRecoveryModal(false)}
-        />
+        {recoveredSession && !isPlaying && (
+          <Card className="max-w-md mx-auto mb-4 p-4">
+            <h3 className="font-bold mb-2">Sessão não concluída encontrada</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Deseja continuar de onde parou?
+            </p>
+            <div className="flex gap-2">
+              <Button onClick={handleResumeSession} size="sm">Continuar</Button>
+              <Button onClick={discardRecoveredSession} size="sm" variant="outline">Descartar</Button>
+            </div>
+          </Card>
+        )}
         
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex gap-2">
-            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
             <GameExitButton
               variant="quit"
-              onExit={async () => {
-                await abandonSession();
-              }}
+              onExit={() => window.location.href = '/games'}
               showProgress={isPlaying}
               currentProgress={totalCycles}
               totalProgress={10}
@@ -350,7 +343,7 @@ export default function MindfulBreath() {
                 {/* Controls */}
                 <div className="flex justify-center gap-4">
                   {!isPlaying ? (
-                    <Button onClick={startSession} size="lg" className="flex items-center gap-2">
+                    <Button onClick={startBreathingSession} size="lg" className="flex items-center gap-2">
                       <Play className="h-5 w-5" />
                       Começar
                     </Button>
@@ -365,7 +358,7 @@ export default function MindfulBreath() {
                     Reiniciar
                   </Button>
                   {totalCycles >= 5 && (
-                    <Button onClick={completeSession} size="lg" className="flex items-center gap-2 bg-green-600 hover:bg-green-700">
+                    <Button onClick={completeBreathingSession} size="lg" className="flex items-center gap-2 bg-green-600 hover:bg-green-700">
                       <Star className="h-5 w-5" />
                       Concluir
                     </Button>
