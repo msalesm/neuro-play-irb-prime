@@ -34,6 +34,7 @@ import BalanceQuest from "./pages/games/BalanceQuest";
 import SensoryFlow from "./pages/games/SensoryFlow";
 import VisualSync from "./pages/games/VisualSync";
 import StackTower from "./pages/games/StackTower";
+import CosmicSequence from "./pages/games/CosmicSequence";
 const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
@@ -195,6 +196,7 @@ const App = () => (
                   <Route path="/games/sensory-flow" element={<SensoryFlow />} />
                   <Route path="/games/visual-sync" element={<VisualSync />} />
                   <Route path="/games/stack-tower" element={<StackTower />} />
+                  <Route path="/games/cosmic-sequence" element={<CosmicSequence />} />
                   <Route path="/games/biofeedback-demo" element={<BiofeedbackDemo />} />
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/games/touch-mapper" element={<TouchMapper />} />
