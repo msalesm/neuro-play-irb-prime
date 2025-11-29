@@ -53,6 +53,16 @@ export const planetas: Planeta[] = [
         rota: '/games/theory-of-mind',
         icone: '🧠',
         completado: false
+      },
+      {
+        id: 'cosmic-sequence',
+        nome: 'Sequência Cósmica',
+        descricao: 'Observe e repita sequências de luzes - trabalha memória e padrões visuais',
+        duracao: 5,
+        dificuldade: 2,
+        rota: '/games/cosmic-sequence',
+        icone: '✨',
+        completado: false
       }
     ],
     recompensa: 'Dissipar a névoa sensorial e revelar auroras deslumbrantes',
@@ -61,7 +71,7 @@ export const planetas: Planeta[] = [
     tamanho: 'grande',
     desbloqueado: true,
     progressoAtual: 0,
-    totalMissoes: 4
+    totalMissoes: 5
   },
   {
     id: 'vortex',
