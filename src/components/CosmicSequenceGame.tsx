@@ -51,6 +51,13 @@ const initAudio = () => {
   return audioContext;
 };
 
+// Haptic feedback using Web Vibration API
+const vibrate = (pattern: number | number[]) => {
+  if ('vibrate' in navigator) {
+    navigator.vibrate(pattern);
+  }
+};
+
 const playTone = (frequency: number, duration: number = 0.3) => {
   const ctx = initAudio();
   if (!ctx) return;
@@ -141,10 +148,11 @@ export const CosmicSequenceGame = ({
         const objectId = sequence[index];
         setActiveObject(objectId);
         
-        // Play sound for this object
+        // Play sound and vibrate for this object
         const obj = gameObjects.find(o => o.id === objectId);
         if (obj) {
           playTone(obj.frequency, speed / 1000);
+          vibrate(50); // Short vibration for each light in sequence
         }
         
         setTimeout(() => {
@@ -189,10 +197,11 @@ export const CosmicSequenceGame = ({
     if (objectId === expectedId) {
       onCorrectTap?.();
       
-      // Play sound for correct tap
+      // Play sound and vibrate for correct tap
       const obj = gameObjects.find(o => o.id === objectId);
       if (obj) {
         playTone(obj.frequency, 0.2);
+        vibrate(30); // Light vibration for correct tap
       }
       
       setActiveObject(objectId);
@@ -217,6 +226,10 @@ export const CosmicSequenceGame = ({
         setTimeout(() => {
           const nextRound = gameState.round + 1;
           const newSequence = generateSequence(nextRound);
+          
+          // Success vibration pattern
+          vibrate([50, 100, 50, 100, 100]);
+          
           setGameState({
             state: 'PRESENTING',
             score: finalScore,
@@ -238,6 +251,10 @@ export const CosmicSequenceGame = ({
       }
     } else {
       onWrongTap?.();
+      
+      // Error feedback: longer vibration
+      vibrate([100, 50, 100]); // Pattern: vibrate-pause-vibrate
+      
       setGameState(prev => ({
         ...prev,
         state: 'GAME_OVER',
