@@ -115,6 +115,16 @@ export const planetas: Planeta[] = [
         rota: '/games/foco-rapido-phases',
         icone: '⚡',
         completado: false
+      },
+      {
+        id: 'stack-tower',
+        nome: 'Torre Perfeita',
+        descricao: 'Construa a torre mais alta praticando timing perfeito e controle de impulsos',
+        duracao: 5,
+        dificuldade: 2,
+        rota: '/games/stack-tower',
+        icone: '🏗️',
+        completado: false
       }
     ],
     recompensa: 'Estabilizar o campo magnético e controlar os vórtices de energia',
@@ -123,7 +133,7 @@ export const planetas: Planeta[] = [
     tamanho: 'grande',
     desbloqueado: true,
     progressoAtual: 0,
-    totalMissoes: 4
+    totalMissoes: 5
   },
   {
     id: 'lumen',
