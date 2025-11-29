@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, Brain, Stethoscope, Settings, User, 
   Users, School, TrendingUp, Menu, Sparkles, Gamepad2,
-  FileText, ClipboardCheck, GraduationCap, Heart, BookOpen,
+  FileText, ClipboardCheck, GraduationCap, BookOpen,
   Trophy, BarChart3
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -69,8 +69,6 @@ export function MobileMenu() {
       items: [
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
         { title: 'Microlearning', path: '/training', icon: BookOpen },
-        { title: 'Atividades Parent-Child', path: '/parent-child-activities', icon: Users },
-        { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
         { title: 'Manual da Plataforma', path: '/platform-manual', icon: BookOpen },
       ],
     });
