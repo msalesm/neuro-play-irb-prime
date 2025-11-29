@@ -77,6 +77,7 @@ import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
 import AdminRiskMaps from "./pages/AdminRiskMaps";
 import ParentChildActivities from "./pages/ParentChildActivities";
 import EmotionalHistoryDashboard from "./pages/EmotionalHistoryDashboard";
+import PlatformReport from "./pages/PlatformReport";
 
 // Neuro Play v2.0 pages
 import NeuroPlayV2 from "./pages/NeuroPlayV2";
@@ -236,6 +237,7 @@ const App = () => (
           <Route path="/admin/risk-maps" element={<AdminRiskMaps />} />
           <Route path="/parent-child-activities" element={<ParentChildActivities />} />
           <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
+          <Route path="/platform-report" element={<PlatformReport />} />
           <Route path="/pei" element={<PEIView />} />
           <Route path="/pei/:patientId" element={<PEIView />} />
           

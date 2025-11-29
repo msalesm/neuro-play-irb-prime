@@ -25,6 +25,15 @@ export const generateNeurodiversityPDF = () => {
     yPosition += 5;
   };
 
+  const addSection = (title: string) => {
+    if (yPosition > 240) {
+      doc.addPage();
+      yPosition = 20;
+    }
+    yPosition += 5;
+    addText(title, 16, true, '#0a1e35');
+  };
+
   // Header
   doc.setFillColor(10, 30, 53);
   doc.rect(0, 0, pageWidth, 40, 'F');
@@ -49,39 +58,84 @@ export const generateNeurodiversityPDF = () => {
   yPosition += 10;
 
   // Modules Section
-  addText('Módulos Principais da Plataforma', 16, true, '#0a1e35');
+  addSection('Funcionalidades Implementadas - NeuroPlay 2.0');
   yPosition += 5;
 
   const modules = [
     {
-      title: '1. Jogos Cognitivos Terapêuticos',
-      description: 'Atividades lúdicas baseadas em neurociência para desenvolvimento cognitivo, social e emocional. Sistema adaptativo de dificuldade e métricas de desempenho em tempo real.',
-      items: ['• 7 categorias cognitivas', '• Dificuldade adaptativa por IA', '• Perfil sensorial personalizado']
+      title: '✅ 1. Sistema de Autenticação e Onboarding LGPD',
+      description: 'Sistema completo de autenticação com Supabase Auth, wizard de onboarding em 4 etapas (dados, termos, consentimentos granulares LGPD, perfil da criança), disclaimers clínicos obrigatórios e registro seguro de consentimentos.',
+      items: ['• Email/senha + Google OAuth', '• Wizard guiado 4 etapas', '• Consentimentos LGPD auditáveis', '• Seleção de perfil sensorial']
     },
     {
-      title: '2. Testes Diagnósticos Clínicos',
-      description: 'Digitalização de testes clínicos autorizados para triagem de TEA (M-CHAT), TDAH (SNAP-IV) e Dislexia. Fluxo guiado com algoritmos de identificação de risco.',
-      items: ['• Testes validados clinicamente', '• Algoritmos de risco', '• Exportação em PDF']
+      title: '✅ 2. Jogos Cognitivos Terapêuticos (15+ jogos)',
+      description: 'Jogos baseados em evidência neurocientífica para 7 domínios: atenção sustentada, controle inibitório, memória de trabalho, flexibilidade cognitiva, processamento fonológico, cognição social, e processamento espacial.',
+      items: ['• 15+ jogos terapêuticos implementados', '• Métricas em tempo real (acurácia, tempo de reação)', '• Dificuldade adaptativa automática', '• Persistência em game_sessions']
     },
     {
-      title: '3. Relatórios Clínicos com IA',
-      description: 'Análise inteligente que agrega dados de jogos e testes para gerar insights clínicos. Perfil cognitivo, padrões comportamentais e recomendações personalizadas.',
-      items: ['• Perfil cognitivo completo', '• Detecção de padrões', '• Alertas de regressão']
+      title: '✅ 3. TUNP - Triagem Unificada NeuroPlay',
+      description: 'Sistema unificado de triagem para 6 dimensões: TEA (M-CHAT), TDAH (SNAP-IV), Dislexia, Discalculia, DLD, e Perfil Sensorial individual. Algoritmos de risco clínico e recomendações de encaminhamento.',
+      items: ['• 6 dimensões neurodivergentes', '• Algoritmos validados de risco', '• Scores percentilados', '• Exportação PDF automática']
     },
     {
-      title: '4. Educação para Pais',
-      description: 'Módulo completo de alfabetização terapêutica: compreensão de TEA/TDAH/Dislexia, estratégias de intervenção domiciliar, manejo comportamental e interpretação de relatórios.',
-      items: ['• Vídeos curtos e práticos', '• Quizzes e certificados', '• Trilhas personalizadas']
+      title: '✅ 4. Relatórios Clínicos com IA (Google Gemini 2.5 Pro)',
+      description: 'Sistema de análise clínica automatizado usando IA para agregar dados de game_sessions. Gera perfil cognitivo, identifica forças/vulnerabilidades, detecta regressões e sugere intervenções personalizadas.',
+      items: ['• Análise via cognitive-analysis edge function', '• Perfil cognitivo 6 domínios', '• Alertas de regressão', '• Recomendações terapêuticas', '• Armazenamento em clinical_reports']
     },
     {
-      title: '5. PEI Inteligente',
-      description: 'Plano Educacional Individualizado gerado por IA com base nos resultados de triagem. Define metas, estratégias, acomodações e acompanhamento de progresso.',
-      items: ['• Geração automática por IA', '• Metas personalizadas', '• Notas de progresso']
+      title: '✅ 5. Chatbot Terapêutico com IA (Lovable AI)',
+      description: 'Assistente terapêutico conversacional usando Google Gemini para check-ins emocionais diários, coaching parental automatizado e detecção de padrões comportamentais. Análise automática a cada 10 mensagens.',
+      items: ['• Check-ins emocionais diários', '• Coaching parental contextual', '• Detecção de padrões via analyze-chat-patterns', '• Insights comportamentais categorizados', '• Persistência em chat_conversations/messages']
     },
     {
-      title: '6. Dashboard Clínico',
-      description: 'Interface profissional para terapeutas e profissionais de saúde com visão completa do progresso, histórico de sessões e recomendações de intervenção.',
-      items: ['• Controle de acesso baseado em roles', '• Métricas agregadas', '• Integração IRB Prime']
+      title: '✅ 6. Dashboard de Histórico Emocional',
+      description: 'Visualização temporal completa de check-ins emocionais com gráficos de evolução de humor, análise de frequência emocional e histórico detalhado. Filtros por período (semana/mês/total) e exportação PDF.',
+      items: ['• Gráficos temporais de humor', '• Análise de frequência emocional', '• Filtros por período', '• Exportação PDF de histórico']
+    },
+    {
+      title: '✅ 7. Exportação de Relatórios Comportamentais PDF',
+      description: 'Geração de relatórios comportamentais consolidados em PDF integrando conversas do chatbot, insights detectados e check-ins emocionais para compartilhamento com terapeutas externos.',
+      items: ['• Consolidação de conversas', '• Insights categorizados', '• Check-ins emocionais', '• Formatação clínica profissional']
+    },
+    {
+      title: '✅ 8. PEI Inteligente (Plano Educacional Individualizado)',
+      description: 'Geração automática de PEI baseado em resultados de TUNP. Editor completo com metas SMART, estratégias, acomodações escolares e notas de progresso. Sistema de versionamento e compartilhamento seguro com escola.',
+      items: ['• Geração automática por IA', '• Editor de metas/estratégias', '• Notas de progresso', '• Compartilhamento escola/terapeuta']
+    },
+    {
+      title: '✅ 9. Sistema Planeta Azul (Universo Gamificado)',
+      description: 'Modelo de gamificação baseado em universo com 5 planetas temáticos: Aurora (TEA), Vortex (TDAH), Lumen (Dislexia), Calm (Regulação Emocional), Order (Funções Executivas). Progressão não-linear cross-planet.',
+      items: ['• 5 planetas temáticos', '• Missões diárias IA', '• Progressão cross-planet', '• Anéis do Sistema (recompensa semanal)']
+    },
+    {
+      title: '✅ 10. Sistema de Avatar Evolutivo',
+      description: 'Avatares personalizáveis que evoluem 5 níveis baseado em progresso dos planetas. Desbloqueio de acessórios exclusivos por planeta completado. Animações de celebração e modal de level-up.',
+      items: ['• 5 níveis progressivos', '• Acessórios desbloqueáveis por planeta', '• Sistema de customização', '• Animações de evolução']
+    },
+    {
+      title: '✅ 11. Dashboards Multi-Stakeholder (4 perfis)',
+      description: 'Dashboards dedicados para Pais (progresso filho, missões, recomendações IA), Terapeutas (painel clínico pacientes, PEI, relatórios), Professores (turmas, PEI, ocorrências escolares) e Admin/Rede (agregação regional, mapas de risco).',
+      items: ['• Dashboard Pais', '• Dashboard Terapeuta', '• Dashboard Professor', '• Dashboard Rede (admin)']
+    },
+    {
+      title: '✅ 12. Educação Parental Gamificada',
+      description: 'Módulos de capacitação para pais sobre TEA/TDAH/Dislexia, estratégias de intervenção domiciliar, manejo comportamental, rotinas estruturadas e interpretação de relatórios. Quizzes com certificação digital.',
+      items: ['• Módulos multimídia curtos', '• Quizzes interativos', '• Certificação digital', '• Trilhas personalizadas por perfil filho']
+    },
+    {
+      title: '✅ 13. Capacitação Docente (Lei 14.254/21)',
+      description: 'Sistema completo de treinamento para professores em conformidade com Lei 14.254/21. 6 módulos sobre neurodiversidade com 30 questões cada, feedback imediato, ranking de desempenho e certificação digital.',
+      items: ['• 6 módulos Lei 14.254/21', '• 30 questões por módulo', '• Ranking de professores', '• Certificação digital válida']
+    },
+    {
+      title: '✅ 14. Integração Escolar e Comunicação Tripartite',
+      description: 'Portal para professores com acesso limitado a dados de alunos, compartilhamento seguro de PEI, registro de ocorrências escolares, relatórios automáticos de progresso e canal de comunicação família-escola-terapeuta.',
+      items: ['• Portal professor limitado', '• Registro de ocorrências', '• PEI compartilhado seguro', '• Canal comunicação tripartite']
+    },
+    {
+      title: '✅ 15. Registro Direto de Pacientes por Terapeutas',
+      description: 'Terapeutas podem registrar pacientes diretamente na plataforma sem necessidade de conta parental prévia. Parent_id nullable, email parental opcional, acesso automático via child_access. Possibilita workflow clínico iniciado pelo terapeuta.',
+      items: ['• Registro direto por terapeuta', '• Email parental opcional', '• Acesso automático via child_access', '• Workflow clínico-iniciado']
     }
   ];
 
@@ -98,12 +152,170 @@ export const generateNeurodiversityPDF = () => {
     yPosition += 5;
   });
 
+  // New page for benchmark comparison
+  doc.addPage();
+  yPosition = 20;
+
+  // Benchmark Comparison Section
+  addSection('Análise Competitiva: NeuroPlay 2.0 vs. 5 Plataformas Globais Líderes');
+  addText('Comparação detalhada com as principais plataformas de neurodiversidade do mercado global.', 11, false, '#666666');
+  yPosition += 5;
+
+  const benchmarks = [
+    {
+      name: '🇬🇧 ThinkDivergent (UK)',
+      focus: 'Premium clinical narratives e multi-perspective reporting',
+      features: [
+        '✓ NeuroMap visual de forças/melhorias',
+        '✓ Relatórios multi-perspectiva (pais/terapeutas/professores)',
+        '✓ Linguagem neuro-inclusiva'
+      ],
+      neuroplay: [
+        '✅ NeuroPlay implementa: Relatórios clínicos IA multi-stakeholder',
+        '✅ Dashboards dedicados para cada perfil (pais, terapeutas, professores)',
+        '✅ Linguagem respeitosa neurodiversidade em toda plataforma',
+        '🚀 NeuroPlay adiciona: Sistema Planeta Azul para narrativa gamificada visual'
+      ]
+    },
+    {
+      name: '🇺🇸 Mightier (USA)',
+      focus: 'Biofeedback integration e emotional regulation',
+      features: [
+        '✓ Biofeedback em jogos terapêuticos',
+        '✓ Monitoramento frequência cardíaca',
+        '✓ Ajuste dificuldade baseado em estado emocional',
+        '✓ Modo regulação emocional'
+      ],
+      neuroplay: [
+        '⏳ NeuroPlay Fase 2.0 Sprint 5: Biofeedback com sensores cardíacos',
+        '✅ NeuroPlay implementa: Chatbot detecção emocional',
+        '✅ Check-ins emocionais diários',
+        '✅ Dashboard histórico emocional com gráficos evolução',
+        '🚀 NeuroPlay adiciona: Perfil sensorial individualizado TEA'
+      ]
+    },
+    {
+      name: '🇩🇰 Tiimo (Denmark)',
+      focus: 'Visual routines e simplified parent UX',
+      features: [
+        '✓ Rotinas visuais diárias vinculadas PEI',
+        '✓ Time-boxing e time-blocking tasks',
+        '✓ Sequências de tarefas step-by-step',
+        '✓ UX simplificada para pais'
+      ],
+      neuroplay: [
+        '✅ NeuroPlay implementa: Missões diárias IA com sequência clara',
+        '✅ Sistema Planeta Azul para progressão visual estruturada',
+        '✅ PEI inteligente com metas e estratégias claras',
+        '⏳ Fase 2.0 Sprint 6: Rotinas visuais microlearning',
+        '🚀 NeuroPlay adiciona: Gamificação além de rotinas (avatar evolutivo, badges)'
+      ]
+    },
+    {
+      name: '🇺🇸 EndeavorRx (USA)',
+      focus: 'Evidence-based clinical protocols e therapist-prescribed',
+      features: [
+        '✓ Protocolos clínicos baseados em evidência',
+        '✓ Jogos prescritos por terapeuta',
+        '✓ Trilhas terapêuticas específicas por idade',
+        '✓ Aprovação FDA para TDAH'
+      ],
+      neuroplay: [
+        '✅ NeuroPlay implementa: 15+ jogos terapêuticos baseados neurociência',
+        '✅ Recomendações IA personalizadas por perfil neurodivergente',
+        '✅ Dashboard terapeuta para prescrever/acompanhar',
+        '✅ Análise clínica IA (cognitive-analysis)',
+        '🚀 NeuroPlay adiciona: Triagem TUNP unificada 6 dimensões (vs. foco único TDAH)'
+      ]
+    },
+    {
+      name: '🇬🇧 Do-IT Profiler (UK)',
+      focus: 'Unified comprehensive neurodivergence assessment',
+      features: [
+        '✓ Avaliação unificada multi-dimensional',
+        '✓ Perfil neurodiversidade completo',
+        '✓ Identificação forças e necessidades'
+      ],
+      neuroplay: [
+        '✅ NeuroPlay implementa: TUNP (Triagem Unificada NeuroPlay)',
+        '✅ 6 dimensões: TEA, TDAH, Dislexia, Discalculia, DLD, Perfil Sensorial',
+        '✅ Algoritmos de risco clínico',
+        '✅ Relatórios PDF exportáveis',
+        '🚀 NeuroPlay adiciona: Gamificação terapêutica integrada (vs. apenas assessment)'
+      ]
+    }
+  ];
+
+  benchmarks.forEach((benchmark, index) => {
+    if (yPosition > 200) {
+      doc.addPage();
+      yPosition = 20;
+    }
+    addText(benchmark.name, 12, true, '#005a70');
+    addText(`Foco: ${benchmark.focus}`, 10, true, '#666666');
+    yPosition += 2;
+    
+    addText('Recursos principais:', 9, true, '#888888');
+    benchmark.features.forEach(feature => {
+      addText(feature, 8, false, '#888888');
+    });
+    yPosition += 2;
+
+    addText('NeuroPlay 2.0 Comparação:', 9, true, '#0a1e35');
+    benchmark.neuroplay.forEach(item => {
+      addText(item, 8, false, '#666666');
+    });
+    yPosition += 5;
+  });
+
+  // Competitive Summary
+  doc.addPage();
+  yPosition = 20;
+  addSection('Resumo Executivo da Vantagem Competitiva');
+  
+  const competitiveAdvantages = [
+    {
+      title: '🏆 Única Plataforma Totalmente Integrada',
+      description: 'NeuroPlay 2.0 é a única solução que integra screening (TUNP), jogos terapêuticos, chatbot IA, relatórios clínicos, PEI automatizado, capacitação parental/docente e integração escolar em uma única plataforma. Concorrentes são especializados em áreas isoladas.'
+    },
+    {
+      title: '🧠 IA Terapêutica Multi-Modal',
+      description: 'Além de jogos adaptativos, NeuroPlay usa IA para: análise cognitiva (cognitive-analysis), detecção comportamental (analyze-chat-patterns), recomendações personalizadas e geração automática de PEI. Concorrentes usam IA apenas para adaptação de jogos.'
+    },
+    {
+      title: '🇧🇷 Conformidade Legal Brasileira (Lei 14.254/21 + LGPD)',
+      description: 'Única plataforma totalmente conforme Lei 14.254/21 (screening precoce, PEI, capacitação docente) e LGPD (consentimentos granulares, pseudonimização, auditoria). Concorrentes não atendem legislação brasileira.'
+    },
+    {
+      title: '🌍 Sistema Planeta Azul (Gamificação Terapêutica)',
+      description: 'Modelo de universo gamificado com 5 planetas temáticos cria narrativa coerente e progressão cross-diagnosis. Concorrentes usam gamificação genérica sem narrativa terapêutica.'
+    },
+    {
+      title: '👨‍👩‍👧 Ecossistema Multi-Stakeholder',
+      description: '4 dashboards dedicados (pais, terapeutas, professores, rede/admin) com comunicação tripartite integrada. Concorrentes focam apenas em pais ou apenas em clínicos, não ambos simultaneamente.'
+    },
+    {
+      title: '💰 Modelo Serverless Escalável e Custo-Eficiente',
+      description: 'Infraestrutura Lovable Cloud + Supabase permite escala automática sem DevOps. Desenvolvimento acelerado por IA reduz time-to-market. Concorrentes têm custos operacionais muito superiores.'
+    }
+  ];
+
+  competitiveAdvantages.forEach(advantage => {
+    if (yPosition > 230) {
+      doc.addPage();
+      yPosition = 20;
+    }
+    addText(advantage.title, 11, true, '#005a70');
+    addText(advantage.description, 9, false, '#666666');
+    yPosition += 3;
+  });
+
   // New page for conditions
   doc.addPage();
   yPosition = 20;
 
   // Conditions Section
-  addText('Condições do Neurodesenvolvimento Atendidas', 16, true, '#0a1e35');
+  addSection('Condições do Neurodesenvolvimento Atendidas');
   yPosition += 5;
 
   const conditions = [
