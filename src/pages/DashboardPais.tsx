@@ -363,11 +363,13 @@ export default function DashboardPais() {
         badgeIcon={unlockedBadge?.icon || '🏆'}
       />
 
-      <PreventiveAlertModal
-        open={showAlertModal}
-        onClose={() => setShowAlertModal(false)}
-        alert={preventiveAlert}
-      />
+      {preventiveAlert && (
+        <PreventiveAlertModal
+          open={showAlertModal}
+          onClose={() => setShowAlertModal(false)}
+          alert={preventiveAlert}
+        />
+      )}
 
       <div className="container mx-auto px-4 py-8">
         {/* Header with Child Selection */}
