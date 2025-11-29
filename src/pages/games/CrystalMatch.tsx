@@ -314,6 +314,10 @@ class Game {
   private comboCount: number;
   private comboDisplay: PIXI.Text | null;
   private comboContainer: PIXI.Container | null;
+  private dragStartGem: PIXI.Text | null;
+  private dragStartPos: { x: number; y: number } | null;
+  private dragCurrentPos: { x: number; y: number } | null;
+  private isDragging: boolean;
   private callbacks: {
     onStart: () => void;
     onMove: (correct: boolean) => void;
@@ -348,6 +352,10 @@ class Game {
     this.comboCount = 0;
     this.comboDisplay = null;
     this.comboContainer = null;
+    this.dragStartGem = null;
+    this.dragStartPos = null;
+    this.dragCurrentPos = null;
+    this.isDragging = false;
   }
 
   setPowerUpCallback(callback: (row: number, col: number) => void) {
@@ -859,7 +867,10 @@ class Game {
 
     gem.eventMode = 'static';
     gem.cursor = 'pointer';
-    gem.on('pointerdown', () => this.onGemClick(gem));
+    gem.on('pointerdown', (e) => this.onGemPointerDown(gem, e));
+    gem.on('pointermove', (e) => this.onGemPointerMove(gem, e));
+    gem.on('pointerup', () => this.onGemPointerUp(gem));
+    gem.on('pointerupoutside', () => this.onGemPointerUp(gem));
 
     return gem;
   }
@@ -891,7 +902,7 @@ class Game {
     return hCount >= 3 || vCount >= 3;
   }
 
-  onGemClick(gem: PIXI.Text) {
+  onGemPointerDown(gem: PIXI.Text, event: any) {
     if (this.gameState !== 'PLAYING' || this.movingGems > 0) return;
 
     const userData = (gem as any).userData;
@@ -901,26 +912,81 @@ class Game {
       return;
     }
 
-    if (!this.selectedGem) {
-      this.selectedGem = gem;
-      this.showSelection(gem, true);
-    } else if (this.selectedGem === gem) {
-      this.showSelection(gem, false);
-      this.selectedGem = null;
-    } else {
-      const row1 = (this.selectedGem as any).userData.row;
-      const col1 = (this.selectedGem as any).userData.col;
-      const row2 = userData.row;
-      const col2 = userData.col;
+    // Iniciar drag
+    this.dragStartGem = gem;
+    this.dragStartPos = { x: event.global.x, y: event.global.y };
+    this.isDragging = false;
 
-      if (this.areAdjacent(row1, col1, row2, col2)) {
-        this.swapGems(this.selectedGem, gem);
+    // Mostrar seleção visual
+    this.showSelection(gem, true);
+  }
+
+  onGemPointerMove(gem: PIXI.Text, event: any) {
+    if (!this.dragStartGem || !this.dragStartPos) return;
+    if (this.gameState !== 'PLAYING' || this.movingGems > 0) return;
+
+    const currentPos = { x: event.global.x, y: event.global.y };
+    this.dragCurrentPos = currentPos;
+    
+    const deltaX = currentPos.x - this.dragStartPos.x;
+    const deltaY = currentPos.y - this.dragStartPos.y;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    // Se moveu mais de 20 pixels, considera como drag
+    if (distance > 20) {
+      this.isDragging = true;
+    }
+  }
+
+  onGemPointerUp(gem: PIXI.Text) {
+    if (!this.dragStartGem || !this.dragStartPos) return;
+    if (this.gameState !== 'PLAYING' || this.movingGems > 0) return;
+
+    const userData = (gem as any).userData;
+
+    if (this.isDragging && this.dragCurrentPos) {
+      // Calcular direção do swipe usando posição salva
+      const deltaX = this.dragCurrentPos.x - this.dragStartPos.x;
+      const deltaY = this.dragCurrentPos.y - this.dragStartPos.y;
+
+      // Determinar direção predominante
+      let targetRow = (this.dragStartGem as any).userData.row;
+      let targetCol = (this.dragStartGem as any).userData.col;
+
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Movimento horizontal
+        targetCol += deltaX > 0 ? 1 : -1;
       } else {
-        this.showSelection(this.selectedGem, false);
-        this.selectedGem = gem;
-        this.showSelection(gem, true);
+        // Movimento vertical
+        targetRow += deltaY > 0 ? 1 : -1;
+      }
+
+      // Verificar se posição é válida
+      if (targetRow >= 0 && targetRow < this.gridSize && 
+          targetCol >= 0 && targetCol < this.gridSize) {
+        const targetGem = this.gems[targetRow][targetCol];
+        if (targetGem) {
+          this.swapGems(this.dragStartGem, targetGem);
+          this.showSelection(this.dragStartGem, false);
+          this.selectedGem = null;
+        }
+      }
+    } else {
+      // Click simples - usar lógica antiga de seleção
+      if (!this.selectedGem || this.selectedGem !== this.dragStartGem) {
+        this.selectedGem = this.dragStartGem;
+        this.showSelection(this.dragStartGem, true);
+      } else if (this.selectedGem === this.dragStartGem) {
+        this.showSelection(this.dragStartGem, false);
+        this.selectedGem = null;
       }
     }
+
+    // Reset drag state
+    this.dragStartGem = null;
+    this.dragStartPos = null;
+    this.dragCurrentPos = null;
+    this.isDragging = false;
   }
 
   showSelection(gem: PIXI.Text, show: boolean) {
