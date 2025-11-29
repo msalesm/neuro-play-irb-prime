@@ -124,6 +124,7 @@ export function MobileMenu() {
           variant="ghost"
           size="icon"
           className="fixed top-4 left-4 z-50 bg-card/95 backdrop-blur-sm border border-border md:hidden"
+          data-mobile-tour="menu-button"
         >
           <Menu className="h-5 w-5" />
         </Button>

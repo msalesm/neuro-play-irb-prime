@@ -29,6 +29,13 @@ export function FloatingActionButton({
 
   const defaultActions: FABAction[] = [
     {
+      id: 'chat',
+      label: 'Chat Terapêutico',
+      icon: <MessageCircle className="w-4 h-4" />,
+      href: '/chat',
+      color: 'bg-purple-500 hover:bg-purple-600'
+    },
+    {
       id: 'quick-game',
       label: 'Jogo Rápido',
       icon: <Brain className="w-4 h-4" />,
@@ -41,13 +48,6 @@ export function FloatingActionButton({
       icon: <Trophy className="w-4 h-4" />,
       href: '/learning-dashboard',
       color: 'bg-yellow-500 hover:bg-yellow-600'
-    },
-    {
-      id: 'feedback',
-      label: 'Feedback',
-      icon: <MessageCircle className="w-4 h-4" />,
-      action: () => console.log('Feedback clicked'),
-      color: 'bg-green-500 hover:bg-green-600'
     },
     {
       id: 'settings',
@@ -63,7 +63,7 @@ export function FloatingActionButton({
   const toggleFAB = () => setIsOpen(!isOpen);
 
   return (
-    <div className={cn("fixed bottom-6 right-6 z-50", className)} role="group" aria-label="Ações rápidas">
+    <div className={cn("fixed bottom-6 right-6 z-50", className)} role="group" aria-label="Ações rápidas" data-mobile-tour="floating-chat">
       {/* Action buttons */}
       {isOpen && (
         <div className="absolute bottom-16 right-0 space-y-3 animate-fade-in">

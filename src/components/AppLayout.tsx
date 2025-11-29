@@ -2,6 +2,7 @@ import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
 import { BottomNavigation } from '@/components/BottomNavigation';
 import { MobileMenu } from '@/components/MobileMenu';
+import { MobileTour } from '@/components/MobileTour';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -27,6 +28,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         <MobileMenu />
         {children}
         <BottomNavigation />
+        <MobileTour />
       </div>
     );
   }

@@ -48,6 +48,7 @@ export function BottomNavigation() {
       className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border"
       role="navigation"
       aria-label="Navegação principal"
+      data-mobile-tour="bottom-nav"
     >
       <div className="flex justify-around items-center py-2">
         {navigationItems.map((item) => {
