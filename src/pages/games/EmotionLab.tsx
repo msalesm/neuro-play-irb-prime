@@ -155,43 +155,28 @@ export default function EmotionLab() {
   const currentScenario = emotionScenarios[currentScenarioIndex];
 
   const startGame = async () => {
-    // Try to start auto-save, but don't block game if it fails
-    try {
-      await startAutoSave('emotion_lab', level, {
-        currentScenario: currentScenarioIndex
-      });
-    } catch (error) {
-      console.error('Auto-save failed, continuing in offline mode:', error);
-      toast.warning('Jogando em modo offline - progresso não será salvo');
+    if (!childProfileId) {
+      toast.error('Perfil da criança não encontrado');
+      return;
     }
 
-    // ALWAYS start the game, regardless of auto-save success
+    await startSession();
     setGameStarted(true);
   };
 
-  const handleResumeSession = async (session: any) => {
-    setScore(session.performance_data.score || 0);
-    setLevel(session.level);
-    setCurrentScenarioIndex(session.performance_data.currentScenario || 0);
-    setSessionData({
-      ...sessionData,
-      totalCorrect: session.performance_data.totalCorrect || 0
-    });
+  const handleResumeSession = async () => {
+    if (!recoveredSession) return;
     
-    await startAutoSave('emotion_lab', session.level, {
-      sessionId: session.id,
-      currentScenario: session.performance_data.currentScenario || 0
-    });
-
+    setScore(recoveredSession.score || 0);
+    setLevel(recoveredSession.difficulty_level || 1);
+    setSessionData(prev => ({
+      ...prev,
+      totalCorrect: recoveredSession.correct_attempts || 0
+    }));
+    
+    await resumeSession(recoveredSession);
     setGameStarted(true);
-    setShowRecoveryModal(false);
   };
-
-  useEffect(() => {
-    if (hasUnfinishedSessions && !gameStarted && !currentSession) {
-      setShowRecoveryModal(true);
-    }
-  }, [hasUnfinishedSessions, gameStarted, currentSession]);
 
   const handleAnswerSelect = async (answerIndex: number) => {
     if (selectedAnswer !== null) return;
@@ -230,18 +215,14 @@ export default function EmotionLab() {
       audio.speak(currentScenario.explanation, { rate: 0.85 });
     }, 2000);
 
-    // Auto-save progress
-    updateAutoSave({
-      score,
-      moves: currentScenarioIndex + 1,
-      correctMoves: sessionData.totalCorrect,
-      additionalData: {
-        level,
-        currentScenario: currentScenarioIndex,
-        sessionData,
-        accuracy: (sessionData.totalCorrect / (currentScenarioIndex + 1)) * 100
-      }
-    });
+    // Update session
+    if (isActive) {
+      await updateSession({
+        score,
+        timeSpent: Math.floor((Date.now() - sessionData.startTime) / 1000),
+        moves: currentScenarioIndex + 1,
+      });
+    }
 
     // Save behavioral data
     await saveBehavioralMetric({
@@ -284,18 +265,19 @@ export default function EmotionLab() {
     audio.speak('Laboratório concluído! Parabéns pelo seu trabalho!', { rate: 0.9 });
     
     const accuracy = (sessionData.totalCorrect / emotionScenarios.length) * 100;
+    const totalTime = Math.floor((Date.now() - sessionData.startTime) / 1000);
+    setTotalTime(totalTime);
+    setFinalScore(score);
     
-    // Complete auto-save session
-    await completeAutoSave({
-      score,
-      moves: emotionScenarios.length,
-      correctMoves: sessionData.totalCorrect,
-      additionalData: {
-        finalLevel: level,
-        sessionData,
-        accuracy
-      }
-    });
+    // End game session
+    if (isActive) {
+      await endSession({
+        score,
+        accuracy,
+        timeSpent: totalTime,
+        moves: emotionScenarios.length,
+      });
+    }
     const emotionalIntelligenceScore = Math.round(
       (sessionData.recognitionAccuracy * 30 + 
        sessionData.regulationStrategies * 40 + 
@@ -433,27 +415,26 @@ export default function EmotionLab() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 p-4">
-      <SessionRecoveryModal
-        open={showRecoveryModal}
-        sessions={unfinishedSessions}
-        onResume={handleResumeSession}
-        onDiscard={async (sessionId) => {
-          await discardSession(sessionId);
-          setShowRecoveryModal(false);
-        }}
-        onStartNew={() => setShowRecoveryModal(false)}
-      />
+      {recoveredSession && !gameStarted && (
+        <Card className="max-w-md mx-auto mb-4 p-4">
+          <h3 className="font-bold mb-2">Sessão não concluída encontrada</h3>
+          <p className="text-sm text-muted-foreground mb-4">
+            Deseja continuar de onde parou?
+          </p>
+          <div className="flex gap-2">
+            <Button onClick={handleResumeSession} size="sm">Continuar</Button>
+            <Button onClick={discardRecoveredSession} size="sm" variant="outline">Descartar</Button>
+          </div>
+        </Card>
+      )}
       
       <Card className="max-w-3xl mx-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex gap-2">
-              {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
               <GameExitButton
                 variant="quit"
-                onExit={async () => {
-                  await abandonSession();
-                }}
+                onExit={() => window.location.href = '/games'}
                 showProgress={gameStarted}
                 currentProgress={sessionData.totalCorrect}
                 totalProgress={emotionScenarios.length}

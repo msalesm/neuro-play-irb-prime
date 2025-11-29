@@ -27,24 +27,35 @@ const SocialScenarios = () => {
   const [showResults, setShowResults] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
   const [completionTime, setCompletionTime] = useState(0);
+  const [childProfileId, setChildProfileId] = useState<string | null>(null);
 
   const {
-    currentSession,
-    isSaving,
-    startSession: startAutoSave,
-    updateSession: updateAutoSave,
-    completeSession: completeAutoSave,
-    abandonSession
-  } = useAutoSave({ saveInterval: 10000, saveOnUnload: true });
+    sessionId,
+    startSession,
+    endSession,
+    updateSession,
+    isActive,
+    recoveredSession,
+    resumeSession: resumeGameSession,
+    discardRecoveredSession
+  } = useGameSession('social-scenarios', childProfileId || undefined);
 
-  const {
-    unfinishedSessions,
-    hasUnfinishedSessions,
-    resumeSession,
-    discardSession
-  } = useSessionRecovery('social_scenarios');
-
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
+  // Get child profile ID
+  useEffect(() => {
+    const loadChildProfile = async () => {
+      if (!user) return;
+      const { data: profiles } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', user.id)
+        .limit(1)
+        .single();
+      if (profiles) {
+        setChildProfileId(profiles.id);
+      }
+    };
+    loadChildProfile();
+  }, [user]);
 
   const {
     scenarios,
@@ -74,45 +85,29 @@ const SocialScenarios = () => {
   }
 
   const startScenario = async (scenario: any) => {
-    const sessionId = await startAutoSave('social_scenarios', 1, {
-      scenarioId: scenario.id,
-      difficulty: scenario.difficulty_level
-    });
-
-    if (sessionId) {
-      setCurrentScenario(scenario);
-      setCurrentChoices(scenario.choices || []);
-      setSelectedChoice(null);
-      setShowResult(false);
-      setSessionStartTime(Date.now());
-      setGameMode('playing');
-      
-      // Narrate scenario
-      audio.speak(`${scenario.title}. ${scenario.description}`, { rate: 0.9 });
+    if (!childProfileId) {
+      toast({ title: 'Erro', description: 'Perfil da criança não encontrado', variant: 'destructive' });
+      return;
     }
+
+    await startSession();
+    setCurrentScenario(scenario);
+    setCurrentChoices(scenario.choices || []);
+    setSelectedChoice(null);
+    setShowResult(false);
+    setSessionStartTime(Date.now());
+    setGameMode('playing');
+    
+    // Narrate scenario
+    audio.speak(`${scenario.title}. ${scenario.description}`, { rate: 0.9 });
   };
 
-  const handleResumeSession = async (session: any) => {
-    const scenario = scenarios.find(s => s.id === session.performance_data?.scenarioId);
-    if (scenario) {
-      await startAutoSave('social_scenarios', session.level, {
-        sessionId: session.id,
-        scenarioId: scenario.id,
-        difficulty: scenario.difficulty_level
-      });
-      
-      setCurrentScenario(scenario);
-      setCurrentChoices(scenario.choices || []);
-      setGameMode('menu');
-      setShowRecoveryModal(false);
-    }
+  const handleResumeSession = async () => {
+    if (!recoveredSession) return;
+    
+    await resumeGameSession(recoveredSession);
+    setGameMode('menu');
   };
-
-  useEffect(() => {
-    if (hasUnfinishedSessions && gameMode === 'menu' && !currentSession) {
-      setShowRecoveryModal(true);
-    }
-  }, [hasUnfinishedSessions, gameMode, currentSession]);
 
   const selectChoice = (choiceId: number) => {
     setSelectedChoice(choiceId);
@@ -153,18 +148,19 @@ const SocialScenarios = () => {
       completionTime
     );
 
-    // Complete auto-save session
-    await completeAutoSave({
-      score: (scores.empathy + scores.assertiveness + scores.communication) * 10,
-      moves: 1,
-      correctMoves: 1,
-      additionalData: {
-        scenarioId: currentScenario.id,
-        selectedChoiceId: choiceId,
-        scores,
-        completionTime
-      }
-    });
+    const totalScore = (scores.empathy + scores.assertiveness + scores.communication) * 10;
+    setFinalScore(totalScore);
+    setCompletionTime(completionTime);
+
+    // End game session
+    if (isActive) {
+      await endSession({
+        score: totalScore,
+        accuracy: 100,
+        timeSpent: completionTime,
+        moves: 1,
+      });
+    }
 
     // Completion sound
     audio.playAchievement();
@@ -203,16 +199,18 @@ const SocialScenarios = () => {
   return (
     <div className="min-h-screen bg-gradient-primary">
       <div className="container mx-auto px-6 py-8">
-        <SessionRecoveryModal
-          open={showRecoveryModal}
-          sessions={unfinishedSessions}
-          onResume={handleResumeSession}
-          onDiscard={async (sessionId) => {
-            await discardSession(sessionId);
-            setShowRecoveryModal(false);
-          }}
-          onStartNew={() => setShowRecoveryModal(false)}
-        />
+        {recoveredSession && gameMode === 'menu' && (
+          <Card className="max-w-md mx-auto mb-4 p-4">
+            <h3 className="font-bold mb-2">Sessão não concluída encontrada</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Deseja continuar de onde parou?
+            </p>
+            <div className="flex gap-2">
+              <Button onClick={handleResumeSession} size="sm">Continuar</Button>
+              <Button onClick={discardRecoveredSession} size="sm" variant="outline">Descartar</Button>
+            </div>
+          </Card>
+        )}
         
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -228,12 +226,9 @@ const SocialScenarios = () => {
             </p>
           </div>
           <div className="flex gap-2">
-            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
             <GameExitButton
               variant="quit"
-              onExit={async () => {
-                await abandonSession();
-              }}
+              onExit={() => window.location.href = '/games'}
               showProgress={gameMode === 'playing'}
               currentProgress={selectedChoice ? 1 : 0}
               totalProgress={1}
