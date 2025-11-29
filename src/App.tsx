@@ -124,8 +124,8 @@ const App = () => (
             >
               <AppLayout>
                 <Routes>
-                  <Route path="/" element={<NeuroPlayLanding />} />
-                  <Route path="/landing" element={<IRBPrimeLanding />} />
+  <Route path="/" element={<IRBPrimeLanding />} />
+  <Route path="/landing" element={<NeuroPlayLanding />} />
                   <Route path="/home" element={<Home />} />
                   <Route path="/onboarding" element={<OnboardingWizard />} />
                   <Route path="/neuroplay" element={
