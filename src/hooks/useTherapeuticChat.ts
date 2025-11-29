@@ -194,6 +194,7 @@ export function useTherapeuticChat({
           ]),
           childProfile,
           userRole: role,
+          conversationId: currentConversationId,
         }),
         signal: abortControllerRef.current.signal,
       });

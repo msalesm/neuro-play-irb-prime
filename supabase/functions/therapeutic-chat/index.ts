@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, childProfile, userRole } = await req.json();
+    const { messages, childProfile, userRole, conversationId } = await req.json();
     
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
@@ -50,7 +50,50 @@ serve(async (req) => {
       }
     }
 
-    // Build system prompt based on user role
+    // Analyze sentiment of the last user message
+    const lastUserMessage = messages[messages.length - 1]?.content || "";
+    let sentimentAnalysis = { score: 0, emotion: "neutral", intensity: "low" };
+    
+    if (lastUserMessage && userRole === "parent") {
+      try {
+        const sentimentResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${LOVABLE_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "google/gemini-2.5-flash",
+            messages: [
+              { 
+                role: "system", 
+                content: "Você é um analisador de sentimentos especializado em detectar emoções de pais de crianças neurodivergentes. Analise o texto e retorne APENAS um JSON válido no formato: {\"score\": número de -1 a 1, \"emotion\": \"frustration\"|\"distress\"|\"anxiety\"|\"hope\"|\"neutral\", \"intensity\": \"low\"|\"medium\"|\"high\"}. Score: -1 = muito negativo, 0 = neutro, 1 = muito positivo." 
+              },
+              { role: "user", content: `Analise o sentimento desta mensagem de um pai/mãe: "${lastUserMessage}"` }
+            ],
+            temperature: 0.3,
+          }),
+        });
+
+        if (sentimentResponse.ok) {
+          const sentimentData = await sentimentResponse.json();
+          const sentimentText = sentimentData.choices[0]?.message?.content || "{}";
+          
+          // Extract JSON from the response (handle markdown code blocks)
+          const jsonMatch = sentimentText.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            sentimentAnalysis = JSON.parse(jsonMatch[0]);
+          }
+          
+          console.log("Sentiment analysis:", sentimentAnalysis);
+        }
+      } catch (error) {
+        console.error("Error analyzing sentiment:", error);
+        // Continue with neutral sentiment if analysis fails
+      }
+    }
+
+    // Build system prompt based on user role and sentiment
     let systemPrompt = "";
     
     if (userRole === "parent") {
@@ -102,6 +145,27 @@ ${developmentalStage ? `- Fase: ${developmentalStage}` : ''}
 - Substituir avaliação profissional presencial
 
 **IMPORTANTE**: Se a situação indicar risco (regressão severa, autolesão, ideação suicida), **seja direto**: "Esta situação requer avaliação presencial urgente. Procure [profissional específico] imediatamente."
+
+**AJUSTE DE TOM BASEADO EM SENTIMENTO DETECTADO:**
+${sentimentAnalysis.emotion === "frustration" || sentimentAnalysis.emotion === "distress" ? `
+⚠️ ATENÇÃO: Pai/mãe demonstrando sinais de ${sentimentAnalysis.emotion === "frustration" ? "frustração" : "angústia"} (intensidade: ${sentimentAnalysis.intensity}).
+
+AJUSTES OBRIGATÓRIOS:
+- Use tom MAIS acolhedor e validador no início ("Entendo que isso está sendo difícil...")
+- Reduza jargão técnico ao mínimo
+- Priorize uma ação imediata MUITO simples e executável HOJE
+- Ofereça perspectiva realista mas esperançosa
+- Se intensidade for "high", considere recomendar suporte emocional para os pais também
+` : ""}
+${sentimentAnalysis.emotion === "anxiety" ? `
+⚠️ ATENÇÃO: Pai/mãe demonstrando ansiedade (intensidade: ${sentimentAnalysis.intensity}).
+
+AJUSTES OBRIGATÓRIOS:
+- Normalize a preocupação ("É completamente normal se sentir assim...")
+- Forneça informações concretas e específicas para reduzir incerteza
+- Evite termos alarmistas ou ambíguos
+- Divida orientações em passos pequenos e gerenciáveis
+` : ""}
 
 Seja empático mas profissional. Sua função é orientar, não acolher emocionalmente por longos períodos.`;
 
@@ -156,6 +220,32 @@ Forneça orientações objetivas e práticas sobre TEA, TDAH e Dislexia. Seja cl
 Use linguagem acessível e estruture respostas em tópicos curtos e acionáveis.`;
     }
 
+    // Update conversation sentiment score if conversationId provided
+    if (conversationId && sentimentAnalysis.score !== 0) {
+      try {
+        const supabaseUrl = Deno.env.get('SUPABASE_URL');
+        const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+        
+        if (supabaseUrl && supabaseServiceKey) {
+          await fetch(`${supabaseUrl}/rest/v1/chat_conversations?id=eq.${conversationId}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': supabaseServiceKey,
+              'Authorization': `Bearer ${supabaseServiceKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              sentiment_score: sentimentAnalysis.score
+            })
+          });
+        }
+      } catch (error) {
+        console.error("Error updating sentiment score:", error);
+        // Continue even if sentiment update fails
+      }
+    }
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -169,7 +259,7 @@ Use linguagem acessível e estruture respostas em tópicos curtos e acionáveis.
           ...messages,
         ],
         stream: true,
-        temperature: 0.5, // Reduced for more consistent, objective responses
+        temperature: sentimentAnalysis.intensity === "high" ? 0.6 : 0.5, // Slightly higher temperature for high-intensity emotions
       }),
     });
 
