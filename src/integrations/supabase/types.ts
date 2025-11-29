@@ -1681,6 +1681,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      professional_has_child_access: {
+        Args: { _child_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "therapist" | "parent" | "user"
