@@ -34,18 +34,22 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
 
   const handleJoyrideCallback = async (data: CallBackProps) => {
     const { status } = data;
-    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
-    if (finishedStatuses.includes(status as string)) {
+
+    if (status === STATUS.FINISHED) {
       setRun(false);
-      localStorage.setItem(`tour_seen_${pageName}`, 'true');
+      localStorage.setItem(`tour_seen_${pageName}`, "true");
       setHasSeenTour(true);
 
       // Salvar conclusão no Supabase e verificar conquistas
-      if (status === STATUS.FINISHED) {
-        await completeTour(pageName);
-        await checkForNewAchievements();
-        toast.success('Tour completado! 🎉');
-      }
+      await completeTour(pageName);
+      await checkForNewAchievements();
+      toast.success('Tour completado! 🎉');
+    }
+
+    // Se o usuário pular o tour, apenas paramos a execução,
+    // mas não marcamos como concluído nem salvamos no backend.
+    if (status === STATUS.SKIPPED) {
+      setRun(false);
     }
   };
 
