@@ -200,6 +200,114 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
         ),
       },
     ],
+    'games': [
+      {
+        target: 'body',
+        content: (
+          <div>
+            <h2 className="text-xl font-bold mb-2">Jogos Cognitivos 🎮</h2>
+            <p>Catálogo completo de jogos terapêuticos para desenvolvimento cognitivo e emocional!</p>
+          </div>
+        ),
+        placement: 'center',
+      },
+      {
+        target: '[data-tour="game-categories"]',
+        content: (
+          <div>
+            <h3 className="font-bold mb-2">Categorias de Jogos 🎯</h3>
+            <p>Navegue entre jogos básicos, avançados e especializados de acordo com as necessidades.</p>
+          </div>
+        ),
+      },
+      {
+        target: '[data-tour="game-card"]',
+        content: (
+          <div>
+            <h3 className="font-bold mb-2">Informações do Jogo 📊</h3>
+            <p>Cada jogo mostra duração, idade recomendada, habilidades desenvolvidas e status de desbloqueio.</p>
+          </div>
+        ),
+      },
+    ],
+    'avatar-evolution': [
+      {
+        target: 'body',
+        content: (
+          <div>
+            <h2 className="text-xl font-bold mb-2">Evolução do Avatar ⭐</h2>
+            <p>Personalize e evolua seu avatar conforme progride na plataforma!</p>
+          </div>
+        ),
+        placement: 'center',
+      },
+      {
+        target: '[data-tour="avatar-display"]',
+        content: (
+          <div>
+            <h3 className="font-bold mb-2">Seu Avatar 👤</h3>
+            <p>Veja seu avatar atual com todos os acessórios conquistados!</p>
+          </div>
+        ),
+      },
+      {
+        target: '[data-tour="evolution-stats"]',
+        content: (
+          <div>
+            <h3 className="font-bold mb-2">Estatísticas de Evolução 📈</h3>
+            <p>Acompanhe seu nível, planetas completados e acessórios desbloqueados.</p>
+          </div>
+        ),
+      },
+      {
+        target: '[data-tour="accessories"]',
+        content: (
+          <div>
+            <h3 className="font-bold mb-2">Acessórios 🎨</h3>
+            <p>Equipar acessórios conquistados ao completar planetas e missões!</p>
+          </div>
+        ),
+      },
+    ],
+    'therapist-dashboard': [
+      {
+        target: 'body',
+        content: (
+          <div>
+            <h2 className="text-xl font-bold mb-2">Dashboard do Terapeuta 👨‍⚕️</h2>
+            <p>Acompanhe a evolução clínica de seus pacientes de forma detalhada.</p>
+          </div>
+        ),
+        placement: 'center',
+      },
+      {
+        target: '[data-tour="patient-info"]',
+        content: (
+          <div>
+            <h3 className="font-bold mb-2">Informações do Paciente 📋</h3>
+            <p>Veja o perfil completo, avatar e condições diagnosticadas.</p>
+          </div>
+        ),
+      },
+      {
+        target: '[data-tour="clinical-tabs"]',
+        content: (
+          <div>
+            <h3 className="font-bold mb-2">Abas Clínicas 📊</h3>
+            <p>Navegue entre evolução, perfil cognitivo, alertas e PEI do paciente.</p>
+          </div>
+        ),
+      },
+      {
+        target: '[data-tour="export-report"]',
+        content: (
+          <div>
+            <h3 className="font-bold mb-2">Exportar Relatório 📄</h3>
+            <p>Gere relatórios clínicos em PDF para compartilhar com outros profissionais.</p>
+          </div>
+        ),
+      },
+    ],
   };
 
   const steps = tours[pageName] || [];

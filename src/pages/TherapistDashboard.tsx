@@ -14,6 +14,7 @@ import {
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
+import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 
 interface PatientData {
   id: string;
@@ -113,20 +114,22 @@ export default function TherapistDashboard() {
   }
 
   return (
-    <ModernPageLayout>
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-6">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/therapist/patients')}
-            className="mb-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar para Pacientes
-          </Button>
+    <>
+      <PlatformOnboarding pageName="therapist-dashboard" />
+      <ModernPageLayout>
+        <div className="container mx-auto px-4 py-8">
+          {/* Header */}
+          <div className="mb-6">
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/therapist/patients')}
+              className="mb-4"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar para Pacientes
+            </Button>
 
-          <Card>
+            <Card data-tour="patient-info">
             <CardContent className="p-6">
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="flex items-center gap-4">
@@ -164,7 +167,7 @@ export default function TherapistDashboard() {
         </div>
 
         {/* Main Content */}
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs value={activeTab} onValueChange={setActiveTab} data-tour="clinical-tabs">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="evolution">Evolução</TabsTrigger>
             <TabsTrigger value="cognitive">Cognitivo</TabsTrigger>
@@ -406,5 +409,6 @@ export default function TherapistDashboard() {
         </Tabs>
       </div>
     </ModernPageLayout>
+  </>
   );
 }

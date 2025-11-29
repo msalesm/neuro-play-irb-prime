@@ -101,7 +101,7 @@ export const AvatarCustomization = ({ evolution, onEquipAccessory }: AvatarCusto
       )}
 
       {/* Accessories Tabs */}
-      <Card>
+      <Card data-tour="accessories">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-primary" />
