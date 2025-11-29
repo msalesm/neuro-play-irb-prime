@@ -38,9 +38,13 @@ import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
 import AttentionSustained from "./pages/games/AttentionSustainedGame";
 import AttentionSustainedAdaptive from "./pages/games/AttentionSustainedAdaptive";
+import AttentionSustainedPhases from "./pages/games/AttentionSustainedPhases";
 import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
 import CognitiveFlexibility from "./pages/games/CognitiveFlexibilityGame";
 import CognitiveFlexibilityPhases from "./pages/games/CognitiveFlexibilityPhases";
+import ExecutiveProcessingPhases from "./pages/games/ExecutiveProcessingPhases";
+import FocusForestPhases from "./pages/games/FocusForestPhases";
+import FocoRapidoPhases from "./pages/games/FocoRapidoPhases";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import MemoryWorkload from "./pages/games/MemoryWorkload";
 import TheoryOfMind from "./pages/games/TheoryOfMind";
@@ -189,9 +193,17 @@ const App = () => (
                   <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
           <Route path="/games/executive-processing" element={<ExecutiveProcessing />} />
           <Route path="/games/executive-processing-game" element={<ExecutiveProcessingGame />} />
+          <Route path="/games/executive-processing-phases" element={<ExecutiveProcessingPhases />} />
+          <Route path="/games/executive-processing-play" element={<ExecutiveProcessing />} />
           <Route path="/games/emotion-lab" element={<EmotionLab />} />
           <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
           <Route path="/games/attention-sustained" element={<AttentionSustained />} />
+          <Route path="/games/attention-sustained-phases" element={<AttentionSustainedPhases />} />
+          <Route path="/games/attention-sustained-play" element={<AttentionSustained />} />
+          <Route path="/games/focus-forest-phases" element={<FocusForestPhases />} />
+          <Route path="/games/focus-forest-play" element={<FocusForest />} />
+          <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
+          <Route path="/games/foco-rapido-play" element={<FocoRapido />} />
           <Route path="/games/cognitive-flexibility" element={<CognitiveFlexibilityPhases />} />
           <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibility />} />
                   <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />

@@ -79,40 +79,40 @@ export const planetas: Planeta[] = [
       {
         id: 'attention-sustained',
         nome: 'Missão Cronometrada',
-        descricao: 'Complete tarefas mantendo foco por períodos crescentes',
+        descricao: 'Complete tarefas mantendo foco por períodos crescentes - 6 fases progressivas',
         duracao: 8,
         dificuldade: 2,
-        rota: '/games/attention-sustained',
+        rota: '/games/attention-sustained-phases',
         icone: '⏱️',
         completado: false
       },
       {
         id: 'focus-forest',
         nome: 'Floresta do Foco',
-        descricao: 'Cultive sua árvore da atenção através de sessões focadas',
+        descricao: 'Cultive sua árvore da atenção através de sessões focadas - 6 fases progressivas',
         duracao: 15,
         dificuldade: 2,
-        rota: '/games/focus-forest',
+        rota: '/games/focus-forest-phases',
         icone: '🌳',
         completado: false
       },
       {
         id: 'executive-processing',
         nome: 'Desvio de Impulsos',
-        descricao: 'Pratique controle inibitório respondendo seletivamente',
+        descricao: 'Pratique controle inibitório respondendo seletivamente - 6 fases progressivas',
         duracao: 10,
         dificuldade: 3,
-        rota: '/games/executive-processing',
+        rota: '/games/executive-processing-phases',
         icone: '🎯',
         completado: false
       },
       {
         id: 'foco-rapido',
         nome: 'Foco Rápido',
-        descricao: 'Melhore velocidade de processamento e atenção seletiva',
+        descricao: 'Melhore velocidade de processamento e atenção seletiva - 6 fases progressivas',
         duracao: 8,
         dificuldade: 2,
-        rota: '/games/foco-rapido',
+        rota: '/games/foco-rapido-phases',
         icone: '⚡',
         completado: false
       }
