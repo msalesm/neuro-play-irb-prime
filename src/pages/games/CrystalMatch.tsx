@@ -5,9 +5,11 @@ import { useGameSession } from '@/hooks/useGameSession';
 import { useGameProfile } from '@/hooks/useGameProfile';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, RotateCcw } from 'lucide-react';
+import { ArrowLeft, RotateCcw, Bomb, Zap, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { hapticsEngine } from '@/lib/haptics';
+
+type PowerUpType = 'bomb' | 'lightning' | 'rainbow' | null;
 
 export default function CrystalMatch() {
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ export default function CrystalMatch() {
   const gameRef = useRef<any>(null);
   const [gameStarted, setGameStarted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activePowerUp, setActivePowerUp] = useState<PowerUpType>(null);
+  const [powerUps, setPowerUps] = useState({ bomb: 2, lightning: 2, rainbow: 2 });
 
 
   useEffect(() => {
@@ -56,10 +60,13 @@ export default function CrystalMatch() {
         onMove: handleMove,
         onScore: handleScore,
         onGameOver: handleGameOver,
+        onPowerUpEarned: handlePowerUpEarned,
       });
 
       await game.setup();
       gameRef.current = game;
+      
+      game.setPowerUpCallback(usePowerUp);
 
       app.ticker.add((ticker) => {
         game.update(ticker.deltaTime);
@@ -108,7 +115,43 @@ export default function CrystalMatch() {
     if (gameRef.current) {
       gameRef.current.startGame();
       setGameStarted(false);
+      setPowerUps({ bomb: 2, lightning: 2, rainbow: 2 });
+      setActivePowerUp(null);
     }
+  };
+
+  const handlePowerUpEarned = (type: 'bomb' | 'lightning' | 'rainbow') => {
+    setPowerUps(prev => ({ ...prev, [type]: prev[type] + 1 }));
+    hapticsEngine.trigger('achievement');
+    toast.success(`Power-up desbloqueado: ${type === 'bomb' ? '💣 Bomba' : type === 'lightning' ? '⚡ Raio' : '🌈 Cristal Arco-Íris'}!`);
+  };
+
+  const handlePowerUpClick = (type: PowerUpType) => {
+    if (!type || powerUps[type] <= 0) return;
+    
+    if (activePowerUp === type) {
+      setActivePowerUp(null);
+      toast.info('Power-up desativado');
+    } else {
+      setActivePowerUp(type);
+      hapticsEngine.trigger('tap');
+      toast.info(`Power-up ativado: ${type === 'bomb' ? '💣 Bomba' : type === 'lightning' ? '⚡ Raio' : '🌈 Cristal Arco-Íris'}`);
+    }
+  };
+
+  const usePowerUp = (row: number, col: number) => {
+    if (!activePowerUp || !gameRef.current) return;
+
+    if (powerUps[activePowerUp] <= 0) {
+      toast.error('Power-up esgotado!');
+      setActivePowerUp(null);
+      return;
+    }
+
+    gameRef.current.activatePowerUp(activePowerUp, row, col);
+    setPowerUps(prev => ({ ...prev, [activePowerUp]: prev[activePowerUp] - 1 }));
+    setActivePowerUp(null);
+    hapticsEngine.trigger('success');
   };
 
   return (
@@ -178,6 +221,49 @@ export default function CrystalMatch() {
           </div>
         ) : (
           <>
+            {/* Power-ups */}
+            {gameStarted && !error && (
+              <div className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-lg p-4 mb-4 border border-purple-500/30">
+                <p className="text-white font-bold mb-3 text-center">⚡ Power-Ups</p>
+                <div className="flex gap-3 justify-center">
+                  <Button
+                    onClick={() => handlePowerUpClick('bomb')}
+                    disabled={powerUps.bomb <= 0}
+                    variant={activePowerUp === 'bomb' ? 'default' : 'outline'}
+                    className={`flex-1 ${activePowerUp === 'bomb' ? 'bg-red-600 hover:bg-red-700' : 'bg-white/10 hover:bg-white/20'} border-2 ${activePowerUp === 'bomb' ? 'border-red-400' : 'border-white/30'}`}
+                  >
+                    <Bomb className="w-5 h-5 mr-2" />
+                    <span className="font-bold">{powerUps.bomb}</span>
+                  </Button>
+                  <Button
+                    onClick={() => handlePowerUpClick('lightning')}
+                    disabled={powerUps.lightning <= 0}
+                    variant={activePowerUp === 'lightning' ? 'default' : 'outline'}
+                    className={`flex-1 ${activePowerUp === 'lightning' ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-white/10 hover:bg-white/20'} border-2 ${activePowerUp === 'lightning' ? 'border-yellow-400' : 'border-white/30'}`}
+                  >
+                    <Zap className="w-5 h-5 mr-2" />
+                    <span className="font-bold">{powerUps.lightning}</span>
+                  </Button>
+                  <Button
+                    onClick={() => handlePowerUpClick('rainbow')}
+                    disabled={powerUps.rainbow <= 0}
+                    variant={activePowerUp === 'rainbow' ? 'default' : 'outline'}
+                    className={`flex-1 ${activePowerUp === 'rainbow' ? 'bg-gradient-to-r from-purple-600 to-pink-600' : 'bg-white/10 hover:bg-white/20'} border-2 ${activePowerUp === 'rainbow' ? 'border-purple-400' : 'border-white/30'}`}
+                  >
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    <span className="font-bold">{powerUps.rainbow}</span>
+                  </Button>
+                </div>
+                {activePowerUp && (
+                  <p className="text-center text-white/80 text-xs mt-3">
+                    {activePowerUp === 'bomb' && '💣 Clique em um cristal para destruir área 3x3'}
+                    {activePowerUp === 'lightning' && '⚡ Clique em um cristal para destruir linha ou coluna'}
+                    {activePowerUp === 'rainbow' && '🌈 Clique em um cristal para transformá-lo em coringa'}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Game Instructions */}
             <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-6 text-white/90 text-sm">
               <p className="mb-2">📋 <strong>Como jogar:</strong></p>
@@ -185,7 +271,7 @@ export default function CrystalMatch() {
                 <li>Clique em um cristal e depois em um adjacente para trocar</li>
                 <li>Forme linhas de 3 ou mais cristais iguais</li>
                 <li>Você tem 30 movimentos para fazer a maior pontuação</li>
-                <li>Cristais novos caem do topo automaticamente</li>
+                <li>Combos de 4+ cristais ganham power-ups!</li>
               </ul>
             </div>
 
@@ -243,7 +329,9 @@ class Game {
     onMove: (correct: boolean) => void;
     onScore: (points: number) => void;
     onGameOver: (score: number, moves: number) => void;
+    onPowerUpEarned: (type: 'bomb' | 'lightning' | 'rainbow') => void;
   };
+  private usePowerUpCallback: ((row: number, col: number) => void) | null;
 
   constructor(app: PIXI.Application, callbacks: any) {
     this.app = app;
@@ -266,6 +354,135 @@ class Game {
     this.selectionHighlight = null;
     this.isCheckingForCascadingMatches = false;
     this.callbacks = callbacks;
+    this.usePowerUpCallback = null;
+  }
+
+  setPowerUpCallback(callback: (row: number, col: number) => void) {
+    this.usePowerUpCallback = callback;
+  }
+
+  activatePowerUp(type: 'bomb' | 'lightning' | 'rainbow', row: number, col: number) {
+    if (type === 'bomb') {
+      this.activateBomb(row, col);
+    } else if (type === 'lightning') {
+      this.activateLightning(row, col);
+    } else if (type === 'rainbow') {
+      this.activateRainbow(row, col);
+    }
+  }
+
+  activateBomb(row: number, col: number) {
+    const matches: Array<{ row: number; col: number }> = [];
+    
+    for (let r = Math.max(0, row - 1); r <= Math.min(this.gridSize - 1, row + 1); r++) {
+      for (let c = Math.max(0, col - 1); c <= Math.min(this.gridSize - 1, col + 1); c++) {
+        if (this.grid[r][c]) {
+          matches.push({ row: r, col: c });
+        }
+      }
+    }
+
+    if (matches.length > 0) {
+      this.score += matches.length * 20;
+      this.updateUI();
+      this.callbacks.onScore(matches.length * 20);
+      this.matchesFound(matches);
+    }
+  }
+
+  activateLightning(row: number, col: number) {
+    const matches: Array<{ row: number; col: number }> = [];
+    
+    const rowCount = this.grid[row].filter(cell => cell !== null).length;
+    const colCount = this.grid.filter(r => r[col] !== null).length;
+
+    if (rowCount >= colCount) {
+      for (let c = 0; c < this.gridSize; c++) {
+        if (this.grid[row][c]) {
+          matches.push({ row, col: c });
+        }
+      }
+    } else {
+      for (let r = 0; r < this.gridSize; r++) {
+        if (this.grid[r][col]) {
+          matches.push({ row: r, col });
+        }
+      }
+    }
+
+    if (matches.length > 0) {
+      this.score += matches.length * 15;
+      this.updateUI();
+      this.callbacks.onScore(matches.length * 15);
+      this.matchesFound(matches);
+    }
+  }
+
+  activateRainbow(row: number, col: number) {
+    const gem = this.gems[row][col];
+    if (!gem) return;
+
+    const rainbowType = '🌈';
+    (gem as any).userData.type = rainbowType;
+    (gem as any).userData.isRainbow = true;
+    gem.text = rainbowType;
+    this.grid[row][col] = rainbowType;
+
+    setTimeout(() => {
+      const matches = this.findRainbowMatches(row, col);
+      if (matches.length > 0) {
+        this.matchesFound(matches);
+      }
+    }, 300);
+  }
+
+  findRainbowMatches(row: number, col: number): Array<{ row: number; col: number }> {
+    const matches: Array<{ row: number; col: number }> = [];
+    const targetType = this.findMostCommonAdjacentType(row, col);
+    
+    if (!targetType) return matches;
+
+    for (let r = 0; r < this.gridSize; r++) {
+      for (let c = 0; c < this.gridSize; c++) {
+        if (this.grid[r][c] === targetType || this.grid[r][c] === '🌈') {
+          matches.push({ row: r, col: c });
+        }
+      }
+    }
+
+    return matches;
+  }
+
+  findMostCommonAdjacentType(row: number, col: number): string | null {
+    const adjacent = [
+      { r: row - 1, c: col },
+      { r: row + 1, c: col },
+      { r: row, c: col - 1 },
+      { r: row, c: col + 1 }
+    ];
+
+    const typeCounts: Record<string, number> = {};
+    
+    adjacent.forEach(({ r, c }) => {
+      if (r >= 0 && r < this.gridSize && c >= 0 && c < this.gridSize) {
+        const type = this.grid[r][c];
+        if (type && type !== '🌈') {
+          typeCounts[type] = (typeCounts[type] || 0) + 1;
+        }
+      }
+    });
+
+    let maxCount = 0;
+    let mostCommon = null;
+    
+    for (const [type, count] of Object.entries(typeCounts)) {
+      if (count > maxCount) {
+        maxCount = count;
+        mostCommon = type;
+      }
+    }
+
+    return mostCommon;
   }
 
   async setup() {
@@ -425,6 +642,11 @@ class Game {
     if (this.gameState !== 'PLAYING' || this.movingGems > 0) return;
 
     const userData = (gem as any).userData;
+
+    if (this.usePowerUpCallback) {
+      this.usePowerUpCallback(userData.row, userData.col);
+      return;
+    }
 
     if (!this.selectedGem) {
       this.selectedGem = gem;
@@ -605,6 +827,14 @@ class Game {
     this.updateUI();
     this.callbacks.onScore(points);
     this.updateMatches(matches);
+
+    if (matches.length >= 4 && matches.length < 6) {
+      const powerUpTypes: ('bomb' | 'lightning' | 'rainbow')[] = ['bomb', 'lightning', 'rainbow'];
+      const randomPowerUp = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+      this.callbacks.onPowerUpEarned(randomPowerUp);
+    } else if (matches.length >= 6) {
+      this.callbacks.onPowerUpEarned('rainbow');
+    }
 
     if (this.selectionHighlight) {
       this.selectionHighlight.visible = false;
