@@ -1104,8 +1104,8 @@ class Game {
       this.removeMatches(matches);
       setTimeout(() => {
         this.dropGems();
-      }, 200);
-    }, 300);
+      }, 300);
+    }, 600); // Tempo aumentado para as animações completas
   }
 
   updateMatches(matches: Array<{ row: number; col: number }>) {
@@ -1113,20 +1113,227 @@ class Game {
       const gem = this.gems[match.row][match.col];
       if (gem) {
         (gem as any).userData.isMatched = true;
-        gem.alpha = 0.5;
+        
+        // Criar efeito de brilho e dissolução
+        this.createMatchGlowEffect(match.row, match.col, gem);
+        
+        // Animação de pulso e fade
+        let scale = 1;
+        let alpha = 1;
+        let pulseDirection = 1;
+        let pulseCount = 0;
+        
+        const animateMatch = () => {
+          // Pulsar 3 vezes
+          if (pulseCount < 6) {
+            scale += 0.05 * pulseDirection;
+            if (scale >= 1.3) pulseDirection = -1;
+            if (scale <= 1 && pulseDirection === -1) {
+              pulseDirection = 1;
+              pulseCount++;
+            }
+            gem.scale.set(scale);
+          } else {
+            // Depois do pulso, iniciar dissolução
+            scale -= 0.05;
+            alpha -= 0.08;
+            gem.scale.set(scale);
+            gem.alpha = alpha;
+          }
+
+          if (pulseCount < 6 || alpha > 0) {
+            requestAnimationFrame(animateMatch);
+          }
+        };
+        animateMatch();
       }
     });
+  }
+
+  createMatchGlowEffect(row: number, col: number, gem: PIXI.Text) {
+    const centerX = gem.x;
+    const centerY = gem.y;
+
+    // Halo de brilho
+    const glow = new PIXI.Graphics();
+    glow.beginFill(0xffffff, 0.4);
+    glow.drawCircle(0, 0, this.cellSize * 0.6);
+    glow.endFill();
+    glow.x = centerX;
+    glow.y = centerY;
+    this.gameContainer!.addChild(glow);
+
+    let glowScale = 0.5;
+    let glowAlpha = 0.6;
+    const animateGlow = () => {
+      glowScale += 0.08;
+      glowAlpha -= 0.04;
+      glow.scale.set(glowScale);
+      glow.alpha = glowAlpha;
+
+      if (glowAlpha > 0) {
+        requestAnimationFrame(animateGlow);
+      } else {
+        this.gameContainer!.removeChild(glow);
+      }
+    };
+    animateGlow();
+
+    // Partículas de brilho
+    const gemType = (gem as any).userData.type;
+    const gemColor = this.getGemColor(gemType);
+    
+    for (let i = 0; i < 8; i++) {
+      setTimeout(() => {
+        const sparkle = new PIXI.Graphics();
+        sparkle.beginFill(gemColor);
+        sparkle.drawStar(0, 0, 4, 8, 3);
+        sparkle.endFill();
+        
+        sparkle.x = centerX;
+        sparkle.y = centerY;
+        
+        const angle = (Math.PI * 2 * i) / 8;
+        const speed = 1 + Math.random() * 2;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        
+        this.gameContainer!.addChild(sparkle);
+
+        let life = 1.0;
+        let rotation = 0;
+        const animateSparkle = () => {
+          sparkle.x += vx;
+          sparkle.y += vy;
+          rotation += 0.15;
+          life -= 0.04;
+          sparkle.rotation = rotation;
+          sparkle.alpha = life;
+
+          if (life > 0) {
+            requestAnimationFrame(animateSparkle);
+          } else {
+            this.gameContainer!.removeChild(sparkle);
+          }
+        };
+        animateSparkle();
+      }, i * 30);
+    }
+
+    // Rastro de luz
+    const trail = new PIXI.Graphics();
+    trail.lineStyle(2, gemColor, 0.8);
+    trail.drawCircle(0, 0, this.cellSize * 0.4);
+    trail.x = centerX;
+    trail.y = centerY;
+    this.gameContainer!.addChild(trail);
+
+    let trailScale = 1;
+    let trailAlpha = 0.8;
+    const animateTrail = () => {
+      trailScale += 0.06;
+      trailAlpha -= 0.06;
+      trail.scale.set(trailScale);
+      trail.alpha = trailAlpha;
+
+      if (trailAlpha > 0) {
+        requestAnimationFrame(animateTrail);
+      } else {
+        this.gameContainer!.removeChild(trail);
+      }
+    };
+    animateTrail();
+  }
+
+  getGemColor(gemType: string): number {
+    const colorMap: Record<string, number> = {
+      '🔴': 0xff0000,
+      '🔵': 0x0000ff,
+      '🟢': 0x00ff00,
+      '🟡': 0xffff00,
+      '🟣': 0x9400d3,
+      '🌈': 0xff69b4,
+    };
+    return colorMap[gemType] || 0xffffff;
   }
 
   removeMatches(matches: Array<{ row: number; col: number }>) {
     matches.forEach(match => {
       const gem = this.gems[match.row][match.col];
       if (gem) {
+        // Efeito final de desaparecimento com estrelas
+        this.createDissolveEffect(gem);
+        
         this.gameContainer!.removeChild(gem);
         this.gems[match.row][match.col] = null;
       }
       this.grid[match.row][match.col] = null;
     });
+  }
+
+  createDissolveEffect(gem: PIXI.Text) {
+    const centerX = gem.x;
+    const centerY = gem.y;
+    const gemType = (gem as any).userData.type;
+    const gemColor = this.getGemColor(gemType);
+
+    // Explosão de micro-partículas na dissolução
+    for (let i = 0; i < 12; i++) {
+      const particle = new PIXI.Graphics();
+      particle.beginFill(gemColor);
+      particle.drawCircle(0, 0, 2 + Math.random() * 3);
+      particle.endFill();
+      
+      particle.x = centerX + (Math.random() - 0.5) * 15;
+      particle.y = centerY + (Math.random() - 0.5) * 15;
+      
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 0.5 + Math.random() * 1.5;
+      const vx = Math.cos(angle) * speed;
+      const vy = Math.sin(angle) * speed;
+      
+      this.gameContainer!.addChild(particle);
+
+      let life = 1.0;
+      const animateParticle = () => {
+        particle.x += vx;
+        particle.y += vy + 0.5; // Gravidade
+        life -= 0.05;
+        particle.alpha = life;
+
+        if (life > 0) {
+          requestAnimationFrame(animateParticle);
+        } else {
+          this.gameContainer!.removeChild(particle);
+        }
+      };
+      animateParticle();
+    }
+
+    // Flash de luz final
+    const flash = new PIXI.Graphics();
+    flash.beginFill(0xffffff, 0.8);
+    flash.drawStar(0, 0, 6, this.cellSize * 0.5, this.cellSize * 0.3);
+    flash.endFill();
+    flash.x = centerX;
+    flash.y = centerY;
+    this.gameContainer!.addChild(flash);
+
+    let flashAlpha = 0.8;
+    let flashRotation = 0;
+    const animateFlash = () => {
+      flashRotation += 0.2;
+      flashAlpha -= 0.1;
+      flash.rotation = flashRotation;
+      flash.alpha = flashAlpha;
+
+      if (flashAlpha > 0) {
+        requestAnimationFrame(animateFlash);
+      } else {
+        this.gameContainer!.removeChild(flash);
+      }
+    };
+    animateFlash();
   }
 
   dropGems() {
