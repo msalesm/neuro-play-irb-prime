@@ -53,7 +53,11 @@ export function useHapticFeedback(childProfileId?: string | null) {
 
   useEffect(() => {
     // Check if Vibration API is supported
-    setIsSupported('vibrate' in navigator);
+    // Note: iOS Safari does NOT support the Vibration API
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const hasVibrationAPI = 'vibrate' in navigator;
+    
+    setIsSupported(hasVibrationAPI && !isIOS);
   }, []);
 
   useEffect(() => {

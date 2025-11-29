@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
-import { Vibrate, VolumeX, Volume1, Volume2 } from 'lucide-react';
+import { Vibrate, VolumeX, Volume1, Volume2, Smartphone, AlertCircle } from 'lucide-react';
 import { useHaptic } from '@/contexts/HapticContext';
 import { HapticIntensity } from '@/hooks/useHapticFeedback';
 
@@ -18,22 +18,59 @@ export function HapticSettings() {
   };
 
   if (!isSupported) {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
     return (
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <VolumeX className="w-5 h-5 text-muted-foreground" />
+            <Smartphone className="w-5 h-5 text-muted-foreground" />
             Feedback Háptico
           </CardTitle>
           <CardDescription>
-            Vibração não suportada neste dispositivo
+            {isIOS 
+              ? 'iPhone/iPad não suporta vibração em apps web'
+              : 'Vibração não suportada neste dispositivo'}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Seu navegador ou dispositivo não suporta a API de vibração. 
-            Para usar feedback háptico, acesse a plataforma através de um dispositivo móvel com suporte.
-          </p>
+        <CardContent className="space-y-4">
+          {isIOS ? (
+            <>
+              <div className="flex items-start gap-3 p-4 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900 rounded-lg">
+                <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400 flex-shrink-0 mt-0.5" />
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-orange-900 dark:text-orange-200">
+                    Limitação do iPhone/iPad
+                  </p>
+                  <p className="text-sm text-orange-800 dark:text-orange-300">
+                    A Apple não permite vibração em aplicativos web abertos no Safari. 
+                    Esta é uma restrição de segurança do iOS.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-lg p-4">
+                <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-2">
+                  💡 Quer ter vibração no iPhone?
+                </p>
+                <p className="text-sm text-blue-800 dark:text-blue-300">
+                  Para ter feedback háptico funcionando no iPhone, é necessário transformar 
+                  o NeuroPlay em um aplicativo nativo (disponível na App Store). 
+                  Entre em contato com o suporte para saber mais.
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+              <AlertCircle className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm text-muted-foreground">
+                  Seu navegador ou dispositivo não suporta a API de vibração. 
+                  Para usar feedback háptico, acesse a plataforma através de um dispositivo móvel Android.
+                </p>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     );
