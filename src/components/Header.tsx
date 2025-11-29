@@ -31,7 +31,7 @@ export const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link 
-            to="/" 
+            to="/landing" 
             className="flex items-center gap-2 sm:gap-3" 
             onClick={closeMobileMenu}
             aria-label="NeuroPlay - Página inicial"
