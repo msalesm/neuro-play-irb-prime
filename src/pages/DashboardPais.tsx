@@ -77,9 +77,12 @@ export default function DashboardPais() {
         .select('id, avatar_url')
         .eq('parent_id', user?.id)
         .limit(1)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error checking avatar:', error);
+        return;
+      }
 
       if (childData && !childData.avatar_url) {
         setShowAvatarModal(true);
@@ -100,10 +103,15 @@ export default function DashboardPais() {
       // Load children from children table
       const { data: childrenData, error } = await supabase
         .from('children')
-        .select('*')
+        .select('id, name, birth_date, avatar_url')
         .eq('parent_id', user?.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error loading children:', error);
+        toast.error('Erro ao carregar perfis das crianças');
+        setLoading(false);
+        return;
+      }
 
       if (childrenData && childrenData.length > 0) {
         const childProfiles: ChildProfile[] = childrenData.map((child: any) => {

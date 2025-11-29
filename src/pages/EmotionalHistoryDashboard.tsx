@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -167,7 +168,7 @@ export default function EmotionalHistoryDashboard() {
               Você precisa estar logado para acessar o histórico emocional.
             </p>
             <Button asChild>
-              <a href="/auth">Fazer Login</a>
+              <Link to="/auth">Fazer Login</Link>
             </Button>
           </CardContent>
         </Card>
