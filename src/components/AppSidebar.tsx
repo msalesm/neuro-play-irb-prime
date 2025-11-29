@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { 
   Home, Gamepad2, FileText, GraduationCap, Settings, 
-  User, Trophy, TrendingUp, Brain, Stethoscope, Heart,
-  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3
+  User, Trophy, TrendingUp, Brain, Stethoscope, Users,
+  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, School, Sparkles, BarChart3
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -91,16 +91,6 @@ export function AppSidebar() {
       title: 'Microlearning',
       path: '/training',
       icon: BookOpen,
-    },
-    {
-      title: 'Atividades Parent-Child',
-      path: '/parent-child-activities',
-      icon: Users,
-    },
-    {
-      title: 'Histórico Emocional',
-      path: '/emotional-history',
-      icon: Heart,
     },
     {
       title: 'Manual da Plataforma',

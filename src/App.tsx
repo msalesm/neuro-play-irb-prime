@@ -77,10 +77,8 @@ import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
 import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
 import AdminRiskMaps from "./pages/AdminRiskMaps";
-import ParentChildActivities from "./pages/ParentChildActivities";
 import CooperativePuzzle from "./pages/games/CooperativePuzzle";
 import RiskAnalysisPage from "./pages/RiskAnalysisPage";
-import EmotionalHistoryDashboard from "./pages/EmotionalHistoryDashboard";
 import PlatformReport from "./pages/PlatformReport";
 import PlatformManual from "./pages/PlatformManual";
 import AdminUserManagement from "./pages/AdminUserManagement";
@@ -170,7 +168,6 @@ const App = () => (
                   <Route path="/planeta/:planetaId" element={<PlanetaDetalhes />} />
                   <Route path="/avatar-evolution" element={<AvatarEvolutionPage />} />
                   <Route path="/therapeutic-chat" element={<TherapeuticChatPage />} />
-                  <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
                   <Route path="/achievements" element={<AchievementsPage />} />
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
                   <Route path="/games/caca-foco" element={<CacaFoco />} />
@@ -250,11 +247,8 @@ const App = () => (
           <Route path="/teacher/class/:classId" element={<TeacherClassView />} />
           <Route path="/teacher/student/:studentId" element={<TeacherStudentView />} />
           <Route path="/admin/risk-maps" element={<AdminRiskMaps />} />
-          <Route path="/parent-child-activities" element={<ParentChildActivities />} />
-          <Route path="/parent-activities" element={<ParentChildActivities />} />
           <Route path="/games/cooperative-puzzle" element={<CooperativePuzzle />} />
           <Route path="/risk-analysis" element={<RiskAnalysisPage />} />
-          <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
           <Route path="/platform-report" element={<PlatformReport />} />
           <Route path="/platform-manual" element={<PlatformManual />} />
           <Route path="/pei" element={<PEIView />} />
