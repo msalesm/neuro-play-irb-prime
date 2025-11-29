@@ -8,13 +8,16 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Settings as SettingsIcon, Accessibility, Bell, 
   Palette, Volume2, Eye, Brain, Monitor,
-  Smartphone, Sun, Moon, Contrast
+  Smartphone, Sun, Moon, Contrast, HelpCircle, Play
 } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { toast } from 'sonner';
 
 export default function Settings() {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   const [settings, setSettings] = useState({
     // Accessibility
     dyslexicFont: false,
@@ -44,6 +47,11 @@ export default function Settings() {
 
   const updateSetting = (key: string, value: boolean | string) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleRestartMobileTour = () => {
+    localStorage.removeItem('neuroplay-mobile-tour-completed');
+    toast.success('Tour reiniciado! Recarregue a página para ver o tour novamente.');
   };
 
   return (
@@ -314,6 +322,40 @@ export default function Settings() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Tutorials and Help */}
+          {isMobile && (
+            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <HelpCircle className="w-5 h-5 text-primary" />
+                  <div>
+                    <CardTitle>Tutoriais e Ajuda</CardTitle>
+                    <CardDescription>Aprenda a usar a plataforma</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label>Tour Guiado Mobile</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Reveja o tutorial interativo da interface mobile
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRestartMobileTour}
+                    className="gap-2"
+                  >
+                    <Play className="w-4 h-4" />
+                    Reiniciar
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Save Button */}
           <div className="flex justify-end gap-4">
