@@ -143,68 +143,70 @@ export default function TherapeuticChat({
   }
 
   return (
-    <div className="container max-w-7xl mx-auto p-6 space-y-6">
+    <div className="container max-w-7xl mx-auto p-3 md:p-6 space-y-4 md:space-y-6 pb-20 md:pb-6">
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
-          <MessageCircle className="h-5 w-5" />
+        <div className="inline-flex items-center gap-2 px-3 py-2 md:px-4 rounded-full bg-primary/10 text-primary text-sm md:text-base">
+          <MessageCircle className="h-4 w-4 md:h-5 md:w-5" />
           <span className="font-semibold">Assistente Terapêutico IA</span>
-          <Badge variant="outline" className="gap-1 ml-2">
+          <Badge variant="outline" className="gap-1 ml-2 text-xs">
             <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            Online
+            <span className="hidden sm:inline">Online</span>
           </Badge>
         </div>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-xs md:text-sm px-4">
           {userRole === 'parent' && 'Apoio especializado para pais e responsáveis com análise de padrões comportamentais'}
           {userRole === 'therapist' && 'Suporte clínico para profissionais de saúde mental com insights automáticos'}
           {!userRole || (userRole !== 'parent' && userRole !== 'therapist') && 'Orientação sobre desenvolvimento cognitivo e neurociência infantil'}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3" data-tour="quick-actions">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3" data-tour="quick-actions">
         {quickActions.map((action, index) => (
           <Button
             key={index}
             variant="outline"
-            className="h-auto py-4 flex flex-col items-center gap-2 hover:bg-primary/5 hover:border-primary transition-all"
+            className="h-auto py-3 md:py-4 flex flex-col items-center gap-1 md:gap-2 hover:bg-primary/5 hover:border-primary transition-all"
             onClick={() => handleQuickAction(action.prompt)}
           >
-            <action.icon className="h-6 w-6 text-primary" />
-            <span className="text-sm font-medium">{action.label}</span>
+            <action.icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
+            <span className="text-xs md:text-sm font-medium text-center">{action.label}</span>
           </Button>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <Card className="h-[600px] flex flex-col" data-tour="chat-messages">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle>Conversa</CardTitle>
+          <Card className="h-[calc(100vh-280px)] md:h-[600px] max-h-[600px] flex flex-col" data-tour="chat-messages">
+            <CardHeader className="pb-3 shrink-0">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <CardTitle className="text-base md:text-lg">Conversa</CardTitle>
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={generatePDF}
                     disabled={generating}
-                    className="gap-2"
+                    className="gap-2 text-xs md:text-sm"
                   >
-                    <FileDown className="h-4 w-4" />
-                    {generating ? 'Gerando...' : 'Exportar PDF'}
+                    <FileDown className="h-3 w-3 md:h-4 md:w-4" />
+                    <span className="hidden sm:inline">{generating ? 'Gerando...' : 'Exportar PDF'}</span>
+                    <span className="sm:hidden">PDF</span>
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={clearConversation}
-                    className="gap-2"
+                    className="gap-2 text-xs md:text-sm"
                   >
-                    <RotateCcw className="h-4 w-4" />
-                    Nova conversa
+                    <RotateCcw className="h-3 w-3 md:h-4 md:w-4" />
+                    <span className="hidden sm:inline">Nova conversa</span>
+                    <span className="sm:hidden">Nova</span>
                   </Button>
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="flex-1 flex flex-col gap-4 p-6 pt-0">
-          <ScrollArea className="flex-1 pr-4" ref={scrollRef}>
+            <CardContent className="flex-1 flex flex-col gap-4 p-4 md:p-6 pt-0 overflow-hidden">
+          <ScrollArea className="flex-1 pr-2 md:pr-4" ref={scrollRef}>
             <div className="space-y-6" data-tour="insights">
               {messages.map((message, index) => (
                 <div
@@ -251,22 +253,22 @@ export default function TherapeuticChat({
             </div>
           </ScrollArea>
 
-          <div className="flex gap-3 items-end">
+          <div className="flex gap-2 md:gap-3 items-end shrink-0">
             <Input
               placeholder="Digite sua mensagem..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               disabled={isLoading}
-              className="flex-1 h-12"
+              className="flex-1 h-10 md:h-12 text-sm md:text-base"
             />
             <Button 
               onClick={sendMessage} 
               disabled={isLoading || !input.trim()} 
-              size="lg"
-              className="bg-gradient-to-r from-irb-petrol to-irb-blue hover:opacity-90"
+              size="default"
+              className="h-10 md:h-12 px-3 md:px-4 bg-gradient-to-r from-irb-petrol to-irb-blue hover:opacity-90 shrink-0"
             >
-              <Send className="h-5 w-5" />
+              <Send className="h-4 w-4 md:h-5 md:w-5" />
             </Button>
           </div>
             </CardContent>
