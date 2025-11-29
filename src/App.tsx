@@ -79,6 +79,7 @@ import ParentChildActivities from "./pages/ParentChildActivities";
 import EmotionalHistoryDashboard from "./pages/EmotionalHistoryDashboard";
 import PlatformReport from "./pages/PlatformReport";
 import PlatformManual from "./pages/PlatformManual";
+import AdminUserManagement from "./pages/AdminUserManagement";
 
 // Neuro Play v2.0 pages
 import NeuroPlayV2 from "./pages/NeuroPlayV2";
@@ -249,6 +250,7 @@ const App = () => (
           
           {/* Admin Routes */}
           <Route path="/admin/network" element={<AdminNetworkDashboard />} />
+          <Route path="/admin/users" element={<AdminUserManagement />} />
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
