@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Brain, TrendingUp, Award, Calendar, Download, 
   ArrowLeft, Heart, Target, Sparkles, Activity,
-  Clock, CheckCircle2, AlertCircle
+  Clock, CheckCircle2, AlertCircle, FileText
 } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { useAuth } from '@/hooks/useAuth';
@@ -344,16 +344,23 @@ export default function DashboardPais() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     <Button
                       variant="outline"
                       onClick={() => navigate('/avatar-evolution')}
                     >
                       ✨ Customizar Avatar
                     </Button>
+                    <Button 
+                      variant="outline"
+                      onClick={() => navigate('/platform-report')}
+                    >
+                      <FileText className="w-4 h-4 mr-2" />
+                      Relatório Plataforma
+                    </Button>
                     <Button onClick={generateReport}>
                       <Download className="w-4 h-4 mr-2" />
-                      Gerar Relatório
+                      Gerar Relatório Clínico
                     </Button>
                   </div>
                 </div>
