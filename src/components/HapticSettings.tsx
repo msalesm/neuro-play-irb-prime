@@ -4,10 +4,10 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
 import { Vibrate, VolumeX, Volume1, Volume2, Smartphone, AlertCircle } from 'lucide-react';
 import { useHaptic } from '@/contexts/HapticContext';
-import { HapticIntensity } from '@/hooks/useHapticFeedback';
+import type { HapticIntensity } from '@/lib/haptics';
 
 export function HapticSettings() {
-  const { intensity, setIntensity, isSupported, hapticFeedback } = useHaptic();
+  const { intensity, setIntensity, isSupported, isNative, hapticFeedback } = useHaptic();
 
   const handleIntensityChange = async (value: string) => {
     await setIntensity(value as HapticIntensity);
@@ -160,6 +160,15 @@ export function HapticSettings() {
             especialmente útil para crianças com TDAH e TEA que se beneficiam de estímulos multissensoriais.
           </p>
         </div>
+
+        {isNative && (
+          <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 rounded-lg p-4">
+            <p className="text-sm text-green-900 dark:text-green-200">
+              ✓ <strong>App Nativo Detectado:</strong> Usando feedback háptico nativo do sistema operacional 
+              para melhor desempenho e precisão.
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
