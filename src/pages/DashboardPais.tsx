@@ -66,17 +66,23 @@ export default function DashboardPais() {
   useEffect(() => {
     if (user) {
       loadChildren();
-      checkAvatarSelection();
     }
   }, [user]);
 
+  useEffect(() => {
+    if (selectedChild) {
+      checkAvatarSelection();
+    }
+  }, [selectedChild]);
+
   const checkAvatarSelection = async () => {
+    if (!selectedChild) return;
+    
     try {
       const { data: childData, error } = await supabase
         .from('children')
         .select('id, avatar_url')
-        .eq('parent_id', user?.id)
-        .limit(1)
+        .eq('id', selectedChild)
         .maybeSingle();
 
       if (error) {
@@ -85,7 +91,9 @@ export default function DashboardPais() {
       }
 
       if (childData && !childData.avatar_url) {
-        setShowAvatarModal(true);
+        setTimeout(() => {
+          setShowAvatarModal(true);
+        }, 500);
       }
     } catch (error) {
       console.error('Error checking avatar:', error);
@@ -294,14 +302,19 @@ export default function DashboardPais() {
     <ModernPageLayout>
       <PlatformOnboarding pageName="dashboard-pais" />
       
-      <AvatarSelectionModal
-        open={showAvatarModal}
-        onComplete={() => {
-          setShowAvatarModal(false);
-          loadChildren();
-        }}
-        childId={selectedChild || undefined}
-      />
+      {selectedChild && (
+        <AvatarSelectionModal
+          open={showAvatarModal}
+          onComplete={() => {
+            setShowAvatarModal(false);
+            loadChildren();
+            if (selectedChild) {
+              loadChildData(selectedChild);
+            }
+          }}
+          childId={selectedChild}
+        />
+      )}
 
       <BadgeUnlockModal
         open={showBadgeModal}
@@ -342,15 +355,22 @@ export default function DashboardPais() {
               <Card className="p-6 mb-8" data-tour="avatar-card">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="relative">
+                    <div className="relative cursor-pointer" onClick={() => setShowAvatarModal(true)}>
                       <ChildAvatarDisplay
                         avatar={selectedChildData.avatar_url}
                         name={selectedChildData.name}
                         size="xl"
+                        level={5}
+                        showEffects
                       />
                       <div className="absolute -bottom-2 -right-2 bg-[#c7923e] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold border-2 border-background">
                         5
                       </div>
+                      {!selectedChildData.avatar_url && (
+                        <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">Clique</span>
+                        </div>
+                      )}
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold">{selectedChildData.name}</h2>

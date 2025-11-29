@@ -16,10 +16,10 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
     const seen = localStorage.getItem(tourKey);
     
     if (!seen) {
-      // Delay to ensure DOM is loaded
+      // Delay to ensure DOM is fully loaded
       const timer = setTimeout(() => {
         setRun(true);
-      }, 1000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
     setHasSeenTour(true);
