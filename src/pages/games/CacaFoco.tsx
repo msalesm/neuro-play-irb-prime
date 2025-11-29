@@ -148,17 +148,12 @@ export default function CacaFoco() {
 
   // Start game
   const startGame = useCallback(async () => {
-    // Try to start auto-save, but don't block game if it fails
     try {
-      await startAutoSave('caca_foco', stats.level, {
-        currentLevel: stats.level
-      });
+      await startSession({ score: 0, level: stats.level }, stats.level);
     } catch (error) {
-      console.error('Auto-save failed, continuing in offline mode:', error);
-      toast.warning('Jogando em modo offline - progresso não será salvo');
+      console.error('Session start failed:', error);
+      toast.warning('Erro ao iniciar sessão');
     }
-
-    // ALWAYS start the game, regardless of auto-save success
     const newTarget = TARGET_EMOJIS[Math.floor(Math.random() * TARGET_EMOJIS.length)];
     setCurrentTarget(newTarget);
     
@@ -193,25 +188,21 @@ export default function CacaFoco() {
   const handleResumeSession = async (session: any) => {
     setStats({
       ...stats,
-      score: session.performance_data.score || 0,
-      level: session.level,
-      correctClicks: session.performance_data.correctClicks || 0,
-      totalClicks: session.performance_data.totalClicks || 0
+      score: session.session_data?.score || 0,
+      level: session.difficulty_level || 1,
+      correctClicks: session.correct_attempts || 0,
+      totalClicks: session.total_attempts || 0
     });
     
-    await startAutoSave('caca_foco', session.level, {
-      sessionId: session.id,
-      currentLevel: session.level
-    });
-
-    setShowRecoveryModal(false);
+    await resumeSession(session.id);
   };
 
   useEffect(() => {
-    if (hasUnfinishedSessions && gameState === 'idle' && !currentSession) {
-      setShowRecoveryModal(true);
+    if (recoveredSession && gameState === 'idle') {
+      // Auto-recover if session available
+      handleResumeSession(recoveredSession);
     }
-  }, [hasUnfinishedSessions, gameState, currentSession]);
+  }, [recoveredSession, gameState]);
 
   // Spawn particles on success
   const spawnParticles = (x: number, y: number) => {
@@ -360,20 +351,18 @@ export default function CacaFoco() {
       audio.playError('soft');
     }
 
-    // Auto-save progress
-    updateAutoSave({
-      score: newStats.score,
-      moves: newStats.totalClicks,
-      correctMoves: newStats.correctClicks,
-      additionalData: {
-        level: newStats.level,
-        timeLeft: newStats.timeLeft,
-        streak: newStats.streak,
-        accuracy
-      }
-    });
-
     setStats(newStats);
+
+    // Update session progress
+    if (isActive) {
+      updateSession({
+        score: newStats.score,
+        moves: newStats.totalClicks,
+        correctMoves: newStats.correctClicks,
+        accuracy: newStats.totalClicks > 0 ? (newStats.correctClicks / newStats.totalClicks) * 100 : 0,
+        timeSpent: startTime ? (Date.now() - startTime) / 1000 : 0
+      });
+    }
   };
 
   // Pause/Resume game
@@ -455,25 +444,37 @@ export default function CacaFoco() {
   return (
     <div className="min-h-screen bg-gradient-card py-8">
       <div className="container mx-auto px-4 max-w-6xl">
-        <SessionRecoveryModal
-          open={showRecoveryModal}
-          sessions={unfinishedSessions}
-          onResume={handleResumeSession}
-          onDiscard={async (sessionId) => {
-            await discardSession(sessionId);
-            setShowRecoveryModal(false);
-          }}
-          onStartNew={() => setShowRecoveryModal(false)}
-        />
+        {recoveredSession && gameState === 'idle' && (
+          <Card className="mb-6">
+            <CardContent className="p-4 flex items-center justify-between">
+              <p className="text-sm">Continuar sessão anterior?</p>
+              <div className="flex gap-2">
+                <Button size="sm" onClick={() => handleResumeSession(recoveredSession)}>
+                  Continuar
+                </Button>
+                <Button size="sm" variant="outline" onClick={discardRecoveredSession}>
+                  Descartar
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex gap-2">
-            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
             <GameExitButton
               variant="quit"
               onExit={async () => {
-                await abandonSession();
+                if (isActive) {
+                  await endSession({
+                    score: stats.score,
+                    moves: stats.totalClicks,
+                    correctMoves: stats.correctClicks,
+                    accuracy,
+                    timeSpent: (Date.now() - startTime) / 1000
+                  });
+                }
               }}
               showProgress={gameState === 'playing'}
               currentProgress={stats.correctClicks}

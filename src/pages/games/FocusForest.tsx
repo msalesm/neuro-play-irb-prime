@@ -178,17 +178,15 @@ function FocusForestGame() {
     setScore(newScore);
     setTreesGrown(newTreesGrown);
 
-    // Auto-save progress
-    updateAutoSave({
-      score: newScore,
-      moves: hits + misses + 1,
-      correctMoves: hits + 1,
-      additionalData: {
-        trees_grown: newTreesGrown,
-        difficulty,
-        level: level + 1
-      }
-    });
+    // Update session progress
+    if (isActive) {
+      updateSession({
+        score: newScore,
+        moves: hits + misses + 1,
+        correctMoves: hits + 1,
+        timeSpent: gameStartTime ? (Date.now() - gameStartTime) / 1000 : 0
+      });
+    }
 
     // Atualizar sequência de acertos
     setTargetsHitSequence(prev => [...prev, 1]); // 1 = acerto
@@ -223,46 +221,37 @@ function FocusForestGame() {
   };
 
   const startGame = async () => {
-    const attentionTrail = getTrailByCategory('attention');
-    const sessionId = await startAutoSave('focus_forest', level + 1, {
-      trailId: attentionTrail?.id,
-      difficulty
-    });
-
-    if (sessionId) {
+    try {
+      await startSession({ score: 0, level: level + 1, difficulty }, level + 1);
       setTargets([]);
       setIsPlaying(true);
       setGameStartTime(Date.now());
       setTimeout(() => {
         spawnTarget();
       }, 100);
+    } catch (error) {
+      console.error('Failed to start session:', error);
+      toast({ title: "Erro ao iniciar jogo", variant: "destructive" });
     }
   };
 
   const handleResumeSession = async (session: any) => {
-    setScore(session.performance_data.score || 0);
-    setHits(session.performance_data.hits || 0);
-    setMisses(session.performance_data.misses || 0);
-    setLevel(session.level - 1);
-    setTreesGrown(session.performance_data.trees_grown || 0);
+    setScore(session.session_data?.score || 0);
+    setHits(session.session_data?.hits || 0);
+    setMisses(session.session_data?.misses || 0);
+    setLevel((session.difficulty_level || 1) - 1);
+    setTreesGrown(session.session_data?.trees_grown || 0);
     
-    const attentionTrail = getTrailByCategory('attention');
-    await startAutoSave('focus_forest', session.level, {
-      sessionId: session.id,
-      trailId: attentionTrail?.id,
-      difficulty: session.performance_data.difficulty || 'normal'
-    });
-
+    await resumeSession(session.id);
     setIsPlaying(true);
     setGameStartTime(Date.now());
-    setShowRecoveryModal(false);
   };
 
   useEffect(() => {
-    if (hasUnfinishedSessions && !isPlaying && !currentSession) {
-      setShowRecoveryModal(true);
+    if (recoveredSession && !isPlaying) {
+      handleResumeSession(recoveredSession);
     }
-  }, [hasUnfinishedSessions, isPlaying, currentSession]);
+  }, [recoveredSession, isPlaying]);
 
   const pauseGame = () => {
     setIsPlaying(false);
@@ -287,19 +276,16 @@ function FocusForestGame() {
     try {
       const accuracy = hits / (hits + misses) * 100;
 
-      // Complete auto-save session
-      await completeAutoSave({
-        score,
-        moves: hits + misses,
-        correctMoves: hits,
-        accuracy,
-        additionalData: {
-          trees_grown: treesGrown,
-          difficulty,
-          level: level + 1,
-          maxConsecutiveHits
-        }
-      });
+      // Complete session
+      if (isActive) {
+        await endSession({
+          score,
+          moves: hits + misses,
+          correctMoves: hits,
+          accuracy,
+          timeSpent: gameStartTime ? (Date.now() - gameStartTime) / 1000 : 0
+        });
+      }
       
       const sessionData = {
         level: level + 1,
@@ -407,11 +393,18 @@ function FocusForestGame() {
             </p>
           </div>
           <div className="flex gap-2">
-            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
             <GameExitButton
               variant="quit"
               onExit={async () => {
-                await abandonSession();
+                if (isActive) {
+                  await endSession({
+                    score,
+                    moves: hits + misses,
+                    correctMoves: hits,
+                    accuracy: hits / (hits + misses) * 100,
+                    timeSpent: gameStartTime ? (Date.now() - gameStartTime) / 1000 : 0
+                  });
+                }
               }}
               showProgress={isPlaying}
               currentProgress={hits + misses}
@@ -420,16 +413,21 @@ function FocusForestGame() {
           </div>
         </div>
 
-        <SessionRecoveryModal
-          open={showRecoveryModal}
-          sessions={unfinishedSessions}
-          onResume={handleResumeSession}
-          onDiscard={async (sessionId) => {
-            await discardSession(sessionId);
-            setShowRecoveryModal(false);
-          }}
-          onStartNew={() => setShowRecoveryModal(false)}
-        />
+        {recoveredSession && !isPlaying && (
+          <Card className="mb-6">
+            <CardContent className="p-4 flex items-center justify-between">
+              <p className="text-sm">Continuar sessão anterior?</p>
+              <div className="flex gap-2">
+                <Button size="sm" onClick={() => handleResumeSession(recoveredSession)}>
+                  Continuar
+                </Button>
+                <Button size="sm" variant="outline" onClick={discardRecoveredSession}>
+                  Descartar
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Game Area */}

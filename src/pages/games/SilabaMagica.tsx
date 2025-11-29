@@ -112,47 +112,35 @@ export default function SilabaMagica() {
     }
   ]);
 
-  // Start game with auto-save
+  // Start game with session
   const startGame = async () => {
-    // Try to start auto-save, but don't block game if it fails
     try {
-      await startAutoSave('syllable_magic', stats.level, {
-        gameMode,
-        currentLevel: stats.level
-      });
+      await startSession({ score: 0, level: stats.level, gameMode }, stats.level);
+      generateChallenge();
     } catch (error) {
-      console.error('Auto-save failed, continuing in offline mode:', error);
-      toast.warning('Jogando em modo offline - progresso não será salvo');
+      console.error('Session start failed:', error);
+      toast.warning('Erro ao iniciar sessão');
     }
-
-    // ALWAYS start the game, regardless of auto-save success
-    generateChallenge();
   };
 
   const handleResumeSession = async (session: any) => {
     setStats({
       ...stats,
-      score: session.performance_data.score || 0,
-      level: session.level,
-      correctMatches: session.performance_data.correctMatches || 0,
-      totalAttempts: session.performance_data.totalAttempts || 0,
-      xp: session.performance_data.xp || 0
+      score: session.session_data?.score || 0,
+      level: session.difficulty_level || 1,
+      correctMatches: session.correct_attempts || 0,
+      totalAttempts: session.total_attempts || 0,
+      xp: session.session_data?.xp || 0
     });
     
-    await startAutoSave('syllable_magic', session.level, {
-      sessionId: session.id,
-      gameMode,
-      currentLevel: session.level
-    });
-
-    setShowRecoveryModal(false);
+    await resumeSession(session.id);
   };
 
   useEffect(() => {
-    if (hasUnfinishedSessions && gameState === 'idle' && !currentSession) {
-      setShowRecoveryModal(true);
+    if (recoveredSession && gameState === 'idle') {
+      handleResumeSession(recoveredSession);
     }
-  }, [hasUnfinishedSessions, gameState, currentSession]);
+  }, [recoveredSession, gameState]);
 
   // Generate new challenge
   const generateChallenge = useCallback(() => {
@@ -229,18 +217,16 @@ export default function SilabaMagica() {
     // Calculate accuracy
     newStats.accuracy = newStats.totalAttempts > 0 ? (newStats.correctMatches / newStats.totalAttempts) * 100 : 100;
     
-    // Auto-save progress
-    updateAutoSave({
-      score: newStats.score,
-      moves: newStats.totalAttempts,
-      correctMoves: newStats.correctMatches,
-      additionalData: {
-        level: newStats.level,
-        xp: newStats.xp,
-        gameMode,
-        accuracy: newStats.accuracy
-      }
-    });
+    // Update session progress
+    if (isActive) {
+      updateSession({
+        score: newStats.score,
+        moves: newStats.totalAttempts,
+        correctMoves: newStats.correctMatches,
+        accuracy: newStats.accuracy,
+        timeSpent: 0
+      });
+    }
     
     // Level progression
     const requiredXP = newStats.level * 100;
@@ -313,25 +299,37 @@ export default function SilabaMagica() {
   return (
     <div className="min-h-screen bg-gradient-dislexia py-8">
       <div className="container mx-auto px-4 max-w-4xl">
-        <SessionRecoveryModal
-          open={showRecoveryModal}
-          sessions={unfinishedSessions}
-          onResume={handleResumeSession}
-          onDiscard={async (sessionId) => {
-            await discardSession(sessionId);
-            setShowRecoveryModal(false);
-          }}
-          onStartNew={() => setShowRecoveryModal(false)}
-        />
+        {recoveredSession && gameState === 'idle' && (
+          <Card className="mb-6">
+            <CardContent className="p-4 flex items-center justify-between">
+              <p className="text-sm">Continuar sessão anterior?</p>
+              <div className="flex gap-2">
+                <Button size="sm" onClick={() => handleResumeSession(recoveredSession)}>
+                  Continuar
+                </Button>
+                <Button size="sm" variant="outline" onClick={discardRecoveredSession}>
+                  Descartar
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex gap-2">
-            {isSaving && <Badge variant="outline">💾 Salvando...</Badge>}
             <GameExitButton
               variant="quit"
               onExit={async () => {
-                await abandonSession();
+                if (isActive) {
+                  await endSession({
+                    score: stats.score,
+                    moves: stats.totalAttempts,
+                    correctMoves: stats.correctMatches,
+                    accuracy: stats.accuracy,
+                    timeSpent: 0
+                  });
+                }
               }}
               showProgress={gameState === 'playing'}
               currentProgress={stats.correctMatches}
