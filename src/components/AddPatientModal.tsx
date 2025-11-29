@@ -81,6 +81,20 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
 
       if (childError) throw childError;
 
+      // Also create in child_profiles for game sessions
+      const { error: profileError } = await supabase
+        .from('child_profiles')
+        .insert({
+          parent_user_id: user.id, // Therapist as temporary guardian
+          name: data.name,
+          date_of_birth: data.birth_date,
+          diagnosed_conditions: data.conditions || [],
+        });
+
+      if (profileError) {
+        console.warn('Could not create child_profiles entry:', profileError);
+      }
+
       // Grant therapist access to child
       const { error: accessError } = await supabase
         .from('child_access')

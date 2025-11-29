@@ -172,7 +172,7 @@ export function OnboardingWizard() {
 
       // Create child profile (only for parents)
       if (data.selectedRole === 'parent') {
-        const { error: childError } = await supabase
+        const { data: childData, error: childError } = await supabase
           .from('children')
           .insert({
             parent_id: user.id,
@@ -184,9 +184,30 @@ export function OnboardingWizard() {
             sensory_profile: data.sensoryProfile,
             consent_data_usage: data.consentAnonymousData,
             consent_research: data.consentResearch,
-          });
+          })
+          .select()
+          .single();
 
         if (childError) throw childError;
+
+        // Also create in child_profiles for game sessions
+        if (childData && data.childBirthDate) {
+          const { data: profileData, error: profileError } = await supabase
+            .from('child_profiles')
+            .insert({
+              parent_user_id: user.id,
+              name: data.childName,
+              date_of_birth: data.childBirthDate,
+              diagnosed_conditions: data.diagnosedConditions || [],
+              sensory_profile: data.sensoryProfile || {},
+            })
+            .select('id')
+            .single();
+
+          if (!profileError && profileData) {
+            localStorage.setItem('selectedChildProfile', profileData.id);
+          }
+        }
       }
 
       toast.success('Perfil criado com sucesso!');

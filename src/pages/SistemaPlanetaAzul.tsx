@@ -37,7 +37,7 @@ export default function SistemaPlanetaAzul() {
     try {
       const { data: children, error } = await supabase
         .from('children')
-        .select('id, name, avatar_url')
+        .select('id, name, avatar_url, birth_date')
         .eq('parent_id', user?.id)
         .limit(1)
         .maybeSingle();
@@ -51,6 +51,33 @@ export default function SistemaPlanetaAzul() {
         setChildId(children.id);
         setChildName(children.name || 'Explorador');
         setChildAvatar(children.avatar_url);
+
+        // Ensure child_profiles entry exists for game sessions
+        const { data: childProfile, error: profileError } = await supabase
+          .from('child_profiles')
+          .select('id')
+          .eq('parent_user_id', user?.id)
+          .limit(1)
+          .maybeSingle();
+
+        if (!childProfile && children.birth_date) {
+          // Create child_profiles entry
+          const { data: newProfile, error: createError } = await supabase
+            .from('child_profiles')
+            .insert({
+              parent_user_id: user?.id,
+              name: children.name,
+              date_of_birth: children.birth_date,
+            })
+            .select('id')
+            .single();
+
+          if (!createError && newProfile) {
+            localStorage.setItem('selectedChildProfile', newProfile.id);
+          }
+        } else if (childProfile) {
+          localStorage.setItem('selectedChildProfile', childProfile.id);
+        }
       }
     } catch (error) {
       console.error('Error loading child data:', error);
