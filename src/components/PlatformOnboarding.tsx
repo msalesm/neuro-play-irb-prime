@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import Joyride, { Step, CallBackProps, STATUS } from 'react-joyride';
 import { useLocation } from 'react-router-dom';
+import { useTourAchievements } from '@/hooks/useTourAchievements';
+import { TourAchievementModal } from './TourAchievementModal';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface PlatformOnboardingProps {
   pageName: string;
@@ -10,12 +14,15 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
   const [run, setRun] = useState(false);
   const [hasSeenTour, setHasSeenTour] = useState(false);
   const location = useLocation();
+  const { completeTour, isTourCompleted, refreshProgress } = useTourAchievements();
+  const [showAchievementModal, setShowAchievementModal] = useState(false);
+  const [unlockedAchievement, setUnlockedAchievement] = useState<any>(null);
 
   useEffect(() => {
     const tourKey = `tour_seen_${pageName}`;
     const seen = localStorage.getItem(tourKey);
     
-    if (!seen) {
+    if (!seen && !isTourCompleted(pageName)) {
       // Delay to ensure DOM is fully loaded
       const timer = setTimeout(() => {
         setRun(true);
@@ -23,15 +30,57 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
       return () => clearTimeout(timer);
     }
     setHasSeenTour(true);
-  }, [pageName]);
+  }, [pageName, isTourCompleted]);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
+  const handleJoyrideCallback = async (data: CallBackProps) => {
     const { status } = data;
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
     if (finishedStatuses.includes(status as string)) {
       setRun(false);
       localStorage.setItem(`tour_seen_${pageName}`, 'true');
       setHasSeenTour(true);
+
+      // Salvar conclusão no Supabase e verificar conquistas
+      if (status === STATUS.FINISHED) {
+        await completeTour(pageName);
+        await checkForNewAchievements();
+        toast.success('Tour completado! 🎉');
+      }
+    }
+  };
+
+  const checkForNewAchievements = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // Buscar conquistas recém desbloqueadas
+      const { data: recentAchievements } = await supabase
+        .from('user_achievements')
+        .select(`
+          achievement_key,
+          unlocked_at,
+          achievements:achievements!inner(name, description, icon, rarity)
+        `)
+        .eq('user_id', user.id)
+        .eq('completed', true)
+        .order('unlocked_at', { ascending: false })
+        .limit(1);
+
+      if (recentAchievements && recentAchievements.length > 0) {
+        const latest = recentAchievements[0];
+        // Verificar se foi desbloqueada recentemente (últimos 5 segundos)
+        const unlockedTime = new Date(latest.unlocked_at).getTime();
+        const now = Date.now();
+        if (now - unlockedTime < 5000 && latest.achievements) {
+          setUnlockedAchievement(latest.achievements);
+          setShowAchievementModal(true);
+        }
+      }
+
+      await refreshProgress();
+    } catch (error) {
+      console.error('Error checking achievements:', error);
     }
   };
 
@@ -363,6 +412,12 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
           <span className="text-xl">❓</span>
         </button>
       )}
+
+      <TourAchievementModal
+        isOpen={showAchievementModal}
+        achievement={unlockedAchievement}
+        onClose={() => setShowAchievementModal(false)}
+      />
     </>
   );
 }

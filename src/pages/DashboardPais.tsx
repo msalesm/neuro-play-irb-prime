@@ -19,6 +19,7 @@ import { DailyMissionCard } from '@/components/DailyMissionCard';
 import { useDailyMissions } from '@/hooks/useDailyMissions';
 import { BadgeUnlockModal } from '@/components/BadgeUnlockModal';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';
+import { TourAchievementsPanel } from '@/components/TourAchievementsPanel';
 
 interface ChildProfile {
   id: string;
@@ -678,8 +679,9 @@ export default function DashboardPais() {
 
             {/* Main Content Tabs */}
             <Tabs defaultValue="cognitive" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="cognitive">Perfil Cognitivo</TabsTrigger>
+                <TabsTrigger value="achievements">Conquistas</TabsTrigger>
                 <TabsTrigger value="progress">Progresso</TabsTrigger>
                 <TabsTrigger value="history">Histórico</TabsTrigger>
               </TabsList>
@@ -715,6 +717,10 @@ export default function DashboardPais() {
                     </p>
                   )}
                 </Card>
+              </TabsContent>
+
+              <TabsContent value="achievements">
+                <TourAchievementsPanel />
               </TabsContent>
 
               <TabsContent value="progress">
