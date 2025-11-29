@@ -86,6 +86,7 @@ import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
 import DashboardPais from "./pages/DashboardPais";
 import IRBPrimeLanding from "./pages/IRBPrimeLanding";
 import Home from "./pages/Home";
+import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -120,6 +121,7 @@ const App = () => (
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/landing" element={<IRBPrimeLanding />} />
+                  <Route path="/onboarding" element={<OnboardingWizard />} />
                   <Route path="/neuroplay" element={
                     <Suspense fallback={<Loading />}>
                       <NeuroPlayIndex />
