@@ -6,7 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { 
   Brain, TrendingUp, Award, Calendar, Download, 
   ArrowLeft, Heart, Target, Sparkles, Activity,
-  Clock, CheckCircle2, AlertCircle, FileText, BookOpen, Trophy
+  Clock, CheckCircle2, AlertCircle, FileText, BookOpen, Trophy, Shield
 } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { useAuth } from '@/hooks/useAuth';
@@ -22,6 +22,9 @@ import { AIGameRecommendations } from '@/components/AIGameRecommendations';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 import { TourAchievementsPanel } from '@/components/TourAchievementsPanel';
 import { useAchievementSystem } from "@/hooks/useAchievementSystem";
+import { usePredictiveAnalysis } from '@/hooks/usePredictiveAnalysis';
+import { RiskIndicatorCard } from '@/components/RiskIndicatorCard';
+import { PreventiveAlertModal } from '@/components/PreventiveAlertModal';
 
 interface ChildProfile {
   id: string;
@@ -66,6 +69,28 @@ export default function DashboardPais() {
     description: string;
     icon: string;
   } | null>(null);
+  
+  // Predictive Analysis
+  const { riskIndicator, analyzing, detectCrisisRisk, reload: reloadPredictiveAnalysis } = usePredictiveAnalysis(selectedChild || undefined);
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [preventiveAlert, setPreventiveAlert] = useState<any>(null);
+
+  // Check for high-risk alerts on mount and when risk changes
+  useEffect(() => {
+    if (riskIndicator && (riskIndicator.level === 'high' || riskIndicator.level === 'critical')) {
+      setPreventiveAlert({
+        level: riskIndicator.level,
+        title: riskIndicator.level === 'critical' ? 'Alerta de Risco Crítico Detectado' : 'Alerta de Risco Alto Detectado',
+        message: riskIndicator.level === 'critical' 
+          ? 'Nossa análise preditiva identificou sinais preocupantes que requerem atenção imediata.'
+          : 'Nossa análise detectou padrões comportamentais que merecem sua atenção.',
+        indicators: riskIndicator.indicators,
+        urgentActions: riskIndicator.recommendations,
+        timeline: riskIndicator.timeline,
+      });
+      setShowAlertModal(true);
+    }
+  }, [riskIndicator]);
 
   useEffect(() => {
     if (user) {
@@ -76,6 +101,10 @@ export default function DashboardPais() {
   useEffect(() => {
     if (selectedChild) {
       checkAvatarSelection();
+      // Run predictive crisis detection on load
+      setTimeout(() => {
+        detectCrisisRisk(14); // Analyze last 14 days for crisis patterns
+      }, 2000);
     }
   }, [selectedChild]);
 
@@ -332,6 +361,12 @@ export default function DashboardPais() {
         badgeIcon={unlockedBadge?.icon || '🏆'}
       />
 
+      <PreventiveAlertModal
+        open={showAlertModal}
+        onClose={() => setShowAlertModal(false)}
+        alert={preventiveAlert}
+      />
+
       <div className="container mx-auto px-4 py-8">
         {/* Header with Child Selection */}
         <div className="mb-8">
@@ -397,11 +432,19 @@ export default function DashboardPais() {
                     </div>
                   </div>
                   <div className="flex gap-2 flex-wrap">
-                    <Button
+                    <Button 
                       variant="outline"
                       onClick={() => navigate('/avatar-evolution')}
                     >
                       ✨ Customizar Avatar
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      onClick={() => navigate('/risk-analysis')}
+                      className="flex items-center gap-2"
+                    >
+                      <Shield className="w-4 h-4" />
+                      Análise de Risco
                     </Button>
                     <Button 
                       variant="outline"
@@ -470,6 +513,21 @@ export default function DashboardPais() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Risk Indicator - Show if there's a risk assessment */}
+            {riskIndicator && (
+              <div className="mb-8" data-tour="risk-indicator">
+                <RiskIndicatorCard
+                  riskIndicator={riskIndicator}
+                  onViewDetails={() => setShowAlertModal(true)}
+                  onRefresh={async () => {
+                    await detectCrisisRisk(14);
+                    await reloadPredictiveAnalysis();
+                  }}
+                  loading={analyzing}
+                />
+              </div>
+            )}
 
             {/* Main Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
