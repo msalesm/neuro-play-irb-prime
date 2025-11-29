@@ -62,6 +62,22 @@ interface AIInsight {
   actionable?: boolean;
 }
 
+interface TherapeuticInsight {
+  category: 'cognitive' | 'emotional' | 'behavioral' | 'developmental';
+  title: string;
+  description: string;
+  severity: 'info' | 'concern' | 'alert';
+  recommendations: string[];
+}
+
+interface PersonalizedRecommendation {
+  nextGame: string;
+  nextGameTitle: string;
+  reason: string;
+  targetDomain: string;
+  estimatedDifficulty: number;
+}
+
 export interface GameResultsDashboardProps {
   gameType: string;
   gameTitle: string;
@@ -74,6 +90,9 @@ export interface GameResultsDashboardProps {
   onClose?: () => void;
   onPlayAgain?: () => void;
   aiInsights?: AIInsight[];
+  therapeuticInsights?: TherapeuticInsight[];
+  personalizedRecommendations?: PersonalizedRecommendation[];
+  evolutionTrend?: 'improving' | 'stable' | 'declining';
 }
 
 export const GameResultsDashboard = ({
@@ -86,7 +105,10 @@ export const GameResultsDashboard = ({
   cognitiveMetrics,
   onClose,
   onPlayAgain,
-  aiInsights = []
+  aiInsights = [],
+  therapeuticInsights = [],
+  personalizedRecommendations = [],
+  evolutionTrend
 }: GameResultsDashboardProps) => {
   // Generate actionable insights based on session data
   const generatedInsights: AIInsight[] = aiInsights.length > 0 ? aiInsights : generateInsights(session);
@@ -321,8 +343,81 @@ export const GameResultsDashboard = ({
             </Card>
           )}
 
+          {/* Insights Terapêuticos Detalhados */}
+          {therapeuticInsights.length > 0 && (
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Brain className="w-5 h-5 text-primary" />
+                  Análise Terapêutica Detalhada
+                </CardTitle>
+                <CardDescription>
+                  Insights clínicos baseados no desempenho e perfil cognitivo
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {therapeuticInsights.map((insight, index) => {
+                  const severityColors = {
+                    info: 'bg-blue-50 border-blue-500 dark:bg-blue-950/20',
+                    concern: 'bg-orange-50 border-orange-500 dark:bg-orange-950/20',
+                    alert: 'bg-red-50 border-red-500 dark:bg-red-950/20'
+                  };
+                  
+                  const categoryIcons = {
+                    cognitive: <Brain className="w-5 h-5" />,
+                    emotional: <Activity className="w-5 h-5" />,
+                    behavioral: <Users className="w-5 h-5" />,
+                    developmental: <TrendingUp className="w-5 h-5" />
+                  };
+
+                  return (
+                    <div 
+                      key={index}
+                      className={cn(
+                        "p-4 rounded-lg border-l-4 animate-fade-in",
+                        severityColors[insight.severity]
+                      )}
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
+                      <div className="flex items-start gap-3 mb-3">
+                        <div className="mt-0.5">
+                          {categoryIcons[insight.category]}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-semibold text-sm">{insight.title}</p>
+                            <Badge variant="outline" className="text-xs">
+                              {insight.category === 'cognitive' && 'Cognitivo'}
+                              {insight.category === 'emotional' && 'Emocional'}
+                              {insight.category === 'behavioral' && 'Comportamental'}
+                              {insight.category === 'developmental' && 'Desenvolvimento'}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {insight.description}
+                          </p>
+                          <div className="space-y-1">
+                            <p className="text-xs font-semibold text-primary">Recomendações:</p>
+                            <ul className="text-xs text-muted-foreground space-y-1">
+                              {insight.recommendations.map((rec, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <span className="text-primary mt-0.5">•</span>
+                                  <span>{rec}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          )}
+
           {/* Insights Acionáveis por IA */}
-          {generatedInsights.length > 0 && (
+          {generatedInsights.length > 0 && therapeuticInsights.length === 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -400,56 +495,129 @@ export const GameResultsDashboard = ({
 
         {/* Progresso Histórico */}
         <TabsContent value="progress" className="space-y-4">
-          {historicalData.length > 0 ? (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  Evolução ao Longo do Tempo
-                </CardTitle>
-                <CardDescription>
-                  Suas últimas {historicalData.length} sessões
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={historicalData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                    <XAxis 
-                      dataKey="date" 
-                      stroke="hsl(var(--foreground))"
-                      tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
-                    />
-                    <YAxis 
-                      stroke="hsl(var(--foreground))"
-                      tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
-                    />
-                    <Tooltip 
-                      contentStyle={{
-                        backgroundColor: 'hsl(var(--card))',
-                        border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px'
-                      }}
-                    />
-                    <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="score" 
-                      stroke="hsl(var(--primary))" 
-                      strokeWidth={2}
-                      name="Pontuação"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="accuracy" 
-                      stroke="hsl(var(--chart-2))" 
-                      strokeWidth={2}
-                      name="Precisão (%)"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+          {evolutionTrend && (
+            <Card className="border-2 border-primary/20">
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Tendência de Evolução</p>
+                    <p className="text-2xl font-bold">
+                      {evolutionTrend === 'improving' && '📈 Melhorando'}
+                      {evolutionTrend === 'stable' && '➡️ Estável'}
+                      {evolutionTrend === 'declining' && '📉 Atenção Necessária'}
+                    </p>
+                  </div>
+                  <div className={cn(
+                    "w-12 h-12 rounded-full flex items-center justify-center",
+                    evolutionTrend === 'improving' && "bg-green-100 text-green-600",
+                    evolutionTrend === 'stable' && "bg-blue-100 text-blue-600",
+                    evolutionTrend === 'declining' && "bg-orange-100 text-orange-600"
+                  )}>
+                    {evolutionTrend === 'improving' && <TrendingUp className="w-6 h-6" />}
+                    {evolutionTrend === 'stable' && <Activity className="w-6 h-6" />}
+                    {evolutionTrend === 'declining' && <Target className="w-6 h-6" />}
+                  </div>
+                </div>
               </CardContent>
             </Card>
+          )}
+
+          {historicalData.length > 0 ? (
+            <>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5" />
+                    Evolução da Pontuação e Precisão
+                  </CardTitle>
+                  <CardDescription>
+                    Suas últimas {historicalData.length} sessões
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={historicalData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                      <XAxis 
+                        dataKey="date" 
+                        stroke="hsl(var(--foreground))"
+                        tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
+                      />
+                      <YAxis 
+                        stroke="hsl(var(--foreground))"
+                        tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
+                      />
+                      <Tooltip 
+                        contentStyle={{
+                          backgroundColor: 'hsl(var(--card))',
+                          border: '1px solid hsl(var(--border))',
+                          borderRadius: '8px'
+                        }}
+                      />
+                      <Legend />
+                      <Line 
+                        type="monotone" 
+                        dataKey="score" 
+                        stroke="hsl(var(--primary))" 
+                        strokeWidth={2}
+                        name="Pontuação"
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="accuracy" 
+                        stroke="hsl(var(--chart-2))" 
+                        strokeWidth={2}
+                        name="Precisão (%)"
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              {historicalData.some(d => 'reactionTime' in d) && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Zap className="w-5 h-5" />
+                      Evolução do Tempo de Reação
+                    </CardTitle>
+                    <CardDescription>
+                      Velocidade de processamento ao longo do tempo
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <LineChart data={historicalData.filter(d => 'reactionTime' in d)}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                        <XAxis 
+                          dataKey="date" 
+                          stroke="hsl(var(--foreground))"
+                          tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
+                        />
+                        <YAxis 
+                          stroke="hsl(var(--foreground))"
+                          tick={{ fill: 'hsl(var(--foreground))', fontSize: 12 }}
+                        />
+                        <Tooltip 
+                          contentStyle={{
+                            backgroundColor: 'hsl(var(--card))',
+                            border: '1px solid hsl(var(--border))',
+                            borderRadius: '8px'
+                          }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="reactionTime" 
+                          stroke="hsl(var(--chart-3))" 
+                          strokeWidth={2}
+                          name="Tempo de Reação (ms)"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              )}
+            </>
           ) : (
             <Card>
               <CardContent className="py-12 text-center">
