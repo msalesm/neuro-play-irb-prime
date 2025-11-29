@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -68,7 +69,7 @@ export default function LearningDashboard() {
               {t('dashboard.loginRequired')}
             </p>
             <Button asChild>
-              <a href="/auth">{t('dashboard.login')}</a>
+              <Link to="/auth">{t('dashboard.login')}</Link>
             </Button>
           </CardContent>
         </Card>
@@ -330,16 +331,16 @@ export default function LearningDashboard() {
             </div>
             <div className="flex gap-3">
               <Button variant="secondary" asChild>
-                <a href="/games" className="flex items-center gap-2">
+                <Link to="/games" className="flex items-center gap-2">
                   <Gamepad2 className="w-4 h-4" />
                   {t('dashboard.playGames')}
-                </a>
+                </Link>
               </Button>
               <Button variant="outline" className="border-border text-foreground hover:bg-accent" asChild>
-                <a href="/diagnostic-tests" className="flex items-center gap-2">
+                <Link to="/diagnostic-tests" className="flex items-center gap-2">
                   <Brain className="w-4 h-4" />
                   {t('dashboard.takeAssessment')}
-                </a>
+                </Link>
               </Button>
             </div>
           </div>

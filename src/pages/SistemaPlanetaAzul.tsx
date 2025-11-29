@@ -40,9 +40,12 @@ export default function SistemaPlanetaAzul() {
         .select('id, name, avatar_url')
         .eq('parent_id', user?.id)
         .limit(1)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error loading child data:', error);
+        return;
+      }
 
       if (children) {
         setChildId(children.id);
