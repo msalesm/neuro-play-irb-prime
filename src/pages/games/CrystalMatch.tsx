@@ -18,6 +18,7 @@ export default function CrystalMatch() {
   const [isLoading, setIsLoading] = useState(true);
   const [gameStarted, setGameStarted] = useState(false);
   const [childProfileId, setChildProfileId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   
   const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || undefined);
 
@@ -25,42 +26,57 @@ export default function CrystalMatch() {
   useEffect(() => {
     if (user) {
       loadChildProfile();
+    } else {
+      setError('Você precisa estar logado para jogar');
+      setIsLoading(false);
     }
   }, [user]);
 
   const loadChildProfile = async () => {
     try {
+      setIsLoading(true);
+      setError(null);
+      
       // First check localStorage
       const storedId = localStorage.getItem('selectedChildProfile');
       if (storedId) {
         setChildProfileId(storedId);
+        setIsLoading(false);
         return;
       }
 
       // If not in localStorage, fetch from database
-      const { data: profiles } = await supabase
+      const { data: profiles, error: profileError } = await supabase
         .from('child_profiles')
         .select('id')
         .eq('parent_user_id', user?.id)
         .limit(1)
         .maybeSingle();
 
+      if (profileError) {
+        console.error('Error loading profile:', profileError);
+        setError('Erro ao carregar perfil da criança');
+        setIsLoading(false);
+        return;
+      }
+
       if (profiles?.id) {
         setChildProfileId(profiles.id);
         localStorage.setItem('selectedChildProfile', profiles.id);
+        setIsLoading(false);
       } else {
-        toast.error('Perfil da criança não encontrado');
-        navigate('/dashboard-pais');
+        setError('Perfil da criança não encontrado. Por favor, crie um perfil primeiro.');
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('Error loading child profile:', error);
-      toast.error('Erro ao carregar perfil da criança');
-      navigate('/dashboard-pais');
+      setError('Erro ao carregar perfil da criança');
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    if (childProfileId) {
+    if (childProfileId && !error) {
       initializeGame();
     }
 
@@ -69,7 +85,7 @@ export default function CrystalMatch() {
         appRef.current.destroy(true, { children: true, texture: true });
       }
     };
-  }, [childProfileId]);
+  }, [childProfileId, error]);
 
   const initializeGame = async () => {
     if (!containerRef.current) return;
@@ -157,7 +173,7 @@ export default function CrystalMatch() {
             Voltar
           </Button>
 
-          {gameStarted && (
+          {gameStarted && !error && (
             <Button
               variant="outline"
               size="sm"
@@ -180,38 +196,64 @@ export default function CrystalMatch() {
           </p>
         </div>
 
-        {/* Game Instructions */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-6 text-white/90 text-sm">
-          <p className="mb-2">📋 <strong>Como jogar:</strong></p>
-          <ul className="list-disc list-inside space-y-1 ml-2">
-            <li>Clique em um cristal e depois em um adjacente para trocar</li>
-            <li>Forme linhas de 3 ou mais cristais iguais</li>
-            <li>Você tem 30 movimentos para fazer a maior pontuação</li>
-            <li>Cristais novos caem do topo automaticamente</li>
-          </ul>
-        </div>
-
-        {/* Game Container */}
-        <div className="flex justify-center items-center">
-          {isLoading ? (
-            <div className="text-white text-center py-12">
-              <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
-              <p>Carregando jogo...</p>
+        {/* Error State */}
+        {error ? (
+          <div className="bg-red-500/10 border-2 border-red-500/50 rounded-lg p-8 text-center">
+            <div className="text-6xl mb-4">⚠️</div>
+            <h2 className="text-2xl font-bold text-white mb-2">Erro ao Carregar</h2>
+            <p className="text-white/80 mb-6">{error}</p>
+            <div className="flex gap-4 justify-center">
+              <Button
+                onClick={() => navigate('/dashboard-pais')}
+                className="bg-white/10 hover:bg-white/20"
+              >
+                Voltar ao Dashboard
+              </Button>
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+                className="text-white border-white/20"
+              >
+                Tentar Novamente
+              </Button>
             </div>
-          ) : (
-            <div
-              ref={containerRef}
-              className="rounded-lg overflow-hidden shadow-2xl border-4 border-purple-500/30"
-            />
-          )}
-        </div>
+          </div>
+        ) : (
+          <>
+            {/* Game Instructions */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-6 text-white/90 text-sm">
+              <p className="mb-2">📋 <strong>Como jogar:</strong></p>
+              <ul className="list-disc list-inside space-y-1 ml-2">
+                <li>Clique em um cristal e depois em um adjacente para trocar</li>
+                <li>Forme linhas de 3 ou mais cristais iguais</li>
+                <li>Você tem 30 movimentos para fazer a maior pontuação</li>
+                <li>Cristais novos caem do topo automaticamente</li>
+              </ul>
+            </div>
 
-        {/* Game Info */}
-        <div className="mt-6 bg-white/5 backdrop-blur-sm rounded-lg p-4 text-white/80 text-sm">
-          <p className="text-center">
-            🧠 <strong>Habilidades trabalhadas:</strong> Atenção Visual, Planejamento, Raciocínio Lógico
-          </p>
-        </div>
+            {/* Game Container */}
+            <div className="flex justify-center items-center">
+              {isLoading ? (
+                <div className="text-white text-center py-12">
+                  <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
+                  <p>Carregando jogo...</p>
+                </div>
+              ) : (
+                <div
+                  ref={containerRef}
+                  className="rounded-lg overflow-hidden shadow-2xl border-4 border-purple-500/30"
+                />
+              )}
+            </div>
+
+            {/* Game Info */}
+            <div className="mt-6 bg-white/5 backdrop-blur-sm rounded-lg p-4 text-white/80 text-sm">
+              <p className="text-center">
+                🧠 <strong>Habilidades trabalhadas:</strong> Atenção Visual, Planejamento, Raciocínio Lógico
+              </p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
