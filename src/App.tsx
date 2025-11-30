@@ -36,6 +36,7 @@ import VisualSync from "./pages/games/VisualSync";
 import StackTower from "./pages/games/StackTower";
 import CosmicSequence from "./pages/games/CosmicSequence";
 import CrystalMatch from "./pages/games/CrystalMatch";
+import CacaSilabas3D from "./pages/games/CacaSilabas3D";
 const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
@@ -210,6 +211,7 @@ const App = () => (
           <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
           <Route path="/games/emotion-lab" element={<EmotionLab />} />
           <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
+          <Route path="/games/caca-silabas-3d" element={<CacaSilabas3D />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/diagnostic-tests" element={<DiagnosticTests />} />

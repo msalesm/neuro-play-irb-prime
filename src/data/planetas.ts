@@ -172,6 +172,17 @@ export const planetas: Planeta[] = [
     ],
     jogos: [
       {
+        id: 'caca-silabas-3d',
+        nome: 'Caça Sílabas 3D',
+        descricao: 'Explore um mundo 3D coletando sílabas na ordem correta para formar palavras',
+        duracao: 8,
+        dificuldade: 2,
+        rota: '/games/caca-silabas-3d',
+        icone: '🎮',
+        completado: false,
+        novo: true
+      },
+      {
         id: 'phonological-processing',
         nome: 'Labirinto de Sílabas',
         descricao: 'Navegue por labirintos identificando e combinando sílabas',
@@ -218,7 +229,7 @@ export const planetas: Planeta[] = [
     tamanho: 'grande',
     desbloqueado: true,
     progressoAtual: 0,
-    totalMissoes: 4
+    totalMissoes: 5
   },
   {
     id: 'calm',
