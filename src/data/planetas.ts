@@ -88,6 +88,17 @@ export const planetas: Planeta[] = [
     ],
     jogos: [
       {
+        id: 'tower-defense',
+        nome: 'Torre de Defesa',
+        descricao: 'Defenda sua base estrategicamente! Posicione torres e elimine ondas de invasores',
+        duracao: 10,
+        dificuldade: 3,
+        rota: '/games/tower-defense',
+        icone: '🏰',
+        completado: false,
+        novo: true
+      },
+      {
         id: 'stack-tower',
         nome: 'Torre Perfeita',
         descricao: 'Construa a torre mais alta praticando timing perfeito e controle de impulsos',
@@ -156,7 +167,7 @@ export const planetas: Planeta[] = [
     tamanho: 'grande',
     desbloqueado: true,
     progressoAtual: 0,
-    totalMissoes: 6
+    totalMissoes: 7
   },
   {
     id: 'lumen',
