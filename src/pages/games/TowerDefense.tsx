@@ -28,7 +28,8 @@ const TowerDefense = () => {
 
     const initGame = async () => {
       try {
-        const app = new PIXI.Application({
+        const app = new PIXI.Application();
+        await app.init({
           width: 800,
           height: 600,
           backgroundColor: 0x3c5e2b,
@@ -36,7 +37,7 @@ const TowerDefense = () => {
         });
 
         if (canvasRef.current) {
-          canvasRef.current.appendChild(app.view as HTMLCanvasElement);
+          canvasRef.current.appendChild(app.canvas as HTMLCanvasElement);
           appRef.current = app;
 
           const game = new Game(app);
@@ -272,8 +273,8 @@ class Game {
     this.resetGame();
     this.setState('title');
 
-    this.app.view.addEventListener('pointerdown', (e: any) => this.onPointerDown(e));
-    this.app.view.addEventListener('pointermove', (e: any) => this.onPointerMove(e));
+    this.app.canvas.addEventListener('pointerdown', (e: any) => this.onPointerDown(e));
+    this.app.canvas.addEventListener('pointermove', (e: any) => this.onPointerMove(e));
     this.app.ticker.add((delta: any) => this.update(delta));
   }
 
@@ -323,17 +324,17 @@ class Game {
   }
 
   setupUI() {
-    this.moneyText = new PIXI.Text('', { fontFamily: 'Arial', fontSize: 22, fill: 0xffff99, fontWeight: 'bold' });
-    this.waveText = new PIXI.Text('', { fontFamily: 'Arial', fontSize: 22, fill: 0xffffff, fontWeight: 'bold' });
-    this.livesText = new PIXI.Text('', { fontFamily: 'Arial', fontSize: 22, fill: 0xff8888, fontWeight: 'bold' });
-
+    this.moneyText = new PIXI.Text({ text: '', style: { fontFamily: 'Arial', fontSize: 22, fill: 0xffff99, fontWeight: 'bold' } });
+    this.waveText = new PIXI.Text({ text: '', style: { fontFamily: 'Arial', fontSize: 22, fill: 0xffffff, fontWeight: 'bold' } });
+    this.livesText = new PIXI.Text({ text: '', style: { fontFamily: 'Arial', fontSize: 22, fill: 0xff8888, fontWeight: 'bold' } });
+    
     this.moneyText.x = 16;
     this.moneyText.y = 10;
     this.waveText.x = 16;
     this.waveText.y = 40;
     this.livesText.x = 16;
     this.livesText.y = 70;
-
+    
     this.uiContainer.addChild(this.moneyText, this.waveText, this.livesText);
     this.updateUI();
   }
@@ -342,7 +343,7 @@ class Game {
     this.moneyText.text = 'Money: ' + this.money;
     this.waveText.text = 'Wave: ' + this.wave;
     this.livesText.text = 'Lives: ' + this.lives;
-
+    
     if (this.onScoreUpdate) {
       this.onScoreUpdate(this.wave, this.money);
     }
@@ -350,16 +351,16 @@ class Game {
 
   setupTitle() {
     this.titleContainer.removeChildren();
-    const title = new PIXI.Text('TOWER DEFENSE', { fontFamily: 'Arial', fontSize: 48, fill: 0xffffcc, fontWeight: 'bold', align: 'center' });
+    const title = new PIXI.Text({ text: 'TOWER DEFENSE', style: { fontFamily: 'Arial', fontSize: 48, fill: 0xffffcc, fontWeight: 'bold', align: 'center' } });
     title.anchor.set(0.5);
     title.x = 400;
     title.y = 220;
-
-    const clickText = new PIXI.Text('Click to Start', { fontFamily: 'Arial', fontSize: 28, fill: 0xffffff, fontWeight: 'bold', align: 'center' });
+    
+    const clickText = new PIXI.Text({ text: 'Click to Start', style: { fontFamily: 'Arial', fontSize: 28, fill: 0xffffff, fontWeight: 'bold', align: 'center' } });
     clickText.anchor.set(0.5);
     clickText.x = 400;
     clickText.y = 330;
-
+    
     this.titleContainer.addChild(title, clickText);
     this.titleContainer.interactive = true;
     this.titleContainer.eventMode = 'static';
@@ -368,21 +369,21 @@ class Game {
 
   setupGameOver() {
     this.overContainer.removeChildren();
-    const overText = new PIXI.Text('GAME OVER', { fontFamily: 'Arial', fontSize: 54, fill: 0xff4444, fontWeight: 'bold', align: 'center' });
+    const overText = new PIXI.Text({ text: 'GAME OVER', style: { fontFamily: 'Arial', fontSize: 54, fill: 0xff4444, fontWeight: 'bold', align: 'center' } });
     overText.anchor.set(0.5);
     overText.x = 400;
     overText.y = 220;
-
-    this.finalWaveText = new PIXI.Text('', { fontFamily: 'Arial', fontSize: 32, fill: 0xffffcc, fontWeight: 'bold', align: 'center' });
+    
+    this.finalWaveText = new PIXI.Text({ text: '', style: { fontFamily: 'Arial', fontSize: 32, fill: 0xffffcc, fontWeight: 'bold', align: 'center' } });
     this.finalWaveText.anchor.set(0.5);
     this.finalWaveText.x = 400;
     this.finalWaveText.y = 290;
-
-    const restartText = new PIXI.Text('Click to Restart', { fontFamily: 'Arial', fontSize: 26, fill: 0xffffff, fontWeight: 'bold', align: 'center' });
+    
+    const restartText = new PIXI.Text({ text: 'Click to Restart', style: { fontFamily: 'Arial', fontSize: 26, fill: 0xffffff, fontWeight: 'bold', align: 'center' } });
     restartText.anchor.set(0.5);
     restartText.x = 400;
     restartText.y = 350;
-
+    
     this.overContainer.addChild(overText, this.finalWaveText, restartText);
     this.overContainer.interactive = true;
     this.overContainer.eventMode = 'static';
@@ -391,9 +392,8 @@ class Game {
 
   drawBackground() {
     this.background.clear();
-    this.background.beginFill(0x3c5e2b);
-    this.background.drawRect(0, 0, 800, 600);
-    this.background.endFill();
+    this.background.rect(0, 0, 800, 600);
+    this.background.fill(0x3c5e2b);
 
     const numClumps = 100;
     const baseColor = 0x3c5e2b;
@@ -409,46 +409,20 @@ class Game {
       const newG = Math.min(255, Math.floor(g * shadeFactor));
       const newB = Math.min(255, Math.floor(b * shadeFactor));
       const clumpColor = (newR << 16) + (newG << 8) + newB;
-      this.background.beginFill(clumpColor, 0.6 + Math.random() * 0.4);
-      this.background.drawCircle(x, y, radius);
-      this.background.endFill();
+      this.background.circle(x, y, radius);
+      this.background.fill({ color: clumpColor, alpha: 0.6 + Math.random() * 0.4 });
     }
   }
 
   drawPath() {
     this.pathGraphics.clear();
-    this.pathGraphics.lineStyle(this.pathWidth, 0x4a4032, 1);
     this.pathGraphics.moveTo(this.path[0].x, this.path[0].y);
+    
     for (let i = 1; i < this.path.length; i++) {
       this.pathGraphics.lineTo(this.path[i].x, this.path[i].y);
     }
-    const numDetails = 150;
-    const pathColor = 0x4a4032;
-    const r = (pathColor >> 16) & 0xFF;
-    const g = (pathColor >> 8) & 0xFF;
-    const b = pathColor & 0xFF;
-    for (let i = 0; i < numDetails; i++) {
-      const segmentIndex = Math.floor(Math.random() * (this.path.length - 1));
-      const start = this.path[segmentIndex];
-      const end = this.path[segmentIndex + 1];
-      const t = Math.random();
-      const px = start.x + (end.x - start.x) * t;
-      const py = start.y + (end.y - start.y) * t;
-      const offset = (Math.random() - 0.5) * (this.pathWidth - 10);
-      const angle = Math.atan2(end.y - start.y, end.x - start.x);
-      const detailX = px + offset * Math.cos(angle + Math.PI / 2);
-      const detailY = py + offset * Math.sin(angle + Math.PI / 2);
-      const radius = 2 + Math.random() * 4;
-      const shadeFactor = 0.8 + Math.random() * 0.4;
-      const newR = Math.min(255, Math.floor(r * shadeFactor));
-      const newG = Math.min(255, Math.floor(g * shadeFactor));
-      const newB = Math.min(255, Math.floor(b * shadeFactor));
-      const detailColor = (newR << 16) + (newG << 8) + newB;
-      this.pathGraphics.beginFill(detailColor, 0.5 + Math.random() * 0.3);
-      this.pathGraphics.drawCircle(detailX, detailY, radius);
-      this.pathGraphics.endFill();
-    }
-    this.pathGraphics.lineStyle(0, 0, 0);
+    
+    this.pathGraphics.stroke({ width: this.pathWidth, color: 0x4a4032 });
   }
 
   drawBase() {
@@ -497,7 +471,7 @@ class Game {
   }
 
   getPointerPos(e: PointerEvent) {
-    const rect = this.app.view.getBoundingClientRect();
+    const rect = this.app.canvas.getBoundingClientRect();
     const x = (e.clientX - rect.left) * (this.app.renderer.width / rect.width);
     const y = (e.clientY - rect.top) * (this.app.renderer.height / rect.height);
     return { x, y };
@@ -578,40 +552,12 @@ class Game {
     container.addChild(baseSprite);
 
     const turret = new PIXI.Container();
-    turret.x = 0;
-    turret.y = 0;
     const turretGraphics = new PIXI.Graphics();
-    turretGraphics.beginFill(0x888888);
-    turretGraphics.drawRect(-4, -25, 8, 25);
-    turretGraphics.endFill();
-    turretGraphics.beginFill(0xbbbbbb);
-    turretGraphics.drawRect(-5, -28, 10, 3);
-    turretGraphics.endFill();
+    turretGraphics.rect(-4, -25, 8, 25);
+    turretGraphics.fill(0x888888);
+    turretGraphics.rect(-5, -28, 10, 3);
+    turretGraphics.fill(0xbbbbbb);
     turret.addChild(turretGraphics);
-
-    const turretBaseGraphics = new PIXI.Graphics();
-    turretBaseGraphics.beginFill(0x555555);
-    turretBaseGraphics.drawCircle(-1, -3, 10);
-    turretBaseGraphics.endFill();
-    const baseColor = 0x555555;
-    const r = (baseColor >> 16) & 0xFF;
-    const g = (baseColor >> 8) & 0xFF;
-    const b = baseColor & 0xFF;
-    for (let i = 0; i < 5; i++) {
-      const radius = 2 + Math.random() * 3;
-      const shadeFactor = 0.7 + Math.random() * 0.6;
-      const newR = Math.min(255, Math.floor(r * shadeFactor));
-      const newG = Math.min(255, Math.floor(g * shadeFactor));
-      const newB = Math.min(255, Math.floor(b * shadeFactor));
-      const flairColor = (newR << 16) + (newG << 8) + newB;
-      const offsetX = (Math.random() - 0.5) * 10;
-      const offsetY = (Math.random() - 0.5) * 10;
-      turretBaseGraphics.beginFill(flairColor, 0.4 + Math.random() * 0.4);
-      turretBaseGraphics.drawCircle(-1 + offsetX, -3 + offsetY, radius);
-      turretBaseGraphics.endFill();
-    }
-    turret.addChild(turretBaseGraphics);
-
     container.addChild(turret);
 
     return container;
@@ -651,8 +597,8 @@ class Game {
       return;
     }
 
-    this.spawnTimer += delta;
     if (this.waveInProgress) {
+      this.spawnTimer += delta.deltaTime;
       if (this.enemiesToSpawn > 0 && this.spawnTimer >= this.spawnInterval) {
         this.spawnEnemy();
         this.spawnTimer = 0;
@@ -660,9 +606,9 @@ class Game {
       }
     }
 
-    this.updateEnemies(delta);
-    this.updateTowers(delta);
-    this.updateBullets(delta);
+    this.updateEnemies(delta.deltaTime);
+    this.updateTowers(delta.deltaTime);
+    this.updateBullets(delta.deltaTime);
 
     if (this.waveInProgress && this.enemiesToSpawn === 0 && this.enemies.length === 0) {
       this.waveInProgress = false;
@@ -745,13 +691,11 @@ class Game {
     const w = 30, h = 4;
     const hpFrac = Math.max(0, enemy.health / enemy.maxHealth);
     const color = hpFrac > 0.6 ? 0x44ff44 : hpFrac > 0.3 ? 0xffcc00 : 0xff4444;
-
-    enemy.healthBar.beginFill(0x222222);
-    enemy.healthBar.drawRect(enemy.x - w / 2, enemy.y - 25, w, h);
-    enemy.healthBar.endFill();
-    enemy.healthBar.beginFill(color);
-    enemy.healthBar.drawRect(enemy.x - w / 2 + 1, enemy.y - 25 + 1, (w - 2) * hpFrac, h - 2);
-    enemy.healthBar.endFill();
+    
+    enemy.healthBar.rect(enemy.x - w / 2, enemy.y - 25, w, h);
+    enemy.healthBar.fill(0x222222);
+    enemy.healthBar.rect(enemy.x - w / 2 + 1, enemy.y - 25 + 1, (w - 2) * hpFrac, h - 2);
+    enemy.healthBar.fill(color);
   }
 
   updateTowers(delta: number) {
@@ -799,9 +743,8 @@ class Game {
 
   createBulletGraphics() {
     const g = new PIXI.Graphics();
-    g.beginFill(0xffff33);
-    g.drawCircle(0, 0, 5);
-    g.endFill();
+    g.circle(0, 0, 5);
+    g.fill(0xffff33);
     return g;
   }
 
