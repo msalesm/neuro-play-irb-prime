@@ -7,6 +7,7 @@ import heroImage from '@/assets/hero-children-learning.jpg';
 import childFocused from '@/assets/child-focused-learning.jpg';
 import groupTherapy from '@/assets/group-therapy-session.jpg';
 import { generateNeurodiversityPDF } from '@/lib/pdfGenerator';
+import { generatePlatformPresentation } from '@/lib/platformPresentationGenerator';
 
 export default function IRBPrimeLanding() {
   const navigate = useNavigate();
@@ -485,15 +486,23 @@ export default function IRBPrimeLanding() {
                   </div>
                 </div>
                 
-                {/* Download Button */}
-                <div className="mt-8 text-center">
+                {/* Download Buttons */}
+                <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                   <Button
                     onClick={generateNeurodiversityPDF}
                     size="lg"
                     className="bg-white text-[#0a1e35] hover:bg-white/90 font-semibold"
                   >
                     <Download className="mr-2 h-5 w-5" />
-                    Baixar Paper em PDF
+                    Baixar Paper Neurodiversidade
+                  </Button>
+                  <Button
+                    onClick={generatePlatformPresentation}
+                    size="lg"
+                    className="bg-[#c7923e] text-white hover:bg-[#c7923e]/90 font-semibold"
+                  >
+                    <Download className="mr-2 h-5 w-5" />
+                    Baixar Apresentação Completa
                   </Button>
                 </div>
               </CardContent>
