@@ -69,19 +69,32 @@ export const DailyMissionCard = ({
               </div>
             </div>
 
-            {recomendadoPorIA && (
-              <Badge 
-                className="flex items-center gap-1"
-                style={{ 
-                  backgroundColor: `${planetaCor}20`,
-                  color: planetaCor,
-                  borderColor: planetaCor
-                }}
-              >
-                <Sparkles className="w-3 h-3" />
-                IA Recomenda
-              </Badge>
-            )}
+            <div className="flex flex-col gap-2">
+              {jogo.novo && (
+                <Badge 
+                  className="flex items-center gap-1 animate-pulse"
+                  style={{ 
+                    backgroundColor: '#c7923e',
+                    color: 'white'
+                  }}
+                >
+                  🌟 NOVO
+                </Badge>
+              )}
+              {recomendadoPorIA && (
+                <Badge 
+                  className="flex items-center gap-1"
+                  style={{ 
+                    backgroundColor: `${planetaCor}20`,
+                    color: planetaCor,
+                    borderColor: planetaCor
+                  }}
+                >
+                  <Sparkles className="w-3 h-3" />
+                  IA Recomenda
+                </Badge>
+              )}
+            </div>
           </div>
 
           <p className="text-muted-foreground text-sm mb-4">

@@ -66,13 +66,38 @@ export const useDailyMissions = (childId: string | null) => {
         }
       }
 
-      // 2. Add 2 more missions from different planets
+      // 2. Add 2 more missions from different planets - PRIORITIZE NEW GAMES
       const availablePlanetas = planetas.filter(p => 
         p.desbloqueado && !dailyMissions.some(m => m.planeta.id === p.id)
       );
 
-      for (const planeta of availablePlanetas.slice(0, 2)) {
-        // Find first incomplete game
+      // First try to add NEW games
+      for (const planeta of availablePlanetas) {
+        if (dailyMissions.length >= 3) break;
+        
+        // Prioritize NEW incomplete games first
+        const newIncompleteGame = planeta.jogos.find(j => 
+          j.novo && !completedGameIds.has(j.id)
+        );
+        
+        if (newIncompleteGame) {
+          dailyMissions.push({
+            jogo: newIncompleteGame,
+            planeta,
+            recomendadoPorIA: false
+          });
+          continue;
+        }
+      }
+
+      // Then fill remaining slots with regular incomplete games
+      for (const planeta of availablePlanetas) {
+        if (dailyMissions.length >= 3) break;
+        
+        // Skip if planet already has a mission
+        if (dailyMissions.some(m => m.planeta.id === planeta.id)) continue;
+        
+        // Find first incomplete game (not necessarily new)
         const incompleteGame = planeta.jogos.find(j => !completedGameIds.has(j.id));
         if (incompleteGame) {
           dailyMissions.push({
