@@ -37,7 +37,6 @@ import StackTower from "./pages/games/StackTower";
 import CosmicSequence from "./pages/games/CosmicSequence";
 import CrystalMatch from "./pages/games/CrystalMatch";
 import TowerDefense from "./pages/games/TowerDefense";
-import SpaceShooter from "./pages/games/SpaceShooter";
 const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
@@ -195,8 +194,7 @@ const App = () => (
           <Route path="/games/stack-tower" element={<StackTower />} />
           <Route path="/games/cosmic-sequence" element={<CosmicSequence />} />
           <Route path="/games/crystal-match" element={<CrystalMatch />} />
-              <Route path="/games/tower-defense" element={<TowerDefense />} />
-              <Route path="/games/space-shooter" element={<SpaceShooter />} />
+          <Route path="/games/tower-defense" element={<TowerDefense />} />
           <Route path="/games/biofeedback-demo" element={<BiofeedbackDemo />} />
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/games/touch-mapper" element={<TouchMapper />} />
