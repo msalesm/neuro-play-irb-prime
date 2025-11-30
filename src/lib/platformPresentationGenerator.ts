@@ -120,6 +120,62 @@ export const generatePlatformPresentation = () => {
     yPosition += 8;
   };
 
+  const addGameCard = (title: string, planet: string, description: string, skills: string, color: [number, number, number]) => {
+    // Check if we need a new page
+    if (yPosition > pageHeight - 70) {
+      doc.addPage();
+      yPosition = 20;
+    }
+
+    // Game card container
+    doc.setDrawColor(200, 200, 200);
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(margin, yPosition, maxWidth, 60, 2, 2, 'FD');
+
+    // Game visual mockup (left side)
+    doc.setFillColor(color[0], color[1], color[2]);
+    doc.roundedRect(margin + 3, yPosition + 3, 50, 54, 2, 2, 'F');
+    
+    // Game icon/logo placeholder
+    doc.setFillColor(255, 255, 255);
+    doc.circle(margin + 28, yPosition + 20, 8, 'F');
+    
+    // Text content (right side)
+    const textStartX = margin + 58;
+    const textWidth = maxWidth - 61;
+
+    // Title
+    doc.setTextColor(10, 30, 53);
+    doc.setFontSize(13);
+    doc.setFont('helvetica', 'bold');
+    doc.text(title, textStartX, yPosition + 8);
+
+    // Planet tag
+    doc.setFontSize(9);
+    doc.setTextColor(0, 90, 112);
+    doc.text(planet, textStartX, yPosition + 14);
+
+    // Description
+    doc.setTextColor(60, 60, 60);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    const descLines = doc.splitTextToSize(description, textWidth);
+    let descY = yPosition + 20;
+    descLines.slice(0, 3).forEach((line: string) => {
+      doc.text(line, textStartX, descY);
+      descY += 4.5;
+    });
+
+    // Skills worked
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.setFont('helvetica', 'italic');
+    doc.text('Habilidades: ' + skills, textStartX, yPosition + 55);
+
+    yPosition += 65;
+    doc.setTextColor(0, 0, 0);
+  };
+
   // Header with logo placeholder
   doc.setFillColor(10, 30, 53);
   doc.rect(0, 0, pageWidth, 40, 'F');
@@ -172,7 +228,35 @@ export const generatePlatformPresentation = () => {
   addBullet('Feedback imediato com insights terapêuticos personalizados');
   addBullet('Coleta automática de métricas: tempo de reação, precisão, padrões de erro, atenção sustentada');
   addBullet('Modo de acessibilidade com ajustes sensoriais para cada perfil individual');
-  addBullet('Exemplos: Sequência Cósmica (memória visual), Torre Perfeita (atenção/timing), Crystal Match (padrões)');
+
+  yPosition += 3;
+
+  // Games Gallery Section
+  addSection('GALERIA DE JOGOS TERAPÊUTICOS');
+
+  addGameCard(
+    '🎯 Torre Perfeita',
+    'Planeta Vortex (TDAH)',
+    'Jogo de empilhamento que desenvolve atenção sustentada, timing preciso e controle de impulsos. A criança deve empilhar blocos em movimento no momento exato, trabalhando coordenação motora fina e concentração.',
+    'Atenção, Controle Inibitório, Timing, Coordenação Motora',
+    [174, 233, 232] // cyan/turquoise for Vortex
+  );
+
+  addGameCard(
+    '💎 Crystal Match',
+    'Planeta Vortex (TDAH)',
+    'Jogo de combinação tipo match-3 que estimula reconhecimento de padrões, tomada de decisão rápida e atenção visual. Sistema de combos e cascatas incentiva planejamento estratégico e flexibilidade cognitiva.',
+    'Atenção Visual, Padrões, Decisão Rápida, Planejamento',
+    [138, 180, 248] // blue for Vortex
+  );
+
+  addGameCard(
+    '✨ Sequência Cósmica',
+    'Planeta Aurora (TEA)',
+    'Jogo de memória sequencial tipo Simon Says que fortalece memória visual, atenção auditiva e sequenciamento. Inclui feedback musical e visual adaptado para crianças com perfil sensorial específico.',
+    'Memória Visual, Sequenciamento, Padrões, Atenção Auditiva',
+    [203, 166, 247] // purple for Aurora
+  );
 
   yPosition += 3;
 
