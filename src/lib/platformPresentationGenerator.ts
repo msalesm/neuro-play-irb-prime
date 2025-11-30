@@ -76,44 +76,75 @@ export const generatePlatformPresentation = () => {
   yPosition = 50;
 
   // Introduction
-  addText('Este documento apresenta a plataforma NeuroPlay 2.0, uma solução clínica completa desenvolvida em parceria com IRB Prime para acompanhamento terapêutico de crianças neurodivergentes (TEA, TDAH, Dislexia).', 11, false);
+  addText('Este documento apresenta a plataforma NeuroPlay 2.0, uma ferramenta terapêutica digital desenvolvida em parceria com IRB Prime para intervenção clínica e apoio educacional de crianças e alunos com neurodivergências (TEA, TDAH, Dislexia, Discalculia, DLD).', 11, false);
+  
+  yPosition += 5;
+
+  addText('IMPORTANTE: NeuroPlay 2.0 NÃO é uma plataforma de jogos recreativos. É uma ferramenta clínica baseada em evidências científicas que utiliza gamificação terapêutica como metodologia de intervenção para desenvolvimento cognitivo, emocional e educacional.', 11, true, [139, 0, 0]);
   
   yPosition += 5;
 
   // Vision and Mission
   addSection('VISÃO E MISSÃO');
-  addText('Transformar a terapia em uma experiência gamificada, personalizada e baseada em evidências científicas, oferecendo suporte completo para crianças, pais e profissionais de saúde.', 11, false);
+  addText('Oferecer intervenção terapêutica digital cientificamente validada que ajude crianças e alunos neurodivergentes a desenvolverem habilidades cognitivas, socioemocionais e acadêmicas através de atividades estruturadas, monitoramento clínico contínuo e suporte multidisciplinar para famílias e educadores.', 11, false);
 
   // Benefits Section
-  addSection('BENEFÍCIOS PRINCIPAIS');
+  addSection('BENEFÍCIOS TERAPÊUTICOS E EDUCACIONAIS');
   
-  addBullet('Gamificação Terapêutica: Jogos cognitivos validados cientificamente que transformam intervenções clínicas em experiências envolventes e motivadoras');
-  addBullet('Inteligência Artificial: Sistema de recomendações personalizadas, ajuste automático de dificuldade e análise preditiva de crises comportamentais');
-  addBullet('Acompanhamento Completo: Dashboards especializados para pais, terapeutas e gestores com métricas clínicas em tempo real');
-  addBullet('Triagem Unificada (TUNP): Avaliação integrada de TEA, TDAH, Dislexia, Discalculia, DLD e perfil sensorial em uma única plataforma');
-  addBullet('Relatórios Clínicos: Geração automática de relatórios terapêuticos detalhados com insights de IA e recomendações de intervenção');
-  addBullet('Chatbot Terapêutico: Assistente de IA para suporte emocional, orientação parental e detecção de padrões comportamentais');
-  addBullet('Conformidade Legal: Plataforma em conformidade com LGPD e Lei 14.254/21 (triagem precoce e PEI)');
+  addText('PARA CRIANÇAS E ALUNOS:', 11, true, [0, 90, 112]);
+  addBullet('Desenvolvimento de habilidades cognitivas (atenção, memória, funções executivas, flexibilidade cognitiva) através de atividades terapêuticas estruturadas');
+  addBullet('Fortalecimento de competências socioemocionais (regulação emocional, reconhecimento de emoções, habilidades sociais, teoria da mente)');
+  addBullet('Apoio ao desenvolvimento acadêmico com foco em consciência fonológica, processamento visual e habilidades matemáticas');
+  addBullet('Aumento de motivação e engajamento através de feedback positivo imediato e progressão personalizada');
+  addBullet('Desenvolvimento de autonomia e autoconfiança através de conquistas graduais e suporte adaptativo');
+  
+  yPosition += 3;
+  
+  addText('PARA PAIS E FAMÍLIAS:', 11, true, [0, 90, 112]);
+  addBullet('Educação estruturada sobre neurodiversidade e estratégias de apoio em casa baseadas em evidências');
+  addBullet('Monitoramento diário do progresso terapêutico da criança com métricas objetivas e compreensíveis');
+  addBullet('Orientação personalizada via chatbot terapêutico para manejo de comportamentos e rotinas');
+  addBullet('Atividades cooperativas pais-filhos que fortalecem vínculo familiar e apoiam desenvolvimento');
+  addBullet('Acesso a relatórios clínicos para compartilhar com equipe multidisciplinar (terapeutas, médicos, escola)');
+  
+  yPosition += 3;
+  
+  addText('PARA TERAPEUTAS E PROFISSIONAIS:', 11, true, [0, 90, 112]);
+  addBullet('Ferramenta de triagem validada (TUNP) para identificação precoce de sinais de neurodivergências');
+  addBullet('Coleta automática de métricas clínicas objetivas durante atividades terapêuticas gamificadas');
+  addBullet('Relatórios automatizados com análise de perfil cognitivo, padrões comportamentais e recomendações de intervenção');
+  addBullet('Dashboard clínico completo para acompanhamento longitudinal de múltiplos pacientes');
+  addBullet('Detecção preditiva de regressões e crises comportamentais para intervenção preventiva');
+  
+  yPosition += 3;
+  
+  addText('PARA ESCOLAS E EDUCADORES:', 11, true, [0, 90, 112]);
+  addBullet('Capacitação docente sobre neurodiversidade em conformidade com Lei 14.254/21 (identificação precoce)');
+  addBullet('Ferramentas para elaboração e acompanhamento de PEI (Plano Educacional Individualizado) digital');
+  addBullet('Comunicação estruturada escola-família-terapeuta para continuidade de cuidado');
+  addBullet('Dados objetivos para subsidiar adaptações curriculares e estratégias pedagógicas individualizadas');
+  addBullet('Dashboard educacional com indicadores de aprendizagem e desenvolvimento por aluno');
 
   // Functionalities Section
   addSection('FUNCIONALIDADES PRINCIPAIS');
 
-  addText('1. SISTEMA PLANETA AZUL', 12, true, [0, 90, 112]);
-  addText('Universo gamificado com 5 planetas temáticos, cada um focado em uma área terapêutica específica:', 11);
-  addBullet('Planeta Aurora (TEA): Jogos de comunicação social, teoria da mente e processamento emocional');
-  addBullet('Planeta Vortex (TDAH): Jogos de atenção sustentada, controle inibitório e funções executivas');
-  addBullet('Planeta Lumen (Dislexia): Jogos de consciência fonológica, decodificação e processamento visual');
-  addBullet('Planeta Calm (Regulação Emocional): Biofeedback, mindfulness e técnicas de autorregulação');
-  addBullet('Planeta Order (Funções Executivas): Planejamento, organização e flexibilidade cognitiva');
+  addText('1. SISTEMA PLANETA AZUL - INTERVENÇÃO TERAPÊUTICA ESTRUTURADA', 12, true, [0, 90, 112]);
+  addText('Metodologia de intervenção organizada em 5 áreas terapêuticas (não são "jogos" recreativos):', 11);
+  addBullet('Planeta Aurora (Intervenção TEA): Desenvolvimento de comunicação social, teoria da mente, reconhecimento emocional e habilidades sociais através de atividades guiadas');
+  addBullet('Planeta Vortex (Intervenção TDAH): Treino de atenção sustentada, controle inibitório, planejamento e organização através de desafios de timing e estratégia');
+  addBullet('Planeta Lumen (Intervenção Dislexia): Desenvolvimento de consciência fonológica, decodificação, processamento visual e habilidades de leitura através de atividades fonéticas');
+  addBullet('Planeta Calm (Regulação Emocional): Técnicas de autorregulação, mindfulness, gerenciamento de ansiedade e biofeedback para todas as neurodivergências');
+  addBullet('Planeta Order (Funções Executivas): Treino de planejamento, organização, flexibilidade cognitiva e resolução de problemas para apoio acadêmico e cotidiano');
 
   yPosition += 3;
 
-  addText('2. JOGOS COGNITIVOS ADAPTATIVOS', 12, true, [0, 90, 112]);
-  addBullet('Sistema de fases progressivas com dificuldade adaptativa baseada em desempenho');
-  addBullet('Feedback imediato com insights terapêuticos personalizados');
-  addBullet('Coleta automática de métricas: tempo de reação, precisão, padrões de erro, atenção sustentada');
-  addBullet('Modo de acessibilidade com ajustes sensoriais para cada perfil individual');
-  addBullet('Exemplos: Sequência Cósmica (memória visual), Torre Perfeita (atenção/timing), Crystal Match (padrões)');
+  addText('2. ATIVIDADES TERAPÊUTICAS ADAPTATIVAS (NÃO SÃO JOGOS RECREATIVOS)', 12, true, [0, 90, 112]);
+  addBullet('Atividades terapêuticas cientificamente validadas baseadas em protocolos clínicos de neuropsicologia e terapia ocupacional');
+  addBullet('Sistema de fases progressivas com dificuldade adaptativa que acompanha o ritmo de desenvolvimento da criança');
+  addBullet('Feedback terapêutico imediato com insights personalizados para reforço positivo e orientação');
+  addBullet('Coleta automática de métricas clínicas objetivas: tempo de reação, precisão, padrões de erro, atenção sustentada, impulsividade');
+  addBullet('Modo de acessibilidade com ajustes sensoriais individualizados (luminosidade, contraste, velocidade, feedback sonoro)');
+  addBullet('Exemplos: Sequência Cósmica (treino de memória visual e sequencial), Torre Perfeita (controle inibitório e timing), Caça Foco (atenção seletiva)');
 
   yPosition += 3;
 
