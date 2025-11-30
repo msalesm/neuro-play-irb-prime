@@ -78,13 +78,13 @@ export const generateNeurodiversityPDF = () => {
       items: ['6 dimensoes neurodivergentes', 'Algoritmos validados de risco', 'Scores percentilados', 'Exportacao PDF automatica']
     },
     {
-      title: '4. Relatorios Clinicos com IA (Google Gemini 2.5 Pro)',
+      title: '4. Relatorios Clinicos com IA',
       description: 'Sistema de analise clinica automatizado usando IA para agregar dados de game_sessions. Gera perfil cognitivo, identifica forcas/vulnerabilidades, detecta regressoes e sugere intervencoes personalizadas.',
       items: ['Analise via cognitive-analysis edge function', 'Perfil cognitivo 6 dominios', 'Alertas de regressao', 'Recomendacoes terapeuticas', 'Armazenamento em clinical_reports']
     },
     {
-      title: '5. Chatbot Terapeutico com IA (Lovable AI)',
-      description: 'Assistente terapeutico conversacional usando Google Gemini para check-ins emocionais diarios, coaching parental automatizado e deteccao de padroes comportamentais. Analise automatica a cada 10 mensagens.',
+      title: '5. Chatbot Terapeutico com IA',
+      description: 'Assistente terapeutico conversacional usando Inteligencia Artificial para check-ins emocionais diarios, coaching parental automatizado e deteccao de padroes comportamentais. Analise automatica a cada 10 mensagens.',
       items: ['Check-ins emocionais diarios', 'Coaching parental contextual', 'Deteccao de padroes via analyze-chat-patterns', 'Insights comportamentais categorizados', 'Persistencia em chat_conversations/messages']
     },
     {

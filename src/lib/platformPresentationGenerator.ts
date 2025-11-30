@@ -61,6 +61,65 @@ export const generatePlatformPresentation = () => {
     yPosition += 1;
   };
 
+  const addDashboardIllustration = (title: string, description: string) => {
+    // Check if we need a new page
+    if (yPosition > pageHeight - 80) {
+      doc.addPage();
+      yPosition = 20;
+    }
+
+    // Title
+    doc.setFillColor(0, 90, 112);
+    doc.rect(margin, yPosition, maxWidth, 10, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(title, margin + 4, yPosition + 6.5);
+    yPosition += 15;
+
+    // Dashboard mockup box
+    doc.setDrawColor(200, 200, 200);
+    doc.setFillColor(245, 245, 245);
+    doc.roundedRect(margin, yPosition, maxWidth, 50, 2, 2, 'FD');
+    
+    // Add dashboard elements visualization
+    doc.setFillColor(10, 30, 53);
+    doc.roundedRect(margin + 5, yPosition + 5, maxWidth - 10, 8, 1, 1, 'F');
+    
+    // Simulated chart/graph elements
+    doc.setFillColor(0, 90, 112);
+    doc.rect(margin + 5, yPosition + 16, 35, 28, 'F');
+    doc.setFillColor(199, 146, 62);
+    doc.rect(margin + 43, yPosition + 16, 35, 28, 'F');
+    doc.setFillColor(10, 30, 53);
+    doc.rect(margin + 81, yPosition + 16, 35, 28, 'F');
+    
+    // Add text elements
+    doc.setFillColor(220, 220, 220);
+    doc.rect(margin + 120, yPosition + 16, maxWidth - 125, 4, 'F');
+    doc.rect(margin + 120, yPosition + 23, maxWidth - 135, 4, 'F');
+    doc.rect(margin + 120, yPosition + 30, maxWidth - 140, 4, 'F');
+
+    yPosition += 55;
+
+    // Description
+    doc.setTextColor(80, 80, 80);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    const descLines = doc.splitTextToSize(description, maxWidth);
+    descLines.forEach((line: string) => {
+      if (yPosition > pageHeight - 20) {
+        doc.addPage();
+        yPosition = 20;
+      }
+      doc.text(line, margin, yPosition);
+      yPosition += 5;
+    });
+
+    doc.setTextColor(0, 0, 0);
+    yPosition += 8;
+  };
+
   // Header with logo placeholder
   doc.setFillColor(10, 30, 53);
   doc.rect(0, 0, pageWidth, 40, 'F');
@@ -150,63 +209,29 @@ export const generatePlatformPresentation = () => {
   addBullet('Recomendações proativas de intervenção terapêutica');
 
   // Dashboards Section
-  addSection('DASHBOARDS ESPECIALIZADOS');
+  addSection('DASHBOARDS ESPECIALIZADOS - ILUSTRAÇÕES');
 
-  addText('1. DASHBOARD DOS PAIS', 12, true, [0, 90, 112]);
-  addText('Interface intuitiva focada no acompanhamento diário do progresso terapêutico:', 11);
-  addBullet('Visão geral do progresso dos filhos com métricas simplificadas');
-  addBullet('Missões diárias recomendadas pela IA baseadas no perfil cognitivo');
-  addBullet('Histórico semanal de jogadas e evolução de conquistas');
-  addBullet('Acesso rápido aos jogos mais indicados e relatórios de progresso');
-  addBullet('Integração com chatbot terapêutico para orientação parental');
-  addBullet('Gráficos de evolução emocional e cognitiva longitudinal');
+  addDashboardIllustration(
+    '📊 DASHBOARD DOS PAIS',
+    'Interface intuitiva para acompanhamento diário: visão geral do progresso dos filhos, missões diárias recomendadas pela IA, histórico semanal de jogadas, acesso aos jogos mais indicados, integração com chatbot terapêutico e gráficos de evolução emocional/cognitiva.'
+  );
 
-  yPosition += 3;
+  addDashboardIllustration(
+    '🏥 DASHBOARD DO TERAPEUTA',
+    'Painel clínico completo: lista de pacientes com indicadores visuais de atenção, painéis com 4 abas (Evolução, Perfil Cognitivo, Alertas, PEI), gráficos temporais por domínio cognitivo, detecção de regressões, geração de relatórios com IA e exportação de dados clínicos.'
+  );
 
-  addText('2. DASHBOARD DO TERAPEUTA', 12, true, [0, 90, 112]);
-  addText('Painel clínico completo para gestão de pacientes e análise terapêutica:', 11);
-  addBullet('Lista de pacientes com indicadores visuais de atenção necessária');
-  addBullet('Painéis clínicos com 4 abas: Evolução, Perfil Cognitivo, Alertas, PEI');
-  addBullet('Gráficos de evolução temporal por domínio cognitivo');
-  addBullet('Detecção automática de regressões e padrões comportamentais');
-  addBullet('Geração de relatórios clínicos com análise de IA');
-  addBullet('Registro direto de pacientes sem necessidade de conta parental prévia');
-  addBullet('Exportação de dados para documentação clínica');
+  addDashboardIllustration(
+    '🎓 DASHBOARD DO PROFESSOR',
+    'Interface educacional: gestão de turmas e alunos com indicadores de risco, visualização de PEI (Plano Educacional Individualizado), registro de ocorrências escolares, geração de relatórios pedagógicos e módulos de capacitação docente gamificados.'
+  );
 
-  yPosition += 3;
+  addDashboardIllustration(
+    '🏛️ DASHBOARD DE REDE (GESTOR)',
+    'Painel administrativo: gestão de escolas e licenças por região, indicadores cognitivos agregados por diagnóstico, mapas de risco preditivo geográfico, relatórios de rede para órgãos públicos, logs de auditoria LGPD e estatísticas de engajamento.'
+  );
 
-  addText('3. DASHBOARD DO PROFESSOR', 12, true, [0, 90, 112]);
-  addText('Interface educacional para gestão de turmas e PEI:', 11);
-  addBullet('Gestão de turmas e lista de alunos com indicadores de risco');
-  addBullet('Visualização e acompanhamento de PEI (Plano Educacional Individualizado)');
-  addBullet('Registro de ocorrências escolares com categorização e severidade');
-  addBullet('Geração automática de relatórios pedagógicos por turma');
-  addBullet('Capacitação docente com módulos gamificados sobre neurodiversidade');
-
-  yPosition += 3;
-
-  addText('4. DASHBOARD DE REDE (GESTOR)', 12, true, [0, 90, 112]);
-  addText('Painel administrativo para gestão de redes escolares e métricas agregadas:', 11);
-  addBullet('Gestão de escolas, turmas e licenças por região');
-  addBullet('Indicadores cognitivos agregados por diagnóstico e faixa etária');
-  addBullet('Mapas de risco preditivo por região geográfica');
-  addBullet('Relatórios de rede com exportação para órgãos públicos');
-  addBullet('Logs de auditoria para conformidade com LGPD');
-  addBullet('Estatísticas de uso e engajamento da plataforma');
-
-  // Technology Section
-  addSection('TECNOLOGIAS E ARQUITETURA');
-  
-  addBullet('Frontend: React + TypeScript + Vite + Tailwind CSS');
-  addBullet('Backend: Lovable Cloud (Supabase) com PostgreSQL');
-  addBullet('Inteligência Artificial: Lovable AI (Google Gemini, OpenAI GPT)');
-  addBullet('Edge Functions serverless para lógica de negócio e análise cognitiva');
-  addBullet('Row Level Security (RLS) para isolamento de dados por usuário e role');
-  addBullet('Sistema de autenticação multi-role (pais, terapeutas, professores, gestores)');
-  addBullet('Armazenamento seguro de arquivos e relatórios clínicos');
-  addBullet('Aplicação nativa via Capacitor para iOS e Android');
-
-  // Target Audience Section
+  // Continue with additional sections
   addSection('PÚBLICO-ALVO');
   
   addText('CRIANÇAS (4-17 anos)', 11, true);
@@ -238,6 +263,18 @@ export const generatePlatformPresentation = () => {
   addBullet('Comunicação escola-família facilitada');
   addBullet('Indicadores de rede para gestão pública');
 
+  // Technology Section
+  addSection('TECNOLOGIAS E ARQUITETURA');
+  
+  addBullet('Frontend: React + TypeScript + Vite + Tailwind CSS');
+  addBullet('Backend: Arquitetura serverless escalável com PostgreSQL');
+  addBullet('Inteligência Artificial: Modelos avançados de linguagem e análise preditiva');
+  addBullet('Edge Functions serverless para lógica de negócio e análise cognitiva');
+  addBullet('Row Level Security (RLS) para isolamento de dados por usuário e role');
+  addBullet('Sistema de autenticação multi-role (pais, terapeutas, professores, gestores)');
+  addBullet('Armazenamento seguro de arquivos e relatórios clínicos');
+  addBullet('Aplicação nativa via Capacitor para iOS e Android');
+
   // Compliance Section
   addSection('CONFORMIDADE LEGAL E ÉTICA');
   
@@ -245,7 +282,7 @@ export const generatePlatformPresentation = () => {
   addBullet('Lei 14.254/21: Triagem precoce, PEI digital, capacitação de professores');
   addBullet('Disclaimers Clínicos: IA realiza triagem, não diagnóstico. Recomenda avaliação profissional');
   addBullet('Auditoria: Logs completos de acesso e modificação para conformidade');
-  addBullet('Segurança: RLS policies, SECURITY DEFINER functions, validação de entrada');
+  addBullet('Segurança: Políticas de segurança robustas, funções seguras e validação de entrada');
 
   // Differentials Section
   addSection('DIFERENCIAIS COMPETITIVOS');
@@ -275,13 +312,13 @@ export const generatePlatformPresentation = () => {
   yPosition += 3;
   addText('IRB Prime Care', 11, true);
   addText('Website: irbprimecare.com.br', 11);
-  addText('Plataforma: Em desenvolvimento com Lovable AI', 11);
+  addText('Email: contato@irbprimecare.com.br', 11);
   
   yPosition += 8;
   doc.setTextColor(100, 100, 100);
   doc.setFontSize(9);
   addText('Documento gerado automaticamente pela plataforma NeuroPlay 2.0', 9);
-  addText(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 9);
+  addText(`Data de geração: ${new Date().toLocaleDateString('pt-BR')}`, 9);
 
   // Add footer to all pages
   const totalPages = doc.getNumberOfPages();
