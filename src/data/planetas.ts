@@ -99,6 +99,17 @@ export const planetas: Planeta[] = [
         novo: true
       },
       {
+        id: 'space-shooter',
+        nome: 'Nave Espacial',
+        descricao: 'Pilote sua nave e derrote ondas de inimigos espaciais',
+        duracao: 10,
+        dificuldade: 3,
+        rota: '/games/space-shooter',
+        icone: '🚀',
+        completado: false,
+        novo: true
+      },
+      {
         id: 'stack-tower',
         nome: 'Torre Perfeita',
         descricao: 'Construa a torre mais alta praticando timing perfeito e controle de impulsos',
@@ -167,7 +178,7 @@ export const planetas: Planeta[] = [
     tamanho: 'grande',
     desbloqueado: true,
     progressoAtual: 0,
-    totalMissoes: 7
+    totalMissoes: 8
   },
   {
     id: 'lumen',
