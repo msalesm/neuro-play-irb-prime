@@ -85,6 +85,7 @@ import EmotionalHistoryDashboard from "./pages/EmotionalHistoryDashboard";
 
 import PlatformManual from "./pages/PlatformManual";
 import AdminUserManagement from "./pages/AdminUserManagement";
+import BeneficiosTerapeuticos from "./pages/BeneficiosTerapeuticos";
 
 // Neuro Play v2.0 pages
 import NeuroPlayV2 from "./pages/NeuroPlayV2";
@@ -258,6 +259,7 @@ const App = () => (
           <Route path="/risk-analysis" element={<RiskAnalysisPage />} />
           <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
           <Route path="/platform-manual" element={<PlatformManual />} />
+          <Route path="/beneficios-terapeuticos" element={<BeneficiosTerapeuticos />} />
           <Route path="/pei" element={<PEIView />} />
           <Route path="/pei/:patientId" element={<PEIView />} />
           
