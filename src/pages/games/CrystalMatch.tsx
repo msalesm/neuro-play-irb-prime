@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { hapticsEngine } from '@/lib/haptics';
+import { GameCompatibilityCheck } from '@/components/GameCompatibilityCheck';
+import { addUniversalEventListener } from '@/lib/browserCompat';
 
 export default function CrystalMatch() {
   const navigate = useNavigate();
@@ -113,6 +115,7 @@ export default function CrystalMatch() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
+      <GameCompatibilityCheck showWarnings={true} />
       <div className="container mx-auto max-w-2xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

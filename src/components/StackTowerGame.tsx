@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import { useGameSession } from '@/hooks/useGameSession';
 import { Button } from '@/components/ui/button';
 import { Pause, Play, RotateCcw } from 'lucide-react';
+import { GameCompatibilityCheck } from '@/components/GameCompatibilityCheck';
+import { safeStorage } from '@/lib/browserCompat';
 
 const GAME_STATE_PLAYING = 0;
 const GAME_STATE_GAMEOVER = 1;
@@ -25,7 +27,7 @@ export function StackTowerGame() {
   const [isPaused, setIsPaused] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   
-  const childProfileId = localStorage.getItem('selectedChildProfile');
+  const childProfileId = safeStorage.getItem('selectedChildProfile');
   const {
     startSession,
     updateSession,
@@ -89,6 +91,7 @@ export function StackTowerGame() {
 
   return (
     <div className="relative w-full h-full">
+      <GameCompatibilityCheck showWarnings={true} />
       <div ref={containerRef} className="w-full h-full" />
       
       {/* Game Controls */}

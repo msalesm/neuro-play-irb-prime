@@ -6,6 +6,8 @@ import * as PIXI from "pixi.js";
 import { useGameProfile } from "@/hooks/useGameProfile";
 import { useGameSession } from "@/hooks/useGameSession";
 import { toast } from "sonner";
+import { GameCompatibilityCheck } from "@/components/GameCompatibilityCheck";
+import { addUniversalEventListener, getEventCoordinates } from "@/lib/browserCompat";
 
 const TowerDefense = () => {
   const navigate = useNavigate();
@@ -113,6 +115,7 @@ const TowerDefense = () => {
 
   return (
     <div className="min-h-screen bg-background p-4">
+      <GameCompatibilityCheck showWarnings={true} />
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-4">
           <Button variant="ghost" onClick={() => navigate(-1)}>
