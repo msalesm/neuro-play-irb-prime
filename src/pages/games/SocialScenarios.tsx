@@ -56,6 +56,8 @@ const SocialScenarios = () => {
     };
     loadChildProfile();
   }, [user]);
+  
+  const isTestMode = !childProfileId; // Modo teste quando não há perfil
 
   const {
     scenarios,
@@ -85,9 +87,8 @@ const SocialScenarios = () => {
   }
 
   const startScenario = async (scenario: any) => {
-    if (!childProfileId) {
-      toast({ title: 'Erro', description: 'Perfil da criança não encontrado', variant: 'destructive' });
-      return;
+    if (!childProfileId && !isTestMode) {
+      toast({ title: 'Modo Teste', description: '🎮 Jogando sem salvar progresso' });
     }
 
     await startSession();

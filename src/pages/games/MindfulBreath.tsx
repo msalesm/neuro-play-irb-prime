@@ -53,6 +53,9 @@ export default function MindfulBreath() {
     };
     loadChildProfile();
   }, [user]);
+  
+  const isTestMode = !childProfileId; // Modo teste quando não há perfil
+  
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentPhase, setCurrentPhase] = useState<BreathPhase>('inhale');
   const [timeLeft, setTimeLeft] = useState(4);
@@ -119,9 +122,8 @@ export default function MindfulBreath() {
   }, [isPlaying, currentPhase, pattern]);
 
   const startBreathingSession = async () => {
-    if (!childProfileId) {
-      toast({ title: 'Erro', description: 'Perfil da criança não encontrado', variant: 'destructive' });
-      return;
+    if (!childProfileId && !isTestMode) {
+      toast({ title: 'Modo Teste', description: '🎮 Jogando sem salvar progresso' });
     }
 
     await startSession();

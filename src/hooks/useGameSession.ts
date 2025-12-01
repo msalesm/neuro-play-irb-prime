@@ -184,8 +184,9 @@ export function useGameSession(gameId: string, childProfileId?: string, isTestMo
         profileId = profiles?.id;
       }
 
-      if (!profileId) {
-        throw new Error('Perfil da criança não encontrado. Por favor, complete o cadastro do perfil da criança primeiro.');
+      // Se não há perfil, permitir jogo em modo teste (sem salvar no banco)
+      if (!profileId && !isTestMode) {
+        console.warn('Sem perfil - ativando modo teste');
       }
 
       const { count } = await supabase
