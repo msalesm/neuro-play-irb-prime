@@ -78,6 +78,8 @@ export default function MemoryWorkload() {
     };
     loadChildProfile();
   }, [user]);
+  
+  const isTestMode = !childProfileId; // Modo teste quando não há perfil
 
   const sequenceLength = Math.min(3 + level, 8);
 
@@ -334,9 +336,8 @@ export default function MemoryWorkload() {
   };
 
   const handleStartGame = async () => {
-    if (!childProfileId) {
-      toast.error('Perfil da criança não encontrado');
-      return;
+    if (!childProfileId && !isTestMode) {
+      toast.info('🎮 Jogando em Modo Teste - Sem salvar progresso');
     }
 
     await startSession();

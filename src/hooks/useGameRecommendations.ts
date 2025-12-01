@@ -66,13 +66,13 @@ export function useGameRecommendations(childProfileId?: string) {
   // Gerar novas recomendações
   const generateRecommendations = async (profileId?: string) => {
     if (!user) {
-      toast.error('Você precisa estar autenticado');
+      toast.info('Faça login para receber recomendações personalizadas');
       return;
     }
 
     const targetProfileId = profileId || childProfileId;
     if (!targetProfileId) {
-      toast.error('Perfil da criança não encontrado');
+      toast.info('Complete o perfil da criança para recomendações personalizadas');
       return;
     }
 

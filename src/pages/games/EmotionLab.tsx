@@ -134,6 +134,9 @@ export default function EmotionLab() {
     };
     loadChildProfile();
   }, [user]);
+  
+  const isTestMode = !childProfileId; // Modo teste quando não há perfil
+  
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -155,9 +158,8 @@ export default function EmotionLab() {
   const currentScenario = emotionScenarios[currentScenarioIndex];
 
   const startGame = async () => {
-    if (!childProfileId) {
-      toast.error('Perfil da criança não encontrado');
-      return;
+    if (!childProfileId && !isTestMode) {
+      toast.info('🎮 Jogando em Modo Teste - Sem salvar progresso');
     }
 
     await startSession();
