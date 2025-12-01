@@ -87,13 +87,10 @@ export default function DislexiaScreening() {
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      toast.error('Você precisa estar logado para realizar a triagem');
-      navigate('/auth');
-      return;
+    if (user) {
+      startScreening('dislexia');
     }
-    startScreening('dislexia');
-  }, [user, navigate]);
+  }, [user]);
 
   const handleStart = () => {
     setStarted(true);
@@ -134,7 +131,23 @@ export default function DislexiaScreening() {
       },
     };
 
-    const result = await saveScreening({ score, duration, gameData });
+    // Salvar apenas se o usuário estiver logado
+    let result = null;
+    if (user) {
+      result = await saveScreening({ score, duration, gameData });
+    } else {
+      // Modo de teste: criar resultado temporário sem salvar no banco
+      result = {
+        id: 'test-mode',
+        type: 'dislexia',
+        score,
+        duration,
+        gameData,
+        percentile: 50,
+        recommended_action: 'Teste realizado em modo demo. Faça login para salvar seus resultados.'
+      };
+      toast.info('Teste realizado em modo demo. Faça login para salvar seus resultados.');
+    }
     
     if (result) {
       navigate('/screening/result', { state: { result } });

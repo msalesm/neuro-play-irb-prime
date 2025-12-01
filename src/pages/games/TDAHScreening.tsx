@@ -32,13 +32,10 @@ export default function TDAHScreening() {
   const [sessionStartTime, setSessionStartTime] = useState<number>(0);
 
   useEffect(() => {
-    if (!user) {
-      toast.error('Você precisa estar logado para realizar a triagem');
-      navigate('/auth');
-      return;
+    if (user) {
+      startScreening('tdah');
     }
-    startScreening('tdah');
-  }, [user, navigate]);
+  }, [user]);
 
   function generateTrials(): Trial[] {
     const trials: Trial[] = [];
@@ -146,7 +143,23 @@ export default function TDAHScreening() {
       omissionErrors: goTrials.length - goCorrect,
     };
 
-    const result = await saveScreening({ score, duration, gameData });
+    // Salvar apenas se o usuário estiver logado
+    let result = null;
+    if (user) {
+      result = await saveScreening({ score, duration, gameData });
+    } else {
+      // Modo de teste: criar resultado temporário sem salvar no banco
+      result = {
+        id: 'test-mode',
+        type: 'tdah',
+        score,
+        duration,
+        gameData,
+        percentile: 50,
+        recommended_action: 'Teste realizado em modo demo. Faça login para salvar seus resultados.'
+      };
+      toast.info('Teste realizado em modo demo. Faça login para salvar seus resultados.');
+    }
     
     if (result) {
       navigate('/screening/result', { state: { result } });
