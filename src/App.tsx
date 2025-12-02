@@ -41,6 +41,7 @@ const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
 import TouchMapper from "./pages/games/TouchMapper";
 import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
 import AttentionSustainedPhases from "./pages/games/AttentionSustainedPhases";
+import AttentionSustainedPlay from "./pages/games/AttentionSustainedPlay";
 import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
 import CognitiveFlexibilityPhases from "./pages/games/CognitiveFlexibilityPhases";
 import ExecutiveProcessingPhases from "./pages/games/ExecutiveProcessingPhases";
@@ -203,6 +204,7 @@ const App = () => (
           {/* Jogos com sistema de fases */}
           <Route path="/games/executive-processing-phases" element={<ExecutiveProcessingPhases />} />
           <Route path="/games/attention-sustained-phases" element={<AttentionSustainedPhases />} />
+          <Route path="/games/attention-sustained-play" element={<AttentionSustainedPlay />} />
           <Route path="/games/focus-forest-phases" element={<FocusForestPhases />} />
           <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
           <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
