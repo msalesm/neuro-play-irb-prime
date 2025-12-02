@@ -106,23 +106,31 @@ export default function MemoryWorkload() {
     clickTimeRef.current = Date.now();
   }, [generateSequence, sequenceLength]);
 
+  const showSequenceRef = useRef(false);
+  
   const showSequence = useCallback(() => {
+    if (showSequenceRef.current) return; // Prevent double execution
+    showSequenceRef.current = true;
+    
     if (showingIndex < sequence.length) {
-      // Play tick sound when showing each item
       audio.playTick();
       
-      setTimeout(() => {
+      const timer = setTimeout(() => {
+        showSequenceRef.current = false;
         setShowingIndex(prev => prev + 1);
       }, SHOW_DURATION);
+      
+      return () => clearTimeout(timer);
     } else {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
+        showSequenceRef.current = false;
         setGameState('input');
-        setTimeLeft(sequenceLength * 1500); // Tempo adequado para input
+        setTimeLeft(sequenceLength * 1500);
         clickTimeRef.current = Date.now();
-        
-        // Play hint sound to indicate input phase
         audio.playHint();
       }, PAUSE_DURATION);
+      
+      return () => clearTimeout(timer);
     }
   }, [showingIndex, sequence.length, sequenceLength, audio]);
 
@@ -262,9 +270,11 @@ export default function MemoryWorkload() {
 
   useEffect(() => {
     if (gameState === 'showing') {
-      showSequence();
+      showSequenceRef.current = false;
+      const cleanup = showSequence();
+      return cleanup;
     }
-  }, [gameState, showSequence]);
+  }, [gameState, showingIndex]);
 
   useEffect(() => {
     if (timeLeft > 0 && (gameState === 'showing' || gameState === 'input')) {
@@ -313,14 +323,15 @@ export default function MemoryWorkload() {
         <div
           key={i}
           className={`
-            w-16 h-16 rounded-lg border-2 transition-all duration-300 flex items-center justify-center
-            ${gameState === 'input' ? 'cursor-pointer hover:scale-110 hover:border-primary hover:shadow-lg' : 'cursor-default'}
-            ${isCurrentShowing ? 'animate-pulse scale-110 shadow-xl' : ''}
+            w-16 h-16 rounded-lg border-2 flex items-center justify-center
+            ${gameState === 'input' ? 'cursor-pointer hover:scale-105 hover:shadow-md transition-transform duration-150' : 'cursor-default'}
+            ${isCurrentShowing ? 'scale-110 shadow-xl ring-4 ring-white/50' : ''}
             ${wasClickedByUser ? 'ring-2 ring-green-400' : ''}
           `}
           style={{
             backgroundColor,
-            borderColor
+            borderColor,
+            transition: 'background-color 0.2s ease, border-color 0.2s ease'
           }}
           onClick={() => handleCellClick(i)}
         >
