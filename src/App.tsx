@@ -44,6 +44,7 @@ import AttentionSustainedPhases from "./pages/games/AttentionSustainedPhases";
 import AttentionSustainedPlay from "./pages/games/AttentionSustainedPlay";
 import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
 import CognitiveFlexibilityPhases from "./pages/games/CognitiveFlexibilityPhases";
+import CognitiveFlexibilityPlay from "./pages/games/CognitiveFlexibilityPlay";
 import ExecutiveProcessingPhases from "./pages/games/ExecutiveProcessingPhases";
 import FocusForestPhases from "./pages/games/FocusForestPhases";
 import FocoRapidoPhases from "./pages/games/FocoRapidoPhases";
@@ -208,6 +209,7 @@ const App = () => (
           <Route path="/games/focus-forest-phases" element={<FocusForestPhases />} />
           <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
           <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
+          <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibilityPlay />} />
           
           {/* Jogos standalone */}
           <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
