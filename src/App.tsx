@@ -10,6 +10,7 @@ import { Loading } from "@/components/Loading";
 import { AppLayout } from "@/components/AppLayout";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 import { AudioEngineDemo } from '@/components/AudioEngineDemo';
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -97,6 +98,10 @@ import IRBPrimeLanding from "./pages/IRBPrimeLanding";
 import Home from "./pages/Home";
 import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
 import AchievementsPage from "./pages/AchievementsPage";
+import AccessibilitySettings from "./pages/AccessibilitySettings";
+import SocialStories from "./pages/SocialStories";
+import StoryReader from "./pages/StoryReader";
+import AdminStories from "./pages/AdminStories";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -115,8 +120,9 @@ const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <LanguageProvider>
-          <TooltipProvider>
+        <AccessibilityProvider>
+          <LanguageProvider>
+            <TooltipProvider>
             <Toaster />
             <Sonner position="top-center" className="!z-[100]" toastOptions={{
               className: '!z-[100]',
@@ -271,6 +277,12 @@ const App = () => (
           <Route path="/admin/network" element={<AdminNetworkDashboard />} />
           <Route path="/admin/network-management" element={<AdminNetworkDashboard />} />
           <Route path="/admin/users" element={<AdminUserManagement />} />
+          
+          {/* Acessibilidade e Histórias Sociais */}
+          <Route path="/accessibility" element={<AccessibilitySettings />} />
+          <Route path="/stories" element={<SocialStories />} />
+          <Route path="/stories/:storyId" element={<StoryReader />} />
+          <Route path="/admin/stories" element={<AdminStories />} />
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
@@ -278,8 +290,9 @@ const App = () => (
                 <FloatingActionButton />
               </AppLayout>
             </BrowserRouter>
-          </TooltipProvider>
-        </LanguageProvider>
+            </TooltipProvider>
+          </LanguageProvider>
+        </AccessibilityProvider>
       </AuthProvider>
     </QueryClientProvider>
   </ErrorBoundary>
