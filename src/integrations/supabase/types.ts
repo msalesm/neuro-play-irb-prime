@@ -14,6 +14,68 @@ export type Database = {
   }
   public: {
     Tables: {
+      accessibility_presets: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          label: string
+          profile: Json
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id: string
+          label: string
+          profile?: Json
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          label?: string
+          profile?: Json
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      accessibility_profiles: {
+        Row: {
+          game_id: string | null
+          id: string
+          preset_id: string | null
+          profile: Json
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          game_id?: string | null
+          id?: string
+          preset_id?: string | null
+          profile?: Json
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          game_id?: string | null
+          id?: string
+          preset_id?: string | null
+          profile?: Json
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accessibility_profiles_preset_id_fkey"
+            columns: ["preset_id"]
+            isOneToOne: false
+            referencedRelation: "accessibility_presets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       achievements: {
         Row: {
           category: string
@@ -1475,6 +1537,107 @@ export type Database = {
           test_data?: Json | null
           type?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      social_stories: {
+        Row: {
+          cover_image_url: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          cover_image_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          cover_image_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      story_steps: {
+        Row: {
+          audio_url: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          order_number: number
+          story_id: string | null
+          title: string
+        }
+        Insert: {
+          audio_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          order_number: number
+          story_id?: string | null
+          title: string
+        }
+        Update: {
+          audio_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          order_number?: number
+          story_id?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_steps_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "social_stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      telemetry_events: {
+        Row: {
+          created_at: string | null
+          event_type: string
+          game_id: string | null
+          id: string
+          payload: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_type: string
+          game_id?: string | null
+          id?: string
+          payload?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          event_type?: string
+          game_id?: string | null
+          id?: string
+          payload?: Json | null
+          user_id?: string | null
         }
         Relationships: []
       }
