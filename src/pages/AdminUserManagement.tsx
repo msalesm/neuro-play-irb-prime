@@ -103,12 +103,24 @@ export default function AdminUserManagement() {
 
   const assignRole = async (userId: string, role: AppRole) => {
     try {
-      const { error } = await supabase.rpc('assign_role', {
-        _user_id: userId,
-        _role: role,
-      });
+      // First, delete ALL existing roles for this user
+      const { error: deleteError } = await supabase
+        .from('user_roles')
+        .delete()
+        .eq('user_id', userId);
 
-      if (error) throw error;
+      if (deleteError) throw deleteError;
+
+      // Then insert the new role
+      const { error: insertError } = await supabase
+        .from('user_roles')
+        .insert({
+          user_id: userId,
+          role: role,
+          created_by: user?.id,
+        });
+
+      if (insertError) throw insertError;
 
       toast.success(`Role ${ROLE_LABELS[role]} atribuído com sucesso`);
       await fetchUsers();
