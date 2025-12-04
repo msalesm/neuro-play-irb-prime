@@ -3,11 +3,13 @@ import { useLocation, Link } from 'react-router-dom';
 import { 
   Home, Gamepad2, FileText, GraduationCap, Settings, 
   User, Trophy, TrendingUp, Brain, Stethoscope, Heart,
-  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3
+  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3,
+  Shield, UserCircle, Briefcase, Building2
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,
   SidebarContent,
@@ -285,16 +287,47 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
 
-        {/* User Info */}
+        {/* User Info with Role Indicator */}
         {open && (
-          <div className="mt-auto p-4 border-t border-sidebar-border">
+          <div className="mt-auto p-4 border-t border-sidebar-border space-y-3">
+            {/* Role Badge */}
+            <div className="flex items-center gap-2">
+              {role === 'admin' && (
+                <Badge className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-0 gap-1.5">
+                  <Shield className="w-3 h-3" />
+                  Administrador
+                </Badge>
+              )}
+              {role === 'therapist' && (
+                <Badge className="bg-gradient-to-r from-cyan-600 to-teal-600 text-white border-0 gap-1.5">
+                  <Briefcase className="w-3 h-3" />
+                  Terapeuta
+                </Badge>
+              )}
+              {role === 'parent' && (
+                <Badge className="bg-gradient-to-r from-amber-600 to-orange-600 text-white border-0 gap-1.5">
+                  <UserCircle className="w-3 h-3" />
+                  Pai/Mãe
+                </Badge>
+              )}
+              {!role && (
+                <Badge variant="secondary" className="gap-1.5">
+                  <User className="w-3 h-3" />
+                  Usuário
+                </Badge>
+              )}
+            </div>
+            
+            {/* User Email */}
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
                 <User className="w-4 h-4 text-primary-foreground" />
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-sm font-medium text-sidebar-foreground truncate">{user.email}</span>
-                <span className="text-xs text-sidebar-foreground/60">Usuário Ativo</span>
+                <span className="text-xs text-sidebar-foreground/60">
+                  {isAdmin ? 'Acesso Total' : 'Usuário Ativo'}
+                </span>
               </div>
             </div>
           </div>
