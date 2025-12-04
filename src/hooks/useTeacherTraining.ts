@@ -24,6 +24,8 @@ export interface ModuleDefinition {
   duration: string;
   topics: string[];
   questions: QuizQuestion[];
+  videoUrl?: string;
+  videoTitle?: string;
 }
 
 export interface QuizQuestion {

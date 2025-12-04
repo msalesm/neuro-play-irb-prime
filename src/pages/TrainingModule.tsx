@@ -11,6 +11,7 @@ import {
   XCircle,
   Lightbulb,
   Award,
+  PlayCircle,
   RotateCcw,
 } from 'lucide-react';
 import { useTeacherTraining } from '@/hooks/useTeacherTraining';
@@ -31,6 +32,7 @@ export default function TrainingModule() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [started, setStarted] = useState(false);
+  const [watchedVideo, setWatchedVideo] = useState(false);
 
   const module = trainingModules.find((m) => m.id === moduleId);
 
@@ -119,6 +121,31 @@ export default function TrainingModule() {
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
+            {module.videoUrl && (
+              <div className="space-y-3">
+                <h3 className="font-semibold flex items-center gap-2">
+                  <PlayCircle className="h-5 w-5 text-primary" />
+                  Assista ao vídeo introdutório:
+                </h3>
+                <div className="relative rounded-lg overflow-hidden bg-black aspect-video">
+                  <video
+                    controls
+                    className="w-full h-full"
+                    onEnded={() => setWatchedVideo(true)}
+                    onPlay={() => {}}
+                  >
+                    <source src={module.videoUrl} type="video/mp4" />
+                    Seu navegador não suporta o elemento de vídeo.
+                  </video>
+                </div>
+                {module.videoTitle && (
+                  <p className="text-sm text-muted-foreground text-center italic">
+                    {module.videoTitle}
+                  </p>
+                )}
+              </div>
+            )}
+
             <div className="space-y-4">
               <h3 className="font-semibold">O que você aprenderá:</h3>
               <ul className="space-y-2">
