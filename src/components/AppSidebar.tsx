@@ -4,7 +4,7 @@ import {
   Home, Gamepad2, FileText, GraduationCap, Settings, 
   User, Trophy, TrendingUp, Brain, Stethoscope, Heart,
   ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3,
-  Shield, UserCircle, Briefcase, Building2
+  Shield, UserCircle, Briefcase, Building2, Drama
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -69,6 +69,11 @@ export function AppSidebar() {
       title: 'Jogos Cognitivos',
       path: '/games',
       icon: Gamepad2,
+    },
+    {
+      title: 'Histórias Sociais',
+      path: '/social-stories',
+      icon: Drama,
     },
     {
       title: 'Progresso',
