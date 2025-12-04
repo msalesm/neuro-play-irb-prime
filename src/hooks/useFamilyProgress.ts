@@ -163,13 +163,13 @@ export function useFamilyProgress() {
             ? gameSessions.slice(0, 5).map(s => ({
                 game_name: s.cognitive_games?.name || 'Jogo',
                 score: s.score || 0,
-                accuracy: s.accuracy_percentage || 0,
+                accuracy: Math.round((s.accuracy_percentage || 0) * 100) / 100,
                 date: s.created_at
               }))
             : (sessions || []).slice(0, 5).map((s: any) => ({
                 game_name: s.game_type || 'Jogo',
                 score: s.performance_data?.score || 0,
-                accuracy: s.performance_data?.accuracy || 0,
+                accuracy: Math.round((s.performance_data?.accuracy || 0) * 100) / 100,
                 date: s.created_at
               }));
 
