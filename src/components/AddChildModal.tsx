@@ -34,7 +34,7 @@ const newChildSchema = z.object({
 });
 
 const linkChildSchema = z.object({
-  searchCode: z.string().min(1, 'Informe o código ou email'),
+  searchCode: z.string().min(2, 'Digite pelo menos 2 caracteres para buscar'),
 });
 
 type NewChildFormData = z.infer<typeof newChildSchema>;
@@ -121,11 +121,11 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
 
       const searchTerm = data.searchCode.trim();
 
-      // Search by ID or by name in children table (therapist-created)
+      // Search by name in children table (therapist-created)
       const { data: childData, error } = await supabase
         .from('children')
         .select('id, name, birth_date, neurodevelopmental_conditions')
-        .or(`id.eq.${searchTerm},name.ilike.%${searchTerm}%`)
+        .ilike('name', `%${searchTerm}%`)
         .limit(1)
         .maybeSingle();
 
@@ -225,8 +225,8 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-lg">
-        <DialogHeader>
+      <DialogContent className="max-w-lg max-h-[85vh] flex flex-col">
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle className="flex items-center gap-2">
             <UserPlus className="h-5 w-5 text-primary" />
             Adicionar Filho
@@ -236,7 +236,7 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="new" className="flex items-center gap-2">
               <UserPlus className="w-4 h-4" />
@@ -249,9 +249,9 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
           </TabsList>
 
           {/* New Child Tab */}
-          <TabsContent value="new" className="mt-4">
+          <TabsContent value="new" className="mt-4 flex-1 overflow-y-auto pr-1">
             <Form {...newChildForm}>
-              <form onSubmit={newChildForm.handleSubmit(onSubmitNewChild)} className="space-y-6">
+              <form onSubmit={newChildForm.handleSubmit(onSubmitNewChild)} className="space-y-6 pb-4">
                 {/* Nome */}
                 <FormField
                   control={newChildForm.control}
@@ -344,8 +344,8 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
           </TabsContent>
 
           {/* Link Existing Child Tab */}
-          <TabsContent value="link" className="mt-4">
-            <div className="space-y-6">
+          <TabsContent value="link" className="mt-4 flex-1 overflow-y-auto pr-1">
+            <div className="space-y-6 pb-4">
               <Form {...linkChildForm}>
                 <form onSubmit={linkChildForm.handleSubmit(searchChild)} className="space-y-4">
                   <FormField
@@ -353,11 +353,11 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
                     name="searchCode"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Código ou Nome da Criança</FormLabel>
+                        <FormLabel>Nome da Criança</FormLabel>
                         <div className="flex gap-2">
                           <FormControl>
                             <Input 
-                              placeholder="Digite o código fornecido pelo terapeuta ou nome" 
+                              placeholder="Digite o nome da criança" 
                               {...field} 
                             />
                           </FormControl>
@@ -370,7 +370,7 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
                           </Button>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          Use o código ou ID fornecido pelo terapeuta da criança
+                          Busque pelo nome da criança cadastrada pelo terapeuta
                         </p>
                         <FormMessage />
                       </FormItem>
