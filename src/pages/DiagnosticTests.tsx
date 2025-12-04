@@ -107,26 +107,6 @@ const diagnosticTests = [
 export default function DiagnosticTests() {
   const { user } = useAuth();
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-card flex items-center justify-center p-6">
-        <Card className="max-w-md">
-          <CardHeader>
-            <h1 className="text-2xl font-bold text-center">Acesso Restrito</h1>
-          </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground">
-              Para acessar as atividades de observação, você precisa fazer login.
-            </p>
-            <Button asChild>
-              <Link to="/auth">Fazer Login</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900/30 to-slate-900 text-white py-12 pb-32 relative overflow-hidden">
       {/* Decorative background elements */}
