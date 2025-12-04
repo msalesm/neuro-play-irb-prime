@@ -887,6 +887,36 @@ export type Database = {
           },
         ]
       }
+      family_links: {
+        Row: {
+          accepted_at: string | null
+          created_at: string | null
+          family_member_id: string
+          id: string
+          parent_user_id: string
+          relationship: string
+          status: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string | null
+          family_member_id: string
+          id?: string
+          parent_user_id: string
+          relationship?: string
+          status?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string | null
+          family_member_id?: string
+          id?: string
+          parent_user_id?: string
+          relationship?: string
+          status?: string
+        }
+        Relationships: []
+      }
       game_categories: {
         Row: {
           cognitive_domains: string[] | null
