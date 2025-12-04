@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useAuth } from './useAuth';
+import { useUserRole } from './useUserRole';
 
 interface ClinicalReport {
   id: string;
+  user_id: string;
   report_type: string;
   generated_date: string;
   report_period_start: string;
@@ -18,26 +21,35 @@ interface ClinicalReport {
 }
 
 export const useClinicalReports = (userId?: string) => {
+  const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [reports, setReports] = useState<ClinicalReport[]>([]);
   const [loading, setLoading] = useState(false);
   const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
-    if (userId) {
+    if (user) {
       loadReports();
     }
-  }, [userId]);
+  }, [user, userId, isAdmin]);
 
   const loadReports = async () => {
-    if (!userId) return;
+    if (!user) return;
 
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      
+      let query = supabase
         .from('clinical_reports')
         .select('*')
-        .eq('user_id', userId)
         .order('generated_date', { ascending: false });
+
+      // Se não é admin, filtra pelo userId fornecido ou do usuário atual
+      if (!isAdmin) {
+        query = query.eq('user_id', userId || user.id);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
 
@@ -55,7 +67,9 @@ export const useClinicalReports = (userId?: string) => {
     endDate: string;
     reportType: 'comprehensive' | 'cognitive' | 'behavioral';
   }) => {
-    if (!userId) {
+    const targetUserId = userId || user?.id;
+    
+    if (!targetUserId) {
       toast.error('Usuário não encontrado');
       return null;
     }
@@ -66,7 +80,7 @@ export const useClinicalReports = (userId?: string) => {
 
       const { data, error } = await supabase.functions.invoke('generate-clinical-report', {
         body: {
-          userId,
+          userId: targetUserId,
           startDate: params.startDate,
           endDate: params.endDate,
           reportType: params.reportType

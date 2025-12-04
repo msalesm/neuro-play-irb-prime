@@ -81,7 +81,7 @@ import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
 import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
 import AdminRiskMaps from "./pages/AdminRiskMaps";
-import ParentChildActivities from "./pages/ParentChildActivities";
+// ParentChildActivities removed - feature deprecated
 import CooperativePuzzle from "./pages/games/CooperativePuzzle";
 import RiskAnalysisPage from "./pages/RiskAnalysisPage";
 import EmotionalHistoryDashboard from "./pages/EmotionalHistoryDashboard";
@@ -266,8 +266,6 @@ const App = () => (
           <Route path="/teacher/class/:classId" element={<TeacherClassView />} />
           <Route path="/teacher/student/:studentId" element={<TeacherStudentView />} />
           <Route path="/admin/risk-maps" element={<AdminRiskMaps />} />
-          <Route path="/parent-child-activities" element={<ParentChildActivities />} />
-          <Route path="/parent-activities" element={<ParentChildActivities />} />
           <Route path="/games/cooperative-puzzle" element={<CooperativePuzzle />} />
           <Route path="/risk-analysis" element={<RiskAnalysisPage />} />
           <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />

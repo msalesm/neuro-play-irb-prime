@@ -100,11 +100,6 @@ export function AppSidebar() {
       icon: BookOpen,
     },
     {
-      title: 'Atividades Parent-Child',
-      path: '/parent-child-activities',
-      icon: Users,
-    },
-    {
       title: 'Histórico Emocional',
       path: '/emotional-history',
       icon: Heart,
