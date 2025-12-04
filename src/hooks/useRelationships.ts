@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { useUserRole } from './useUserRole';
 
 export interface ParentChildRelationship {
   id: string;
@@ -42,6 +43,7 @@ export interface TeacherStudentRelationship {
 // Hook para gerenciar relacionamentos Pai-Filho
 export function useParentChildRelationships() {
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [children, setChildren] = useState<ParentChildRelationship[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +54,8 @@ export function useParentChildRelationships() {
     setError(null);
 
     try {
-      const { data, error: queryError } = await supabase
+      // Admins veem todos os relacionamentos
+      let query = supabase
         .from('children')
         .select(`
           id,
@@ -66,8 +69,14 @@ export function useParentChildRelationships() {
             email
           )
         `)
-        .eq('parent_id', user.id)
         .eq('is_active', true);
+
+      // Se não é admin, filtra pelo parent_id do usuário
+      if (!isAdmin) {
+        query = query.eq('parent_id', user.id);
+      }
+
+      const { data, error: queryError } = await query;
 
       if (queryError) throw queryError;
 
@@ -90,7 +99,7 @@ export function useParentChildRelationships() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   const addChild = useCallback(async (childData: {
     name: string;
@@ -145,6 +154,7 @@ export function useParentChildRelationships() {
 // Hook para gerenciar relacionamentos Terapeuta-Paciente
 export function useTherapistPatientRelationships() {
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [patients, setPatients] = useState<TherapistPatientRelationship[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -155,7 +165,7 @@ export function useTherapistPatientRelationships() {
     setError(null);
 
     try {
-      const { data, error: queryError } = await supabase
+      let query = supabase
         .from('child_access')
         .select(`
           id,
@@ -173,8 +183,14 @@ export function useTherapistPatientRelationships() {
             full_name
           )
         `)
-        .eq('professional_id', user.id)
         .eq('is_active', true);
+
+      // Se não é admin, filtra pelo professional_id do usuário
+      if (!isAdmin) {
+        query = query.eq('professional_id', user.id);
+      }
+
+      const { data, error: queryError } = await query;
 
       if (queryError) throw queryError;
 
@@ -198,7 +214,7 @@ export function useTherapistPatientRelationships() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   const addPatient = useCallback(async (patientData: {
     child_id: string;
@@ -267,6 +283,7 @@ export function useTherapistPatientRelationships() {
 // Hook para gerenciar relacionamentos Professor-Aluno
 export function useTeacherStudentRelationships() {
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [students, setStudents] = useState<TeacherStudentRelationship[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -298,10 +315,13 @@ export function useTeacherStudentRelationships() {
 
       if (queryError) throw queryError;
 
-      // Filtrar por turmas do professor
-      const filtered = (data || []).filter((s: any) => 
-        s.school_classes?.teacher_id === user.id || s.teacher_id === user.id
-      );
+      // Se não é admin, filtra por turmas do professor
+      let filtered = data || [];
+      if (!isAdmin) {
+        filtered = filtered.filter((s: any) => 
+          s.school_classes?.teacher_id === user.id || s.teacher_id === user.id
+        );
+      }
 
       const formatted: TeacherStudentRelationship[] = filtered.map((s: any) => ({
         id: s.id,
@@ -322,7 +342,7 @@ export function useTeacherStudentRelationships() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   const addStudentToClass = useCallback(async (studentData: {
     child_id: string;

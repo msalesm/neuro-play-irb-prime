@@ -745,15 +745,15 @@ export default function DashboardPais() {
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/parent-activities')}>
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/games/cooperative-puzzle')}>
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
                       <Heart className="w-6 h-6 text-red-500" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">Atividades Cooperativas</h3>
-                      <p className="text-sm text-muted-foreground">Jogos para pais e filhos</p>
+                      <h3 className="font-semibold">Quebra-Cabeça Cooperativo</h3>
+                      <p className="text-sm text-muted-foreground">Jogo cooperativo para pais e filhos</p>
                     </div>
                   </div>
                 </CardContent>

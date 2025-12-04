@@ -72,7 +72,6 @@ export function MobileMenu() {
       items: [
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
         { title: 'Microlearning', path: '/training', icon: BookOpen },
-        { title: 'Atividades Parent-Child', path: '/parent-child-activities', icon: Users },
         { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
         { title: 'Manual da Plataforma', path: '/platform-manual', icon: BookOpen },
       ],

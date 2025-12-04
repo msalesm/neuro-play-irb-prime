@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { useUserRole } from './useUserRole';
 
 interface ParentTraining {
   id: string;
+  userId: string;
   moduleName: string;
   status: 'nao_iniciado' | 'em_andamento' | 'concluido';
   score?: number;
@@ -15,6 +17,7 @@ interface ParentTraining {
 
 export function useParentTraining() {
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [trainings, setTrainings] = useState<ParentTraining[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,21 +25,28 @@ export function useParentTraining() {
     if (user) {
       fetchTrainings();
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   const fetchTrainings = async () => {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('parent_training')
-        .select('*')
-        .eq('user_id', user.id);
+        .select('*');
+
+      // Se não é admin, filtra apenas os dados do usuário
+      if (!isAdmin) {
+        query = query.eq('user_id', user.id);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
 
       const mapped = (data || []).map((t) => ({
         id: t.id,
+        userId: t.user_id,
         moduleName: t.module_name,
         status: t.status as 'nao_iniciado' | 'em_andamento' | 'concluido',
         score: t.score || undefined,

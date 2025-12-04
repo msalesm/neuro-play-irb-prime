@@ -166,7 +166,7 @@ export default function CooperativePuzzle() {
     });
 
     setTimeout(() => {
-      navigate('/parent-activities');
+      navigate('/dashboard-pais');
     }, 3000);
   };
 
@@ -178,7 +178,7 @@ export default function CooperativePuzzle() {
       <div className="container mx-auto max-w-6xl">
         <Button 
           variant="ghost" 
-          onClick={() => navigate('/parent-activities')}
+          onClick={() => navigate('/dashboard-pais')}
           className="mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
