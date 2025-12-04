@@ -4,7 +4,7 @@ import {
   Home, Brain, Stethoscope, Settings, User, 
   Users, School, TrendingUp, Menu, Sparkles, Gamepad2,
   FileText, ClipboardCheck, GraduationCap, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase
+  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -41,7 +41,7 @@ export function MobileMenu() {
         { title: 'Sistema de Planetas', path: '/sistema-planeta-azul', icon: Sparkles },
         { title: 'Missão do Dia', path: '/dashboard', icon: Trophy },
         { title: 'Jogos Cognitivos', path: '/games', icon: Gamepad2 },
-        { title: 'Histórias Sociais', path: '/social-stories', icon: BookOpen },
+        { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
         { title: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
       ],
     },
