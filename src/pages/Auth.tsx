@@ -10,18 +10,62 @@ import { Brain, Mail, Lock, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { signInSchema, signUpSchema } from '@/lib/validation';
 import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Auth() {
   const { user, signIn, signUp, loading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [checkingRole, setCheckingRole] = useState(false);
 
-  // Redirect if already authenticated
+  // Check if user has a role and redirect accordingly
   useEffect(() => {
-    if (user && !loading) {
-      navigate('/dashboard');
-    }
+    const checkUserRole = async () => {
+      if (user && !loading) {
+        setCheckingRole(true);
+        try {
+          const { data: roles, error } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', user.id);
+
+          if (error) throw error;
+
+          if (!roles || roles.length === 0) {
+            // No role assigned - redirect to onboarding
+            navigate('/onboarding');
+          } else {
+            // Has role - redirect based on role
+            const primaryRole = roles[0].role;
+            switch (primaryRole) {
+              case 'parent':
+                navigate('/dashboard-pais');
+                break;
+              case 'therapist':
+                navigate('/therapist/patients');
+                break;
+              case 'user':
+                navigate('/teacher/classes');
+                break;
+              case 'admin':
+                navigate('/admin/network');
+                break;
+              default:
+                navigate('/dashboard-pais');
+            }
+          }
+        } catch (error) {
+          console.error('Error checking user role:', error);
+          // On error, redirect to onboarding to be safe
+          navigate('/onboarding');
+        } finally {
+          setCheckingRole(false);
+        }
+      }
+    };
+
+    checkUserRole();
   }, [user, loading, navigate]);
 
   const [loginForm, setLoginForm] = useState({
@@ -57,8 +101,9 @@ export default function Auth() {
       } else {
         toast({
           title: "Login realizado com sucesso!",
-          description: "Bem-vindo ao GameNeuro",
+          description: "Bem-vindo ao NeuroPlay",
         });
+        // Redirect will be handled by useEffect after user state updates
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -106,8 +151,9 @@ export default function Auth() {
       } else {
         toast({
           title: "Conta criada com sucesso!",
-          description: "Verifique seu email para ativar a conta",
+          description: "Complete seu perfil para continuar",
         });
+        // New users will be redirected to onboarding automatically
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -128,7 +174,7 @@ export default function Auth() {
     setIsLoading(false);
   };
 
-  if (loading) {
+  if (loading || checkingRole) {
     return (
       <div className="min-h-screen bg-gradient-hero flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-foreground"></div>
