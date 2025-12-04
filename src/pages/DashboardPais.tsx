@@ -187,6 +187,35 @@ export default function DashboardPais() {
     };
   }, [selectedChild]);
 
+  // Realtime subscription for learning_sessions (when no child profile)
+  useEffect(() => {
+    if (selectedChild || !user) return;
+
+    const channel = supabase
+      .channel('learning-sessions-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'learning_sessions',
+          filter: `user_id=eq.${user.id}`
+        },
+        (payload) => {
+          console.log('Learning session update:', payload);
+          loadUserLearningSessions();
+          toast.success('Novo progresso detectado!', {
+            description: 'Seus dados foram atualizados em tempo real.'
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedChild, user]);
+
   const loadChildren = async () => {
     try {
       // Load children from child_profiles table (correct table for all app queries)
@@ -222,6 +251,9 @@ export default function DashboardPais() {
         });
         setChildren(childProfiles);
         setSelectedChild(childProfiles[0].id);
+      } else {
+        // Sem perfil de criança - carregar learning_sessions do usuário diretamente
+        await loadUserLearningSessions();
       }
 
       // Mesmo sem crianças, encerramos o loading para mostrar o estado vazio
@@ -230,6 +262,55 @@ export default function DashboardPais() {
       console.error('Error loading children (exception):', error?.message || error);
       toast.error(`Erro ao carregar perfis das crianças: ${error?.message || 'erro desconhecido'}`);
       setLoading(false);
+    }
+  };
+
+  // Carregar learning_sessions quando não há perfil de criança
+  const loadUserLearningSessions = async () => {
+    try {
+      const { data: learningSessions, error } = await supabase
+        .from('learning_sessions')
+        .select('*')
+        .eq('user_id', user?.id)
+        .eq('completed', true)
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (error) {
+        console.error('Error loading learning sessions:', error);
+        return;
+      }
+
+      if (learningSessions && learningSessions.length > 0) {
+        // Transformar learning_sessions para SessionData
+        const transformedSessions: SessionData[] = learningSessions.map((session: any) => ({
+          id: session.id,
+          game_type: session.game_type || 'Jogo',
+          duration: session.session_duration_seconds || 0,
+          score: session.performance_data?.score || 0,
+          created_at: session.created_at,
+          performance_data: session.performance_data || {}
+        }));
+
+        setSessions(transformedSessions);
+
+        // Calcular scores cognitivos baseado nos dados disponíveis
+        if (transformedSessions.length > 0) {
+          const avgAccuracy = transformedSessions.reduce((sum, s) => 
+            sum + (s.performance_data?.accuracy || 0), 0) / transformedSessions.length;
+
+          setCognitiveScores({
+            attention: Math.round(avgAccuracy * 0.9),
+            memory: Math.round(avgAccuracy),
+            language: Math.round(avgAccuracy * 0.85),
+            logic: Math.round(avgAccuracy * 0.95),
+            emotion: Math.round(avgAccuracy * 0.8),
+            coordination: Math.round(avgAccuracy * 0.9)
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error loading user learning sessions:', error);
     }
   };
 
@@ -450,19 +531,73 @@ export default function DashboardPais() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
           </div>
         ) : children.length === 0 ? (
-          /* Empty State - No Children */
+          /* Empty State - No Children, but show user's sessions */
           <div className="space-y-8">
             {/* Family Progress Section - sempre visível */}
             <FamilyProgressSection />
+            
+            {/* Show sessions if user has played games */}
+            {sessions.length > 0 && (
+              <Card className="p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <Activity className="w-6 h-6 text-primary" />
+                  <h3 className="text-xl font-bold">Seu Histórico de Jogos</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <Card className="p-4 bg-primary/5">
+                    <div className="text-2xl font-bold">{sessions.length}</div>
+                    <div className="text-sm text-muted-foreground">Jogos Completados</div>
+                  </Card>
+                  <Card className="p-4 bg-green-500/10">
+                    <div className="text-2xl font-bold">
+                      {sessions.length > 0 
+                        ? Math.round(sessions.reduce((sum, s) => sum + (s.performance_data?.accuracy || 0), 0) / sessions.length)
+                        : 0}%
+                    </div>
+                    <div className="text-sm text-muted-foreground">Precisão Média</div>
+                  </Card>
+                  <Card className="p-4 bg-blue-500/10">
+                    <div className="text-2xl font-bold">
+                      {sessions.reduce((sum, s) => sum + (s.score || 0), 0)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Pontuação Total</div>
+                  </Card>
+                </div>
+                
+                <h4 className="font-semibold mb-3">Últimas Sessões</h4>
+                <div className="space-y-2">
+                  {sessions.slice(0, 5).map((session) => (
+                    <div key={session.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                      <div>
+                        <div className="font-medium">{session.game_type}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {new Date(session.created_at).toLocaleDateString('pt-BR')}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-primary">{session.score} pts</div>
+                        <div className="text-sm text-muted-foreground">
+                          {session.performance_data?.accuracy?.toFixed(0) || 0}% precisão
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
             
             <Card className="p-12 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
               <div className="max-w-md mx-auto">
                 <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
                   <Users className="w-10 h-10 text-primary" />
                 </div>
-                <h2 className="text-2xl font-bold mb-4">Bem-vindo ao NeuroPlay!</h2>
+                <h2 className="text-2xl font-bold mb-4">
+                  {sessions.length > 0 ? 'Cadastre seu filho para análises detalhadas' : 'Bem-vindo ao NeuroPlay!'}
+                </h2>
                 <p className="text-muted-foreground mb-8">
-                  Para começar a acompanhar o desenvolvimento do seu filho, cadastre o primeiro perfil.
+                  {sessions.length > 0 
+                    ? 'Ao cadastrar o perfil do seu filho, você terá acesso a relatórios cognitivos detalhados, análise preditiva e recomendações personalizadas.'
+                    : 'Para começar a acompanhar o desenvolvimento do seu filho, cadastre o primeiro perfil.'}
                 </p>
                 <Button size="lg" onClick={() => setShowAddChildModal(true)}>
                   <UserPlus className="w-5 h-5 mr-2" />
