@@ -10,17 +10,13 @@ export function useGamePhaseProgress(gameId: string, childProfileId?: string) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      loadProgress();
-    }
+    loadProgress();
   }, [user, gameId, childProfileId]);
 
   const loadProgress = async () => {
-    if (!user) return;
-
     try {
-      // For now, use localStorage until we add phase_progress table
-      const storageKey = `game_phase_progress_${gameId}_${childProfileId || user.id}`;
+      // Universal test mode - works with or without user
+      const storageKey = `game_phase_progress_${gameId}_${childProfileId || user?.id || 'guest'}`;
       const stored = localStorage.getItem(storageKey);
       
       if (stored) {
@@ -29,7 +25,7 @@ export function useGamePhaseProgress(gameId: string, childProfileId?: string) {
         // Initialize default progress
         const defaultProgress: GamePhaseProgress = {
           gameId,
-          childProfileId: childProfileId || user.id,
+          childProfileId: childProfileId || user?.id || 'guest',
           phases: {},
           currentPhase: '1',
           totalStars: 0,

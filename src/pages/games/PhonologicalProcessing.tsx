@@ -377,17 +377,8 @@ export const PhonologicalProcessing: React.FC = () => {
     };
   }, []);
 
-  if (!user) {
-    return (
-      <Alert>
-        <AlertTriangle className="h-4 w-4" />
-        <AlertTitle>Login Necessário</AlertTitle>
-        <AlertDescription>
-          Faça login para acessar o teste de processamento fonológico.
-        </AlertDescription>
-      </Alert>
-    );
-  }
+  // Test mode for universal access - no login required
+  const isTestMode = !user;
 
   return (
     <div className="container mx-auto p-6 max-w-4xl">
