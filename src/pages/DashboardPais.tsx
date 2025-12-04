@@ -6,7 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { 
   Brain, TrendingUp, Award, Calendar, Download, 
   ArrowLeft, Heart, Target, Sparkles, Activity,
-  Clock, CheckCircle2, AlertCircle, FileText, BookOpen, Trophy, Shield
+  Clock, CheckCircle2, AlertCircle, FileText, BookOpen, Trophy, Shield, UserPlus, Users
 } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { useAuth } from '@/hooks/useAuth';
@@ -25,6 +25,7 @@ import { useAchievementSystem } from "@/hooks/useAchievementSystem";
 import { usePredictiveAnalysis } from '@/hooks/usePredictiveAnalysis';
 import { RiskIndicatorCard } from '@/components/RiskIndicatorCard';
 import { PreventiveAlertModal } from '@/components/PreventiveAlertModal';
+import { AddChildModal } from '@/components/AddChildModal';
 
 interface ChildProfile {
   id: string;
@@ -74,6 +75,7 @@ export default function DashboardPais() {
   const { riskIndicator, analyzing, detectCrisisRisk, reload: reloadPredictiveAnalysis } = usePredictiveAnalysis(selectedChild || undefined);
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [preventiveAlert, setPreventiveAlert] = useState<any>(null);
+  const [showAddChildModal, setShowAddChildModal] = useState(false);
 
   // Check for high-risk alerts on mount and when risk changes
   useEffect(() => {
@@ -384,6 +386,14 @@ export default function DashboardPais() {
         />
       )}
 
+      <AddChildModal
+        open={showAddChildModal}
+        onClose={() => setShowAddChildModal(false)}
+        onSuccess={() => {
+          loadChildren();
+        }}
+      />
+
       <div className="container mx-auto px-4 py-8">
         {/* Header with Child Selection */}
         <div className="mb-8">
@@ -408,9 +418,51 @@ export default function DashboardPais() {
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
           </div>
+        ) : children.length === 0 ? (
+          /* Empty State - No Children */
+          <Card className="p-12 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
+            <div className="max-w-md mx-auto">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
+                <Users className="w-10 h-10 text-primary" />
+              </div>
+              <h2 className="text-2xl font-bold mb-4">Bem-vindo ao NeuroPlay!</h2>
+              <p className="text-muted-foreground mb-8">
+                Para começar a acompanhar o desenvolvimento do seu filho, cadastre o primeiro perfil.
+              </p>
+              <Button size="lg" onClick={() => setShowAddChildModal(true)}>
+                <UserPlus className="w-5 h-5 mr-2" />
+                Cadastrar Filho
+              </Button>
+            </div>
+          </Card>
         ) : (
           <>
-            {/* Child Selector */}
+            {/* Child Selector with Add Button */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex gap-2">
+                {children.map((child) => (
+                  <Button
+                    key={child.id}
+                    variant={selectedChild === child.id ? 'default' : 'outline'}
+                    onClick={() => setSelectedChild(child.id)}
+                    className="flex items-center gap-2"
+                  >
+                    <ChildAvatarDisplay
+                      avatar={child.avatar_url}
+                      name={child.name}
+                      size="sm"
+                    />
+                    {child.name}
+                  </Button>
+                ))}
+              </div>
+              <Button variant="outline" onClick={() => setShowAddChildModal(true)}>
+                <UserPlus className="w-4 h-4 mr-2" />
+                Adicionar Filho
+              </Button>
+            </div>
+
+            {/* Child Profile Card */}
             {selectedChildData && (
               <Card className="p-6 mb-8" data-tour="avatar-card">
                 <div className="flex items-center justify-between flex-wrap gap-4">
