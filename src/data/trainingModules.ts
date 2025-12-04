@@ -2,6 +2,89 @@ import type { ModuleDefinition } from '@/hooks/useTeacherTraining';
 
 export const trainingModules: ModuleDefinition[] = [
   {
+    id: 'tea-um-jeito-unico',
+    name: 'TEA: Um Jeito Único',
+    description: 'Compreenda o Transtorno do Espectro Autista de forma acolhedora e inclusiva',
+    icon: '💙',
+    color: 'from-blue-600 to-indigo-600',
+    duration: '15 min',
+    videoUrl: '/videos/tea-um-jeito-unico.mp4',
+    videoTitle: 'TEA: Um Jeito Único de Ser',
+    topics: [
+      'O que é o Transtorno do Espectro Autista',
+      'Características e singularidades',
+      'Formas de apoio e inclusão',
+      'Comunicação e interação social',
+    ],
+    questions: [
+      {
+        id: 1,
+        question: 'O que significa TEA?',
+        options: [
+          'Transtorno Emocional Agudo',
+          'Transtorno do Espectro Autista',
+          'Terapia Especial Aplicada',
+          'Técnica de Ensino Adaptado',
+        ],
+        correct: 1,
+        explanation:
+          'TEA significa Transtorno do Espectro Autista, uma condição neurológica que afeta o desenvolvimento e a forma como a pessoa percebe e interage com o mundo.',
+      },
+      {
+        id: 2,
+        question: 'Qual é uma característica comum em pessoas com TEA?',
+        options: [
+          'Todas têm dificuldade de aprendizagem',
+          'Todas são iguais em suas características',
+          'Cada pessoa com TEA é única e apresenta características próprias',
+          'Todas têm deficiência intelectual',
+        ],
+        correct: 2,
+        explanation:
+          'O autismo é um espectro, o que significa que cada pessoa com TEA é única e apresenta características, habilidades e desafios próprios.',
+      },
+      {
+        id: 3,
+        question: 'Como podemos apoiar uma criança com TEA?',
+        options: [
+          'Tratando-a de forma diferente dos outros',
+          'Respeitando seu tempo, rotinas e formas de comunicação',
+          'Forçando interações sociais',
+          'Ignorando suas necessidades especiais',
+        ],
+        correct: 1,
+        explanation:
+          'O apoio adequado inclui respeitar o tempo da criança, manter rotinas previsíveis e valorizar suas formas únicas de comunicação e expressão.',
+      },
+      {
+        id: 4,
+        question: 'O autismo é uma doença que precisa de cura?',
+        options: [
+          'Sim, todas as pessoas com autismo precisam ser curadas',
+          'Não, o autismo é uma forma diferente de ser e perceber o mundo',
+          'Depende da gravidade do caso',
+          'Somente em crianças pequenas',
+        ],
+        correct: 1,
+        explanation:
+          'O autismo não é uma doença, mas uma condição neurológica. Pessoas com TEA têm uma forma única de ser e perceber o mundo, que deve ser respeitada e valorizada.',
+      },
+      {
+        id: 5,
+        question: 'O que significa inclusão de pessoas com TEA?',
+        options: [
+          'Colocá-las em salas separadas',
+          'Acolher, respeitar diferenças e promover participação em todos os ambientes',
+          'Tratá-las como se não tivessem nenhuma necessidade especial',
+          'Apenas incluí-las em atividades específicas',
+        ],
+        correct: 1,
+        explanation:
+          'Inclusão verdadeira significa acolher a pessoa com TEA, respeitar suas diferenças e promover sua participação plena em todos os ambientes e atividades.',
+      },
+    ],
+  },
+  {
     id: 'identificacao-precoce',
     name: 'Identificação Precoce',
     description: 'Reconhecer sinais de Dislexia, TDAH e TEA em sala de aula',
