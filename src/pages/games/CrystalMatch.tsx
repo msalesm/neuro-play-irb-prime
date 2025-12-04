@@ -13,8 +13,8 @@ import { addUniversalEventListener } from '@/lib/browserCompat';
 
 export default function CrystalMatch() {
   const navigate = useNavigate();
-  const { childProfileId, isTestMode, loading, user } = useGameProfile();
-  const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || undefined, isTestMode);
+  const { childProfileId, loading, user } = useGameProfile();
+  const { startSession, endSession, updateSession } = useGameSession('crystal-match', childProfileId || undefined);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<PIXI.Application | null>(null);
@@ -102,7 +102,7 @@ export default function CrystalMatch() {
       timeSpent: 0,
     });
 
-    const modeText = isTestMode ? ' (Modo Teste)' : '';
+    const modeText = '';
     toast.success(`Jogo finalizado! Pontuação: ${finalScore}${modeText}`);
   };
 
@@ -150,11 +150,6 @@ export default function CrystalMatch() {
           <p className="text-white/70">
             Combine 3 ou mais cristais para pontuar!
           </p>
-          {isTestMode && (
-            <Badge className="mt-2 bg-[#c7923e] text-white">
-              🎮 Modo Teste - Sem salvar progresso
-            </Badge>
-          )}
         </div>
 
         {/* Error State */}
