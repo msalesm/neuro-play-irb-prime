@@ -49,6 +49,31 @@ export default function MemoryWorkload() {
     reactionTimes: [] as number[]
   });
   const [childProfileId, setChildProfileId] = useState<string | null>(null);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+
+  // Get child profile ID
+  useEffect(() => {
+    const loadChildProfile = async () => {
+      if (!user) {
+        setProfileLoaded(true);
+        return;
+      }
+      const { data: profiles } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', user.id)
+        .limit(1)
+        .maybeSingle();
+      if (profiles) {
+        setChildProfileId(profiles.id);
+      }
+      setProfileLoaded(true);
+    };
+    loadChildProfile();
+  }, [user]);
+  
+  // Modo teste quando não há usuário ou perfil carregado sem perfil
+  const isTestMode = !user || (profileLoaded && !childProfileId);
 
   const {
     sessionId,
@@ -60,26 +85,7 @@ export default function MemoryWorkload() {
     recoveredSession,
     resumeSession,
     discardRecoveredSession
-  } = useGameSession('memory-workload', childProfileId || undefined);
-
-  // Get child profile ID
-  useEffect(() => {
-    const loadChildProfile = async () => {
-      if (!user) return;
-      const { data: profiles } = await supabase
-        .from('child_profiles')
-        .select('id')
-        .eq('parent_user_id', user.id)
-        .limit(1)
-        .single();
-      if (profiles) {
-        setChildProfileId(profiles.id);
-      }
-    };
-    loadChildProfile();
-  }, [user]);
-  
-  const isTestMode = !childProfileId; // Modo teste quando não há perfil
+  } = useGameSession('memory-workload', childProfileId || undefined, isTestMode);
 
   const sequenceLength = Math.min(3 + level, 8);
 
