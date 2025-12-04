@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 
-export type AppRole = 'admin' | 'therapist' | 'parent' | 'user';
+export type AppRole = 'admin' | 'therapist' | 'parent' | 'user' | 'patient';
 
 export function useUserRole() {
   const { user } = useAuth();
@@ -31,7 +31,7 @@ export function useUserRole() {
         setRoles(userRoles);
 
         // Set primary role (highest privilege)
-        const roleHierarchy: AppRole[] = ['admin', 'therapist', 'parent', 'user'];
+        const roleHierarchy: AppRole[] = ['admin', 'therapist', 'parent', 'patient', 'user'];
         const primaryRole = roleHierarchy.find(r => userRoles.includes(r)) || null;
         setRole(primaryRole);
       } catch (error) {
@@ -53,6 +53,7 @@ export function useUserRole() {
   const isAdmin = hasRole('admin');
   const isTherapist = hasRole('therapist');
   const isParent = hasRole('parent');
+  const isPatient = hasRole('patient');
 
   return {
     role,
@@ -62,5 +63,6 @@ export function useUserRole() {
     isAdmin,
     isTherapist,
     isParent,
+    isPatient,
   };
 }

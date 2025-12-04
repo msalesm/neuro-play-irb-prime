@@ -42,6 +42,9 @@ export default function Auth() {
               case 'parent':
                 navigate('/dashboard-pais');
                 break;
+              case 'patient':
+                navigate('/sistema-planeta-azul');
+                break;
               case 'therapist':
                 navigate('/therapist/patients');
                 break;

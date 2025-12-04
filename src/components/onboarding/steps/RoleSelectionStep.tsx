@@ -1,6 +1,6 @@
 import { OnboardingData } from '../OnboardingWizard';
 import { Card } from '@/components/ui/card';
-import { Users, Stethoscope, GraduationCap, Building2 } from 'lucide-react';
+import { Users, Stethoscope, GraduationCap, Building2, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -9,6 +9,14 @@ type Props = {
 };
 
 const ROLES = [
+  {
+    id: 'patient' as const,
+    title: 'Paciente',
+    description: 'Usar os jogos terapêuticos para meu próprio desenvolvimento',
+    icon: Heart,
+    features: ['Jogos cognitivos', 'Acompanhamento pessoal', 'Relatórios de progresso', 'Chat terapêutico'],
+    color: 'irb-blue',
+  },
   {
     id: 'parent' as const,
     title: 'Pai/Mãe',
