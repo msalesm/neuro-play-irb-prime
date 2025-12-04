@@ -172,6 +172,11 @@ export function AppSidebar() {
       icon: Users,
     },
     {
+      title: 'Relacionamentos',
+      path: '/admin/relationships',
+      icon: Heart,
+    },
+    {
       title: 'Mapas de Risco',
       path: '/admin/risk-maps',
       icon: TrendingUp,

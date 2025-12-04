@@ -103,6 +103,7 @@ import SocialStories from "./pages/SocialStories";
 import StoryReader from "./pages/StoryReader";
 import AdminStories from "./pages/AdminStories";
 import AcceptInvite from "./pages/AcceptInvite";
+import RelationshipsManager from "./pages/admin/RelationshipsManager";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -279,6 +280,7 @@ const App = () => (
           <Route path="/admin/network" element={<AdminNetworkDashboard />} />
           <Route path="/admin/network-management" element={<AdminNetworkDashboard />} />
           <Route path="/admin/users" element={<AdminUserManagement />} />
+          <Route path="/admin/relationships" element={<RelationshipsManager />} />
           
           {/* Acessibilidade e Histórias Sociais */}
           <Route path="/accessibility" element={<AccessibilitySettings />} />
