@@ -146,7 +146,7 @@ export default function IRBPrimeLanding() {
                         <div className="w-8 h-8 rounded-full bg-[#c7923e]/20 flex items-center justify-center flex-shrink-0">
                           <CheckCircle className="w-5 h-5 text-[#c7923e]" />
                         </div>
-                        <span>19+ jogos cognitivos adaptativos</span>
+                        <span>25+ jogos cognitivos adaptativos</span>
                       </div>
                       <div className="flex items-center gap-3 text-white/90">
                         <div className="w-8 h-8 rounded-full bg-[#c7923e]/20 flex items-center justify-center flex-shrink-0">
@@ -279,15 +279,51 @@ export default function IRBPrimeLanding() {
                 <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
                   <Gamepad2 className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Jogos Terapêuticos</h3>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">25+ Jogos Terapêuticos</h3>
                 <p className="text-gray-600 mb-4">
-                  15+ jogos cognitivos baseados em neurociência para desenvolvimento de: atenção sustentada, 
-                  controle inibitório, memória de trabalho, flexibilidade cognitiva, consciência fonológica e processamento emocional.
+                  Jogos cognitivos baseados em neurociência: memória, atenção sustentada, controle inibitório, 
+                  flexibilidade cognitiva, consciência fonológica, timing e coordenação motora.
                 </p>
                 <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Torre Perfeita, Sequência Cósmica, Crystal Match</li>
+                  <li>• Tower Defense, Space Shooter, Caça Foco</li>
                   <li>• Dificuldade adaptativa por IA</li>
-                  <li>• Coleta de métricas em tempo real</li>
-                  <li>• Perfil de sensibilidade sensorial</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <Heart className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Chatbot Terapêutico</h3>
+                <p className="text-gray-600 mb-4">
+                  Assistente de IA especializado em neurodiversidade com coaching parental, 
+                  check-ins emocionais e detecção de padrões comportamentais.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Análise de sentimentos em tempo real</li>
+                  <li>• Insights comportamentais automáticos</li>
+                  <li>• Exportação de relatórios PDF</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <Award className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Gamificação Avançada</h3>
+                <p className="text-gray-600 mb-4">
+                  Sistema completo de motivação com avatares evolutivos, badges de 5 níveis, 
+                  streaks diários e recompensas personalizadas.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Avatar que evolui com progresso</li>
+                  <li>• Missões diárias e semanais</li>
+                  <li>• Sistema Planeta Azul com 5 planetas</li>
                 </ul>
               </CardContent>
             </Card>
@@ -299,8 +335,8 @@ export default function IRBPrimeLanding() {
                 </div>
                 <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Testes Diagnósticos</h3>
                 <p className="text-gray-600 mb-4">
-                  Digitalização de testes clínicos autorizados para triagem de TEA, TDAH e Dislexia. 
-                  Fluxos guiados com algoritmos de identificação de risco e recomendações de intervenção.
+                  Triagem unificada TUNP para TEA, TDAH e Dislexia. 
+                  Acesso universal sem necessidade de cadastro prévio.
                 </p>
                 <ul className="text-sm text-gray-500 space-y-2">
                   <li>• SNAP-IV e ASRS para TDAH</li>
@@ -315,51 +351,15 @@ export default function IRBPrimeLanding() {
                 <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
                   <BarChart3 className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Relatórios Clínicos com IA</h3>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Análise Preditiva</h3>
                 <p className="text-gray-600 mb-4">
-                  Sistema de análise em tempo real que agrega dados de jogos, testes e educação parental. 
-                  Gera insights clínicos, detecta padrões e emite alertas de regressão.
+                  IA analisa padrões comportamentais para detecção precoce de crises, 
+                  alertas preventivos e recomendações de intervenção.
                 </p>
                 <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Perfil cognitivo e emocional</li>
-                  <li>• Detecção de padrões</li>
-                  <li>• Exportação para PDF</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <BookOpen className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Educação para Pais</h3>
-                <p className="text-gray-600 mb-4">
-                  Módulo completo de alfabetização terapêutica: compreensão de TEA/TDAH/Dislexia, 
-                  estratégias de intervenção domiciliar, manejo comportamental e interpretação de relatórios.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Vídeos curtos e práticos</li>
-                  <li>• Quizzes e certificados</li>
-                  <li>• Trilhas personalizadas</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <Target className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">PEI Inteligente</h3>
-                <p className="text-gray-600 mb-4">
-                  Plano Educacional Individualizado gerado por IA com base nos resultados de triagem. 
-                  Define metas, estratégias, acomodações e acompanhamento de progresso.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Geração automática por IA</li>
-                  <li>• Metas personalizadas</li>
-                  <li>• Notas de progresso</li>
+                  <li>• Detecção de regressão cognitiva</li>
+                  <li>• Alertas preventivos automáticos</li>
+                  <li>• Relatórios clínicos com IA</li>
                 </ul>
               </CardContent>
             </Card>
@@ -369,15 +369,69 @@ export default function IRBPrimeLanding() {
                 <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
                   <Users className="w-7 h-7 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Dashboard Clínico</h3>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Jogos Cooperativos</h3>
                 <p className="text-gray-600 mb-4">
-                  Interface profissional para terapeutas e profissionais de saúde com visão completa do progresso, 
-                  histórico de sessões e recomendações de intervenção.
+                  Atividades multiplayer para pais e filhos com sincronização em tempo real 
+                  e métricas de vínculo familiar.
                 </p>
                 <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Controle de acesso baseado em roles</li>
-                  <li>• Métricas agregadas</li>
-                  <li>• Integração IRB Prime</li>
+                  <li>• Quebra-cabeça cooperativo</li>
+                  <li>• Métricas de colaboração</li>
+                  <li>• Fortalecimento do vínculo</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <BookOpen className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Histórias Sociais</h3>
+                <p className="text-gray-600 mb-4">
+                  Narrativas ilustradas passo a passo para ensinar rotinas diárias: 
+                  escovar dentes, lavar mãos, tomar banho, ir ao médico.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Imagens e áudio integrados</li>
+                  <li>• Adaptação por acessibilidade</li>
+                  <li>• Telemetria de progresso</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <Target className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Acessibilidade Clínica</h3>
+                <p className="text-gray-600 mb-4">
+                  5 presets de acessibilidade: TEA Baixa Sensorialidade, TDAH Foco, 
+                  Baixa Visão, Deficiência Motora e padrão.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Ajuste de fonte e contraste</li>
+                  <li>• Redução de movimento</li>
+                  <li>• Feedback háptico configurável</li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="border-none shadow-lg hover-scale bg-white">
+              <CardContent className="p-8">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
+                  <Shield className="w-7 h-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Multi-Stakeholder</h3>
+                <p className="text-gray-600 mb-4">
+                  Dashboards especializados para pais, terapeutas, professores e administradores 
+                  com controle de acesso baseado em roles.
+                </p>
+                <ul className="text-sm text-gray-500 space-y-2">
+                  <li>• Dashboard da Família</li>
+                  <li>• Painel Clínico para Terapeutas</li>
+                  <li>• Gestão de Turmas para Escolas</li>
                 </ul>
               </CardContent>
             </Card>
