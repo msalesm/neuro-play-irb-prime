@@ -23,7 +23,7 @@ const TowerDefense = () => {
     endSession, 
     updateSession,
     isActive: sessionActive 
-  } = useGameSession(childProfileId, "tower-defense", isTestMode);
+  } = useGameSession("tower-defense", childProfileId || undefined, isTestMode);
 
   useEffect(() => {
     if (profileLoading || !canvasRef.current) return;

@@ -5,6 +5,10 @@ import { Progress } from '@/components/ui/progress';
 import { Brain, Users, MessageCircle, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { useBehavioralAnalysis } from '@/hooks/useBehavioralAnalysis';
+import { useGameSession } from '@/hooks/useGameSession';
+import { useGameProfile } from '@/hooks/useGameProfile';
+import { GameExitButton } from '@/components/GameExitButton';
+import { Badge } from '@/components/ui/badge';
 
 interface Scenario {
   id: string;
@@ -78,16 +82,40 @@ const scenarios: Scenario[] = [
 
 export default function TheoryOfMind() {
   const { saveBehavioralMetric } = useBehavioralAnalysis();
+  const { childProfileId, isTestMode, loading } = useGameProfile();
+  const { startSession, endSession, updateSession, isActive } = useGameSession('theory-of-mind', childProfileId || undefined, isTestMode);
+  
   const [currentScenario, setCurrentScenario] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
   const [sessionData, setSessionData] = useState({
     correctAnswers: 0,
     totalAnswers: 0,
     responseTime: [] as number[],
     scenarioStartTime: Date.now()
   });
+
+  const handleStartGame = async () => {
+    await startSession({ score: 0 });
+    setGameStarted(true);
+    setSessionData(prev => ({ ...prev, scenarioStartTime: Date.now() }));
+  };
+
+  const handleGameComplete = async () => {
+    const accuracy = sessionData.totalAnswers > 0 
+      ? (sessionData.correctAnswers / sessionData.totalAnswers) * 100 
+      : 0;
+    
+    await endSession({
+      score,
+      accuracy,
+      correctMoves: sessionData.correctAnswers,
+      totalMoves: sessionData.totalAnswers,
+      reactionTimes: sessionData.responseTime,
+    });
+  };
 
   const scenario = scenarios[currentScenario];
   const progress = ((currentScenario + 1) / scenarios.length) * 100;
