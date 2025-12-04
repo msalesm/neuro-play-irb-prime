@@ -173,10 +173,18 @@ export function useFamilyProgress() {
                 date: s.created_at
               }));
 
+          // Extract display name - use full_name or first part of email
+          let displayName = profile?.full_name || 'Familiar';
+          if (!profile?.full_name && profile?.email) {
+            const emailName = profile.email.split('@')[0];
+            // Capitalize first letter
+            displayName = emailName.charAt(0).toUpperCase() + emailName.slice(1);
+          }
+
           return {
             id: link.family_member_id,
-            name: profile?.full_name || profile?.email || 'Familiar',
-            email: profile?.email || '',
+            name: displayName,
+            email: '', // Hide email for privacy
             relationship: link.relationship,
             status: link.status,
             totalSessions,
