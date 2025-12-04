@@ -184,9 +184,12 @@ export function useGameSession(gameId: string, childProfileId?: string, isTestMo
         profileId = profiles?.id;
       }
 
-      // Se não há perfil, permitir jogo em modo teste (sem salvar no banco)
-      if (!profileId && !isTestMode) {
+      // Se não há perfil, ativar modo teste automaticamente
+      if (!profileId) {
         console.warn('Sem perfil - ativando modo teste');
+        setSessionId('test-session');
+        setIsActive(true);
+        return { success: true, sessionId: 'test-session', testMode: true };
       }
 
       const { count } = await supabase
