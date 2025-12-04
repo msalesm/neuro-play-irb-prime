@@ -126,20 +126,39 @@ export function useFamilyProgress() {
           const totalPlayTime = allSessions.reduce((acc, s) => {
             return acc + (s.session_duration_seconds || s.duration_seconds || 0);
           }, 0);
-          const avgAccuracy = gameSessions.length > 0
-            ? Math.round(gameSessions.reduce((acc, s) => acc + (s.accuracy_percentage || 0), 0) / gameSessions.length)
-            : 0;
+          
+          // Calculate accuracy from both learning_sessions and game_sessions
+          let avgAccuracy = 0;
+          if (gameSessions.length > 0) {
+            avgAccuracy = Math.round(gameSessions.reduce((acc, s) => acc + (s.accuracy_percentage || 0), 0) / gameSessions.length);
+          } else if (sessions && sessions.length > 0) {
+            // Use learning_sessions accuracy from performance_data
+            const accuracies = sessions
+              .filter((s: any) => s.performance_data?.accuracy)
+              .map((s: any) => s.performance_data.accuracy);
+            if (accuracies.length > 0) {
+              avgAccuracy = Math.round(accuracies.reduce((a: number, b: number) => a + b, 0) / accuracies.length);
+            }
+          }
           
           const lastActivity = allSessions.length > 0
             ? allSessions[0].created_at
             : null;
 
-          const recentGames = gameSessions.slice(0, 5).map(s => ({
-            game_name: s.cognitive_games?.name || 'Jogo',
-            score: s.score || 0,
-            accuracy: s.accuracy_percentage || 0,
-            date: s.created_at
-          }));
+          // Include learning_sessions in recent games if no game_sessions
+          const recentGames = gameSessions.length > 0 
+            ? gameSessions.slice(0, 5).map(s => ({
+                game_name: s.cognitive_games?.name || 'Jogo',
+                score: s.score || 0,
+                accuracy: s.accuracy_percentage || 0,
+                date: s.created_at
+              }))
+            : (sessions || []).slice(0, 5).map((s: any) => ({
+                game_name: s.game_type || 'Jogo',
+                score: s.performance_data?.score || 0,
+                accuracy: s.performance_data?.accuracy || 0,
+                date: s.created_at
+              }));
 
           return {
             id: link.family_member_id,
