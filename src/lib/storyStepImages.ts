@@ -15,6 +15,13 @@ import ajuda4 from '@/assets/steps/ajuda-4-explicar.jpg';
 import ajuda5 from '@/assets/steps/ajuda-5-ouvir.jpg';
 import ajuda6 from '@/assets/steps/ajuda-6-agradecer.jpg';
 
+import banho1 from '@/assets/steps/banho-1-preparar.jpg';
+import banho2 from '@/assets/steps/banho-2-agua.jpg';
+import banho3 from '@/assets/steps/banho-3-molhar.jpg';
+import banho4 from '@/assets/steps/banho-4-sabonete.jpg';
+import banho5 from '@/assets/steps/banho-5-enxaguar.jpg';
+import banho6 from '@/assets/steps/banho-6-secar.jpg';
+
 // IDs das histórias do banco
 const STORY_IDS = {
   MOCHILA: 'c3d4e5f6-a7b8-9012-cdef-123456789012',
@@ -28,6 +35,7 @@ const STORY_IDS = {
 const storyStepImagesMap: Record<string, string[]> = {
   [STORY_IDS.MOCHILA]: [mochila1, mochila2, mochila3, mochila4, mochila5, mochila6],
   [STORY_IDS.PEDIR_AJUDA]: [ajuda1, ajuda2, ajuda3, ajuda4, ajuda5, ajuda6],
+  [STORY_IDS.TOMAR_BANHO]: [banho1, banho2, banho3, banho4, banho5, banho6],
 };
 
 /**
