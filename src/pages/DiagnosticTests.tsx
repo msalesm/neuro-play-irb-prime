@@ -39,7 +39,7 @@ const diagnosticTests = [
     scientificBasis: "Teste de Sally-Anne e variações"
   },
   {
-    id: 'attention-sustained',
+    id: 'attention-sustained-phases',
     title: "Observação de Atenção Sustentada",
     category: "Observação • Atenção",
     description: "Observe padrões de capacidade de manter atenção focada durante períodos prolongados.",
@@ -55,7 +55,7 @@ const diagnosticTests = [
     scientificBasis: "Baseado no Teste de Performance Contínua (CPT)"
   },
   {
-    id: 'cognitive-flexibility',
+    id: 'cognitive-flexibility-phases',
     title: "Flexibilidade Cognitiva",
     category: "Observação • Executiva",
     description: "Atividade baseada no Wisconsin Card Sorting para observar padrões de adaptação e flexibilidade cognitiva.",
@@ -87,7 +87,7 @@ const diagnosticTests = [
     scientificBasis: "Teste de Consciência Fonológica"
   },
   {
-    id: 'executive-processing',
+    id: 'executive-processing-phases',
     title: "Processamento Executivo",
     category: "Observação • Executiva",
     description: "Atividade baseada na Torre de Londres para observar padrões de planejamento e organização.",
