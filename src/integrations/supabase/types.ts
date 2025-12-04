@@ -412,6 +412,7 @@ export type Database = {
           granted_at: string | null
           granted_by: string
           id: string
+          is_active: boolean | null
           professional_id: string
         }
         Insert: {
@@ -421,6 +422,7 @@ export type Database = {
           granted_at?: string | null
           granted_by: string
           id?: string
+          is_active?: boolean | null
           professional_id: string
         }
         Update: {
@@ -430,6 +432,7 @@ export type Database = {
           granted_at?: string | null
           granted_by?: string
           id?: string
+          is_active?: boolean | null
           professional_id?: string
         }
         Relationships: [
@@ -438,6 +441,20 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "child_access_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "child_access_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
           },
           {
@@ -507,9 +524,11 @@ export type Database = {
           created_at: string | null
           gender: string | null
           id: string
+          is_active: boolean | null
           name: string
           neurodevelopmental_conditions: Json | null
           parent_id: string | null
+          relationship_type: string | null
           sensory_profile: Json | null
           updated_at: string | null
         }
@@ -521,9 +540,11 @@ export type Database = {
           created_at?: string | null
           gender?: string | null
           id?: string
+          is_active?: boolean | null
           name: string
           neurodevelopmental_conditions?: Json | null
           parent_id?: string | null
+          relationship_type?: string | null
           sensory_profile?: Json | null
           updated_at?: string | null
         }
@@ -535,9 +556,11 @@ export type Database = {
           created_at?: string | null
           gender?: string | null
           id?: string
+          is_active?: boolean | null
           name?: string
           neurodevelopmental_conditions?: Json | null
           parent_id?: string | null
+          relationship_type?: string | null
           sensory_profile?: Json | null
           updated_at?: string | null
         }
@@ -557,21 +580,27 @@ export type Database = {
           class_id: string
           enrolled_at: string | null
           id: string
+          is_active: boolean | null
           notes: string | null
+          teacher_id: string | null
         }
         Insert: {
           child_id: string
           class_id: string
           enrolled_at?: string | null
           id?: string
+          is_active?: boolean | null
           notes?: string | null
+          teacher_id?: string | null
         }
         Update: {
           child_id?: string
           class_id?: string
           enrolled_at?: string | null
           id?: string
+          is_active?: boolean | null
           notes?: string | null
+          teacher_id?: string | null
         }
         Relationships: [
           {
@@ -579,6 +608,20 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
           },
           {
@@ -822,6 +865,20 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_consents_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "data_consents_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
           },
           {
@@ -1476,6 +1533,20 @@ export type Database = {
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "school_communications_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "school_communications_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
         ]
       }
       school_occurrences: {
@@ -1527,6 +1598,20 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "school_occurrences_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "school_occurrences_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
           },
         ]
@@ -1892,7 +1977,115 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      parent_child_relationships: {
+        Row: {
+          birth_date: string | null
+          child_id: string | null
+          child_name: string | null
+          id: string | null
+          is_active: boolean | null
+          parent_email: string | null
+          parent_id: string | null
+          parent_name: string | null
+          relationship_type: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "children_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teacher_student_relationships: {
+        Row: {
+          class_id: string | null
+          class_name: string | null
+          grade_level: string | null
+          id: string | null
+          is_active: boolean | null
+          student_id: string | null
+          student_name: string | null
+          teacher_id: string | null
+          teacher_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_students_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "school_classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      therapist_patient_relationships: {
+        Row: {
+          access_level: string | null
+          expires_at: string | null
+          granted_at: string | null
+          id: string | null
+          is_active: boolean | null
+          patient_birth_date: string | null
+          patient_id: string | null
+          patient_name: string | null
+          therapist_id: string | null
+          therapist_name: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "child_access_child_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "child_access_child_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "child_access_child_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "child_access_professional_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       assign_role: {
@@ -1915,11 +2108,27 @@ export type Database = {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
       }
+      has_child_access: {
+        Args: { _child_id: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_parent_of: {
+        Args: { _child_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_teacher_of: {
+        Args: { _child_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_therapist_of: {
+        Args: { _child_id: string; _user_id: string }
         Returns: boolean
       }
       professional_has_child_access: {
