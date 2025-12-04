@@ -82,8 +82,8 @@ const scenarios: Scenario[] = [
 
 export default function TheoryOfMind() {
   const { saveBehavioralMetric } = useBehavioralAnalysis();
-  const { childProfileId, isTestMode, loading } = useGameProfile();
-  const { startSession, endSession, updateSession, isActive } = useGameSession('theory-of-mind', childProfileId || undefined, isTestMode);
+  const { childProfileId, loading } = useGameProfile();
+  const { startSession, endSession, updateSession, isActive } = useGameSession('theory-of-mind', childProfileId || undefined);
   
   const [currentScenario, setCurrentScenario] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);

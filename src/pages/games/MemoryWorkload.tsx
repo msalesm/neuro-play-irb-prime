@@ -85,7 +85,7 @@ export default function MemoryWorkload() {
     recoveredSession,
     resumeSession,
     discardRecoveredSession
-  } = useGameSession('memory-workload', childProfileId || undefined, isTestMode);
+  } = useGameSession('memory-workload', childProfileId || undefined);
 
   const sequenceLength = Math.min(3 + level, 8);
 

@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 
 /**
  * Hook universal para gerenciar perfis de jogos
- * Permite modo teste quando não há child_profile
+ * SEMPRE salva sessões - nunca entra em modo teste
  */
 export function useGameProfile() {
   const { user } = useAuth();
   const [childProfileId, setChildProfileId] = useState<string | null>(null);
-  const [isTestMode, setIsTestMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,17 +26,29 @@ export function useGameProfile() {
       // Try to load from localStorage first
       const storedId = localStorage.getItem('selectedChildProfile');
       if (storedId) {
-        setChildProfileId(storedId);
-        setIsTestMode(false);
-        setLoading(false);
-        return;
+        // Verify it still exists and belongs to user
+        const { data: verifyProfile } = await supabase
+          .from('child_profiles')
+          .select('id')
+          .eq('id', storedId)
+          .eq('parent_user_id', user?.id)
+          .maybeSingle();
+        
+        if (verifyProfile?.id) {
+          setChildProfileId(storedId);
+          setLoading(false);
+          return;
+        } else {
+          localStorage.removeItem('selectedChildProfile');
+        }
       }
 
-      // Try to load from database
+      // Try to load from database - get first child profile
       const { data: profiles, error } = await supabase
         .from('child_profiles')
         .select('id')
         .eq('parent_user_id', user?.id)
+        .limit(1)
         .maybeSingle();
 
       if (error) {
@@ -47,19 +57,13 @@ export function useGameProfile() {
 
       if (profiles?.id) {
         setChildProfileId(profiles.id);
-        setIsTestMode(false);
         localStorage.setItem('selectedChildProfile', profiles.id);
       } else {
-        // No profile found - enable test mode
-        setIsTestMode(true);
+        // No child profile - sessions will still be saved to learning_sessions
         setChildProfileId(null);
-        toast.info('🎮 Modo Teste - Jogando sem salvar progresso', {
-          duration: 3000,
-        });
       }
     } catch (error) {
       console.error('Error in loadProfile:', error);
-      setIsTestMode(true);
     } finally {
       setLoading(false);
     }
@@ -67,7 +71,7 @@ export function useGameProfile() {
 
   return {
     childProfileId,
-    isTestMode,
+    isTestMode: false, // NEVER test mode - always save
     loading,
     user,
   };

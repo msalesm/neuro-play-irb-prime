@@ -46,8 +46,8 @@ const challengeModes = {
 export default function BalanceQuest() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { childProfileId, isTestMode, loading: profileLoading } = useGameProfile();
-  const { startSession, endSession, updateSession, isActive } = useGameSession('balance-quest', childProfileId || undefined, isTestMode);
+  const { childProfileId, loading: profileLoading } = useGameProfile();
+  const { startSession, endSession, updateSession, isActive } = useGameSession('balance-quest', childProfileId || undefined);
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [level, setLevel] = useState(1);
