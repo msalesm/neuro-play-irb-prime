@@ -5,12 +5,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus } from 'lucide-react';
+import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus, LayoutGrid, List } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 import { AddPatientModal } from '@/components/AddPatientModal';
+import { TherapistPatientSection } from '@/components/TherapistPatientSection';
 
 interface Patient {
   id: string;
@@ -130,6 +132,8 @@ export default function TherapistPatients() {
     }
   };
 
+  const [viewMode, setViewMode] = useState<'cards' | 'progress'>('cards');
+
   return (
     <ModernPageLayout>
       <div className="container mx-auto px-4 py-8">
@@ -154,9 +158,22 @@ export default function TherapistPatients() {
                   className="pl-10"
                 />
               </div>
-              <Button variant="outline">
-                Filtros
-              </Button>
+              <div className="flex gap-1 border rounded-lg p-1">
+                <Button 
+                  variant={viewMode === 'cards' ? 'default' : 'ghost'} 
+                  size="sm"
+                  onClick={() => setViewMode('cards')}
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </Button>
+                <Button 
+                  variant={viewMode === 'progress' ? 'default' : 'ghost'} 
+                  size="sm"
+                  onClick={() => setViewMode('progress')}
+                >
+                  <List className="w-4 h-4" />
+                </Button>
+              </div>
               <Button onClick={() => setShowAddModal(true)}>
                 <Plus className="w-4 h-4 mr-2" />
                 Adicionar Paciente
@@ -165,8 +182,13 @@ export default function TherapistPatients() {
           </CardContent>
         </Card>
 
-        {/* Patients Grid */}
-        {loading ? (
+        {/* Progress View */}
+        {viewMode === 'progress' ? (
+          <TherapistPatientSection 
+            onViewDetails={(patientId) => navigate(`/therapist/patient/${patientId}`)}
+            onAddPatient={() => setShowAddModal(true)}
+          />
+        ) : loading ? (
           <div className="flex items-center justify-center py-20">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
           </div>

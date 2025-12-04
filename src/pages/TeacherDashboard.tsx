@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -32,10 +33,12 @@ import {
   Download,
   BarChart3,
   GraduationCap,
+  Activity,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { TeacherStudentSection } from '@/components/TeacherStudentSection';
 
 interface StudentScreening {
   id: string;
@@ -57,6 +60,7 @@ export default function TeacherDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [activeTab, setActiveTab] = useState<string>('progress');
 
   useEffect(() => {
     if (!user) {
@@ -271,8 +275,28 @@ export default function TeacherDashboard() {
           </Alert>
         )}
 
-        <Card className="mb-6">
-          <CardHeader>
+        {/* Tabs for different views */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+          <TabsList>
+            <TabsTrigger value="progress" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Progresso dos Alunos
+            </TabsTrigger>
+            <TabsTrigger value="screenings" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Triagens
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="progress" className="mt-4">
+            <TeacherStudentSection 
+              onViewDetails={(studentId) => navigate(`/teacher/student/${studentId}`)}
+            />
+          </TabsContent>
+
+          <TabsContent value="screenings" className="mt-4">
+            <Card className="mb-6">
+              <CardHeader>
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
               <div>
                 <CardTitle>Triagens Realizadas</CardTitle>
@@ -391,8 +415,10 @@ export default function TeacherDashboard() {
                 </TableBody>
               </Table>
             </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
