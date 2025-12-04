@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -44,6 +44,13 @@ export default function AcceptInvite() {
       code: initialCode,
     },
   });
+
+  // Auto-search if code is in URL
+  useEffect(() => {
+    if (initialCode && initialCode.length === 8) {
+      searchInvitation({ code: initialCode });
+    }
+  }, [initialCode]);
 
   const searchInvitation = async (data: InviteCodeForm) => {
     try {
