@@ -421,21 +421,26 @@ export default function DashboardPais() {
           </div>
         ) : children.length === 0 ? (
           /* Empty State - No Children */
-          <Card className="p-12 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
-            <div className="max-w-md mx-auto">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-                <Users className="w-10 h-10 text-primary" />
+          <div className="space-y-8">
+            {/* Family Progress Section - sempre visível */}
+            <FamilyProgressSection />
+            
+            <Card className="p-12 text-center bg-gradient-to-br from-primary/5 to-secondary/5">
+              <div className="max-w-md mx-auto">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Users className="w-10 h-10 text-primary" />
+                </div>
+                <h2 className="text-2xl font-bold mb-4">Bem-vindo ao NeuroPlay!</h2>
+                <p className="text-muted-foreground mb-8">
+                  Para começar a acompanhar o desenvolvimento do seu filho, cadastre o primeiro perfil.
+                </p>
+                <Button size="lg" onClick={() => setShowAddChildModal(true)}>
+                  <UserPlus className="w-5 h-5 mr-2" />
+                  Cadastrar Filho
+                </Button>
               </div>
-              <h2 className="text-2xl font-bold mb-4">Bem-vindo ao NeuroPlay!</h2>
-              <p className="text-muted-foreground mb-8">
-                Para começar a acompanhar o desenvolvimento do seu filho, cadastre o primeiro perfil.
-              </p>
-              <Button size="lg" onClick={() => setShowAddChildModal(true)}>
-                <UserPlus className="w-5 h-5 mr-2" />
-                Cadastrar Filho
-              </Button>
-            </div>
-          </Card>
+            </Card>
+          </div>
         ) : (
           <>
             {/* Child Selector with Add Button */}

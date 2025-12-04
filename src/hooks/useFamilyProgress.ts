@@ -33,10 +33,14 @@ export function useFamilyProgress() {
   }, [user]);
 
   const loadFamilyMembers = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('[FamilyProgress] No user, skipping load');
+      return;
+    }
 
     try {
       setLoading(true);
+      console.log('[FamilyProgress] Loading family links for user:', user.id);
 
       // Get family links where current user is the parent
       const { data: links, error: linksError } = await supabase
@@ -45,6 +49,8 @@ export function useFamilyProgress() {
         .eq('parent_user_id', user.id)
         .eq('status', 'accepted');
 
+      console.log('[FamilyProgress] Family links result:', { links, linksError });
+
       if (linksError) {
         console.error('Error loading family links:', linksError);
         setLoading(false);
@@ -52,6 +58,7 @@ export function useFamilyProgress() {
       }
 
       if (!links || links.length === 0) {
+        console.log('[FamilyProgress] No family links found');
         setFamilyMembers([]);
         setLoading(false);
         return;
@@ -59,11 +66,14 @@ export function useFamilyProgress() {
 
       // Get profiles for each family member
       const memberIds = links.map(l => l.family_member_id);
+      console.log('[FamilyProgress] Looking up member IDs:', memberIds);
       
       const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('id, email, full_name')
         .in('id', memberIds);
+
+      console.log('[FamilyProgress] Profiles result:', { profiles, profilesError });
 
       if (profilesError) {
         console.error('Error loading profiles:', profilesError);
@@ -146,6 +156,7 @@ export function useFamilyProgress() {
         })
       );
 
+      console.log('[FamilyProgress] Final members with progress:', membersWithProgress);
       setFamilyMembers(membersWithProgress);
     } catch (error) {
       console.error('Error loading family progress:', error);
