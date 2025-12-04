@@ -26,6 +26,7 @@ import { usePredictiveAnalysis } from '@/hooks/usePredictiveAnalysis';
 import { RiskIndicatorCard } from '@/components/RiskIndicatorCard';
 import { PreventiveAlertModal } from '@/components/PreventiveAlertModal';
 import { AddChildModal } from '@/components/AddChildModal';
+import { FamilyProgressSection } from '@/components/FamilyProgressSection';
 
 interface ChildProfile {
   id: string;
@@ -597,6 +598,11 @@ export default function DashboardPais() {
                 />
               </div>
             )}
+
+            {/* Family Progress Section */}
+            <div className="mb-8">
+              <FamilyProgressSection />
+            </div>
 
             {/* Main Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
