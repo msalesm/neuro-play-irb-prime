@@ -8,6 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Play, Pause, RotateCcw, CircleDot, Zap, Home, Settings } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { useGameSession } from '@/hooks/useGameSession';
+import { useGameProfile } from '@/hooks/useGameProfile';
+import { GameExitButton } from '@/components/GameExitButton';
 
 interface BalanceChallenge {
   id: number;
@@ -43,6 +46,8 @@ const challengeModes = {
 export default function BalanceQuest() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { childProfileId, isTestMode, loading: profileLoading } = useGameProfile();
+  const { startSession, endSession, updateSession, isActive } = useGameSession('balance-quest', childProfileId || undefined, isTestMode);
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [level, setLevel] = useState(1);
@@ -65,6 +70,27 @@ export default function BalanceQuest() {
 
   const currentSensitivity = sensitivityLevels[sensitivity];
   const currentMode = challengeModes[mode];
+
+  // Start game session
+  const handleStartGame = async () => {
+    await startSession({ score: 0, level: 1, mode });
+    setIsPlaying(true);
+    setSessionStartTime(Date.now());
+  };
+
+  // End game session
+  const handleEndGame = async () => {
+    const timeSpent = (Date.now() - sessionStartTime) / 1000;
+    const accuracy = challenges.length > 0 ? (challengesCompleted / challenges.length) * 100 : 0;
+    
+    await endSession({
+      score,
+      accuracy,
+      timeSpent,
+      correctMoves: challengesCompleted,
+      totalMoves: challenges.length,
+    });
+  };
 
   // Request device motion permission and setup listeners
   useEffect(() => {
