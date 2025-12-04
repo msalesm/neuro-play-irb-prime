@@ -218,6 +218,8 @@ export default function DashboardPais() {
 
   const loadChildren = async () => {
     try {
+      console.log('[Dashboard] Loading children for user:', user?.id);
+      
       // Load children from child_profiles table (correct table for all app queries)
       const { data: childrenData, error } = await supabase
         .from('child_profiles')
@@ -230,6 +232,8 @@ export default function DashboardPais() {
         setLoading(false);
         return;
       }
+
+      console.log('[Dashboard] Children found:', childrenData?.length || 0);
 
       if (childrenData && childrenData.length > 0) {
         const childProfiles: ChildProfile[] = childrenData.map((child: any) => {
@@ -251,13 +255,13 @@ export default function DashboardPais() {
         });
         setChildren(childProfiles);
         setSelectedChild(childProfiles[0].id);
+        setLoading(false);
       } else {
         // Sem perfil de criança - carregar learning_sessions do usuário diretamente
+        console.log('[Dashboard] No children, loading user learning sessions...');
         await loadUserLearningSessions();
+        setLoading(false);
       }
-
-      // Mesmo sem crianças, encerramos o loading para mostrar o estado vazio
-      setLoading(false);
     } catch (error: any) {
       console.error('Error loading children (exception):', error?.message || error);
       toast.error(`Erro ao carregar perfis das crianças: ${error?.message || 'erro desconhecido'}`);
@@ -267,14 +271,26 @@ export default function DashboardPais() {
 
   // Carregar learning_sessions quando não há perfil de criança
   const loadUserLearningSessions = async () => {
+    if (!user?.id) {
+      console.log('[Dashboard] No user id, skipping loadUserLearningSessions');
+      return;
+    }
+    
+    console.log('[Dashboard] Loading learning sessions for user:', user.id);
+    
     try {
       const { data: learningSessions, error } = await supabase
         .from('learning_sessions')
         .select('*')
-        .eq('user_id', user?.id)
+        .eq('user_id', user.id)
         .eq('completed', true)
         .order('created_at', { ascending: false })
         .limit(20);
+
+      console.log('[Dashboard] Learning sessions result:', { 
+        count: learningSessions?.length || 0, 
+        error: error?.message 
+      });
 
       if (error) {
         console.error('Error loading learning sessions:', error);
@@ -292,22 +308,26 @@ export default function DashboardPais() {
           performance_data: session.performance_data || {}
         }));
 
+        console.log('[Dashboard] Transformed sessions:', transformedSessions.length);
         setSessions(transformedSessions);
 
         // Calcular scores cognitivos baseado nos dados disponíveis
-        if (transformedSessions.length > 0) {
-          const avgAccuracy = transformedSessions.reduce((sum, s) => 
-            sum + (s.performance_data?.accuracy || 0), 0) / transformedSessions.length;
+        const avgAccuracy = transformedSessions.reduce((sum, s) => 
+          sum + (s.performance_data?.accuracy || 0), 0) / transformedSessions.length;
 
-          setCognitiveScores({
-            attention: Math.round(avgAccuracy * 0.9),
-            memory: Math.round(avgAccuracy),
-            language: Math.round(avgAccuracy * 0.85),
-            logic: Math.round(avgAccuracy * 0.95),
-            emotion: Math.round(avgAccuracy * 0.8),
-            coordination: Math.round(avgAccuracy * 0.9)
-          });
-        }
+        console.log('[Dashboard] Average accuracy:', avgAccuracy);
+
+        setCognitiveScores({
+          attention: Math.round(avgAccuracy * 0.9),
+          memory: Math.round(avgAccuracy),
+          language: Math.round(avgAccuracy * 0.85),
+          logic: Math.round(avgAccuracy * 0.95),
+          emotion: Math.round(avgAccuracy * 0.8),
+          coordination: Math.round(avgAccuracy * 0.9)
+        });
+      } else {
+        console.log('[Dashboard] No learning sessions found for user');
+        setSessions([]);
       }
     } catch (error) {
       console.error('Error loading user learning sessions:', error);
