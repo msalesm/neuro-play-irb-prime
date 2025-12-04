@@ -148,7 +148,7 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
           conditions,
         });
       } else {
-        toast.error('Nenhuma criança encontrada com esse código/nome');
+        toast.error('Criança não encontrada. A criança deve estar cadastrada por um terapeuta e ainda não vinculada a outro responsável.');
       }
     } catch (error: any) {
       console.error('Error searching child:', error);
