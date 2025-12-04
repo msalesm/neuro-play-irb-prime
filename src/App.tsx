@@ -280,6 +280,7 @@ const App = () => (
           
           {/* Acessibilidade e Histórias Sociais */}
           <Route path="/accessibility" element={<AccessibilitySettings />} />
+          <Route path="/social-stories" element={<SocialStories />} />
           <Route path="/stories" element={<SocialStories />} />
           <Route path="/stories/:storyId" element={<StoryReader />} />
           <Route path="/admin/stories" element={<AdminStories />} />
