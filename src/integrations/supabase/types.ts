@@ -1060,6 +1060,54 @@ export type Database = {
           },
         ]
       }
+      invitations: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          child_birth_date: string | null
+          child_conditions: Json | null
+          child_name: string | null
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          invite_code: string
+          invite_type: string
+          inviter_id: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          child_birth_date?: string | null
+          child_conditions?: Json | null
+          child_name?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          invite_code?: string
+          invite_type: string
+          inviter_id: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          child_birth_date?: string | null
+          child_conditions?: Json | null
+          child_name?: string | null
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          invite_code?: string
+          invite_type?: string
+          inviter_id?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       learning_sessions: {
         Row: {
           completed: boolean | null

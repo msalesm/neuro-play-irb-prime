@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Loader2, UserPlus, Link2, Search } from 'lucide-react';
+import { Loader2, UserPlus, Link2, Search, Send, Copy, Check } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const conditions = [
@@ -37,8 +37,21 @@ const linkChildSchema = z.object({
   searchCode: z.string().min(2, 'Digite pelo menos 2 caracteres para buscar'),
 });
 
+const inviteSchema = z.object({
+  name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres').max(100, 'Nome muito longo'),
+  date_of_birth: z.string().refine((date) => {
+    const birthDate = new Date(date);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    return age >= 0 && age <= 18;
+  }, 'Idade deve estar entre 0 e 18 anos'),
+  conditions: z.array(z.string()).optional(),
+  invite_type: z.enum(['parent', 'child']),
+});
+
 type NewChildFormData = z.infer<typeof newChildSchema>;
 type LinkChildFormData = z.infer<typeof linkChildSchema>;
+type InviteFormData = z.infer<typeof inviteSchema>;
 
 interface ChildToLink {
   id: string;
@@ -59,6 +72,8 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
   const [activeTab, setActiveTab] = useState('new');
   const [searching, setSearching] = useState(false);
   const [foundChild, setFoundChild] = useState<ChildToLink | null>(null);
+  const [generatedCode, setGeneratedCode] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const newChildForm = useForm<NewChildFormData>({
     resolver: zodResolver(newChildSchema),
@@ -76,23 +91,32 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
     },
   });
 
+  const inviteForm = useForm<InviteFormData>({
+    resolver: zodResolver(inviteSchema),
+    defaultValues: {
+      name: '',
+      date_of_birth: '',
+      conditions: [],
+      invite_type: 'child',
+    },
+  });
+
   const onSubmitNewChild = async (data: NewChildFormData) => {
     if (!user) {
-      toast.error('Você precisa estar autenticado');
+      toast.error('Você precisa estar logado para adicionar um filho');
       return;
     }
 
     try {
       setLoading(true);
 
-      // Create child profile for parent
       const { error } = await supabase
         .from('child_profiles')
         .insert({
-          parent_user_id: user.id,
           name: data.name,
           date_of_birth: data.date_of_birth,
           diagnosed_conditions: data.conditions || [],
+          parent_user_id: user.id,
         });
 
       if (error) throw error;
@@ -102,8 +126,8 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
       onSuccess();
       onClose();
     } catch (error: any) {
-      console.error('Error adding child:', error);
-      toast.error(error?.message || 'Erro ao cadastrar filho. Tente novamente.');
+      console.error('Error creating child profile:', error);
+      toast.error('Erro ao cadastrar filho. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -111,7 +135,7 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
 
   const searchChild = async (data: LinkChildFormData) => {
     if (!user) {
-      toast.error('Você precisa estar autenticado');
+      toast.error('Você precisa estar logado');
       return;
     }
 
@@ -152,73 +176,116 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
       }
     } catch (error: any) {
       console.error('Error searching child:', error);
-      toast.error('Erro ao buscar. Verifique o código e tente novamente.');
+      toast.error('Erro ao buscar. Verifique o nome e tente novamente.');
     } finally {
       setSearching(false);
     }
   };
 
   const linkChild = async () => {
-    if (!user || !foundChild) return;
+    if (!user || !foundChild) {
+      toast.error('Erro ao vincular criança');
+      return;
+    }
 
     try {
       setLoading(true);
 
       // Check if already linked
-      const { data: existingAccess } = await supabase
-        .from('child_access')
+      const { data: existingLink } = await supabase
+        .from('child_profiles')
         .select('id')
-        .eq('child_id', foundChild.id)
-        .eq('professional_id', user.id)
+        .eq('parent_user_id', user.id)
+        .eq('name', foundChild.name)
         .maybeSingle();
 
-      if (existingAccess) {
-        toast.error('Você já tem acesso a este perfil');
+      if (existingLink) {
+        toast.error('Esta criança já está vinculada ao seu perfil');
         return;
       }
 
-      // Create child_profiles entry for parent
+      // Create child_profiles entry
       const { error: profileError } = await supabase
         .from('child_profiles')
         .insert({
-          parent_user_id: user.id,
           name: foundChild.name,
-          date_of_birth: new Date(new Date().getFullYear() - foundChild.age, 0, 1).toISOString().split('T')[0],
+          date_of_birth: new Date().toISOString().split('T')[0], // Will be updated
           diagnosed_conditions: foundChild.conditions,
+          parent_user_id: user.id,
         });
 
-      if (profileError) {
-        // Check if profile already exists
-        if (profileError.code === '23505') {
-          toast.info('Perfil já vinculado à sua conta');
-        } else {
-          throw profileError;
-        }
-      }
+      if (profileError) throw profileError;
 
-      // Also update children table to set parent_id
-      await supabase
+      // Update children table with parent_id
+      const { error: childError } = await supabase
         .from('children')
         .update({ parent_id: user.id })
         .eq('id', foundChild.id);
 
-      toast.success(`${foundChild.name} vinculado com sucesso!`);
+      if (childError) throw childError;
+
+      toast.success(`${foundChild.name} vinculado(a) com sucesso!`);
       linkChildForm.reset();
       setFoundChild(null);
       onSuccess();
       onClose();
     } catch (error: any) {
       console.error('Error linking child:', error);
-      toast.error(error?.message || 'Erro ao vincular. Tente novamente.');
+      toast.error('Erro ao vincular criança. Tente novamente.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const onSubmitInvite = async (data: InviteFormData) => {
+    if (!user) {
+      toast.error('Você precisa estar logado para criar um convite');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const { data: invitation, error } = await supabase
+        .from('invitations')
+        .insert({
+          inviter_id: user.id,
+          invite_type: data.invite_type,
+          child_name: data.name,
+          child_birth_date: data.date_of_birth,
+          child_conditions: data.conditions || [],
+        })
+        .select('invite_code')
+        .single();
+
+      if (error) throw error;
+
+      setGeneratedCode(invitation.invite_code);
+      toast.success('Código de convite gerado com sucesso!');
+    } catch (error: any) {
+      console.error('Error creating invitation:', error);
+      toast.error('Erro ao criar convite. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyCode = () => {
+    if (generatedCode) {
+      navigator.clipboard.writeText(generatedCode);
+      setCopied(true);
+      toast.success('Código copiado!');
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
   const handleClose = () => {
     newChildForm.reset();
     linkChildForm.reset();
+    inviteForm.reset();
     setFoundChild(null);
+    setGeneratedCode(null);
+    setCopied(false);
     setActiveTab('new');
     onClose();
   };
@@ -232,19 +299,26 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
             Adicionar Filho
           </DialogTitle>
           <DialogDescription>
-            Cadastre um novo perfil ou vincule uma criança já registrada
+            Cadastre, vincule ou convide para a plataforma
           </DialogDescription>
         </DialogHeader>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="new" className="flex items-center gap-2">
-              <UserPlus className="w-4 h-4" />
-              Novo Cadastro
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="new" className="flex items-center gap-1 text-xs sm:text-sm">
+              <UserPlus className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Novo</span>
+              <span className="sm:hidden">Novo</span>
             </TabsTrigger>
-            <TabsTrigger value="link" className="flex items-center gap-2">
-              <Link2 className="w-4 h-4" />
-              Vincular Existente
+            <TabsTrigger value="link" className="flex items-center gap-1 text-xs sm:text-sm">
+              <Link2 className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Vincular</span>
+              <span className="sm:hidden">Vincular</span>
+            </TabsTrigger>
+            <TabsTrigger value="invite" className="flex items-center gap-1 text-xs sm:text-sm">
+              <Send className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Convidar</span>
+              <span className="sm:hidden">Convidar</span>
             </TabsTrigger>
           </TabsList>
 
@@ -252,7 +326,6 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
           <TabsContent value="new" className="mt-4 flex-1 overflow-y-auto pr-1">
             <Form {...newChildForm}>
               <form onSubmit={newChildForm.handleSubmit(onSubmitNewChild)} className="space-y-6 pb-4">
-                {/* Nome */}
                 <FormField
                   control={newChildForm.control}
                   name="name"
@@ -267,7 +340,6 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
                   )}
                 />
 
-                {/* Data de Nascimento */}
                 <FormField
                   control={newChildForm.control}
                   name="date_of_birth"
@@ -282,7 +354,6 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
                   )}
                 />
 
-                {/* Condições */}
                 <FormField
                   control={newChildForm.control}
                   name="conditions"
@@ -301,22 +372,21 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
                             control={newChildForm.control}
                             name="conditions"
                             render={({ field }) => (
-                              <FormItem
-                                className="flex flex-row items-center space-x-3 space-y-0 rounded-lg border p-3 hover:bg-muted/50 transition-colors"
-                              >
+                              <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-3">
                                 <FormControl>
                                   <Checkbox
                                     checked={field.value?.includes(condition.id)}
                                     onCheckedChange={(checked) => {
-                                      return checked
-                                        ? field.onChange([...(field.value || []), condition.id])
-                                        : field.onChange(
-                                            field.value?.filter((value) => value !== condition.id)
-                                          );
+                                      const current = field.value || [];
+                                      if (checked) {
+                                        field.onChange([...current, condition.id]);
+                                      } else {
+                                        field.onChange(current.filter((v) => v !== condition.id));
+                                      }
                                     }}
                                   />
                                 </FormControl>
-                                <FormLabel className="font-normal cursor-pointer flex-1 text-sm">
+                                <FormLabel className="font-normal cursor-pointer flex-1">
                                   {condition.label}
                                 </FormLabel>
                               </FormItem>
@@ -329,16 +399,10 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
                   )}
                 />
 
-                {/* Buttons */}
-                <div className="flex justify-end gap-3 pt-4">
-                  <Button type="button" variant="outline" onClick={handleClose} disabled={loading}>
-                    Cancelar
-                  </Button>
-                  <Button type="submit" disabled={loading}>
-                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Cadastrar
-                  </Button>
-                </div>
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Cadastrar Filho
+                </Button>
               </form>
             </Form>
           </TabsContent>
@@ -379,49 +443,198 @@ export function AddChildModal({ open, onClose, onSuccess }: AddChildModalProps) 
                 </form>
               </Form>
 
-              {/* Found Child Preview */}
               {foundChild && (
                 <Card className="border-primary/50 bg-primary/5">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="font-semibold text-lg">{foundChild.name}</h4>
-                        <p className="text-sm text-muted-foreground">{foundChild.age} anos</p>
-                        {foundChild.conditions.length > 0 && (
-                          <div className="flex gap-1 mt-2">
-                            {foundChild.conditions.map((c, idx) => (
-                              <span key={idx} className="text-xs bg-secondary px-2 py-1 rounded">
-                                {c}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <Button onClick={linkChild} disabled={loading}>
+                  <CardContent className="pt-4">
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">{foundChild.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {foundChild.age} anos
+                      </p>
+                      {foundChild.conditions.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {foundChild.conditions.map((c) => (
+                            <span 
+                              key={c} 
+                              className="text-xs bg-secondary px-2 py-1 rounded"
+                            >
+                              {c}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      <Button 
+                        onClick={linkChild} 
+                        className="w-full mt-4"
+                        disabled={loading}
+                      >
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        Vincular
+                        <Link2 className="mr-2 h-4 w-4" />
+                        Vincular ao Meu Perfil
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
               )}
+            </div>
+          </TabsContent>
 
-              {!foundChild && (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Link2 className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                  <p className="text-sm">
-                    Busque pelo código ou nome para vincular uma criança já cadastrada por um terapeuta
-                  </p>
-                </div>
-              )}
-
-              {/* Cancel Button */}
-              <div className="flex justify-end pt-4">
-                <Button type="button" variant="outline" onClick={handleClose}>
-                  Cancelar
+          {/* Invite Tab */}
+          <TabsContent value="invite" className="mt-4 flex-1 overflow-y-auto pr-1">
+            {generatedCode ? (
+              <div className="space-y-6 pb-4">
+                <Card className="border-primary/50 bg-primary/5">
+                  <CardContent className="pt-6 text-center">
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Código de Convite
+                    </p>
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-3xl font-mono font-bold tracking-wider text-primary">
+                        {generatedCode}
+                      </span>
+                      <Button 
+                        variant="outline" 
+                        size="icon"
+                        onClick={copyCode}
+                      >
+                        {copied ? (
+                          <Check className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-4">
+                      Compartilhe este código com quem deseja convidar. Válido por 7 dias.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => {
+                    setGeneratedCode(null);
+                    inviteForm.reset();
+                  }}
+                >
+                  Criar Novo Convite
                 </Button>
               </div>
-            </div>
+            ) : (
+              <Form {...inviteForm}>
+                <form onSubmit={inviteForm.handleSubmit(onSubmitInvite)} className="space-y-6 pb-4">
+                  <FormField
+                    control={inviteForm.control}
+                    name="invite_type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tipo de Convite</FormLabel>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button
+                            type="button"
+                            variant={field.value === 'child' ? 'default' : 'outline'}
+                            className="w-full"
+                            onClick={() => field.onChange('child')}
+                          >
+                            Filho(a)
+                          </Button>
+                          <Button
+                            type="button"
+                            variant={field.value === 'parent' ? 'default' : 'outline'}
+                            className="w-full"
+                            onClick={() => field.onChange('parent')}
+                          >
+                            Responsável
+                          </Button>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          {field.value === 'child' 
+                            ? 'Convide seu filho para usar a plataforma'
+                            : 'Convide outro responsável para acompanhar'}
+                        </p>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={inviteForm.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nome da Criança *</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex: João Pedro" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={inviteForm.control}
+                    name="date_of_birth"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Data de Nascimento *</FormLabel>
+                        <FormControl>
+                          <Input type="date" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={inviteForm.control}
+                    name="conditions"
+                    render={() => (
+                      <FormItem>
+                        <div className="mb-4">
+                          <FormLabel>Condições (opcional)</FormLabel>
+                        </div>
+                        <div className="grid grid-cols-1 gap-2">
+                          {conditions.map((condition) => (
+                            <FormField
+                              key={condition.id}
+                              control={inviteForm.control}
+                              name="conditions"
+                              render={({ field }) => (
+                                <FormItem className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-3">
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(condition.id)}
+                                      onCheckedChange={(checked) => {
+                                        const current = field.value || [];
+                                        if (checked) {
+                                          field.onChange([...current, condition.id]);
+                                        } else {
+                                          field.onChange(current.filter((v) => v !== condition.id));
+                                        }
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal cursor-pointer flex-1 text-sm">
+                                    {condition.label}
+                                  </FormLabel>
+                                </FormItem>
+                              )}
+                            />
+                          ))}
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    <Send className="mr-2 h-4 w-4" />
+                    Gerar Código de Convite
+                  </Button>
+                </form>
+              </Form>
+            )}
           </TabsContent>
         </Tabs>
       </DialogContent>
