@@ -291,11 +291,11 @@ export function OnboardingWizard() {
           
           <Progress value={progress} className="h-2" />
           
-          <div className="flex gap-2 mt-4">
+          <div className="flex gap-2 mt-4 overflow-x-auto pb-2 -mx-1 px-1">
             {STEPS.map((step) => (
               <div
                 key={step.id}
-                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                className={`min-w-[120px] flex-shrink-0 p-3 rounded-lg border-2 transition-all ${
                   step.id === currentStep
                     ? 'border-irb-blue bg-secondary/10'
                     : step.id < currentStep
@@ -305,9 +305,9 @@ export function OnboardingWizard() {
               >
                 <div className="flex items-center gap-2">
                   {step.id < currentStep ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
                   ) : (
-                    <div className="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-xs font-bold">
+                    <div className="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-xs font-bold flex-shrink-0">
                       {step.id}
                     </div>
                   )}
