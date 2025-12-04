@@ -2,6 +2,89 @@ import type { ModuleDefinition } from '@/hooks/useTeacherTraining';
 
 export const trainingModules: ModuleDefinition[] = [
   {
+    id: 'tdah-um-jeito-especial',
+    name: 'TDAH: Um Jeito Especial',
+    description: 'Compreenda o Transtorno de Déficit de Atenção e Hiperatividade de forma acolhedora',
+    icon: '⚡',
+    color: 'from-orange-500 to-amber-500',
+    duration: '15 min',
+    videoUrl: '/videos/tdah-um-jeito-especial.mp4',
+    videoTitle: 'TDAH: Um Jeito Especial de Ser',
+    topics: [
+      'O que é TDAH',
+      'Desatenção, hiperatividade e impulsividade',
+      'Pontos fortes de pessoas com TDAH',
+      'Estratégias de apoio e inclusão',
+    ],
+    questions: [
+      {
+        id: 1,
+        question: 'O que significa TDAH?',
+        options: [
+          'Transtorno de Déficit de Atenção e Hiperatividade',
+          'Transtorno do Desenvolvimento e Aprendizagem Humana',
+          'Técnica de Diagnóstico e Avaliação Hospitalar',
+          'Terapia de Desenvolvimento e Habilidades',
+        ],
+        correct: 0,
+        explanation:
+          'TDAH significa Transtorno de Déficit de Atenção e Hiperatividade, uma condição neurobiológica que afeta a atenção, o controle de impulsos e a regulação da atividade.',
+      },
+      {
+        id: 2,
+        question: 'Quais são as três principais características do TDAH?',
+        options: [
+          'Tristeza, ansiedade e medo',
+          'Desatenção, hiperatividade e impulsividade',
+          'Dificuldade de leitura, escrita e matemática',
+          'Agressividade, isolamento e timidez',
+        ],
+        correct: 1,
+        explanation:
+          'As três características principais do TDAH são desatenção (dificuldade de manter foco), hiperatividade (excesso de atividade motora) e impulsividade (agir sem pensar).',
+      },
+      {
+        id: 3,
+        question: 'Pessoas com TDAH podem ter pontos fortes?',
+        options: [
+          'Não, TDAH só traz dificuldades',
+          'Sim, como criatividade, energia e pensamento fora da caixa',
+          'Apenas se forem tratadas com medicação',
+          'Somente na vida adulta',
+        ],
+        correct: 1,
+        explanation:
+          'Pessoas com TDAH frequentemente apresentam pontos fortes como criatividade, energia, capacidade de hiperfoco em áreas de interesse e pensamento inovador.',
+      },
+      {
+        id: 4,
+        question: 'Como podemos ajudar uma criança com TDAH na escola?',
+        options: [
+          'Deixando-a fazer o que quiser',
+          'Criando rotinas claras, dividindo tarefas e oferecendo feedback frequente',
+          'Isolando-a dos colegas',
+          'Exigindo que fique sempre quieta',
+        ],
+        correct: 1,
+        explanation:
+          'Estratégias eficazes incluem rotinas estruturadas, dividir tarefas em passos menores, oferecer feedback positivo frequente e permitir movimentação adequada.',
+      },
+      {
+        id: 5,
+        question: 'TDAH é resultado de má educação ou falta de disciplina?',
+        options: [
+          'Sim, é culpa dos pais',
+          'Não, é uma condição neurobiológica com base genética',
+          'Depende da criança',
+          'Sim, é falta de limites',
+        ],
+        correct: 1,
+        explanation:
+          'TDAH é uma condição neurobiológica com forte componente genético. Não é causado por má educação ou falta de disciplina, embora o ambiente possa influenciar a expressão dos sintomas.',
+      },
+    ],
+  },
+  {
     id: 'tea-um-jeito-unico',
     name: 'TEA: Um Jeito Único',
     description: 'Compreenda o Transtorno do Espectro Autista de forma acolhedora e inclusiva',
