@@ -233,7 +233,7 @@ export default function StoryReader() {
       </div>
 
       {/* Navigation */}
-      <div className="sticky bottom-0 bg-background border-t px-4 py-4">
+      <div className="sticky bottom-20 bg-background border-t px-4 py-4">
         <div className="container max-w-2xl mx-auto flex gap-4">
           <Button
             variant="outline"
