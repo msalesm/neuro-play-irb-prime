@@ -21,7 +21,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 export function MobileMenu() {
   const { user } = useAuth();
-  const { role } = useUserRole();
+  const { role, isAdmin } = useUserRole();
   const location = useLocation();
   const { t } = useLanguage();
   const [open, setOpen] = useState(false);
@@ -63,7 +63,8 @@ export function MobileMenu() {
   ];
 
   // Adiciona seções baseadas no papel do usuário
-  if (role === 'parent' || !role) {
+  // Admins veem TODOS os menus
+  if (isAdmin || role === 'parent' || !role) {
     menuSections.push({
       title: 'Pais',
       items: [
@@ -76,7 +77,7 @@ export function MobileMenu() {
     });
   }
 
-  if (role === 'therapist') {
+  if (isAdmin || role === 'therapist') {
     menuSections.push({
       title: 'Terapeuta',
       items: [
@@ -87,7 +88,7 @@ export function MobileMenu() {
     });
   }
 
-  if (role === 'parent' || !role) {
+  if (isAdmin || role === 'parent' || !role) {
     menuSections.push({
       title: 'Escola',
       items: [
@@ -98,7 +99,7 @@ export function MobileMenu() {
     });
   }
 
-  if (role === 'admin') {
+  if (isAdmin) {
     menuSections.push({
       title: 'Gestor Público',
       items: [

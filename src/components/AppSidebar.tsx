@@ -30,7 +30,7 @@ import {
 
 export function AppSidebar() {
   const { user } = useAuth();
-  const { role } = useUserRole();
+  const { role, isAdmin } = useUserRole();
   const { t } = useLanguage();
   const location = useLocation();
   const { open } = useSidebar();
@@ -186,6 +186,7 @@ export function AppSidebar() {
   ];
 
   // Organize navigation groups based on role
+  // Admins can see ALL menus
   const navigationGroups = [];
 
   // Always show Home section
@@ -195,8 +196,8 @@ export function AppSidebar() {
     items: homeNavigation,
   });
 
-  // Show Parents section if user is a parent or no role defined
-  if (role === 'parent' || !role) {
+  // Show Parents section if user is admin, parent, or no role defined
+  if (isAdmin || role === 'parent' || !role) {
     navigationGroups.push({
       id: 'parents',
       label: 'Pais',
@@ -204,8 +205,8 @@ export function AppSidebar() {
     });
   }
 
-  // Show Therapist section if user is a therapist
-  if (role === 'therapist') {
+  // Show Therapist section if user is admin or therapist
+  if (isAdmin || role === 'therapist') {
     navigationGroups.push({
       id: 'therapist',
       label: 'Terapeuta',
@@ -213,8 +214,8 @@ export function AppSidebar() {
     });
   }
 
-  // Show School section if user is a teacher or no role defined
-  if (role === 'parent' || !role) {
+  // Show School section if user is admin, parent, or no role defined
+  if (isAdmin || role === 'parent' || !role) {
     navigationGroups.push({
       id: 'teacher',
       label: 'Escola',
@@ -223,7 +224,7 @@ export function AppSidebar() {
   }
 
   // Show Admin section if user is admin
-  if (role === 'admin') {
+  if (isAdmin) {
     navigationGroups.push({
       id: 'admin',
       label: 'Gestor Público',
