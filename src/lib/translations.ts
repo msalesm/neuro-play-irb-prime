@@ -122,7 +122,36 @@ export const translations = {
       readyToPlay: 'Pronto para jogar',
       continueJourney: 'Continue a jornada de aprendizagem',
       playGames: 'Jogar jogos',
-      takeAssessment: 'Fazer avaliação'
+      takeAssessment: 'Fazer avaliação',
+      trails: 'Trilhas',
+      progress: 'Progresso',
+      achievements: 'Conquistas',
+      profile: 'Perfil',
+      gamesPlayed: 'Jogos Jogados',
+      xpGained: 'XP Ganho',
+      streakDays: 'Dias de Sequência',
+      days: 'dias',
+      recentSessions: 'Sessões Recentes',
+      noRecentSessions: 'Nenhuma sessão recente',
+      cognitiveProfile: 'Perfil Cognitivo',
+      detectedPatterns: 'Padrões Detectados',
+      noPatterns: 'Nenhum padrão identificado',
+      profileNotCreated: 'Perfil ainda não criado',
+      learningPreferences: 'Preferências de Aprendizagem',
+      visualLearning: 'Aprendizagem Visual',
+      auditoryLearning: 'Aprendizagem Auditiva',
+      kinestheticLearning: 'Aprendizagem Cinestésica'
+    },
+    
+    // Achievements
+    achievements: {
+      firstWin: 'Primeira Vitória',
+      firstWinDesc: 'Complete seu primeiro jogo',
+      speedster: 'Velocista',
+      speedsterDesc: 'Complete 3 jogos em um dia',
+      focused: 'Focado',
+      focusedDesc: 'Mantenha 80% de precisão',
+      unlocked: 'Desbloqueado'
     },
     
     // Common
@@ -264,7 +293,36 @@ export const translations = {
       readyToPlay: 'Ready to play',
       continueJourney: 'Continue your journey',
       playGames: 'Play games',
-      takeAssessment: 'Take assessment'
+      takeAssessment: 'Take assessment',
+      trails: 'Trails',
+      progress: 'Progress',
+      achievements: 'Achievements',
+      profile: 'Profile',
+      gamesPlayed: 'Games Played',
+      xpGained: 'XP Gained',
+      streakDays: 'Streak Days',
+      days: 'days',
+      recentSessions: 'Recent Sessions',
+      noRecentSessions: 'No recent sessions',
+      cognitiveProfile: 'Cognitive Profile',
+      detectedPatterns: 'Detected Patterns',
+      noPatterns: 'No patterns identified',
+      profileNotCreated: 'Profile not yet created',
+      learningPreferences: 'Learning Preferences',
+      visualLearning: 'Visual Learning',
+      auditoryLearning: 'Auditory Learning',
+      kinestheticLearning: 'Kinesthetic Learning'
+    },
+    
+    // Achievements
+    achievements: {
+      firstWin: 'First Win',
+      firstWinDesc: 'Complete your first game',
+      speedster: 'Speedster',
+      speedsterDesc: 'Complete 3 games in one day',
+      focused: 'Focused',
+      focusedDesc: 'Maintain 80% accuracy',
+      unlocked: 'Unlocked'
     },
     
     common: {
@@ -405,7 +463,36 @@ export const translations = {
       readyToPlay: 'Listo para jugar',
       continueJourney: 'Continúa tu viaje de aprendizaje',
       playGames: 'Jugar juegos',
-      takeAssessment: 'Hacer evaluación'
+      takeAssessment: 'Hacer evaluación',
+      trails: 'Rutas',
+      progress: 'Progreso',
+      achievements: 'Logros',
+      profile: 'Perfil',
+      gamesPlayed: 'Juegos Jugados',
+      xpGained: 'XP Ganado',
+      streakDays: 'Días de Racha',
+      days: 'días',
+      recentSessions: 'Sesiones Recientes',
+      noRecentSessions: 'Sin sesiones recientes',
+      cognitiveProfile: 'Perfil Cognitivo',
+      detectedPatterns: 'Patrones Detectados',
+      noPatterns: 'Ningún patrón identificado',
+      profileNotCreated: 'Perfil aún no creado',
+      learningPreferences: 'Preferencias de Aprendizaje',
+      visualLearning: 'Aprendizaje Visual',
+      auditoryLearning: 'Aprendizaje Auditivo',
+      kinestheticLearning: 'Aprendizaje Cinestésico'
+    },
+    
+    // Achievements
+    achievements: {
+      firstWin: 'Primera Victoria',
+      firstWinDesc: 'Completa tu primer juego',
+      speedster: 'Velocista',
+      speedsterDesc: 'Completa 3 juegos en un día',
+      focused: 'Enfocado',
+      focusedDesc: 'Mantén 80% de precisión',
+      unlocked: 'Desbloqueado'
     },
     
     common: {
