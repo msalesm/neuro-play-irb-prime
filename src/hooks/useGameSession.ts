@@ -160,7 +160,7 @@ export function useGameSession(gameId: string, childProfileId?: string, isTestMo
     try {
       const { data: gameData, error: gameError } = await supabase
         .from('cognitive_games')
-        .select('id')
+        .select('id, name')
         .eq('game_id', gameId)
         .maybeSingle();
 
@@ -184,43 +184,67 @@ export function useGameSession(gameId: string, childProfileId?: string, isTestMo
         profileId = profiles?.id;
       }
 
-      // Se não há perfil, ativar modo teste automaticamente
-      if (!profileId) {
-        console.warn('Sem perfil - ativando modo teste');
-        setSessionId('test-session');
-        setIsActive(true);
-        return { success: true, sessionId: 'test-session', testMode: true };
-      }
-
-      const { count } = await supabase
-        .from('game_sessions')
-        .select('*', { count: 'exact', head: true })
-        .eq('child_profile_id', profileId)
-        .eq('game_id', gameData.id);
-
       const difficulty = initialDifficulty || currentDifficulty;
 
-      const { data: session, error } = await supabase
-        .from('game_sessions')
+      // SEMPRE salvar em learning_sessions para qualquer usuário autenticado
+      const { data: learningSession, error: learningError } = await supabase
+        .from('learning_sessions')
         .insert({
-          child_profile_id: profileId,
-          game_id: gameData.id,
-          session_number: (count || 0) + 1,
-          difficulty_level: difficulty,
-          started_at: new Date().toISOString(),
-          score: data?.score || 0,
-          session_data: data || {}
+          user_id: user.id,
+          game_type: gameId,
+          completed: false,
+          session_duration_seconds: 0,
+          performance_data: {
+            game_name: gameData.name,
+            difficulty: difficulty,
+            started_at: new Date().toISOString(),
+            ...data
+          }
         })
         .select()
         .single();
 
-      if (error) throw error;
+      if (learningError) {
+        console.error('Error creating learning session:', learningError);
+      }
 
-      setSessionId(session.id);
+      // Se tem perfil de criança, também salvar em game_sessions para métricas detalhadas
+      if (profileId) {
+        const { count } = await supabase
+          .from('game_sessions')
+          .select('*', { count: 'exact', head: true })
+          .eq('child_profile_id', profileId)
+          .eq('game_id', gameData.id);
+
+        const { data: session, error } = await supabase
+          .from('game_sessions')
+          .insert({
+            child_profile_id: profileId,
+            game_id: gameData.id,
+            session_number: (count || 0) + 1,
+            difficulty_level: difficulty,
+            started_at: new Date().toISOString(),
+            score: data?.score || 0,
+            session_data: { ...data, learning_session_id: learningSession?.id }
+          })
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        setSessionId(session.id);
+        setIsActive(true);
+        setCurrentDifficulty(difficulty);
+
+        return { success: true, sessionId: session.id, learningSessionId: learningSession?.id };
+      }
+
+      // Sem perfil de criança - usar learning_session como sessão principal
+      setSessionId(learningSession?.id || 'learning-session');
       setIsActive(true);
       setCurrentDifficulty(difficulty);
 
-      return { success: true, sessionId: session.id };
+      return { success: true, sessionId: learningSession?.id, learningSessionId: learningSession?.id, userMode: true };
     } catch (error: any) {
       console.error('Error starting session:', error);
       toast({
@@ -240,25 +264,13 @@ export function useGameSession(gameId: string, childProfileId?: string, isTestMo
       return { success: true };
     }
 
-    if (!sessionId || !isActive) {
+    if (!sessionId || !isActive || !user) {
       return { success: false };
     }
 
     try {
       const completedAt = new Date().toISOString();
-      const startedAt = new Date();
-
-      const { data: sessionData } = await supabase
-        .from('game_sessions')
-        .select('started_at')
-        .eq('id', sessionId)
-        .single();
-
-      if (sessionData?.started_at) {
-        startedAt.setTime(new Date(sessionData.started_at).getTime());
-      }
-
-      const durationSeconds = Math.floor((new Date().getTime() - startedAt.getTime()) / 1000);
+      const durationSeconds = data?.timeSpent || 0;
       
       const totalAttempts = (data?.correctMoves || 0) + ((data?.totalMoves || 0) - (data?.correctMoves || 0));
       const accuracy = totalAttempts > 0 ? ((data?.correctMoves || 0) / totalAttempts) * 100 : 0;
@@ -267,36 +279,79 @@ export function useGameSession(gameId: string, childProfileId?: string, isTestMo
         ? Math.floor(reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length)
         : null;
 
-      const { error } = await supabase
+      // Tentar atualizar game_sessions (se existir)
+      const { data: gameSessionData } = await supabase
         .from('game_sessions')
-        .update({
-          completed: true,
-          completed_at: completedAt,
-          duration_seconds: data?.timeSpent || durationSeconds,
-          score: data?.score || 0,
-          accuracy_percentage: accuracy,
-          correct_attempts: data?.correctMoves || 0,
-          incorrect_attempts: (data?.totalMoves || 0) - (data?.correctMoves || 0),
-          total_attempts: totalAttempts,
-          avg_reaction_time_ms: avgReactionTime,
-          fastest_reaction_time_ms: reactionTimes.length > 0 ? Math.min(...reactionTimes) : null,
-          slowest_reaction_time_ms: reactionTimes.length > 0 ? Math.max(...reactionTimes) : null,
-          help_requests: data?.hintsUsed || 0,
-          error_pattern: data?.errors || null,
-          quit_reason: data?.quitReason,
-          pause_count: data?.pauseCount || 0,
-          session_data: data || {}
-        })
-        .eq('id', sessionId);
+        .select('started_at')
+        .eq('id', sessionId)
+        .maybeSingle();
 
-      if (error) throw error;
+      if (gameSessionData) {
+        // Sessão existe em game_sessions - atualizar
+        const startedAt = new Date(gameSessionData.started_at);
+        const calculatedDuration = Math.floor((new Date().getTime() - startedAt.getTime()) / 1000);
+
+        await supabase
+          .from('game_sessions')
+          .update({
+            completed: true,
+            completed_at: completedAt,
+            duration_seconds: data?.timeSpent || calculatedDuration,
+            score: data?.score || 0,
+            accuracy_percentage: accuracy,
+            correct_attempts: data?.correctMoves || 0,
+            incorrect_attempts: (data?.totalMoves || 0) - (data?.correctMoves || 0),
+            total_attempts: totalAttempts,
+            avg_reaction_time_ms: avgReactionTime,
+            fastest_reaction_time_ms: reactionTimes.length > 0 ? Math.min(...reactionTimes) : null,
+            slowest_reaction_time_ms: reactionTimes.length > 0 ? Math.max(...reactionTimes) : null,
+            help_requests: data?.hintsUsed || 0,
+            error_pattern: data?.errors || null,
+            quit_reason: data?.quitReason,
+            pause_count: data?.pauseCount || 0,
+            session_data: data || {}
+          })
+          .eq('id', sessionId);
+
+        // Trigger cognitive analysis
+        supabase.functions.invoke('cognitive-analysis', {
+          body: { sessionId }
+        }).catch(err => console.error('Analysis error:', err));
+      }
+
+      // SEMPRE atualizar learning_sessions para o usuário
+      // Buscar a sessão de aprendizado mais recente deste usuário para este jogo
+      const { data: learningSession } = await supabase
+        .from('learning_sessions')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('game_type', gameId)
+        .eq('completed', false)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (learningSession) {
+        await supabase
+          .from('learning_sessions')
+          .update({
+            completed: true,
+            session_duration_seconds: durationSeconds,
+            performance_data: {
+              score: data?.score || 0,
+              accuracy: accuracy,
+              correct_moves: data?.correctMoves || 0,
+              total_moves: data?.totalMoves || 0,
+              avg_reaction_time_ms: avgReactionTime,
+              completed_at: completedAt,
+              ...data
+            }
+          })
+          .eq('id', learningSession.id);
+      }
 
       setIsActive(false);
       setSessionId(null);
-
-      supabase.functions.invoke('cognitive-analysis', {
-        body: { sessionId }
-      }).catch(err => console.error('Analysis error:', err));
 
       return { success: true };
     } catch (error: any) {
@@ -308,7 +363,7 @@ export function useGameSession(gameId: string, childProfileId?: string, isTestMo
       });
       return { success: false };
     }
-  }, [sessionId, isActive, toast]);
+  }, [sessionId, isActive, user, gameId, toast]);
 
   const updateSession = useCallback(async (data: SessionData) => {
     // Test mode: skip database operations
