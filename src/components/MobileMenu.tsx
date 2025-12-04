@@ -70,6 +70,7 @@ export function MobileMenu() {
       title: 'Pais',
       items: [
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
+        { title: 'Histórias Sociais', path: '/social-stories', icon: BookOpen },
         { title: 'Microlearning', path: '/training', icon: BookOpen },
         { title: 'Atividades Parent-Child', path: '/parent-child-activities', icon: Users },
         { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
