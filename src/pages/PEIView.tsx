@@ -12,8 +12,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { 
   Brain, Target, Lightbulb, ClipboardCheck, 
-  Plus, Save, TrendingUp, AlertCircle, ArrowLeft 
+  Plus, Save, TrendingUp, AlertCircle, ArrowLeft, FileDown 
 } from 'lucide-react';
+import { generatePEIPdf, getClassificationLabel, getDefaultBNCCSkills } from '@/lib/peiPdfGenerator';
 import { toast } from 'sonner';
 
 interface PEIGoal {
@@ -126,13 +127,51 @@ export default function PEIView() {
     }
   };
 
-  const getStatusLabel = (status: string) => {
+const getStatusLabel = (status: string) => {
     switch (status) {
       case 'active': return 'Em Progresso';
       case 'completed': return 'Concluída';
       case 'pending': return 'Pendente';
       default: return status;
     }
+  };
+
+  const handleExportPDF = () => {
+    const totalScore = goals.length > 0 
+      ? Math.round(goals.reduce((sum, g) => sum + g.progress, 0) / goals.length / 10)
+      : 5;
+
+    // Generate BNCC skills for each goal area
+    const allBnccSkills = goals.flatMap(goal => getDefaultBNCCSkills(goal.area));
+
+    // Generate orientations text based on goals
+    const orientationsText = goals.length > 0
+      ? `O aluno apresenta perfil cognitivo com características específicas nas áreas de ${goals.map(g => g.area).join(', ')}. ` +
+        `Recomenda-se acompanhamento contínuo com foco nas estratégias delineadas neste plano. ` +
+        `Estimule a autonomia e o protagonismo nas atividades propostas, adaptando sempre que necessário às necessidades individuais.`
+      : 'Aguardando definição de metas e objetivos para orientações específicas.';
+
+    generatePEIPdf({
+      studentInfo: {
+        name: patientId || 'Aluno',
+        age: undefined,
+        grade: undefined,
+        shift: undefined,
+        institution: 'NeuroPlay IRB Prime'
+      },
+      classification: getClassificationLabel(totalScore),
+      totalScore,
+      goals: goals as any,
+      accommodations: accommodations as any,
+      strategies: currentPlan?.strategies && Array.isArray(currentPlan.strategies) 
+        ? currentPlan.strategies 
+        : [],
+      orientations: orientationsText,
+      bnccSkills: allBnccSkills,
+      progressNotes: currentPlan?.progress_notes
+    });
+
+    toast.success('PDF do PEI gerado com sucesso!');
   };
 
   if (loading) {
@@ -159,6 +198,10 @@ export default function PEIView() {
             </div>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" onClick={handleExportPDF}>
+              <FileDown className="h-4 w-4 mr-2" />
+              Exportar PDF
+            </Button>
             <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
               {isEditing ? 'Cancelar' : 'Editar PEI'}
             </Button>
