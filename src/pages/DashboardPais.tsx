@@ -157,6 +157,36 @@ export default function DashboardPais() {
     }
   }, [selectedChild]);
 
+  // Realtime subscription for game sessions
+  useEffect(() => {
+    if (!selectedChild) return;
+
+    const channel = supabase
+      .channel('game-sessions-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'game_sessions',
+          filter: `child_profile_id=eq.${selectedChild}`
+        },
+        (payload) => {
+          console.log('Realtime update:', payload);
+          // Reload data when new session is inserted or updated
+          loadChildData(selectedChild);
+          toast.success('Novo progresso detectado!', {
+            description: 'Os dados foram atualizados em tempo real.'
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedChild]);
+
   const loadChildren = async () => {
     try {
       // Load children from child_profiles table (correct table for all app queries)
