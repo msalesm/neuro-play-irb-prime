@@ -108,7 +108,7 @@ export default function TrainingModule() {
 
   if (!started) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-background/95 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-b from-background to-background/95 flex items-center justify-center p-4 pb-24">
         <Card className="max-w-2xl w-full">
           <div className={`h-2 bg-gradient-to-r ${module.color}`} />
           <CardHeader>
@@ -195,7 +195,7 @@ export default function TrainingModule() {
     const passed = score >= 70;
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-background/95 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-b from-background to-background/95 flex items-center justify-center p-4 pb-24">
         <Card className="max-w-2xl w-full">
           <div className={`h-2 bg-gradient-to-r ${module.color}`} />
           <CardHeader>

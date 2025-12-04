@@ -142,7 +142,7 @@ export default function SocialStories() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-secondary/5">
+    <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-secondary/5 pb-24">
       <div className="container max-w-2xl mx-auto px-4 py-6">
         {/* Header */}
         <motion.div 
