@@ -102,6 +102,7 @@ import AccessibilitySettings from "./pages/AccessibilitySettings";
 import SocialStories from "./pages/SocialStories";
 import StoryReader from "./pages/StoryReader";
 import AdminStories from "./pages/AdminStories";
+import AcceptInvite from "./pages/AcceptInvite";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -152,6 +153,7 @@ const App = () => (
                     </Suspense>
                   } />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/aceitar-convite" element={<AcceptInvite />} />
                   <Route path="/cognitive-diagnostic" element={
                     <Suspense fallback={<Loading />}>
                       <CognitiveDiagnostic />
