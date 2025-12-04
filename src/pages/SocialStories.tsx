@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ChevronRight, Drama, Sparkles, Star } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Drama, Sparkles, Star, Crown, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useSocialStories } from '@/hooks/useSocialStories';
@@ -8,32 +8,74 @@ import { useTelemetry } from '@/hooks/useTelemetry';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
-// Import AI-generated illustrations
-import storyBrushingTeeth from '@/assets/story-brushing-teeth.jpg';
-import storyDoctorVisit from '@/assets/story-doctor-visit.jpg';
-import storyMakingFriends from '@/assets/story-making-friends.jpg';
-import storyWashingHands from '@/assets/story-washing-hands.jpg';
+// Import unique illustrations for each story
+import storyTakingBath from '@/assets/story-taking-bath.jpg';
+import storyBrushingTeeth from '@/assets/story-brushing-teeth-new.jpg';
+import storyAskingHelp from '@/assets/story-asking-help.jpg';
+import storyPackingBackpack from '@/assets/story-packing-backpack.jpg';
+import storyWashingHands from '@/assets/story-washing-hands-new.jpg';
 
-// Default illustrations for stories without cover images
-const defaultIllustrations = [
-  { image: storyBrushingTeeth, keywords: ['dente', 'escovar', 'escova', 'higiene bucal'] },
-  { image: storyDoctorVisit, keywords: ['médico', 'doutor', 'hospital', 'consulta', 'pediatra'] },
-  { image: storyMakingFriends, keywords: ['amigo', 'amizade', 'brincar', 'criança', 'escola'] },
-  { image: storyWashingHands, keywords: ['mão', 'lavar', 'sabão', 'higiene'] },
-];
-
-const getDefaultIllustration = (title: string, index: number): string => {
-  const lowerTitle = title.toLowerCase();
-  
-  // Try to match by keywords
-  for (const illustration of defaultIllustrations) {
-    if (illustration.keywords.some(keyword => lowerTitle.includes(keyword))) {
-      return illustration.image;
-    }
+// Story configurations with illustrations and styling
+const storyConfigs: Record<string, {
+  image: string;
+  isHighlighted: boolean;
+  gradient: string;
+  badge: string;
+  badgeIcon: 'star' | 'crown' | 'heart';
+}> = {
+  'Como tomar banho': {
+    image: storyTakingBath,
+    isHighlighted: true,
+    gradient: 'from-blue-500/20 via-cyan-500/10 to-transparent',
+    badge: 'Essencial',
+    badgeIcon: 'crown'
+  },
+  'Como escovar os dentes': {
+    image: storyBrushingTeeth,
+    isHighlighted: true,
+    gradient: 'from-pink-500/20 via-rose-500/10 to-transparent',
+    badge: 'Importante',
+    badgeIcon: 'heart'
+  },
+  'Como pedir ajuda': {
+    image: storyAskingHelp,
+    isHighlighted: true,
+    gradient: 'from-amber-500/20 via-orange-500/10 to-transparent',
+    badge: 'Fundamental',
+    badgeIcon: 'star'
+  },
+  'Como arrumar a mochila': {
+    image: storyPackingBackpack,
+    isHighlighted: false,
+    gradient: 'from-primary/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'star'
+  },
+  'Como lavar as mãos': {
+    image: storyWashingHands,
+    isHighlighted: false,
+    gradient: 'from-primary/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'star'
   }
-  
-  // Fallback to cycle through illustrations
-  return defaultIllustrations[index % defaultIllustrations.length].image;
+};
+
+const getStoryConfig = (title: string) => {
+  return storyConfigs[title] || {
+    image: storyTakingBath,
+    isHighlighted: false,
+    gradient: 'from-primary/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'star' as const
+  };
+};
+
+const BadgeIcon = ({ type }: { type: 'star' | 'crown' | 'heart' }) => {
+  switch (type) {
+    case 'crown': return <Crown className="h-3 w-3" />;
+    case 'heart': return <Heart className="h-3 w-3" />;
+    default: return <Star className="h-3 w-3" />;
+  }
 };
 
 export default function SocialStories() {
@@ -89,6 +131,15 @@ export default function SocialStories() {
       }
     }
   };
+
+  // Sort stories to show highlighted ones first
+  const sortedStories = [...stories].sort((a, b) => {
+    const configA = getStoryConfig(a.title);
+    const configB = getStoryConfig(b.title);
+    if (configA.isHighlighted && !configB.isHighlighted) return -1;
+    if (!configA.isHighlighted && configB.isHighlighted) return 1;
+    return 0;
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-secondary/5">
@@ -154,7 +205,7 @@ export default function SocialStories() {
             initial="hidden"
             animate="visible"
           >
-            {stories.length === 0 ? (
+            {sortedStories.length === 0 ? (
               <motion.div variants={cardVariants}>
                 <Card className="bg-gradient-to-br from-primary/5 to-secondary/5">
                   <CardContent className="p-8 text-center">
@@ -165,78 +216,111 @@ export default function SocialStories() {
                 </Card>
               </motion.div>
             ) : (
-              stories.map((story, index) => (
-                <motion.div
-                  key={story.id}
-                  variants={cardVariants}
-                  whileHover={{ scale: 1.02, y: -6 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Card 
-                    className="cursor-pointer overflow-hidden border-2 border-transparent hover:border-primary/40 transition-all duration-300 shadow-lg hover:shadow-2xl group"
-                    onClick={() => handleStoryClick(story.id)}
+              sortedStories.map((story) => {
+                const config = getStoryConfig(story.title);
+                
+                return (
+                  <motion.div
+                    key={story.id}
+                    variants={cardVariants}
+                    whileHover={{ scale: 1.02, y: -6 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <CardContent className="p-0">
-                      <div className="flex">
-                        {/* Illustration */}
-                        <motion.div 
-                          className="h-36 w-36 md:h-40 md:w-40 flex-shrink-0 relative overflow-hidden"
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <img 
-                            src={story.cover_image_url || getDefaultIllustration(story.title, index)} 
-                            alt={story.title}
-                            className="h-full w-full object-cover"
-                          />
-                          {/* Shimmer overlay on hover */}
+                    <Card 
+                      className={`cursor-pointer overflow-hidden transition-all duration-300 shadow-lg hover:shadow-2xl group ${
+                        config.isHighlighted 
+                          ? 'border-2 border-primary/50 hover:border-primary ring-2 ring-primary/20' 
+                          : 'border-2 border-transparent hover:border-primary/40'
+                      }`}
+                      onClick={() => handleStoryClick(story.id)}
+                    >
+                      <CardContent className="p-0">
+                        <div className={`flex bg-gradient-to-r ${config.gradient}`}>
+                          {/* Illustration */}
                           <motion.div 
-                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100"
-                            variants={shimmerVariants}
-                            initial="initial"
-                            whileHover="animate"
-                          />
-                          {/* Badge */}
-                          <div className="absolute top-2 left-2 bg-primary/90 text-primary-foreground text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                            <Star className="h-3 w-3" />
-                            <span>Novo</span>
-                          </div>
-                        </motion.div>
-                        
-                        {/* Story Info */}
-                        <div className="flex-1 p-4 flex flex-col justify-between">
-                          <div>
-                            <h3 className="font-bold text-lg text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                              {story.title}
-                            </h3>
-                            {story.description && (
-                              <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
-                                {story.description}
-                              </p>
-                            )}
-                          </div>
-                          
-                          <div className="flex items-center justify-between mt-3">
-                            <span className="text-xs bg-gradient-to-r from-primary/20 to-secondary/20 text-primary px-3 py-1.5 rounded-full font-medium flex items-center gap-1">
-                              <Sparkles className="h-3 w-3" />
-                              História Guiada
-                            </span>
+                            className={`flex-shrink-0 relative overflow-hidden ${
+                              config.isHighlighted ? 'h-40 w-40 md:h-48 md:w-48' : 'h-36 w-36 md:h-40 md:w-40'
+                            }`}
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <img 
+                              src={config.image} 
+                              alt={story.title}
+                              className="h-full w-full object-cover"
+                            />
+                            {/* Shimmer overlay on hover */}
+                            <motion.div 
+                              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 group-hover:opacity-100"
+                              variants={shimmerVariants}
+                              initial="initial"
+                              whileHover="animate"
+                            />
+                            {/* Badge */}
+                            <div className={`absolute top-2 left-2 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 ${
+                              config.isHighlighted 
+                                ? 'bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg' 
+                                : 'bg-primary/90 text-primary-foreground'
+                            }`}>
+                              <BadgeIcon type={config.badgeIcon} />
+                              <span>{config.badge}</span>
+                            </div>
                             
-                            <motion.div
-                              className="flex items-center gap-1 text-primary font-medium text-sm"
-                              whileHover={{ x: 5 }}
-                              transition={{ type: "spring", stiffness: 300 }}
-                            >
-                              <span className="hidden sm:inline">Começar</span>
-                              <ChevronRight className="h-5 w-5" />
-                            </motion.div>
+                            {/* Highlighted indicator */}
+                            {config.isHighlighted && (
+                              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary animate-pulse" />
+                            )}
+                          </motion.div>
+                          
+                          {/* Story Info */}
+                          <div className="flex-1 p-4 flex flex-col justify-between">
+                            <div>
+                              <h3 className={`font-bold text-foreground line-clamp-2 group-hover:text-primary transition-colors ${
+                                config.isHighlighted ? 'text-xl' : 'text-lg'
+                              }`}>
+                                {story.title}
+                              </h3>
+                              {story.description && (
+                                <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
+                                  {story.description}
+                                </p>
+                              )}
+                              
+                              {/* Highlighted story extra info */}
+                              {config.isHighlighted && (
+                                <div className="mt-2 flex items-center gap-1 text-xs text-primary font-medium">
+                                  <Sparkles className="h-3 w-3" />
+                                  <span>História recomendada</span>
+                                </div>
+                              )}
+                            </div>
+                            
+                            <div className="flex items-center justify-between mt-3">
+                              <span className={`text-xs px-3 py-1.5 rounded-full font-medium flex items-center gap-1 ${
+                                config.isHighlighted 
+                                  ? 'bg-gradient-to-r from-primary/30 to-secondary/30 text-primary' 
+                                  : 'bg-gradient-to-r from-primary/20 to-secondary/20 text-primary'
+                              }`}>
+                                <Sparkles className="h-3 w-3" />
+                                História Guiada
+                              </span>
+                              
+                              <motion.div
+                                className="flex items-center gap-1 text-primary font-medium text-sm"
+                                whileHover={{ x: 5 }}
+                                transition={{ type: "spring", stiffness: 300 }}
+                              >
+                                <span className="hidden sm:inline">Começar</span>
+                                <ChevronRight className="h-5 w-5" />
+                              </motion.div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })
             )}
           </motion.div>
         )}
