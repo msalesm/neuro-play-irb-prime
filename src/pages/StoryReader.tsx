@@ -9,6 +9,7 @@ import { useTelemetry } from '@/hooks/useTelemetry';
 import { useAccessibility } from '@/contexts/AccessibilityContext';
 import { Skeleton } from '@/components/ui/skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getStepImage } from '@/lib/storyStepImages';
 
 export default function StoryReader() {
   const { storyId } = useParams<{ storyId: string }>();
@@ -172,19 +173,25 @@ export default function StoryReader() {
               <Card className="overflow-hidden">
                 {/* Image */}
                 <div className="aspect-video bg-muted flex items-center justify-center">
-                  {currentStep.image_url ? (
-                    <img
-                      src={currentStep.image_url}
-                      alt={currentStep.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="text-center p-8">
-                      <div className="text-8xl mb-4">
-                        {getStepEmoji(currentStepIndex)}
+                  {(() => {
+                    const imageUrl = currentStep.image_url || getStepImage(storyId!, currentStepIndex);
+                    if (imageUrl) {
+                      return (
+                        <img
+                          src={imageUrl}
+                          alt={currentStep.title}
+                          className="w-full h-full object-cover"
+                        />
+                      );
+                    }
+                    return (
+                      <div className="text-center p-8">
+                        <div className="text-8xl mb-4">
+                          {getStepEmoji(currentStepIndex)}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    );
+                  })()}
                 </div>
 
                 {/* Text Content */}
