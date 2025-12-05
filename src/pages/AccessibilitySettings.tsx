@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Settings, Eye, Hand, Volume2, Brain, Timer } from 'lucide-react';
+import { ArrowLeft, Settings, Eye, Hand, Volume2, Brain, Timer, Palette, Focus, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -38,7 +38,7 @@ export default function AccessibilitySettings() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-24">
       <div className="container max-w-2xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
@@ -148,6 +148,128 @@ export default function AccessibilitySettings() {
           </CardContent>
         </Card>
 
+        {/* Color Blindness Settings */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Palette className="h-5 w-5" />
+              Daltonismo
+            </CardTitle>
+            <CardDescription>
+              Adapta as cores para diferentes tipos de daltonismo
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Modo de Cor</Label>
+              <Select
+                value={profile.colorBlindMode || 'none'}
+                onValueChange={(value: 'none' | 'deuteranopia' | 'protanopia' | 'tritanopia') => 
+                  updateProfile({ colorBlindMode: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">Normal</SelectItem>
+                  <SelectItem value="deuteranopia">Deuteranopia (vermelho-verde)</SelectItem>
+                  <SelectItem value="protanopia">Protanopia (vermelho)</SelectItem>
+                  <SelectItem value="tritanopia">Tritanopia (azul-amarelo)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Sensory Settings */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Focus className="h-5 w-5" />
+              Sensorial e Foco
+            </CardTitle>
+            <CardDescription>
+              Configurações para sensibilidade sensorial e concentração
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Low Stimulation */}
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Baixa Estimulação</Label>
+                <p className="text-sm text-muted-foreground">Cores suaves e interface calma</p>
+              </div>
+              <Switch
+                checked={profile.lowStimulation || false}
+                onCheckedChange={(checked) => updateProfile({ lowStimulation: checked })}
+              />
+            </div>
+
+            {/* Focus Mode */}
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Modo Foco</Label>
+                <p className="text-sm text-muted-foreground">Remove decorações e distrações</p>
+              </div>
+              <Switch
+                checked={profile.focusMode || false}
+                onCheckedChange={(checked) => updateProfile({ focusMode: checked })}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Reading Settings */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BookOpen className="h-5 w-5" />
+              Leitura (Dislexia)
+            </CardTitle>
+            <CardDescription>
+              Configurações otimizadas para facilitar a leitura
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Reading Mode */}
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Modo Leitura</Label>
+                <p className="text-sm text-muted-foreground">Fonte e espaçamento otimizados</p>
+              </div>
+              <Switch
+                checked={profile.readingMode || false}
+                onCheckedChange={(checked) => updateProfile({ readingMode: checked })}
+              />
+            </div>
+
+            {/* Line Spacing */}
+            <div className="space-y-2">
+              <Label>Espaçamento entre Linhas: {(profile.lineSpacing || 1.5).toFixed(1)}</Label>
+              <Slider
+                value={[profile.lineSpacing || 1.5]}
+                min={1.0}
+                max={2.5}
+                step={0.1}
+                onValueChange={([value]) => updateProfile({ lineSpacing: value })}
+              />
+            </div>
+
+            {/* Letter Spacing */}
+            <div className="space-y-2">
+              <Label>Espaçamento entre Letras: {((profile.letterSpacing || 0) * 100).toFixed(0)}%</Label>
+              <Slider
+                value={[(profile.letterSpacing || 0) * 100]}
+                min={0}
+                max={20}
+                step={1}
+                onValueChange={([value]) => updateProfile({ letterSpacing: value / 100 })}
+              />
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Motor Settings */}
         <Card className="mb-6">
           <CardHeader>
@@ -194,6 +316,18 @@ export default function AccessibilitySettings() {
                 onCheckedChange={(checked) => 
                   updateProfile({ captions: { ...profile.captions, enabled: checked } })
                 }
+              />
+            </div>
+
+            {/* Soft Sounds */}
+            <div className="flex items-center justify-between">
+              <div>
+                <Label>Sons Suaves</Label>
+                <p className="text-sm text-muted-foreground">Reduz volume e intensidade dos sons</p>
+              </div>
+              <Switch
+                checked={profile.softSounds || false}
+                onCheckedChange={(checked) => updateProfile({ softSounds: checked })}
               />
             </div>
           </CardContent>
@@ -255,9 +389,11 @@ export default function AccessibilitySettings() {
               style={{ 
                 fontSize: `${profile.fontScale}rem`,
                 filter: profile.highContrast ? 'contrast(1.6) brightness(1.1)' : 'none',
+                lineHeight: profile.lineSpacing || 1.5,
+                letterSpacing: `${profile.letterSpacing || 0}em`,
               }}
             >
-              <p className="mb-4">Este é um texto de exemplo para visualizar suas configurações.</p>
+              <p className="mb-4">Este é um texto de exemplo para visualizar suas configurações de acessibilidade.</p>
               <Button 
                 style={{ 
                   minHeight: `${profile.touchTargetSizePx}px`,

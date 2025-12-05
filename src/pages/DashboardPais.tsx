@@ -220,15 +220,43 @@ export default function DashboardPais() {
     try {
       console.log('[Dashboard] Loading children for user:', user?.id);
       
-      // Load children from child_profiles table (correct table for all app queries)
+      // Use unified function to get children from both tables
       const { data: childrenData, error } = await supabase
-        .from('child_profiles')
-        .select('id, name, date_of_birth, diagnosed_conditions')
-        .eq('parent_user_id', user?.id);
+        .rpc('get_user_children', { _user_id: user?.id });
 
       if (error) {
         console.error('Error loading children:', error?.message || error);
-        toast.error(`Erro ao carregar perfis das crianças: ${error?.message || 'erro desconhecido'}`);
+        // Fallback to direct query if RPC fails
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from('child_profiles')
+          .select('id, name, date_of_birth, diagnosed_conditions')
+          .eq('parent_user_id', user?.id);
+        
+        if (fallbackError) {
+          toast.error(`Erro ao carregar perfis das crianças: ${fallbackError?.message || 'erro desconhecido'}`);
+          setLoading(false);
+          return;
+        }
+        
+        if (fallbackData && fallbackData.length > 0) {
+          const childProfiles: ChildProfile[] = fallbackData.map((child: any) => {
+            let calculatedAge = 0;
+            if (child.date_of_birth) {
+              const birthDate = new Date(child.date_of_birth);
+              const today = new Date();
+              calculatedAge = today.getFullYear() - birthDate.getFullYear();
+            }
+            return {
+              id: child.id,
+              name: child.name || 'Sem nome',
+              age: calculatedAge,
+              profile: child.diagnosed_conditions?.[0],
+              avatar_url: undefined
+            };
+          });
+          setChildren(childProfiles);
+          setSelectedChild(childProfiles[0].id);
+        }
         setLoading(false);
         return;
       }
@@ -237,10 +265,9 @@ export default function DashboardPais() {
 
       if (childrenData && childrenData.length > 0) {
         const childProfiles: ChildProfile[] = childrenData.map((child: any) => {
-          // Calculate age from date_of_birth
           let calculatedAge = 0;
-          if (child.date_of_birth) {
-            const birthDate = new Date(child.date_of_birth);
+          if (child.birth_date) {
+            const birthDate = new Date(child.birth_date);
             const today = new Date();
             calculatedAge = today.getFullYear() - birthDate.getFullYear();
           }
@@ -249,15 +276,16 @@ export default function DashboardPais() {
             id: child.id,
             name: child.name || 'Sem nome',
             age: calculatedAge,
-            profile: child.diagnosed_conditions?.[0],
-            avatar_url: undefined // child_profiles doesn't store avatar_url directly
+            profile: Array.isArray(child.neurodevelopmental_conditions) 
+              ? child.neurodevelopmental_conditions[0] 
+              : undefined,
+            avatar_url: child.avatar_url
           };
         });
         setChildren(childProfiles);
         setSelectedChild(childProfiles[0].id);
         setLoading(false);
       } else {
-        // Sem perfil de criança - carregar learning_sessions do usuário diretamente
         console.log('[Dashboard] No children, loading user learning sessions...');
         await loadUserLearningSessions();
         setLoading(false);
