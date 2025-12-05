@@ -58,7 +58,7 @@ export function AccessibilityToolbar() {
 
   return (
     <TooltipProvider>
-      <div className="fixed bottom-24 left-4 z-[9990] md:bottom-4 md:right-4 md:left-auto">
+      <div className="fixed top-4 right-4 z-40 md:bottom-4 md:top-auto">
         {/* Toggle Button */}
         <Tooltip>
           <TooltipTrigger asChild>
