@@ -65,6 +65,9 @@ const defaultProfile: AccessibilityProfile = {
   colorBlindMode: 'none',
   lowStimulation: false,
   focusMode: false,
+  simplifiedLanguage: false,
+  extendedTime: false,
+  visualCues: false,
 };
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);

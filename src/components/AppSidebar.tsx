@@ -95,6 +95,11 @@ export function AppSidebar() {
       icon: Home,
     },
     {
+      title: 'Relatórios Inteligentes',
+      path: '/reports',
+      icon: BarChart3,
+    },
+    {
       title: 'Microlearning',
       path: '/training',
       icon: BookOpen,
@@ -119,7 +124,12 @@ export function AppSidebar() {
       icon: Users,
     },
     {
-      title: 'Relatórios',
+      title: 'Relatórios Inteligentes',
+      path: '/reports',
+      icon: BarChart3,
+    },
+    {
+      title: 'Relatórios Clínicos',
       path: '/clinical',
       icon: FileText,
     },
@@ -141,6 +151,11 @@ export function AppSidebar() {
       title: 'Turmas',
       path: '/teacher/classes',
       icon: School,
+    },
+    {
+      title: 'Relatórios Pedagógicos',
+      path: '/reports',
+      icon: BarChart3,
     },
     {
       title: 'PEI Escolar',

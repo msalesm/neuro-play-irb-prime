@@ -104,6 +104,7 @@ import StoryReader from "./pages/StoryReader";
 import AdminStories from "./pages/AdminStories";
 import AcceptInvite from "./pages/AcceptInvite";
 import RelationshipsManager from "./pages/admin/RelationshipsManager";
+import IntelligentReports from "./pages/IntelligentReports";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -286,6 +287,10 @@ const App = () => (
           <Route path="/stories" element={<SocialStories />} />
           <Route path="/stories/:storyId" element={<StoryReader />} />
           <Route path="/admin/stories" element={<AdminStories />} />
+          
+          {/* Relatórios Inteligentes */}
+          <Route path="/reports" element={<IntelligentReports />} />
+          <Route path="/relatorios" element={<IntelligentReports />} />
                   
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
