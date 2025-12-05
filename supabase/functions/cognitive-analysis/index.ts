@@ -35,17 +35,68 @@ serve(async (req) => {
   }
 
   try {
+    // Authentication check
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: 'Missing authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+    const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabaseAuth = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: { headers: { Authorization: authHeader } }
+    });
+
+    const { data: { user }, error: authError } = await supabaseAuth.auth.getUser();
+    if (authError || !user) {
+      console.error('Auth error:', authError);
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('Authenticated user:', user.id);
+
     const { performanceData, userAge, userProfile }: AnalysisRequest = await req.json();
     
+    // Input validation
+    if (!performanceData || !Array.isArray(performanceData) || performanceData.length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'No performance data provided' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (performanceData.length > 100) {
+      return new Response(
+        JSON.stringify({ error: 'Performance data exceeds maximum limit (100 entries)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (userAge !== undefined && (typeof userAge !== 'number' || userAge < 3 || userAge > 99)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid user age (must be between 3 and 99)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (userProfile && (typeof userProfile !== 'string' || userProfile.length > 1000)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid user profile (max 1000 characters)' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     console.log('Starting cognitive analysis:', {
       gamesCount: performanceData?.length,
       userAge,
       userProfile
     });
-
-    if (!performanceData || performanceData.length === 0) {
-      throw new Error('Performance data is required');
-    }
 
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
