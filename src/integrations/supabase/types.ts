@@ -273,6 +273,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       behavioral_insights: {
@@ -407,6 +414,8 @@ export type Database = {
       child_access: {
         Row: {
           access_level: string
+          approval_status: string | null
+          approved_at: string | null
           child_id: string
           expires_at: string | null
           granted_at: string | null
@@ -417,6 +426,8 @@ export type Database = {
         }
         Insert: {
           access_level: string
+          approval_status?: string | null
+          approved_at?: string | null
           child_id: string
           expires_at?: string | null
           granted_at?: string | null
@@ -427,6 +438,8 @@ export type Database = {
         }
         Update: {
           access_level?: string
+          approval_status?: string | null
+          approved_at?: string | null
           child_id?: string
           expires_at?: string | null
           granted_at?: string | null
@@ -465,10 +478,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "child_access_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "child_access_professional_id_fkey"
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "child_access_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -572,6 +599,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "children_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       class_students: {
@@ -630,6 +664,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "school_classes"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_students_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_relationships"
+            referencedColumns: ["class_id"]
           },
         ]
       }
@@ -886,6 +927,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_consents_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1997,7 +2045,35 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "children_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      public_profiles: {
+        Row: {
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          role: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          role?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          role?: string | null
+        }
+        Relationships: []
       }
       teacher_student_relationships: {
         Row: {
@@ -2031,13 +2107,6 @@ export type Database = {
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "class_students_class_id_fkey"
-            columns: ["class_id"]
-            isOneToOne: false
-            referencedRelation: "school_classes"
             referencedColumns: ["id"]
           },
         ]
@@ -2082,6 +2151,13 @@ export type Database = {
             columns: ["therapist_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "child_access_professional_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -2183,6 +2259,22 @@ export type Database = {
       professional_has_child_access: {
         Args: { _child_id: string; _user_id: string }
         Returns: boolean
+      }
+      search_children_for_linking: {
+        Args: { search_name: string }
+        Returns: {
+          birth_year: number
+          id: string
+          name: string
+        }[]
+      }
+      validate_invitation_code: {
+        Args: { p_code: string }
+        Returns: {
+          expires_at: string
+          invite_type: string
+          valid: boolean
+        }[]
       }
     }
     Enums: {
