@@ -1,13 +1,15 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.d98addd99b3b410c900bc8de6e51b25e',
-  appName: 'NeuroPlay IRB Prime',
+  appId: 'com.irbprime.neuroplay',
+  appName: 'NeuroPlay',
   webDir: 'dist',
-  server: {
-    url: 'https://d98addd9-9b3b-410c-900b-c8de6e51b25e.lovableproject.com?forceHideBadge=true',
-    cleartext: true
-  },
+  // For production: remove server block or leave url empty
+  // For development: uncomment to enable hot-reload
+  // server: {
+  //   url: 'https://d98addd9-9b3b-410c-900b-c8de6e51b25e.lovableproject.com?forceHideBadge=true',
+  //   cleartext: true
+  // },
   plugins: {
     SplashScreen: {
       launchShowDuration: 2000,
@@ -28,7 +30,7 @@ const config: CapacitorConfig = {
       keystorePassword: undefined,
       keystoreAlias: undefined,
       keystoreAliasPassword: undefined,
-      releaseType: 'APK'
+      releaseType: 'AAB' // Required for Google Play
     }
   }
 };
