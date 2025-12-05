@@ -1,4 +1,1 @@
 project_id = "wzazjftrtakwugdgfcko"
-
-[functions.generate-clinical-report]
-verify_jwt = false
