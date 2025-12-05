@@ -2104,6 +2104,19 @@ export type Database = {
           role: string
         }[]
       }
+      get_user_children: {
+        Args: { _user_id: string }
+        Returns: {
+          avatar_url: string
+          birth_date: string
+          id: string
+          is_active: boolean
+          name: string
+          neurodevelopmental_conditions: Json
+          parent_id: string
+          source_table: string
+        }[]
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]

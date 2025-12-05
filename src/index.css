@@ -306,3 +306,174 @@ All colors MUST be HSL.
     }
   }
 }
+
+/* =====================================================
+   Sprint 8: Advanced Accessibility Modes
+   ===================================================== */
+
+/* Color Blind Modes - Deuteranopia (red-green) */
+.colorblind-deuteranopia {
+  --primary: 210 80% 50%;
+  --secondary: 45 90% 55%;
+  --accent: 30 85% 60%;
+  --destructive: 210 100% 40%;
+  --tdah-primary: 45 90% 55%;
+  --tea-primary: 210 80% 50%;
+  filter: url('#deuteranopia-filter');
+}
+
+/* Color Blind Modes - Protanopia */
+.colorblind-protanopia {
+  --primary: 220 75% 55%;
+  --secondary: 50 85% 50%;
+  --accent: 40 80% 55%;
+  --destructive: 220 90% 45%;
+  --tdah-primary: 50 85% 50%;
+  --tea-primary: 220 75% 55%;
+  filter: url('#protanopia-filter');
+}
+
+/* Color Blind Modes - Tritanopia */
+.colorblind-tritanopia {
+  --primary: 0 70% 55%;
+  --secondary: 180 65% 50%;
+  --accent: 15 75% 60%;
+  --destructive: 350 85% 55%;
+  filter: url('#tritanopia-filter');
+}
+
+/* Low Stimulation Mode - Muted colors, calm interface */
+.low-stimulation {
+  --background: 40 15% 98%;
+  --foreground: 40 10% 25%;
+  --primary: 40 20% 45%;
+  --secondary: 40 15% 55%;
+  --accent: 40 25% 60%;
+  --muted: 40 10% 90%;
+  --muted-foreground: 40 15% 50%;
+  --card: 40 15% 99%;
+  --border: 40 10% 85%;
+  
+  /* Reduce all saturations */
+  --tdah-primary: 25 40% 55%;
+  --tea-primary: 250 25% 55%;
+  --dislexia-primary: 150 35% 50%;
+  
+  /* Softer shadows */
+  --shadow-soft: 0 2px 8px hsla(40, 10%, 30%, 0.05);
+  --shadow-medium: 0 4px 12px hsla(40, 10%, 30%, 0.08);
+}
+
+.low-stimulation * {
+  transition-duration: 0.5s !important;
+}
+
+/* Focus Mode - Minimal distractions */
+.focus-mode {
+  --shadow-soft: none;
+  --shadow-medium: none;
+  --shadow-card: none;
+  --shadow-glow: none;
+}
+
+.focus-mode .decorative,
+.focus-mode [data-decorative="true"],
+.focus-mode .animate-pulse,
+.focus-mode .animate-bounce {
+  display: none !important;
+}
+
+.focus-mode *:not(:focus):not(:hover) {
+  box-shadow: none !important;
+}
+
+/* Reading Mode - Optimized for dyslexia and reading difficulties */
+.reading-mode {
+  --font-body: 'OpenDyslexic', 'Comic Sans MS', 'Verdana', sans-serif;
+  line-height: var(--line-spacing, 1.8);
+  letter-spacing: var(--letter-spacing, 0.05em);
+  word-spacing: 0.15em;
+}
+
+.reading-mode p,
+.reading-mode span,
+.reading-mode li,
+.reading-mode td {
+  font-family: var(--font-body);
+  line-height: var(--line-spacing, 1.8);
+  letter-spacing: var(--letter-spacing, 0.05em);
+}
+
+/* High Contrast Mode - Enhanced */
+.high-contrast {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 5%;
+  --card-foreground: 0 0% 100%;
+  --primary: 60 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 180 100% 50%;
+  --secondary-foreground: 0 0% 0%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 85%;
+  --border: 0 0% 40%;
+  --accent: 300 100% 60%;
+  --destructive: 0 100% 50%;
+}
+
+.high-contrast * {
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Reduced Motion - Global */
+[data-reduced-motion="true"] *,
+[data-reduced-motion="true"] *::before,
+[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Spacious UI Density */
+[data-ui-density="spacious"] {
+  --radius: 1rem;
+}
+
+[data-ui-density="spacious"] .gap-2 {
+  gap: 1rem;
+}
+
+[data-ui-density="spacious"] .gap-4 {
+  gap: 1.5rem;
+}
+
+[data-ui-density="spacious"] .p-4 {
+  padding: 1.5rem;
+}
+
+[data-ui-density="spacious"] .p-6 {
+  padding: 2rem;
+}
+
+/* Touch Target Size - Applied via CSS variable */
+button,
+[role="button"],
+a,
+input[type="checkbox"],
+input[type="radio"],
+select {
+  min-height: var(--touch-target, 44px);
+  min-width: var(--touch-target, 44px);
+}
+
+/* Font Scale - Applied via CSS variable */
+html {
+  font-size: calc(16px * var(--font-scale, 1));
+}
+
+/* SVG Filters for Color Blindness */
+svg.accessibility-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+}

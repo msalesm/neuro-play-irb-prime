@@ -22,6 +22,19 @@ export interface AccessibilityProfile {
     defaultMs: number;
   };
   inputMode?: string;
+  // Sprint 8: Advanced Accessibility
+  colorBlindMode?: 'none' | 'deuteranopia' | 'protanopia' | 'tritanopia';
+  readingMode?: boolean;
+  lineSpacing?: number;
+  letterSpacing?: number;
+  lowStimulation?: boolean;
+  mutedColors?: boolean;
+  softSounds?: boolean;
+  focusMode?: boolean;
+  hideDecorations?: boolean;
+  extendedTime?: boolean;
+  visualCues?: boolean;
+  simplifiedLanguage?: boolean;
 }
 
 interface AccessibilityPreset {
@@ -49,6 +62,9 @@ const defaultProfile: AccessibilityProfile = {
   touchTargetSizePx: 44,
   captions: { enabled: false, language: 'pt-BR' },
   hints: { showInlineHints: true, hintMode: 'normal' },
+  colorBlindMode: 'none',
+  lowStimulation: false,
+  focusMode: false,
 };
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
@@ -66,11 +82,41 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     
     root.style.setProperty('--font-scale', String(p.fontScale));
     root.style.setProperty('--touch-target', `${p.touchTargetSizePx}px`);
+    root.style.setProperty('--line-spacing', String(p.lineSpacing || 1.5));
+    root.style.setProperty('--letter-spacing', `${p.letterSpacing || 0}em`);
     
+    // High contrast mode
     if (p.highContrast) {
       root.classList.add('high-contrast');
     } else {
       root.classList.remove('high-contrast');
+    }
+    
+    // Color blind modes
+    root.classList.remove('colorblind-deuteranopia', 'colorblind-protanopia', 'colorblind-tritanopia');
+    if (p.colorBlindMode && p.colorBlindMode !== 'none') {
+      root.classList.add(`colorblind-${p.colorBlindMode}`);
+    }
+    
+    // Low stimulation mode
+    if (p.lowStimulation) {
+      root.classList.add('low-stimulation');
+    } else {
+      root.classList.remove('low-stimulation');
+    }
+    
+    // Focus mode
+    if (p.focusMode) {
+      root.classList.add('focus-mode');
+    } else {
+      root.classList.remove('focus-mode');
+    }
+    
+    // Reading mode
+    if (p.readingMode) {
+      root.classList.add('reading-mode');
+    } else {
+      root.classList.remove('reading-mode');
     }
     
     root.setAttribute('data-reduced-motion', String(p.reducedMotion));
