@@ -45,7 +45,7 @@ export function validateReportRequest(data: any, authenticatedUserId: string): V
   }
 
   // Validate reportType
-  const validTypes = ['behavioral', 'comprehensive', 'progress'];
+  const validTypes = ['behavioral', 'comprehensive', 'progress', 'clinical', 'pedagogical', 'familiar'];
   if (!data.reportType || typeof data.reportType !== 'string') {
     errors.push({ field: 'reportType', message: 'Report type is required' });
   } else if (!validTypes.includes(data.reportType)) {
