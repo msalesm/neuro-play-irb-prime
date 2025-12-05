@@ -2144,6 +2144,15 @@ export type Database = {
         Args: { _child_id: string; _user_id: string }
         Returns: boolean
       }
+      log_audit_event: {
+        Args: {
+          p_action: string
+          p_resource_id?: string
+          p_resource_type: string
+          p_user_agent?: string
+        }
+        Returns: undefined
+      }
       professional_has_child_access: {
         Args: { _child_id: string; _user_id: string }
         Returns: boolean
