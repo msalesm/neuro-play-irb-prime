@@ -40,10 +40,39 @@ serve(async (req) => {
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const lovableApiKey = Deno.env.get('LOVABLE_API_KEY')!;
     
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // ============ SECURITY: Validate Authentication ============
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error('[Recommendations] Missing authorization header');
+      return new Response(
+        JSON.stringify({ error: 'Missing authorization header' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Create authenticated client to verify user
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+
+    const { data: { user }, error: authError } = await supabaseAuth.auth.getUser();
+    if (authError || !user) {
+      console.error('[Recommendations] Auth error:', authError);
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('[Recommendations] Authenticated user:', user.id);
+    // ============ END SECURITY ============
+
+    // Service role client for data operations
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
     
     const { child_profile_id } = await req.json();
     
@@ -53,6 +82,29 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    // ============ SECURITY: Verify user has access to this child profile ============
+    const { data: hasAccess, error: accessError } = await supabase
+      .rpc('has_child_access', { _user_id: user.id, _child_id: child_profile_id });
+
+    if (accessError) {
+      console.error('[Recommendations] Access check error:', accessError);
+      return new Response(
+        JSON.stringify({ error: 'Failed to verify access' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!hasAccess) {
+      console.error('[Recommendations] User does not have access to child profile:', child_profile_id);
+      return new Response(
+        JSON.stringify({ error: 'Access denied to this child profile' }),
+        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('[Recommendations] Access verified for child:', child_profile_id);
+    // ============ END SECURITY ============
 
     console.log('[Recommendations] Starting generation for child:', child_profile_id);
 
