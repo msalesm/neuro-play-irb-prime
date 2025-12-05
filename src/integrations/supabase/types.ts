@@ -2132,6 +2132,33 @@ export type Database = {
         }
         Returns: boolean
       }
+      insert_behavioral_insight: {
+        Args: {
+          p_child_profile_id?: string
+          p_description: string
+          p_insight_type: string
+          p_severity?: string
+          p_supporting_data?: Json
+          p_title: string
+          p_user_id: string
+        }
+        Returns: string
+      }
+      insert_clinical_report: {
+        Args: {
+          p_alert_flags?: Json
+          p_detailed_analysis?: Json
+          p_generated_by_ai?: boolean
+          p_intervention_recommendations?: Json
+          p_progress_indicators?: Json
+          p_report_period_end: string
+          p_report_period_start: string
+          p_report_type: string
+          p_summary_insights?: string
+          p_user_id: string
+        }
+        Returns: string
+      }
       is_parent_of: {
         Args: { _child_id: string; _user_id: string }
         Returns: boolean
