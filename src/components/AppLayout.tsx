@@ -14,6 +14,7 @@ import {
   HighVisibilityMode,
   SensoryReducedMode
 } from '@/components/accessibility';
+import { FloatingAIAssistant } from '@/components/ai/FloatingAIAssistant';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -53,6 +54,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             <BottomNavigation />
             <MobileTour />
             <AccessibilityQuickPanel />
+            <FloatingAIAssistant />
           </div>
         </KeyboardNavigationProvider>
       </VisualNotificationProvider>
@@ -108,6 +110,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             </div>
             
             <AccessibilityQuickPanel />
+            <FloatingAIAssistant />
           </div>
         </SidebarProvider>
       </KeyboardNavigationProvider>
