@@ -101,16 +101,16 @@ export function AccessibilityQuickPanel() {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - Top Right */}
       <Button
         variant="default"
         size="icon"
-        className="fixed bottom-20 right-4 z-50 rounded-full shadow-lg w-14 h-14 md:bottom-6"
+        className="fixed top-20 right-4 z-50 rounded-full shadow-lg w-12 h-12 md:top-4"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label="Menu de acessibilidade"
       >
-        <Accessibility className="h-6 w-6" />
+        <Accessibility className="h-5 w-5" />
       </Button>
 
       {/* Panel */}
