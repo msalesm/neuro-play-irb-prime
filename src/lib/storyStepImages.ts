@@ -36,6 +36,38 @@ import maos4 from '@/assets/steps/maos-4-esfregar.jpg';
 import maos5 from '@/assets/steps/maos-5-enxaguar.jpg';
 import maos6 from '@/assets/steps/maos-6-secar.jpg';
 
+// Imagens para "Quando as coisas não dão certo"
+import frustracao1 from '@/assets/steps/frustracao-1-algo-errado.jpg';
+import frustracao2 from '@/assets/steps/frustracao-2-sinto.jpg';
+import frustracao3 from '@/assets/steps/frustracao-3-tudo-bem.jpg';
+import frustracao4 from '@/assets/steps/frustracao-4-respiro.jpg';
+import frustracao5 from '@/assets/steps/frustracao-5-solucoes.jpg';
+import frustracao6 from '@/assets/steps/frustracao-6-tentar.jpg';
+
+// Imagens para "Quando alguém está triste"
+import triste1 from '@/assets/steps/triste-1-observar-rosto.jpg';
+import triste2 from '@/assets/steps/triste-2-observar-corpo.jpg';
+import triste3 from '@/assets/steps/triste-3-ouvir-voz.jpg';
+import triste4 from '@/assets/steps/triste-4-perguntar.jpg';
+import triste5 from '@/assets/steps/triste-5-oferecer-ajuda.jpg';
+import triste6 from '@/assets/steps/triste-6-respeitar.jpg';
+
+// Imagens para "Preparar para dormir"
+import dormir1 from '@/assets/steps/dormir-1-banho.jpg';
+import dormir2 from '@/assets/steps/dormir-2-pijama.jpg';
+import dormir3 from '@/assets/steps/dormir-3-dentes.jpg';
+import dormir4 from '@/assets/steps/dormir-4-historia.jpg';
+import dormir5 from '@/assets/steps/dormir-5-luz.jpg';
+import dormir6 from '@/assets/steps/dormir-6-sonhos.jpg';
+
+// Imagens para "Trabalho em grupo"
+import grupo1 from '@/assets/steps/grupo-1-trabalho.jpg';
+import grupo2 from '@/assets/steps/grupo-2-ouvir.jpg';
+import grupo3 from '@/assets/steps/grupo-3-opiniao.jpg';
+import grupo4 from '@/assets/steps/grupo-4-dividir.jpg';
+import grupo5 from '@/assets/steps/grupo-5-fazer.jpg';
+import grupo6 from '@/assets/steps/grupo-6-apresentar.jpg';
+
 // IDs das histórias do banco
 const STORY_IDS = {
   MOCHILA: 'c3d4e5f6-a7b8-9012-cdef-123456789012',
@@ -43,6 +75,10 @@ const STORY_IDS = {
   TOMAR_BANHO: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
   ESCOVAR_DENTES: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
   LAVAR_MAOS: 'd4e5f6a7-b8c9-0123-defa-234567890123',
+  FRUSTRACAO: 'dfb1ff4a-e349-4abc-9610-f59dc9aad5f8',
+  ALGUEM_TRISTE: '41c95a59-f149-4036-b258-1424d3d1428f',
+  PREPARAR_DORMIR: 'f6a7b8c9-d0e1-2345-fabc-456789012345',
+  TRABALHO_GRUPO: 'a7b8c9d0-e1f2-3456-abcd-567890123456',
 };
 
 // Mapeamento: storyId -> array de imagens por ordem
@@ -52,6 +88,10 @@ const storyStepImagesMap: Record<string, string[]> = {
   [STORY_IDS.TOMAR_BANHO]: [banho1, banho2, banho3, banho4, banho5, banho6],
   [STORY_IDS.ESCOVAR_DENTES]: [dentes1, dentes2, dentes3, dentes4, dentes5, dentes6],
   [STORY_IDS.LAVAR_MAOS]: [maos1, maos2, maos3, maos4, maos5, maos6],
+  [STORY_IDS.FRUSTRACAO]: [frustracao1, frustracao2, frustracao3, frustracao4, frustracao5, frustracao6],
+  [STORY_IDS.ALGUEM_TRISTE]: [triste1, triste2, triste3, triste4, triste5, triste6],
+  [STORY_IDS.PREPARAR_DORMIR]: [dormir1, dormir2, dormir3, dormir4, dormir5, dormir6],
+  [STORY_IDS.TRABALHO_GRUPO]: [grupo1, grupo2, grupo3, grupo4, grupo5, grupo6],
 };
 
 /**
