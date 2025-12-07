@@ -41,9 +41,14 @@ export default function RoutineViewer() {
   };
 
   const handleToggleStep = async (stepId: string, currentValue: boolean) => {
-    await toggleStepComplete(stepId, !currentValue);
-    if (!currentValue) {
-      toast.success('Passo concluído! ⭐');
+    try {
+      await toggleStepComplete(stepId, !currentValue);
+      if (!currentValue) {
+        toast.success('Passo concluído! ⭐');
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar passo:', err);
+      toast.error('Erro ao atualizar passo');
     }
   };
 
