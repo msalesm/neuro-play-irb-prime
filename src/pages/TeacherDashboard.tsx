@@ -205,13 +205,21 @@ export default function TeacherDashboard() {
                   Acompanhamento de triagens e planos educacionais
                 </p>
               </div>
+          </div>
+            <div className="flex gap-2">
+              <Button asChild variant="outline">
+                <Link to="/teacher/classes">
+                  <Users className="h-4 w-4 mr-2" />
+                  Minhas Turmas
+                </Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link to="/parent-training">
+                  <GraduationCap className="h-4 w-4 mr-2" />
+                  Capacitação
+                </Link>
+              </Button>
             </div>
-            <Button asChild variant="outline">
-              <Link to="/parent-training">
-                <GraduationCap className="h-4 w-4 mr-2" />
-                Capacitação dos Pais
-              </Link>
-            </Button>
           </div>
         </div>
 
