@@ -68,6 +68,12 @@ const defaultProfile: AccessibilityProfile = {
   simplifiedLanguage: false,
   extendedTime: false,
   visualCues: false,
+  readingMode: false,
+  lineSpacing: 1.5,
+  letterSpacing: 0,
+  softSounds: false,
+  hideDecorations: false,
+  mutedColors: false,
 };
 
 const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined);
@@ -79,10 +85,11 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
   const [currentPresetId, setCurrentPresetId] = useState<string>('DEFAULT');
   const [loading, setLoading] = useState(true);
 
-  // Apply CSS variables
+  // Apply CSS variables and data attributes
   const applyAccessibility = useCallback((p: AccessibilityProfile) => {
     const root = document.documentElement;
     
+    // CSS Variables
     root.style.setProperty('--font-scale', String(p.fontScale));
     root.style.setProperty('--touch-target', `${p.touchTargetSizePx}px`);
     root.style.setProperty('--line-spacing', String(p.lineSpacing || 1.5));
@@ -91,8 +98,10 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     // High contrast mode
     if (p.highContrast) {
       root.classList.add('high-contrast');
+      root.setAttribute('data-high-visibility', 'true');
     } else {
       root.classList.remove('high-contrast');
+      root.removeAttribute('data-high-visibility');
     }
     
     // Color blind modes
@@ -101,11 +110,13 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
       root.classList.add(`colorblind-${p.colorBlindMode}`);
     }
     
-    // Low stimulation mode
+    // Low stimulation / Sensory reduced mode
     if (p.lowStimulation) {
       root.classList.add('low-stimulation');
+      root.setAttribute('data-sensory-reduced', 'true');
     } else {
       root.classList.remove('low-stimulation');
+      root.removeAttribute('data-sensory-reduced');
     }
     
     // Focus mode
@@ -120,6 +131,34 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
       root.classList.add('reading-mode');
     } else {
       root.classList.remove('reading-mode');
+    }
+    
+    // Motor mode (large touch targets)
+    if (p.touchTargetSizePx >= 60) {
+      root.setAttribute('data-motor-mode', 'true');
+    } else {
+      root.removeAttribute('data-motor-mode');
+    }
+    
+    // Simplified language
+    if (p.simplifiedLanguage) {
+      root.setAttribute('data-simplified-language', 'true');
+    } else {
+      root.removeAttribute('data-simplified-language');
+    }
+    
+    // Extended time
+    if (p.extendedTime) {
+      root.setAttribute('data-extended-time', 'true');
+    } else {
+      root.removeAttribute('data-extended-time');
+    }
+    
+    // Visual cues
+    if (p.visualCues) {
+      root.setAttribute('data-visual-cues', 'true');
+    } else {
+      root.removeAttribute('data-visual-cues');
     }
     
     root.setAttribute('data-reduced-motion', String(p.reducedMotion));
