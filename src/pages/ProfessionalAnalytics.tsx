@@ -176,20 +176,24 @@ export default function ProfessionalAnalytics() {
 
   if (loading) {
     return (
-      <ModernPageLayout title="Analytics Profissional" subtitle="Carregando...">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <ModernPageLayout>
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-2xl font-bold text-white mb-4">Analytics Profissional</h1>
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
         </div>
       </ModernPageLayout>
     );
   }
 
   return (
-    <ModernPageLayout 
-      title="Analytics Profissional" 
-      subtitle="Métricas detalhadas de engajamento e progresso"
-    >
-      <div className="space-y-6">
+    <ModernPageLayout>
+      <div className="container mx-auto px-4 py-8 space-y-6">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-white">Analytics Profissional</h1>
+          <p className="text-white/70">Métricas detalhadas de engajamento e progresso</p>
+        </div>
         {/* Header Controls */}
         <div className="flex flex-col sm:flex-row justify-between gap-4">
           <Select value={period} onValueChange={setPeriod}>

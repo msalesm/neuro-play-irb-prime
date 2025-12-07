@@ -112,8 +112,12 @@ export default function ContentManager() {
       const { error } = await supabase
         .from('social_stories')
         .insert({
-          ...storyForm,
-          created_by: user?.id
+          title: storyForm.title,
+          description: storyForm.description,
+          category: storyForm.category as any,
+          age_min: storyForm.age_min,
+          age_max: storyForm.age_max,
+          is_active: storyForm.is_active
         });
 
       if (error) throw error;
@@ -132,7 +136,7 @@ export default function ContentManager() {
     if (!confirm('Tem certeza que deseja excluir este item?')) return;
 
     try {
-      const { error } = await supabase.from(table).delete().eq('id', id);
+      const { error } = await supabase.from(table as any).delete().eq('id', id);
       if (error) throw error;
 
       toast.success('Item excluído com sucesso!');
@@ -146,7 +150,7 @@ export default function ContentManager() {
   const handleToggleActive = async (table: string, id: string, currentValue: boolean) => {
     try {
       const { error } = await supabase
-        .from(table)
+        .from(table as any)
         .update({ is_active: !currentValue })
         .eq('id', id);
 
@@ -167,11 +171,12 @@ export default function ContentManager() {
   );
 
   return (
-    <ModernPageLayout 
-      title="Gerenciador de Conteúdo" 
-      subtitle="CMS interno para administradores"
-    >
-      <div className="space-y-6">
+    <ModernPageLayout>
+      <div className="container mx-auto px-4 py-8 space-y-6">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-white">Gerenciador de Conteúdo</h1>
+          <p className="text-white/70">CMS interno para administradores</p>
+        </div>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <div className="flex flex-col sm:flex-row justify-between gap-4">
             <TabsList>

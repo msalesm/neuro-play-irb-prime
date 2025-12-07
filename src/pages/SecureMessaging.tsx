@@ -206,11 +206,13 @@ export default function SecureMessaging() {
   const unreadCount = messages.filter(m => !m.is_read && m.recipient_id === user?.id).length;
 
   return (
-    <ModernPageLayout 
-      title="Mensagens Seguras" 
-      subtitle="Comunicação entre terapeutas e famílias"
-    >
-      <div className="grid lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
+    <ModernPageLayout>
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-white">Mensagens Seguras</h1>
+          <p className="text-white/70">Comunicação entre terapeutas e famílias</p>
+        </div>
+        <div className="grid lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
         {/* Message List */}
         <Card className="lg:col-span-1">
           <CardHeader className="pb-3">
@@ -468,6 +470,7 @@ export default function SecureMessaging() {
             </CardContent>
           )}
         </Card>
+        </div>
       </div>
     </ModernPageLayout>
   );
