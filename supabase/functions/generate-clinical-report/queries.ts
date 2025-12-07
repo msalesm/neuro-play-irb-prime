@@ -158,59 +158,66 @@ async function fetchGameSessionsData(
   };
 }
 
-export async function fetchBehavioralMetricsData(
+export async function fetchBehavioralInsightsData(
   supabase: SupabaseClient,
   userId: string,
   startDate: string,
   endDate: string
 ): Promise<SessionsQueryResult> {
-  console.log('📊 Fallback: Fetching behavioral_metrics data...');
+  console.log('📊 Fallback: Fetching behavioral_insights data...');
   
-  // Fetch behavioral metrics
-  const { data: metrics, error: metricsError } = await supabase
-    .from('behavioral_metrics')
+  // Fetch behavioral insights (correct table name)
+  const { data: insights, error: insightsError } = await supabase
+    .from('behavioral_insights')
     .select('*')
     .eq('user_id', userId)
-    .gte('timestamp', startDate)
-    .lte('timestamp', endDate)
-    .order('timestamp', { ascending: true });
+    .gte('created_at', startDate)
+    .lte('created_at', endDate)
+    .order('created_at', { ascending: true });
 
-  if (metricsError) {
-    console.error('Error fetching behavioral metrics:', metricsError);
-    throw new Error('Failed to fetch behavioral metrics');
-  }
-
-  if (!metrics || metrics.length === 0) {
+  if (insightsError) {
+    console.error('Error fetching behavioral insights:', insightsError);
+    // Don't throw, just return empty - this is a fallback
     return { sessions: [], trailsData: {} };
   }
 
-  console.log(`✅ Found ${metrics.length} behavioral metrics`);
+  if (!insights || insights.length === 0) {
+    console.log('No behavioral insights found');
+    return { sessions: [], trailsData: {} };
+  }
 
-  // Group metrics by category and transform to session format
+  console.log(`✅ Found ${insights.length} behavioral insights`);
+
+  // Group insights by type and transform to session format
   const sessionsByCategory = new Map<string, any[]>();
   
-  metrics.forEach(metric => {
-    const category = metric.category || 'general';
+  insights.forEach(insight => {
+    const category = insight.insight_type || 'general';
     if (!sessionsByCategory.has(category)) {
       sessionsByCategory.set(category, []);
     }
     
+    // Map severity to a numeric value
+    const severityValue = insight.severity === 'high' ? 0.3 : 
+                          insight.severity === 'medium' ? 0.6 : 0.8;
+    
     sessionsByCategory.get(category)!.push({
-      id: metric.id,
-      user_id: metric.user_id,
+      id: insight.id,
+      user_id: insight.user_id,
       trail_id: null,
-      created_at: metric.timestamp,
-      completed_at: metric.timestamp,
+      created_at: insight.created_at,
+      completed_at: insight.created_at,
       cognitive_category: category,
       current_level: 1,
-      total_xp: Math.round(metric.value * 100),
+      total_xp: Math.round(severityValue * 100),
       performance_data: {
-        accuracy: metric.value,
-        score: Math.round(metric.value * 100),
-        metricType: metric.metric_type,
-        contextData: metric.context_data
+        accuracy: severityValue * 100,
+        score: Math.round(severityValue * 100),
+        insightType: insight.insight_type,
+        title: insight.title,
+        description: insight.description
       },
-      struggles_detected: metric.value < 0.6 ? [metric.metric_type] : []
+      struggles_detected: insight.severity === 'high' ? [insight.insight_type] : []
     });
   });
 
@@ -223,8 +230,8 @@ export async function fetchBehavioralMetricsData(
     const avgAccuracy = sessions.reduce((sum, s) => sum + s.performance_data.accuracy, 0) / sessions.length;
     trailsData[category] = {
       initialLevel: 1,
-      currentLevel: Math.min(Math.floor(avgAccuracy * 5) + 1, 10),
-      totalXP: Math.round(avgAccuracy * 100 * sessions.length)
+      currentLevel: Math.min(Math.floor(avgAccuracy / 20) + 1, 10),
+      totalXP: Math.round(avgAccuracy * sessions.length)
     };
   });
 
