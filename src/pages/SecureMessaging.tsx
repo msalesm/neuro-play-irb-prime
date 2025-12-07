@@ -244,12 +244,18 @@ export default function SecureMessaging() {
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione..." />
                         </SelectTrigger>
-                        <SelectContent>
-                          {recipients.map((r) => (
-                            <SelectItem key={r.id} value={r.id}>
-                              {r.full_name || r.email}
-                            </SelectItem>
-                          ))}
+                        <SelectContent className="z-[200] bg-background">
+                          {recipients.length === 0 ? (
+                            <div className="p-2 text-sm text-muted-foreground">
+                              Nenhum destinatário disponível
+                            </div>
+                          ) : (
+                            recipients.map((r) => (
+                              <SelectItem key={r.id} value={r.id}>
+                                {r.full_name || r.email}
+                              </SelectItem>
+                            ))
+                          )}
                         </SelectContent>
                       </Select>
                     </div>
@@ -262,7 +268,7 @@ export default function SecureMessaging() {
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="z-[200] bg-background">
                           <SelectItem value="text">Mensagem</SelectItem>
                           <SelectItem value="feedback">Feedback</SelectItem>
                           <SelectItem value="recommendation">Recomendação</SelectItem>
