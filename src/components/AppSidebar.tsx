@@ -4,7 +4,7 @@ import {
   Home, Gamepad2, FileText, GraduationCap, Settings, 
   User, Trophy, TrendingUp, Brain, Stethoscope, Heart,
   ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3,
-  Shield, UserCircle, Briefcase, Building2, Drama
+  Shield, UserCircle, Briefcase, Building2, Drama, CalendarCheck, Rocket
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -56,14 +56,19 @@ export function AppSidebar() {
   // Home - Criança/Usuário Principal
   const homeNavigation = [
     {
+      title: 'Hub do Aluno',
+      path: '/student-hub',
+      icon: Rocket,
+    },
+    {
       title: 'Sistema de Planetas',
       path: '/sistema-planeta-azul',
       icon: Sparkles,
     },
     {
-      title: 'Missão do Dia',
-      path: '/dashboard',
-      icon: Trophy,
+      title: 'Minhas Rotinas',
+      path: '/rotinas',
+      icon: CalendarCheck,
     },
     {
       title: 'Jogos Cognitivos',
@@ -185,6 +190,16 @@ export function AppSidebar() {
       title: 'Relacionamentos',
       path: '/admin/relationships',
       icon: Heart,
+    },
+    {
+      title: 'Analytics',
+      path: '/analytics',
+      icon: TrendingUp,
+    },
+    {
+      title: 'Editor de Histórias',
+      path: '/admin/story-editor',
+      icon: BookOpen,
     },
     {
       title: 'Mapas de Risco',

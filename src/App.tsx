@@ -105,6 +105,11 @@ import AdminStories from "./pages/AdminStories";
 import AcceptInvite from "./pages/AcceptInvite";
 import RelationshipsManager from "./pages/admin/RelationshipsManager";
 import IntelligentReports from "./pages/IntelligentReports";
+import StudentHub from "./pages/StudentHub";
+import StoryEditor from "./pages/StoryEditor";
+import SimpleAnalytics from "./pages/SimpleAnalytics";
+import RoutinesPage from "./pages/RoutinesPage";
+import RoutineViewer from "./pages/RoutineViewer";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -291,9 +296,19 @@ const App = () => (
           {/* Relatórios Inteligentes */}
           <Route path="/reports" element={<IntelligentReports />} />
           <Route path="/relatorios" element={<IntelligentReports />} />
+          
+          {/* Phase 3 Routes */}
+          <Route path="/student-hub" element={<StudentHub />} />
+          <Route path="/hub" element={<StudentHub />} />
+          <Route path="/rotinas" element={<RoutinesPage />} />
+          <Route path="/routines" element={<RoutinesPage />} />
+          <Route path="/rotinas/:routineId" element={<RoutineViewer />} />
+          <Route path="/admin/story-editor" element={<StoryEditor />} />
+          <Route path="/admin/story-editor/:storyId" element={<StoryEditor />} />
+          <Route path="/analytics" element={<SimpleAnalytics />} />
                   
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
                 </Routes>
                 <FloatingActionButton />
               </AppLayout>
