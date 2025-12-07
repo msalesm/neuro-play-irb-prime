@@ -23,6 +23,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { toast } from '@/hooks/use-toast';
 import { format, subDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -63,6 +64,7 @@ interface ReportData {
 
 export function IntelligentReportGenerator() {
   const { user } = useAuth();
+  const { role, isAdmin, isTherapist, isParent } = useUserRole();
   const [selectedChild, setSelectedChild] = useState<string>('');
   const [selectedPeriod, setSelectedPeriod] = useState<string>('30');
   const [generating, setGenerating] = useState<string | null>(null);
@@ -71,6 +73,21 @@ export function IntelligentReportGenerator() {
     pedagogical: null,
     familiar: null,
   });
+
+  // Determine which tab to show based on role
+  const getDefaultTab = () => {
+    if (isParent) return 'familiar';
+    if (isTherapist) return 'clinical';
+    return 'pedagogical'; // teacher
+  };
+
+  const canViewTab = (tab: string) => {
+    if (isAdmin) return true;
+    if (isParent && tab === 'familiar') return true;
+    if (isTherapist && tab === 'clinical') return true;
+    if (!isParent && !isTherapist && tab === 'pedagogical') return true; // teacher
+    return false;
+  };
 
   const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
     if (!user) return;
@@ -220,20 +237,26 @@ export function IntelligentReportGenerator() {
       </div>
 
       {/* Report Type Tabs */}
-      <Tabs defaultValue="clinical" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="clinical" className="flex items-center gap-2">
-            <Stethoscope className="h-4 w-4" />
-            <span className="hidden sm:inline">Clínico</span>
-          </TabsTrigger>
-          <TabsTrigger value="pedagogical" className="flex items-center gap-2">
-            <GraduationCap className="h-4 w-4" />
-            <span className="hidden sm:inline">Pedagógico</span>
-          </TabsTrigger>
-          <TabsTrigger value="familiar" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            <span className="hidden sm:inline">Familiar</span>
-          </TabsTrigger>
+      <Tabs defaultValue={getDefaultTab()} className="w-full">
+        <TabsList className={`grid w-full ${isAdmin ? 'grid-cols-3' : 'grid-cols-1'}`}>
+          {canViewTab('clinical') && (
+            <TabsTrigger value="clinical" className="flex items-center gap-2">
+              <Stethoscope className="h-4 w-4" />
+              <span className="hidden sm:inline">Clínico</span>
+            </TabsTrigger>
+          )}
+          {canViewTab('pedagogical') && (
+            <TabsTrigger value="pedagogical" className="flex items-center gap-2">
+              <GraduationCap className="h-4 w-4" />
+              <span className="hidden sm:inline">Pedagógico</span>
+            </TabsTrigger>
+          )}
+          {canViewTab('familiar') && (
+            <TabsTrigger value="familiar" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              <span className="hidden sm:inline">Familiar</span>
+            </TabsTrigger>
+          )}
         </TabsList>
 
         {/* Clinical Report */}

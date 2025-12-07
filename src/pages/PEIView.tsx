@@ -198,11 +198,11 @@ const getStatusLabel = (status: string) => {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={handleExportPDF}>
+            <Button variant="secondary" onClick={handleExportPDF} className="text-foreground">
               <FileDown className="h-4 w-4 mr-2" />
               Exportar PDF
             </Button>
-            <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
+            <Button variant="secondary" onClick={() => setIsEditing(!isEditing)} className="text-foreground">
               {isEditing ? 'Cancelar' : 'Editar PEI'}
             </Button>
             {isEditing && (
