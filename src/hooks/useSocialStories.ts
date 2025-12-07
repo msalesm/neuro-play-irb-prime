@@ -8,6 +8,8 @@ export interface SocialStory {
   cover_image_url: string | null;
   is_active: boolean;
   created_at: string;
+  age_min: number | null;
+  age_max: number | null;
 }
 
 export interface StoryStep {

@@ -1753,6 +1753,8 @@ export type Database = {
       }
       social_stories: {
         Row: {
+          age_max: number | null
+          age_min: number | null
           cover_image_url: string | null
           created_at: string | null
           created_by: string | null
@@ -1763,6 +1765,8 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          age_max?: number | null
+          age_min?: number | null
           cover_image_url?: string | null
           created_at?: string | null
           created_by?: string | null
@@ -1773,6 +1777,8 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          age_max?: number | null
+          age_min?: number | null
           cover_image_url?: string | null
           created_at?: string | null
           created_by?: string | null
