@@ -15,7 +15,8 @@ import { toast } from 'sonner';
 import { Progress } from '@/components/ui/progress';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 import { AvatarSelectionModal } from '@/components/AvatarSelectionModal';
-import { DailyMissionCard } from '@/components/DailyMissionCard';
+import { DailyMissionSection } from '@/components/DailyMissionSection';
+import { RecentScreeningsCard } from '@/components/RecentScreeningsCard';
 import { useDailyMissions } from '@/hooks/useDailyMissions';
 import { BadgeUnlockModal } from '@/components/BadgeUnlockModal';
 import { AIGameRecommendations } from '@/components/AIGameRecommendations';
@@ -849,22 +850,16 @@ export default function DashboardPais() {
                   </CardContent>
                 </Card>
 
-                {/* Daily Mission */}
-                {!missionsLoading && missions.length > 0 && (
-                  <div data-tour="daily-mission">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Target className="w-5 h-5 text-[#c7923e]" />
-                      <h3 className="text-lg font-semibold">Missão do Dia</h3>
-                    </div>
-                    <DailyMissionCard
-                      jogo={missions[0].jogo}
-                      planetaNome={missions[0].planeta.nome}
-                      planetaCor={missions[0].planeta.cor}
-                      planetaIcone={missions[0].planeta.icone}
-                      recomendadoPorIA={missions[0].recomendadoPorIA}
-                    />
-                  </div>
-                )}
+                {/* Daily Mission with Stories and Games */}
+                <div data-tour="daily-mission">
+                  <DailyMissionSection
+                    missions={missions}
+                    loading={missionsLoading}
+                  />
+                </div>
+
+                {/* Recent Diagnostic Tests */}
+                <RecentScreeningsCard />
 
                 {/* Achievement System Preview */}
                 <Card>
