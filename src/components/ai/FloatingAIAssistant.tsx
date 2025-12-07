@@ -142,7 +142,7 @@ export function FloatingAIAssistant() {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            className="fixed bottom-24 right-4 z-50 md:bottom-8"
+            className="fixed bottom-24 left-4 z-50 md:bottom-8"
           >
             <Button
               onClick={() => setIsOpen(true)}
@@ -179,7 +179,7 @@ export function FloatingAIAssistant() {
               height: isMinimized ? 'auto' : 'auto'
             }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
-            className="fixed bottom-24 right-4 z-50 w-[350px] md:bottom-8 md:w-[400px]"
+            className="fixed bottom-24 left-4 z-50 w-[350px] md:bottom-8 md:w-[400px]"
           >
             <Card className="overflow-hidden border-2 border-primary/20 bg-background/95 backdrop-blur-lg shadow-2xl">
               {/* Header */}
