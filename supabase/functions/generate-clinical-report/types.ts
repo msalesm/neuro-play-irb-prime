@@ -65,7 +65,7 @@ export interface ReportData {
 export interface SessionData {
   id: string;
   user_id: string;
-  trail_id: string;
+  trail_id: string | null;
   created_at: string;
   completed_at: string | null;
   performance_data: {

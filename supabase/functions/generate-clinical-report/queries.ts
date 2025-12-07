@@ -7,17 +7,17 @@ export async function fetchSessionsData(
   startDate: string,
   endDate: string
 ): Promise<SessionsQueryResult> {
-  // Fetch learning sessions with trail data
+  // Fetch learning sessions (without trail_id which doesn't exist)
   const { data: sessions, error: sessionsError } = await supabase
     .from('learning_sessions')
     .select(`
       id,
       user_id,
-      trail_id,
+      game_type,
       created_at,
-      completed_at,
-      performance_data,
-      struggles_detected
+      completed,
+      session_duration_seconds,
+      performance_data
     `)
     .eq('user_id', userId)
     .gte('created_at', startDate)
@@ -30,49 +30,126 @@ export async function fetchSessionsData(
   }
 
   if (!sessions || sessions.length === 0) {
+    // Try to fetch from game_sessions as fallback
+    return fetchGameSessionsData(supabase, userId, startDate, endDate);
+  }
+
+  // Transform sessions to expected format
+  const enrichedSessions = sessions.map(session => ({
+    id: session.id,
+    user_id: session.user_id,
+    trail_id: null,
+    created_at: session.created_at,
+    completed_at: session.created_at,
+    cognitive_category: session.game_type || 'general',
+    current_level: 1,
+    total_xp: session.session_duration_seconds ? Math.round(session.session_duration_seconds / 10) : 0,
+    performance_data: session.performance_data || {},
+    struggles_detected: []
+  }));
+
+  // Create trails data summary
+  const trailsData: { [category: string]: any } = {};
+  const categories = [...new Set(enrichedSessions.map(s => s.cognitive_category))];
+  
+  categories.forEach(category => {
+    const categorySessions = enrichedSessions.filter(s => s.cognitive_category === category);
+    trailsData[category] = {
+      initialLevel: 1,
+      currentLevel: Math.min(Math.ceil(categorySessions.length / 5) + 1, 10),
+      totalXP: categorySessions.reduce((sum, s) => sum + s.total_xp, 0)
+    };
+  });
+
+  return {
+    sessions: enrichedSessions,
+    trailsData
+  };
+}
+
+async function fetchGameSessionsData(
+  supabase: SupabaseClient,
+  userId: string,
+  startDate: string,
+  endDate: string
+): Promise<SessionsQueryResult> {
+  console.log('📊 Fallback: Fetching game_sessions data...');
+
+  // First get child profiles for this user
+  const { data: childProfiles } = await supabase
+    .from('child_profiles')
+    .select('id')
+    .eq('parent_user_id', userId);
+
+  const childIds = childProfiles?.map(c => c.id) || [];
+
+  if (childIds.length === 0) {
+    console.log('No child profiles found, returning empty');
     return { sessions: [], trailsData: {} };
   }
 
-  // Get unique trail IDs
-  const trailIds = [...new Set(sessions.map(s => s.trail_id))];
+  // Fetch game sessions for child profiles
+  const { data: gameSessions, error } = await supabase
+    .from('game_sessions')
+    .select(`
+      id,
+      child_profile_id,
+      game_id,
+      created_at,
+      completed_at,
+      completed,
+      score,
+      accuracy_percentage,
+      duration_seconds,
+      difficulty_level
+    `)
+    .in('child_profile_id', childIds)
+    .gte('created_at', startDate)
+    .lte('created_at', endDate)
+    .order('created_at', { ascending: true });
 
-  // Fetch trails data
-  const { data: trails, error: trailsError } = await supabase
-    .from('learning_trails')
-    .select('id, cognitive_category, current_level, total_xp')
-    .in('id', trailIds);
-
-  if (trailsError) {
-    console.error('Error fetching trails:', trailsError);
-    throw new Error('Failed to fetch learning trails');
+  if (error) {
+    console.error('Error fetching game sessions:', error);
+    return { sessions: [], trailsData: {} };
   }
 
-  // Create a map of trail_id to trail data
-  const trailsMap = new Map(trails?.map(t => [t.id, t]) || []);
+  if (!gameSessions || gameSessions.length === 0) {
+    console.log('No game sessions found');
+    return { sessions: [], trailsData: {} };
+  }
 
-  // Enrich sessions with cognitive category
-  const enrichedSessions = sessions.map(session => ({
-    ...session,
-    cognitive_category: trailsMap.get(session.trail_id)?.cognitive_category || 'unknown',
-    current_level: trailsMap.get(session.trail_id)?.current_level || 1,
-    total_xp: trailsMap.get(session.trail_id)?.total_xp || 0
+  console.log(`✅ Found ${gameSessions.length} game sessions`);
+
+  // Transform to expected format
+  const enrichedSessions = gameSessions.map(session => ({
+    id: session.id,
+    user_id: userId,
+    trail_id: null,
+    created_at: session.created_at,
+    completed_at: session.completed_at || session.created_at,
+    cognitive_category: session.game_id || 'general',
+    current_level: session.difficulty_level || 1,
+    total_xp: session.score || 0,
+    performance_data: {
+      accuracy: session.accuracy_percentage || 0,
+      score: session.score || 0,
+      duration: session.duration_seconds || 0
+    },
+    struggles_detected: (session.accuracy_percentage || 0) < 60 ? ['low_accuracy'] : []
   }));
 
-  // Calculate initial levels (first session level per category)
+  // Create trails data summary
   const trailsData: { [category: string]: any } = {};
+  const categories = [...new Set(enrichedSessions.map(s => s.cognitive_category))];
   
-  trails?.forEach(trail => {
-    const categorySessions = enrichedSessions.filter(
-      s => s.trail_id === trail.id
-    ).sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-
-    if (categorySessions.length > 0) {
-      trailsData[trail.cognitive_category] = {
-        initialLevel: categorySessions[0].current_level || 1,
-        currentLevel: trail.current_level,
-        totalXP: trail.total_xp
-      };
-    }
+  categories.forEach(category => {
+    const categorySessions = enrichedSessions.filter(s => s.cognitive_category === category);
+    const avgAccuracy = categorySessions.reduce((sum, s) => sum + (s.performance_data.accuracy || 0), 0) / categorySessions.length;
+    trailsData[category] = {
+      initialLevel: 1,
+      currentLevel: Math.min(Math.ceil(avgAccuracy / 20) + 1, 10),
+      totalXP: categorySessions.reduce((sum, s) => sum + s.total_xp, 0)
+    };
   });
 
   return {
