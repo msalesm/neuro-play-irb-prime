@@ -200,7 +200,7 @@ export default function SocialStories() {
   const hiddenCount = stories.length - ageFilteredStories.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary via-secondary to-primary pb-24">
+    <div className="min-h-screen bg-background pb-24">
       <div className="container max-w-2xl mx-auto px-4 py-6">
         {/* Header */}
         <motion.div 
