@@ -16,6 +16,9 @@ import storyBrushingTeeth from '@/assets/story-brushing-teeth-new.jpg';
 import storyAskingHelp from '@/assets/story-asking-help.jpg';
 import storyPackingBackpack from '@/assets/story-packing-backpack.jpg';
 import storyWashingHands from '@/assets/story-washing-hands-new.jpg';
+import storyDoctorVisit from '@/assets/story-doctor-visit.jpg';
+import storyMakingFriends from '@/assets/story-making-friends.jpg';
+import heroGaming from '/hero-gaming.jpg';
 
 // Story configurations with illustrations and styling
 const storyConfigs: Record<string, {
@@ -28,21 +31,21 @@ const storyConfigs: Record<string, {
   'Como tomar banho': {
     image: storyTakingBath,
     isHighlighted: true,
-    gradient: 'from-blue-500/20 via-cyan-500/10 to-transparent',
+    gradient: 'from-secondary/20 via-secondary/10 to-transparent',
     badge: 'Essencial',
     badgeIcon: 'crown'
   },
   'Como escovar os dentes': {
     image: storyBrushingTeeth,
     isHighlighted: true,
-    gradient: 'from-pink-500/20 via-rose-500/10 to-transparent',
+    gradient: 'from-accent/20 via-accent/10 to-transparent',
     badge: 'Importante',
     badgeIcon: 'heart'
   },
   'Como pedir ajuda': {
     image: storyAskingHelp,
     isHighlighted: true,
-    gradient: 'from-amber-500/20 via-orange-500/10 to-transparent',
+    gradient: 'from-accent/20 via-primary/10 to-transparent',
     badge: 'Fundamental',
     badgeIcon: 'star'
   },
@@ -59,14 +62,55 @@ const storyConfigs: Record<string, {
     gradient: 'from-primary/10 to-transparent',
     badge: 'Novo',
     badgeIcon: 'star'
+  },
+  'Entrar na sala de aula': {
+    image: storyMakingFriends,
+    isHighlighted: false,
+    gradient: 'from-secondary/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'star'
+  },
+  'Como participar de um trabalho em grupo': {
+    image: storyDoctorVisit,
+    isHighlighted: false,
+    gradient: 'from-accent/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'star'
+  },
+  'O que fazer quando fico muito frustrado': {
+    image: heroGaming,
+    isHighlighted: false,
+    gradient: 'from-primary/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'heart'
   }
 };
 
 const getStoryConfig = (title: string) => {
-  return storyConfigs[title] || {
-    image: storyTakingBath,
+  // Check for exact match first
+  if (storyConfigs[title]) {
+    return storyConfigs[title];
+  }
+  
+  // Check for partial matches in title
+  for (const [key, config] of Object.entries(storyConfigs)) {
+    if (title.toLowerCase().includes(key.toLowerCase().split(' ').slice(0, 3).join(' '))) {
+      return config;
+    }
+  }
+  
+  // Default fallback with unique color based on title hash
+  const hash = title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const gradients = [
+    'from-secondary/15 to-transparent',
+    'from-accent/15 to-transparent',
+    'from-primary/15 to-transparent'
+  ];
+  
+  return {
+    image: heroGaming,
     isHighlighted: false,
-    gradient: 'from-primary/10 to-transparent',
+    gradient: gradients[hash % gradients.length],
     badge: 'Novo',
     badgeIcon: 'star' as const
   };
@@ -156,7 +200,7 @@ export default function SocialStories() {
   const hiddenCount = stories.length - ageFilteredStories.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[hsl(199,100%,11%)] via-[hsl(194,100%,22%)] to-[hsl(199,100%,11%)] pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-primary via-secondary to-primary pb-24">
       <div className="container max-w-2xl mx-auto px-4 py-6">
         {/* Header */}
         <motion.div 
@@ -165,22 +209,22 @@ export default function SocialStories() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-white hover:bg-white/10">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-primary-foreground hover:bg-primary-foreground/10">
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Drama className="h-6 w-6 text-[hsl(40,55%,51%)]" />
+            <h1 className="text-2xl font-bold text-primary-foreground flex items-center gap-2">
+              <Drama className="h-6 w-6 text-accent" />
               Histórias Sociais
             </h1>
-            <p className="text-white/70">
+            <p className="text-primary-foreground/70">
               {isFiltering 
                 ? `Conteúdo para ${childAge} anos` 
                 : 'Aprenda rotinas do dia a dia de forma divertida'}
             </p>
           </div>
           {isFiltering && (
-            <Badge className="bg-[hsl(40,55%,51%)]/20 text-[hsl(40,55%,51%)] border-[hsl(40,55%,51%)]/30">
+            <Badge className="bg-accent/20 text-accent border-accent/30">
               {childAge} anos
             </Badge>
           )}
@@ -298,25 +342,25 @@ export default function SocialStories() {
                           {/* Story Info */}
                           <div className="flex-1 p-4 flex flex-col justify-between">
                             <div>
-                              <h3 className={`font-bold text-[hsl(199,100%,11%)] line-clamp-2 group-hover:text-[hsl(194,100%,22%)] transition-colors ${
+                            <h3 className={`font-bold text-foreground line-clamp-2 group-hover:text-secondary transition-colors ${
                                 config.isHighlighted ? 'text-xl' : 'text-lg'
                               }`}>
                                 {story.title}
                               </h3>
                               {story.description && (
-                                <p className="text-sm text-[hsl(199,100%,11%)]/70 line-clamp-2 mt-2">
+                                <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
                                   {story.description}
                                 </p>
                               )}
                               
                               {/* Age indicator */}
                               <div className="mt-2 flex items-center gap-2">
-                                <div className="flex items-center gap-1 text-xs bg-[hsl(194,100%,22%)]/30 text-[hsl(40,55%,51%)] px-2 py-1 rounded-full font-medium">
+                                <div className="flex items-center gap-1 text-xs bg-secondary/30 text-accent px-2 py-1 rounded-full font-medium">
                                   <Calendar className="h-3 w-3" />
                                   <span>{story.age_min || 3}-{story.age_max || 18} anos</span>
                                 </div>
                                 {config.isHighlighted && (
-                                  <div className="flex items-center gap-1 text-xs text-[hsl(40,55%,51%)] font-medium">
+                                  <div className="flex items-center gap-1 text-xs text-accent font-medium">
                                     <Sparkles className="h-3 w-3" />
                                     <span>Recomendada</span>
                                   </div>
@@ -327,15 +371,15 @@ export default function SocialStories() {
                             <div className="flex items-center justify-between mt-3">
                               <span className={`text-xs px-3 py-1.5 rounded-full font-medium flex items-center gap-1 ${
                                 config.isHighlighted 
-                                  ? 'bg-gradient-to-r from-[hsl(40,55%,51%)]/30 to-[hsl(194,100%,22%)]/30 text-[hsl(40,55%,51%)]' 
-                                  : 'bg-gradient-to-r from-[hsl(194,100%,22%)]/20 to-[hsl(199,100%,11%)]/20 text-white/80'
+                                  ? 'bg-gradient-to-r from-accent/30 to-secondary/30 text-accent' 
+                                  : 'bg-gradient-to-r from-secondary/20 to-primary/20 text-muted-foreground'
                               }`}>
                                 <Sparkles className="h-3 w-3" />
                                 História Guiada
                               </span>
                               
                               <motion.div
-                                className="flex items-center gap-1 text-[hsl(40,55%,51%)] font-medium text-sm"
+                                className="flex items-center gap-1 text-accent font-medium text-sm"
                                 whileHover={{ x: 5 }}
                                 transition={{ type: "spring", stiffness: 300 }}
                               >
