@@ -111,6 +111,13 @@ import SimpleAnalytics from "./pages/SimpleAnalytics";
 import RoutinesPage from "./pages/RoutinesPage";
 import RoutineViewer from "./pages/RoutineViewer";
 
+// Phase 4 pages
+import InstitutionalDashboard from "./pages/InstitutionalDashboard";
+import SubscriptionPage from "./pages/SubscriptionPage";
+import SecureMessaging from "./pages/SecureMessaging";
+import ContentManager from "./pages/ContentManager";
+import ProfessionalAnalytics from "./pages/ProfessionalAnalytics";
+
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -306,7 +313,17 @@ const App = () => (
           <Route path="/admin/story-editor" element={<StoryEditor />} />
           <Route path="/admin/story-editor/:storyId" element={<StoryEditor />} />
           <Route path="/analytics" element={<SimpleAnalytics />} />
-                  
+          
+          {/* Phase 4 Routes */}
+          <Route path="/institutional" element={<InstitutionalDashboard />} />
+          <Route path="/subscription" element={<SubscriptionPage />} />
+          <Route path="/assinatura" element={<SubscriptionPage />} />
+          <Route path="/messages" element={<SecureMessaging />} />
+          <Route path="/mensagens" element={<SecureMessaging />} />
+          <Route path="/content-manager" element={<ContentManager />} />
+          <Route path="/admin/content" element={<ContentManager />} />
+          <Route path="/professional-analytics" element={<ProfessionalAnalytics />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
                 </Routes>

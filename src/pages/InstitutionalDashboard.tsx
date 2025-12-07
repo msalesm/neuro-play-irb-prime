@@ -157,9 +157,12 @@ export default function InstitutionalDashboard() {
 
   if (loading) {
     return (
-      <ModernPageLayout title="Dashboard Institucional" subtitle="Carregando...">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <ModernPageLayout>
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-2xl font-bold text-white mb-4">Dashboard Institucional</h1>
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
         </div>
       </ModernPageLayout>
     );
@@ -167,28 +170,32 @@ export default function InstitutionalDashboard() {
 
   if (!institution) {
     return (
-      <ModernPageLayout title="Dashboard Institucional" subtitle="Gerencie sua instituição">
-        <Card className="max-w-lg mx-auto">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Building2 className="w-5 h-5" />
-              Sem Instituição Vinculada
-            </CardTitle>
-            <CardDescription>
-              Você não está vinculado a nenhuma instituição. Entre em contato com o administrador.
-            </CardDescription>
-          </CardHeader>
-        </Card>
+      <ModernPageLayout>
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-2xl font-bold text-white mb-4">Dashboard Institucional</h1>
+          <Card className="max-w-lg mx-auto">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Building2 className="w-5 h-5" />
+                Sem Instituição Vinculada
+              </CardTitle>
+              <CardDescription>
+                Você não está vinculado a nenhuma instituição. Entre em contato com o administrador.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
       </ModernPageLayout>
     );
   }
 
   return (
-    <ModernPageLayout 
-      title={institution.name} 
-      subtitle="Painel de Gestão Institucional"
-    >
-      <div className="space-y-6">
+    <ModernPageLayout>
+      <div className="container mx-auto px-4 py-8 space-y-6">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-white">{institution.name}</h1>
+          <p className="text-white/70">Painel de Gestão Institucional</p>
+        </div>
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">

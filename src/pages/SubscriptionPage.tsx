@@ -60,7 +60,11 @@ export default function SubscriptionPage() {
         .order('sort_order');
 
       if (plansError) throw plansError;
-      setPlans(plansData || []);
+      setPlans((plansData || []).map(p => ({
+        ...p,
+        features: (typeof p.features === 'object' && p.features !== null ? p.features : {}) as Record<string, boolean>,
+        limits: (typeof p.limits === 'object' && p.limits !== null ? p.limits : {}) as Record<string, number>
+      })) as SubscriptionPlan[]);
 
       // Load current subscription
       if (user) {
@@ -207,20 +211,24 @@ export default function SubscriptionPage() {
 
   if (loading) {
     return (
-      <ModernPageLayout title="Minha Assinatura" subtitle="Carregando...">
-        <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <ModernPageLayout>
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-2xl font-bold text-white mb-4">Minha Assinatura</h1>
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
         </div>
       </ModernPageLayout>
     );
   }
 
   return (
-    <ModernPageLayout 
-      title="Planos e Assinatura" 
-      subtitle="Escolha o plano ideal para suas necessidades"
-    >
-      <div className="space-y-8">
+    <ModernPageLayout>
+      <div className="container mx-auto px-4 py-8 space-y-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-white">Planos e Assinatura</h1>
+          <p className="text-white/70">Escolha o plano ideal para suas necessidades</p>
+        </div>
         {/* Current Subscription */}
         {currentSubscription && (
           <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30">

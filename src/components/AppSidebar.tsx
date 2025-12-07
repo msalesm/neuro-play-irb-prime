@@ -4,7 +4,7 @@ import {
   Home, Gamepad2, FileText, GraduationCap, Settings, 
   User, Trophy, TrendingUp, Brain, Stethoscope, Heart,
   ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3,
-  Shield, UserCircle, Briefcase, Building2, Drama, CalendarCheck, Rocket
+  Shield, UserCircle, Briefcase, Building2, Drama, CalendarCheck, Rocket, Mail, CreditCard, Folder
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -100,6 +100,11 @@ export function AppSidebar() {
       icon: Home,
     },
     {
+      title: 'Mensagens',
+      path: '/messages',
+      icon: Mail,
+    },
+    {
       title: 'Relatórios Inteligentes',
       path: '/reports',
       icon: BarChart3,
@@ -115,6 +120,11 @@ export function AppSidebar() {
       icon: Heart,
     },
     {
+      title: 'Minha Assinatura',
+      path: '/subscription',
+      icon: CreditCard,
+    },
+    {
       title: 'Manual da Plataforma',
       path: '/platform-manual',
       icon: BookOpen,
@@ -127,6 +137,16 @@ export function AppSidebar() {
       title: 'Pacientes',
       path: '/therapist/patients',
       icon: Users,
+    },
+    {
+      title: 'Mensagens',
+      path: '/messages',
+      icon: Mail,
+    },
+    {
+      title: 'Analytics Profissional',
+      path: '/professional-analytics',
+      icon: BarChart3,
     },
     {
       title: 'Relatórios Inteligentes',
@@ -174,8 +194,13 @@ export function AppSidebar() {
     },
   ];
 
-  // Gestor Público
+  // Gestor Público / Admin
   const adminNavigation = [
+    {
+      title: 'Dashboard Institucional',
+      path: '/institutional',
+      icon: Building2,
+    },
     {
       title: 'Dashboard Geral',
       path: '/admin/network',
@@ -187,13 +212,18 @@ export function AppSidebar() {
       icon: Users,
     },
     {
+      title: 'Gerenciador de Conteúdo',
+      path: '/content-manager',
+      icon: Folder,
+    },
+    {
       title: 'Relacionamentos',
       path: '/admin/relationships',
       icon: Heart,
     },
     {
-      title: 'Analytics',
-      path: '/analytics',
+      title: 'Analytics Profissional',
+      path: '/professional-analytics',
       icon: TrendingUp,
     },
     {
