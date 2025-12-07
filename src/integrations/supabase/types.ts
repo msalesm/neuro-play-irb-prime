@@ -1492,6 +1492,89 @@ export type Database = {
         }
         Relationships: []
       }
+      routine_steps: {
+        Row: {
+          audio_url: string | null
+          completed_at: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          is_completed: boolean | null
+          order_number: number
+          routine_id: string
+          title: string
+        }
+        Insert: {
+          audio_url?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_completed?: boolean | null
+          order_number?: number
+          routine_id: string
+          title: string
+        }
+        Update: {
+          audio_url?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_completed?: boolean | null
+          order_number?: number
+          routine_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "routine_steps_routine_id_fkey"
+            columns: ["routine_id"]
+            isOneToOne: false
+            referencedRelation: "routines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      routines: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_template: boolean | null
+          routine_type: string | null
+          title: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_template?: boolean | null
+          routine_type?: string | null
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_template?: boolean | null
+          routine_type?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       school_classes: {
         Row: {
           created_at: string | null
@@ -1755,6 +1838,7 @@ export type Database = {
         Row: {
           age_max: number | null
           age_min: number | null
+          category: Database["public"]["Enums"]["story_category"] | null
           cover_image_url: string | null
           created_at: string | null
           created_by: string | null
@@ -1767,6 +1851,7 @@ export type Database = {
         Insert: {
           age_max?: number | null
           age_min?: number | null
+          category?: Database["public"]["Enums"]["story_category"] | null
           cover_image_url?: string | null
           created_at?: string | null
           created_by?: string | null
@@ -1779,6 +1864,7 @@ export type Database = {
         Update: {
           age_max?: number | null
           age_min?: number | null
+          category?: Database["public"]["Enums"]["story_category"] | null
           cover_image_url?: string | null
           created_at?: string | null
           created_by?: string | null
@@ -1789,6 +1875,102 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      story_assignments: {
+        Row: {
+          assigned_by: string
+          assigned_to: string
+          completed_at: string | null
+          created_at: string | null
+          due_date: string | null
+          id: string
+          notes: string | null
+          routine_id: string | null
+          story_id: string | null
+        }
+        Insert: {
+          assigned_by: string
+          assigned_to: string
+          completed_at?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          notes?: string | null
+          routine_id?: string | null
+          story_id?: string | null
+        }
+        Update: {
+          assigned_by?: string
+          assigned_to?: string
+          completed_at?: string | null
+          created_at?: string | null
+          due_date?: string | null
+          id?: string
+          notes?: string | null
+          routine_id?: string | null
+          story_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_assignments_routine_id_fkey"
+            columns: ["routine_id"]
+            isOneToOne: false
+            referencedRelation: "routines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_assignments_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "social_stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      story_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          points_earned: number | null
+          routine_id: string | null
+          story_id: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          points_earned?: number | null
+          routine_id?: string | null
+          story_id?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          points_earned?: number | null
+          routine_id?: string | null
+          story_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_progress_routine_id_fkey"
+            columns: ["routine_id"]
+            isOneToOne: false
+            referencedRelation: "routines"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_progress_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "social_stories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       story_steps: {
         Row: {
@@ -2285,6 +2467,11 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "therapist" | "parent" | "user" | "patient"
+      story_category:
+        | "rotinas"
+        | "habilidades_sociais"
+        | "emocoes"
+        | "sensorial"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2413,6 +2600,12 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "therapist", "parent", "user", "patient"],
+      story_category: [
+        "rotinas",
+        "habilidades_sociais",
+        "emocoes",
+        "sensorial",
+      ],
     },
   },
 } as const
