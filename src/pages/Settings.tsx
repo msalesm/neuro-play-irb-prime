@@ -9,13 +9,14 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Settings as SettingsIcon, Accessibility, Bell, 
   Palette, Volume2, Eye, Brain, Monitor,
-  Smartphone, Sun, Moon, Contrast, HelpCircle, Play
+  Smartphone, Sun, Moon, Contrast, HelpCircle, Play, Sliders
 } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { HapticProvider } from '@/contexts/HapticContext';
 import { HapticSettings } from '@/components/HapticSettings';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { AdvancedAccessibilitySettings } from '@/components/accessibility/AdvancedAccessibilitySettings';
 import { toast } from 'sonner';
 
 export default function Settings() {
@@ -219,6 +220,22 @@ export default function Settings() {
                   onCheckedChange={(checked) => updateSetting('largeText', checked)}
                 />
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Advanced Accessibility Settings */}
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <Sliders className="w-5 h-5 text-primary" />
+                <div>
+                  <CardTitle>Acessibilidade Avançada</CardTitle>
+                  <CardDescription>Perfis clínicos e configurações detalhadas</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <AdvancedAccessibilitySettings />
             </CardContent>
           </Card>
 
