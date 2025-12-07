@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ChevronRight, Drama, Sparkles, Star, Crown, Heart } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Drama, Sparkles, Star, Crown, Heart, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useSocialStories } from '@/hooks/useSocialStories';
+import { useSocialStories, SocialStory } from '@/hooks/useSocialStories';
 import { useTelemetry } from '@/hooks/useTelemetry';
+import { useChildAge, filterByAge } from '@/hooks/useAgeFilter';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
 
 // Import unique illustrations for each story
@@ -82,6 +84,14 @@ export default function SocialStories() {
   const navigate = useNavigate();
   const { stories, loading, error } = useSocialStories();
   const { trackScreenView } = useTelemetry();
+  const { childAge, isLoading: ageLoading } = useChildAge();
+
+  // Filter stories by child's age
+  const ageFilteredStories = filterByAge(
+    stories,
+    childAge ?? null,
+    (story) => ({ min: story.age_min, max: story.age_max })
+  );
 
   useEffect(() => {
     trackScreenView('social_stories_list');
@@ -133,7 +143,7 @@ export default function SocialStories() {
   };
 
   // Sort stories to show highlighted ones first
-  const sortedStories = [...stories].sort((a, b) => {
+  const sortedStories = [...ageFilteredStories].sort((a, b) => {
     const configA = getStoryConfig(a.title);
     const configB = getStoryConfig(b.title);
     if (configA.isHighlighted && !configB.isHighlighted) return -1;
@@ -141,8 +151,12 @@ export default function SocialStories() {
     return 0;
   });
 
+  // Check if filtering is active
+  const isFiltering = childAge !== null && childAge !== undefined;
+  const hiddenCount = stories.length - ageFilteredStories.length;
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-primary/5 to-secondary/5 pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-[hsl(199,100%,11%)] via-[hsl(194,100%,22%)] to-[hsl(199,100%,11%)] pb-24">
       <div className="container max-w-2xl mx-auto px-4 py-6">
         {/* Header */}
         <motion.div 
@@ -151,16 +165,25 @@ export default function SocialStories() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-white hover:bg-white/10">
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Drama className="h-6 w-6 text-primary" />
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+              <Drama className="h-6 w-6 text-[hsl(40,55%,51%)]" />
               Histórias Sociais
             </h1>
-            <p className="text-muted-foreground">Aprenda rotinas do dia a dia de forma divertida</p>
+            <p className="text-white/70">
+              {isFiltering 
+                ? `Conteúdo para ${childAge} anos` 
+                : 'Aprenda rotinas do dia a dia de forma divertida'}
+            </p>
           </div>
+          {isFiltering && (
+            <Badge className="bg-[hsl(40,55%,51%)]/20 text-[hsl(40,55%,51%)] border-[hsl(40,55%,51%)]/30">
+              {childAge} anos
+            </Badge>
+          )}
         </motion.div>
 
         {/* Loading State */}
@@ -275,38 +298,44 @@ export default function SocialStories() {
                           {/* Story Info */}
                           <div className="flex-1 p-4 flex flex-col justify-between">
                             <div>
-                              <h3 className={`font-bold text-foreground line-clamp-2 group-hover:text-primary transition-colors ${
+                              <h3 className={`font-bold text-[hsl(199,100%,11%)] line-clamp-2 group-hover:text-[hsl(194,100%,22%)] transition-colors ${
                                 config.isHighlighted ? 'text-xl' : 'text-lg'
                               }`}>
                                 {story.title}
                               </h3>
                               {story.description && (
-                                <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
+                                <p className="text-sm text-[hsl(199,100%,11%)]/70 line-clamp-2 mt-2">
                                   {story.description}
                                 </p>
                               )}
                               
-                              {/* Highlighted story extra info */}
-                              {config.isHighlighted && (
-                                <div className="mt-2 flex items-center gap-1 text-xs text-primary font-medium">
-                                  <Sparkles className="h-3 w-3" />
-                                  <span>História recomendada</span>
+                              {/* Age indicator */}
+                              <div className="mt-2 flex items-center gap-2">
+                                <div className="flex items-center gap-1 text-xs bg-[hsl(194,100%,22%)]/30 text-[hsl(40,55%,51%)] px-2 py-1 rounded-full font-medium">
+                                  <Calendar className="h-3 w-3" />
+                                  <span>{story.age_min || 3}-{story.age_max || 18} anos</span>
                                 </div>
-                              )}
+                                {config.isHighlighted && (
+                                  <div className="flex items-center gap-1 text-xs text-[hsl(40,55%,51%)] font-medium">
+                                    <Sparkles className="h-3 w-3" />
+                                    <span>Recomendada</span>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                             
                             <div className="flex items-center justify-between mt-3">
                               <span className={`text-xs px-3 py-1.5 rounded-full font-medium flex items-center gap-1 ${
                                 config.isHighlighted 
-                                  ? 'bg-gradient-to-r from-primary/30 to-secondary/30 text-primary' 
-                                  : 'bg-gradient-to-r from-primary/20 to-secondary/20 text-primary'
+                                  ? 'bg-gradient-to-r from-[hsl(40,55%,51%)]/30 to-[hsl(194,100%,22%)]/30 text-[hsl(40,55%,51%)]' 
+                                  : 'bg-gradient-to-r from-[hsl(194,100%,22%)]/20 to-[hsl(199,100%,11%)]/20 text-white/80'
                               }`}>
                                 <Sparkles className="h-3 w-3" />
                                 História Guiada
                               </span>
                               
                               <motion.div
-                                className="flex items-center gap-1 text-primary font-medium text-sm"
+                                className="flex items-center gap-1 text-[hsl(40,55%,51%)] font-medium text-sm"
                                 whileHover={{ x: 5 }}
                                 transition={{ type: "spring", stiffness: 300 }}
                               >

@@ -265,23 +265,23 @@ export default function Games() {
   return (
     <>
       <PlatformOnboarding pageName="games" />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-12 pb-32 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-b from-[hsl(199,100%,11%)] via-[hsl(194,100%,22%)] to-[hsl(199,100%,11%)] text-white py-12 pb-32 relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
-          <div className="absolute top-3/4 -right-4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 -left-4 w-72 h-72 bg-[hsl(194,100%,22%)]/20 rounded-full blur-3xl" />
+          <div className="absolute top-3/4 -right-4 w-96 h-96 bg-[hsl(40,55%,51%)]/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[hsl(194,100%,22%)]/5 rounded-full blur-3xl" />
         </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-purple-500/25">
-              <Gamepad2 className="h-8 w-8 text-white" />
+            <div className="w-16 h-16 bg-gradient-to-br from-[hsl(199,100%,11%)] to-[hsl(194,100%,22%)] rounded-2xl flex items-center justify-center shadow-2xl shadow-[hsl(194,100%,22%)]/25 border border-[hsl(40,55%,51%)]/20">
+              <Gamepad2 className="h-8 w-8 text-[hsl(40,55%,51%)]" />
             </div>
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-white">
               Jogos 
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[hsl(194,100%,35%)] to-[hsl(40,55%,51%)] bg-clip-text text-transparent">
                 Terapêuticos
               </span>
             </h1>
@@ -292,13 +292,13 @@ export default function Games() {
         </div>
 
         {/* Clinical Dashboard CTA Card */}
-        <Card className="mb-12 bg-gradient-to-br from-purple-600/30 to-blue-600/30 backdrop-blur-md border-purple-400/50 shadow-2xl overflow-hidden max-w-4xl mx-auto">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20" />
+        <Card className="mb-12 bg-gradient-to-br from-[hsl(199,100%,11%)]/50 to-[hsl(194,100%,22%)]/50 backdrop-blur-md border-[hsl(40,55%,51%)]/30 shadow-2xl overflow-hidden max-w-4xl mx-auto">
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(194,100%,22%)]/20 to-[hsl(40,55%,51%)]/10" />
           <CardContent className="p-8 relative z-10">
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="flex-shrink-0">
-                <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-2xl">
-                  <Trophy className="h-10 w-10 text-white" />
+                <div className="w-20 h-20 bg-gradient-to-br from-[hsl(199,100%,11%)] to-[hsl(194,100%,22%)] rounded-2xl flex items-center justify-center shadow-2xl border border-[hsl(40,55%,51%)]/20">
+                  <Trophy className="h-10 w-10 text-[hsl(40,55%,51%)]" />
                 </div>
               </div>
               <div className="flex-1 text-center md:text-left">
@@ -356,7 +356,7 @@ export default function Games() {
         {/* Seção de Jogos Básicos */}
         <div className="mb-16" data-tour="game-categories">
           <h2 className="text-3xl font-bold mb-8 text-center">
-            <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[hsl(194,100%,35%)] to-[hsl(40,55%,51%)] bg-clip-text text-transparent">
               Jogos Disponíveis
             </span>
           </h2>
