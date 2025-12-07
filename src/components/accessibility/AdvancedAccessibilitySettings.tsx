@@ -55,14 +55,14 @@ const presets = [
 
 export function AdvancedAccessibilitySettings() {
   const { 
-    settings, 
-    updateSettings, 
-    applyPreset, 
-    resetToDefaults 
+    profile, 
+    presets: contextPresets,
+    currentPresetId,
+    updateProfile, 
+    setPreset, 
   } = useAccessibility();
 
   const [speechRate, setSpeechRate] = useState(1);
-  const [selectedPreset, setSelectedPreset] = useState('default');
 
   useEffect(() => {
     // Load speech rate from localStorage
@@ -72,9 +72,8 @@ export function AdvancedAccessibilitySettings() {
     }
   }, []);
 
-  const handlePresetSelect = (presetId: string) => {
-    setSelectedPreset(presetId);
-    applyPreset(presetId);
+  const handlePresetSelect = async (presetId: string) => {
+    await setPreset(presetId);
     toast.success(`Perfil "${presets.find(p => p.id === presetId)?.name}" aplicado`);
   };
 
@@ -84,9 +83,8 @@ export function AdvancedAccessibilitySettings() {
     localStorage.setItem('tts_speech_rate', rate.toString());
   };
 
-  const handleReset = () => {
-    resetToDefaults();
-    setSelectedPreset('default');
+  const handleReset = async () => {
+    await setPreset('DEFAULT');
     setSpeechRate(1);
     localStorage.setItem('tts_speech_rate', '1');
     toast.success('Configurações restauradas');
@@ -112,19 +110,19 @@ export function AdvancedAccessibilitySettings() {
                 key={preset.id}
                 onClick={() => handlePresetSelect(preset.id)}
                 className={`p-4 rounded-lg border-2 text-left transition-all ${
-                  selectedPreset === preset.id
+                  currentPresetId?.toLowerCase() === preset.id
                     ? 'border-primary bg-primary/10'
                     : 'border-border hover:border-primary/50'
                 }`}
               >
                 <div className="flex items-start gap-3">
                   <preset.icon className={`h-6 w-6 ${
-                    selectedPreset === preset.id ? 'text-primary' : 'text-muted-foreground'
+                    currentPresetId?.toLowerCase() === preset.id ? 'text-primary' : 'text-muted-foreground'
                   }`} />
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{preset.name}</span>
-                      {selectedPreset === preset.id && (
+                      {currentPresetId?.toLowerCase() === preset.id && (
                         <Check className="h-4 w-4 text-primary" />
                       )}
                     </div>
@@ -155,14 +153,14 @@ export function AdvancedAccessibilitySettings() {
                 <Type className="h-4 w-4" />
                 Tamanho do Texto
               </Label>
-              <Badge variant="outline">{(settings.fontScale * 100).toFixed(0)}%</Badge>
+              <Badge variant="outline">{(profile.fontScale * 100).toFixed(0)}%</Badge>
             </div>
             <Slider
-              value={[settings.fontScale]}
+              value={[profile.fontScale]}
               min={0.8}
               max={2}
               step={0.1}
-              onValueChange={(v) => updateSettings({ fontScale: v[0] })}
+              onValueChange={(v) => updateProfile({ fontScale: v[0] })}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>Menor</span>
@@ -184,8 +182,8 @@ export function AdvancedAccessibilitySettings() {
               </p>
             </div>
             <Switch
-              checked={settings.highContrast}
-              onCheckedChange={(v) => updateSettings({ highContrast: v })}
+              checked={profile.highContrast}
+              onCheckedChange={(v) => updateProfile({ highContrast: v })}
             />
           </div>
 
@@ -203,8 +201,8 @@ export function AdvancedAccessibilitySettings() {
               </p>
             </div>
             <Switch
-              checked={settings.reducedMotion}
-              onCheckedChange={(v) => updateSettings({ reducedMotion: v })}
+              checked={profile.reducedMotion}
+              onCheckedChange={(v) => updateProfile({ reducedMotion: v })}
             />
           </div>
         </CardContent>
@@ -223,14 +221,14 @@ export function AdvancedAccessibilitySettings() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label>Tamanho dos Botões</Label>
-              <Badge variant="outline">{settings.touchTargetSizePx}px</Badge>
+              <Badge variant="outline">{profile.touchTargetSizePx}px</Badge>
             </div>
             <Slider
-              value={[settings.touchTargetSizePx]}
+              value={[profile.touchTargetSizePx]}
               min={44}
               max={100}
               step={4}
-              onValueChange={(v) => updateSettings({ touchTargetSizePx: v[0] })}
+              onValueChange={(v) => updateProfile({ touchTargetSizePx: v[0] })}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>Normal</span>
@@ -243,15 +241,14 @@ export function AdvancedAccessibilitySettings() {
           {/* UI Density */}
           <div className="space-y-3">
             <Label>Espaçamento da Interface</Label>
-            <div className="grid grid-cols-3 gap-2">
-              {(['compact', 'normal', 'spacious'] as const).map((density) => (
+            <div className="grid grid-cols-2 gap-2">
+              {(['normal', 'spacious'] as const).map((density) => (
                 <Button
                   key={density}
-                  variant={settings.uiDensity === density ? 'default' : 'outline'}
+                  variant={profile.uiDensity === density ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => updateSettings({ uiDensity: density })}
+                  onClick={() => updateProfile({ uiDensity: density })}
                 >
-                  {density === 'compact' && 'Compacto'}
                   {density === 'normal' && 'Normal'}
                   {density === 'spacious' && 'Espaçoso'}
                 </Button>
@@ -300,8 +297,8 @@ export function AdvancedAccessibilitySettings() {
               </p>
             </div>
             <Switch
-              checked={settings.captions}
-              onCheckedChange={(v) => updateSettings({ captions: v })}
+              checked={profile.captions.enabled}
+              onCheckedChange={(v) => updateProfile({ captions: { ...profile.captions, enabled: v } })}
             />
           </div>
 
@@ -311,16 +308,16 @@ export function AdvancedAccessibilitySettings() {
           <div className="space-y-3">
             <Label>Dicas e Instruções</Label>
             <div className="grid grid-cols-3 gap-2">
-              {(['none', 'simple', 'detailed'] as const).map((hint) => (
+              {(['normal', 'simplified', 'timed'] as const).map((hint) => (
                 <Button
                   key={hint}
-                  variant={settings.hints === hint ? 'default' : 'outline'}
+                  variant={profile.hints.hintMode === hint ? 'default' : 'outline'}
                   size="sm"
-                  onClick={() => updateSettings({ hints: hint })}
+                  onClick={() => updateProfile({ hints: { ...profile.hints, hintMode: hint } })}
                 >
-                  {hint === 'none' && 'Sem Dicas'}
-                  {hint === 'simple' && 'Simples'}
-                  {hint === 'detailed' && 'Detalhadas'}
+                  {hint === 'normal' && 'Normal'}
+                  {hint === 'simplified' && 'Simples'}
+                  {hint === 'timed' && 'Temporizadas'}
                 </Button>
               ))}
             </div>

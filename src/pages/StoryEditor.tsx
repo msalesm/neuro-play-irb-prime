@@ -34,11 +34,13 @@ interface StoryStep {
   audio_url?: string;
 }
 
+type StoryCategory = 'rotinas' | 'sensorial' | 'emocoes' | 'habilidades_sociais';
+
 interface StoryData {
   id?: string;
   title: string;
   description: string;
-  category: string;
+  category: StoryCategory;
   age_min: number;
   age_max: number;
   cover_image_url?: string;
@@ -49,8 +51,8 @@ const categories = [
   { value: 'rotinas', label: 'Rotinas' },
   { value: 'sensorial', label: 'Sensorial' },
   { value: 'emocoes', label: 'Emoções' },
-  { value: 'social', label: 'Habilidades Sociais' },
-];
+  { value: 'habilidades_sociais', label: 'Habilidades Sociais' },
+] as const;
 
 export default function StoryEditor() {
   const navigate = useNavigate();
@@ -107,7 +109,7 @@ export default function StoryEditor() {
         id: storyData.id,
         title: storyData.title,
         description: storyData.description || '',
-        category: storyData.category || 'rotinas',
+        category: (storyData.category as StoryCategory) || 'rotinas',
         age_min: storyData.age_min || 3,
         age_max: storyData.age_max || 12,
         cover_image_url: storyData.cover_image_url,
@@ -176,17 +178,19 @@ export default function StoryEditor() {
         toast.success('História atualizada!');
       } else {
         // Create new story
+        const storyInsert = {
+          title: story.title,
+          description: story.description,
+          category: story.category as StoryCategory,
+          age_min: story.age_min,
+          age_max: story.age_max,
+          cover_image_url: story.cover_image_url,
+          created_by: user.id,
+        };
+        
         const { data: newStory, error: createError } = await supabase
           .from('social_stories')
-          .insert({
-            title: story.title,
-            description: story.description,
-            category: story.category,
-            age_min: story.age_min,
-            age_max: story.age_max,
-            cover_image_url: story.cover_image_url,
-            created_by: user.id,
-          })
+          .insert(storyInsert)
           .select()
           .single();
 
@@ -330,7 +334,7 @@ export default function StoryEditor() {
                 <Label htmlFor="category">Categoria</Label>
                 <Select
                   value={story.category}
-                  onValueChange={(value) => setStory({ ...story, category: value })}
+                  onValueChange={(value: StoryCategory) => setStory({ ...story, category: value })}
                 >
                   <SelectTrigger>
                     <SelectValue />
