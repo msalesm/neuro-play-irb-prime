@@ -10,7 +10,9 @@ import {
   SkipLinks, 
   VisualNotificationProvider,
   KeyboardNavigationProvider,
-  AccessibilityToolbar
+  AccessibilityQuickPanel,
+  HighVisibilityMode,
+  SensoryReducedMode
 } from '@/components/accessibility';
 
 interface AppLayoutProps {
@@ -39,6 +41,8 @@ export function AppLayout({ children }: AppLayoutProps) {
     return (
       <VisualNotificationProvider>
         <KeyboardNavigationProvider>
+          <HighVisibilityMode />
+          <SensoryReducedMode />
           <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
             <ScreenReaderAnnouncer />
             <SkipLinks />
@@ -48,7 +52,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             </main>
             <BottomNavigation />
             <MobileTour />
-            <AccessibilityToolbar />
+            <AccessibilityQuickPanel />
           </div>
         </KeyboardNavigationProvider>
       </VisualNotificationProvider>
@@ -58,6 +62,8 @@ export function AppLayout({ children }: AppLayoutProps) {
   return (
     <VisualNotificationProvider>
       <KeyboardNavigationProvider>
+        <HighVisibilityMode />
+        <SensoryReducedMode />
         <SidebarProvider defaultOpen>
           <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
             <ScreenReaderAnnouncer />
@@ -101,7 +107,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </main>
             </div>
             
-            <AccessibilityToolbar />
+            <AccessibilityQuickPanel />
           </div>
         </SidebarProvider>
       </KeyboardNavigationProvider>
