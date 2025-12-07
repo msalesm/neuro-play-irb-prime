@@ -174,7 +174,9 @@ export default function StoryReader() {
                 {/* Image */}
                 <div className="aspect-video bg-muted flex items-center justify-center">
                   {(() => {
-                    const imageUrl = currentStep.image_url || getStepImage(storyId!, currentStepIndex);
+                    // Prioriza imagens do sistema de mapeamento (importadas como ES6 modules)
+                    const mappedImage = getStepImage(storyId!, currentStepIndex);
+                    const imageUrl = mappedImage || currentStep.image_url;
                     if (imageUrl) {
                       return (
                         <img

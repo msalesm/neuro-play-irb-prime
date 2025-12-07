@@ -68,6 +68,30 @@ import grupo4 from '@/assets/steps/grupo-4-dividir.jpg';
 import grupo5 from '@/assets/steps/grupo-5-fazer.jpg';
 import grupo6 from '@/assets/steps/grupo-6-apresentar.jpg';
 
+// Imagens para "Como lidar com barulho alto"
+import barulho1 from '@/assets/steps/barulho-1-perceber.jpg';
+import barulho2 from '@/assets/steps/barulho-2-respirar.jpg';
+import barulho3 from '@/assets/steps/barulho-3-proteger.jpg';
+import barulho4 from '@/assets/steps/barulho-4-afastar.jpg';
+import barulho5 from '@/assets/steps/barulho-5-pedir-ajuda.jpg';
+import barulho6 from '@/assets/steps/barulho-6-calmo.jpg';
+
+// Imagens para "Entrar na sala de aula"
+import sala1 from '@/assets/steps/sala-1-chegar.jpg';
+import sala2 from '@/assets/steps/sala-2-respirar.jpg';
+import sala3 from '@/assets/steps/sala-3-cumprimentar.jpg';
+import sala4 from '@/assets/steps/sala-4-lugar.jpg';
+import sala5 from '@/assets/steps/sala-5-material.jpg';
+import sala6 from '@/assets/steps/sala-6-pronto.jpg';
+
+// Imagens para "O que fazer quando as coisas mudam de repente"
+import mudanca1 from '@/assets/steps/mudanca-1-surpresa.jpg';
+import mudanca2 from '@/assets/steps/mudanca-2-parar.jpg';
+import mudanca3 from '@/assets/steps/mudanca-3-respirar.jpg';
+import mudanca4 from '@/assets/steps/mudanca-4-pensar.jpg';
+import mudanca5 from '@/assets/steps/mudanca-5-conversar.jpg';
+import mudanca6 from '@/assets/steps/mudanca-6-adaptar.jpg';
+
 // IDs das histórias do banco
 const STORY_IDS = {
   MOCHILA: 'c3d4e5f6-a7b8-9012-cdef-123456789012',
@@ -79,6 +103,9 @@ const STORY_IDS = {
   ALGUEM_TRISTE: '41c95a59-f149-4036-b258-1424d3d1428f',
   PREPARAR_DORMIR: 'f6a7b8c9-d0e1-2345-fabc-456789012345',
   TRABALHO_GRUPO: 'a7b8c9d0-e1f2-3456-abcd-567890123456',
+  BARULHO_ALTO: '4e0a5814-d757-4fbf-b9ae-b6af3c131dcf',
+  ENTRAR_SALA: 'c41b4f93-5c57-4132-aa24-3d9a0f2d4aae',
+  MUDANCAS: '6d97a90d-7071-4cbb-91df-4c742306b47e',
 };
 
 // Mapeamento: storyId -> array de imagens por ordem
@@ -92,6 +119,9 @@ const storyStepImagesMap: Record<string, string[]> = {
   [STORY_IDS.ALGUEM_TRISTE]: [triste1, triste2, triste3, triste4, triste5, triste6],
   [STORY_IDS.PREPARAR_DORMIR]: [dormir1, dormir2, dormir3, dormir4, dormir5, dormir6],
   [STORY_IDS.TRABALHO_GRUPO]: [grupo1, grupo2, grupo3, grupo4, grupo5, grupo6],
+  [STORY_IDS.BARULHO_ALTO]: [barulho1, barulho2, barulho3, barulho4, barulho5, barulho6],
+  [STORY_IDS.ENTRAR_SALA]: [sala1, sala2, sala3, sala4, sala5, sala6],
+  [STORY_IDS.MUDANCAS]: [mudanca1, mudanca2, mudanca3, mudanca4, mudanca5, mudanca6],
 };
 
 /**
