@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.3";
 import { ReportRequest, ReportResponse } from "./types.ts";
-import { fetchSessionsData, fetchBehavioralMetricsData, fetchNeurodiversityProfile } from "./queries.ts";
+import { fetchSessionsData, fetchBehavioralInsightsData, fetchNeurodiversityProfile } from "./queries.ts";
 import { calculateMetrics, analyzeTemporalEvolution, analyzeBehavioralPatterns } from "./metrics.ts";
 import { generateAIPrompt } from "./ai-prompts.ts";
 import { buildReport } from "./report-builder.ts";
@@ -69,16 +69,16 @@ serve(async (req) => {
     console.log('🔍 Attempting to fetch learning_sessions...');
     sessionsData = await fetchSessionsData(supabase, userId, startDate, endDate);
 
-    // If no learning_sessions, fallback to behavioral_metrics
+    // If no learning_sessions, fallback to behavioral_insights
     if (!sessionsData.sessions || sessionsData.sessions.length === 0) {
-      console.log('⚠️  No learning_sessions found, trying behavioral_metrics fallback...');
-      sessionsData = await fetchBehavioralMetricsData(supabase, userId, startDate, endDate);
-      dataSource = 'behavioral_metrics';
+      console.log('⚠️  No learning_sessions found, trying behavioral_insights fallback...');
+      sessionsData = await fetchBehavioralInsightsData(supabase, userId, startDate, endDate);
+      dataSource = 'behavioral_insights';
     }
 
     // If still no data, return informative error
     if (!sessionsData.sessions || sessionsData.sessions.length === 0) {
-      console.log('❌ No data found in either learning_sessions or behavioral_metrics');
+      console.log('❌ No data found in either learning_sessions or behavioral_insights');
       return new Response(
         JSON.stringify({
           status: 'error',
