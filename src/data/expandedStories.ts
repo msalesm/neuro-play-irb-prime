@@ -183,7 +183,7 @@ export const expandedStories: StoryTemplate[] = [
   // ============ EMOÇÕES (5) ============
   {
     id: 'story-feeling-frustrated',
-    title: 'Quando Fico Frustrado',
+    title: 'Quando as Coisas Não Dão Certo',
     description: 'O que fazer quando as coisas não saem como esperado',
     category: 'emocoes',
     ageMin: 4,
