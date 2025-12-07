@@ -77,7 +77,7 @@ const storyConfigs: Record<string, {
     badge: 'Novo',
     badgeIcon: 'star'
   },
-  'O que fazer quando fico muito frustrado': {
+  'Quando as Coisas Não Dão Certo': {
     image: heroGaming,
     isHighlighted: false,
     gradient: 'from-primary/10 to-transparent',
