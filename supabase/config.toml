@@ -32,3 +32,12 @@ verify_jwt = false
 
 [functions.customer-portal]
 verify_jwt = false
+
+[functions.emotional-ai-analysis]
+verify_jwt = false
+
+[functions.generate-social-story]
+verify_jwt = false
+
+[functions.smart-recommendations]
+verify_jwt = false
