@@ -944,6 +944,203 @@ export type Database = {
           },
         ]
       }
+      community_comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          post_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          post_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_leaderboard: {
+        Row: {
+          id: string
+          period: string
+          points: number | null
+          rank: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          period: string
+          points?: number | null
+          rank?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          period?: string
+          points?: number | null
+          rank?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      community_likes: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_points: {
+        Row: {
+          badges_earned: string[] | null
+          id: string
+          level: number | null
+          monthly_points: number | null
+          rank: string | null
+          total_points: number | null
+          updated_at: string | null
+          user_id: string
+          weekly_points: number | null
+        }
+        Insert: {
+          badges_earned?: string[] | null
+          id?: string
+          level?: number | null
+          monthly_points?: number | null
+          rank?: string | null
+          total_points?: number | null
+          updated_at?: string | null
+          user_id: string
+          weekly_points?: number | null
+        }
+        Update: {
+          badges_earned?: string[] | null
+          id?: string
+          level?: number | null
+          monthly_points?: number | null
+          rank?: string | null
+          total_points?: number | null
+          updated_at?: string | null
+          user_id?: string
+          weekly_points?: number | null
+        }
+        Relationships: []
+      }
+      community_posts: {
+        Row: {
+          child_id: string | null
+          comments_count: number | null
+          content: string | null
+          created_at: string | null
+          id: string
+          image_url: string | null
+          is_public: boolean | null
+          likes_count: number | null
+          metadata: Json | null
+          post_type: string
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          child_id?: string | null
+          comments_count?: number | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_public?: boolean | null
+          likes_count?: number | null
+          metadata?: Json | null
+          post_type: string
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          child_id?: string | null
+          comments_count?: number | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_public?: boolean | null
+          likes_count?: number | null
+          metadata?: Json | null
+          post_type?: string
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_posts_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_posts_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "community_posts_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content_library: {
         Row: {
           category: string | null
@@ -2610,6 +2807,51 @@ export type Database = {
           },
         ]
       }
+      social_missions: {
+        Row: {
+          badge_reward: string | null
+          category: string
+          created_at: string | null
+          description: string
+          end_date: string | null
+          id: string
+          is_active: boolean | null
+          mission_type: string
+          points_reward: number | null
+          requirements: Json
+          start_date: string | null
+          title: string
+        }
+        Insert: {
+          badge_reward?: string | null
+          category: string
+          created_at?: string | null
+          description: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          mission_type: string
+          points_reward?: number | null
+          requirements?: Json
+          start_date?: string | null
+          title: string
+        }
+        Update: {
+          badge_reward?: string | null
+          category?: string
+          created_at?: string | null
+          description?: string
+          end_date?: string | null
+          id?: string
+          is_active?: boolean | null
+          mission_type?: string
+          points_reward?: number | null
+          requirements?: Json
+          start_date?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       social_stories: {
         Row: {
           age_max: number | null
@@ -3218,6 +3460,53 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_mission_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          mission_id: string
+          points_earned: number | null
+          progress: number | null
+          target: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          mission_id: string
+          points_earned?: number | null
+          progress?: number | null
+          target: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          mission_id?: string
+          points_earned?: number | null
+          progress?: number | null
+          target?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_mission_progress_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "social_missions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_profiles: {
         Row: {
