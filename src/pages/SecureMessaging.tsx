@@ -103,24 +103,35 @@ export default function SecureMessaging() {
 
   const loadRecipients = async () => {
     try {
-      // Load users this person can message (patients, parents, therapists)
-      const { data: accessData } = await supabase
-        .from('child_access')
-        .select(`
-          children:child_id (parent_id)
-        `)
-        .eq('professional_id', user?.id)
-        .eq('is_active', true);
+      // Load all profiles except current user as potential recipients
+      const { data: profiles, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, email')
+        .neq('id', user?.id || '');
 
-      const parentIds = accessData?.map(a => (a.children as any)?.parent_id).filter(Boolean) || [];
+      if (error) {
+        console.error('Error loading recipients:', error);
+        return;
+      }
 
-      if (parentIds.length > 0) {
-        const { data: profiles } = await supabase
-          .from('profiles')
-          .select('id, full_name, email')
-          .in('id', parentIds);
+      if (profiles && profiles.length > 0) {
+        // Get roles for each profile
+        const profileIds = profiles.map(p => p.id);
+        const { data: roles } = await supabase
+          .from('user_roles')
+          .select('user_id, role')
+          .in('user_id', profileIds);
 
-        setRecipients(profiles || []);
+        const roleMap = new Map(roles?.map(r => [r.user_id, r.role]) || []);
+
+        const recipientsWithRoles = profiles.map(p => ({
+          ...p,
+          role: roleMap.get(p.id) || 'user'
+        }));
+
+        setRecipients(recipientsWithRoles);
+      } else {
+        setRecipients([]);
       }
     } catch (error) {
       console.error('Error loading recipients:', error);
@@ -252,7 +263,7 @@ export default function SecureMessaging() {
                           ) : (
                             recipients.map((r) => (
                               <SelectItem key={r.id} value={r.id}>
-                                {r.full_name || r.email}
+                                {r.full_name || r.email} {r.role && `(${r.role === 'therapist' ? 'Terapeuta' : r.role === 'teacher' ? 'Professor' : 'Responsável'})`}
                               </SelectItem>
                             ))
                           )}
