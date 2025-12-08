@@ -81,6 +81,11 @@ export function AppSidebar() {
       icon: Drama,
     },
     {
+      title: 'Comunidade',
+      path: '/community',
+      icon: Users,
+    },
+    {
       title: 'Progresso',
       path: '/learning-dashboard',
       icon: TrendingUp,

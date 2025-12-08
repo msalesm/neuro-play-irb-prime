@@ -114,7 +114,6 @@ export function CommunityFeed() {
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={post.profiles?.avatar_url} />
                     <AvatarFallback>
                       {post.profiles?.name?.charAt(0) || 'U'}
                     </AvatarFallback>
@@ -190,7 +189,6 @@ export function CommunityFeed() {
                       {comments[post.id]?.map(comment => (
                         <div key={comment.id} className="flex gap-2">
                           <Avatar className="w-8 h-8">
-                            <AvatarImage src={comment.profiles?.avatar_url} />
                             <AvatarFallback className="text-xs">
                               {comment.profiles?.name?.charAt(0) || 'U'}
                             </AvatarFallback>

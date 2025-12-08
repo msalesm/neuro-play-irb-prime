@@ -114,7 +114,6 @@ export function CommunityLeaderboard() {
 
                       {/* Avatar */}
                       <Avatar className="w-10 h-10">
-                        <AvatarImage src={entry.avatar_url} />
                         <AvatarFallback>
                           {entry.name?.charAt(0) || 'U'}
                         </AvatarFallback>

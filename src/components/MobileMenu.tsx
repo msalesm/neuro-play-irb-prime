@@ -43,6 +43,7 @@ export function MobileMenu() {
         { title: 'Minhas Rotinas', path: '/rotinas', icon: CalendarCheck },
         { title: 'Jogos Cognitivos', path: '/games', icon: Gamepad2 },
         { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
+        { title: 'Comunidade', path: '/community', icon: Users },
         { title: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
       ],
     },

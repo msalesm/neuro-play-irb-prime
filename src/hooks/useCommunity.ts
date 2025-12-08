@@ -18,7 +18,6 @@ interface CommunityPost {
   created_at: string;
   profiles?: {
     name: string;
-    avatar_url?: string;
   };
   user_liked?: boolean;
 }
@@ -31,7 +30,6 @@ interface CommunityComment {
   created_at: string;
   profiles?: {
     name: string;
-    avatar_url?: string;
   };
 }
 
@@ -63,7 +61,6 @@ interface LeaderboardEntry {
   points: number;
   rank: number;
   name?: string;
-  avatar_url?: string;
 }
 
 export function useCommunity() {
@@ -90,11 +87,12 @@ export function useCommunity() {
       const userIds = [...new Set(data?.map(p => p.user_id) || [])];
       const { data: profilesData } = await supabase
         .from('profiles')
-        .select('id, full_name, avatar_url')
+        .select('id, full_name')
         .in('id', userIds);
 
-      const profilesMap = new Map(profilesData?.map(p => [p.id, { name: p.full_name, avatar_url: p.avatar_url }]) || []);
-
+      const profilesMap = new Map(
+        (profilesData || []).map(p => [p.id, { name: p.full_name || 'Usuário' }])
+      );
 
       // Check which posts the user has liked
       let likedPostIds = new Set<string>();
@@ -111,7 +109,7 @@ export function useCommunity() {
         metadata: (typeof post.metadata === 'object' && post.metadata !== null) 
           ? post.metadata as Record<string, any> 
           : {},
-        profiles: profilesMap.get(post.user_id) || undefined,
+        profiles: profilesMap.get(post.user_id),
         user_liked: likedPostIds.has(post.id)
       }));
 
@@ -208,13 +206,11 @@ export function useCommunity() {
         });
       } else {
         // Initialize points for new user
-        const { data: newPoints, error: insertError } = await supabase
+        const { error: insertError } = await supabase
           .from('community_points')
-          .insert({ user_id: user.id })
-          .select()
-          .single();
+          .insert({ user_id: user.id });
 
-        if (!insertError && newPoints) {
+        if (!insertError) {
           setMyPoints({
             total_points: 0,
             weekly_points: 0,
@@ -246,17 +242,18 @@ export function useCommunity() {
       const userIds = [...new Set(data?.map(e => e.user_id) || [])];
       const { data: profilesData } = await supabase
         .from('profiles')
-        .select('id, name, avatar_url')
+        .select('id, full_name')
         .in('id', userIds);
 
-      const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
+      const profilesMap = new Map(
+        (profilesData || []).map(p => [p.id, p.full_name])
+      );
 
       setLeaderboard(data?.map((entry, index) => ({
         user_id: entry.user_id,
         points: entry.points || 0,
         rank: index + 1,
-        name: profilesMap.get(entry.user_id)?.name,
-        avatar_url: profilesMap.get(entry.user_id)?.avatar_url
+        name: profilesMap.get(entry.user_id) || 'Usuário'
       })) || []);
     } catch (error) {
       console.error('Error fetching leaderboard:', error);
@@ -311,7 +308,6 @@ export function useCommunity() {
 
     try {
       if (post.user_liked) {
-        // Unlike
         await supabase
           .from('community_likes')
           .delete()
@@ -324,7 +320,6 @@ export function useCommunity() {
             : p
         ));
       } else {
-        // Like
         await supabase
           .from('community_likes')
           .insert({ post_id: postId, user_id: user.id });
@@ -335,7 +330,6 @@ export function useCommunity() {
             : p
         ));
 
-        // Award points for social engagement
         await addPoints(2, 'like');
       }
     } catch (error) {
@@ -363,23 +357,21 @@ export function useCommunity() {
       // Fetch profile for the comment
       const { data: profileData } = await supabase
         .from('profiles')
-        .select('name, avatar_url')
+        .select('full_name')
         .eq('id', user.id)
         .single();
 
-      // Update comment count
       setPosts(prev => prev.map(p => 
         p.id === postId 
           ? { ...p, comments_count: p.comments_count + 1 }
           : p
       ));
 
-      // Award points
       await addPoints(5, 'comment');
 
       return {
         ...data,
-        profiles: profileData || undefined
+        profiles: { name: profileData?.full_name || 'Usuário' }
       };
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -402,14 +394,16 @@ export function useCommunity() {
       const userIds = [...new Set(data?.map(c => c.user_id) || [])];
       const { data: profilesData } = await supabase
         .from('profiles')
-        .select('id, name, avatar_url')
+        .select('id, full_name')
         .in('id', userIds);
 
-      const profilesMap = new Map(profilesData?.map(p => [p.id, p]) || []);
+      const profilesMap = new Map(
+        (profilesData || []).map(p => [p.id, { name: p.full_name || 'Usuário' }])
+      );
 
       return (data || []).map(comment => ({
         ...comment,
-        profiles: profilesMap.get(comment.user_id) || undefined
+        profiles: profilesMap.get(comment.user_id)
       }));
     } catch (error) {
       console.error('Error fetching comments:', error);
@@ -471,7 +465,6 @@ export function useCommunity() {
           description: `Você completou "${mission.title}" e ganhou ${mission.points_reward} pontos!`
         });
 
-        // Auto-share achievement
         await createPost({
           post_type: 'achievement',
           title: `Completou a missão: ${mission.title}`,
@@ -486,13 +479,11 @@ export function useCommunity() {
     }
   };
 
-  // Helper to extract target from requirements
   function getTargetFromRequirements(requirements: Record<string, any>): number {
     const values = Object.values(requirements);
     return typeof values[0] === 'number' ? values[0] : 1;
   }
 
-  // Initialize data
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -508,7 +499,6 @@ export function useCommunity() {
     loadData();
   }, [fetchPosts, fetchMissions, fetchMyPoints, fetchLeaderboard]);
 
-  // Real-time updates
   useEffect(() => {
     const channel = supabase
       .channel('community-updates')
