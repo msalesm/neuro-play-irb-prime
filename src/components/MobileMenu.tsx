@@ -4,7 +4,7 @@ import {
   Home, Brain, Stethoscope, Settings, User, 
   Users, School, TrendingUp, Menu, Sparkles, Gamepad2,
   FileText, ClipboardCheck, GraduationCap, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, CalendarCheck, Rocket, Mail
+  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, CalendarCheck, Rocket, Mail, Folder
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -110,6 +110,7 @@ export function MobileMenu() {
       items: [
         { title: 'Dashboard Geral', path: '/admin/network', icon: BarChart3 },
         { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
+        { title: 'Gerenciador de Conteúdo', path: '/content-manager', icon: Folder },
         { title: 'Mapas de Risco', path: '/admin/risk-maps', icon: TrendingUp },
         { title: 'IA Contextual', path: '/contextual-ai', icon: Brain },
         { title: 'Analytics Profissional', path: '/professional-analytics', icon: BarChart3 },
