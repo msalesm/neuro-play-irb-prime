@@ -44,50 +44,30 @@ export function NewMessageModal({ open, onOpenChange, onSend }: NewMessageModalP
   const loadRecipients = async () => {
     setLoadingRecipients(true);
     try {
-      // Load users the current user can message (based on child_access relationships)
-      const { data: accessData } = await supabase
-        .from('child_access')
-        .select('professional_id, child_id, children(parent_id)')
-        .eq('is_active', true);
+      // Get all profiles except current user
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, full_name, email')
+        .neq('id', user?.id || '');
 
-      const recipientIds = new Set<string>();
-      accessData?.forEach((access: any) => {
-        if (access.professional_id) recipientIds.add(access.professional_id);
-        if (access.children?.parent_id) recipientIds.add(access.children.parent_id);
-      });
-
-      // Also get therapists with direct access
-      const { data: therapistAccess } = await supabase
-        .from('child_access')
-        .select('professional_id')
-        .eq('is_active', true);
-
-      therapistAccess?.forEach(access => {
-        if (access.professional_id) recipientIds.add(access.professional_id);
-      });
-
-      // Remove current user from recipients
-      recipientIds.delete(user?.id || '');
-
-      if (recipientIds.size > 0) {
-        const { data: profiles } = await supabase
-          .from('profiles')
-          .select('id, full_name, email')
-          .in('id', Array.from(recipientIds));
-
+      if (profiles && profiles.length > 0) {
+        const profileIds = profiles.map(p => p.id);
+        
         const { data: roles } = await supabase
           .from('user_roles')
           .select('user_id, role')
-          .in('user_id', Array.from(recipientIds));
+          .in('user_id', profileIds);
 
         const roleMap = new Map(roles?.map(r => [r.user_id, r.role]) || []);
 
-        setRecipients((profiles || []).map(p => ({
+        setRecipients(profiles.map(p => ({
           id: p.id,
           name: p.full_name || 'Usuário',
           email: p.email || '',
           type: (roleMap.get(p.id) as 'parent' | 'therapist' | 'teacher') || 'parent'
         })));
+      } else {
+        setRecipients([]);
       }
     } catch (error) {
       console.error('Error loading recipients:', error);
