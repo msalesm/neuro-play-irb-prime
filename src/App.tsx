@@ -306,6 +306,7 @@ const App = () => (
           {/* Relatórios Inteligentes */}
           <Route path="/reports" element={<IntelligentReports />} />
           <Route path="/relatorios" element={<IntelligentReports />} />
+          <Route path="/intelligent-reports" element={<IntelligentReports />} />
           
           {/* Phase 3 Routes */}
           <Route path="/student-hub" element={<StudentHub />} />
