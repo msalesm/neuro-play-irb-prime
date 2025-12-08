@@ -133,6 +133,7 @@ REGRAS IMPORTANTES:
 - Forneça orientações práticas e baseadas em evidências
 - NUNCA faça diagnósticos - apenas triagem e orientação
 - Seja empático e acolhedor
+- Quando apropriado, sugira ações específicas na plataforma
 
 FUNCIONALIDADES DA PLATAFORMA:
 - Sistema Planeta Azul: 5 planetas temáticos (Aurora-TEA, Vortex-TDAH, Lumen-Dislexia, Calm-Emocional, Order-Executivo)
@@ -140,7 +141,9 @@ FUNCIONALIDADES DA PLATAFORMA:
 - Rotinas e histórias sociais ilustradas
 - Chat terapêutico com check-ins emocionais
 - Relatórios clínicos gerados por IA
-- Painel para pais, terapeutas e escolas`;
+- Painel para pais, terapeutas e escolas
+- Central de IA Contextual com recomendações personalizadas
+- Análise preditiva de comportamento e detecção de riscos`;
 
   // Add page-specific context
   if (currentPage.includes('dashboard-pais')) {
@@ -150,7 +153,19 @@ CONTEXTO ATUAL: Dashboard dos Pais
 - Foco: ajudar pais a entender o progresso do filho
 - Explique métricas de forma simples
 - Sugira próximos passos baseado no histórico
-- Indique quando procurar ajuda profissional`;
+- Indique quando procurar ajuda profissional
+- Recomende jogos específicos baseado no perfil da criança`;
+  }
+  
+  if (currentPage.includes('contextual-ai') || currentPage.includes('ia-contextual')) {
+    return `${basePrompt}
+
+CONTEXTO ATUAL: Central de IA Contextual
+- Foco: explicar como funcionam as recomendações e análises
+- Descreva os tipos de análise preditiva disponíveis
+- Explique como interpretar insights gerados
+- Sugira quando usar cada tipo de análise
+- Ajude a entender métricas de confiança`;
   }
   
   if (currentPage.includes('sistema-planeta-azul') || currentPage.includes('planeta')) {
@@ -162,7 +177,8 @@ CONTEXTO ATUAL: Sistema Planeta Azul
 - Vortex (TDAH): atenção, controle inibitório, timing
 - Lumen (Dislexia): consciência fonológica, leitura
 - Calm: regulação emocional, respiração
-- Order: funções executivas, planejamento`;
+- Order: funções executivas, planejamento
+- Sugira o planeta mais adequado baseado nas necessidades`;
   }
   
   if (currentPage.includes('rotinas') || currentPage.includes('historias')) {
@@ -172,7 +188,8 @@ CONTEXTO ATUAL: Rotinas e Histórias Sociais
 - Foco: orientar sobre estruturação de rotinas
 - Explique benefícios das histórias sociais para TEA
 - Sugira como manter consistência
-- Dê dicas de personalização`;
+- Dê dicas de personalização
+- Recomende histórias específicas para situações comuns`;
   }
   
   if (currentPage.includes('games') || currentPage.includes('jogo')) {
@@ -182,7 +199,8 @@ CONTEXTO ATUAL: Jogos Cognitivos
 - Foco: explicar mecânicas e benefícios terapêuticos
 - Descreva como a dificuldade adaptativa funciona
 - Explique as métricas coletadas
-- Relacione jogos com habilidades cognitivas`;
+- Relacione jogos com habilidades cognitivas
+- Sugira jogos baseado no perfil e objetivos terapêuticos`;
   }
   
   if (currentPage.includes('therapist') || currentPage.includes('terapeuta')) {
@@ -192,7 +210,8 @@ CONTEXTO ATUAL: Painel do Terapeuta
 - Foco: suporte clínico para profissionais
 - Ajude a interpretar dados e relatórios
 - Sugira intervenções baseadas em evidências
-- Oriente sobre configuração de PEI`;
+- Oriente sobre configuração de PEI
+- Explique como usar análises preditivas para prevenção`;
   }
   
   if (currentPage.includes('teacher') || currentPage.includes('professor')) {
@@ -202,7 +221,19 @@ CONTEXTO ATUAL: Painel do Professor
 - Foco: suporte pedagógico inclusivo
 - Sugira adaptações curriculares
 - Explique indicadores de aprendizagem
-- Oriente sobre comunicação com pais`;
+- Oriente sobre comunicação com pais
+- Ajude a interpretar relatórios pedagógicos`;
+  }
+  
+  if (currentPage.includes('intelligent-reports') || currentPage.includes('relatorios')) {
+    return `${basePrompt}
+
+CONTEXTO ATUAL: Relatórios Inteligentes
+- Foco: ajudar a interpretar e gerar relatórios
+- Explique os diferentes tipos de relatório (clínico, pedagógico, familiar)
+- Descreva métricas e indicadores
+- Oriente sobre exportação e compartilhamento
+- Sugira como usar relatórios para acompanhamento`;
   }
 
   return basePrompt;

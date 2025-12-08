@@ -111,6 +111,7 @@ export function MobileMenu() {
         { title: 'Dashboard Geral', path: '/admin/network', icon: BarChart3 },
         { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
         { title: 'Mapas de Risco', path: '/admin/risk-maps', icon: TrendingUp },
+        { title: 'IA Contextual', path: '/contextual-ai', icon: Brain },
         { title: 'Analytics Profissional', path: '/professional-analytics', icon: BarChart3 },
         { title: 'Editor de Histórias', path: '/admin/story-editor', icon: BookOpen },
         { title: 'Dashboard Institucional', path: '/institutional', icon: Briefcase },
