@@ -118,6 +118,7 @@ import SubscriptionPage from "./pages/SubscriptionPage";
 import SecureMessaging from "./pages/SecureMessaging";
 import ContentManager from "./pages/ContentManager";
 import ProfessionalAnalytics from "./pages/ProfessionalAnalytics";
+import Community from "./pages/Community";
 
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
@@ -325,6 +326,10 @@ const App = () => (
           <Route path="/content-manager" element={<ContentManager />} />
           <Route path="/admin/content" element={<ContentManager />} />
           <Route path="/professional-analytics" element={<ProfessionalAnalytics />} />
+          
+          {/* Phase 3 - Community */}
+          <Route path="/community" element={<Community />} />
+          <Route path="/comunidade" element={<Community />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
