@@ -153,7 +153,7 @@ export default function ContextualAIDashboard() {
       description: 'Gerar relatórios inteligentes',
       icon: BarChart3,
       color: 'text-amber-500',
-      href: '/intelligent-reports',
+      href: '/reports',
     },
   ];
 
