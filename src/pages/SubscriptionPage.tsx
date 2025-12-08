@@ -8,10 +8,11 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Crown, Check, X, Zap, Building2, Users, Star,
-  CreditCard, Calendar, AlertCircle, ArrowRight
+  CreditCard, Calendar, AlertCircle, ArrowRight, ExternalLink
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useSearchParams } from 'react-router-dom';
 
 interface SubscriptionPlan {
   id: string;
@@ -27,32 +28,37 @@ interface SubscriptionPlan {
   sort_order: number;
 }
 
-interface Subscription {
-  id: string;
-  status: string;
-  billing_cycle: string;
-  current_period_start: string;
-  current_period_end: string;
-  trial_ends_at: string | null;
-  plan: SubscriptionPlan;
+interface StripeSubscription {
+  subscribed: boolean;
+  plan_type: string | null;
+  subscription_end: string | null;
 }
 
 export default function SubscriptionPage() {
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
-  const [currentSubscription, setCurrentSubscription] = useState<Subscription | null>(null);
+  const [stripeSubscription, setStripeSubscription] = useState<StripeSubscription | null>(null);
   const [loading, setLoading] = useState(true);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
 
   useEffect(() => {
+    // Handle Stripe redirect
+    if (searchParams.get('success') === 'true') {
+      toast.success('Assinatura realizada com sucesso!');
+    } else if (searchParams.get('cancelled') === 'true') {
+      toast.info('Checkout cancelado');
+    }
+    
     loadData();
-  }, [user]);
+  }, [user, searchParams]);
 
   const loadData = async () => {
     try {
-      // Load plans
+      // Load plans from database
       const { data: plansData, error: plansError } = await supabase
         .from('subscription_plans')
         .select('*')
@@ -66,23 +72,11 @@ export default function SubscriptionPage() {
         limits: (typeof p.limits === 'object' && p.limits !== null ? p.limits : {}) as Record<string, number>
       })) as SubscriptionPlan[]);
 
-      // Load current subscription
+      // Check Stripe subscription status
       if (user) {
-        const { data: subData } = await supabase
-          .from('subscriptions')
-          .select(`
-            *,
-            plan:plan_id (*)
-          `)
-          .eq('user_id', user.id)
-          .in('status', ['active', 'trial'])
-          .single();
-
-        if (subData) {
-          setCurrentSubscription({
-            ...subData,
-            plan: subData.plan as unknown as SubscriptionPlan
-          } as Subscription);
+        const { data, error } = await supabase.functions.invoke('check-subscription');
+        if (!error && data) {
+          setStripeSubscription(data as StripeSubscription);
         }
       }
     } catch (error) {
@@ -93,112 +87,61 @@ export default function SubscriptionPage() {
   };
 
   const handleSelectPlan = (plan: SubscriptionPlan) => {
+    if (plan.plan_type === 'free') {
+      toast.info('Plano gratuito já disponível para todos os usuários');
+      return;
+    }
     setSelectedPlan(plan);
     setShowUpgradeDialog(true);
   };
 
-  const handleStartTrial = async () => {
+  const handleStripeCheckout = async () => {
     if (!selectedPlan || !user) return;
 
     try {
-      // If plan has trial, start trial immediately
-      if (selectedPlan.trial_days > 0) {
-        const trialEnd = new Date();
-        trialEnd.setDate(trialEnd.getDate() + selectedPlan.trial_days);
-
-        const periodEnd = new Date();
-        periodEnd.setMonth(periodEnd.getMonth() + (billingCycle === 'yearly' ? 12 : 1));
-
-        const { error } = await supabase
-          .from('subscriptions')
-          .insert({
-            user_id: user.id,
-            plan_id: selectedPlan.id,
-            status: 'trial',
-            billing_cycle: billingCycle,
-            current_period_end: periodEnd.toISOString(),
-            trial_ends_at: trialEnd.toISOString()
-          });
-
-        if (error) throw error;
-
-        toast.success(`Trial de ${selectedPlan.trial_days} dias iniciado!`);
-        setShowUpgradeDialog(false);
-        loadData();
-        return;
-      }
-
-      // For paid plans without trial, redirect to Mercado Pago
-      if (selectedPlan.price_monthly > 0) {
-        setLoading(true);
-        
-        const { data, error } = await supabase.functions.invoke('mercado-pago-payment', {
-          body: {
-            action: 'create_preference',
-            planId: selectedPlan.id,
-            userId: user.id,
-            billingCycle,
-            email: user.email,
-            returnUrl: `${window.location.origin}/subscription`,
-          }
-        });
-
-        if (error) throw error;
-
-        if (data?.initPoint) {
-          window.location.href = data.initPoint;
-        } else {
-          throw new Error('Could not create payment preference');
+      setCheckoutLoading(true);
+      
+      const { data, error } = await supabase.functions.invoke('stripe-checkout', {
+        body: {
+          planType: selectedPlan.plan_type,
+          billingCycle
         }
-        return;
-      }
-
-      // Free plan - just activate
-      const periodEnd = new Date();
-      periodEnd.setFullYear(periodEnd.getFullYear() + 10);
-
-      const { error } = await supabase
-        .from('subscriptions')
-        .insert({
-          user_id: user.id,
-          plan_id: selectedPlan.id,
-          status: 'active',
-          billing_cycle: billingCycle,
-          current_period_end: periodEnd.toISOString(),
-        });
+      });
 
       if (error) throw error;
 
-      toast.success('Plano gratuito ativado!');
-      setShowUpgradeDialog(false);
-      loadData();
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      } else {
+        throw new Error('Could not create checkout session');
+      }
     } catch (error) {
-      console.error('Error starting subscription:', error);
-      toast.error('Erro ao processar assinatura');
+      console.error('Error creating checkout:', error);
+      toast.error('Erro ao iniciar checkout');
     } finally {
-      setLoading(false);
+      setCheckoutLoading(false);
+      setShowUpgradeDialog(false);
     }
   };
 
-  const handleCancelSubscription = async () => {
-    if (!currentSubscription) return;
-
+  const handleManageSubscription = async () => {
     try {
-      const { error } = await supabase
-        .from('subscriptions')
-        .update({
-          status: 'cancelled',
-          cancelled_at: new Date().toISOString()
-        })
-        .eq('id', currentSubscription.id);
+      setCheckoutLoading(true);
+      
+      const { data, error } = await supabase.functions.invoke('customer-portal');
 
       if (error) throw error;
 
-      toast.success('Assinatura cancelada. Você terá acesso até o fim do período.');
-      loadData();
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      } else {
+        throw new Error('Could not create portal session');
+      }
     } catch (error) {
-      console.error('Error cancelling subscription:', error);
-      toast.error('Erro ao cancelar assinatura');
+      console.error('Error opening customer portal:', error);
+      toast.error('Erro ao abrir portal de gerenciamento');
+    } finally {
+      setCheckoutLoading(false);
     }
   };
 
@@ -219,6 +162,16 @@ export default function SubscriptionPage() {
       case 'pro_therapist': return 'from-purple-500/20 to-purple-600/10 border-purple-500/30';
       case 'institutional': return 'from-amber-500/20 to-amber-600/10 border-amber-500/30';
       default: return 'from-gray-500/20 to-gray-600/10 border-gray-500/30';
+    }
+  };
+
+  const getPlanLabel = (planType: string) => {
+    switch (planType) {
+      case 'free': return 'Gratuito';
+      case 'pro_family': return 'Pro Família';
+      case 'pro_therapist': return 'Pro Terapeuta';
+      case 'institutional': return 'Institucional';
+      default: return planType;
     }
   };
 
@@ -276,37 +229,37 @@ export default function SubscriptionPage() {
           <h1 className="text-3xl font-bold text-white">Planos e Assinatura</h1>
           <p className="text-white/70">Escolha o plano ideal para suas necessidades</p>
         </div>
-        {/* Current Subscription */}
-        {currentSubscription && (
+
+        {/* Current Stripe Subscription */}
+        {stripeSubscription?.subscribed && (
           <Card className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/20 rounded-lg">
-                    {getPlanIcon(currentSubscription.plan.plan_type)}
+                    {getPlanIcon(stripeSubscription.plan_type || 'free')}
                   </div>
                   <div>
-                    <CardTitle>Seu Plano Atual: {currentSubscription.plan.name}</CardTitle>
+                    <CardTitle>Seu Plano Atual: {getPlanLabel(stripeSubscription.plan_type || 'free')}</CardTitle>
                     <CardDescription>
-                      {currentSubscription.status === 'trial' 
-                        ? `Trial até ${new Date(currentSubscription.trial_ends_at!).toLocaleDateString('pt-BR')}`
-                        : `Renova em ${new Date(currentSubscription.current_period_end).toLocaleDateString('pt-BR')}`
+                      {stripeSubscription.subscription_end 
+                        ? `Renova em ${new Date(stripeSubscription.subscription_end).toLocaleDateString('pt-BR')}`
+                        : 'Assinatura ativa'
                       }
                     </CardDescription>
                   </div>
                 </div>
-                <Badge variant={currentSubscription.status === 'trial' ? 'secondary' : 'default'}>
-                  {currentSubscription.status === 'trial' ? 'Trial' : 'Ativo'}
-                </Badge>
+                <Badge variant="default">Ativo</Badge>
               </div>
             </CardHeader>
             <CardFooter className="flex gap-2">
-              <Button variant="outline" onClick={() => handleCancelSubscription()}>
-                Cancelar Assinatura
-              </Button>
-              <Button>
-                <CreditCard className="w-4 h-4 mr-2" />
-                Gerenciar Pagamento
+              <Button 
+                variant="outline" 
+                onClick={handleManageSubscription}
+                disabled={checkoutLoading}
+              >
+                <ExternalLink className="w-4 h-4 mr-2" />
+                Gerenciar Assinatura
               </Button>
             </CardFooter>
           </Card>
@@ -330,7 +283,7 @@ export default function SubscriptionPage() {
         {/* Plans Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {plans.map((plan) => {
-            const isCurrentPlan = currentSubscription?.plan.id === plan.id;
+            const isCurrentPlan = stripeSubscription?.plan_type === plan.plan_type;
             const price = billingCycle === 'yearly' ? plan.price_yearly : plan.price_monthly;
             const monthlyEquivalent = billingCycle === 'yearly' ? price / 12 : price;
 
@@ -339,11 +292,16 @@ export default function SubscriptionPage() {
                 key={plan.id} 
                 className={`relative bg-gradient-to-br ${getPlanColor(plan.plan_type)} ${
                   plan.plan_type === 'pro_therapist' ? 'ring-2 ring-purple-500/50' : ''
-                }`}
+                } ${isCurrentPlan ? 'ring-2 ring-green-500/50' : ''}`}
               >
-                {plan.plan_type === 'pro_therapist' && (
+                {plan.plan_type === 'pro_therapist' && !isCurrentPlan && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <Badge className="bg-purple-500 text-white">Mais Popular</Badge>
+                  </div>
+                )}
+                {isCurrentPlan && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <Badge className="bg-green-500 text-white">Seu Plano</Badge>
                   </div>
                 )}
                 
@@ -353,8 +311,14 @@ export default function SubscriptionPage() {
                   </div>
                   <CardTitle>{plan.name}</CardTitle>
                   <div className="mt-4">
-                    <span className="text-3xl font-bold">{formatPrice(monthlyEquivalent)}</span>
-                    <span className="text-muted-foreground">/mês</span>
+                    {price === 0 ? (
+                      <span className="text-3xl font-bold">Grátis</span>
+                    ) : (
+                      <>
+                        <span className="text-3xl font-bold">{formatPrice(monthlyEquivalent)}</span>
+                        <span className="text-muted-foreground">/mês</span>
+                      </>
+                    )}
                   </div>
                   {billingCycle === 'yearly' && price > 0 && (
                     <p className="text-sm text-muted-foreground">
@@ -381,11 +345,11 @@ export default function SubscriptionPage() {
                   <Button 
                     className="w-full" 
                     variant={isCurrentPlan ? 'secondary' : 'default'}
-                    disabled={isCurrentPlan}
+                    disabled={isCurrentPlan || plan.plan_type === 'free'}
                     onClick={() => handleSelectPlan(plan)}
                   >
-                    {isCurrentPlan ? 'Plano Atual' : plan.trial_days > 0 ? 'Iniciar Trial' : 'Escolher Plano'}
-                    {!isCurrentPlan && <ArrowRight className="w-4 h-4 ml-2" />}
+                    {isCurrentPlan ? 'Plano Atual' : plan.plan_type === 'free' ? 'Disponível' : 'Escolher Plano'}
+                    {!isCurrentPlan && plan.plan_type !== 'free' && <ArrowRight className="w-4 h-4 ml-2" />}
                   </Button>
                 </CardFooter>
               </Card>
@@ -393,7 +357,7 @@ export default function SubscriptionPage() {
           })}
         </div>
 
-        {/* FAQ or Info Section */}
+        {/* FAQ Section */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -409,15 +373,15 @@ export default function SubscriptionPage() {
               </p>
             </div>
             <div>
-              <h4 className="font-medium">Como funciona o trial?</h4>
+              <h4 className="font-medium">Como funciona o pagamento?</h4>
               <p className="text-sm text-muted-foreground">
-                Durante o período de trial você tem acesso completo ao plano. Não cobramos nada até o trial terminar.
+                Utilizamos Stripe para processar pagamentos de forma segura. Aceitamos cartões de crédito e débito.
               </p>
             </div>
             <div>
               <h4 className="font-medium">Posso fazer upgrade do plano?</h4>
               <p className="text-sm text-muted-foreground">
-                Sim! Você pode fazer upgrade a qualquer momento. O valor será calculado proporcionalmente.
+                Sim! Você pode fazer upgrade a qualquer momento através do portal de gerenciamento.
               </p>
             </div>
           </CardContent>
@@ -428,12 +392,9 @@ export default function SubscriptionPage() {
       <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirmar Plano: {selectedPlan?.name}</DialogTitle>
+            <DialogTitle>Assinar: {selectedPlan?.name}</DialogTitle>
             <DialogDescription>
-              {selectedPlan?.trial_days && selectedPlan.trial_days > 0
-                ? `Você terá ${selectedPlan.trial_days} dias de trial gratuito.`
-                : 'Confirme sua escolha de plano.'
-              }
+              Você será redirecionado para o checkout seguro do Stripe.
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 space-y-4">
@@ -446,16 +407,26 @@ export default function SubscriptionPage() {
                 )}
               </span>
             </div>
-            {selectedPlan?.trial_days && selectedPlan.trial_days > 0 && (
-              <p className="text-sm text-muted-foreground text-center">
-                Cobrança apenas após o término do trial
-              </p>
-            )}
-            <Button onClick={handleStartTrial} className="w-full">
-              {selectedPlan?.trial_days && selectedPlan.trial_days > 0 
-                ? 'Iniciar Trial Gratuito' 
-                : 'Continuar para Pagamento'
-              }
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <CreditCard className="w-4 h-4" />
+              <span>Pagamento seguro processado por Stripe</span>
+            </div>
+            <Button 
+              onClick={handleStripeCheckout} 
+              className="w-full"
+              disabled={checkoutLoading}
+            >
+              {checkoutLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  Processando...
+                </>
+              ) : (
+                <>
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  Continuar para Checkout
+                </>
+              )}
             </Button>
           </div>
         </DialogContent>
