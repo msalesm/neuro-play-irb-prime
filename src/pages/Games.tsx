@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { GameIllustration } from "@/components/GameIllustration";
@@ -241,6 +241,7 @@ const gamesList = [
 
 export default function Games() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   if (!user) {
     return (
@@ -276,6 +277,14 @@ export default function Games() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-6">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => navigate(-1)}
+              className="text-white/70 hover:text-white hover:bg-white/10 absolute left-6 top-0"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
             <div className="w-16 h-16 bg-gradient-to-br from-[hsl(199,100%,11%)] to-[hsl(194,100%,22%)] rounded-2xl flex items-center justify-center shadow-2xl shadow-[hsl(194,100%,22%)]/25 border border-[hsl(40,55%,51%)]/20">
               <Gamepad2 className="h-8 w-8 text-[hsl(40,55%,51%)]" />
             </div>

@@ -1,5 +1,7 @@
-import { Users, MessageCircle, Target, Trophy } from 'lucide-react';
+import { Users, MessageCircle, Target, Trophy, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { CommunityFeed } from '@/components/community/CommunityFeed';
 import { SocialMissions } from '@/components/community/SocialMissions';
 import { CommunityLeaderboard } from '@/components/community/CommunityLeaderboard';
@@ -7,18 +9,25 @@ import { CommunityStats } from '@/components/community/CommunityStats';
 import { AppLayout } from '@/components/AppLayout';
 
 export default function Community() {
+  const navigate = useNavigate();
+
   return (
     <AppLayout>
       <div className="container mx-auto px-4 py-6 max-w-6xl">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold flex items-center gap-3">
-            <Users className="w-8 h-8 text-primary" />
-            Comunidade NeuroPlay
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Compartilhe conquistas, complete missões e conecte-se com outras famílias
-          </p>
+        <div className="mb-6 flex items-center gap-4">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold flex items-center gap-3">
+              <Users className="w-8 h-8 text-primary" />
+              Comunidade NeuroPlay
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Compartilhe conquistas, complete missões e conecte-se com outras famílias
+            </p>
+          </div>
         </div>
 
         {/* Stats Overview */}
