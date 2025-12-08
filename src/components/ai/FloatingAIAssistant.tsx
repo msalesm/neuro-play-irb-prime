@@ -144,10 +144,11 @@ export function FloatingAIAssistant() {
             exit={{ scale: 0, opacity: 0 }}
             className="fixed bottom-24 left-4 z-[9999] md:bottom-8"
           >
-            <Button
+            <motion.button
               onClick={() => setIsOpen(true)}
-              size="lg"
-              className="h-14 w-14 rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(194,100%,22%)] shadow-lg hover:shadow-xl transition-all"
+              className="h-14 w-14 rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(194,100%,22%)] shadow-lg hover:shadow-xl transition-all flex items-center justify-center text-white active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               <motion.div
                 animate={{ rotate: [0, 10, -10, 0] }}
@@ -155,7 +156,7 @@ export function FloatingAIAssistant() {
               >
                 <Bot className="h-6 w-6" />
               </motion.div>
-            </Button>
+            </motion.button>
             
             {/* Pulse effect */}
             <motion.div
