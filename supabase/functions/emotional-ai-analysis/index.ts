@@ -12,6 +12,36 @@ serve(async (req) => {
   }
 
   try {
+    // CRITICAL: Authenticate user
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error('Missing Authorization header');
+      return new Response(JSON.stringify({ error: 'Unauthorized - Missing authorization header' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    
+    // Create client with user's token to verify authentication
+    const supabaseAuth = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } }
+    });
+    
+    const { data: { user }, error: authError } = await supabaseAuth.auth.getUser();
+    if (authError || !user) {
+      console.error('Authentication failed:', authError?.message);
+      return new Response(JSON.stringify({ error: 'Unauthorized - Invalid token' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    console.log('Authenticated user:', user.id);
+
     const { childId, analysisType } = await req.json();
     
     if (!childId) {
@@ -21,9 +51,53 @@ serve(async (req) => {
       });
     }
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Use service role for data access after authentication verified
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // SECURITY: Verify user has access to this child
+    const { data: accessCheck } = await supabase
+      .from('children')
+      .select('id, parent_id')
+      .eq('id', childId)
+      .single();
+
+    if (!accessCheck) {
+      return new Response(JSON.stringify({ error: 'Child not found' }), {
+        status: 404,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Check if user is parent, professional with access, or admin
+    const isParent = accessCheck.parent_id === user.id;
+    
+    const { data: professionalAccess } = await supabase
+      .from('child_access')
+      .select('id')
+      .eq('child_id', childId)
+      .eq('professional_id', user.id)
+      .eq('is_active', true)
+      .eq('approval_status', 'approved')
+      .maybeSingle();
+
+    const { data: userRole } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .maybeSingle();
+
+    const hasAccess = isParent || !!professionalAccess || !!userRole;
+
+    if (!hasAccess) {
+      console.error('Access denied for user:', user.id, 'to child:', childId);
+      return new Response(JSON.stringify({ error: 'Access denied - You do not have permission to access this child\'s data' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    console.log('Access verified for user:', user.id, 'to child:', childId);
 
     // Fetch recent game sessions
     const { data: gameSessions } = await supabase

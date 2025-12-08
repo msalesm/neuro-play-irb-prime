@@ -1,43 +1,43 @@
 project_id = "wzazjftrtakwugdgfcko"
 
 [functions.contextual-ai-assistant]
-verify_jwt = false
+verify_jwt = true
 
 [functions.therapeutic-chat]
-verify_jwt = false
+verify_jwt = true
 
 [functions.analyze-chat-patterns]
-verify_jwt = false
+verify_jwt = true
 
 [functions.cognitive-analysis]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-clinical-report]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-game-recommendations]
-verify_jwt = false
+verify_jwt = true
 
 [functions.predictive-analysis]
-verify_jwt = false
+verify_jwt = true
 
 [functions.aggregate-metrics]
-verify_jwt = false
+verify_jwt = true
 
 [functions.stripe-checkout]
-verify_jwt = false
+verify_jwt = true
 
 [functions.check-subscription]
-verify_jwt = false
+verify_jwt = true
 
 [functions.customer-portal]
-verify_jwt = false
+verify_jwt = true
 
 [functions.emotional-ai-analysis]
-verify_jwt = false
+verify_jwt = true
 
 [functions.generate-social-story]
-verify_jwt = false
+verify_jwt = true
 
 [functions.smart-recommendations]
-verify_jwt = false
+verify_jwt = true
