@@ -101,8 +101,10 @@ export const translations = {
       accessPanel: 'Acessar Painel Clínico'
     },
     
-    // Games
+    // Games Page
     games: {
+      title: 'Jogos Terapêuticos',
+      subtitle: 'Desenvolva habilidades cognitivas através de jogos divertidos e envolventes.',
       focusForest: 'Floresta do Foco',
       memoriaColorida: 'Memória Colorida',
       logicaRapida: 'Lógica Rápida',
@@ -110,6 +112,14 @@ export const translations = {
       aventuraNumeros: 'Aventura dos Números',
       socialScenarios: 'Cenários Sociais',
       popular: 'Popular',
+      available: 'Disponível',
+      diagnostic: 'Diagnóstico',
+      accessRestricted: 'Acesso Restrito',
+      loginToAccess: 'Para acessar os jogos terapêuticos, você precisa fazer login.',
+      discoverProfile: 'Descubra Seu Perfil Cognitivo',
+      completeTests: 'Complete os testes diagnósticos e receba uma análise clínica detalhada gerada por IA.',
+      availableGames: 'Jogos Disponíveis',
+      diagnosticGames: 'Testes Diagnósticos',
       difficulty: {
         easy: 'Fácil',
         intermediate: 'Intermediário',
@@ -181,6 +191,141 @@ export const translations = {
       kinestheticLearning: 'Aprendizagem Cinestésica'
     },
     
+    // Parent Dashboard
+    parentDashboard: {
+      title: 'Painel dos Pais',
+      subtitle: 'Acompanhe o progresso do seu filho',
+      childProfiles: 'Perfis das Crianças',
+      addChild: 'Adicionar Criança',
+      linkExisting: 'Vincular Existente',
+      noChildren: 'Nenhuma criança cadastrada',
+      registerChild: 'Cadastrar Criança',
+      selectChild: 'Selecione uma criança',
+      years: 'anos',
+      cognitiveScores: 'Pontuações Cognitivas',
+      attention: 'Atenção',
+      memory: 'Memória',
+      language: 'Linguagem',
+      logic: 'Lógica',
+      emotion: 'Emoção',
+      coordination: 'Coordenação',
+      riskAnalysis: 'Análise de Risco',
+      recommendations: 'Recomendações',
+      dailyMissions: 'Missões Diárias',
+      recentScreenings: 'Triagens Recentes',
+      generateReport: 'Gerar Relatório',
+      backToDashboard: 'Voltar ao Dashboard',
+      newProgressDetected: 'Novo progresso detectado!',
+      dataUpdatedRealtime: 'Os dados foram atualizados em tempo real.',
+      generatingReport: 'Gerando relatório clínico...',
+      errorLoadingData: 'Erro ao carregar dados'
+    },
+    
+    // Planet System
+    planetSystem: {
+      title: 'Sistema Planeta Azul',
+      subtitle: 'Explore universos terapêuticos e domine habilidades cognitivas',
+      backToDashboard: 'Voltar ao Dashboard',
+      overallProgress: 'Progresso Geral',
+      missions: 'Missões',
+      completedPlanets: 'Planetas Completos',
+      activePlanets: 'Planetas Ativos',
+      spaceMap: 'Mapa Espacial',
+      gridView: 'Visualização em Grade',
+      howItWorks: 'Como funciona o Sistema Planeta Azul?',
+      howItWorksDesc: 'Cada planeta representa uma área terapêutica específica com jogos e desafios personalizados. Complete missões para desbloquear recompensas, revelar novos conteúdos e dominar habilidades cognitivas essenciais.',
+      therapeuticGames: 'Jogos Terapêuticos',
+      aiAdaptation: 'Adaptação por IA',
+      realTimeAnalysis: 'Análise em Tempo Real',
+      rewardSystem: 'Sistema de Recompensas'
+    },
+    
+    // Settings Page
+    settings: {
+      title: 'Configurações',
+      subtitle: 'Personalize sua experiência na plataforma',
+      accessibility: 'Acessibilidade',
+      accessibilityDesc: 'Configurações para melhorar a usabilidade',
+      dyslexicFont: 'Fonte para Dislexia',
+      dyslexicFontDesc: 'Usa fonte especial para melhor legibilidade',
+      highContrast: 'Alto Contraste',
+      highContrastDesc: 'Aumenta o contraste para melhor visibilidade',
+      reduceMotion: 'Reduzir Movimento',
+      reduceMotionDesc: 'Minimiza animações e transições',
+      largeText: 'Texto Grande',
+      largeTextDesc: 'Aumenta o tamanho do texto em toda a interface',
+      advancedAccessibility: 'Acessibilidade Avançada',
+      advancedAccessibilityDesc: 'Perfis clínicos e configurações detalhadas',
+      audioVisual: 'Áudio e Visual',
+      audioVisualDesc: 'Configure efeitos sonoros e visuais',
+      soundEffects: 'Efeitos Sonoros',
+      soundEffectsDesc: 'Sons de interação e feedback durante os jogos',
+      backgroundMusic: 'Música de Fundo',
+      backgroundMusicDesc: 'Música ambiente durante a navegação',
+      visualEffects: 'Efeitos Visuais',
+      visualEffectsDesc: 'Animações e partículas nos jogos',
+      appearance: 'Aparência',
+      appearanceDesc: 'Configure temas e esquemas de cores',
+      theme: 'Tema',
+      light: 'Claro',
+      dark: 'Escuro',
+      auto: 'Automático',
+      colorScheme: 'Esquema de Cores Neurodiverso',
+      default: 'Padrão',
+      notifications: 'Notificações',
+      notificationsDesc: 'Configure alertas e lembretes',
+      gameReminders: 'Lembretes de Jogos',
+      gameRemindersDesc: 'Receba lembretes para jogar regularmente',
+      progressUpdates: 'Atualizações de Progresso',
+      progressUpdatesDesc: 'Notificações sobre seu desenvolvimento',
+      achievementAlerts: 'Alertas de Conquistas',
+      achievementAlertsDesc: 'Seja notificado quando conquistar novos marcos',
+      tutorials: 'Tutoriais e Ajuda',
+      tutorialsDesc: 'Aprenda a usar a plataforma',
+      mobileTour: 'Tour Guiado Mobile',
+      mobileTourDesc: 'Reveja o tutorial interativo da interface mobile',
+      restart: 'Reiniciar',
+      resetDefaults: 'Resetar Padrões',
+      saveSettings: 'Salvar Configurações',
+      settingsSaved: 'Configurações salvas com sucesso!',
+      settingsReset: 'Configurações restauradas para o padrão',
+      tourRestarted: 'Tour reiniciado! Recarregue a página para ver o tour novamente.'
+    },
+    
+    // Therapist Dashboard
+    therapistDashboard: {
+      title: 'Painel do Terapeuta',
+      backToPatients: 'Voltar para Pacientes',
+      patientNotFound: 'Paciente não encontrado',
+      backToList: 'Voltar para Lista',
+      sessions: 'Sessões',
+      avgAccuracy: 'Precisão Média',
+      totalTime: 'Tempo Total',
+      reports: 'Relatórios',
+      aiReport: 'Relatório IA',
+      chatWithParents: 'Chat com Pais',
+      evolution: 'Evolução',
+      alerts: 'Alertas',
+      pei: 'PEI',
+      chat: 'Chat',
+      planetEvolution: 'Evolução por Planeta',
+      recentReports: 'Relatórios Recentes',
+      cognitiveDomains: 'Domínios Cognitivos',
+      sustainedAttention: 'Atenção Sustentada',
+      workingMemory: 'Memória de Trabalho',
+      cognitiveFlexibility: 'Flexibilidade Cognitiva',
+      inhibitoryControl: 'Controle Inibitório',
+      lastSessions: 'Últimas Sessões',
+      noSessions: 'Nenhuma sessão registrada',
+      sessionNotes: 'Notas da Sessão',
+      addSessionNotes: 'Registre observações, comportamentos e recomendações...',
+      saveSession: 'Salvar Sessão',
+      sessionSaved: 'Sessão registrada com sucesso',
+      addNotes: 'Adicione notas da sessão',
+      generatingReport: 'Gerando relatório clínico com IA...',
+      reportGenerated: 'Relatório gerado com sucesso!'
+    },
+    
     // Achievements
     achievements: {
       firstWin: 'Primeira Vitória',
@@ -228,10 +373,13 @@ export const translations = {
       copy: 'Copiar',
       copied: 'Copiado!',
       viewMore: 'Ver mais',
-      viewLess: 'Ver menos'
+      viewLess: 'Ver menos',
+      min: 'min',
+      player: 'jogador',
+      years: 'anos'
     },
     
-    // Phase 5 - Emotional AI
+    // Phase 5
     phase5: {
       title: 'NeuroPlay Fase 5',
       subtitle: 'IA Avançada, Wearables, Marketplace e mais',
@@ -432,6 +580,38 @@ export const translations = {
         changeLanguage: 'Alterar Idioma',
         languageChanged: 'Idioma alterado com sucesso!'
       }
+    },
+    
+    // Community
+    community: {
+      title: 'Comunidade',
+      subtitle: 'Conecte-se com outras famílias',
+      feed: 'Feed',
+      missions: 'Missões',
+      leaderboard: 'Ranking',
+      createPost: 'Criar Publicação',
+      noPostsYet: 'Nenhuma publicação ainda'
+    },
+    
+    // Social Stories
+    socialStories: {
+      title: 'Histórias Sociais',
+      subtitle: 'Histórias terapêuticas ilustradas',
+      readStory: 'Ler História',
+      steps: 'passos',
+      ageRange: 'Faixa etária',
+      noStories: 'Nenhuma história disponível'
+    },
+    
+    // Routines
+    routines: {
+      title: 'Minhas Rotinas',
+      subtitle: 'Organize seu dia a dia',
+      morning: 'Manhã',
+      afternoon: 'Tarde',
+      night: 'Noite',
+      createRoutine: 'Criar Rotina',
+      noRoutines: 'Nenhuma rotina criada'
     }
   },
   
@@ -536,6 +716,8 @@ export const translations = {
     },
     
     games: {
+      title: 'Therapeutic Games',
+      subtitle: 'Develop cognitive skills through fun and engaging games.',
       focusForest: 'Focus Forest',
       memoriaColorida: 'Colorful Memory',
       logicaRapida: 'Quick Logic',
@@ -543,6 +725,14 @@ export const translations = {
       aventuraNumeros: 'Numbers Adventure',
       socialScenarios: 'Social Scenarios',
       popular: 'Popular',
+      available: 'Available',
+      diagnostic: 'Diagnostic',
+      accessRestricted: 'Access Restricted',
+      loginToAccess: 'To access therapeutic games, you need to log in.',
+      discoverProfile: 'Discover Your Cognitive Profile',
+      completeTests: 'Complete diagnostic tests and receive a detailed AI-generated clinical analysis.',
+      availableGames: 'Available Games',
+      diagnosticGames: 'Diagnostic Tests',
       difficulty: {
         easy: 'Easy',
         intermediate: 'Intermediate',
@@ -614,6 +804,141 @@ export const translations = {
       kinestheticLearning: 'Kinesthetic Learning'
     },
     
+    // Parent Dashboard
+    parentDashboard: {
+      title: 'Parent Dashboard',
+      subtitle: 'Track your child\'s progress',
+      childProfiles: 'Child Profiles',
+      addChild: 'Add Child',
+      linkExisting: 'Link Existing',
+      noChildren: 'No children registered',
+      registerChild: 'Register Child',
+      selectChild: 'Select a child',
+      years: 'years',
+      cognitiveScores: 'Cognitive Scores',
+      attention: 'Attention',
+      memory: 'Memory',
+      language: 'Language',
+      logic: 'Logic',
+      emotion: 'Emotion',
+      coordination: 'Coordination',
+      riskAnalysis: 'Risk Analysis',
+      recommendations: 'Recommendations',
+      dailyMissions: 'Daily Missions',
+      recentScreenings: 'Recent Screenings',
+      generateReport: 'Generate Report',
+      backToDashboard: 'Back to Dashboard',
+      newProgressDetected: 'New progress detected!',
+      dataUpdatedRealtime: 'Data has been updated in real-time.',
+      generatingReport: 'Generating clinical report...',
+      errorLoadingData: 'Error loading data'
+    },
+    
+    // Planet System
+    planetSystem: {
+      title: 'Blue Planet System',
+      subtitle: 'Explore therapeutic universes and master cognitive skills',
+      backToDashboard: 'Back to Dashboard',
+      overallProgress: 'Overall Progress',
+      missions: 'Missions',
+      completedPlanets: 'Completed Planets',
+      activePlanets: 'Active Planets',
+      spaceMap: 'Space Map',
+      gridView: 'Grid View',
+      howItWorks: 'How does the Blue Planet System work?',
+      howItWorksDesc: 'Each planet represents a specific therapeutic area with customized games and challenges. Complete missions to unlock rewards, reveal new content, and master essential cognitive skills.',
+      therapeuticGames: 'Therapeutic Games',
+      aiAdaptation: 'AI Adaptation',
+      realTimeAnalysis: 'Real-Time Analysis',
+      rewardSystem: 'Reward System'
+    },
+    
+    // Settings Page
+    settings: {
+      title: 'Settings',
+      subtitle: 'Customize your platform experience',
+      accessibility: 'Accessibility',
+      accessibilityDesc: 'Settings to improve usability',
+      dyslexicFont: 'Dyslexic Font',
+      dyslexicFontDesc: 'Uses special font for better readability',
+      highContrast: 'High Contrast',
+      highContrastDesc: 'Increases contrast for better visibility',
+      reduceMotion: 'Reduce Motion',
+      reduceMotionDesc: 'Minimizes animations and transitions',
+      largeText: 'Large Text',
+      largeTextDesc: 'Increases text size throughout the interface',
+      advancedAccessibility: 'Advanced Accessibility',
+      advancedAccessibilityDesc: 'Clinical profiles and detailed settings',
+      audioVisual: 'Audio & Visual',
+      audioVisualDesc: 'Configure sound and visual effects',
+      soundEffects: 'Sound Effects',
+      soundEffectsDesc: 'Interaction sounds and feedback during games',
+      backgroundMusic: 'Background Music',
+      backgroundMusicDesc: 'Ambient music during navigation',
+      visualEffects: 'Visual Effects',
+      visualEffectsDesc: 'Animations and particles in games',
+      appearance: 'Appearance',
+      appearanceDesc: 'Configure themes and color schemes',
+      theme: 'Theme',
+      light: 'Light',
+      dark: 'Dark',
+      auto: 'Auto',
+      colorScheme: 'Neurodiverse Color Scheme',
+      default: 'Default',
+      notifications: 'Notifications',
+      notificationsDesc: 'Configure alerts and reminders',
+      gameReminders: 'Game Reminders',
+      gameRemindersDesc: 'Receive reminders to play regularly',
+      progressUpdates: 'Progress Updates',
+      progressUpdatesDesc: 'Notifications about your development',
+      achievementAlerts: 'Achievement Alerts',
+      achievementAlertsDesc: 'Be notified when you reach new milestones',
+      tutorials: 'Tutorials & Help',
+      tutorialsDesc: 'Learn how to use the platform',
+      mobileTour: 'Mobile Guided Tour',
+      mobileTourDesc: 'Review the interactive mobile interface tutorial',
+      restart: 'Restart',
+      resetDefaults: 'Reset Defaults',
+      saveSettings: 'Save Settings',
+      settingsSaved: 'Settings saved successfully!',
+      settingsReset: 'Settings restored to default',
+      tourRestarted: 'Tour restarted! Reload the page to see the tour again.'
+    },
+    
+    // Therapist Dashboard
+    therapistDashboard: {
+      title: 'Therapist Dashboard',
+      backToPatients: 'Back to Patients',
+      patientNotFound: 'Patient not found',
+      backToList: 'Back to List',
+      sessions: 'Sessions',
+      avgAccuracy: 'Average Accuracy',
+      totalTime: 'Total Time',
+      reports: 'Reports',
+      aiReport: 'AI Report',
+      chatWithParents: 'Chat with Parents',
+      evolution: 'Evolution',
+      alerts: 'Alerts',
+      pei: 'IEP',
+      chat: 'Chat',
+      planetEvolution: 'Planet Evolution',
+      recentReports: 'Recent Reports',
+      cognitiveDomains: 'Cognitive Domains',
+      sustainedAttention: 'Sustained Attention',
+      workingMemory: 'Working Memory',
+      cognitiveFlexibility: 'Cognitive Flexibility',
+      inhibitoryControl: 'Inhibitory Control',
+      lastSessions: 'Last Sessions',
+      noSessions: 'No sessions recorded',
+      sessionNotes: 'Session Notes',
+      addSessionNotes: 'Record observations, behaviors, and recommendations...',
+      saveSession: 'Save Session',
+      sessionSaved: 'Session recorded successfully',
+      addNotes: 'Add session notes',
+      generatingReport: 'Generating clinical report with AI...',
+      reportGenerated: 'Report generated successfully!'
+    },
+    
     // Achievements
     achievements: {
       firstWin: 'First Win',
@@ -660,10 +985,13 @@ export const translations = {
       copy: 'Copy',
       copied: 'Copied!',
       viewMore: 'View more',
-      viewLess: 'View less'
+      viewLess: 'View less',
+      min: 'min',
+      player: 'player',
+      years: 'years'
     },
     
-    // Phase 5 - Emotional AI
+    // Phase 5
     phase5: {
       title: 'NeuroPlay Phase 5',
       subtitle: 'Advanced AI, Wearables, Marketplace and more',
@@ -688,20 +1016,42 @@ export const translations = {
         alerts: 'Smart Alerts',
         pauseTime: 'Break time',
         routineTime: 'Routine time',
-        suggestedActivity: 'Suggested activity'
+        suggestedActivity: 'Suggested activity',
+        analyze: 'Analyze',
+        analyzing: 'Analyzing...',
+        noAnalysis: 'No analysis available',
+        clickToAnalyze: 'Click "Analyze" to generate insights',
+        smartRecommendations: 'Smart Recommendations',
+        recommendedMode: 'Recommended mode',
+        recommendedGames: 'Recommended Games',
+        level: 'Level',
+        moods: {
+          happy: 'Happy',
+          calm: 'Calm',
+          focused: 'Focused',
+          tired: 'Tired',
+          anxious: 'Anxious',
+          neutral: 'Neutral'
+        },
+        priority: {
+          high: 'High',
+          medium: 'Medium',
+          low: 'Low'
+        }
       },
       wearables: {
         title: 'Wearables',
         subtitle: 'Biofeedback device integration',
         connected: 'Connected',
         disconnected: 'Disconnected',
-        connect: 'Connect Device',
+        connect: 'Connect',
+        connectDevice: 'Connect Device',
         disconnect: 'Disconnect',
         heartRate: 'Heart Rate',
         sleep: 'Sleep',
         movement: 'Movement',
-        hrv: 'Heart Rate Variability',
-        stressLevel: 'Stress Level',
+        hrv: 'HRV',
+        stressLevel: 'Stress',
         calmMode: 'Calm Mode',
         focusMode: 'Focus Mode',
         autoAdjust: 'Auto Adjust',
@@ -712,7 +1062,15 @@ export const translations = {
         activeMinutes: 'Active Minutes',
         recommendations: 'Data-Based Recommendations',
         poorSleep: 'Poor sleep detected - adapted routine',
-        highStress: 'High stress detected - breathing activity suggested'
+        highStress: 'High stress - breathing activity suggested',
+        connectedDevices: 'Connected Devices',
+        simulate: 'Simulate',
+        placeholderIntegration: 'Placeholder integration - connect your real device when available',
+        noDevices: 'No devices connected',
+        connectToMonitor: 'Connect a wearable to monitor vital signs',
+        avg24h: '24h average',
+        hours: 'hours',
+        understood: 'Understood'
       },
       marketplace: {
         title: 'Marketplace',
@@ -737,7 +1095,17 @@ export const translations = {
         approved: 'Approved',
         rejected: 'Rejected',
         earnings: 'Earnings',
-        commission: 'Commission'
+        commission: 'Commission',
+        searchPlaceholder: 'Search marketplace...',
+        coins: 'coins',
+        all: 'All',
+        stories: 'Stories',
+        trails: 'Trails',
+        games: 'Games',
+        routines: 'Routines',
+        noItems: 'No items found',
+        adjustFilters: 'Try adjusting your search filters',
+        by: 'By'
       },
       teleorientation: {
         title: 'Teleorientation',
@@ -757,12 +1125,33 @@ export const translations = {
         postSessionActivities: 'Post-Session Activities',
         recordingAvailable: 'Recording Available',
         noUpcoming: 'No scheduled sessions',
-        scheduleNew: 'Schedule New Session'
+        scheduleNew: 'Schedule New Session',
+        history: 'Session History',
+        noHistory: 'No sessions yet',
+        parentId: 'Parent ID',
+        parentIdPlaceholder: 'Parent UUID',
+        sessionType: 'Session Type',
+        dateTime: 'Date and Time',
+        durationMinutes: 'Duration (minutes)',
+        minutes: 'minutes',
+        notesPlaceholder: 'Write your observations and recommendations...',
+        requiresFollowUp: 'Requires follow-up',
+        saveNotes: 'Save Notes',
+        start: 'Start',
+        complete: 'Complete',
+        statusScheduled: 'Scheduled',
+        statusInProgress: 'In Progress',
+        statusCompleted: 'Completed',
+        statusCancelled: 'Cancelled',
+        statusNoShow: 'No Show',
+        typeOrientation: 'Orientation',
+        typeFollowUp: 'Follow-up',
+        typeEvaluation: 'Evaluation'
       },
       premiumAvatar: {
         title: 'Premium Avatar',
         subtitle: 'Customize your emotional avatar',
-        customize: 'Customize',
+        customize: 'Customize Avatar',
         items: 'Items',
         equipped: 'Equipped',
         unlock: 'Unlock',
@@ -784,7 +1173,13 @@ export const translations = {
         calmMode: 'Calm Mode',
         focusMode: 'Focus Mode',
         happyMode: 'Happy Mode',
-        saveChanges: 'Save Changes'
+        normalMode: 'Normal',
+        saveChanges: 'Save Changes',
+        selectChild: 'Select a child to customize the avatar',
+        avatarMode: 'Avatar Mode',
+        pets: 'Pets',
+        unlockableWorlds: 'Unlockable Worlds',
+        level: 'Level'
       },
       internationalization: {
         title: 'Internationalization',
@@ -797,6 +1192,38 @@ export const translations = {
         changeLanguage: 'Change Language',
         languageChanged: 'Language changed successfully!'
       }
+    },
+    
+    // Community
+    community: {
+      title: 'Community',
+      subtitle: 'Connect with other families',
+      feed: 'Feed',
+      missions: 'Missions',
+      leaderboard: 'Leaderboard',
+      createPost: 'Create Post',
+      noPostsYet: 'No posts yet'
+    },
+    
+    // Social Stories
+    socialStories: {
+      title: 'Social Stories',
+      subtitle: 'Illustrated therapeutic stories',
+      readStory: 'Read Story',
+      steps: 'steps',
+      ageRange: 'Age range',
+      noStories: 'No stories available'
+    },
+    
+    // Routines
+    routines: {
+      title: 'My Routines',
+      subtitle: 'Organize your daily life',
+      morning: 'Morning',
+      afternoon: 'Afternoon',
+      night: 'Night',
+      createRoutine: 'Create Routine',
+      noRoutines: 'No routines created'
     }
   },
   
@@ -901,6 +1328,8 @@ export const translations = {
     },
     
     games: {
+      title: 'Juegos Terapéuticos',
+      subtitle: 'Desarrolla habilidades cognitivas a través de juegos divertidos y atractivos.',
       focusForest: 'Bosque del Enfoque',
       memoriaColorida: 'Memoria Colorida',
       logicaRapida: 'Lógica Rápida',
@@ -908,6 +1337,14 @@ export const translations = {
       aventuraNumeros: 'Aventura de Números',
       socialScenarios: 'Escenarios Sociales',
       popular: 'Popular',
+      available: 'Disponible',
+      diagnostic: 'Diagnóstico',
+      accessRestricted: 'Acceso Restringido',
+      loginToAccess: 'Para acceder a los juegos terapéuticos, necesitas iniciar sesión.',
+      discoverProfile: 'Descubre Tu Perfil Cognitivo',
+      completeTests: 'Completa las pruebas diagnósticas y recibe un análisis clínico detallado generado por IA.',
+      availableGames: 'Juegos Disponibles',
+      diagnosticGames: 'Pruebas Diagnósticas',
       difficulty: {
         easy: 'Fácil',
         intermediate: 'Intermedio',
@@ -979,6 +1416,141 @@ export const translations = {
       kinestheticLearning: 'Aprendizaje Cinestésico'
     },
     
+    // Parent Dashboard
+    parentDashboard: {
+      title: 'Panel de Padres',
+      subtitle: 'Sigue el progreso de tu hijo',
+      childProfiles: 'Perfiles de Niños',
+      addChild: 'Agregar Niño',
+      linkExisting: 'Vincular Existente',
+      noChildren: 'Sin niños registrados',
+      registerChild: 'Registrar Niño',
+      selectChild: 'Selecciona un niño',
+      years: 'años',
+      cognitiveScores: 'Puntuaciones Cognitivas',
+      attention: 'Atención',
+      memory: 'Memoria',
+      language: 'Lenguaje',
+      logic: 'Lógica',
+      emotion: 'Emoción',
+      coordination: 'Coordinación',
+      riskAnalysis: 'Análisis de Riesgo',
+      recommendations: 'Recomendaciones',
+      dailyMissions: 'Misiones Diarias',
+      recentScreenings: 'Evaluaciones Recientes',
+      generateReport: 'Generar Informe',
+      backToDashboard: 'Volver al Dashboard',
+      newProgressDetected: '¡Nuevo progreso detectado!',
+      dataUpdatedRealtime: 'Los datos se han actualizado en tiempo real.',
+      generatingReport: 'Generando informe clínico...',
+      errorLoadingData: 'Error al cargar datos'
+    },
+    
+    // Planet System
+    planetSystem: {
+      title: 'Sistema Planeta Azul',
+      subtitle: 'Explora universos terapéuticos y domina habilidades cognitivas',
+      backToDashboard: 'Volver al Dashboard',
+      overallProgress: 'Progreso General',
+      missions: 'Misiones',
+      completedPlanets: 'Planetas Completos',
+      activePlanets: 'Planetas Activos',
+      spaceMap: 'Mapa Espacial',
+      gridView: 'Vista en Cuadrícula',
+      howItWorks: '¿Cómo funciona el Sistema Planeta Azul?',
+      howItWorksDesc: 'Cada planeta representa un área terapéutica específica con juegos y desafíos personalizados. Completa misiones para desbloquear recompensas, revelar nuevo contenido y dominar habilidades cognitivas esenciales.',
+      therapeuticGames: 'Juegos Terapéuticos',
+      aiAdaptation: 'Adaptación por IA',
+      realTimeAnalysis: 'Análisis en Tiempo Real',
+      rewardSystem: 'Sistema de Recompensas'
+    },
+    
+    // Settings Page
+    settings: {
+      title: 'Configuración',
+      subtitle: 'Personaliza tu experiencia en la plataforma',
+      accessibility: 'Accesibilidad',
+      accessibilityDesc: 'Configuraciones para mejorar la usabilidad',
+      dyslexicFont: 'Fuente para Dislexia',
+      dyslexicFontDesc: 'Usa fuente especial para mejor legibilidad',
+      highContrast: 'Alto Contraste',
+      highContrastDesc: 'Aumenta el contraste para mejor visibilidad',
+      reduceMotion: 'Reducir Movimiento',
+      reduceMotionDesc: 'Minimiza animaciones y transiciones',
+      largeText: 'Texto Grande',
+      largeTextDesc: 'Aumenta el tamaño del texto en toda la interfaz',
+      advancedAccessibility: 'Accesibilidad Avanzada',
+      advancedAccessibilityDesc: 'Perfiles clínicos y configuraciones detalladas',
+      audioVisual: 'Audio y Visual',
+      audioVisualDesc: 'Configura efectos de sonido y visuales',
+      soundEffects: 'Efectos de Sonido',
+      soundEffectsDesc: 'Sonidos de interacción y retroalimentación durante los juegos',
+      backgroundMusic: 'Música de Fondo',
+      backgroundMusicDesc: 'Música ambiente durante la navegación',
+      visualEffects: 'Efectos Visuales',
+      visualEffectsDesc: 'Animaciones y partículas en los juegos',
+      appearance: 'Apariencia',
+      appearanceDesc: 'Configura temas y esquemas de colores',
+      theme: 'Tema',
+      light: 'Claro',
+      dark: 'Oscuro',
+      auto: 'Automático',
+      colorScheme: 'Esquema de Colores Neurodiverso',
+      default: 'Predeterminado',
+      notifications: 'Notificaciones',
+      notificationsDesc: 'Configura alertas y recordatorios',
+      gameReminders: 'Recordatorios de Juegos',
+      gameRemindersDesc: 'Recibe recordatorios para jugar regularmente',
+      progressUpdates: 'Actualizaciones de Progreso',
+      progressUpdatesDesc: 'Notificaciones sobre tu desarrollo',
+      achievementAlerts: 'Alertas de Logros',
+      achievementAlertsDesc: 'Sé notificado cuando alcances nuevos hitos',
+      tutorials: 'Tutoriales y Ayuda',
+      tutorialsDesc: 'Aprende a usar la plataforma',
+      mobileTour: 'Tour Guiado Móvil',
+      mobileTourDesc: 'Revisa el tutorial interactivo de la interfaz móvil',
+      restart: 'Reiniciar',
+      resetDefaults: 'Restablecer Predeterminados',
+      saveSettings: 'Guardar Configuración',
+      settingsSaved: '¡Configuración guardada exitosamente!',
+      settingsReset: 'Configuración restablecida a predeterminados',
+      tourRestarted: '¡Tour reiniciado! Recarga la página para ver el tour nuevamente.'
+    },
+    
+    // Therapist Dashboard
+    therapistDashboard: {
+      title: 'Panel del Terapeuta',
+      backToPatients: 'Volver a Pacientes',
+      patientNotFound: 'Paciente no encontrado',
+      backToList: 'Volver a la Lista',
+      sessions: 'Sesiones',
+      avgAccuracy: 'Precisión Promedio',
+      totalTime: 'Tiempo Total',
+      reports: 'Informes',
+      aiReport: 'Informe IA',
+      chatWithParents: 'Chat con Padres',
+      evolution: 'Evolución',
+      alerts: 'Alertas',
+      pei: 'PEI',
+      chat: 'Chat',
+      planetEvolution: 'Evolución por Planeta',
+      recentReports: 'Informes Recientes',
+      cognitiveDomains: 'Dominios Cognitivos',
+      sustainedAttention: 'Atención Sostenida',
+      workingMemory: 'Memoria de Trabajo',
+      cognitiveFlexibility: 'Flexibilidad Cognitiva',
+      inhibitoryControl: 'Control Inhibitorio',
+      lastSessions: 'Últimas Sesiones',
+      noSessions: 'Sin sesiones registradas',
+      sessionNotes: 'Notas de la Sesión',
+      addSessionNotes: 'Registra observaciones, comportamientos y recomendaciones...',
+      saveSession: 'Guardar Sesión',
+      sessionSaved: 'Sesión registrada exitosamente',
+      addNotes: 'Agrega notas de la sesión',
+      generatingReport: 'Generando informe clínico con IA...',
+      reportGenerated: '¡Informe generado exitosamente!'
+    },
+    
     // Achievements
     achievements: {
       firstWin: 'Primera Victoria',
@@ -1025,10 +1597,13 @@ export const translations = {
       copy: 'Copiar',
       copied: '¡Copiado!',
       viewMore: 'Ver más',
-      viewLess: 'Ver menos'
+      viewLess: 'Ver menos',
+      min: 'min',
+      player: 'jugador',
+      years: 'años'
     },
     
-    // Phase 5 - Emotional AI
+    // Phase 5
     phase5: {
       title: 'NeuroPlay Fase 5',
       subtitle: 'IA Avanzada, Wearables, Marketplace y más',
@@ -1053,20 +1628,42 @@ export const translations = {
         alerts: 'Alertas Inteligentes',
         pauseTime: 'Hora de descanso',
         routineTime: 'Hora de rutina',
-        suggestedActivity: 'Actividad sugerida'
+        suggestedActivity: 'Actividad sugerida',
+        analyze: 'Analizar',
+        analyzing: 'Analizando...',
+        noAnalysis: 'Sin análisis disponible',
+        clickToAnalyze: 'Haz clic en "Analizar" para generar insights',
+        smartRecommendations: 'Recomendaciones Inteligentes',
+        recommendedMode: 'Modo recomendado',
+        recommendedGames: 'Juegos Recomendados',
+        level: 'Nivel',
+        moods: {
+          happy: 'Feliz',
+          calm: 'Tranquilo',
+          focused: 'Enfocado',
+          tired: 'Cansado',
+          anxious: 'Ansioso',
+          neutral: 'Neutral'
+        },
+        priority: {
+          high: 'Alta',
+          medium: 'Media',
+          low: 'Baja'
+        }
       },
       wearables: {
         title: 'Wearables',
         subtitle: 'Integración con dispositivos de biofeedback',
         connected: 'Conectado',
         disconnected: 'Desconectado',
-        connect: 'Conectar Dispositivo',
+        connect: 'Conectar',
+        connectDevice: 'Conectar Dispositivo',
         disconnect: 'Desconectar',
         heartRate: 'Frecuencia Cardíaca',
         sleep: 'Sueño',
         movement: 'Movimiento',
-        hrv: 'Variabilidad Cardíaca',
-        stressLevel: 'Nivel de Estrés',
+        hrv: 'VRC',
+        stressLevel: 'Estrés',
         calmMode: 'Modo Calma',
         focusMode: 'Modo Enfoque',
         autoAdjust: 'Ajuste Automático',
@@ -1077,7 +1674,15 @@ export const translations = {
         activeMinutes: 'Minutos Activos',
         recommendations: 'Recomendaciones Basadas en Datos',
         poorSleep: 'Sueño insuficiente detectado - rutina adaptada',
-        highStress: 'Estrés elevado detectado - actividad de respiración sugerida'
+        highStress: 'Estrés elevado - actividad de respiración sugerida',
+        connectedDevices: 'Dispositivos Conectados',
+        simulate: 'Simular',
+        placeholderIntegration: 'Integración placeholder - conecta tu dispositivo real cuando esté disponible',
+        noDevices: 'Sin dispositivos conectados',
+        connectToMonitor: 'Conecta un wearable para monitorear signos vitales',
+        avg24h: 'Promedio 24h',
+        hours: 'horas',
+        understood: 'Entendido'
       },
       marketplace: {
         title: 'Marketplace',
@@ -1102,7 +1707,17 @@ export const translations = {
         approved: 'Aprobado',
         rejected: 'Rechazado',
         earnings: 'Ganancias',
-        commission: 'Comisión'
+        commission: 'Comisión',
+        searchPlaceholder: 'Buscar en marketplace...',
+        coins: 'monedas',
+        all: 'Todos',
+        stories: 'Historias',
+        trails: 'Rutas',
+        games: 'Juegos',
+        routines: 'Rutinas',
+        noItems: 'No se encontraron artículos',
+        adjustFilters: 'Intenta ajustar tus filtros de búsqueda',
+        by: 'Por'
       },
       teleorientation: {
         title: 'Teleorientación',
@@ -1122,12 +1737,33 @@ export const translations = {
         postSessionActivities: 'Actividades Post-Sesión',
         recordingAvailable: 'Grabación Disponible',
         noUpcoming: 'No hay sesiones programadas',
-        scheduleNew: 'Programar Nueva Sesión'
+        scheduleNew: 'Programar Nueva Sesión',
+        history: 'Historial de Sesiones',
+        noHistory: 'Sin sesiones aún',
+        parentId: 'ID del Padre',
+        parentIdPlaceholder: 'UUID del padre',
+        sessionType: 'Tipo de Sesión',
+        dateTime: 'Fecha y Hora',
+        durationMinutes: 'Duración (minutos)',
+        minutes: 'minutos',
+        notesPlaceholder: 'Escribe tus observaciones y recomendaciones...',
+        requiresFollowUp: 'Requiere seguimiento',
+        saveNotes: 'Guardar Notas',
+        start: 'Iniciar',
+        complete: 'Completar',
+        statusScheduled: 'Programada',
+        statusInProgress: 'En Progreso',
+        statusCompleted: 'Completada',
+        statusCancelled: 'Cancelada',
+        statusNoShow: 'No Asistió',
+        typeOrientation: 'Orientación',
+        typeFollowUp: 'Seguimiento',
+        typeEvaluation: 'Evaluación'
       },
       premiumAvatar: {
         title: 'Avatar Premium',
         subtitle: 'Personaliza tu avatar emocional',
-        customize: 'Personalizar',
+        customize: 'Personalizar Avatar',
         items: 'Artículos',
         equipped: 'Equipado',
         unlock: 'Desbloquear',
@@ -1149,7 +1785,13 @@ export const translations = {
         calmMode: 'Modo Calma',
         focusMode: 'Modo Enfoque',
         happyMode: 'Modo Feliz',
-        saveChanges: 'Guardar Cambios'
+        normalMode: 'Normal',
+        saveChanges: 'Guardar Cambios',
+        selectChild: 'Selecciona un niño para personalizar el avatar',
+        avatarMode: 'Modo del Avatar',
+        pets: 'Mascotas',
+        unlockableWorlds: 'Mundos Desbloqueables',
+        level: 'Nivel'
       },
       internationalization: {
         title: 'Internacionalización',
@@ -1162,127 +1804,38 @@ export const translations = {
         changeLanguage: 'Cambiar Idioma',
         languageChanged: '¡Idioma cambiado exitosamente!'
       }
-    }
-  },
-  
-  it: {
-    // Navigation
-    nav: {
-      home: 'Home',
-      games: 'Giochi',
-      dashboard: 'Dashboard',
-      learning: 'Apprendimento',
-      clinical: 'Clinico',
-      today: 'Oggi',
-      tests: 'Test',
-      diagnosticTests: 'Valutazioni Diagnostiche',
-      myProgress: 'I Miei Progressi',
-      screening: 'Screening'
     },
     
-    // Hero Section
-    hero: {
-      title: 'NeuroPlay',
-      subtitle: 'Giochi Terapeutici per la Neurodiversità',
-      description: 'Sviluppa le tue abilità cognitive attraverso giochi terapeutici personalizzati basati su evidenze scientifiche.',
-      cta: 'Esplora Giochi',
-      validation: 'Validazione Scientifica',
-      ageRange: '6-99 anni',
-      categories: '15+ categorie',
-      evidenceBased: 'Basato su evidenze',
-      startJourney: 'Inizia il Viaggio',
-      cognitiveDescription: 'Sviluppa le tue abilità cognitive attraverso giochi terapeutici personalizzati.',
-      continueDevelopment: 'Continua il tuo sviluppo cognitivo'
+    // Community
+    community: {
+      title: 'Comunidad',
+      subtitle: 'Conéctate con otras familias',
+      feed: 'Feed',
+      missions: 'Misiones',
+      leaderboard: 'Clasificación',
+      createPost: 'Crear Publicación',
+      noPostsYet: 'Sin publicaciones aún'
     },
     
-    // Educational System
-    educational: {
-      title: 'Sistema Educativo Avanzato',
-      subtitle: 'Apprendimento personalizzato con feedback pedagogico',
-      features: {
-        unifiedScoring: {
-          title: 'Sistema XP Unificato',
-          description: 'Punteggio coerente in tutti i giochi con progressione chiara'
-        },
-        pedagogicalFeedback: {
-          title: 'Feedback Educativo',
-          description: 'Spiegazioni dettagliate su concetti e strategie di apprendimento'
-        },
-        adaptiveLearning: {
-          title: 'Apprendimento Adattivo',
-          description: 'Difficoltà regolata automaticamente in base alle prestazioni'
-        },
-        progressTracking: {
-          title: 'Monitoraggio Progressi',
-          description: 'Visualizzazione dettagliata dello sviluppo cognitivo'
-        }
-      }
+    // Social Stories
+    socialStories: {
+      title: 'Historias Sociales',
+      subtitle: 'Historias terapéuticas ilustradas',
+      readStory: 'Leer Historia',
+      steps: 'pasos',
+      ageRange: 'Rango de edad',
+      noStories: 'No hay historias disponibles'
     },
     
-    // Clinical Dashboard
-    clinical: {
-      title: 'Dashboard Clinica Avanzata',
-      subtitle: 'Sistema di analisi comportamentale con IA per identificazione precoce di ASD, ADHD e Dislessia',
-      diagnosticTests: 'Valutazioni Diagnostiche',
-      behavioralAnalysis: 'Analisi Comportamentale',
-      automaticReports: 'Report Automatici',
-      accessPanel: 'Accedi al Pannello Clinico'
-    },
-    
-    // Games
-    games: {
-      focusForest: 'Foresta del Focus',
-      memoriaColorida: 'Memoria Colorata',
-      logicaRapida: 'Logica Rapida',
-      ritmoMusical: 'Ritmo Musicale',
-      aventuraNumeros: 'Avventura dei Numeri',
-      socialScenarios: 'Scenari Sociali',
-      popular: 'Popolare',
-      difficulty: {
-        easy: 'Facile',
-        intermediate: 'Intermedio',
-        hard: 'Difficile',
-        adaptive: 'Adattivo',
-        challenging: 'Sfidante'
-      },
-      descriptions: {
-        focusForest: 'Sviluppa la tua attenzione sostenuta',
-        memoriaColorida: 'Rafforza la tua memoria visiva',
-        logicaRapida: 'Accelera il tuo ragionamento logico',
-        ritmoMusical: 'Sincronizzati con il ritmo',
-        aventuraNumeros: 'Esplora il mondo della matematica',
-        socialScenarios: 'Sviluppa abilità sociali'
-      },
-      subtitles: {
-        sustainedAttention: 'Attenzione Sostenuta',
-        visualMemory: 'Memoria Visiva',
-        reasoning: 'Ragionamento'
-      },
-      dailyGame: {
-        title: 'Il Tuo Gioco Giornaliero',
-        uniqueLine: 'Linea unica',
-        play: 'GIOCA',
-        focusCapacity: 'Sviluppa la tua capacità di concentrazione',
-        logicalThinking: 'Accelera il tuo pensiero logico'
-      }
-    },
-    
-    // Common
-    common: {
-      start: 'Inizia',
-      continue: 'Continua',
-      complete: 'Completa',
-      next: 'Avanti',
-      previous: 'Indietro',
-      save: 'Salva',
-      cancel: 'Annulla',
-      loading: 'Caricamento...',
-      error: 'Errore',
-      success: 'Successo!',
-      myLearning: 'Il Mio Apprendimento',
-      viewAll: 'Vedi Tutti i Giochi',
-      newFeature: 'Novità',
-      hello: 'Ciao'
+    // Routines
+    routines: {
+      title: 'Mis Rutinas',
+      subtitle: 'Organiza tu día a día',
+      morning: 'Mañana',
+      afternoon: 'Tarde',
+      night: 'Noche',
+      createRoutine: 'Crear Rutina',
+      noRoutines: 'Sin rutinas creadas'
     }
   }
 };
