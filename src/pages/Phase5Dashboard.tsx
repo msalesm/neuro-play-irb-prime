@@ -12,19 +12,20 @@ import { WearablesDashboard } from '@/components/phase5/WearablesDashboard';
 import { MarketplaceGrid } from '@/components/phase5/MarketplaceGrid';
 import { TeleorientationPanel } from '@/components/phase5/TeleorientationPanel';
 import { PremiumAvatarCustomizer } from '@/components/phase5/PremiumAvatarCustomizer';
+import { InternationalizationPanel } from '@/components/phase5/InternationalizationPanel';
+import { LanguageSelector } from '@/components/LanguageSelector';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { AppLayout } from '@/components/AppLayout';
 
 export default function Phase5Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { role } = useUserRole();
+  const { t } = useLanguage();
   const [selectedChildId, setSelectedChildId] = useState<string | undefined>();
   const [activeTab, setActiveTab] = useState('ai');
-
-  // For demo purposes, we'll use a placeholder child ID
-  // In production, this would come from child selection
 
   return (
     <AppLayout>
@@ -38,13 +39,14 @@ export default function Phase5Dashboard() {
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
                 <Sparkles className="h-6 w-6 text-primary" />
-                NeuroPlay Fase 5
+                {t('phase5.title')}
               </h1>
               <p className="text-muted-foreground">
-                IA Avançada, Wearables, Marketplace e mais
+                {t('phase5.subtitle')}
               </p>
             </div>
           </div>
+          <LanguageSelector variant="full" />
         </div>
 
         {/* Main Tabs */}
@@ -55,21 +57,21 @@ export default function Phase5Dashboard() {
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               <Brain className="h-4 w-4" />
-              <span className="hidden sm:inline">IA Emocional</span>
+              <span className="hidden sm:inline">{t('phase5.emotionalAI.title')}</span>
             </TabsTrigger>
             <TabsTrigger 
               value="wearables"
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               <Watch className="h-4 w-4" />
-              <span className="hidden sm:inline">Wearables</span>
+              <span className="hidden sm:inline">{t('phase5.wearables.title')}</span>
             </TabsTrigger>
             <TabsTrigger 
               value="marketplace"
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               <ShoppingCart className="h-4 w-4" />
-              <span className="hidden sm:inline">Marketplace</span>
+              <span className="hidden sm:inline">{t('phase5.marketplace.title')}</span>
             </TabsTrigger>
             {(role === 'therapist' || role === 'admin') && (
               <TabsTrigger 
@@ -77,7 +79,7 @@ export default function Phase5Dashboard() {
                 className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 <Video className="h-4 w-4" />
-                <span className="hidden sm:inline">Teleorientação</span>
+                <span className="hidden sm:inline">{t('phase5.teleorientation.title')}</span>
               </TabsTrigger>
             )}
             <TabsTrigger 
@@ -85,7 +87,14 @@ export default function Phase5Dashboard() {
               className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
             >
               <Crown className="h-4 w-4" />
-              <span className="hidden sm:inline">Avatar Premium</span>
+              <span className="hidden sm:inline">{t('phase5.premiumAvatar.title')}</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="international"
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              <Globe className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('phase5.internationalization.title')}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -98,11 +107,11 @@ export default function Phase5Dashboard() {
               <div>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Selecionar Criança</CardTitle>
+                    <CardTitle className="text-lg">{t('phase5.emotionalAI.selectChild')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Selecione uma criança para ver a análise emocional e recomendações personalizadas.
+                      {t('phase5.emotionalAI.selectChild')}
                     </p>
                     <Button 
                       variant="outline" 
@@ -110,7 +119,7 @@ export default function Phase5Dashboard() {
                       onClick={() => navigate('/dashboard-pais')}
                     >
                       <Users className="h-4 w-4 mr-2" />
-                      Ver Crianças
+                      {t('common.viewMore')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -137,33 +146,38 @@ export default function Phase5Dashboard() {
           <TabsContent value="avatar">
             <PremiumAvatarCustomizer childId={selectedChildId} />
           </TabsContent>
+
+          {/* Internationalization */}
+          <TabsContent value="international">
+            <InternationalizationPanel />
+          </TabsContent>
         </Tabs>
 
         {/* Feature Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
           <FeatureCard
             icon={<Brain className="h-8 w-8 text-purple-500" />}
-            title="IA Contextual"
-            description="Análise emocional e recomendações personalizadas"
+            title={t('phase5.emotionalAI.title')}
+            description={t('phase5.emotionalAI.subtitle')}
             onClick={() => setActiveTab('ai')}
           />
           <FeatureCard
             icon={<Watch className="h-8 w-8 text-blue-500" />}
-            title="Biofeedback"
-            description="Integração com wearables e monitoramento"
+            title={t('phase5.wearables.title')}
+            description={t('phase5.wearables.subtitle')}
             onClick={() => setActiveTab('wearables')}
           />
           <FeatureCard
             icon={<ShoppingCart className="h-8 w-8 text-green-500" />}
-            title="Marketplace"
-            description="Conteúdo de criadores certificados"
+            title={t('phase5.marketplace.title')}
+            description={t('phase5.marketplace.subtitle')}
             onClick={() => setActiveTab('marketplace')}
           />
           <FeatureCard
             icon={<Globe className="h-8 w-8 text-orange-500" />}
-            title="Internacional"
-            description="Suporte a PT, EN, ES"
-            onClick={() => navigate('/settings')}
+            title={t('phase5.internationalization.title')}
+            description="PT, EN, ES"
+            onClick={() => setActiveTab('international')}
           />
         </div>
       </div>
