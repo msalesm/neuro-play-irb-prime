@@ -5377,6 +5377,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      get_admin_institution_ids: {
+        Args: { _user_id: string }
+        Returns: string[]
+      }
       get_all_users_with_roles: {
         Args: never
         Returns: {
@@ -5404,6 +5408,10 @@ export type Database = {
         Returns: Database["public"]["Enums"]["app_role"]
       }
       has_child_access: {
+        Args: { _child_id: string; _user_id: string }
+        Returns: boolean
+      }
+      has_professional_access: {
         Args: { _child_id: string; _user_id: string }
         Returns: boolean
       }
@@ -5441,7 +5449,15 @@ export type Database = {
         }
         Returns: string
       }
+      is_institution_admin: {
+        Args: { _institution_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_parent_of: {
+        Args: { _child_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_parent_of_child: {
         Args: { _child_id: string; _user_id: string }
         Returns: boolean
       }
