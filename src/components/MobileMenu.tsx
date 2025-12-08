@@ -4,7 +4,7 @@ import {
   Home, Brain, Stethoscope, Settings, User, 
   Users, School, TrendingUp, Menu, Sparkles, Gamepad2,
   FileText, ClipboardCheck, GraduationCap, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, CalendarCheck, Rocket
+  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, CalendarCheck, Rocket, Mail
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -73,6 +73,7 @@ export function MobileMenu() {
       title: 'Pais',
       items: [
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
+        { title: 'Mensagens', path: '/messages', icon: Mail },
         { title: 'Microlearning', path: '/training', icon: BookOpen },
         { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
         { title: 'Manual da Plataforma', path: '/platform-manual', icon: BookOpen },
@@ -85,6 +86,7 @@ export function MobileMenu() {
       title: 'Terapeuta',
       items: [
         { title: 'Pacientes', path: '/therapist/patients', icon: Users },
+        { title: 'Mensagens', path: '/messages', icon: Mail },
         { title: 'Relatórios', path: '/clinical', icon: FileText },
         { title: 'PEI Inteligente', path: '/pei', icon: Brain },
       ],
