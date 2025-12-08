@@ -21,6 +21,7 @@ interface EmotionCaptureCameraProps {
   onEmotionCaptured: (result: EmotionResult) => void;
   onClose: () => void;
   childId?: string;
+  childName?: string;
 }
 
 const moodEmojis: Record<number, string> = {
@@ -39,7 +40,7 @@ const emotionColors: Record<string, string> = {
   'Neutro': 'bg-gray-500',
 };
 
-export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId }: EmotionCaptureCameraProps) {
+export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId, childName }: EmotionCaptureCameraProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -160,7 +161,7 @@ export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId }: Em
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-lg flex items-center gap-2">
           <Camera className="h-5 w-5" />
-          Captura de Emoção
+          {childName ? `Capturar emoção de ${childName}` : 'Captura de Emoção'}
         </CardTitle>
         <Button variant="ghost" size="icon" onClick={onClose}>
           <X className="h-4 w-4" />
@@ -273,7 +274,7 @@ export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId }: Em
         )}
         
         <p className="text-xs text-muted-foreground text-center">
-          Posicione seu rosto no centro da câmera para uma melhor análise
+          Posicione o rosto {childName ? `de ${childName}` : 'da criança'} no centro da câmera
         </p>
       </CardContent>
     </Card>

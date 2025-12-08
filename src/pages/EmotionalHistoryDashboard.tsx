@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { 
+import { Dialog, DialogContent, DialogTrigger, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import {
   Heart, 
   TrendingUp, 
   Calendar, 
@@ -56,6 +58,9 @@ export default function EmotionalHistoryDashboard() {
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'all'>('month');
   const [showCamera, setShowCamera] = useState(false);
+  const [children, setChildren] = useState<{ id: string; name: string }[]>([]);
+  const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
+  const [childProfiles, setChildProfiles] = useState<{ id: string; name: string }[]>([]);
 
   const handleEmotionCaptured = async (result: {
     primaryEmotion: string;
@@ -63,14 +68,15 @@ export default function EmotionalHistoryDashboard() {
     moodRating: number;
     confidence: number;
   }) => {
-    if (!user) return;
+    if (!user || !selectedChildId) return;
     
     try {
-      // Create a new emotional check-in with captured emotion
+      // Create a new emotional check-in for the child
       const { error } = await supabase
         .from('emotional_checkins')
         .insert({
           user_id: user.id,
+          child_profile_id: selectedChildId,
           scheduled_for: new Date().toISOString(),
           completed_at: new Date().toISOString(),
           mood_rating: result.moodRating,
@@ -80,12 +86,15 @@ export default function EmotionalHistoryDashboard() {
       
       if (error) throw error;
       
+      const childName = childProfiles.find(c => c.id === selectedChildId)?.name || 'Criança';
+      
       toast({
         title: 'Check-in registrado!',
-        description: `Emoção detectada: ${result.primaryEmotion}`,
+        description: `Emoção de ${childName}: ${result.primaryEmotion}`,
       });
       
       fetchCheckIns();
+      setShowCamera(false);
     } catch (error) {
       console.error('Error saving check-in:', error);
       toast({
@@ -95,6 +104,49 @@ export default function EmotionalHistoryDashboard() {
       });
     }
   };
+
+  // Fetch children/patients for the user
+  useEffect(() => {
+    const fetchChildren = async () => {
+      if (!user) return;
+      
+      try {
+        // Fetch from children table (for parents)
+        const { data: childrenData } = await supabase
+          .from('children')
+          .select('id, name')
+          .eq('parent_id', user.id);
+        
+        // Fetch from child_profiles table
+        const { data: profilesData } = await supabase
+          .from('child_profiles')
+          .select('id, name')
+          .eq('parent_user_id', user.id);
+        
+        // Combine both sources
+        const allChildren = [
+          ...(childrenData || []),
+          ...(profilesData || []),
+        ];
+        
+        // Remove duplicates by id
+        const uniqueChildren = allChildren.filter(
+          (child, index, self) => index === self.findIndex(c => c.id === child.id)
+        );
+        
+        setChildProfiles(uniqueChildren);
+        
+        // Auto-select first child if only one
+        if (uniqueChildren.length === 1) {
+          setSelectedChildId(uniqueChildren[0].id);
+        }
+      } catch (error) {
+        console.error('Error fetching children:', error);
+      }
+    };
+    
+    fetchChildren();
+  }, [user]);
 
   useEffect(() => {
     if (user) {
@@ -245,16 +297,44 @@ export default function EmotionalHistoryDashboard() {
           <div className="flex gap-2">
             <Dialog open={showCamera} onOpenChange={setShowCamera}>
               <DialogTrigger asChild>
-                <Button className="gap-2">
+                <Button className="gap-2" disabled={childProfiles.length === 0}>
                   <Camera className="h-4 w-4" />
                   Capturar Emoção
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md p-0 border-0 bg-transparent">
-                <EmotionCaptureCamera
-                  onEmotionCaptured={handleEmotionCaptured}
-                  onClose={() => setShowCamera(false)}
-                />
+              <DialogContent className="sm:max-w-md">
+                {!selectedChildId ? (
+                  <div className="space-y-4">
+                    <DialogHeader>
+                      <DialogTitle>Selecione a Criança</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-2">
+                      <Label>Capturar emoção de:</Label>
+                      <Select onValueChange={setSelectedChildId}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {childProfiles.map((child) => (
+                            <SelectItem key={child.id} value={child.id}>
+                              {child.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                ) : (
+                  <EmotionCaptureCamera
+                    onEmotionCaptured={handleEmotionCaptured}
+                    onClose={() => {
+                      setShowCamera(false);
+                      setSelectedChildId(childProfiles.length === 1 ? childProfiles[0].id : null);
+                    }}
+                    childId={selectedChildId}
+                    childName={childProfiles.find(c => c.id === selectedChildId)?.name}
+                  />
+                )}
               </DialogContent>
             </Dialog>
             
