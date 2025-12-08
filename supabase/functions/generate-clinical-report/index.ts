@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.3";
 import { ReportRequest, ReportResponse } from "./types.ts";
-import { fetchSessionsData, fetchBehavioralInsightsData, fetchNeurodiversityProfile } from "./queries.ts";
+import { fetchAllAvailableData, fetchNeurodiversityProfile } from "./queries.ts";
 import { calculateMetrics, analyzeTemporalEvolution, analyzeBehavioralPatterns } from "./metrics.ts";
 import { generateAIPrompt } from "./ai-prompts.ts";
 import { buildReport } from "./report-builder.ts";
@@ -61,29 +61,48 @@ serve(async (req) => {
 
     console.log(`Generating ${reportType} report for user ${userId} from ${startDate} to ${endDate}`);
 
-    // Step 1: Fetch all necessary data
-    let sessionsData;
-    let dataSource = 'learning_sessions';
+    // Step 1: Fetch all necessary data from all sources
+    console.log('🔍 Fetching data from all sources...');
+    const allData = await fetchAllAvailableData(supabase, userId, startDate, endDate);
     
-    // Try learning_sessions first
-    console.log('🔍 Attempting to fetch learning_sessions...');
-    sessionsData = await fetchSessionsData(supabase, userId, startDate, endDate);
+    // Combine all sessions from different sources
+    const combinedSessions = [
+      ...allData.sessions.sessions,
+      ...allData.screenings.sessions,
+      ...allData.insights.sessions
+    ];
+    
+    // Merge trails data
+    const combinedTrailsData = {
+      ...allData.sessions.trailsData,
+      ...allData.screenings.trailsData,
+      ...allData.insights.trailsData
+    };
+    
+    const sessionsData = {
+      sessions: combinedSessions,
+      trailsData: combinedTrailsData
+    };
 
-    // If no learning_sessions, fallback to behavioral_insights
-    if (!sessionsData.sessions || sessionsData.sessions.length === 0) {
-      console.log('⚠️  No learning_sessions found, trying behavioral_insights fallback...');
-      sessionsData = await fetchBehavioralInsightsData(supabase, userId, startDate, endDate);
-      dataSource = 'behavioral_insights';
-    }
+    const dataSources = [];
+    if (allData.sessions.sessions.length > 0) dataSources.push('game_sessions');
+    if (allData.screenings.sessions.length > 0) dataSources.push('screenings');
+    if (allData.insights.sessions.length > 0) dataSources.push('behavioral_insights');
+    const dataSource = dataSources.join(', ') || 'none';
 
-    // If still no data, return informative error
-    if (!sessionsData.sessions || sessionsData.sessions.length === 0) {
-      console.log('❌ No data found in either learning_sessions or behavioral_insights');
+    // If no data from any source, return informative error
+    if (combinedSessions.length === 0) {
+      console.log('❌ No data found in any source');
       return new Response(
         JSON.stringify({
           status: 'error',
-          message: 'Nenhum dado encontrado para gerar relatório. Complete alguns jogos de diagnóstico primeiro!',
-          suggestion: 'Jogue pelo menos 5 sessões de jogos diferentes para gerar um relatório completo.'
+          message: 'Nenhum dado encontrado para gerar relatório. Complete alguns jogos ou testes de diagnóstico primeiro!',
+          suggestion: 'Jogue alguns jogos cognitivos ou complete testes de triagem (TEA, TDAH, Dislexia) para gerar um relatório.',
+          dataSources: {
+            sessions: 0,
+            screenings: 0,
+            insights: 0
+          }
         }),
         {
           status: 404,
@@ -92,7 +111,7 @@ serve(async (req) => {
       );
     }
 
-    console.log(`✅ Using ${dataSource} as data source (${sessionsData.sessions.length} sessions found)`);
+    console.log(`✅ Combined ${combinedSessions.length} total records from: ${dataSource}`);
     
     const neurodiversityProfile = await fetchNeurodiversityProfile(supabase, userId);
 
