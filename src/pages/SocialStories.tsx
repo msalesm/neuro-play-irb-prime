@@ -18,7 +18,13 @@ import storyPackingBackpack from '@/assets/story-packing-backpack.jpg';
 import storyWashingHands from '@/assets/story-washing-hands-new.jpg';
 import storyDoctorVisit from '@/assets/story-doctor-visit.jpg';
 import storyMakingFriends from '@/assets/story-making-friends.jpg';
-import heroGaming from '/hero-gaming.jpg';
+import storyLoudNoises from '@/assets/story-loud-noises.jpg';
+import storyChanges from '@/assets/story-changes.jpg';
+import storyTeamwork from '@/assets/story-teamwork.jpg';
+import storyFrustration from '@/assets/story-frustration.jpg';
+import storyEmpathy from '@/assets/story-empathy.jpg';
+import storyClassroom from '@/assets/story-classroom.jpg';
+import storyBedtime from '@/assets/story-bedtime.jpg';
 
 // Story configurations with illustrations and styling
 const storyConfigs: Record<string, {
@@ -64,25 +70,53 @@ const storyConfigs: Record<string, {
     badgeIcon: 'star'
   },
   'Entrar na sala de aula': {
-    image: storyMakingFriends,
+    image: storyClassroom,
     isHighlighted: false,
     gradient: 'from-secondary/10 to-transparent',
     badge: 'Novo',
     badgeIcon: 'star'
   },
-  'Como participar de um trabalho em grupo': {
-    image: storyDoctorVisit,
+  'Como lidar com barulho alto': {
+    image: storyLoudNoises,
     isHighlighted: false,
     gradient: 'from-accent/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'heart'
+  },
+  'O que fazer quando as coisas mudam de repente': {
+    image: storyChanges,
+    isHighlighted: false,
+    gradient: 'from-primary/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'star'
+  },
+  'Trabalhando em Grupo': {
+    image: storyTeamwork,
+    isHighlighted: false,
+    gradient: 'from-secondary/10 to-transparent',
     badge: 'Novo',
     badgeIcon: 'star'
   },
   'Quando as Coisas Não Dão Certo': {
-    image: heroGaming,
+    image: storyFrustration,
     isHighlighted: false,
     gradient: 'from-primary/10 to-transparent',
     badge: 'Novo',
     badgeIcon: 'heart'
+  },
+  'Como entender quando outra pessoa está triste': {
+    image: storyEmpathy,
+    isHighlighted: false,
+    gradient: 'from-accent/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'heart'
+  },
+  'Preparando para Dormir': {
+    image: storyBedtime,
+    isHighlighted: false,
+    gradient: 'from-primary/10 to-transparent',
+    badge: 'Novo',
+    badgeIcon: 'star'
   }
 };
 
@@ -106,9 +140,10 @@ const getStoryConfig = (title: string) => {
     'from-accent/15 to-transparent',
     'from-primary/15 to-transparent'
   ];
+  const images = [storyTakingBath, storyBrushingTeeth, storyAskingHelp, storyPackingBackpack, storyWashingHands];
   
   return {
-    image: heroGaming,
+    image: images[hash % images.length],
     isHighlighted: false,
     gradient: gradients[hash % gradients.length],
     badge: 'Novo',
