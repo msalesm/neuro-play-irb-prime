@@ -3,10 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { SpaceMap } from '@/components/planeta-azul/SpaceMap';
 import { PlanetCard } from '@/components/planeta-azul/PlanetCard';
 import { planetas } from '@/data/planetas';
-import { Sparkles, Map, Grid3x3, Trophy, Rocket, ArrowLeft } from 'lucide-react';
+import { Sparkles, Map, Grid3x3, Trophy, Rocket, ArrowLeft, Camera } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { Planeta } from '@/types/planeta';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
@@ -14,17 +15,22 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { usePlanetProgress } from '@/hooks/usePlanetProgress';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';
+import { EmotionCaptureCamera } from '@/components/emotional/EmotionCaptureCamera';
+import { useToast } from '@/hooks/use-toast';
 
 type ViewMode = 'mapa' | 'grid';
 
 export default function SistemaPlanetaAzul() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [viewMode, setViewMode] = useState<ViewMode>('mapa');
   const [selectedPlanet, setSelectedPlanet] = useState<Planeta | null>(null);
   const [childAvatar, setChildAvatar] = useState<string | null>(null);
   const [childName, setChildName] = useState<string>('Explorador');
   const [childId, setChildId] = useState<string | null>(null);
+  const [childProfileId, setChildProfileId] = useState<string | null>(null);
+  const [showEmotionCamera, setShowEmotionCamera] = useState(false);
   const { progress } = usePlanetProgress(childId);
 
   useEffect(() => {
@@ -73,9 +79,11 @@ export default function SistemaPlanetaAzul() {
             .single();
 
           if (!createError && newProfile) {
+            setChildProfileId(newProfile.id);
             localStorage.setItem('selectedChildProfile', newProfile.id);
           }
         } else if (childProfile) {
+          setChildProfileId(childProfile.id);
           localStorage.setItem('selectedChildProfile', childProfile.id);
         }
       }
@@ -98,6 +106,45 @@ export default function SistemaPlanetaAzul() {
 
   const handlePlanetClick = (planeta: Planeta) => {
     setSelectedPlanet(planeta);
+  };
+
+  const handleEmotionCaptured = async (result: {
+    primaryEmotion: string;
+    detectedEmotions: string[];
+    moodRating: number;
+    confidence: number;
+  }) => {
+    if (!user || !childProfileId) return;
+    
+    try {
+      const { error } = await supabase
+        .from('emotional_checkins')
+        .insert({
+          user_id: user.id,
+          child_profile_id: childProfileId,
+          scheduled_for: new Date().toISOString(),
+          completed_at: new Date().toISOString(),
+          mood_rating: result.moodRating,
+          emotions_detected: result.detectedEmotions,
+          notes: `Capturado via câmera (${result.confidence}% confiança): ${result.primaryEmotion}`,
+        });
+      
+      if (error) throw error;
+      
+      toast({
+        title: '😊 Emoção registrada!',
+        description: `${childName} está se sentindo: ${result.primaryEmotion}`,
+      });
+      
+      setShowEmotionCamera(false);
+    } catch (error) {
+      console.error('Error saving check-in:', error);
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível salvar o check-in.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -140,13 +187,37 @@ export default function SistemaPlanetaAzul() {
               Voltar ao Dashboard
             </Button>
             
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
-              <ChildAvatarDisplay
-                avatar={childAvatar}
-                name={childName}
-                size="md"
-              />
-              <span className="text-white font-semibold">{childName}</span>
+            <div className="flex items-center gap-2">
+              <Dialog open={showEmotionCamera} onOpenChange={setShowEmotionCamera}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-white/20 text-white hover:bg-white/10 gap-2"
+                    disabled={!childProfileId}
+                  >
+                    <Camera className="h-4 w-4" />
+                    <span className="hidden sm:inline">Como estou?</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md p-0 bg-transparent border-none">
+                  <EmotionCaptureCamera
+                    onEmotionCaptured={handleEmotionCaptured}
+                    onClose={() => setShowEmotionCamera(false)}
+                    childId={childProfileId || undefined}
+                    childName={childName}
+                  />
+                </DialogContent>
+              </Dialog>
+              
+              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                <ChildAvatarDisplay
+                  avatar={childAvatar}
+                  name={childName}
+                  size="md"
+                />
+                <span className="text-white font-semibold">{childName}</span>
+              </div>
             </div>
           </div>
 
