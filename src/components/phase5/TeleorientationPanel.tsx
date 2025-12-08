@@ -10,6 +10,7 @@ import {
   Plus, Play, CheckCircle, XCircle, ExternalLink
 } from 'lucide-react';
 import { useTeleorientation, TeleorientationSession } from '@/hooks/useTeleorientation';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Dialog,
   DialogContent,
@@ -26,25 +27,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-
-const statusLabels: Record<string, string> = {
-  scheduled: 'Agendada',
-  in_progress: 'Em andamento',
-  completed: 'Concluída',
-  cancelled: 'Cancelada',
-  no_show: 'Não compareceu'
-};
-
-const statusColors: Record<string, string> = {
-  scheduled: 'bg-blue-100 text-blue-800',
-  in_progress: 'bg-green-100 text-green-800',
-  completed: 'bg-gray-100 text-gray-800',
-  cancelled: 'bg-red-100 text-red-800',
-  no_show: 'bg-orange-100 text-orange-800'
-};
+import { enUS, es, ptBR } from 'date-fns/locale';
 
 export function TeleorientationPanel() {
+  const { t, language } = useLanguage();
   const { 
     sessions, 
     notes,
@@ -73,6 +59,28 @@ export function TeleorientationPanel() {
 
   const upcomingSessions = getUpcomingSessions();
   const pastSessions = getPastSessions();
+
+  const getLocale = () => {
+    switch (language) {
+      case 'en': return enUS;
+      case 'es': return es;
+      default: return ptBR;
+    }
+  };
+
+  const statusLabels: Record<string, string> = {
+    scheduled: t('phase5.teleorientation.statusScheduled'),
+    in_progress: t('phase5.teleorientation.statusInProgress'),
+    completed: t('phase5.teleorientation.statusCompleted'),
+    cancelled: t('phase5.teleorientation.statusCancelled'),
+    no_show: t('phase5.teleorientation.statusNoShow')
+  };
+
+  const sessionTypeLabels: Record<string, string> = {
+    orientation: t('phase5.teleorientation.typeOrientation'),
+    follow_up: t('phase5.teleorientation.typeFollowUp'),
+    evaluation: t('phase5.teleorientation.typeEvaluation')
+  };
 
   const handleSchedule = async () => {
     if (!newSession.parent_id || !newSession.scheduled_at) return;
@@ -114,30 +122,30 @@ export function TeleorientationPanel() {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <Video className="h-6 w-6 text-primary" />
-          Teleorientação
+          {t('phase5.teleorientation.title')}
         </h2>
         <Dialog open={showScheduleDialog} onOpenChange={setShowScheduleDialog}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Agendar Sessão
+              {t('phase5.teleorientation.schedule')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Agendar Nova Sessão</DialogTitle>
+              <DialogTitle>{t('phase5.teleorientation.scheduleNew')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div>
-                <label className="text-sm font-medium">ID do Responsável</label>
+                <label className="text-sm font-medium">{t('phase5.teleorientation.parentId')}</label>
                 <Input
-                  placeholder="UUID do responsável"
+                  placeholder={t('phase5.teleorientation.parentIdPlaceholder')}
                   value={newSession.parent_id}
                   onChange={(e) => setNewSession({ ...newSession, parent_id: e.target.value })}
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Tipo de Sessão</label>
+                <label className="text-sm font-medium">{t('phase5.teleorientation.sessionType')}</label>
                 <Select
                   value={newSession.session_type}
                   onValueChange={(value: any) => setNewSession({ ...newSession, session_type: value })}
@@ -146,14 +154,14 @@ export function TeleorientationPanel() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="orientation">Orientação</SelectItem>
-                    <SelectItem value="follow_up">Acompanhamento</SelectItem>
-                    <SelectItem value="evaluation">Avaliação</SelectItem>
+                    <SelectItem value="orientation">{t('phase5.teleorientation.typeOrientation')}</SelectItem>
+                    <SelectItem value="follow_up">{t('phase5.teleorientation.typeFollowUp')}</SelectItem>
+                    <SelectItem value="evaluation">{t('phase5.teleorientation.typeEvaluation')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <label className="text-sm font-medium">Data e Hora</label>
+                <label className="text-sm font-medium">{t('phase5.teleorientation.dateTime')}</label>
                 <Input
                   type="datetime-local"
                   value={newSession.scheduled_at}
@@ -161,7 +169,7 @@ export function TeleorientationPanel() {
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Duração (minutos)</label>
+                <label className="text-sm font-medium">{t('phase5.teleorientation.durationMinutes')}</label>
                 <Select
                   value={String(newSession.duration_minutes)}
                   onValueChange={(value) => setNewSession({ ...newSession, duration_minutes: Number(value) })}
@@ -170,20 +178,20 @@ export function TeleorientationPanel() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="15">15 minutos</SelectItem>
-                    <SelectItem value="30">30 minutos</SelectItem>
-                    <SelectItem value="45">45 minutos</SelectItem>
-                    <SelectItem value="60">60 minutos</SelectItem>
+                    <SelectItem value="15">15 {t('phase5.teleorientation.minutes')}</SelectItem>
+                    <SelectItem value="30">30 {t('phase5.teleorientation.minutes')}</SelectItem>
+                    <SelectItem value="45">45 {t('phase5.teleorientation.minutes')}</SelectItem>
+                    <SelectItem value="60">60 {t('phase5.teleorientation.minutes')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setShowScheduleDialog(false)}>
-                Cancelar
+                {t('common.cancel')}
               </Button>
               <Button onClick={handleSchedule}>
-                Agendar
+                {t('phase5.teleorientation.schedule')}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -195,14 +203,14 @@ export function TeleorientationPanel() {
         <CardHeader className="pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            Próximas Sessões
+            {t('phase5.teleorientation.upcoming')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {upcomingSessions.length === 0 ? (
             <div className="text-center py-6 text-muted-foreground">
               <Calendar className="h-10 w-10 mx-auto mb-2 opacity-50" />
-              <p>Nenhuma sessão agendada</p>
+              <p>{t('phase5.teleorientation.noUpcoming')}</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -216,6 +224,10 @@ export function TeleorientationPanel() {
                     setSelectedSession(session);
                     setShowNotesDialog(true);
                   }}
+                  statusLabels={statusLabels}
+                  sessionTypeLabels={sessionTypeLabels}
+                  locale={getLocale()}
+                  t={t}
                 />
               ))}
             </div>
@@ -228,13 +240,13 @@ export function TeleorientationPanel() {
         <CardHeader className="pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
             <Clock className="h-5 w-5" />
-            Histórico de Sessões
+            {t('phase5.teleorientation.history')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {pastSessions.length === 0 ? (
             <div className="text-center py-6 text-muted-foreground">
-              <p>Nenhuma sessão realizada ainda</p>
+              <p>{t('phase5.teleorientation.noHistory')}</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -247,6 +259,10 @@ export function TeleorientationPanel() {
                     setSelectedSession(session);
                     setShowNotesDialog(true);
                   }}
+                  statusLabels={statusLabels}
+                  sessionTypeLabels={sessionTypeLabels}
+                  locale={getLocale()}
+                  t={t}
                   isPast
                 />
               ))}
@@ -259,11 +275,11 @@ export function TeleorientationPanel() {
       <Dialog open={showNotesDialog} onOpenChange={setShowNotesDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Notas da Sessão</DialogTitle>
+            <DialogTitle>{t('phase5.teleorientation.sessionNotes')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <Textarea
-              placeholder="Escreva suas observações e recomendações..."
+              placeholder={t('phase5.teleorientation.notesPlaceholder')}
               value={newNote.notes}
               onChange={(e) => setNewNote({ ...newNote, notes: e.target.value })}
               rows={5}
@@ -276,16 +292,16 @@ export function TeleorientationPanel() {
                 onChange={(e) => setNewNote({ ...newNote, follow_up_needed: e.target.checked })}
               />
               <label htmlFor="follow_up" className="text-sm">
-                Requer acompanhamento
+                {t('phase5.teleorientation.requiresFollowUp')}
               </label>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowNotesDialog(false)}>
-              Cancelar
+              {t('common.cancel')}
             </Button>
             <Button onClick={handleAddNote}>
-              Salvar Notas
+              {t('phase5.teleorientation.saveNotes')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -300,10 +316,22 @@ interface SessionCardProps {
   onComplete?: () => void;
   onCancel?: () => void;
   onAddNote?: () => void;
+  statusLabels: Record<string, string>;
+  sessionTypeLabels: Record<string, string>;
+  locale: any;
+  t: (key: string) => string;
   isPast?: boolean;
 }
 
-function SessionCard({ session, onStart, onComplete, onCancel, onAddNote, isPast }: SessionCardProps) {
+const statusColors: Record<string, string> = {
+  scheduled: 'bg-blue-100 text-blue-800',
+  in_progress: 'bg-green-100 text-green-800',
+  completed: 'bg-gray-100 text-gray-800',
+  cancelled: 'bg-red-100 text-red-800',
+  no_show: 'bg-orange-100 text-orange-800'
+};
+
+function SessionCard({ session, onStart, onComplete, onCancel, onAddNote, statusLabels, sessionTypeLabels, locale, t, isPast }: SessionCardProps) {
   const sessionDate = new Date(session.scheduled_at);
   
   return (
@@ -314,14 +342,13 @@ function SessionCard({ session, onStart, onComplete, onCancel, onAddNote, isPast
             {statusLabels[session.status]}
           </Badge>
           <span className="text-sm text-muted-foreground">
-            {session.session_type === 'orientation' ? 'Orientação' : 
-             session.session_type === 'follow_up' ? 'Acompanhamento' : 'Avaliação'}
+            {sessionTypeLabels[session.session_type]}
           </span>
         </div>
         <div className="flex items-center gap-4 text-sm">
           <span className="flex items-center gap-1">
             <Calendar className="h-3 w-3" />
-            {format(sessionDate, "dd/MM/yyyy", { locale: ptBR })}
+            {format(sessionDate, "dd/MM/yyyy", { locale })}
           </span>
           <span className="flex items-center gap-1">
             <Clock className="h-3 w-3" />
@@ -343,7 +370,7 @@ function SessionCard({ session, onStart, onComplete, onCancel, onAddNote, isPast
             )}
             <Button size="sm" onClick={onStart}>
               <Play className="h-4 w-4 mr-1" />
-              Iniciar
+              {t('phase5.teleorientation.start')}
             </Button>
             <Button size="sm" variant="ghost" onClick={onCancel}>
               <XCircle className="h-4 w-4" />
@@ -354,14 +381,14 @@ function SessionCard({ session, onStart, onComplete, onCancel, onAddNote, isPast
         {session.status === 'in_progress' && (
           <Button size="sm" onClick={onComplete}>
             <CheckCircle className="h-4 w-4 mr-1" />
-            Concluir
+            {t('phase5.teleorientation.complete')}
           </Button>
         )}
         
         {(session.status === 'completed' || isPast) && (
           <Button size="sm" variant="outline" onClick={onAddNote}>
             <FileText className="h-4 w-4 mr-1" />
-            Notas
+            {t('phase5.teleorientation.notes')}
           </Button>
         )}
       </div>
