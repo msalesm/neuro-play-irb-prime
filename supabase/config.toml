@@ -41,3 +41,6 @@ verify_jwt = true
 
 [functions.smart-recommendations]
 verify_jwt = true
+
+[functions.analyze-emotion]
+verify_jwt = true
