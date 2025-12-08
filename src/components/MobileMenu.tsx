@@ -4,13 +4,14 @@ import {
   Home, Brain, Stethoscope, Settings, User, 
   Users, School, TrendingUp, Menu, Sparkles, Gamepad2,
   FileText, ClipboardCheck, GraduationCap, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, CalendarCheck, Rocket, Mail, Folder
+  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, CalendarCheck, Rocket, Mail, Folder, Globe
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { LanguageSelector } from '@/components/LanguageSelector';
 import {
   Sheet,
   SheetContent,
@@ -142,35 +143,38 @@ export function MobileMenu() {
       </SheetTrigger>
       <SheetContent side="left" className="w-[280px] p-0">
         <SheetHeader className="p-6 pb-4 border-b space-y-3">
-          <SheetTitle className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-primary" />
-            Menu
-          </SheetTitle>
+          <div className="flex items-center justify-between">
+            <SheetTitle className="flex items-center gap-2">
+              <Brain className="h-5 w-5 text-primary" />
+              Menu
+            </SheetTitle>
+            <LanguageSelector variant="minimal" />
+          </div>
           
           {/* Role Badge */}
           <div className="flex items-center">
             {role === 'admin' && (
               <Badge className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-0 gap-1.5">
                 <Shield className="w-3 h-3" />
-                Administrador
+                {t('nav.admin') || 'Administrador'}
               </Badge>
             )}
             {role === 'therapist' && (
               <Badge className="bg-gradient-to-r from-cyan-600 to-teal-600 text-white border-0 gap-1.5">
                 <Briefcase className="w-3 h-3" />
-                Terapeuta
+                {t('nav.therapist') || 'Terapeuta'}
               </Badge>
             )}
             {role === 'parent' && (
               <Badge className="bg-gradient-to-r from-amber-600 to-orange-600 text-white border-0 gap-1.5">
                 <UserCircle className="w-3 h-3" />
-                Pai/Mãe
+                {t('nav.parent') || 'Pai/Mãe'}
               </Badge>
             )}
             {!role && (
               <Badge variant="secondary" className="gap-1.5">
                 <User className="w-3 h-3" />
-                Usuário
+                {t('nav.user') || 'Usuário'}
               </Badge>
             )}
           </div>
