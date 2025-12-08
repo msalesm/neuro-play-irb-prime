@@ -194,10 +194,9 @@ export default function SistemaPlanetaAzul() {
                     variant="outline"
                     size="sm"
                     className="border-white/20 text-white hover:bg-white/10 gap-2"
-                    disabled={!childProfileId}
                   >
                     <Camera className="h-4 w-4" />
-                    <span className="hidden sm:inline">Como estou?</span>
+                    Como estou?
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md p-0 bg-transparent border-none">
