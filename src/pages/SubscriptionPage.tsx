@@ -101,35 +101,82 @@ export default function SubscriptionPage() {
     if (!selectedPlan || !user) return;
 
     try {
-      const trialEnd = new Date();
-      trialEnd.setDate(trialEnd.getDate() + selectedPlan.trial_days);
+      // If plan has trial, start trial immediately
+      if (selectedPlan.trial_days > 0) {
+        const trialEnd = new Date();
+        trialEnd.setDate(trialEnd.getDate() + selectedPlan.trial_days);
 
+        const periodEnd = new Date();
+        periodEnd.setMonth(periodEnd.getMonth() + (billingCycle === 'yearly' ? 12 : 1));
+
+        const { error } = await supabase
+          .from('subscriptions')
+          .insert({
+            user_id: user.id,
+            plan_id: selectedPlan.id,
+            status: 'trial',
+            billing_cycle: billingCycle,
+            current_period_end: periodEnd.toISOString(),
+            trial_ends_at: trialEnd.toISOString()
+          });
+
+        if (error) throw error;
+
+        toast.success(`Trial de ${selectedPlan.trial_days} dias iniciado!`);
+        setShowUpgradeDialog(false);
+        loadData();
+        return;
+      }
+
+      // For paid plans without trial, redirect to Mercado Pago
+      if (selectedPlan.price_monthly > 0) {
+        setLoading(true);
+        
+        const { data, error } = await supabase.functions.invoke('mercado-pago-payment', {
+          body: {
+            action: 'create_preference',
+            planId: selectedPlan.id,
+            userId: user.id,
+            billingCycle,
+            email: user.email,
+            returnUrl: `${window.location.origin}/subscription`,
+          }
+        });
+
+        if (error) throw error;
+
+        if (data?.initPoint) {
+          window.location.href = data.initPoint;
+        } else {
+          throw new Error('Could not create payment preference');
+        }
+        return;
+      }
+
+      // Free plan - just activate
       const periodEnd = new Date();
-      periodEnd.setMonth(periodEnd.getMonth() + (billingCycle === 'yearly' ? 12 : 1));
+      periodEnd.setFullYear(periodEnd.getFullYear() + 10);
 
       const { error } = await supabase
         .from('subscriptions')
         .insert({
           user_id: user.id,
           plan_id: selectedPlan.id,
-          status: selectedPlan.trial_days > 0 ? 'trial' : 'pending',
+          status: 'active',
           billing_cycle: billingCycle,
           current_period_end: periodEnd.toISOString(),
-          trial_ends_at: selectedPlan.trial_days > 0 ? trialEnd.toISOString() : null
         });
 
       if (error) throw error;
 
-      toast.success(
-        selectedPlan.trial_days > 0 
-          ? `Trial de ${selectedPlan.trial_days} dias iniciado!` 
-          : 'Plano selecionado! Configure o pagamento.'
-      );
+      toast.success('Plano gratuito ativado!');
       setShowUpgradeDialog(false);
       loadData();
     } catch (error) {
       console.error('Error starting subscription:', error);
-      toast.error('Erro ao iniciar assinatura');
+      toast.error('Erro ao processar assinatura');
+    } finally {
+      setLoading(false);
     }
   };
 
