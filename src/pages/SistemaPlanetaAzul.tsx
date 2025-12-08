@@ -193,7 +193,7 @@ export default function SistemaPlanetaAzul() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-white/20 text-white hover:bg-white/10 gap-2"
+                    className="border-white/30 bg-white/10 text-white hover:bg-white/20 gap-2"
                   >
                     <Camera className="h-4 w-4" />
                     Como estou?
@@ -239,7 +239,7 @@ export default function SistemaPlanetaAzul() {
               <Button
                 variant={viewMode === 'mapa' ? 'default' : 'outline'}
                 onClick={() => setViewMode('mapa')}
-                className={viewMode === 'mapa' ? 'bg-[#c7923e] hover:bg-[#c7923e]/90' : 'border-white/20 text-white hover:bg-white/10'}
+                className={viewMode === 'mapa' ? 'bg-[#c7923e] hover:bg-[#c7923e]/90 text-white' : 'border-white/30 bg-white/10 text-white hover:bg-white/20'}
               >
                 <Map className="w-4 h-4 mr-2" />
                 Mapa Espacial
@@ -247,7 +247,7 @@ export default function SistemaPlanetaAzul() {
               <Button
                 variant={viewMode === 'grid' ? 'default' : 'outline'}
                 onClick={() => setViewMode('grid')}
-                className={viewMode === 'grid' ? 'bg-[#c7923e] hover:bg-[#c7923e]/90' : 'border-white/20 text-white hover:bg-white/10'}
+                className={viewMode === 'grid' ? 'bg-[#c7923e] hover:bg-[#c7923e]/90 text-white' : 'border-white/30 bg-white/10 text-white hover:bg-white/20'}
               >
                 <Grid3x3 className="w-4 h-4 mr-2" />
                 Visualização em Grade
