@@ -56,44 +56,49 @@ export function AppSidebar() {
   // Home - Criança/Usuário Principal
   const homeNavigation = [
     {
-      title: 'Hub do Aluno',
+      title: t('nav.studentHub'),
       path: '/student-hub',
       icon: Rocket,
     },
     {
-      title: 'Sistema de Planetas',
+      title: t('nav.planetSystem'),
       path: '/sistema-planeta-azul',
       icon: Sparkles,
     },
     {
-      title: 'Minhas Rotinas',
+      title: t('nav.myRoutines'),
       path: '/rotinas',
       icon: CalendarCheck,
     },
     {
-      title: 'Jogos Cognitivos',
+      title: t('nav.cognitiveGames'),
       path: '/games',
       icon: Gamepad2,
     },
     {
-      title: 'Histórias Sociais',
+      title: t('nav.socialStories'),
       path: '/social-stories',
       icon: Drama,
     },
     {
-      title: 'Comunidade',
+      title: t('nav.community'),
       path: '/community',
       icon: Users,
     },
     {
-      title: 'Progresso',
+      title: t('nav.progress'),
       path: '/learning-dashboard',
       icon: TrendingUp,
     },
     {
-      title: 'Perfil',
+      title: t('nav.profile'),
       path: '/profile',
       icon: User,
+    },
+    {
+      title: t('nav.phase5'),
+      path: '/fase5',
+      icon: Sparkles,
     },
   ];
 

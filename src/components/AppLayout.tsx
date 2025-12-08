@@ -5,6 +5,8 @@ import { MobileMenu } from '@/components/MobileMenu';
 import { MobileTour } from '@/components/MobileTour';
 import { useAuth } from '@/hooks/useAuth';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { LanguageSelector } from '@/components/LanguageSelector';
 import { 
   ScreenReaderAnnouncer, 
   SkipLinks, 
@@ -23,6 +25,7 @@ interface AppLayoutProps {
 export function AppLayout({ children }: AppLayoutProps) {
   const { user } = useAuth();
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
 
   if (!user) {
     return (
@@ -89,14 +92,17 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </div>
 
                 <div className="flex items-center gap-4">
+                  {/* Language Selector */}
+                  <LanguageSelector variant="icon" />
+                  
                   {/* Quick Actions */}
                   <div className="hidden md:flex items-center gap-2">
                     <div 
                       className="w-2 h-2 bg-green-500 rounded-full animate-pulse" 
                       role="status"
-                      aria-label="Sistema online"
+                      aria-label={t('common.loading')}
                     />
-                    <span className="text-xs text-muted-foreground">Sistema Online</span>
+                    <span className="text-xs text-muted-foreground">{t('nav.online') || 'Online'}</span>
                   </div>
                 </div>
               </header>
