@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Heart, 
   TrendingUp, 
@@ -14,11 +15,14 @@ import {
   Meh,
   FileDown,
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
+  Camera
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useBehavioralReport } from '@/hooks/useBehavioralReport';
+import { EmotionCaptureCamera } from '@/components/emotional/EmotionCaptureCamera';
+import { useToast } from '@/hooks/use-toast';
 import {
   LineChart,
   Line,
@@ -47,9 +51,50 @@ interface EmotionalCheckIn {
 export default function EmotionalHistoryDashboard() {
   const { user } = useAuth();
   const { generatePDF, generating } = useBehavioralReport();
+  const { toast } = useToast();
   const [checkIns, setCheckIns] = useState<EmotionalCheckIn[]>([]);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'week' | 'month' | 'all'>('month');
+  const [showCamera, setShowCamera] = useState(false);
+
+  const handleEmotionCaptured = async (result: {
+    primaryEmotion: string;
+    detectedEmotions: string[];
+    moodRating: number;
+    confidence: number;
+  }) => {
+    if (!user) return;
+    
+    try {
+      // Create a new emotional check-in with captured emotion
+      const { error } = await supabase
+        .from('emotional_checkins')
+        .insert({
+          user_id: user.id,
+          scheduled_for: new Date().toISOString(),
+          completed_at: new Date().toISOString(),
+          mood_rating: result.moodRating,
+          emotions_detected: result.detectedEmotions,
+          notes: `Capturado via câmera (${result.confidence}% confiança): ${result.primaryEmotion}`,
+        });
+      
+      if (error) throw error;
+      
+      toast({
+        title: 'Check-in registrado!',
+        description: `Emoção detectada: ${result.primaryEmotion}`,
+      });
+      
+      fetchCheckIns();
+    } catch (error) {
+      console.error('Error saving check-in:', error);
+      toast({
+        title: 'Erro',
+        description: 'Não foi possível salvar o check-in.',
+        variant: 'destructive',
+      });
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -198,6 +243,21 @@ export default function EmotionalHistoryDashboard() {
           </div>
           
           <div className="flex gap-2">
+            <Dialog open={showCamera} onOpenChange={setShowCamera}>
+              <DialogTrigger asChild>
+                <Button className="gap-2">
+                  <Camera className="h-4 w-4" />
+                  Capturar Emoção
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md p-0 border-0 bg-transparent">
+                <EmotionCaptureCamera
+                  onEmotionCaptured={handleEmotionCaptured}
+                  onClose={() => setShowCamera(false)}
+                />
+              </DialogContent>
+            </Dialog>
+            
             <Button
               variant="outline"
               onClick={generatePDF}
