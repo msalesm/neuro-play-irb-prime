@@ -6,9 +6,9 @@ import { useCommunity } from '@/hooks/useCommunity';
 import { cn } from '@/lib/utils';
 
 const missionTypeStyles: Record<string, { bg: string; border: string; label: string }> = {
-  daily: { bg: 'bg-blue-500/10', border: 'border-blue-500/30', label: 'Diária' },
-  weekly: { bg: 'bg-purple-500/10', border: 'border-purple-500/30', label: 'Semanal' },
-  special: { bg: 'bg-amber-500/10', border: 'border-amber-500/30', label: 'Especial' }
+  daily: { bg: 'bg-muted/50', border: 'border-border', label: 'Diária' },
+  weekly: { bg: 'bg-muted/50', border: 'border-border', label: 'Semanal' },
+  special: { bg: 'bg-muted/50', border: 'border-border', label: 'Especial' }
 };
 
 const categoryIcons: Record<string, React.ElementType> = {
@@ -47,11 +47,11 @@ export function SocialMissions() {
   const specialMissions = missions.filter(m => m.mission_type === 'special');
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+    <Card className="border-border">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-base">
           <Target className="w-5 h-5 text-primary" />
-          Missões Sociais
+          Missões
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">

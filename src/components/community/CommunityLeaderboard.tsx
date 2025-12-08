@@ -25,35 +25,32 @@ export function CommunityLeaderboard() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-yellow-500" />
-          Ranking da Comunidade
+    <Card className="border-border">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-base">
+          <Trophy className="w-5 h-5 text-primary" />
+          Ranking
         </CardTitle>
       </CardHeader>
       <CardContent>
         {/* My Stats */}
         {myPoints && (
-          <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
+          <div className="mb-4 p-3 bg-muted/50 rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium">Sua Posição</span>
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className="font-bold">Nível {myPoints.level}</span>
-              </div>
+              <span className="text-sm text-muted-foreground">Sua Posição</span>
+              <span className="text-sm font-medium">Nível {myPoints.level}</span>
             </div>
             <div className="grid grid-cols-3 gap-2 text-center">
               <div>
-                <p className="text-2xl font-bold text-primary">{myPoints.total_points}</p>
+                <p className="text-lg font-semibold text-foreground">{myPoints.total_points}</p>
                 <p className="text-xs text-muted-foreground">Total</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-blue-500">{myPoints.weekly_points}</p>
+                <p className="text-lg font-semibold text-foreground">{myPoints.weekly_points}</p>
                 <p className="text-xs text-muted-foreground">Semanal</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-purple-500">{myPoints.monthly_points}</p>
+                <p className="text-lg font-semibold text-foreground">{myPoints.monthly_points}</p>
                 <p className="text-xs text-muted-foreground">Mensal</p>
               </div>
             </div>
