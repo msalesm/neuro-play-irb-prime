@@ -160,7 +160,7 @@ export function FloatingAIAssistant() {
             
             {/* Pulse effect */}
             <motion.div
-              className="absolute inset-0 rounded-full bg-primary/30"
+              className="absolute inset-0 rounded-full bg-primary/30 pointer-events-none"
               animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
