@@ -92,6 +92,7 @@ import BeneficiosTerapeuticos from "./pages/BeneficiosTerapeuticos";
 
 // Neuro Play v2.0 pages
 import NeuroPlayV2 from "./pages/NeuroPlayV2";
+import NeuroPlayLanding from "./pages/NeuroPlayLanding";
 import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
 import DashboardPais from "./pages/DashboardPais";
 import IRBPrimeLanding from "./pages/IRBPrimeLanding";
@@ -159,6 +160,7 @@ const App = () => (
                     </Suspense>
                   } />
                   <Route path="/v2" element={<NeuroPlayV2 />} />
+                  <Route path="/neuro-play" element={<NeuroPlayLanding />} />
                   <Route path="/diagnostico-completo" element={<DiagnosticoCompleto />} />
                   <Route path="/dashboard-pais" element={<DashboardPais />} />
                   <Route path="/old-home" element={
