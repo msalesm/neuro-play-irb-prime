@@ -297,7 +297,7 @@ export default function EmotionalHistoryDashboard() {
           <div className="flex gap-2">
             <Dialog open={showCamera} onOpenChange={setShowCamera}>
               <DialogTrigger asChild>
-                <Button className="gap-2" disabled={childProfiles.length === 0}>
+                <Button className="gap-2">
                   <Camera className="h-4 w-4" />
                   Capturar Emoção
                 </Button>
