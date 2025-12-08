@@ -11,6 +11,7 @@ import {
   CheckCircle, Crown
 } from 'lucide-react';
 import { useMarketplace, MarketplaceItem } from '@/hooks/useMarketplace';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const typeIcons: Record<string, React.ReactNode> = {
   social_story: <BookOpen className="h-4 w-4" />,
@@ -19,14 +20,8 @@ const typeIcons: Record<string, React.ReactNode> = {
   routine_template: <Calendar className="h-4 w-4" />
 };
 
-const typeLabels: Record<string, string> = {
-  social_story: 'História Social',
-  learning_trail: 'Trilha de Aprendizado',
-  mini_game: 'Mini Jogo',
-  routine_template: 'Modelo de Rotina'
-};
-
 export function MarketplaceGrid() {
+  const { t } = useLanguage();
   const { 
     items, 
     coins, 
@@ -38,6 +33,13 @@ export function MarketplaceGrid() {
   
   const [search, setSearch] = useState('');
   const [selectedType, setSelectedType] = useState<string>('all');
+
+  const typeLabels: Record<string, string> = {
+    social_story: t('phase5.marketplace.socialStories'),
+    learning_trail: t('phase5.marketplace.educationalTrails'),
+    mini_game: t('phase5.marketplace.therapeuticGames'),
+    routine_template: t('phase5.marketplace.routines')
+  };
 
   const filteredItems = items.filter(item => {
     const matchesSearch = item.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -66,7 +68,7 @@ export function MarketplaceGrid() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Buscar no marketplace..."
+            placeholder={t('phase5.marketplace.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
@@ -75,29 +77,29 @@ export function MarketplaceGrid() {
         <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 px-4 py-2 rounded-lg border border-yellow-200 dark:border-yellow-800">
           <Coins className="h-5 w-5 text-yellow-600" />
           <span className="font-bold text-yellow-700 dark:text-yellow-300">{coins.balance}</span>
-          <span className="text-sm text-yellow-600 dark:text-yellow-400">moedas</span>
+          <span className="text-sm text-yellow-600 dark:text-yellow-400">{t('phase5.marketplace.coins')}</span>
         </div>
       </div>
 
       {/* Filters */}
       <Tabs value={selectedType} onValueChange={setSelectedType}>
         <TabsList className="flex-wrap h-auto">
-          <TabsTrigger value="all">Todos</TabsTrigger>
+          <TabsTrigger value="all">{t('phase5.marketplace.all')}</TabsTrigger>
           <TabsTrigger value="social_story" className="flex items-center gap-1">
             <BookOpen className="h-3 w-3" />
-            Histórias
+            {t('phase5.marketplace.stories')}
           </TabsTrigger>
           <TabsTrigger value="learning_trail" className="flex items-center gap-1">
             <Route className="h-3 w-3" />
-            Trilhas
+            {t('phase5.marketplace.trails')}
           </TabsTrigger>
           <TabsTrigger value="mini_game" className="flex items-center gap-1">
             <Gamepad2 className="h-3 w-3" />
-            Jogos
+            {t('phase5.marketplace.games')}
           </TabsTrigger>
           <TabsTrigger value="routine_template" className="flex items-center gap-1">
             <Calendar className="h-3 w-3" />
-            Rotinas
+            {t('phase5.marketplace.routines')}
           </TabsTrigger>
         </TabsList>
 
@@ -105,8 +107,8 @@ export function MarketplaceGrid() {
           {filteredItems.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <ShoppingCart className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-medium">Nenhum item encontrado</p>
-              <p className="text-sm">Tente ajustar seus filtros de busca</p>
+              <p className="text-lg font-medium">{t('phase5.marketplace.noItems')}</p>
+              <p className="text-sm">{t('phase5.marketplace.adjustFilters')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -117,6 +119,8 @@ export function MarketplaceGrid() {
                   isPurchased={hasPurchased(item.id)}
                   onPurchase={() => purchaseItem(item.id)}
                   canAfford={coins.balance >= item.price_coins}
+                  typeLabels={typeLabels}
+                  t={t}
                 />
               ))}
             </div>
@@ -132,9 +136,11 @@ interface MarketplaceItemCardProps {
   isPurchased: boolean;
   onPurchase: () => void;
   canAfford: boolean;
+  typeLabels: Record<string, string>;
+  t: (key: string) => string;
 }
 
-function MarketplaceItemCard({ item, isPurchased, onPurchase, canAfford }: MarketplaceItemCardProps) {
+function MarketplaceItemCard({ item, isPurchased, onPurchase, canAfford, typeLabels, t }: MarketplaceItemCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       {/* Preview Image */}
@@ -159,7 +165,7 @@ function MarketplaceItemCard({ item, isPurchased, onPurchase, canAfford }: Marke
           {item.is_premium_only && (
             <Badge className="bg-gradient-to-r from-amber-500 to-yellow-500">
               <Crown className="h-3 w-3 mr-1" />
-              Premium
+              {t('phase5.marketplace.premium')}
             </Badge>
           )}
         </div>
@@ -174,7 +180,7 @@ function MarketplaceItemCard({ item, isPurchased, onPurchase, canAfford }: Marke
         {/* Creator */}
         {item.creator && (
           <div className="flex items-center gap-2 mt-3 text-sm">
-            <span className="text-muted-foreground">Por:</span>
+            <span className="text-muted-foreground">{t('phase5.marketplace.by')}:</span>
             <span className="font-medium">{item.creator.display_name}</span>
             {item.creator.credentials?.length > 0 && (
               <Badge variant="outline" className="text-xs">
@@ -201,7 +207,7 @@ function MarketplaceItemCard({ item, isPurchased, onPurchase, canAfford }: Marke
         {isPurchased ? (
           <Button className="w-full" variant="secondary" disabled>
             <CheckCircle className="h-4 w-4 mr-2" />
-            Adquirido
+            {t('phase5.marketplace.purchased')}
           </Button>
         ) : (
           <Button 
@@ -210,7 +216,7 @@ function MarketplaceItemCard({ item, isPurchased, onPurchase, canAfford }: Marke
             disabled={!canAfford}
           >
             <Coins className="h-4 w-4 mr-2" />
-            {item.price_coins > 0 ? `${item.price_coins} moedas` : 'Grátis'}
+            {item.price_coins > 0 ? `${item.price_coins} ${t('phase5.marketplace.coins')}` : t('phase5.marketplace.free')}
           </Button>
         )}
       </CardFooter>

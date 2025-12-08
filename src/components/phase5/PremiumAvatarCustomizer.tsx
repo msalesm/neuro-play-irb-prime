@@ -9,6 +9,7 @@ import {
   Palette, PawPrint, ImageIcon, Stars
 } from 'lucide-react';
 import { useAvatarPremium, AvatarItem } from '@/hooks/useAvatarPremium';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface PremiumAvatarCustomizerProps {
@@ -21,14 +22,6 @@ const categoryIcons: Record<string, React.ReactNode> = {
   pet: <PawPrint className="h-4 w-4" />,
   background: <ImageIcon className="h-4 w-4" />,
   effect: <Stars className="h-4 w-4" />
-};
-
-const categoryLabels: Record<string, string> = {
-  accessory: 'Acessórios',
-  clothing: 'Roupas',
-  pet: 'Pets',
-  background: 'Cenários',
-  effect: 'Efeitos'
 };
 
 const rarityColors: Record<string, string> = {
@@ -45,6 +38,7 @@ const modeIcons: Record<string, React.ReactNode> = {
 };
 
 export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProps) {
+  const { t } = useLanguage();
   const {
     allItems,
     unlockedItems,
@@ -60,6 +54,20 @@ export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProp
 
   const [selectedCategory, setSelectedCategory] = useState('accessory');
   const equippedItems = getEquippedItems();
+
+  const categoryLabels: Record<string, string> = {
+    accessory: t('phase5.premiumAvatar.categories.accessories'),
+    clothing: t('phase5.premiumAvatar.categories.clothes'),
+    pet: t('phase5.premiumAvatar.pets'),
+    background: t('phase5.premiumAvatar.categories.background'),
+    effect: t('phase5.premiumAvatar.categories.effects')
+  };
+
+  const modeLabels: Record<string, string> = {
+    normal: t('phase5.premiumAvatar.normalMode'),
+    calm: t('phase5.premiumAvatar.calmMode'),
+    focus: t('phase5.premiumAvatar.focusMode')
+  };
 
   const categoryItems = allItems.filter(item => item.item_type === selectedCategory);
 
@@ -80,7 +88,7 @@ export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProp
     return (
       <Card>
         <CardContent className="p-6 text-center text-muted-foreground">
-          Selecione uma criança para personalizar o avatar
+          {t('phase5.premiumAvatar.selectChild')}
         </CardContent>
       </Card>
     );
@@ -130,7 +138,7 @@ export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProp
       {/* Mode Selector */}
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Modo do Avatar</CardTitle>
+          <CardTitle className="text-lg">{t('phase5.premiumAvatar.avatarMode')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex gap-2">
@@ -142,8 +150,8 @@ export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProp
                 onClick={() => setMode(mode)}
               >
                 {modeIcons[mode]}
-                <span className="ml-2 capitalize">
-                  {mode === 'calm' ? 'Calmo' : mode === 'focus' ? 'Foco' : 'Normal'}
+                <span className="ml-2">
+                  {modeLabels[mode]}
                 </span>
               </Button>
             ))}
@@ -156,7 +164,7 @@ export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProp
         <CardHeader className="pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
             <Crown className="h-5 w-5 text-primary" />
-            Personalizar Avatar
+            {t('phase5.premiumAvatar.customize')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -184,6 +192,7 @@ export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProp
                       isEquipped={isEquipped}
                       onEquip={() => equipItem(item.id)}
                       onUnequip={() => unequipItem(item.id)}
+                      categoryIcons={categoryIcons}
                     />
                   );
                 })}
@@ -198,7 +207,7 @@ export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProp
         <CardHeader className="pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
             <Stars className="h-5 w-5 text-primary" />
-            Mundos Desbloqueáveis
+            {t('phase5.premiumAvatar.unlockableWorlds')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -219,7 +228,7 @@ export function PremiumAvatarCustomizer({ childId }: PremiumAvatarCustomizerProp
                 </div>
                 <p className="font-medium text-sm">{world.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  Nível {world.unlock_value}
+                  {t('phase5.premiumAvatar.level')} {world.unlock_value}
                 </p>
                 {world.is_premium && (
                   <Badge className="mt-2 text-xs" variant="outline">
@@ -242,9 +251,10 @@ interface ItemCardProps {
   isEquipped: boolean;
   onEquip: () => void;
   onUnequip: () => void;
+  categoryIcons: Record<string, React.ReactNode>;
 }
 
-function ItemCard({ item, isUnlocked, isEquipped, onEquip, onUnequip }: ItemCardProps) {
+function ItemCard({ item, isUnlocked, isEquipped, onEquip, onUnequip, categoryIcons }: ItemCardProps) {
   return (
     <div
       className={cn(

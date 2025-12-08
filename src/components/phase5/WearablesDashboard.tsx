@@ -9,6 +9,7 @@ import {
   Plus, Unplug, RefreshCw, TrendingUp, TrendingDown 
 } from 'lucide-react';
 import { useWearables } from '@/hooks/useWearables';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Dialog,
   DialogContent,
@@ -36,6 +37,7 @@ const providerNames: Record<string, string> = {
 };
 
 export function WearablesDashboard({ childId }: WearablesDashboardProps) {
+  const { t } = useLanguage();
   const { 
     connections, 
     readings, 
@@ -91,23 +93,23 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
             <Watch className="h-5 w-5 text-primary" />
-            Dispositivos Conectados
+            {t('phase5.wearables.connectedDevices')}
           </CardTitle>
           <div className="flex gap-2">
             <Button size="sm" variant="outline" onClick={handleSimulate}>
               <RefreshCw className="h-4 w-4 mr-1" />
-              Simular
+              {t('phase5.wearables.simulate')}
             </Button>
             <Dialog open={showConnectDialog} onOpenChange={setShowConnectDialog}>
               <DialogTrigger asChild>
                 <Button size="sm">
                   <Plus className="h-4 w-4 mr-1" />
-                  Conectar
+                  {t('phase5.wearables.connect')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Conectar Dispositivo</DialogTitle>
+                  <DialogTitle>{t('phase5.wearables.connectDevice')}</DialogTitle>
                 </DialogHeader>
                 <div className="grid grid-cols-2 gap-4 py-4">
                   {(['apple_watch', 'fitbit', 'amazfit', 'garmin'] as const).map(provider => (
@@ -123,7 +125,7 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground text-center">
-                  Integração via placeholder - conecte seu dispositivo real quando disponível
+                  {t('phase5.wearables.placeholderIntegration')}
                 </p>
               </DialogContent>
             </Dialog>
@@ -133,8 +135,8 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
           {connections.length === 0 ? (
             <div className="text-center py-6 text-muted-foreground">
               <Watch className="h-10 w-10 mx-auto mb-2 opacity-50" />
-              <p>Nenhum dispositivo conectado</p>
-              <p className="text-sm">Conecte um wearable para monitorar sinais vitais</p>
+              <p>{t('phase5.wearables.noDevices')}</p>
+              <p className="text-sm">{t('phase5.wearables.connectToMonitor')}</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -146,7 +148,7 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
                       <p className="font-medium">{providerNames[conn.provider]}</p>
                       {conn.last_sync_at && (
                         <p className="text-xs text-muted-foreground">
-                          Último sync: {new Date(conn.last_sync_at).toLocaleString('pt-BR')}
+                          {t('phase5.wearables.lastSync')}: {new Date(conn.last_sync_at).toLocaleString()}
                         </p>
                       )}
                     </div>
@@ -171,7 +173,7 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Heart className="h-4 w-4 text-red-500" />
-              <span className="text-sm text-muted-foreground">Freq. Cardíaca</span>
+              <span className="text-sm text-muted-foreground">{t('phase5.wearables.heartRate')}</span>
             </div>
             <div className="text-2xl font-bold">
               {latestHeartRate ? `${Math.round(latestHeartRate.value)}` : '--'}
@@ -184,7 +186,7 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
                 ) : (
                   <TrendingDown className="h-3 w-3 text-green-500" />
                 )}
-                Média 24h: {Math.round(avgHeartRate)}
+                {t('phase5.wearables.avg24h')}: {Math.round(avgHeartRate)}
               </div>
             )}
           </CardContent>
@@ -194,7 +196,7 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Activity className="h-4 w-4 text-purple-500" />
-              <span className="text-sm text-muted-foreground">HRV</span>
+              <span className="text-sm text-muted-foreground">{t('phase5.wearables.hrv')}</span>
             </div>
             <div className="text-2xl font-bold">
               {latestHRV ? `${Math.round(latestHRV.value)}` : '--'}
@@ -207,7 +209,7 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Zap className="h-4 w-4 text-orange-500" />
-              <span className="text-sm text-muted-foreground">Estresse</span>
+              <span className="text-sm text-muted-foreground">{t('phase5.wearables.stressLevel')}</span>
             </div>
             <div className="text-2xl font-bold">
               {latestStress ? `${Math.round(latestStress.value)}` : '--'}
@@ -226,11 +228,11 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Moon className="h-4 w-4 text-blue-500" />
-              <span className="text-sm text-muted-foreground">Sono</span>
+              <span className="text-sm text-muted-foreground">{t('phase5.wearables.sleep')}</span>
             </div>
             <div className="text-2xl font-bold">
               {latestSleep ? `${latestSleep.value.toFixed(1)}` : '--'}
-              <span className="text-sm font-normal text-muted-foreground"> horas</span>
+              <span className="text-sm font-normal text-muted-foreground"> {t('phase5.wearables.hours')}</span>
             </div>
           </CardContent>
         </Card>
@@ -242,7 +244,7 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center gap-2">
               <AlertCircle className="h-5 w-5 text-orange-500" />
-              Alertas
+              {t('phase5.emotionalAI.alerts')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
@@ -272,7 +274,7 @@ export function WearablesDashboard({ childId }: WearablesDashboardProps) {
                   variant="ghost"
                   onClick={() => acknowledgeAlert(alert.id)}
                 >
-                  Entendido
+                  {t('phase5.wearables.understood')}
                 </Button>
               </div>
             ))}

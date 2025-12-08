@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Brain, Sparkles, AlertTriangle, Lightbulb, RefreshCw, Heart, Zap, Moon } from 'lucide-react';
 import { useEmotionalAI } from '@/hooks/useEmotionalAI';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface EmotionalAIPanelProps {
   childId?: string;
@@ -20,15 +21,6 @@ const moodIcons: Record<string, React.ReactNode> = {
   neutral: <Brain className="h-5 w-5 text-purple-500" />
 };
 
-const moodLabels: Record<string, string> = {
-  happy: 'Feliz',
-  calm: 'Calmo',
-  focused: 'Focado',
-  tired: 'Cansado',
-  anxious: 'Ansioso',
-  neutral: 'Neutro'
-};
-
 const moodColors: Record<string, string> = {
   happy: 'bg-pink-100 text-pink-800 border-pink-200',
   calm: 'bg-blue-100 text-blue-800 border-blue-200',
@@ -39,6 +31,7 @@ const moodColors: Record<string, string> = {
 };
 
 export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
+  const { t } = useLanguage();
   const { 
     isAnalyzing, 
     analysis, 
@@ -49,6 +42,15 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
   } = useEmotionalAI(childId);
   
   const [hasLoaded, setHasLoaded] = useState(false);
+
+  const moodLabels: Record<string, string> = {
+    happy: t('phase5.emotionalAI.moods.happy') || 'Feliz',
+    calm: t('phase5.emotionalAI.moods.calm') || 'Calmo',
+    focused: t('phase5.emotionalAI.moods.focused') || 'Focado',
+    tired: t('phase5.emotionalAI.moods.tired') || 'Cansado',
+    anxious: t('phase5.emotionalAI.moods.anxious') || 'Ansioso',
+    neutral: t('phase5.emotionalAI.moods.neutral') || 'Neutro'
+  };
 
   useEffect(() => {
     if (childId && !hasLoaded) {
@@ -66,7 +68,7 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
     return (
       <Card>
         <CardContent className="p-6 text-center text-muted-foreground">
-          Selecione uma criança para ver a análise emocional
+          {t('phase5.emotionalAI.selectChild')}
         </CardContent>
       </Card>
     );
@@ -78,7 +80,7 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
-            Análise Emocional IA
+            {t('phase5.emotionalAI.title')}
           </CardTitle>
           <Button 
             size="sm" 
@@ -90,7 +92,7 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
             ) : (
               <Sparkles className="h-4 w-4 mr-2" />
             )}
-            {isAnalyzing ? 'Analisando...' : 'Analisar'}
+            {isAnalyzing ? t('phase5.emotionalAI.analyzing') : t('phase5.emotionalAI.analyze')}
           </Button>
         </CardHeader>
         <CardContent>
@@ -109,10 +111,10 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
                 </div>
                 <div className="flex-1">
                   <p className="font-medium">
-                    Estado Emocional: {moodLabels[analysis.emotional_state] || 'Neutro'}
+                    {t('phase5.emotionalAI.currentState')}: {moodLabels[analysis.emotional_state] || moodLabels.neutral}
                   </p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-sm text-muted-foreground">Confiança:</span>
+                    <span className="text-sm text-muted-foreground">{t('phase5.emotionalAI.confidence')}:</span>
                     <Progress value={(analysis.confidence_score || 0) * 100} className="flex-1 h-2" />
                     <span className="text-sm font-medium">
                       {Math.round((analysis.confidence_score || 0) * 100)}%
@@ -126,7 +128,7 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
                 <div>
                   <h4 className="font-medium mb-2 flex items-center gap-2">
                     <Lightbulb className="h-4 w-4" />
-                    Padrões Detectados
+                    {t('phase5.emotionalAI.patterns')}
                   </h4>
                   <div className="space-y-2">
                     {analysis.detected_patterns.slice(0, 3).map((pattern: any, i: number) => (
@@ -141,12 +143,14 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
               {/* Recommendations */}
               {analysis.recommendations && analysis.recommendations.length > 0 && (
                 <div>
-                  <h4 className="font-medium mb-2">Recomendações</h4>
+                  <h4 className="font-medium mb-2">{t('phase5.emotionalAI.recommendations')}</h4>
                   <div className="space-y-2">
                     {analysis.recommendations.slice(0, 3).map((rec: any, i: number) => (
                       <div key={i} className="flex items-start gap-2 text-sm">
                         <Badge variant={rec.priority === 'high' ? 'destructive' : rec.priority === 'medium' ? 'default' : 'secondary'}>
-                          {rec.priority === 'high' ? 'Alta' : rec.priority === 'medium' ? 'Média' : 'Baixa'}
+                          {rec.priority === 'high' ? t('phase5.emotionalAI.priority.high') : 
+                           rec.priority === 'medium' ? t('phase5.emotionalAI.priority.medium') : 
+                           t('phase5.emotionalAI.priority.low')}
                         </Badge>
                         <span>{rec.title}: {rec.description}</span>
                       </div>
@@ -156,14 +160,14 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
               )}
 
               <p className="text-xs text-muted-foreground">
-                Última análise: {new Date(analysis.created_at).toLocaleString('pt-BR')}
+                {t('phase5.emotionalAI.lastAnalysis')}: {new Date(analysis.created_at).toLocaleString()}
               </p>
             </div>
           ) : (
             <div className="text-center py-8 text-muted-foreground">
               <Brain className="h-12 w-12 mx-auto mb-3 opacity-50" />
-              <p>Nenhuma análise disponível</p>
-              <p className="text-sm">Clique em "Analisar" para gerar insights</p>
+              <p>{t('phase5.emotionalAI.noAnalysis')}</p>
+              <p className="text-sm">{t('phase5.emotionalAI.clickToAnalyze')}</p>
             </div>
           )}
         </CardContent>
@@ -175,7 +179,7 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-primary" />
-              Recomendações Inteligentes
+              {t('phase5.emotionalAI.smartRecommendations')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -183,7 +187,7 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
             {recommendations.modeRecommendation && recommendations.modeRecommendation !== 'normal' && (
               <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
                 <p className="font-medium">
-                  Modo recomendado: {recommendations.modeRecommendation === 'calm' ? '🌙 Calmo' : '⚡ Foco'}
+                  {t('phase5.emotionalAI.recommendedMode')}: {recommendations.modeRecommendation === 'calm' ? `🌙 ${t('phase5.wearables.calmMode')}` : `⚡ ${t('phase5.wearables.focusMode')}`}
                 </p>
               </div>
             )}
@@ -191,12 +195,12 @@ export function EmotionalAIPanel({ childId }: EmotionalAIPanelProps) {
             {/* Recommended Games */}
             {recommendations.recommendedGames && recommendations.recommendedGames.length > 0 && (
               <div>
-                <h4 className="font-medium mb-2">Jogos Recomendados</h4>
+                <h4 className="font-medium mb-2">{t('phase5.emotionalAI.recommendedGames')}</h4>
                 <div className="space-y-2">
                   {recommendations.recommendedGames.slice(0, 3).map((game: any, i: number) => (
                     <div key={i} className="flex items-center justify-between p-2 bg-muted rounded-md">
                       <span className="text-sm">{game.reason}</span>
-                      <Badge>Nível {game.suggestedDifficulty}</Badge>
+                      <Badge>{t('phase5.emotionalAI.level')} {game.suggestedDifficulty}</Badge>
                     </div>
                   ))}
                 </div>
