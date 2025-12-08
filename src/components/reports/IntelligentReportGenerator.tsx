@@ -109,7 +109,30 @@ export function IntelligentReportGenerator() {
         },
       });
 
-      if (error) throw error;
+      // Handle error responses from the edge function (including 404)
+      if (error) {
+        // Check if the error contains the response body (for non-2xx responses)
+        const errorBody = error.context?.body || error.message;
+        if (typeof errorBody === 'string' && errorBody.includes('Nenhum dado encontrado')) {
+          toast({
+            title: 'Nenhum dado encontrado',
+            description: 'Complete alguns jogos de diagnóstico primeiro para gerar um relatório.',
+            variant: 'default',
+          });
+          return;
+        }
+        throw error;
+      }
+
+      // Check if the response indicates an error status
+      if (data?.status === 'error') {
+        toast({
+          title: data.message || 'Erro ao gerar relatório',
+          description: data.suggestion || 'Tente novamente mais tarde.',
+          variant: 'default',
+        });
+        return;
+      }
 
       // Transform API response to our report format
       const apiData = data.data || data;
@@ -148,14 +171,26 @@ export function IntelligentReportGenerator() {
         title: 'Relatório gerado',
         description: `Relatório ${getReportTypeName(type)} gerado com sucesso.`,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating report:', error);
-      announce('Erro ao gerar relatório', 'assertive');
-      toast({
-        title: 'Erro ao gerar relatório',
-        description: 'Não foi possível gerar o relatório. Tente novamente.',
-        variant: 'destructive',
-      });
+      
+      // Check for "no data" error in catch block as well
+      const errorMessage = error?.message || error?.context?.body || '';
+      if (errorMessage.includes('Nenhum dado encontrado') || errorMessage.includes('No data')) {
+        announce('Nenhum dado encontrado para gerar relatório', 'polite');
+        toast({
+          title: 'Nenhum dado encontrado',
+          description: 'Complete alguns jogos de diagnóstico primeiro para gerar um relatório.',
+          variant: 'default',
+        });
+      } else {
+        announce('Erro ao gerar relatório', 'assertive');
+        toast({
+          title: 'Erro ao gerar relatório',
+          description: 'Não foi possível gerar o relatório. Tente novamente.',
+          variant: 'destructive',
+        });
+      }
     } finally {
       setGenerating(null);
     }
