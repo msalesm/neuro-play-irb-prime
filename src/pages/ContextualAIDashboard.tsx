@@ -10,8 +10,10 @@ import {
   Lightbulb,
   BarChart3,
   Calendar,
-  ChevronRight
+  ChevronRight,
+  ArrowLeft
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -31,6 +33,7 @@ interface Child {
 export default function ContextualAIDashboard() {
   const { user } = useAuth();
   const { role } = useUserRole();
+  const navigate = useNavigate();
   const [children, setChildren] = useState<Child[]>([]);
   const [selectedChildId, setSelectedChildId] = useState<string>('');
   const [stats, setStats] = useState({
@@ -163,6 +166,14 @@ export default function ContextualAIDashboard() {
         className="flex flex-col md:flex-row md:items-center justify-between gap-4"
       >
         <div className="flex items-center gap-3">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => navigate(-1)}
+            className="shrink-0"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
           <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20">
             <Brain className="h-8 w-8 text-primary" />
           </div>

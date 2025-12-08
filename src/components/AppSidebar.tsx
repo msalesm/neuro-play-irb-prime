@@ -202,6 +202,11 @@ export function AppSidebar() {
   // Gestor Público / Admin
   const adminNavigation = [
     {
+      title: 'IA Contextual',
+      path: '/contextual-ai',
+      icon: Brain,
+    },
+    {
       title: 'Dashboard Institucional',
       path: '/institutional',
       icon: Building2,
