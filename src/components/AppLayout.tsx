@@ -30,7 +30,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   if (!user) {
     return (
       <VisualNotificationProvider>
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <div className="min-h-screen bg-background">
           <ScreenReaderAnnouncer />
           <SkipLinks />
           <main id="main-content">
@@ -47,11 +47,11 @@ export function AppLayout({ children }: AppLayoutProps) {
         <KeyboardNavigationProvider>
           <HighVisibilityMode />
           <SensoryReducedMode />
-          <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+          <div className="min-h-screen bg-background">
             <ScreenReaderAnnouncer />
             <SkipLinks />
             <MobileMenu />
-            <main id="main-content">
+            <main id="main-content" className="pb-20">
               {children}
             </main>
             <BottomNavigation />
@@ -70,14 +70,14 @@ export function AppLayout({ children }: AppLayoutProps) {
         <HighVisibilityMode />
         <SensoryReducedMode />
         <SidebarProvider defaultOpen>
-          <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+          <div className="min-h-screen flex w-full bg-background">
             <ScreenReaderAnnouncer />
             <SkipLinks />
             <AppSidebar />
             
             <div className="flex-1 flex flex-col">
               {/* Top Bar */}
-              <header className="h-14 flex items-center justify-between px-6 border-b border-border/20 bg-background/80 backdrop-blur-sm">
+              <header className="h-14 flex items-center justify-between px-6 border-b border-border bg-card">
                 <div className="flex items-center gap-4">
                   <SidebarTrigger 
                     className="hover:bg-accent hover:text-accent-foreground" 
@@ -85,20 +85,18 @@ export function AppLayout({ children }: AppLayoutProps) {
                   />
                   
                   <nav id="main-navigation" className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>NeuroPlay</span>
+                    <span className="font-semibold text-foreground">NeuroPlay</span>
                     <span aria-hidden="true">•</span>
                     <span>Plataforma de Desenvolvimento Cognitivo</span>
                   </nav>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  {/* Language Selector */}
                   <LanguageSelector variant="icon" />
                   
-                  {/* Quick Actions */}
                   <div className="hidden md:flex items-center gap-2">
                     <div 
-                      className="w-2 h-2 bg-green-500 rounded-full animate-pulse" 
+                      className="w-2 h-2 bg-green-500 rounded-full" 
                       role="status"
                       aria-label={t('common.loading')}
                     />
@@ -108,7 +106,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </header>
 
               {/* Main Content */}
-              <main id="main-content" className="flex-1 overflow-auto" role="main">
+              <main id="main-content" className="flex-1 overflow-auto bg-muted/30" role="main">
                 <div className="container mx-auto px-6 py-6">
                   {children}
                 </div>

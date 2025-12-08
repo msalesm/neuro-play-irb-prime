@@ -11,14 +11,14 @@ import { useCommunity } from '@/hooks/useCommunity';
 import { cn } from '@/lib/utils';
 
 const postTypeIcons: Record<string, { icon: React.ElementType; color: string; label: string }> = {
-  achievement: { icon: Trophy, color: 'text-yellow-500', label: 'Conquista' },
-  milestone: { icon: Star, color: 'text-purple-500', label: 'Marco' },
-  story_complete: { icon: BookOpen, color: 'text-blue-500', label: 'História' },
-  game_complete: { icon: Gamepad2, color: 'text-green-500', label: 'Jogo' },
-  routine_complete: { icon: CheckCircle, color: 'text-teal-500', label: 'Rotina' },
-  badge_earned: { icon: Star, color: 'text-amber-500', label: 'Badge' },
-  level_up: { icon: Flame, color: 'text-orange-500', label: 'Level Up' },
-  streak: { icon: Flame, color: 'text-red-500', label: 'Sequência' },
+  achievement: { icon: Trophy, color: 'text-primary', label: 'Conquista' },
+  milestone: { icon: Star, color: 'text-primary', label: 'Marco' },
+  story_complete: { icon: BookOpen, color: 'text-primary', label: 'História' },
+  game_complete: { icon: Gamepad2, color: 'text-primary', label: 'Jogo' },
+  routine_complete: { icon: CheckCircle, color: 'text-primary', label: 'Rotina' },
+  badge_earned: { icon: Star, color: 'text-primary', label: 'Badge' },
+  level_up: { icon: Flame, color: 'text-primary', label: 'Level Up' },
+  streak: { icon: Flame, color: 'text-primary', label: 'Sequência' },
   custom: { icon: MessageCircle, color: 'text-muted-foreground', label: 'Post' }
 };
 
@@ -108,7 +108,7 @@ export function CommunityFeed() {
         const TypeIcon = typeInfo.icon;
 
         return (
-          <Card key={post.id} className="overflow-hidden">
+          <Card key={post.id} className="border-border bg-card">
             <CardContent className="p-4">
               {/* Header */}
               <div className="flex items-start justify-between mb-3">
