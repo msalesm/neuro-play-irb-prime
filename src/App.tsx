@@ -119,7 +119,7 @@ import SecureMessaging from "./pages/SecureMessaging";
 import ContentManager from "./pages/ContentManager";
 import ProfessionalAnalytics from "./pages/ProfessionalAnalytics";
 import Community from "./pages/Community";
-
+import ContextualAIDashboard from "./pages/ContextualAIDashboard";
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -326,6 +326,8 @@ const App = () => (
           <Route path="/content-manager" element={<ContentManager />} />
           <Route path="/admin/content" element={<ContentManager />} />
           <Route path="/professional-analytics" element={<ProfessionalAnalytics />} />
+          <Route path="/contextual-ai" element={<ContextualAIDashboard />} />
+          <Route path="/ia-contextual" element={<ContextualAIDashboard />} />
           
           {/* Phase 3 - Community */}
           <Route path="/community" element={<Community />} />
