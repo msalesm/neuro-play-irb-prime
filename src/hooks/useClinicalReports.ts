@@ -87,7 +87,14 @@ export const useClinicalReports = (userId?: string) => {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Edge function error:', error);
+        throw new Error(error.message || 'Erro ao chamar função de relatório');
+      }
+
+      if (!data) {
+        throw new Error('Resposta vazia do servidor');
+      }
 
       if (data.status === 'error') {
         if (data.message?.includes('Nenhum dado encontrado')) {
@@ -96,23 +103,36 @@ export const useClinicalReports = (userId?: string) => {
           });
         } else {
           toast.error('Erro ao gerar relatório', {
-            description: data.message
+            description: data.message || 'Tente novamente mais tarde.'
           });
         }
         return null;
       }
 
       toast.success('Relatório gerado com sucesso!', {
-        description: 'Análise de IA incluída'
+        description: data.warning ? 'Análise parcial' : 'Análise de IA incluída'
       });
 
       await loadReports();
-      return data.data;
+      return data.data || data;
     } catch (error: any) {
       console.error('Error generating report:', error);
-      toast.error('Erro ao gerar relatório', {
-        description: error.message
-      });
+      const errorMessage = error?.message || 'Erro desconhecido';
+      
+      // Check for specific error types
+      if (errorMessage.includes('Nenhum dado') || errorMessage.includes('No data')) {
+        toast.error('Nenhum dado encontrado', {
+          description: 'Complete alguns jogos de diagnóstico primeiro.'
+        });
+      } else if (errorMessage.includes('Unauthorized')) {
+        toast.error('Sessão expirada', {
+          description: 'Faça login novamente.'
+        });
+      } else {
+        toast.error('Erro ao gerar relatório', {
+          description: errorMessage
+        });
+      }
       return null;
     } finally {
       setGenerating(false);
