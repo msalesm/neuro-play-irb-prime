@@ -136,29 +136,41 @@ export function IntelligentReportGenerator() {
 
       // Transform API response to our report format
       const apiData = data.data || data;
+      
+      // Safely extract values with proper fallbacks
+      const generalData = apiData?.general || {};
+      const aiAnalysis = apiData?.aiAnalysis || {};
+      const cognitiveData = apiData?.cognitive || {};
+      
       const transformedReport: ReportData = {
         type,
         period: `${format(startDate, 'dd/MM/yyyy', { locale: ptBR })} - ${format(endDate, 'dd/MM/yyyy', { locale: ptBR })}`,
         generatedAt: new Date().toISOString(),
         summary: {
-          overallProgress: apiData?.general?.avgAccuracy || 0,
-          sessionsCompleted: apiData?.general?.totalSessions || 0,
-          averageAccuracy: apiData?.general?.avgAccuracy || 0,
-          totalPlayTime: apiData?.general?.totalPlayTime || 0,
-          strengths: apiData?.aiAnalysis?.strengths || ['Memória visual', 'Concentração'],
-          areasOfConcern: apiData?.aiAnalysis?.areasOfConcern || [],
-          recommendations: apiData?.aiAnalysis?.recommendations || ['Continuar praticando regularmente'],
+          overallProgress: Number(generalData.avgAccuracy) || 0,
+          sessionsCompleted: Number(generalData.totalSessions) || 0,
+          averageAccuracy: Number(generalData.avgAccuracy) || 0,
+          totalPlayTime: Number(generalData.totalPlayTime) || 0,
+          strengths: Array.isArray(aiAnalysis.strengths) && aiAnalysis.strengths.length > 0 
+            ? aiAnalysis.strengths 
+            : ['Engajamento consistente'],
+          areasOfConcern: Array.isArray(aiAnalysis.areasOfConcern) 
+            ? aiAnalysis.areasOfConcern 
+            : [],
+          recommendations: Array.isArray(aiAnalysis.recommendations) && aiAnalysis.recommendations.length > 0 
+            ? aiAnalysis.recommendations 
+            : ['Continuar praticando regularmente'],
         },
-        cognitiveProfile: apiData?.cognitive || {
-          attention: 70,
-          memory: 75,
-          language: 65,
-          logic: 80,
-          emotion: 60,
-          coordination: 72,
+        cognitiveProfile: {
+          attention: Number(cognitiveData.attention) || 0,
+          memory: Number(cognitiveData.memory) || 0,
+          language: Number(cognitiveData.language) || 0,
+          logic: Number(cognitiveData.logic) || 0,
+          emotion: Number(cognitiveData.emotion) || 0,
+          coordination: Number(cognitiveData.coordination) || 0,
         },
-        temporalEvolution: apiData?.temporal || [],
-        alerts: transformAlerts(apiData?.aiAnalysis),
+        temporalEvolution: Array.isArray(apiData?.temporal) ? apiData.temporal : [],
+        alerts: transformAlerts(aiAnalysis),
       };
 
       setReports(prev => ({
@@ -228,17 +240,55 @@ export function IntelligentReportGenerator() {
 
   const downloadReport = (type: string) => {
     const report = reports[type];
-    if (!report) return;
+    if (!report) {
+      toast({
+        title: 'Relatório não disponível',
+        description: 'Gere um relatório primeiro antes de exportar.',
+        variant: 'destructive',
+      });
+      return;
+    }
 
-    // Generate PDF or export to file
-    const content = JSON.stringify(report, null, 2);
-    const blob = new Blob([content], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `relatorio-${type}-${format(new Date(), 'yyyy-MM-dd')}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      // Sanitize the report data to ensure it's valid JSON
+      const sanitizedReport = {
+        ...report,
+        summary: {
+          ...report.summary,
+          overallProgress: report.summary.overallProgress || 0,
+          sessionsCompleted: report.summary.sessionsCompleted || 0,
+          averageAccuracy: report.summary.averageAccuracy || 0,
+          totalPlayTime: report.summary.totalPlayTime || 0,
+          strengths: Array.isArray(report.summary.strengths) ? report.summary.strengths : [],
+          areasOfConcern: Array.isArray(report.summary.areasOfConcern) ? report.summary.areasOfConcern : [],
+          recommendations: Array.isArray(report.summary.recommendations) ? report.summary.recommendations : [],
+        },
+        cognitiveProfile: report.cognitiveProfile || {},
+        temporalEvolution: Array.isArray(report.temporalEvolution) ? report.temporalEvolution : [],
+        alerts: Array.isArray(report.alerts) ? report.alerts : [],
+      };
+
+      const content = JSON.stringify(sanitizedReport, null, 2);
+      const blob = new Blob([content], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `relatorio-${type}-${format(new Date(), 'yyyy-MM-dd')}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: 'Relatório exportado',
+        description: 'O relatório foi baixado com sucesso.',
+      });
+    } catch (error) {
+      console.error('Error exporting report:', error);
+      toast({
+        title: 'Erro ao exportar',
+        description: 'Não foi possível exportar o relatório. Tente novamente.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
