@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { 
   User, Brain, Heart, Activity, FileText, 
   Download, RefreshCw, Calendar, Clock,
-  TrendingUp, AlertCircle, Target
+  TrendingUp, AlertCircle, Target, Users, Sparkles
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -18,6 +18,9 @@ import { EmotionalTimeline } from './EmotionalTimeline';
 import { PredictiveInsightsPanel } from './PredictiveInsightsPanel';
 import { RoutineHub } from './RoutineHub';
 import { ImmediateInterventions } from './ImmediateInterventions';
+import { MultidisciplinaryPanel } from './MultidisciplinaryPanel';
+import { IntegratedTimeline } from './IntegratedTimeline';
+import { AIReportGenerator } from './AIReportGenerator';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 
 interface UnifiedPatientRecordProps {
@@ -165,26 +168,38 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="overview" className="flex items-center gap-2">
-            <User className="w-4 h-4" />
-            <span className="hidden sm:inline">Visão Geral</span>
+        <TabsList className="flex flex-wrap justify-start gap-1">
+          <TabsTrigger value="overview" className="flex items-center gap-1 text-xs px-2">
+            <User className="w-3 h-3" />
+            <span className="hidden md:inline">Visão Geral</span>
           </TabsTrigger>
-          <TabsTrigger value="cognitive" className="flex items-center gap-2">
-            <Brain className="w-4 h-4" />
-            <span className="hidden sm:inline">Cognitivo</span>
+          <TabsTrigger value="cognitive" className="flex items-center gap-1 text-xs px-2">
+            <Brain className="w-3 h-3" />
+            <span className="hidden md:inline">Cognitivo</span>
           </TabsTrigger>
-          <TabsTrigger value="emotional" className="flex items-center gap-2">
-            <Heart className="w-4 h-4" />
-            <span className="hidden sm:inline">Emocional</span>
+          <TabsTrigger value="emotional" className="flex items-center gap-1 text-xs px-2">
+            <Heart className="w-3 h-3" />
+            <span className="hidden md:inline">Emocional</span>
           </TabsTrigger>
-          <TabsTrigger value="routine" className="flex items-center gap-2">
-            <Activity className="w-4 h-4" />
-            <span className="hidden sm:inline">Rotina</span>
+          <TabsTrigger value="routine" className="flex items-center gap-1 text-xs px-2">
+            <Activity className="w-3 h-3" />
+            <span className="hidden md:inline">Rotina</span>
           </TabsTrigger>
-          <TabsTrigger value="predictive" className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4" />
-            <span className="hidden sm:inline">Preditivo</span>
+          <TabsTrigger value="timeline" className="flex items-center gap-1 text-xs px-2">
+            <Clock className="w-3 h-3" />
+            <span className="hidden md:inline">Timeline</span>
+          </TabsTrigger>
+          <TabsTrigger value="multidisciplinary" className="flex items-center gap-1 text-xs px-2">
+            <Users className="w-3 h-3" />
+            <span className="hidden md:inline">Equipe</span>
+          </TabsTrigger>
+          <TabsTrigger value="reports" className="flex items-center gap-1 text-xs px-2">
+            <Sparkles className="w-3 h-3" />
+            <span className="hidden md:inline">Relatórios IA</span>
+          </TabsTrigger>
+          <TabsTrigger value="predictive" className="flex items-center gap-1 text-xs px-2">
+            <TrendingUp className="w-3 h-3" />
+            <span className="hidden md:inline">Preditivo</span>
           </TabsTrigger>
         </TabsList>
 
@@ -317,6 +332,21 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
         <TabsContent value="routine" className="mt-6 space-y-6">
           <RoutineHub childId={childId} />
           <ImmediateInterventions childId={childId} />
+        </TabsContent>
+
+        {/* Timeline Tab */}
+        <TabsContent value="timeline" className="mt-6">
+          <IntegratedTimeline childId={childId} />
+        </TabsContent>
+
+        {/* Multidisciplinary Tab */}
+        <TabsContent value="multidisciplinary" className="mt-6">
+          <MultidisciplinaryPanel childId={childId} userRole="therapist" />
+        </TabsContent>
+
+        {/* Reports Tab */}
+        <TabsContent value="reports" className="mt-6">
+          <AIReportGenerator childId={childId} childName={profile.name} />
         </TabsContent>
 
         {/* Predictive Tab */}
