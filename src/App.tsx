@@ -106,6 +106,7 @@ import AdminStories from "./pages/AdminStories";
 import AcceptInvite from "./pages/AcceptInvite";
 import RelationshipsManager from "./pages/admin/RelationshipsManager";
 import IntelligentReports from "./pages/IntelligentReports";
+import ProntuarioUnificado from "./pages/ProntuarioUnificado";
 import StudentHub from "./pages/StudentHub";
 import StoryEditor from "./pages/StoryEditor";
 import SimpleAnalytics from "./pages/SimpleAnalytics";
@@ -277,6 +278,7 @@ const App = () => (
           {/* Therapist Routes */}
           <Route path="/therapist/patients" element={<TherapistPatients />} />
           <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
+          <Route path="/prontuario/:childId" element={<ProntuarioUnificado />} />
           
           {/* Teacher Routes */}
           <Route path="/teacher/classes" element={<TeacherClasses />} />
