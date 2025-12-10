@@ -16,6 +16,8 @@ import { useUnifiedPatientData } from '@/hooks/useUnifiedPatientData';
 import { CognitiveMapRadar } from './CognitiveMapRadar';
 import { EmotionalTimeline } from './EmotionalTimeline';
 import { PredictiveInsightsPanel } from './PredictiveInsightsPanel';
+import { RoutineHub } from './RoutineHub';
+import { ImmediateInterventions } from './ImmediateInterventions';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 
 interface UnifiedPatientRecordProps {
@@ -163,7 +165,7 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <User className="w-4 h-4" />
             <span className="hidden sm:inline">Visão Geral</span>
@@ -175,6 +177,10 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
           <TabsTrigger value="emotional" className="flex items-center gap-2">
             <Heart className="w-4 h-4" />
             <span className="hidden sm:inline">Emocional</span>
+          </TabsTrigger>
+          <TabsTrigger value="routine" className="flex items-center gap-2">
+            <Activity className="w-4 h-4" />
+            <span className="hidden sm:inline">Rotina</span>
           </TabsTrigger>
           <TabsTrigger value="predictive" className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
@@ -305,6 +311,12 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
             emotionalHistory={emotionalHistory}
             sessions={recentSessions}
           />
+        </TabsContent>
+
+        {/* Routine Tab */}
+        <TabsContent value="routine" className="mt-6 space-y-6">
+          <RoutineHub childId={childId} />
+          <ImmediateInterventions childId={childId} />
         </TabsContent>
 
         {/* Predictive Tab */}
