@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { 
   User, Brain, Heart, Activity, FileText, 
   Download, RefreshCw, Calendar, Clock,
-  TrendingUp, AlertCircle, Target, Users, Sparkles
+  TrendingUp, AlertCircle, Target, Users, Sparkles, Video
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -21,6 +21,7 @@ import { ImmediateInterventions } from './ImmediateInterventions';
 import { MultidisciplinaryPanel } from './MultidisciplinaryPanel';
 import { IntegratedTimeline } from './IntegratedTimeline';
 import { AIReportGenerator } from './AIReportGenerator';
+import { TeleconsultTab } from './TeleconsultTab';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 
 interface UnifiedPatientRecordProps {
@@ -193,6 +194,10 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
             <Users className="w-3 h-3" />
             <span className="hidden md:inline">Equipe</span>
           </TabsTrigger>
+          <TabsTrigger value="teleconsult" className="flex items-center gap-1 text-xs px-2">
+            <Video className="w-3 h-3" />
+            <span className="hidden md:inline">Teleconsulta</span>
+          </TabsTrigger>
           <TabsTrigger value="reports" className="flex items-center gap-1 text-xs px-2">
             <Sparkles className="w-3 h-3" />
             <span className="hidden md:inline">Relatórios IA</span>
@@ -342,6 +347,11 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
         {/* Multidisciplinary Tab */}
         <TabsContent value="multidisciplinary" className="mt-6">
           <MultidisciplinaryPanel childId={childId} userRole="therapist" />
+        </TabsContent>
+
+        {/* Teleconsult Tab */}
+        <TabsContent value="teleconsult" className="mt-6">
+          <TeleconsultTab childId={childId} />
         </TabsContent>
 
         {/* Reports Tab */}

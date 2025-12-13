@@ -1765,6 +1765,134 @@ export type Database = {
           },
         ]
       }
+      condensed_assessments: {
+        Row: {
+          assessment_date: string
+          behavioral_impulsivity_score: number | null
+          behavioral_organization_score: number | null
+          behavioral_overall_score: number | null
+          behavioral_percentile: number | null
+          behavioral_planning_score: number | null
+          behavioral_risk: string | null
+          behavioral_trend: string | null
+          child_id: string
+          cognitive_attention_score: number | null
+          cognitive_memory_score: number | null
+          cognitive_overall_score: number | null
+          cognitive_percentile: number | null
+          cognitive_processing_score: number | null
+          cognitive_risk: string | null
+          cognitive_trend: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          professional_id: string
+          socioemotional_anxiety_score: number | null
+          socioemotional_interaction_score: number | null
+          socioemotional_overall_score: number | null
+          socioemotional_percentile: number | null
+          socioemotional_regulation_score: number | null
+          socioemotional_risk: string | null
+          socioemotional_trend: string | null
+          source_session_id: string | null
+          source_type: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assessment_date?: string
+          behavioral_impulsivity_score?: number | null
+          behavioral_organization_score?: number | null
+          behavioral_overall_score?: number | null
+          behavioral_percentile?: number | null
+          behavioral_planning_score?: number | null
+          behavioral_risk?: string | null
+          behavioral_trend?: string | null
+          child_id: string
+          cognitive_attention_score?: number | null
+          cognitive_memory_score?: number | null
+          cognitive_overall_score?: number | null
+          cognitive_percentile?: number | null
+          cognitive_processing_score?: number | null
+          cognitive_risk?: string | null
+          cognitive_trend?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          professional_id: string
+          socioemotional_anxiety_score?: number | null
+          socioemotional_interaction_score?: number | null
+          socioemotional_overall_score?: number | null
+          socioemotional_percentile?: number | null
+          socioemotional_regulation_score?: number | null
+          socioemotional_risk?: string | null
+          socioemotional_trend?: string | null
+          source_session_id?: string | null
+          source_type?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assessment_date?: string
+          behavioral_impulsivity_score?: number | null
+          behavioral_organization_score?: number | null
+          behavioral_overall_score?: number | null
+          behavioral_percentile?: number | null
+          behavioral_planning_score?: number | null
+          behavioral_risk?: string | null
+          behavioral_trend?: string | null
+          child_id?: string
+          cognitive_attention_score?: number | null
+          cognitive_memory_score?: number | null
+          cognitive_overall_score?: number | null
+          cognitive_percentile?: number | null
+          cognitive_processing_score?: number | null
+          cognitive_risk?: string | null
+          cognitive_trend?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          professional_id?: string
+          socioemotional_anxiety_score?: number | null
+          socioemotional_interaction_score?: number | null
+          socioemotional_overall_score?: number | null
+          socioemotional_percentile?: number | null
+          socioemotional_regulation_score?: number | null
+          socioemotional_risk?: string | null
+          socioemotional_trend?: string | null
+          source_session_id?: string | null
+          source_type?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "condensed_assessments_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "condensed_assessments_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "condensed_assessments_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "condensed_assessments_source_session_id_fkey"
+            columns: ["source_session_id"]
+            isOneToOne: false
+            referencedRelation: "teleorientation_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content_library: {
         Row: {
           category: string | null
@@ -2360,6 +2488,77 @@ export type Database = {
           status?: string
         }
         Relationships: []
+      }
+      follow_up_plans: {
+        Row: {
+          child_id: string
+          created_at: string | null
+          frequency: string | null
+          id: string
+          interventions: Json | null
+          next_review_date: string | null
+          objectives: Json | null
+          professional_id: string
+          session_id: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          child_id: string
+          created_at?: string | null
+          frequency?: string | null
+          id?: string
+          interventions?: Json | null
+          next_review_date?: string | null
+          objectives?: Json | null
+          professional_id: string
+          session_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          child_id?: string
+          created_at?: string | null
+          frequency?: string | null
+          id?: string
+          interventions?: Json | null
+          next_review_date?: string | null
+          objectives?: Json | null
+          professional_id?: string
+          session_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follow_up_plans_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follow_up_plans_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "follow_up_plans_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follow_up_plans_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "teleorientation_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       game_categories: {
         Row: {
@@ -4454,6 +4653,77 @@ export type Database = {
         }
         Relationships: []
       }
+      teleconsult_observations: {
+        Row: {
+          behavioral_impulsivity: string | null
+          behavioral_organization: string | null
+          behavioral_planning: string | null
+          behavioral_score: number | null
+          cognitive_attention: string | null
+          cognitive_memory: string | null
+          cognitive_processing: string | null
+          cognitive_score: number | null
+          created_at: string | null
+          id: string
+          observed_traits: Json | null
+          professional_id: string
+          session_id: string
+          socioemotional_anxiety: string | null
+          socioemotional_interaction: string | null
+          socioemotional_regulation: string | null
+          socioemotional_score: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          behavioral_impulsivity?: string | null
+          behavioral_organization?: string | null
+          behavioral_planning?: string | null
+          behavioral_score?: number | null
+          cognitive_attention?: string | null
+          cognitive_memory?: string | null
+          cognitive_processing?: string | null
+          cognitive_score?: number | null
+          created_at?: string | null
+          id?: string
+          observed_traits?: Json | null
+          professional_id: string
+          session_id: string
+          socioemotional_anxiety?: string | null
+          socioemotional_interaction?: string | null
+          socioemotional_regulation?: string | null
+          socioemotional_score?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          behavioral_impulsivity?: string | null
+          behavioral_organization?: string | null
+          behavioral_planning?: string | null
+          behavioral_score?: number | null
+          cognitive_attention?: string | null
+          cognitive_memory?: string | null
+          cognitive_processing?: string | null
+          cognitive_score?: number | null
+          created_at?: string | null
+          id?: string
+          observed_traits?: Json | null
+          professional_id?: string
+          session_id?: string
+          socioemotional_anxiety?: string | null
+          socioemotional_interaction?: string | null
+          socioemotional_regulation?: string | null
+          socioemotional_score?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teleconsult_observations_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "teleorientation_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       telemetry_events: {
         Row: {
           created_at: string | null
@@ -4534,13 +4804,16 @@ export type Database = {
       teleorientation_sessions: {
         Row: {
           child_id: string | null
+          clinical_summary: string | null
           created_at: string | null
           duration_minutes: number | null
           ended_at: string | null
+          follow_up_plan: string | null
           id: string
           meeting_url: string | null
           parent_id: string
           professional_id: string
+          report_generated_id: string | null
           scheduled_at: string
           session_type: string | null
           started_at: string | null
@@ -4549,13 +4822,16 @@ export type Database = {
         }
         Insert: {
           child_id?: string | null
+          clinical_summary?: string | null
           created_at?: string | null
           duration_minutes?: number | null
           ended_at?: string | null
+          follow_up_plan?: string | null
           id?: string
           meeting_url?: string | null
           parent_id: string
           professional_id: string
+          report_generated_id?: string | null
           scheduled_at: string
           session_type?: string | null
           started_at?: string | null
@@ -4564,13 +4840,16 @@ export type Database = {
         }
         Update: {
           child_id?: string | null
+          clinical_summary?: string | null
           created_at?: string | null
           duration_minutes?: number | null
           ended_at?: string | null
+          follow_up_plan?: string | null
           id?: string
           meeting_url?: string | null
           parent_id?: string
           professional_id?: string
+          report_generated_id?: string | null
           scheduled_at?: string
           session_type?: string | null
           started_at?: string | null
@@ -4597,6 +4876,13 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "teleorientation_sessions_report_generated_id_fkey"
+            columns: ["report_generated_id"]
+            isOneToOne: false
+            referencedRelation: "clinical_reports"
             referencedColumns: ["id"]
           },
         ]
