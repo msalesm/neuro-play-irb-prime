@@ -86,10 +86,11 @@ export function MobileMenu() {
     menuSections.push({
       title: 'Terapeuta',
       items: [
+        { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
         { title: 'Pacientes', path: '/therapist/patients', icon: Users },
-        { title: 'Mensagens', path: '/messages', icon: Mail },
-        { title: 'Relatórios', path: '/clinical', icon: FileText },
+        { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
         { title: 'PEI Inteligente', path: '/pei', icon: Brain },
+        { title: 'Mensagens', path: '/messages', icon: Mail },
       ],
     });
   }

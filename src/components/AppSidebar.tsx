@@ -144,9 +144,24 @@ export function AppSidebar() {
   // Terapeuta
   const therapistNavigation = [
     {
+      title: 'Teleconsultas',
+      path: '/teleconsultas',
+      icon: Stethoscope,
+    },
+    {
       title: 'Pacientes',
       path: '/therapist/patients',
       icon: Users,
+    },
+    {
+      title: 'Prontuário Eletrônico',
+      path: '/clinical',
+      icon: FileText,
+    },
+    {
+      title: 'PEI Inteligente',
+      path: '/pei',
+      icon: Brain,
     },
     {
       title: 'Mensagens',
@@ -157,26 +172,6 @@ export function AppSidebar() {
       title: 'Analytics Profissional',
       path: '/professional-analytics',
       icon: BarChart3,
-    },
-    {
-      title: 'Relatórios Inteligentes',
-      path: '/reports',
-      icon: BarChart3,
-    },
-    {
-      title: 'Relatórios Clínicos',
-      path: '/clinical',
-      icon: FileText,
-    },
-    {
-      title: 'PEI Inteligente',
-      path: '/pei',
-      icon: Brain,
-    },
-    {
-      title: 'Jogos Terapêuticos',
-      path: '/games',
-      icon: Gamepad2,
     },
   ];
 
