@@ -1359,6 +1359,82 @@ export type Database = {
           },
         ]
       }
+      clinical_pattern_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          action_taken: string | null
+          alert_type: string
+          child_id: string
+          created_at: string
+          description: string
+          detected_pattern: Json | null
+          domain: string
+          id: string
+          is_acknowledged: boolean | null
+          professional_id: string | null
+          recommendations: Json | null
+          severity: string
+          title: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          action_taken?: string | null
+          alert_type: string
+          child_id: string
+          created_at?: string
+          description: string
+          detected_pattern?: Json | null
+          domain: string
+          id?: string
+          is_acknowledged?: boolean | null
+          professional_id?: string | null
+          recommendations?: Json | null
+          severity?: string
+          title: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          action_taken?: string | null
+          alert_type?: string
+          child_id?: string
+          created_at?: string
+          description?: string
+          detected_pattern?: Json | null
+          domain?: string
+          id?: string
+          is_acknowledged?: boolean | null
+          professional_id?: string | null
+          recommendations?: Json | null
+          severity?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_pattern_alerts_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_pattern_alerts_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "clinical_pattern_alerts_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clinical_protocols: {
         Row: {
           age_max: number | null
@@ -2290,6 +2366,101 @@ export type Database = {
           },
         ]
       }
+      digital_prescriptions: {
+        Row: {
+          child_id: string
+          created_at: string
+          description: string
+          dosage: string | null
+          duration: string | null
+          end_date: string | null
+          frequency: string | null
+          id: string
+          notes: string | null
+          parent_acknowledged_at: string | null
+          prescription_type: string
+          professional_id: string
+          session_id: string | null
+          signature_hash: string | null
+          signed_at: string | null
+          start_date: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          child_id: string
+          created_at?: string
+          description: string
+          dosage?: string | null
+          duration?: string | null
+          end_date?: string | null
+          frequency?: string | null
+          id?: string
+          notes?: string | null
+          parent_acknowledged_at?: string | null
+          prescription_type: string
+          professional_id: string
+          session_id?: string | null
+          signature_hash?: string | null
+          signed_at?: string | null
+          start_date?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          child_id?: string
+          created_at?: string
+          description?: string
+          dosage?: string | null
+          duration?: string | null
+          end_date?: string | null
+          frequency?: string | null
+          id?: string
+          notes?: string | null
+          parent_acknowledged_at?: string | null
+          prescription_type?: string
+          professional_id?: string
+          session_id?: string | null
+          signature_hash?: string | null
+          signed_at?: string | null
+          start_date?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_prescriptions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "digital_prescriptions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "digital_prescriptions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "digital_prescriptions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "teleorientation_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       editorial_content: {
         Row: {
           author_credentials: string | null
@@ -2733,6 +2904,68 @@ export type Database = {
           },
         ]
       }
+      government_health_integration: {
+        Row: {
+          api_endpoint: string | null
+          certification_expires_at: string | null
+          certified_at: string | null
+          compliance_certificate: string | null
+          created_at: string
+          credentials_encrypted: string | null
+          id: string
+          institution_id: string | null
+          integration_type: string
+          is_active: boolean | null
+          last_sync_at: string | null
+          sync_errors: Json | null
+          sync_status: string | null
+          system_identifier: string | null
+          updated_at: string
+        }
+        Insert: {
+          api_endpoint?: string | null
+          certification_expires_at?: string | null
+          certified_at?: string | null
+          compliance_certificate?: string | null
+          created_at?: string
+          credentials_encrypted?: string | null
+          id?: string
+          institution_id?: string | null
+          integration_type: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          sync_errors?: Json | null
+          sync_status?: string | null
+          system_identifier?: string | null
+          updated_at?: string
+        }
+        Update: {
+          api_endpoint?: string | null
+          certification_expires_at?: string | null
+          certified_at?: string | null
+          compliance_certificate?: string | null
+          created_at?: string
+          credentials_encrypted?: string | null
+          id?: string
+          institution_id?: string | null
+          integration_type?: string
+          is_active?: boolean | null
+          last_sync_at?: string | null
+          sync_errors?: Json | null
+          sync_status?: string | null
+          system_identifier?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "government_health_integration_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       group_assignments: {
         Row: {
           assigned_by: string
@@ -2804,6 +3037,80 @@ export type Database = {
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_export_logs: {
+        Row: {
+          acknowledged_at: string | null
+          child_id: string | null
+          created_at: string
+          data_exported: Json | null
+          error_message: string | null
+          export_format: string | null
+          export_type: string
+          id: string
+          integration_id: string | null
+          response_data: Json | null
+          sent_at: string | null
+          status: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          child_id?: string | null
+          created_at?: string
+          data_exported?: Json | null
+          error_message?: string | null
+          export_format?: string | null
+          export_type: string
+          id?: string
+          integration_id?: string | null
+          response_data?: Json | null
+          sent_at?: string | null
+          status?: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          child_id?: string | null
+          created_at?: string
+          data_exported?: Json | null
+          error_message?: string | null
+          export_format?: string | null
+          export_type?: string
+          id?: string
+          integration_id?: string | null
+          response_data?: Json | null
+          sent_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_export_logs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "health_export_logs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "health_export_logs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "health_export_logs_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "government_health_integration"
             referencedColumns: ["id"]
           },
         ]
@@ -3349,6 +3656,103 @@ export type Database = {
             columns: ["school_id"]
             isOneToOne: false
             referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      neuro_anamnesis: {
+        Row: {
+          allergies: string[] | null
+          child_id: string
+          complaint_duration: string | null
+          completed_at: string | null
+          created_at: string
+          current_medications: Json | null
+          developmental_milestones: Json | null
+          family_history: Json | null
+          id: string
+          learning_difficulties: Json | null
+          main_complaint: string
+          medical_history: Json | null
+          pregnancy_birth_history: Json | null
+          previous_diagnoses: string[] | null
+          previous_evaluations: Json | null
+          professional_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          school_history: Json | null
+          social_behavior: Json | null
+          status: string | null
+          updated_at: string
+        }
+        Insert: {
+          allergies?: string[] | null
+          child_id: string
+          complaint_duration?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_medications?: Json | null
+          developmental_milestones?: Json | null
+          family_history?: Json | null
+          id?: string
+          learning_difficulties?: Json | null
+          main_complaint: string
+          medical_history?: Json | null
+          pregnancy_birth_history?: Json | null
+          previous_diagnoses?: string[] | null
+          previous_evaluations?: Json | null
+          professional_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          school_history?: Json | null
+          social_behavior?: Json | null
+          status?: string | null
+          updated_at?: string
+        }
+        Update: {
+          allergies?: string[] | null
+          child_id?: string
+          complaint_duration?: string | null
+          completed_at?: string | null
+          created_at?: string
+          current_medications?: Json | null
+          developmental_milestones?: Json | null
+          family_history?: Json | null
+          id?: string
+          learning_difficulties?: Json | null
+          main_complaint?: string
+          medical_history?: Json | null
+          pregnancy_birth_history?: Json | null
+          previous_diagnoses?: string[] | null
+          previous_evaluations?: Json | null
+          professional_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          school_history?: Json | null
+          social_behavior?: Json | null
+          status?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "neuro_anamnesis_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "neuro_anamnesis_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "neuro_anamnesis_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
           },
         ]
