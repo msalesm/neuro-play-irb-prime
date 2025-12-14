@@ -76,6 +76,7 @@ import TrainingModule from "./pages/TrainingModule";
 import TherapeuticChatPage from "./pages/TherapeuticChatPage";
 import TherapistPatients from "./pages/TherapistPatients";
 import TherapistDashboard from "./pages/TherapistDashboard";
+import Teleconsultas from "./pages/Teleconsultas";
 import TeacherClasses from "./pages/TeacherClasses";
 import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
@@ -276,6 +277,7 @@ const App = () => (
                   <Route path="/chat" element={<TherapeuticChatPage />} />
                   
           {/* Therapist Routes */}
+          <Route path="/teleconsultas" element={<Teleconsultas />} />
           <Route path="/therapist/patients" element={<TherapistPatients />} />
           <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
           <Route path="/prontuario/:childId" element={<ProntuarioUnificado />} />
