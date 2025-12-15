@@ -106,33 +106,91 @@ const AboutSection = () => (
   </section>
 );
 
-// O que a plataforma entrega
-const DeliverablesSection = () => (
+// Funcionalidades principais - Prontuário e Teleconsulta em destaque
+const CoreFeaturesSection = () => (
   <section className="py-20 bg-muted/30">
     <div className="container mx-auto px-6">
       <div className="max-w-4xl mx-auto text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          O que a plataforma entrega
+          Funcionalidades Principais
         </h2>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      {/* Destaques: Prontuário e Teleconsulta */}
+      <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+        <Card className="border-2 border-primary/30 bg-primary/5">
+          <CardContent className="p-8">
+            <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-6">
+              <FileText className="w-8 h-8 text-primary" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3">Prontuário Eletrônico</h3>
+            <p className="text-muted-foreground mb-4">
+              Registro clínico completo e longitudinal do paciente, com timeline integrada, 
+              avaliações em 3 blocos (cognitivo, comportamental, socioemocional), histórico 
+              evolutivo e geração automática de relatórios.
+            </p>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                Mapa cognitivo via radar
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                Timeline de ações clínicas
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                Logs imutáveis para auditoria
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card className="border-2 border-primary/30 bg-primary/5">
+          <CardContent className="p-8">
+            <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mb-6">
+              <Video className="w-8 h-8 text-primary" />
+            </div>
+            <h3 className="text-2xl font-bold mb-3">Teleconsulta Integrada</h3>
+            <p className="text-muted-foreground mb-4">
+              Vídeo WebRTC nativo com split-screen: consulta em vídeo de um lado, prontuário 
+              do paciente do outro. Anotações em tempo real, fechamento obrigatório com 
+              sumário clínico e plano de follow-up.
+            </p>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                Split-screen vídeo + prontuário
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                Histórico acessível durante sessão
+              </li>
+              <li className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                Fechamento clínico obrigatório
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Outras funcionalidades */}
+      <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
         {[
-          { icon: ClipboardCheck, title: "Diagnóstico estruturado e contínuo" },
-          { icon: FileText, title: "Prontuário eletrônico do paciente" },
-          { icon: Video, title: "Teleconsulta integrada" },
-          { icon: BarChart3, title: "Relatórios cognitivos e comportamentais" },
-          { icon: Activity, title: "Histórico evolutivo longitudinal" },
-          { icon: Users, title: "Acompanhamento familiar e institucional" },
-          { icon: Network, title: "APIs para integrações externas" },
-          { icon: Calendar, title: "Gestão de filas e SLA operacional" }
+          { icon: ClipboardCheck, title: "Diagnóstico estruturado" },
+          { icon: BarChart3, title: "Relatórios inteligentes" },
+          { icon: Activity, title: "Histórico evolutivo" },
+          { icon: Users, title: "Acompanhamento familiar" },
+          { icon: Network, title: "APIs e integrações" },
+          { icon: Calendar, title: "Filas e SLA" }
         ].map((item, index) => (
           <Card key={index} className="border-border/50 hover:border-primary/30 transition-colors">
-            <CardContent className="p-6 text-center">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                <item.icon className="w-6 h-6 text-primary" />
+            <CardContent className="p-4 text-center">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                <item.icon className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="font-semibold text-foreground">{item.title}</h3>
+              <h3 className="font-medium text-sm text-foreground">{item.title}</h3>
             </CardContent>
           </Card>
         ))}
@@ -329,7 +387,7 @@ const NeuroPlayLanding = () => {
     <div className="min-h-screen bg-background">
       <HeroSection />
       <AboutSection />
-      <DeliverablesSection />
+      <CoreFeaturesSection />
       <EvolutionSection />
       <AudienceSection />
       <ScaleSection />
