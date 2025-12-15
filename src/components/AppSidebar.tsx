@@ -53,6 +53,25 @@ export function AppSidebar() {
     );
   };
 
+  // Principal - Navegação do aluno/criança
+  const principalNavigation = [
+    {
+      title: 'Hub do Aluno',
+      path: '/student-hub',
+      icon: Rocket,
+    },
+    {
+      title: 'Sistema de Planetas',
+      path: '/sistema-planeta-azul',
+      icon: Sparkles,
+    },
+    {
+      title: 'Histórias Sociais',
+      path: '/social-stories',
+      icon: Drama,
+    },
+  ];
+
   // Home - Navegação clínica focada
   const homeNavigation = [
     {
@@ -240,6 +259,13 @@ export function AppSidebar() {
   // Organize navigation groups based on role
   // Admins can see ALL menus
   const navigationGroups = [];
+
+  // Always show Principal section first (student-facing)
+  navigationGroups.push({
+    id: 'principal',
+    label: 'Principal',
+    items: principalNavigation,
+  });
 
   // Always show Home section
   navigationGroups.push({
