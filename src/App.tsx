@@ -82,6 +82,7 @@ import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
 import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
 import AdminRiskMaps from "./pages/AdminRiskMaps";
+import OperationsCenter from "./pages/OperationsCenter";
 // ParentChildActivities removed - feature deprecated
 import CooperativePuzzle from "./pages/games/CooperativePuzzle";
 import RiskAnalysisPage from "./pages/RiskAnalysisPage";
@@ -300,6 +301,7 @@ const App = () => (
           <Route path="/admin/network-management" element={<AdminNetworkDashboard />} />
           <Route path="/admin/users" element={<AdminUserManagement />} />
           <Route path="/admin/relationships" element={<RelationshipsManager />} />
+          <Route path="/operations" element={<OperationsCenter />} />
           
           {/* Acessibilidade e Histórias Sociais */}
           <Route path="/accessibility" element={<AccessibilitySettings />} />

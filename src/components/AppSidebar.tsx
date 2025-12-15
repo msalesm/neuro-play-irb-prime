@@ -207,6 +207,11 @@ export function AppSidebar() {
       icon: Brain,
     },
     {
+      title: 'Centro de Operações',
+      path: '/operations',
+      icon: TrendingUp,
+    },
+    {
       title: 'Dashboard Institucional',
       path: '/institutional',
       icon: Building2,

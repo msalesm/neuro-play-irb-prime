@@ -901,6 +901,86 @@ export type Database = {
           },
         ]
       }
+      case_assignments: {
+        Row: {
+          assigned_at: string | null
+          assigned_by: string
+          from_professional_id: string | null
+          id: string
+          queue_item_id: string
+          reason: string | null
+          to_professional_id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_by: string
+          from_professional_id?: string | null
+          id?: string
+          queue_item_id: string
+          reason?: string | null
+          to_professional_id: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_by?: string
+          from_professional_id?: string | null
+          id?: string
+          queue_item_id?: string
+          reason?: string | null
+          to_professional_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_assignments_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_assignments_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_assignments_from_professional_id_fkey"
+            columns: ["from_professional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_assignments_from_professional_id_fkey"
+            columns: ["from_professional_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_assignments_queue_item_id_fkey"
+            columns: ["queue_item_id"]
+            isOneToOne: false
+            referencedRelation: "queue_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_assignments_to_professional_id_fkey"
+            columns: ["to_professional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_assignments_to_professional_id_fkey"
+            columns: ["to_professional_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat_conversations: {
         Row: {
           behavioral_tags: string[] | null
@@ -3757,6 +3837,93 @@ export type Database = {
           },
         ]
       }
+      operational_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          alert_type: string
+          auto_resolved: boolean | null
+          created_at: string | null
+          description: string
+          id: string
+          institution_id: string
+          is_acknowledged: boolean | null
+          queue_id: string | null
+          queue_item_id: string | null
+          resolved_at: string | null
+          severity: string | null
+          title: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_type: string
+          auto_resolved?: boolean | null
+          created_at?: string | null
+          description: string
+          id?: string
+          institution_id: string
+          is_acknowledged?: boolean | null
+          queue_id?: string | null
+          queue_item_id?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+          title: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_type?: string
+          auto_resolved?: boolean | null
+          created_at?: string | null
+          description?: string
+          id?: string
+          institution_id?: string
+          is_acknowledged?: boolean | null
+          queue_id?: string | null
+          queue_item_id?: string | null
+          resolved_at?: string | null
+          severity?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "operational_alerts_acknowledged_by_fkey"
+            columns: ["acknowledged_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operational_alerts_acknowledged_by_fkey"
+            columns: ["acknowledged_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operational_alerts_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operational_alerts_queue_id_fkey"
+            columns: ["queue_id"]
+            isOneToOne: false
+            referencedRelation: "service_queues"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "operational_alerts_queue_item_id_fkey"
+            columns: ["queue_item_id"]
+            isOneToOne: false
+            referencedRelation: "queue_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       parent_training: {
         Row: {
           certificate_url: string | null
@@ -3976,6 +4143,70 @@ export type Database = {
           },
         ]
       }
+      professional_workload: {
+        Row: {
+          availability_status: string | null
+          created_at: string | null
+          current_active_cases: number | null
+          id: string
+          institution_id: string
+          last_assignment_at: string | null
+          max_daily_cases: number | null
+          max_weekly_cases: number | null
+          professional_id: string
+          specializations: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          availability_status?: string | null
+          created_at?: string | null
+          current_active_cases?: number | null
+          id?: string
+          institution_id: string
+          last_assignment_at?: string | null
+          max_daily_cases?: number | null
+          max_weekly_cases?: number | null
+          professional_id: string
+          specializations?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          availability_status?: string | null
+          created_at?: string | null
+          current_active_cases?: number | null
+          id?: string
+          institution_id?: string
+          last_assignment_at?: string | null
+          max_daily_cases?: number | null
+          max_weekly_cases?: number | null
+          professional_id?: string
+          specializations?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_workload_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "professional_workload_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "professional_workload_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -4005,6 +4236,103 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      queue_items: {
+        Row: {
+          assigned_to: string | null
+          child_id: string
+          completed_at: string | null
+          created_at: string | null
+          entered_queue_at: string | null
+          id: string
+          notes: string | null
+          priority_score: number | null
+          queue_id: string
+          risk_level: string | null
+          sla_breached: boolean | null
+          sla_deadline: string | null
+          started_at: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          child_id: string
+          completed_at?: string | null
+          created_at?: string | null
+          entered_queue_at?: string | null
+          id?: string
+          notes?: string | null
+          priority_score?: number | null
+          queue_id: string
+          risk_level?: string | null
+          sla_breached?: boolean | null
+          sla_deadline?: string | null
+          started_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          child_id?: string
+          completed_at?: string | null
+          created_at?: string | null
+          entered_queue_at?: string | null
+          id?: string
+          notes?: string | null
+          priority_score?: number | null
+          queue_id?: string
+          risk_level?: string | null
+          sla_breached?: boolean | null
+          sla_deadline?: string | null
+          started_at?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "queue_items_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "queue_items_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "queue_items_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "queue_items_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "queue_items_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "queue_items_queue_id_fkey"
+            columns: ["queue_id"]
+            isOneToOne: false
+            referencedRelation: "service_queues"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       regional_pricing: {
         Row: {
@@ -4500,6 +4828,88 @@ export type Database = {
             columns: ["sender_id"]
             isOneToOne: false
             referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_queues: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          institution_id: string | null
+          is_active: boolean | null
+          name: string
+          priority_weight: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
+          name: string
+          priority_weight?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
+          name?: string
+          priority_weight?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_queues_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sla_configurations: {
+        Row: {
+          alert_threshold_percent: number | null
+          created_at: string | null
+          escalation_hours: number | null
+          id: string
+          institution_id: string
+          max_wait_hours: number
+          risk_level: string
+          updated_at: string | null
+        }
+        Insert: {
+          alert_threshold_percent?: number | null
+          created_at?: string | null
+          escalation_hours?: number | null
+          id?: string
+          institution_id: string
+          max_wait_hours: number
+          risk_level: string
+          updated_at?: string | null
+        }
+        Update: {
+          alert_threshold_percent?: number | null
+          created_at?: string | null
+          escalation_hours?: number | null
+          id?: string
+          institution_id?: string
+          max_wait_hours?: number
+          risk_level?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_configurations_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
         ]
