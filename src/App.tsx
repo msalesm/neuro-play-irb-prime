@@ -119,6 +119,7 @@ import StoryEditor from "./pages/StoryEditor";
 import SimpleAnalytics from "./pages/SimpleAnalytics";
 import PrivacyPortal from "./pages/PrivacyPortal";
 import InstallApp from "./pages/InstallApp";
+import Assinatura from "./pages/Assinatura";
 import RoutinesPage from "./pages/RoutinesPage";
 import RoutineViewer from "./pages/RoutineViewer";
 import ConsentManagement from "./pages/ConsentManagement";
@@ -345,8 +346,9 @@ const App = () => (
           
           {/* Phase 4 Routes */}
           <Route path="/institutional" element={<InstitutionalDashboard />} />
-          <Route path="/subscription" element={<SubscriptionPage />} />
-          <Route path="/assinatura" element={<SubscriptionPage />} />
+          <Route path="/subscription" element={<Assinatura />} />
+          <Route path="/assinatura" element={<Assinatura />} />
+          <Route path="/planos" element={<Assinatura />} />
           <Route path="/messages" element={<SecureMessaging />} />
           <Route path="/mensagens" element={<SecureMessaging />} />
           <Route path="/content-manager" element={<ContentManager />} />
