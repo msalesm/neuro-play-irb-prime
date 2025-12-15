@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
 import { 
-  Video, VideoOff, Mic, MicOff, Phone, FileText, 
   Brain, Heart, Users, Save, AlertCircle, Clock,
   CheckCircle, Plus
 } from 'lucide-react';
@@ -66,8 +65,6 @@ export function TeleconsultSession({
   onClose, 
   onComplete 
 }: TeleconsultSessionProps) {
-  const [isVideoOn, setIsVideoOn] = useState(true);
-  const [isMicOn, setIsMicOn] = useState(true);
   const [activeTab, setActiveTab] = useState('cognitive');
   const [saving, setSaving] = useState(false);
   const [clinicalSummary, setClinicalSummary] = useState('');
@@ -485,40 +482,39 @@ export function TeleconsultSession({
               )}
             </TabsContent>
           </Tabs>
-        </div>
 
-        {/* Summary and Completion */}
-        <div className="p-4 border-t border-border space-y-4">
-          <div className="space-y-2">
-            <Label>Resumo Clínico *</Label>
-            <Textarea
-              placeholder="Resumo obrigatório da sessão..."
-              value={clinicalSummary}
-              onChange={(e) => setClinicalSummary(e.target.value)}
-              rows={2}
-            />
+          {/* Summary and Completion */}
+          <div className="mt-6 space-y-4">
+            <div className="space-y-2">
+              <Label>Resumo Clínico *</Label>
+              <Textarea
+                placeholder="Resumo obrigatório da sessão..."
+                value={clinicalSummary}
+                onChange={(e) => setClinicalSummary(e.target.value)}
+                rows={2}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Plano de Acompanhamento</Label>
+              <Textarea
+                placeholder="Definir próximos passos, objetivos, intervenções..."
+                value={followUpPlan}
+                onChange={(e) => setFollowUpPlan(e.target.value)}
+                rows={2}
+              />
+            </div>
+
+            <Button 
+              className="w-full" 
+              onClick={saveAndComplete}
+              disabled={saving}
+            >
+              <Save className="w-4 h-4 mr-2" />
+              {saving ? 'Salvando...' : 'Finalizar Teleconsulta'}
+            </Button>
           </div>
-
-          <div className="space-y-2">
-            <Label>Plano de Acompanhamento</Label>
-            <Textarea
-              placeholder="Definir próximos passos, objetivos, intervenções..."
-              value={followUpPlan}
-              onChange={(e) => setFollowUpPlan(e.target.value)}
-              rows={2}
-            />
-          </div>
-
-          <Button 
-            className="w-full" 
-            onClick={saveAndComplete}
-            disabled={saving}
-          >
-            <Save className="w-4 h-4 mr-2" />
-            {saving ? 'Salvando...' : 'Finalizar Teleconsulta'}
-          </Button>
         </div>
       </div>
-    </div>
   );
 }
