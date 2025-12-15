@@ -45,8 +45,19 @@ export default function TeleconsultaSessionPage() {
         return;
       }
 
+      // Check if user is admin
+      const { data: userRole } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+
+      const isAdminUser = !!userRole;
+
       setSessionData(session);
-      setIsProfessional(session.professional_id === user.id);
+      // Allow admin or session professional to have professional access
+      setIsProfessional(session.professional_id === user.id || isAdminUser);
 
       // Update session status to in_progress
       if (session.status === 'scheduled') {
