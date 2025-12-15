@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Accessibility, 
   ZoomIn, 
   ZoomOut, 
   Contrast, 
@@ -18,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { useAccessibility } from '@/contexts/AccessibilityContext';
 import { announce } from './ScreenReaderAnnouncer';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import accessibilityIcon from '@/assets/accessibility-icon.jpg';
 
 // Floating accessibility toolbar (WCAG 2.2 compliant)
 export function AccessibilityToolbar() {
@@ -65,12 +65,12 @@ export function AccessibilityToolbar() {
             <Button
               variant="default"
               size="icon"
-              className="rounded-full shadow-lg w-12 h-12"
+              className="rounded-full shadow-lg w-12 h-12 p-1"
               onClick={() => setIsOpen(!isOpen)}
               aria-expanded={isOpen}
               aria-label="Menu de acessibilidade"
             >
-              <Accessibility className="h-6 w-6" />
+              <img src={accessibilityIcon} alt="Acessibilidade" className="h-8 w-8 rounded-full" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="left">
