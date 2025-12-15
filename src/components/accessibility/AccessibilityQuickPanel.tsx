@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Accessibility, 
   ZoomIn, 
   ZoomOut, 
   Contrast,
@@ -23,6 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { useAccessibility } from '@/contexts/AccessibilityContext';
 import { useNavigate } from 'react-router-dom';
 import { announce } from './ScreenReaderAnnouncer';
+import accessibilityIcon from '@/assets/accessibility-icon.jpg';
 
 export function AccessibilityQuickPanel() {
   const [isOpen, setIsOpen] = useState(false);
@@ -105,12 +105,12 @@ export function AccessibilityQuickPanel() {
       <Button
         variant="default"
         size="icon"
-        className="fixed top-20 right-4 z-50 rounded-full shadow-lg w-12 h-12 md:top-4"
+        className="fixed top-20 right-4 z-50 rounded-full shadow-lg w-12 h-12 md:top-4 p-1"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label="Menu de acessibilidade"
       >
-        <Accessibility className="h-5 w-5" />
+        <img src={accessibilityIcon} alt="Acessibilidade" className="h-8 w-8 rounded-full" />
       </Button>
 
       {/* Panel */}
@@ -138,7 +138,7 @@ export function AccessibilityQuickPanel() {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <Accessibility className="h-6 w-6 text-primary" />
+                    <img src={accessibilityIcon} alt="Acessibilidade" className="h-6 w-6 rounded-full" />
                     <h2 className="text-xl font-bold">Acessibilidade</h2>
                   </div>
                   <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} aria-label="Fechar">
