@@ -4,14 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Video, Calendar, Clock, User, Plus, FileText,
-  Play, AlertCircle, CheckCircle
+  Play, AlertCircle, CheckCircle, Share2
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { format, isToday, isTomorrow, isPast, isFuture } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { ScheduleTeleconsultModal } from './ScheduleTeleconsultModal';
-
+import { TeleconsultInvite } from './TeleconsultInvite';
 interface TeleconsultSession {
   id: string;
   child_id: string;
@@ -34,7 +34,15 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
   const [sessions, setSessions] = useState<TeleconsultSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [inviteSession, setInviteSession] = useState<TeleconsultSession | null>(null);
+  const [userProfile, setUserProfile] = useState<{ full_name: string } | null>(null);
 
+  useEffect(() => {
+    if (user) {
+      supabase.from('profiles').select('full_name').eq('id', user.id).single()
+        .then(({ data }) => setUserProfile(data));
+    }
+  }, [user]);
   const loadSessions = async () => {
     if (!user) return;
 
@@ -203,6 +211,14 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
                   </div>
                   <div className="flex gap-2">
                     <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setInviteSession(session)}
+                      title="Enviar convite"
+                    >
+                      <Share2 className="w-4 h-4" />
+                    </Button>
+                    <Button 
                       variant="outline" 
                       size="sm"
                       onClick={() => session.children?.id && onViewRecord(session.children.id)}
@@ -288,6 +304,18 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
           loadSessions();
         }}
       />
+
+      {/* Invite Modal */}
+      {inviteSession && (
+        <TeleconsultInvite
+          open={!!inviteSession}
+          onClose={() => setInviteSession(null)}
+          sessionId={inviteSession.id}
+          patientName={inviteSession.children?.name || 'Paciente'}
+          scheduledAt={new Date(inviteSession.scheduled_at)}
+          professionalName={userProfile?.full_name || 'Profissional'}
+        />
+      )}
     </div>
   );
 }
