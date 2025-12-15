@@ -6,6 +6,9 @@ const DEPRECATED_PATHS = [
   '/avatar',
   '/achievements',
   '/rotinas',
+  '/admin/story-editor',
+  '/content-manager',
+  '/admin/content',
 ];
 
 export function useDeprecatedModules() {
