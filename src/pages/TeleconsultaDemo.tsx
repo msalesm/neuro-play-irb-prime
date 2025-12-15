@@ -114,7 +114,7 @@ export default function TeleconsultaDemo() {
               autoPlay
               playsInline
               muted
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-black"
             />
             {!stream && (
               <div className="absolute inset-0 flex items-center justify-center bg-muted">
