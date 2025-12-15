@@ -99,6 +99,11 @@ export function AppSidebar() {
       icon: Home,
     },
     {
+      title: 'Minhas Teleconsultas',
+      path: '/minhas-teleconsultas',
+      icon: Stethoscope,
+    },
+    {
       title: 'Mensagens',
       path: '/messages',
       icon: Mail,
