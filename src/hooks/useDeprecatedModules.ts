@@ -1,14 +1,10 @@
 // Lista estática de módulos deprecados para performance (não depende de tipos)
 const DEPRECATED_PATHS = [
-  '/sistema-planeta-azul',
   '/games',
-  '/social-stories',
   '/community',
   '/fase5',
-  '/planeta',
   '/avatar',
   '/achievements',
-  '/student-hub',
   '/rotinas',
 ];
 
