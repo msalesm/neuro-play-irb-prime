@@ -7,9 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { 
   Users, Clock, AlertTriangle, TrendingUp, 
-  Bell, CheckCircle, XCircle, RefreshCw, BarChart3
+  Bell, CheckCircle, XCircle, RefreshCw, BarChart3, Settings, Calendar
 } from 'lucide-react';
 import { QueueManagement } from './QueueManagement';
+import { PerformanceMetrics } from './PerformanceMetrics';
+import { EscalationPanel } from './EscalationPanel';
+import { InstitutionalSettings } from './InstitutionalSettings';
+import { useOperationalScaling } from '@/hooks/useOperationalScaling';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 

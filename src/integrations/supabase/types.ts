@@ -3113,6 +3113,53 @@ export type Database = {
           },
         ]
       }
+      escalation_history: {
+        Row: {
+          auto_escalated: boolean | null
+          created_at: string | null
+          escalated_from: string | null
+          escalated_to: string | null
+          escalation_level: number | null
+          id: string
+          queue_item_id: string | null
+          reason: string
+          resolution_notes: string | null
+          resolved_at: string | null
+        }
+        Insert: {
+          auto_escalated?: boolean | null
+          created_at?: string | null
+          escalated_from?: string | null
+          escalated_to?: string | null
+          escalation_level?: number | null
+          id?: string
+          queue_item_id?: string | null
+          reason: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+        }
+        Update: {
+          auto_escalated?: boolean | null
+          created_at?: string | null
+          escalated_from?: string | null
+          escalated_to?: string | null
+          escalation_level?: number | null
+          id?: string
+          queue_item_id?: string | null
+          reason?: string
+          resolution_notes?: string | null
+          resolved_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "escalation_history_queue_item_id_fkey"
+            columns: ["queue_item_id"]
+            isOneToOne: false
+            referencedRelation: "queue_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       external_integrations: {
         Row: {
           config: Json | null
@@ -3702,6 +3749,62 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institution_operational_settings: {
+        Row: {
+          auto_assign_enabled: boolean | null
+          created_at: string | null
+          default_sla_hours: number | null
+          escalation_enabled: boolean | null
+          escalation_threshold_hours: number | null
+          id: string
+          institution_id: string | null
+          max_queue_size: number | null
+          notification_channels: string[] | null
+          updated_at: string | null
+          working_days: number[] | null
+          working_hours_end: string | null
+          working_hours_start: string | null
+        }
+        Insert: {
+          auto_assign_enabled?: boolean | null
+          created_at?: string | null
+          default_sla_hours?: number | null
+          escalation_enabled?: boolean | null
+          escalation_threshold_hours?: number | null
+          id?: string
+          institution_id?: string | null
+          max_queue_size?: number | null
+          notification_channels?: string[] | null
+          updated_at?: string | null
+          working_days?: number[] | null
+          working_hours_end?: string | null
+          working_hours_start?: string | null
+        }
+        Update: {
+          auto_assign_enabled?: boolean | null
+          created_at?: string | null
+          default_sla_hours?: number | null
+          escalation_enabled?: boolean | null
+          escalation_threshold_hours?: number | null
+          id?: string
+          institution_id?: string | null
+          max_queue_size?: number | null
+          notification_channels?: string[] | null
+          updated_at?: string | null
+          working_days?: number[] | null
+          working_hours_end?: string | null
+          working_hours_start?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_operational_settings_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: true
+            referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
         ]
@@ -4711,6 +4814,39 @@ export type Database = {
           },
         ]
       }
+      professional_schedules: {
+        Row: {
+          created_at: string | null
+          day_of_week: number
+          end_time: string
+          id: string
+          is_available: boolean | null
+          max_cases_per_slot: number | null
+          professional_id: string | null
+          start_time: string
+        }
+        Insert: {
+          created_at?: string | null
+          day_of_week: number
+          end_time: string
+          id?: string
+          is_available?: boolean | null
+          max_cases_per_slot?: number | null
+          professional_id?: string | null
+          start_time: string
+        }
+        Update: {
+          created_at?: string | null
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          is_available?: boolean | null
+          max_cases_per_slot?: number | null
+          professional_id?: string | null
+          start_time?: string
+        }
+        Relationships: []
+      }
       professional_workload: {
         Row: {
           availability_status: string | null
@@ -4898,6 +5034,62 @@ export type Database = {
             columns: ["queue_id"]
             isOneToOne: false
             referencedRelation: "service_queues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      queue_performance_metrics: {
+        Row: {
+          avg_service_time_minutes: number | null
+          avg_wait_time_minutes: number | null
+          completed_cases: number | null
+          created_at: string | null
+          high_risk_cases: number | null
+          id: string
+          institution_id: string | null
+          metric_date: string
+          peak_hour: number | null
+          professional_utilization_rate: number | null
+          sla_breaches: number | null
+          sla_compliance_rate: number | null
+          total_cases: number | null
+        }
+        Insert: {
+          avg_service_time_minutes?: number | null
+          avg_wait_time_minutes?: number | null
+          completed_cases?: number | null
+          created_at?: string | null
+          high_risk_cases?: number | null
+          id?: string
+          institution_id?: string | null
+          metric_date: string
+          peak_hour?: number | null
+          professional_utilization_rate?: number | null
+          sla_breaches?: number | null
+          sla_compliance_rate?: number | null
+          total_cases?: number | null
+        }
+        Update: {
+          avg_service_time_minutes?: number | null
+          avg_wait_time_minutes?: number | null
+          completed_cases?: number | null
+          created_at?: string | null
+          high_risk_cases?: number | null
+          id?: string
+          institution_id?: string | null
+          metric_date?: string
+          peak_hour?: number | null
+          professional_utilization_rate?: number | null
+          sla_breaches?: number | null
+          sla_compliance_rate?: number | null
+          total_cases?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "queue_performance_metrics_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
         ]
@@ -5434,6 +5626,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "service_queues_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shift_handoffs: {
+        Row: {
+          acknowledged_at: string | null
+          created_at: string | null
+          critical_notes: string | null
+          from_professional_id: string | null
+          handoff_time: string | null
+          id: string
+          institution_id: string | null
+          pending_cases_count: number | null
+          to_professional_id: string | null
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          created_at?: string | null
+          critical_notes?: string | null
+          from_professional_id?: string | null
+          handoff_time?: string | null
+          id?: string
+          institution_id?: string | null
+          pending_cases_count?: number | null
+          to_professional_id?: string | null
+        }
+        Update: {
+          acknowledged_at?: string | null
+          created_at?: string | null
+          critical_notes?: string | null
+          from_professional_id?: string | null
+          handoff_time?: string | null
+          id?: string
+          institution_id?: string | null
+          pending_cases_count?: number | null
+          to_professional_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shift_handoffs_institution_id_fkey"
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "institutions"
@@ -7273,6 +7509,14 @@ export type Database = {
         }
         Returns: undefined
       }
+      auto_assign_queue_item: {
+        Args: { p_queue_item_id: string }
+        Returns: string
+      }
+      calculate_daily_queue_metrics: {
+        Args: { p_date?: string; p_institution_id: string }
+        Returns: undefined
+      }
       calculate_global_risk_score: {
         Args: {
           p_behavioral: number
@@ -7281,6 +7525,7 @@ export type Database = {
         }
         Returns: number
       }
+      check_sla_alerts: { Args: never; Returns: undefined }
       classify_risk_level: { Args: { p_score: number }; Returns: string }
       generate_api_key: { Args: never; Returns: string }
       get_admin_institution_ids: {
