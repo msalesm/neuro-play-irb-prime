@@ -1439,6 +1439,103 @@ export type Database = {
           },
         ]
       }
+      clinical_outcomes: {
+        Row: {
+          behavioral_improvement: number | null
+          child_id: string
+          cognitive_improvement: number | null
+          created_at: string | null
+          entry_behavioral_score: number | null
+          entry_cognitive_score: number | null
+          entry_global_risk: string | null
+          entry_socioemotional_score: number | null
+          exit_behavioral_score: number | null
+          exit_cognitive_score: number | null
+          exit_global_risk: string | null
+          exit_socioemotional_score: number | null
+          global_improvement: number | null
+          id: string
+          measurement_end: string | null
+          measurement_start: string
+          outcome_classification: string | null
+          plan_adherence_percentage: number | null
+          professional_id: string
+          socioemotional_improvement: number | null
+          total_sessions: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          behavioral_improvement?: number | null
+          child_id: string
+          cognitive_improvement?: number | null
+          created_at?: string | null
+          entry_behavioral_score?: number | null
+          entry_cognitive_score?: number | null
+          entry_global_risk?: string | null
+          entry_socioemotional_score?: number | null
+          exit_behavioral_score?: number | null
+          exit_cognitive_score?: number | null
+          exit_global_risk?: string | null
+          exit_socioemotional_score?: number | null
+          global_improvement?: number | null
+          id?: string
+          measurement_end?: string | null
+          measurement_start: string
+          outcome_classification?: string | null
+          plan_adherence_percentage?: number | null
+          professional_id: string
+          socioemotional_improvement?: number | null
+          total_sessions?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          behavioral_improvement?: number | null
+          child_id?: string
+          cognitive_improvement?: number | null
+          created_at?: string | null
+          entry_behavioral_score?: number | null
+          entry_cognitive_score?: number | null
+          entry_global_risk?: string | null
+          entry_socioemotional_score?: number | null
+          exit_behavioral_score?: number | null
+          exit_cognitive_score?: number | null
+          exit_global_risk?: string | null
+          exit_socioemotional_score?: number | null
+          global_improvement?: number | null
+          id?: string
+          measurement_end?: string | null
+          measurement_start?: string
+          outcome_classification?: string | null
+          plan_adherence_percentage?: number | null
+          professional_id?: string
+          socioemotional_improvement?: number | null
+          total_sessions?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_outcomes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_outcomes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "clinical_outcomes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clinical_pattern_alerts: {
         Row: {
           acknowledged_at: string | null
@@ -4143,6 +4240,76 @@ export type Database = {
           },
         ]
       }
+      pre_triage_forms: {
+        Row: {
+          auto_summary: string | null
+          calculated_risk_score: number | null
+          checklist_responses: Json
+          child_id: string
+          completed_at: string | null
+          completed_by: string | null
+          created_at: string | null
+          historical_summary: Json | null
+          id: string
+          reviewed_by: string | null
+          risk_level: string | null
+          session_id: string | null
+          status: string | null
+        }
+        Insert: {
+          auto_summary?: string | null
+          calculated_risk_score?: number | null
+          checklist_responses?: Json
+          child_id: string
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string | null
+          historical_summary?: Json | null
+          id?: string
+          reviewed_by?: string | null
+          risk_level?: string | null
+          session_id?: string | null
+          status?: string | null
+        }
+        Update: {
+          auto_summary?: string | null
+          calculated_risk_score?: number | null
+          checklist_responses?: Json
+          child_id?: string
+          completed_at?: string | null
+          completed_by?: string | null
+          created_at?: string | null
+          historical_summary?: Json | null
+          id?: string
+          reviewed_by?: string | null
+          risk_level?: string | null
+          session_id?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pre_triage_forms_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pre_triage_forms_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "pre_triage_forms_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       professional_workload: {
         Row: {
           availability_status: string | null
@@ -6477,6 +6644,15 @@ export type Database = {
         }
         Returns: undefined
       }
+      calculate_global_risk_score: {
+        Args: {
+          p_behavioral: number
+          p_cognitive: number
+          p_socioemotional: number
+        }
+        Returns: number
+      }
+      classify_risk_level: { Args: { p_score: number }; Returns: string }
       get_admin_institution_ids: {
         Args: { _user_id: string }
         Returns: string[]
