@@ -53,37 +53,12 @@ export function AppSidebar() {
     );
   };
 
-  // Home - Criança/Usuário Principal
+  // Home - Navegação clínica focada
   const homeNavigation = [
     {
-      title: t('nav.studentHub'),
-      path: '/student-hub',
-      icon: Rocket,
-    },
-    {
-      title: t('nav.planetSystem'),
-      path: '/sistema-planeta-azul',
-      icon: Sparkles,
-    },
-    {
-      title: t('nav.myRoutines'),
-      path: '/rotinas',
-      icon: CalendarCheck,
-    },
-    {
-      title: t('nav.cognitiveGames'),
-      path: '/games',
-      icon: Gamepad2,
-    },
-    {
-      title: t('nav.socialStories'),
-      path: '/social-stories',
-      icon: Drama,
-    },
-    {
-      title: t('nav.community'),
-      path: '/community',
-      icon: Users,
+      title: 'Avaliações Clínicas',
+      path: '/diagnostic-tests',
+      icon: ClipboardCheck,
     },
     {
       title: t('nav.progress'),
@@ -94,11 +69,6 @@ export function AppSidebar() {
       title: t('nav.profile'),
       path: '/profile',
       icon: User,
-    },
-    {
-      title: t('nav.phase5'),
-      path: '/fase5',
-      icon: Sparkles,
     },
   ];
 
