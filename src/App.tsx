@@ -117,6 +117,7 @@ import ProntuarioUnificado from "./pages/ProntuarioUnificado";
 import StudentHub from "./pages/StudentHub";
 import StoryEditor from "./pages/StoryEditor";
 import SimpleAnalytics from "./pages/SimpleAnalytics";
+import PrivacyPortal from "./pages/PrivacyPortal";
 import RoutinesPage from "./pages/RoutinesPage";
 import RoutineViewer from "./pages/RoutineViewer";
 import ConsentManagement from "./pages/ConsentManagement";
@@ -377,6 +378,10 @@ const App = () => (
           {/* Sprint 6 - Impact */}
           <Route path="/impact" element={<ImpactDashboard />} />
           <Route path="/impacto" element={<ImpactDashboard />} />
+          
+          {/* Sprint 20 - Privacy Portal LGPD */}
+          <Route path="/privacy" element={<PrivacyPortal />} />
+          <Route path="/privacidade" element={<PrivacyPortal />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
