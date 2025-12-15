@@ -2466,6 +2466,75 @@ export type Database = {
           },
         ]
       }
+      data_access_logs: {
+        Row: {
+          access_reason: string | null
+          access_type: string
+          accessed_child_id: string | null
+          accessed_user_id: string | null
+          created_at: string | null
+          data_category: string
+          id: string
+          ip_address: unknown
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          access_reason?: string | null
+          access_type: string
+          accessed_child_id?: string | null
+          accessed_user_id?: string | null
+          created_at?: string | null
+          data_category: string
+          id?: string
+          ip_address?: unknown
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          access_reason?: string | null
+          access_type?: string
+          accessed_child_id?: string | null
+          accessed_user_id?: string | null
+          created_at?: string | null
+          data_category?: string
+          id?: string
+          ip_address?: unknown
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      data_anonymization_logs: {
+        Row: {
+          anonymized_by: string
+          anonymized_fields: string[]
+          created_at: string | null
+          id: string
+          reason: string | null
+          record_id: string
+          table_name: string
+        }
+        Insert: {
+          anonymized_by?: string
+          anonymized_fields: string[]
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          record_id: string
+          table_name: string
+        }
+        Update: {
+          anonymized_by?: string
+          anonymized_fields?: string[]
+          created_at?: string | null
+          id?: string
+          reason?: string | null
+          record_id?: string
+          table_name?: string
+        }
+        Relationships: []
+      }
       data_consents: {
         Row: {
           child_id: string | null
@@ -2540,6 +2609,167 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      data_deletion_requests: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          child_id: string | null
+          completed_at: string | null
+          created_at: string | null
+          data_categories: string[] | null
+          id: string
+          reason: string | null
+          rejection_reason: string | null
+          request_type: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          child_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          data_categories?: string[] | null
+          id?: string
+          reason?: string | null
+          rejection_reason?: string | null
+          request_type: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          child_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          data_categories?: string[] | null
+          id?: string
+          reason?: string | null
+          rejection_reason?: string | null
+          request_type?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_deletion_requests_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_deletion_requests_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "data_deletion_requests_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      data_export_requests: {
+        Row: {
+          child_id: string | null
+          completed_at: string | null
+          created_at: string | null
+          error_message: string | null
+          expires_at: string | null
+          export_url: string | null
+          id: string
+          request_type: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          child_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          expires_at?: string | null
+          export_url?: string | null
+          id?: string
+          request_type: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          child_id?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          error_message?: string | null
+          expires_at?: string | null
+          export_url?: string | null
+          id?: string
+          request_type?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_export_requests_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_export_requests_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "data_export_requests_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      data_retention_policies: {
+        Row: {
+          anonymize_after_days: number | null
+          created_at: string | null
+          data_type: string
+          description: string | null
+          id: string
+          is_active: boolean | null
+          retention_days: number
+          updated_at: string | null
+        }
+        Insert: {
+          anonymize_after_days?: number | null
+          created_at?: string | null
+          data_type: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          retention_days: number
+          updated_at?: string | null
+        }
+        Update: {
+          anonymize_after_days?: number | null
+          created_at?: string | null
+          data_type?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          retention_days?: number
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       development_trails: {
         Row: {
@@ -6990,6 +7220,17 @@ export type Database = {
           p_child_id?: string
           p_resource_id?: string
           p_resource_type: string
+          p_user_agent?: string
+        }
+        Returns: string
+      }
+      log_data_access: {
+        Args: {
+          p_access_reason?: string
+          p_access_type?: string
+          p_accessed_child_id?: string
+          p_accessed_user_id?: string
+          p_data_category?: string
           p_user_agent?: string
         }
         Returns: string

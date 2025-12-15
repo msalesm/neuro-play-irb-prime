@@ -120,6 +120,7 @@ import SimpleAnalytics from "./pages/SimpleAnalytics";
 import RoutinesPage from "./pages/RoutinesPage";
 import RoutineViewer from "./pages/RoutineViewer";
 import ConsentManagement from "./pages/ConsentManagement";
+import DataGovernance from "./pages/DataGovernance";
 
 // Phase 4 pages
 import InstitutionalDashboard from "./pages/InstitutionalDashboard";
@@ -361,6 +362,8 @@ const App = () => (
           <Route path="/consents" element={<ConsentManagement />} />
           <Route path="/consentimentos" element={<ConsentManagement />} />
           <Route path="/admin/compliance" element={<ComplianceDashboard />} />
+          <Route path="/data-governance" element={<DataGovernance />} />
+          <Route path="/governanca-dados" element={<DataGovernance />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
