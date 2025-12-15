@@ -211,64 +211,25 @@ export function TeleconsultSession({
   };
 
   return (
-    <div className="fixed inset-0 bg-background z-50 flex">
-      {/* Video Area - Left Side */}
-      <div className="w-1/2 bg-muted/30 flex flex-col">
-        <div className="flex-1 flex items-center justify-center relative">
-          {/* Placeholder for video - integração real requer WebRTC */}
-          <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
-            <div className="text-center">
-              <Video className="w-24 h-24 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Vídeo do paciente</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                {patientName}
-              </p>
-            </div>
-          </div>
-          
-          {/* Timer */}
-          <div className="absolute top-4 right-4 bg-background/90 px-3 py-1 rounded-full">
+    <div className="h-full flex flex-col overflow-hidden">
+      {/* Header with timer */}
+      <div className="p-4 border-b border-border flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold">Prontuário em Tempo Real</h2>
+          <p className="text-muted-foreground text-sm">{patientName}</p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="bg-muted px-3 py-1 rounded-full">
             <div className="flex items-center gap-2 text-sm font-medium">
               <Clock className="w-4 h-4 text-red-500 animate-pulse" />
               {formatTime(elapsedTime)}
             </div>
           </div>
         </div>
-
-        {/* Video Controls */}
-        <div className="p-4 border-t border-border flex items-center justify-center gap-4">
-          <Button
-            variant={isVideoOn ? "outline" : "destructive"}
-            size="icon"
-            onClick={() => setIsVideoOn(!isVideoOn)}
-          >
-            {isVideoOn ? <Video className="w-5 h-5" /> : <VideoOff className="w-5 h-5" />}
-          </Button>
-          <Button
-            variant={isMicOn ? "outline" : "destructive"}
-            size="icon"
-            onClick={() => setIsMicOn(!isMicOn)}
-          >
-            {isMicOn ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
-          </Button>
-          <Button
-            variant="destructive"
-            size="icon"
-            onClick={onClose}
-          >
-            <Phone className="w-5 h-5 rotate-[135deg]" />
-          </Button>
-        </div>
       </div>
 
-      {/* Clinical Panel - Right Side */}
-      <div className="w-1/2 flex flex-col overflow-hidden">
-        <div className="p-4 border-b border-border">
-          <h2 className="text-xl font-bold">Prontuário em Tempo Real</h2>
-          <p className="text-muted-foreground text-sm">{patientName}</p>
-        </div>
-
-        <div className="flex-1 overflow-auto p-4">
+      {/* Clinical Panel */}
+      <div className="flex-1 overflow-auto p-4">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid grid-cols-4 mb-4">
               <TabsTrigger value="cognitive" className="text-xs">
