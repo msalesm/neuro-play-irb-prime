@@ -118,6 +118,7 @@ import StudentHub from "./pages/StudentHub";
 import StoryEditor from "./pages/StoryEditor";
 import SimpleAnalytics from "./pages/SimpleAnalytics";
 import PrivacyPortal from "./pages/PrivacyPortal";
+import InstallApp from "./pages/InstallApp";
 import RoutinesPage from "./pages/RoutinesPage";
 import RoutineViewer from "./pages/RoutineViewer";
 import ConsentManagement from "./pages/ConsentManagement";
@@ -383,6 +384,9 @@ const App = () => (
           <Route path="/privacy" element={<PrivacyPortal />} />
           <Route path="/privacidade" element={<PrivacyPortal />} />
           
+          {/* Sprint 19 - PWA Install */}
+          <Route path="/install" element={<InstallApp />} />
+          <Route path="/instalar" element={<InstallApp />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
                 </Routes>
