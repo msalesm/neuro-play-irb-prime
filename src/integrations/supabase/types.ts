@@ -2771,6 +2771,56 @@ export type Database = {
         }
         Relationships: []
       }
+      data_sync_logs: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          direction: string
+          error_details: Json | null
+          id: string
+          integration_id: string
+          records_failed: number | null
+          records_processed: number | null
+          started_at: string
+          status: string
+          sync_type: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          direction: string
+          error_details?: Json | null
+          id?: string
+          integration_id: string
+          records_failed?: number | null
+          records_processed?: number | null
+          started_at: string
+          status?: string
+          sync_type: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          direction?: string
+          error_details?: Json | null
+          id?: string
+          integration_id?: string
+          records_failed?: number | null
+          records_processed?: number | null
+          started_at?: string
+          status?: string
+          sync_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_sync_logs_integration_id_fkey"
+            columns: ["integration_id"]
+            isOneToOne: false
+            referencedRelation: "external_integrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       development_trails: {
         Row: {
           content_items: Json | null
@@ -3067,32 +3117,47 @@ export type Database = {
         Row: {
           config: Json | null
           created_at: string | null
+          credentials_encrypted: string | null
+          error_message: string | null
           id: string
           institution_id: string | null
+          integration_type: string | null
           is_active: boolean | null
           last_sync_at: string | null
           provider: string
+          sync_status: string | null
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           config?: Json | null
           created_at?: string | null
+          credentials_encrypted?: string | null
+          error_message?: string | null
           id?: string
           institution_id?: string | null
+          integration_type?: string | null
           is_active?: boolean | null
           last_sync_at?: string | null
           provider: string
+          sync_status?: string | null
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           config?: Json | null
           created_at?: string | null
+          credentials_encrypted?: string | null
+          error_message?: string | null
           id?: string
           institution_id?: string | null
+          integration_type?: string | null
           is_active?: boolean | null
           last_sync_at?: string | null
           provider?: string
+          sync_status?: string | null
           updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -6867,6 +6932,112 @@ export type Database = {
           },
         ]
       }
+      webhook_configurations: {
+        Row: {
+          created_at: string | null
+          events: string[]
+          id: string
+          institution_id: string | null
+          is_active: boolean | null
+          last_status: number | null
+          last_triggered_at: string | null
+          name: string
+          retry_count: number | null
+          secret: string
+          timeout_seconds: number | null
+          updated_at: string | null
+          url: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          events?: string[]
+          id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
+          last_status?: number | null
+          last_triggered_at?: string | null
+          name: string
+          retry_count?: number | null
+          secret: string
+          timeout_seconds?: number | null
+          updated_at?: string | null
+          url: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          events?: string[]
+          id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
+          last_status?: number | null
+          last_triggered_at?: string | null
+          name?: string
+          retry_count?: number | null
+          secret?: string
+          timeout_seconds?: number | null
+          updated_at?: string | null
+          url?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_configurations_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_deliveries: {
+        Row: {
+          attempt_number: number | null
+          created_at: string | null
+          delivered_at: string | null
+          error_message: string | null
+          event_type: string
+          id: string
+          payload: Json
+          response_body: string | null
+          response_status: number | null
+          webhook_id: string
+        }
+        Insert: {
+          attempt_number?: number | null
+          created_at?: string | null
+          delivered_at?: string | null
+          error_message?: string | null
+          event_type: string
+          id?: string
+          payload: Json
+          response_body?: string | null
+          response_status?: number | null
+          webhook_id: string
+        }
+        Update: {
+          attempt_number?: number | null
+          created_at?: string | null
+          delivered_at?: string | null
+          error_message?: string | null
+          event_type?: string
+          id?: string
+          payload?: Json
+          response_body?: string | null
+          response_status?: number | null
+          webhook_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_deliveries_webhook_id_fkey"
+            columns: ["webhook_id"]
+            isOneToOne: false
+            referencedRelation: "webhook_configurations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       weekly_feedback: {
         Row: {
           areas_of_improvement: Json | null
@@ -7111,6 +7282,7 @@ export type Database = {
         Returns: number
       }
       classify_risk_level: { Args: { p_score: number }; Returns: string }
+      generate_api_key: { Args: never; Returns: string }
       get_admin_institution_ids: {
         Args: { _user_id: string }
         Returns: string[]
@@ -7239,12 +7411,30 @@ export type Database = {
         Args: { _child_id: string; _user_id: string }
         Returns: boolean
       }
+      record_api_key_usage: {
+        Args: {
+          p_endpoint: string
+          p_key_id: string
+          p_method: string
+          p_response_time: number
+          p_status: number
+        }
+        Returns: undefined
+      }
       search_children_for_linking: {
         Args: { search_name: string }
         Returns: {
           birth_year: number
           id: string
           name: string
+        }[]
+      }
+      validate_api_key: {
+        Args: { p_key_hash: string; p_key_prefix: string }
+        Returns: {
+          institution_id: string
+          permissions: string[]
+          user_id: string
         }[]
       }
       validate_invitation_code: {
