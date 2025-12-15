@@ -2402,6 +2402,124 @@ export type Database = {
           },
         ]
       }
+      contract_amendments: {
+        Row: {
+          amendment_number: number
+          approved_at: string | null
+          approved_by: string | null
+          changes: Json | null
+          contract_id: string | null
+          created_at: string | null
+          description: string
+          effective_date: string
+          id: string
+        }
+        Insert: {
+          amendment_number: number
+          approved_at?: string | null
+          approved_by?: string | null
+          changes?: Json | null
+          contract_id?: string | null
+          created_at?: string | null
+          description: string
+          effective_date: string
+          id?: string
+        }
+        Update: {
+          amendment_number?: number
+          approved_at?: string | null
+          approved_by?: string | null
+          changes?: Json | null
+          contract_id?: string | null
+          created_at?: string | null
+          description?: string
+          effective_date?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contract_amendments_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "contracts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contracts: {
+        Row: {
+          auto_renew: boolean | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          contract_number: string
+          contract_type: string | null
+          created_at: string | null
+          end_date: string | null
+          id: string
+          institution_id: string | null
+          payment_terms: string | null
+          renewal_notice_days: number | null
+          signed_at: string | null
+          signed_by: string | null
+          start_date: string
+          status: string | null
+          terms_document_url: string | null
+          updated_at: string | null
+          value_monthly: number | null
+          value_total: number | null
+        }
+        Insert: {
+          auto_renew?: boolean | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          contract_number: string
+          contract_type?: string | null
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          institution_id?: string | null
+          payment_terms?: string | null
+          renewal_notice_days?: number | null
+          signed_at?: string | null
+          signed_by?: string | null
+          start_date: string
+          status?: string | null
+          terms_document_url?: string | null
+          updated_at?: string | null
+          value_monthly?: number | null
+          value_total?: number | null
+        }
+        Update: {
+          auto_renew?: boolean | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          contract_number?: string
+          contract_type?: string | null
+          created_at?: string | null
+          end_date?: string | null
+          id?: string
+          institution_id?: string | null
+          payment_terms?: string | null
+          renewal_notice_days?: number | null
+          signed_at?: string | null
+          signed_by?: string | null
+          start_date?: string
+          status?: string | null
+          terms_document_url?: string | null
+          updated_at?: string | null
+          value_monthly?: number | null
+          value_total?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cooperative_sessions: {
         Row: {
           completed_at: string | null
@@ -3701,6 +3819,80 @@ export type Database = {
           },
         ]
       }
+      impact_reports: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          avg_sessions_per_patient: number | null
+          challenges_identified: Json | null
+          comparative_analysis: Json | null
+          completed_interventions: number | null
+          created_at: string | null
+          generated_by: string | null
+          id: string
+          institution_id: string | null
+          is_published: boolean | null
+          key_achievements: Json | null
+          new_patients: number | null
+          outcomes_summary: Json | null
+          period_end: string
+          period_start: string
+          recommendations: Json | null
+          report_type: string
+          total_patients_served: number | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          avg_sessions_per_patient?: number | null
+          challenges_identified?: Json | null
+          comparative_analysis?: Json | null
+          completed_interventions?: number | null
+          created_at?: string | null
+          generated_by?: string | null
+          id?: string
+          institution_id?: string | null
+          is_published?: boolean | null
+          key_achievements?: Json | null
+          new_patients?: number | null
+          outcomes_summary?: Json | null
+          period_end: string
+          period_start: string
+          recommendations?: Json | null
+          report_type: string
+          total_patients_served?: number | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          avg_sessions_per_patient?: number | null
+          challenges_identified?: Json | null
+          comparative_analysis?: Json | null
+          completed_interventions?: number | null
+          created_at?: string | null
+          generated_by?: string | null
+          id?: string
+          institution_id?: string | null
+          is_published?: boolean | null
+          key_achievements?: Json | null
+          new_patients?: number | null
+          outcomes_summary?: Json | null
+          period_end?: string
+          period_start?: string
+          recommendations?: Json | null
+          report_type?: string
+          total_patients_served?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impact_reports_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institution_members: {
         Row: {
           department: string | null
@@ -3914,6 +4106,68 @@ export type Database = {
           },
         ]
       }
+      intervention_effectiveness: {
+        Row: {
+          avg_improvement_behavioral: number | null
+          avg_improvement_cognitive: number | null
+          avg_improvement_socioemotional: number | null
+          confidence_interval_high: number | null
+          confidence_interval_low: number | null
+          created_at: string | null
+          effect_size: number | null
+          id: string
+          institution_id: string | null
+          intervention_type: string
+          measurement_period_end: string | null
+          measurement_period_start: string | null
+          methodology_notes: string | null
+          sample_size: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_improvement_behavioral?: number | null
+          avg_improvement_cognitive?: number | null
+          avg_improvement_socioemotional?: number | null
+          confidence_interval_high?: number | null
+          confidence_interval_low?: number | null
+          created_at?: string | null
+          effect_size?: number | null
+          id?: string
+          institution_id?: string | null
+          intervention_type: string
+          measurement_period_end?: string | null
+          measurement_period_start?: string | null
+          methodology_notes?: string | null
+          sample_size?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_improvement_behavioral?: number | null
+          avg_improvement_cognitive?: number | null
+          avg_improvement_socioemotional?: number | null
+          confidence_interval_high?: number | null
+          confidence_interval_low?: number | null
+          created_at?: string | null
+          effect_size?: number | null
+          id?: string
+          institution_id?: string | null
+          intervention_type?: string
+          measurement_period_end?: string | null
+          measurement_period_start?: string | null
+          methodology_notes?: string | null
+          sample_size?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intervention_effectiveness_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invitations: {
         Row: {
           accepted_at: string | null
@@ -3961,6 +4215,78 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      invoices: {
+        Row: {
+          amount: number
+          billing_period_end: string
+          billing_period_start: string
+          created_at: string | null
+          currency: string | null
+          due_date: string
+          id: string
+          institution_id: string | null
+          invoice_number: string
+          line_items: Json | null
+          notes: string | null
+          paid_at: string | null
+          payment_method: string | null
+          status: string | null
+          subscription_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          billing_period_end: string
+          billing_period_start: string
+          created_at?: string | null
+          currency?: string | null
+          due_date: string
+          id?: string
+          institution_id?: string | null
+          invoice_number: string
+          line_items?: Json | null
+          notes?: string | null
+          paid_at?: string | null
+          payment_method?: string | null
+          status?: string | null
+          subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          billing_period_end?: string
+          billing_period_start?: string
+          created_at?: string | null
+          currency?: string | null
+          due_date?: string
+          id?: string
+          institution_id?: string | null
+          invoice_number?: string
+          line_items?: Json | null
+          notes?: string | null
+          paid_at?: string | null
+          payment_method?: string | null
+          status?: string | null
+          subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       learning_sessions: {
         Row: {
@@ -4521,6 +4847,86 @@ export type Database = {
             columns: ["queue_item_id"]
             isOneToOne: false
             referencedRelation: "queue_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      outcome_measurements: {
+        Row: {
+          child_id: string | null
+          created_at: string | null
+          domain: string
+          id: string
+          institution_id: string | null
+          instrument_used: string | null
+          interpretation: string | null
+          measured_at: string | null
+          measurement_type: string
+          notes: string | null
+          percentile: number | null
+          professional_id: string | null
+          score_normalized: number | null
+          score_raw: number | null
+        }
+        Insert: {
+          child_id?: string | null
+          created_at?: string | null
+          domain: string
+          id?: string
+          institution_id?: string | null
+          instrument_used?: string | null
+          interpretation?: string | null
+          measured_at?: string | null
+          measurement_type: string
+          notes?: string | null
+          percentile?: number | null
+          professional_id?: string | null
+          score_normalized?: number | null
+          score_raw?: number | null
+        }
+        Update: {
+          child_id?: string | null
+          created_at?: string | null
+          domain?: string
+          id?: string
+          institution_id?: string | null
+          instrument_used?: string | null
+          interpretation?: string | null
+          measured_at?: string | null
+          measurement_type?: string
+          notes?: string | null
+          percentile?: number | null
+          professional_id?: string | null
+          score_normalized?: number | null
+          score_raw?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "outcome_measurements_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outcome_measurements_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "outcome_measurements_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "outcome_measurements_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
         ]
@@ -7525,9 +7931,24 @@ export type Database = {
         }
         Returns: number
       }
+      calculate_intervention_effectiveness: {
+        Args: {
+          p_end_date: string
+          p_institution_id: string
+          p_intervention_type: string
+          p_start_date: string
+        }
+        Returns: {
+          avg_behavioral: number
+          avg_cognitive: number
+          avg_socioemotional: number
+          sample_size: number
+        }[]
+      }
       check_sla_alerts: { Args: never; Returns: undefined }
       classify_risk_level: { Args: { p_score: number }; Returns: string }
       generate_api_key: { Args: never; Returns: string }
+      generate_invoice_number: { Args: never; Returns: string }
       get_admin_institution_ids: {
         Args: { _user_id: string }
         Returns: string[]
