@@ -1439,6 +1439,73 @@ export type Database = {
           },
         ]
       }
+      clinical_audit_logs: {
+        Row: {
+          action_details: Json | null
+          action_type: string
+          child_id: string | null
+          created_at: string
+          id: string
+          ip_address: unknown
+          professional_id: string | null
+          resource_id: string | null
+          resource_type: string
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_details?: Json | null
+          action_type: string
+          child_id?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          professional_id?: string | null
+          resource_id?: string | null
+          resource_type: string
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_details?: Json | null
+          action_type?: string
+          child_id?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: unknown
+          professional_id?: string | null
+          resource_id?: string | null
+          resource_type?: string
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_audit_logs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_audit_logs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "clinical_audit_logs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clinical_outcomes: {
         Row: {
           behavioral_improvement: number | null
@@ -3527,6 +3594,45 @@ export type Database = {
           session_duration_seconds?: number | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      legal_documents: {
+        Row: {
+          content: string
+          created_at: string | null
+          created_by: string | null
+          document_type: string
+          id: string
+          is_active: boolean | null
+          published_at: string | null
+          summary: string | null
+          title: string
+          version: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          created_by?: string | null
+          document_type: string
+          id?: string
+          is_active?: boolean | null
+          published_at?: string | null
+          summary?: string | null
+          title: string
+          version: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          created_by?: string | null
+          document_type?: string
+          id?: string
+          is_active?: boolean | null
+          published_at?: string | null
+          summary?: string | null
+          title?: string
+          version?: string
         }
         Relationships: []
       }
@@ -6253,6 +6359,77 @@ export type Database = {
         }
         Relationships: []
       }
+      user_consents: {
+        Row: {
+          child_id: string | null
+          consent_given: boolean
+          consent_method: string
+          consented_at: string | null
+          document_id: string
+          id: string
+          ip_address: unknown
+          revocation_reason: string | null
+          revoked_at: string | null
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          child_id?: string | null
+          consent_given: boolean
+          consent_method: string
+          consented_at?: string | null
+          document_id: string
+          id?: string
+          ip_address?: unknown
+          revocation_reason?: string | null
+          revoked_at?: string | null
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          child_id?: string | null
+          consent_given?: boolean
+          consent_method?: string
+          consented_at?: string | null
+          document_id?: string
+          id?: string
+          ip_address?: unknown
+          revocation_reason?: string | null
+          revoked_at?: string | null
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_consents_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_consents_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "user_consents_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_consents_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "legal_documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_gamification: {
         Row: {
           created_at: string | null
@@ -6742,6 +6919,7 @@ export type Database = {
         Args: { _child_id: string; _user_id: string }
         Returns: boolean
       }
+      has_required_consents: { Args: { p_user_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -6804,6 +6982,17 @@ export type Database = {
           p_user_agent?: string
         }
         Returns: undefined
+      }
+      log_clinical_audit: {
+        Args: {
+          p_action_details?: Json
+          p_action_type: string
+          p_child_id?: string
+          p_resource_id?: string
+          p_resource_type: string
+          p_user_agent?: string
+        }
+        Returns: string
       }
       professional_has_child_access: {
         Args: { _child_id: string; _user_id: string }

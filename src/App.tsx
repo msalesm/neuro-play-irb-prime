@@ -119,6 +119,7 @@ import StoryEditor from "./pages/StoryEditor";
 import SimpleAnalytics from "./pages/SimpleAnalytics";
 import RoutinesPage from "./pages/RoutinesPage";
 import RoutineViewer from "./pages/RoutineViewer";
+import ConsentManagement from "./pages/ConsentManagement";
 
 // Phase 4 pages
 import InstitutionalDashboard from "./pages/InstitutionalDashboard";
@@ -129,6 +130,7 @@ import ProfessionalAnalytics from "./pages/ProfessionalAnalytics";
 import Community from "./pages/Community";
 import ContextualAIDashboard from "./pages/ContextualAIDashboard";
 import Phase5Dashboard from "./pages/Phase5Dashboard";
+import ComplianceDashboard from "./pages/ComplianceDashboard";
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -354,6 +356,11 @@ const App = () => (
           {/* Phase 5 Routes */}
           <Route path="/phase5" element={<Phase5Dashboard />} />
           <Route path="/fase5" element={<Phase5Dashboard />} />
+          
+          {/* Phase 6 - Compliance Routes */}
+          <Route path="/consents" element={<ConsentManagement />} />
+          <Route path="/consentimentos" element={<ConsentManagement />} />
+          <Route path="/admin/compliance" element={<ComplianceDashboard />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
