@@ -133,6 +133,8 @@ import Community from "./pages/Community";
 import ContextualAIDashboard from "./pages/ContextualAIDashboard";
 import Phase5Dashboard from "./pages/Phase5Dashboard";
 import ComplianceDashboard from "./pages/ComplianceDashboard";
+import BillingDashboard from "./pages/BillingDashboard";
+import ImpactDashboard from "./pages/ImpactDashboard";
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -367,6 +369,14 @@ const App = () => (
           <Route path="/governanca-dados" element={<DataGovernance />} />
           <Route path="/api-integrations" element={<ApiIntegrations />} />
           <Route path="/integracoes-api" element={<ApiIntegrations />} />
+          
+          {/* Sprint 5 - Billing */}
+          <Route path="/billing" element={<BillingDashboard />} />
+          <Route path="/faturamento" element={<BillingDashboard />} />
+          
+          {/* Sprint 6 - Impact */}
+          <Route path="/impact" element={<ImpactDashboard />} />
+          <Route path="/impacto" element={<ImpactDashboard />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
