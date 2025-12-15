@@ -123,7 +123,39 @@ export function ScheduleTeleconsultModal({ open, onClose, onSuccess }: ScheduleT
 
       if (error) throw error;
 
-      toast.success('Teleconsulta agendada com sucesso');
+      // Generate WhatsApp message
+      const formattedDate = new Date(`${form.date}T${form.time}`).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+      const formattedTime = new Date(`${form.date}T${form.time}`).toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      const inviteLink = `${window.location.origin}/teleconsulta/${form.childId}`;
+      const whatsappMessage = `Olá! Você tem uma teleconsulta agendada:
+
+📅 Data: ${formattedDate}
+⏰ Horário: ${formattedTime}
+👤 Paciente: ${patient?.name}
+
+Para participar, acesse o link:
+${inviteLink}
+
+Dicas:
+• Entre alguns minutos antes do horário
+• Tenha uma conexão de internet estável
+• Permita acesso à câmera e microfone`;
+
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      
+      toast.success('Teleconsulta agendada! Abrindo WhatsApp...');
+      
+      // Open WhatsApp in new tab
+      window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+      
       onSuccess();
     } catch (error) {
       console.error('Error scheduling session:', error);
