@@ -79,6 +79,7 @@ import TherapistDashboard from "./pages/TherapistDashboard";
 import Teleconsultas from "./pages/Teleconsultas";
 import TeleconsultaSession from "./pages/TeleconsultaSession";
 import TeleconsultaDemo from "./pages/TeleconsultaDemo";
+import MinhasTeleconsultas from "./pages/MinhasTeleconsultas";
 import CameraTest from "./pages/CameraTest";
 import TeacherClasses from "./pages/TeacherClasses";
 import TeacherClassView from "./pages/TeacherClassView";
@@ -284,6 +285,7 @@ const App = () => (
           <Route path="/teleconsultas" element={<Teleconsultas />} />
           <Route path="/teleconsulta/:sessionId" element={<TeleconsultaSession />} />
           <Route path="/teleconsulta-demo" element={<TeleconsultaDemo />} />
+          <Route path="/minhas-teleconsultas" element={<MinhasTeleconsultas />} />
           <Route path="/camera-test" element={<CameraTest />} />
           <Route path="/therapist/patients" element={<TherapistPatients />} />
           <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />

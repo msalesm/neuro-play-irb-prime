@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { TeleconsultSession } from '@/components/teleconsult/TeleconsultSession';
 import { VideoCall } from '@/components/teleconsult/VideoCall';
 import { PatientHistoryPanel } from '@/components/teleconsult/PatientHistoryPanel';
+import { WaitingRoom } from '@/components/teleconsult/WaitingRoom';
 import { Loading } from '@/components/Loading';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { History, FileText } from 'lucide-react';
+import { History, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function TeleconsultaSessionPage() {
   const { sessionId } = useParams();
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [sessionData, setSessionData] = useState<any>(null);
   const [isProfessional, setIsProfessional] = useState(false);
   const [activePanel, setActivePanel] = useState<'history' | 'session'>('history');
+  const [showWaitingRoom, setShowWaitingRoom] = useState(true);
+  const [professionalName, setProfessionalName] = useState('Profissional');
+  const [isPanelCollapsed, setIsPanelCollapsed] = useState(false);
 
   useEffect(() => {
     if (!sessionId) {
@@ -49,7 +52,18 @@ export default function TeleconsultaSessionPage() {
         return;
       }
 
-      // Check if user is admin
+      // Carregar nome do profissional
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', session.professional_id)
+        .single();
+      
+      if (profile) {
+        setProfessionalName(profile.full_name || 'Profissional');
+      }
+
+      // Verificar se usuário é admin
       const { data: userRole } = await supabase
         .from('user_roles')
         .select('role')
@@ -60,19 +74,9 @@ export default function TeleconsultaSessionPage() {
       const isAdminUser = !!userRole;
 
       setSessionData(session);
-      // Allow admin or session professional to have professional access
+      // Permitir admin ou profissional da sessão ter acesso profissional
       setIsProfessional(session.professional_id === user.id || isAdminUser);
 
-      // Update session status to in_progress
-      if (session.status === 'scheduled') {
-        await supabase
-          .from('teleorientation_sessions')
-          .update({ 
-            status: 'in_progress',
-            started_at: new Date().toISOString()
-          })
-          .eq('id', sessionId);
-      }
     } catch (error) {
       console.error('Error loading session:', error);
       toast.error('Erro ao carregar sessão');
@@ -81,13 +85,27 @@ export default function TeleconsultaSessionPage() {
     }
   };
 
+  const handleStartSession = async () => {
+    // Atualizar status da sessão
+    if (sessionData?.status === 'scheduled') {
+      await supabase
+        .from('teleorientation_sessions')
+        .update({ 
+          status: 'in_progress',
+          started_at: new Date().toISOString()
+        })
+        .eq('id', sessionId);
+    }
+    setShowWaitingRoom(false);
+  };
+
   const handleClose = () => {
-    navigate('/teleconsultas');
+    navigate(isProfessional ? '/teleconsultas' : '/minhas-teleconsultas');
   };
 
   const handleComplete = () => {
     toast.success('Teleconsulta finalizada');
-    navigate('/teleconsultas');
+    navigate(isProfessional ? '/teleconsultas' : '/minhas-teleconsultas');
   };
 
   if (loading) {
@@ -98,10 +116,24 @@ export default function TeleconsultaSessionPage() {
     return null;
   }
 
+  // Mostrar sala de espera
+  if (showWaitingRoom) {
+    return (
+      <WaitingRoom
+        patientName={sessionData.children?.name || 'Paciente'}
+        professionalName={professionalName}
+        scheduledAt={new Date(sessionData.scheduled_at)}
+        onReady={handleStartSession}
+        onCancel={handleClose}
+        isWaitingForOther={false}
+      />
+    );
+  }
+
   return (
-    <div className="fixed inset-0 bg-background z-50 flex">
-      {/* Video Area - Left Side */}
-      <div className="w-1/2 flex flex-col">
+    <div className="fixed inset-0 bg-background z-50 flex flex-col md:flex-row">
+      {/* Video Area */}
+      <div className={`flex-1 flex flex-col min-h-[40vh] md:min-h-0 ${isPanelCollapsed ? '' : 'md:w-1/2'}`}>
         <VideoCall
           sessionId={sessionId!}
           patientName={sessionData.children?.name || 'Paciente'}
@@ -110,9 +142,20 @@ export default function TeleconsultaSessionPage() {
         />
       </div>
 
+      {/* Toggle Panel Button (Desktop) */}
+      {isProfessional && (
+        <button
+          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background border border-border rounded-l-lg p-2 shadow-lg"
+          onClick={() => setIsPanelCollapsed(!isPanelCollapsed)}
+          style={{ right: isPanelCollapsed ? 0 : 'calc(50% - 1px)' }}
+        >
+          {isPanelCollapsed ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+        </button>
+      )}
+
       {/* Clinical Panel - Right Side (only for professionals) */}
-      {isProfessional ? (
-        <div className="w-1/2 flex flex-col">
+      {isProfessional && !isPanelCollapsed && (
+        <div className="flex-1 md:w-1/2 flex flex-col border-t md:border-t-0 md:border-l border-border">
           {/* Panel Toggle */}
           <div className="p-2 border-b border-border flex gap-2 bg-muted/30">
             <Button
@@ -153,13 +196,20 @@ export default function TeleconsultaSessionPage() {
             )}
           </div>
         </div>
-      ) : (
-        <div className="w-1/2 flex items-center justify-center bg-muted/30">
-          <div className="text-center p-8">
-            <h2 className="text-2xl font-bold mb-4">Teleconsulta em andamento</h2>
-            <p className="text-muted-foreground">
+      )}
+
+      {/* Patient View - Simpler interface */}
+      {!isProfessional && (
+        <div className="md:w-1/3 flex items-center justify-center bg-muted/30 p-4 md:p-8">
+          <div className="text-center max-w-md">
+            <h2 className="text-xl md:text-2xl font-bold mb-4">Teleconsulta em andamento</h2>
+            <p className="text-muted-foreground mb-6">
+              Você está conectado com {professionalName}. 
               Aguarde enquanto o profissional conduz a sessão.
             </p>
+            <Button variant="outline" onClick={handleClose}>
+              Sair da consulta
+            </Button>
           </div>
         </div>
       )}
