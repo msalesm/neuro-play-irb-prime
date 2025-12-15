@@ -74,6 +74,7 @@ export function MobileMenu() {
       title: 'Pais',
       items: [
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
+        { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
         { title: 'Mensagens', path: '/messages', icon: Mail },
         { title: 'Microlearning', path: '/training', icon: BookOpen },
         { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
