@@ -102,10 +102,8 @@ export function ScheduleTeleconsultModal({ open, onClose, onSuccess }: ScheduleT
     setLoading(true);
     try {
       const patient = patients.find(p => p.id === form.childId);
-      if (!patient?.parent_id) {
-        toast.error('Paciente não possui responsável vinculado');
-        return;
-      }
+      // Use parent_id if available, otherwise use professional's own ID for admin test cases
+      const parentId = patient?.parent_id || user?.id;
 
       const scheduledAt = new Date(`${form.date}T${form.time}`);
       const meetingUrl = `https://meet.neuroplay.app/${crypto.randomUUID().slice(0, 8)}`;
@@ -114,7 +112,7 @@ export function ScheduleTeleconsultModal({ open, onClose, onSuccess }: ScheduleT
         .from('teleorientation_sessions')
         .insert({
           professional_id: user?.id,
-          parent_id: patient.parent_id,
+          parent_id: parentId,
           child_id: form.childId,
           scheduled_at: scheduledAt.toISOString(),
           duration_minutes: parseInt(form.duration),
