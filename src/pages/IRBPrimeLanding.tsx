@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield, Download } from 'lucide-react';
+import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield, Download, Video, ClipboardList, Calendar, Activity } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import irbPrimeCareLogo from '@/assets/irb-prime-care-logo.png';
 import heroImage from '@/assets/hero-children-learning.jpg';
@@ -208,6 +208,124 @@ export default function IRBPrimeLanding() {
                       ))}
                     </div>
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Prontuário Eletrônico e Teleconsulta - DESTAQUE CLÍNICO */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-4xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#005a70]/10 text-[#005a70] text-sm font-medium mb-6">
+              <Activity className="w-4 h-4" />
+              Infraestrutura Clínica Completa
+            </div>
+            <h2 className="text-4xl font-bold text-[#0a1e35] mb-6">
+              Prontuário Eletrônico e Teleconsulta Integrada
+            </h2>
+            <p className="text-xl text-gray-600 leading-relaxed">
+              A NeuroPlay vai além dos jogos terapêuticos. Oferecemos infraestrutura clínica completa 
+              com prontuário eletrônico longitudinal e teleconsulta profissional integrada.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Prontuário Eletrônico */}
+            <Card className="border-2 border-[#005a70]/30 shadow-xl bg-white overflow-hidden">
+              <div className="h-2 bg-gradient-to-r from-[#0a1e35] to-[#005a70]" />
+              <CardContent className="p-8">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-6">
+                  <ClipboardList className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-[#0a1e35] mb-4">Prontuário Eletrônico</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Registro clínico completo e longitudinal do paciente com timeline integrada, 
+                  avaliações estruturadas em 3 blocos (cognitivo, comportamental, socioemocional), 
+                  histórico evolutivo e geração automática de relatórios.
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    'Mapa cognitivo via visualização radar',
+                    'Timeline de todas as ações clínicas',
+                    'Avaliações em 3 blocos: cognitivo, comportamental e socioemocional',
+                    'Relatórios automáticos com IA',
+                    'Logs imutáveis para auditoria LGPD'
+                  ].map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-3 text-gray-700">
+                      <CheckCircle className="w-5 h-5 text-[#005a70] flex-shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button 
+                  className="w-full mt-6 bg-gradient-to-r from-[#0a1e35] to-[#005a70]"
+                  onClick={() => navigate('/auth')}
+                >
+                  Acessar Prontuário
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Teleconsulta Integrada */}
+            <Card className="border-2 border-[#c7923e]/30 shadow-xl bg-white overflow-hidden">
+              <div className="h-2 bg-gradient-to-r from-[#c7923e] to-[#d4a54f]" />
+              <CardContent className="p-8">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#c7923e] to-[#d4a54f] rounded-2xl flex items-center justify-center mb-6">
+                  <Video className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-[#0a1e35] mb-4">Teleconsulta com Neuro</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Vídeo WebRTC nativo com interface split-screen: consulta em vídeo de um lado, 
+                  prontuário completo do paciente do outro. Anotações em tempo real, fechamento 
+                  clínico obrigatório e plano de follow-up integrado.
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    'Split-screen: vídeo + prontuário simultâneos',
+                    'Acesso ao histórico completo durante sessão',
+                    'Anotações em tempo real por bloco clínico',
+                    'Fechamento obrigatório com sumário',
+                    'Plano de follow-up integrado ao prontuário'
+                  ].map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-3 text-gray-700">
+                      <CheckCircle className="w-5 h-5 text-[#c7923e] flex-shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button 
+                  className="w-full mt-6 bg-gradient-to-r from-[#c7923e] to-[#d4a54f]"
+                  onClick={() => navigate('/auth')}
+                >
+                  Agendar Teleconsulta
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Workflow Clínico */}
+          <div className="mt-16 max-w-4xl mx-auto">
+            <Card className="border-none shadow-lg bg-gradient-to-br from-[#0a1e35] to-[#005a70] text-white">
+              <CardContent className="p-8">
+                <h3 className="text-xl font-bold mb-6 text-center">Fluxo Clínico Integrado</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {[
+                    { icon: ClipboardList, label: 'Triagem', desc: 'Avaliação inicial' },
+                    { icon: FileText, label: 'Prontuário', desc: 'Registro completo' },
+                    { icon: Video, label: 'Teleconsulta', desc: 'Sessão integrada' },
+                    { icon: Calendar, label: 'Follow-up', desc: 'Plano de ação' }
+                  ].map((step, idx) => (
+                    <div key={idx} className="text-center">
+                      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-3">
+                        <step.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <p className="font-semibold text-sm">{step.label}</p>
+                      <p className="text-xs text-white/70">{step.desc}</p>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
