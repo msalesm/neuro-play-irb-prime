@@ -3,8 +3,11 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { TeleconsultSession } from '@/components/teleconsult/TeleconsultSession';
 import { VideoCall } from '@/components/teleconsult/VideoCall';
+import { PatientHistoryPanel } from '@/components/teleconsult/PatientHistoryPanel';
 import { Loading } from '@/components/Loading';
+import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { History, FileText } from 'lucide-react';
 
 export default function TeleconsultaSessionPage() {
   const { sessionId } = useParams();
@@ -13,6 +16,7 @@ export default function TeleconsultaSessionPage() {
   const [loading, setLoading] = useState(true);
   const [sessionData, setSessionData] = useState<any>(null);
   const [isProfessional, setIsProfessional] = useState(false);
+  const [activePanel, setActivePanel] = useState<'history' | 'session'>('history');
 
   useEffect(() => {
     if (!sessionId) {
@@ -108,14 +112,46 @@ export default function TeleconsultaSessionPage() {
 
       {/* Clinical Panel - Right Side (only for professionals) */}
       {isProfessional ? (
-        <div className="w-1/2">
-          <TeleconsultSession
-            sessionId={sessionId!}
-            patientId={sessionData.child_id}
-            patientName={sessionData.children?.name || 'Paciente'}
-            onClose={handleClose}
-            onComplete={handleComplete}
-          />
+        <div className="w-1/2 flex flex-col">
+          {/* Panel Toggle */}
+          <div className="p-2 border-b border-border flex gap-2 bg-muted/30">
+            <Button
+              variant={activePanel === 'history' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setActivePanel('history')}
+              className="flex-1"
+            >
+              <History className="w-4 h-4 mr-2" />
+              Histórico
+            </Button>
+            <Button
+              variant={activePanel === 'session' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setActivePanel('session')}
+              className="flex-1"
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Prontuário
+            </Button>
+          </div>
+
+          {/* Active Panel Content */}
+          <div className="flex-1 overflow-hidden">
+            {activePanel === 'history' ? (
+              <PatientHistoryPanel
+                patientId={sessionData.child_id}
+                patientName={sessionData.children?.name || 'Paciente'}
+              />
+            ) : (
+              <TeleconsultSession
+                sessionId={sessionId!}
+                patientId={sessionData.child_id}
+                patientName={sessionData.children?.name || 'Paciente'}
+                onClose={handleClose}
+                onComplete={handleComplete}
+              />
+            )}
+          </div>
         </div>
       ) : (
         <div className="w-1/2 flex items-center justify-center bg-muted/30">
