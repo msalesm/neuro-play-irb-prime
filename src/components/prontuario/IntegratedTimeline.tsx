@@ -15,7 +15,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface TimelineEvent {
   id: string;
-  type: 'cognitive' | 'emotional' | 'routine' | 'intervention' | 'achievement';
+  type: 'cognitive' | 'emotional' | 'routine' | 'intervention' | 'achievement' | 'screening';
   title: string;
   description: string;
   timestamp: Date;
@@ -60,6 +60,12 @@ const eventTypeConfig = {
     color: 'text-[#c7923e]',
     bgColor: 'bg-[#c7923e]/10',
     label: 'Conquista'
+  },
+  screening: {
+    icon: CheckCircle,
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-500/10',
+    label: 'Triagem'
   }
 };
 
@@ -152,6 +158,31 @@ export const IntegratedTimeline = ({ childId }: IntegratedTimelineProps) => {
               timestamp: new Date(a.unlocked_at || Date.now())
             });
           }
+        });
+      }
+
+      // Fetch screenings (diagnostic tests)
+      const { data: screenings } = await supabase
+        .from('screenings')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(15);
+
+      if (screenings) {
+        const screeningLabels: Record<string, string> = {
+          'tea': 'TEA (Autismo)',
+          'tdah': 'TDAH',
+          'dislexia': 'Dislexia'
+        };
+        screenings.forEach(s => {
+          allEvents.push({
+            id: `screening-${s.id}`,
+            type: 'screening',
+            title: `Triagem: ${screeningLabels[s.type] || s.type}`,
+            description: `Score: ${Number(s.score).toFixed(0)}%${s.recommended_action ? ` | ${s.recommended_action}` : ''}`,
+            timestamp: new Date(s.created_at || Date.now()),
+            metadata: { score: Number(s.score) }
+          });
         });
       }
 

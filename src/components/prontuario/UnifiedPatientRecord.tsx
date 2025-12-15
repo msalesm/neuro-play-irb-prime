@@ -8,7 +8,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { 
   User, Brain, Heart, Activity, FileText, 
   Download, RefreshCw, Calendar, Clock,
-  TrendingUp, AlertCircle, Target, Users, Sparkles, Video
+  TrendingUp, AlertCircle, Target, Users, Sparkles, Video,
+  ClipboardCheck
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -22,6 +23,7 @@ import { MultidisciplinaryPanel } from './MultidisciplinaryPanel';
 import { IntegratedTimeline } from './IntegratedTimeline';
 import { AIReportGenerator } from './AIReportGenerator';
 import { TeleconsultTab } from './TeleconsultTab';
+import { DiagnosticsTab } from './DiagnosticsTab';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 
 interface UnifiedPatientRecordProps {
@@ -198,6 +200,10 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
             <Video className="w-3 h-3" />
             <span className="hidden md:inline">Teleconsulta</span>
           </TabsTrigger>
+          <TabsTrigger value="diagnostics" className="flex items-center gap-1 text-xs px-2">
+            <ClipboardCheck className="w-3 h-3" />
+            <span className="hidden md:inline">Diagnósticos</span>
+          </TabsTrigger>
           <TabsTrigger value="reports" className="flex items-center gap-1 text-xs px-2">
             <Sparkles className="w-3 h-3" />
             <span className="hidden md:inline">Relatórios IA</span>
@@ -352,6 +358,11 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
         {/* Teleconsult Tab */}
         <TabsContent value="teleconsult" className="mt-6">
           <TeleconsultTab childId={childId} />
+        </TabsContent>
+
+        {/* Diagnostics Tab */}
+        <TabsContent value="diagnostics" className="mt-6">
+          <DiagnosticsTab childId={childId} />
         </TabsContent>
 
         {/* Reports Tab */}
