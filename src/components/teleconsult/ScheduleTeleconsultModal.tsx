@@ -41,24 +41,49 @@ export function ScheduleTeleconsultModal({ open, onClose, onSuccess }: ScheduleT
 
   const loadPatients = async () => {
     try {
-      const { data, error } = await supabase
-        .from('child_access')
-        .select(`
-          child_id,
-          children (id, name, parent_id)
-        `)
-        .eq('professional_id', user?.id)
-        .eq('is_active', true);
+      // Check if user is admin
+      const { data: userRole } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user?.id)
+        .eq('role', 'admin')
+        .maybeSingle();
 
-      if (error) throw error;
+      const isAdmin = !!userRole;
 
-      const patientList = (data || [])
-        .filter((a: any) => a.children)
-        .map((a: any) => ({
-          id: a.children.id,
-          name: a.children.name,
-          parent_id: a.children.parent_id
-        }));
+      let patientList: Patient[] = [];
+
+      if (isAdmin) {
+        // Admin can see all children
+        const { data: allChildren, error } = await supabase
+          .from('children')
+          .select('id, name, parent_id')
+          .eq('is_active', true)
+          .order('name');
+
+        if (error) throw error;
+        patientList = allChildren || [];
+      } else {
+        // Regular professional sees only their linked patients
+        const { data, error } = await supabase
+          .from('child_access')
+          .select(`
+            child_id,
+            children (id, name, parent_id)
+          `)
+          .eq('professional_id', user?.id)
+          .eq('is_active', true);
+
+        if (error) throw error;
+
+        patientList = (data || [])
+          .filter((a: any) => a.children)
+          .map((a: any) => ({
+            id: a.children.id,
+            name: a.children.name,
+            parent_id: a.children.parent_id
+          }));
+      }
 
       setPatients(patientList);
     } catch (error) {

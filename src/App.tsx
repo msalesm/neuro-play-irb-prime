@@ -78,6 +78,7 @@ import TherapistPatients from "./pages/TherapistPatients";
 import TherapistDashboard from "./pages/TherapistDashboard";
 import Teleconsultas from "./pages/Teleconsultas";
 import TeleconsultaSession from "./pages/TeleconsultaSession";
+import CameraTest from "./pages/CameraTest";
 import TeacherClasses from "./pages/TeacherClasses";
 import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
@@ -281,6 +282,7 @@ const App = () => (
           {/* Therapist Routes */}
           <Route path="/teleconsultas" element={<Teleconsultas />} />
           <Route path="/teleconsulta/:sessionId" element={<TeleconsultaSession />} />
+          <Route path="/camera-test" element={<CameraTest />} />
           <Route path="/therapist/patients" element={<TherapistPatients />} />
           <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
           <Route path="/prontuario/:childId" element={<ProntuarioUnificado />} />
