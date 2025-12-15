@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Video, Calendar, Clock, User, 
-  AlertCircle, CheckCircle, ArrowRight
+  AlertCircle, CheckCircle, ArrowRight, Plus
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format, isToday, isTomorrow, isPast, addMinutes } from 'date-fns';
@@ -143,9 +143,15 @@ export default function MinhasTeleconsultas() {
   return (
     <ModernPageLayout>
       <div className="container mx-auto px-4 py-6 space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold">Minhas Teleconsultas</h1>
-          <p className="text-muted-foreground">Acompanhe e participe das suas consultas online</p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold">Minhas Teleconsultas</h1>
+            <p className="text-muted-foreground">Acompanhe e participe das suas consultas online</p>
+          </div>
+          <Button onClick={() => navigate('/agendar-teleconsulta')} className="gap-2">
+            <Video className="w-4 h-4" />
+            Agendar Teleconsulta
+          </Button>
         </div>
 
         {/* Consulta de Hoje - Destaque */}
@@ -277,11 +283,15 @@ export default function MinhasTeleconsultas() {
         {sessions.length === 0 && (
           <Card className="text-center py-12">
             <CardContent>
-              <AlertCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+              <Video className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
               <h3 className="text-lg font-semibold mb-2">Nenhuma teleconsulta agendada</h3>
-              <p className="text-muted-foreground">
-                Aguarde o profissional agendar uma teleconsulta para você.
+              <p className="text-muted-foreground mb-4">
+                Agende uma teleconsulta com seu terapeuta
               </p>
+              <Button onClick={() => navigate('/agendar-teleconsulta')} className="gap-2">
+                <Plus className="w-4 h-4" />
+                Agendar Teleconsulta
+              </Button>
             </CardContent>
           </Card>
         )}
