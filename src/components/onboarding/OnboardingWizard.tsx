@@ -275,7 +275,7 @@ export function OnboardingWizard() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <CardTitle className="text-2xl font-bold text-irb-petrol">
-                Bem-vindo à NeuroPlay
+                Bem-vindo ao Neuro IRB Prime
               </CardTitle>
               <CardDescription className="text-base mt-1">
                 Configure seu perfil terapêutico em {data.selectedRole === 'parent' ? '5' : '4'} etapas

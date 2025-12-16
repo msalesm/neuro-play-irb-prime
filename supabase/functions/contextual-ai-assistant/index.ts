@@ -125,7 +125,7 @@ serve(async (req) => {
 });
 
 function buildContextualPrompt(currentPage: string): string {
-  const basePrompt = `Você é o assistente IA da NeuroPlay, uma plataforma clínico-terapêutica para crianças neurodivergentes (TEA, TDAH, Dislexia).
+  const basePrompt = `Você é o assistente IA do Neuro IRB Prime, uma plataforma clínico-terapêutica para crianças neurodivergentes (TEA, TDAH, Dislexia).
 
 REGRAS IMPORTANTES:
 - Seja conciso e direto (máximo 3 parágrafos)

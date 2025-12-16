@@ -304,7 +304,7 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
       doc.setFontSize(8);
       doc.setTextColor(128, 128, 128);
       doc.text(
-        'NeuroPlay - Relatório gerado automaticamente | Este documento não substitui avaliação profissional',
+        'Neuro IRB Prime - Relatório gerado automaticamente | Este documento não substitui avaliação profissional',
         pageWidth / 2,
         285,
         { align: 'center' }

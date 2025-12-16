@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const MOBILE_TOUR_KEY = 'neuroplay-mobile-tour-completed';
+const MOBILE_TOUR_KEY = 'neuro-irb-prime-mobile-tour-completed';
 
 export function useMobileTour() {
   const [runTour, setRunTour] = useState(false);

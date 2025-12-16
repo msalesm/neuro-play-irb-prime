@@ -333,8 +333,8 @@ export function AppSidebar() {
             </div>
             {open && (
               <div className="flex flex-col">
-                <span className="font-semibold text-sm text-sidebar-foreground">NeuroPlay</span>
-                <span className="text-xs text-sidebar-foreground/60">Forge</span>
+                <span className="font-semibold text-sm text-sidebar-foreground">Neuro IRB Prime</span>
+                <span className="text-xs text-sidebar-foreground/60">Plataforma Clínica</span>
               </div>
             )}
           </Link>

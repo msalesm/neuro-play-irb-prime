@@ -17,8 +17,8 @@ export default defineConfig(({ mode }) => ({
       registerType: "autoUpdate",
       includeAssets: ["favicon.png", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
       manifest: {
-        name: "NeuroPlay - Plataforma Clínica Digital",
-        short_name: "NeuroPlay",
+        name: "Neuro IRB Prime - Plataforma Clínica Digital",
+        short_name: "Neuro IRB Prime",
         description: "Diagnóstico, cuidado e desenvolvimento humano em uma única plataforma clínica digital.",
         theme_color: "#0a1e35",
         background_color: "#0a1e35",

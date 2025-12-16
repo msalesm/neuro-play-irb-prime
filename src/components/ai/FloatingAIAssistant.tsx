@@ -231,7 +231,7 @@ export function FloatingAIAssistant() {
                           <div className="space-y-4">
                             <div className="text-center text-muted-foreground text-sm">
                               <Bot className="h-12 w-12 mx-auto mb-3 text-primary/50" />
-                              <p>Olá! Sou o assistente IA da NeuroPlay.</p>
+                              <p>Olá! Sou o assistente IA do Neuro IRB Prime.</p>
                               <p className="mt-1">Como posso ajudar?</p>
                             </div>
                             

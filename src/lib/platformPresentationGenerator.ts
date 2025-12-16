@@ -76,7 +76,7 @@ export const generatePlatformPresentation = () => {
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(42);
   doc.setFont('helvetica', 'bold');
-  doc.text('NeuroPlay', pageWidth / 2, 80, { align: 'center' });
+  doc.text('Neuro IRB Prime', pageWidth / 2, 80, { align: 'center' });
   
   doc.setFontSize(16);
   doc.setFont('helvetica', 'normal');

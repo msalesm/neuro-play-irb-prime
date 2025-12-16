@@ -240,7 +240,7 @@ ${developmentalStage ? `- Estágio: ${developmentalStage}` : ''}
 Seja técnico, direto e orientado a resultados mensuráveis.`;
 
     } else {
-      systemPrompt = `Você é um assistente terapêutico da plataforma NeuroPlay IRB Prime, especializado em desenvolvimento cognitivo infantil.
+      systemPrompt = `Você é um assistente terapêutico da plataforma Neuro IRB Prime, especializado em desenvolvimento cognitivo infantil.
 
 Forneça orientações objetivas e práticas sobre TEA, TDAH e Dislexia. Seja claro, empático e sempre recomende avaliação profissional quando apropriado.
 

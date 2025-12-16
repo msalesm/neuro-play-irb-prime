@@ -6,7 +6,7 @@ const tourSteps: Step[] = [
     target: 'body',
     content: (
       <div className="text-center">
-        <h2 className="text-xl font-bold mb-2">Bem-vindo ao NeuroPlay! 🎮</h2>
+        <h2 className="text-xl font-bold mb-2">Bem-vindo ao Neuro IRB Prime! 🎮</h2>
         <p className="text-sm text-muted-foreground">
           Vamos fazer um tour rápido pelos principais recursos da plataforma no mobile.
         </p>

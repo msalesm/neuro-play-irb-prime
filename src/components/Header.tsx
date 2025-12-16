@@ -34,13 +34,13 @@ export const Header = () => {
             to="/landing" 
             className="flex items-center gap-2 sm:gap-3" 
             onClick={closeMobileMenu}
-            aria-label="NeuroPlay - Página inicial"
+            aria-label="Neuro IRB Prime - Página inicial"
           >
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
               <Brain className="h-4 w-4 sm:h-6 sm:w-6 text-white" aria-hidden="true" />
             </div>
             <span className="font-heading text-xl sm:text-2xl font-bold text-white">
-              NeuroPlay
+              Neuro IRB Prime
             </span>
           </Link>
 
