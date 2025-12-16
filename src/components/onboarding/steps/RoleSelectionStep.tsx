@@ -57,7 +57,7 @@ export function RoleSelectionStep({ data, updateData }: Props) {
       <div className="text-center">
         <h3 className="text-2xl font-bold text-irb-petrol mb-2">Qual é o seu perfil?</h3>
         <p className="text-muted-foreground">
-          Selecione como você usará a plataforma NeuroPlay
+          Selecione como você usará a plataforma Neuro IRB Prime
         </p>
       </div>
 

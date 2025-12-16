@@ -102,7 +102,7 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
         target: 'body',
         content: (
           <div>
-            <h2 className="text-xl font-bold mb-2">Bem-vindo ao NeuroPlay! 🎉</h2>
+            <h2 className="text-xl font-bold mb-2">Bem-vindo ao Neuro IRB Prime! 🎉</h2>
             <p>Vamos fazer um tour rápido pelas principais funcionalidades desta página.</p>
           </div>
         ),

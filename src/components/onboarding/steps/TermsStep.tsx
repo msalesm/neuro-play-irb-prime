@@ -48,7 +48,7 @@ export function TermsStep({ data, updateData }: Props) {
               
               <p className="font-semibold text-irb-petrol">4. Propriedade Intelectual</p>
               <p>
-                Todo o conteúdo da plataforma é propriedade da NeuroPlay e seus parceiros, protegido por direitos autorais.
+                Todo o conteúdo da plataforma é propriedade do Neuro IRB Prime e seus parceiros, protegido por direitos autorais.
               </p>
             </div>
           </ScrollArea>

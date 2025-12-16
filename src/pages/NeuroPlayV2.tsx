@@ -22,7 +22,7 @@ export default function NeuroPlayV2() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Neuro Play
+              Neuro IRB Prime
             </h1>
             
             <p className="text-2xl md:text-3xl text-muted-foreground font-medium">

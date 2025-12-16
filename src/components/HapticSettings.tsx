@@ -55,7 +55,7 @@ export function HapticSettings() {
                 </p>
                 <p className="text-sm text-blue-800 dark:text-blue-300">
                   Para ter feedback háptico funcionando no iPhone, é necessário transformar 
-                  o NeuroPlay em um aplicativo nativo (disponível na App Store). 
+                  o Neuro IRB Prime em um aplicativo nativo (disponível na App Store). 
                   Entre em contato com o suporte para saber mais.
                 </p>
               </div>

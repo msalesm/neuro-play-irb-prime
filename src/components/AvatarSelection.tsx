@@ -58,7 +58,7 @@ export const AvatarSelection = ({ onSelect, selectedAvatar }: AvatarSelectionPro
           Escolha seu Avatar
         </h3>
         <p className="text-muted-foreground">
-          Selecione um personagem que represente você no NeuroPlay
+          Selecione um personagem que represente você no Neuro IRB Prime
         </p>
       </div>
 

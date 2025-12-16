@@ -214,7 +214,7 @@ export function useBehavioralReport(childProfileId?: string) {
         doc.setFontSize(8);
         doc.setTextColor(128, 128, 128);
         doc.text(
-          `Página ${i} de ${totalPages} | NeuroPlay IRB Prime | Relatório Confidencial`,
+          `Página ${i} de ${totalPages} | Neuro IRB Prime | Relatório Confidencial`,
           doc.internal.pageSize.width / 2,
           pageHeight - 10,
           { align: 'center' }

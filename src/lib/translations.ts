@@ -54,7 +54,7 @@ export const translations = {
     
     // Hero Section
     hero: {
-      title: 'NeuroPlay',
+      title: 'Neuro IRB Prime',
       subtitle: 'Jogos Terapêuticos para Neurodiversidade',
       description: 'Desenvolva suas habilidades cognitivas através de jogos terapêuticos personalizados baseados em evidências científicas.',
       cta: 'Explorar Jogos',
@@ -670,7 +670,7 @@ export const translations = {
     
     // Hero Section
     hero: {
-      title: 'NeuroPlay',
+      title: 'Neuro IRB Prime',
       subtitle: 'Therapeutic Games for Neurodiversity',
       description: 'Develop your cognitive skills through personalized therapeutic games based on scientific evidence.',
       cta: 'Explore Games',
@@ -1282,7 +1282,7 @@ export const translations = {
     
     // Hero Section
     hero: {
-      title: 'NeuroPlay',
+      title: 'Neuro IRB Prime',
       subtitle: 'Juegos Terapéuticos para la Neurodiversidad',
       description: 'Desarrolla tus habilidades cognitivas a través de juegos terapéuticos personalizados basados en evidencia científica.',
       cta: 'Explorar Juegos',

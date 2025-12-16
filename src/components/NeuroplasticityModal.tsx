@@ -334,7 +334,7 @@ export function NeuroplasticityModal({ open, onOpenChange }: NeuroplasticityModa
               <CardContent className="text-sm text-muted-foreground space-y-2">
                 <p>
                   <strong>Baseado no App Clever:</strong> Essas métricas são inspiradas no sistema de avaliação 
-                  cognitiva do aplicativo Clever, adaptadas para o contexto terapêutico do NeuroPlay.
+                  cognitiva do aplicativo Clever, adaptadas para o contexto terapêutico do Neuro IRB Prime.
                 </p>
                 <p>
                   Cada habilidade é desenvolvida através de diferentes jogos e exercícios, 

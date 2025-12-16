@@ -108,7 +108,7 @@ export default function Auth() {
       } else {
         toast({
           title: "Login realizado com sucesso!",
-          description: "Bem-vindo ao NeuroPlay",
+          description: "Bem-vindo ao Neuro IRB Prime",
         });
         // Redirect will be handled by useEffect after user state updates
       }

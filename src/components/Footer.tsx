@@ -14,8 +14,8 @@ export const Footer = () => {
                 <Brain className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-heading text-2xl font-bold">GameNeuro</h3>
-                <p className="text-sm opacity-80">Neuro.Lux Ecosystem</p>
+                <h3 className="font-heading text-2xl font-bold">Neuro IRB Prime</h3>
+                <p className="text-sm opacity-80">Plataforma Clínica Digital</p>
               </div>
             </div>
             <p className="text-lg opacity-90 mb-6 leading-relaxed">
@@ -46,7 +46,7 @@ export const Footer = () => {
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-primary" />
-                <span className="opacity-80">contato@gameneuro.com</span>
+                <span className="opacity-80">contato@neuroirbprime.com</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-primary" />

@@ -59,7 +59,7 @@ export function NeuralHero() {
 
         {/* Main Headline */}
         <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in">
-          Descubra o poder do seu cérebro brincando
+          Neuro IRB Prime
         </h1>
 
         {/* Subtitle */}

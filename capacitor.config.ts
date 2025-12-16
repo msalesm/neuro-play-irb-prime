@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.irbprime.neuroplay',
-  appName: 'NeuroPlay',
+  appId: 'com.irbprime.neuroirbprime',
+  appName: 'Neuro IRB Prime',
   webDir: 'dist',
   // For production: remove server block or leave url empty
   // For development: uncomment to enable hot-reload

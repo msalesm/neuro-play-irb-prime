@@ -26,7 +26,7 @@ export const AudioEngineDemo: React.FC = () => {
   const audio = useAudioEngine();
   const [volume, setVolume] = useState(50);
   const [isEnabled, setIsEnabled] = useState(true);
-  const [ttsText, setTtsText] = useState('Bem-vindo ao NeuroPlay! Este é um teste do sistema de áudio.');
+  const [ttsText, setTtsText] = useState('Bem-vindo ao Neuro IRB Prime! Este é um teste do sistema de áudio.');
 
   const handleVolumeChange = (value: number[]) => {
     const newVolume = value[0];

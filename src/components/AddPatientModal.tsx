@@ -168,7 +168,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
   const shareViaWhatsApp = () => {
     if (inviteData) {
       const message = encodeURIComponent(
-        `Olá! Você foi convidado(a) para acompanhar o progresso de ${inviteData.childName} na plataforma NeuroPlay.\n\nClique no link para aceitar o convite e criar sua conta:\n${inviteData.link}\n\nCódigo de convite: ${inviteData.code}`
+        `Olá! Você foi convidado(a) para acompanhar o progresso de ${inviteData.childName} na plataforma Neuro IRB Prime.\n\nClique no link para aceitar o convite e criar sua conta:\n${inviteData.link}\n\nCódigo de convite: ${inviteData.code}`
       );
       window.open(`https://wa.me/?text=${message}`, '_blank');
     }
