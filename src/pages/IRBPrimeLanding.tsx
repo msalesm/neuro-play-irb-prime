@@ -48,7 +48,7 @@ export default function IRBPrimeLanding() {
             </div>
             
             <h1 className="text-5xl md:text-6xl font-bold text-[#0a1e35] mb-6 leading-tight">
-              NeuroPlay
+              Neuro IRB Prime
               <br />
               <span className="text-[#005a70]">por que você merece sempre o melhor</span>
             </h1>
@@ -122,7 +122,7 @@ export default function IRBPrimeLanding() {
                   <div className="space-y-6">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c7923e]/20 text-[#c7923e] text-sm font-medium">
                       <Sparkles className="w-4 h-4" />
-                      Novidade NeuroPlay 2.0
+                      Novidade Neuro IRB Prime 2.0
                     </div>
                     
                     <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
@@ -227,7 +227,7 @@ export default function IRBPrimeLanding() {
               Prontuário Eletrônico e Teleconsulta Integrada
             </h2>
             <p className="text-xl text-gray-600 leading-relaxed">
-              A NeuroPlay vai além dos jogos terapêuticos. Oferecemos infraestrutura clínica completa 
+              O Neuro IRB Prime vai além dos jogos terapêuticos. Oferecemos infraestrutura clínica completa 
               com prontuário eletrônico longitudinal e teleconsulta profissional integrada.
             </p>
           </div>
@@ -344,7 +344,7 @@ export default function IRBPrimeLanding() {
               </h2>
               
               <p className="text-lg text-gray-600 leading-relaxed">
-                A plataforma NeuroPlay, desenvolvida em parceria com a IRB Prime Care, nasceu com um propósito claro: 
+                A plataforma Neuro IRB Prime, desenvolvida em parceria com a IRB Prime Care, nasceu com um propósito claro: 
                 transformar o desenvolvimento cognitivo de crianças através de tecnologia adaptativa e baseada em ciência.
               </p>
 
@@ -384,7 +384,7 @@ export default function IRBPrimeLanding() {
               Plataforma Completa para o Desenvolvimento Cognitivo
             </h2>
             <p className="text-xl text-gray-600 leading-relaxed">
-              A NeuroPlay é uma plataforma clínica-terapêutica completa desenvolvida em parceria com IRB Prime Care, 
+              O Neuro IRB Prime é uma plataforma clínica-terapêutica completa desenvolvida em parceria com IRB Prime Care, 
               oferecendo tecnologia de ponta para crianças neurodiversas, seus pais e profissionais de saúde.
             </p>
           </div>
@@ -681,7 +681,7 @@ export default function IRBPrimeLanding() {
             <h2 className="text-4xl font-bold text-[#0a1e35] mb-6">Nossa Missão</h2>
             <p className="text-xl text-gray-600 leading-relaxed">
               A cada dia levarmos a mais crianças e famílias o nosso atendimento especializado. 
-              A NeuroPlay IRB Prime Care investe no que há de mais moderno em tecnologia educacional, 
+              O Neuro IRB Prime investe no que há de mais moderno em tecnologia educacional, 
               porém com o foco de valorizar cada criança e profissional que trabalha conosco.
             </p>
           </div>
