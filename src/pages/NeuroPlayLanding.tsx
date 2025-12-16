@@ -35,7 +35,7 @@ const HeroSection = () => (
     <div className="container mx-auto px-6 py-20 relative z-10">
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
-          NeuroPlay.
+          Neuro IRB Prime.
           <br />
           <span className="text-white/90 text-2xl md:text-3xl lg:text-4xl font-normal">
             Diagnóstico, cuidado e desenvolvimento humano em uma única plataforma.
@@ -84,16 +84,16 @@ const HeroSection = () => (
   </section>
 );
 
-// O que é a NeuroPlay
+// O que é o Neuro IRB Prime
 const AboutSection = () => (
   <section className="py-20 bg-background">
     <div className="container mx-auto px-6">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
-          O que é a NeuroPlay
+          O que é o Neuro IRB Prime
         </h2>
         <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-          A NeuroPlay é uma plataforma digital integrada que conecta <strong>diagnóstico</strong>, 
+          O Neuro IRB Prime é uma plataforma digital integrada que conecta <strong>diagnóstico</strong>, 
           <strong> acompanhamento clínico</strong> e <strong>desenvolvimento cognitivo</strong> em um único ambiente. 
           Criada para profissionais, instituições e governos que precisam de dados confiáveis, 
           processos claros e escala operacional.
@@ -208,7 +208,7 @@ const EvolutionSection = () => (
           Uma plataforma construída por fases. Entregue como um todo.
         </h2>
         <p className="text-lg text-muted-foreground mb-10 leading-relaxed">
-          A NeuroPlay foi desenvolvida em <strong>seis fases progressivas</strong>, cada uma adicionando 
+          O Neuro IRB Prime foi desenvolvido em <strong>seis fases progressivas</strong>, cada uma adicionando 
           camadas reais de valor. Hoje, todas essas fases operam de forma integrada, formando uma 
           única plataforma sólida e pronta para uso institucional.
         </p>
@@ -307,7 +307,7 @@ const ScaleSection = () => (
           Pronta para escala
         </h2>
         <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-          A NeuroPlay possui arquitetura preparada para integrações com sistemas externos, 
+          O Neuro IRB Prime possui arquitetura preparada para integrações com sistemas externos, 
           ERPs de saúde, prontuários legados e plataformas institucionais. É uma base tecnológica 
           pensada para crescer sem perder controle, dados ou qualidade.
         </p>
@@ -338,7 +338,7 @@ const CTASection = () => (
     <div className="container mx-auto px-6">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-          NeuroPlay é infraestrutura digital para diagnóstico e desenvolvimento humano.
+          Neuro IRB Prime é infraestrutura digital para diagnóstico e desenvolvimento humano.
         </h2>
         <p className="text-xl text-white/80 mb-10">
           Não é um experimento. É um sistema pronto.
@@ -374,7 +374,7 @@ const PDFInfoSection = () => (
         <Lock className="w-8 h-8 text-muted-foreground mx-auto mb-4" />
         <p className="text-sm text-muted-foreground">
           O PDF institucional apresenta em detalhe tudo o que foi implementado da Fase 1 à Fase 6, 
-          incluindo funcionalidades, benefícios e visão completa da plataforma NeuroPlay como solução de longo prazo.
+          incluindo funcionalidades, benefícios e visão completa da plataforma Neuro IRB Prime como solução de longo prazo.
         </p>
       </div>
     </div>
