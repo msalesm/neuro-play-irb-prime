@@ -180,6 +180,8 @@ export function AppSidebar() {
       title: 'Inventário de Habilidades',
       path: '/inventario-habilidades',
       icon: ClipboardList,
+      badge: 'Novo',
+      highlight: true,
     },
   ];
 
@@ -371,15 +373,24 @@ export function AppSidebar() {
             )}
             <SidebarGroupContent>
               <SidebarMenu>
-                {group.items.map((item) => (
+                {group.items.map((item: any) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
                       <Link 
                         to={item.path}
-                        className={`text-sidebar-foreground ${isActive(item.path) ? 'bg-sidebar-accent text-sidebar-accent-foreground' : 'hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground'}`}
+                        className={`text-sidebar-foreground ${item.highlight ? 'bg-primary/10 border border-primary/30' : ''} ${isActive(item.path) ? 'bg-sidebar-accent text-sidebar-accent-foreground' : 'hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground'}`}
                       >
-                        <item.icon className="w-4 h-4" />
-                        {open && <span>{item.title}</span>}
+                        <item.icon className={`w-4 h-4 ${item.highlight ? 'text-primary' : ''}`} />
+                        {open && (
+                          <span className="flex items-center gap-2">
+                            {item.title}
+                            {item.badge && (
+                              <Badge variant="default" className="text-[10px] px-1.5 py-0 h-4 bg-primary text-primary-foreground">
+                                {item.badge}
+                              </Badge>
+                            )}
+                          </span>
+                        )}
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
