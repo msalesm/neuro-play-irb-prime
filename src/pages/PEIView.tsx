@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { generatePEIPdf, getClassificationLabel, getDefaultBNCCSkills } from '@/lib/peiPdfGenerator';
 import { toast } from 'sonner';
+import { SkillsInventory } from '@/components/pei/SkillsInventory';
 
 interface PEIGoal {
   id: string;
@@ -266,8 +267,9 @@ const getStatusLabel = (status: string) => {
           </div>
 
           <Tabs defaultValue="goals" className="space-y-4">
-            <TabsList>
+            <TabsList className="flex-wrap">
               <TabsTrigger value="goals">Metas e Objetivos</TabsTrigger>
+              <TabsTrigger value="skills">Inventário de Habilidades</TabsTrigger>
               <TabsTrigger value="accommodations">Acomodações</TabsTrigger>
               <TabsTrigger value="strategies">Estratégias</TabsTrigger>
               <TabsTrigger value="progress">Notas de Progresso</TabsTrigger>
@@ -391,6 +393,14 @@ const getStatusLabel = (status: string) => {
                   </CardContent>
                 </Card>
               )}
+            </TabsContent>
+
+            <TabsContent value="skills">
+              <SkillsInventory 
+                childId={patientId || ''} 
+                peiPlanId={currentPlan?.id}
+                childName={patientId}
+              />
             </TabsContent>
 
             <TabsContent value="accommodations" className="space-y-4">
