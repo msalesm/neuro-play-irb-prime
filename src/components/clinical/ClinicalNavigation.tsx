@@ -13,31 +13,25 @@ interface NavItem {
   description: string;
 }
 
-// Navegação clínica focada em diagnóstico, priorização e decisão
+// Navegação clínica simplificada - PACIENTES como foco central
 const clinicalNavigation: NavItem[] = [
   {
-    title: 'Prontuário Eletrônico',
-    path: '/clinical',
+    title: 'Pacientes',
+    path: '/therapist/patients',
+    icon: Users,
+    description: 'Prontuário, PEI e acompanhamento'
+  },
+  {
+    title: 'Agenda',
+    path: '/agenda',
     icon: FileText,
-    description: 'História clínica longitudinal'
+    description: 'Agenda de atendimentos'
   },
   {
     title: 'Teleconsultas',
     path: '/teleconsultas',
     icon: Stethoscope,
     description: 'Consultas com registro obrigatório'
-  },
-  {
-    title: 'Pacientes',
-    path: '/therapist/patients',
-    icon: Users,
-    description: 'Lista de pacientes e priorização'
-  },
-  {
-    title: 'Triagem',
-    path: '/inventario-habilidades',
-    icon: ClipboardCheck,
-    description: 'Inventário de habilidades'
   },
   {
     title: 'Avaliações',
@@ -50,12 +44,6 @@ const clinicalNavigation: NavItem[] = [
     path: '/reports',
     icon: BarChart3,
     description: 'Todos os relatórios clínicos'
-  },
-  {
-    title: 'Fila de Atendimento',
-    path: '/operations',
-    icon: TrendingUp,
-    description: 'Priorização por risco'
   },
 ];
 
