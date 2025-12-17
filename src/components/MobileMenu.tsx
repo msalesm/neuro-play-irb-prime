@@ -58,15 +58,15 @@ export function MobileMenu() {
       title: 'Área dos Pais',
       items: [
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
-        { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck },
-        { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
+        { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck, badge: 'Novo' },
+        { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope, badge: 'Novo' },
         { title: 'Relatórios', path: '/reports', icon: BarChart3 },
         { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
         { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
-        { title: 'Mensagens', path: '/messages', icon: Mail },
-        { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem },
+        { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
+        { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem, badge: 'Novo' },
         { title: 'Microlearning', path: '/training', icon: BookOpen },
-        { title: 'Minha Assinatura', path: '/subscription', icon: CreditCard },
+        { title: 'Minha Assinatura', path: '/subscription', icon: CreditCard, badge: 'Novo' },
       ],
     });
   }
@@ -76,14 +76,14 @@ export function MobileMenu() {
     menuSections.push({
       title: 'Área Clínica',
       items: [
-        { title: 'Agenda do Dia', path: '/agenda', icon: Calendar },
+        { title: 'Agenda do Dia', path: '/agenda', icon: Calendar, badge: 'Novo' },
         { title: 'Meus Pacientes', path: '/therapist/patients', icon: Users },
         { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
         { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
         { title: 'PEI Inteligente', path: '/pei', icon: Brain },
         { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
         { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck, badge: 'Novo' },
-        { title: 'Mensagens', path: '/messages', icon: Mail },
+        { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
         { title: 'Analytics', path: '/professional-analytics', icon: BarChart3 },
       ],
     });
@@ -124,8 +124,8 @@ export function MobileMenu() {
     menuSections.push({
       title: 'Administração',
       items: [
-        { title: 'Centro de Operações', path: '/operations', icon: TrendingUp },
-        { title: 'Dashboard Institucional', path: '/institutional', icon: Building2 },
+        { title: 'Centro de Operações', path: '/operations', icon: TrendingUp, badge: 'Novo' },
+        { title: 'Dashboard Institucional', path: '/institutional', icon: Building2, badge: 'Novo' },
         { title: 'Dashboard Geral', path: '/admin/network', icon: BarChart3 },
         { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
         { title: 'Gerenciador de Conteúdo', path: '/content-manager', icon: Folder },
