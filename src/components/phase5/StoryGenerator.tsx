@@ -205,8 +205,8 @@ export function StoryGenerator({
                     <div className="aspect-video bg-muted rounded-lg mb-3 flex items-center justify-center text-muted-foreground">
                       <BookOpen className="h-8 w-8" />
                     </div>
-                    <h4 className="font-semibold mb-1">{step.title}</h4>
-                    <p className="text-sm text-muted-foreground">{step.description}</p>
+                    <h4 className="font-semibold mb-1 leading-normal pb-1">{step.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed pb-2" style={{ lineHeight: 1.6 }}>{step.description}</p>
                   </CardContent>
                 </Card>
               ))}

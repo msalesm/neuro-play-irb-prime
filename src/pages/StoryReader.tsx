@@ -200,8 +200,8 @@ export default function StoryReader() {
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <h2 
-                      className="text-xl font-bold text-foreground"
-                      style={{ fontSize: `${1.25 * profile.fontScale}rem` }}
+                      className="text-xl font-bold text-foreground leading-normal pb-1"
+                      style={{ fontSize: `${1.25 * profile.fontScale}rem`, lineHeight: 1.4 }}
                     >
                       {currentStep.title}
                     </h2>
