@@ -22,6 +22,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { useClinicalReports } from '@/hooks/useClinicalReports';
 import { ClinicalReportCard } from './ClinicalReportCard';
+import { ReportDetailDialog } from './reports/ReportDetailDialog';
 import { toast } from 'sonner';
 
 interface ClinicalStats {
@@ -43,6 +44,7 @@ export default function ClinicalDashboard() {
     activeProfiles: 0
   });
   const [loading, setLoading] = useState(true);
+  const [selectedReport, setSelectedReport] = useState<typeof reports[0] | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -517,8 +519,8 @@ export default function ClinicalDashboard() {
                   <ClinicalReportCard
                     key={report.id}
                     report={report}
-                    onView={() => toast.info('Visualização detalhada em desenvolvimento')}
-                    onDownload={() => toast.info('Download de PDF em desenvolvimento')}
+                    onView={() => setSelectedReport(report)}
+                    onDownload={() => setSelectedReport(report)}
                   />
                 ))}
               </div>
@@ -543,6 +545,13 @@ export default function ClinicalDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Report Detail Dialog */}
+      <ReportDetailDialog
+        report={selectedReport}
+        open={!!selectedReport}
+        onOpenChange={(open) => !open && setSelectedReport(null)}
+      />
     </div>
   );
 }
