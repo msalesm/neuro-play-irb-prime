@@ -136,7 +136,7 @@ REGRAS IMPORTANTES:
 - Quando apropriado, sugira ações específicas na plataforma
 
 FUNCIONALIDADES DA PLATAFORMA:
-- Sistema Planeta Azul: 5 planetas temáticos (Aurora-TEA, Vortex-TDAH, Lumen-Dislexia, Calm-Emocional, Order-Executivo)
+- Planeta Azul: 5 planetas temáticos (TEA, TDAH, Dislexia, Regulação Emocional, Funções Executivas)
 - Jogos cognitivos terapêuticos com métricas em tempo real
 - Rotinas e histórias sociais ilustradas
 - Chat terapêutico com check-ins emocionais
@@ -171,13 +171,13 @@ CONTEXTO ATUAL: Central de IA Contextual
   if (currentPage.includes('sistema-planeta-azul') || currentPage.includes('planeta')) {
     return `${basePrompt}
 
-CONTEXTO ATUAL: Sistema Planeta Azul
+CONTEXTO ATUAL: Planeta Azul
 - Foco: explicar o sistema de gamificação terapêutica
-- Aurora (TEA): memória visual, padrões, sequências
-- Vortex (TDAH): atenção, controle inibitório, timing
-- Lumen (Dislexia): consciência fonológica, leitura
-- Calm: regulação emocional, respiração
-- Order: funções executivas, planejamento
+- TEA: memória visual, padrões, sequências, cognição social
+- TDAH: atenção, controle inibitório, timing
+- Dislexia: consciência fonológica, leitura
+- Regulação Emocional: respiração, mindfulness
+- Funções Executivas: planejamento, organização
 - Sugira o planeta mais adequado baseado nas necessidades`;
   }
   

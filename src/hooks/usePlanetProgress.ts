@@ -127,14 +127,14 @@ export const usePlanetProgress = (childId: string | null) => {
 
   const mapGameToPlanet = (gameId: string): string => {
     const gameMapping: Record<string, string> = {
-      // Planeta Aurora (TEA)
+      // Planeta TEA
       'cosmic-sequence': 'aurora',
       'emotion-lab': 'aurora',
       'social-scenarios': 'aurora',
       'sensory-flow': 'aurora',
       'theory-of-mind': 'aurora',
       
-      // Planeta Vortex (TDAH)
+      // Planeta TDAH
       'tower-defense': 'vortex',
       'stack-tower': 'vortex',
       'crystal-match': 'vortex',
@@ -147,18 +147,18 @@ export const usePlanetProgress = (childId: string | null) => {
       'foco-rapido': 'vortex',
       'foco-rapido-phases': 'vortex',
       
-      // Planeta Lumen (Dislexia)
+      // Planeta Dislexia
       'phonological-processing': 'lumen',
       'caca-letras': 'lumen',
       'silaba-magica': 'lumen',
       'contador-historias': 'lumen',
       
-      // Planeta Calm (Regulação Emocional)
+      // Planeta Regulação Emocional
       'mindful-breath': 'calm',
       'emotional-weather': 'calm',
       'balance-quest': 'calm',
       
-      // Planeta Order (Funções Executivas)
+      // Planeta Funções Executivas
       'memory-workload': 'order',
       'cognitive-flexibility': 'order',
       'cognitive-flexibility-phases': 'order',

@@ -147,7 +147,7 @@ export const generatePlatformPresentation = () => {
   addBullet('Triagem Unificada NeuroPlay (TUNP) - 6 dimensões neurodesenvolvimentais');
   addBullet('Prontuário eletrônico com timeline clínica');
   addBullet('Dashboards especializados por role (pais, terapeutas, professores, rede)');
-  addBullet('Sistema Planeta Azul com jogos terapêuticos cognitivos');
+  addBullet('Planeta Azul com jogos terapêuticos cognitivos');
   addBullet('Histórias sociais ilustradas com acessibilidade');
   addBullet('Chatbot terapêutico com IA contextualizada por idade');
   addBullet('Análise preditiva de regressões comportamentais');

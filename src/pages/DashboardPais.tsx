@@ -767,7 +767,7 @@ export default function DashboardPais() {
                       <Sparkles className="w-6 h-6 text-[#005a70]" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">Sistema Planeta Azul</h3>
+                      <h3 className="font-semibold">Planeta Azul</h3>
                       <p className="text-sm text-muted-foreground">Universo de jogos terapêuticos</p>
                     </div>
                   </div>
@@ -839,7 +839,7 @@ export default function DashboardPais() {
                         🌍
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-lg">Planeta Aurora</h4>
+                        <h4 className="font-semibold text-lg">TEA</h4>
                         <p className="text-sm text-muted-foreground">Foco em Atenção e Cognição Social</p>
                         <Progress value={65} className="mt-2" />
                       </div>

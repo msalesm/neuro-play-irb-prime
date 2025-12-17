@@ -61,7 +61,7 @@ export function AppSidebar() {
       icon: Home,
     },
     {
-      title: 'Meus Planetas',
+      title: 'Planeta Azul',
       path: '/sistema-planeta-azul',
       icon: Sparkles,
     },

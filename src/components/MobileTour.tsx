@@ -45,9 +45,9 @@ const tourSteps: Step[] = [
     target: '[data-mobile-tour="bottom-nav"] a:first-child',
     content: (
       <div>
-        <h3 className="font-semibold mb-2">Sistema Planeta Azul 🌍</h3>
+        <h3 className="font-semibold mb-2">Planeta Azul 🌍</h3>
         <p className="text-sm text-muted-foreground">
-          Explore os 5 planetas terapêuticos: Aurora (TEA), Vortex (TDAH), Lumen (Dislexia), Calm (Regulação Emocional) e Order (Funções Executivas).
+          Explore os 5 planetas terapêuticos: TEA, TDAH, Dislexia, Regulação Emocional e Funções Executivas.
         </p>
       </div>
     ),

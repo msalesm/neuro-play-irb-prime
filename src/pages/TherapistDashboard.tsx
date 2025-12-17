@@ -381,11 +381,11 @@ export default function TherapistDashboard() {
                 <CardContent>
                   <div className="space-y-6">
                     {[
-                      { name: 'Aurora (TEA)', progress: 65, color: 'bg-purple-500' },
-                      { name: 'Vortex (TDAH)', progress: 78, color: 'bg-blue-500' },
-                      { name: 'Lumen (Dislexia)', progress: 52, color: 'bg-yellow-500' },
-                      { name: 'Calm (Emoções)', progress: 70, color: 'bg-green-500' },
-                      { name: 'Order (Executivo)', progress: 60, color: 'bg-orange-500' }
+                      { name: 'TEA', progress: 65, color: 'bg-purple-500' },
+                      { name: 'TDAH', progress: 78, color: 'bg-blue-500' },
+                      { name: 'Dislexia', progress: 52, color: 'bg-yellow-500' },
+                      { name: 'Regulação Emocional', progress: 70, color: 'bg-green-500' },
+                      { name: 'Funções Executivas', progress: 60, color: 'bg-orange-500' }
                     ].map((planeta, idx) => (
                       <div key={idx}>
                         <div className="flex items-center justify-between mb-2">

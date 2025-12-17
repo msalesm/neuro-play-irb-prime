@@ -146,11 +146,11 @@ export default function AdminNetworkDashboard() {
 
       // Mock planet usage data
       setPlanetUsage([
-        { name: 'Aurora (TEA)', sessions: 450, color: COLORS[0] },
-        { name: 'Vortex (TDAH)', sessions: 380, color: COLORS[1] },
-        { name: 'Lumen (Dislexia)', sessions: 320, color: COLORS[2] },
-        { name: 'Calm (Regulação)', sessions: 290, color: COLORS[3] },
-        { name: 'Order (Executivas)', sessions: 260, color: COLORS[4] },
+        { name: 'TEA', sessions: 450, color: COLORS[0] },
+        { name: 'TDAH', sessions: 380, color: COLORS[1] },
+        { name: 'Dislexia', sessions: 320, color: COLORS[2] },
+        { name: 'Regulação Emocional', sessions: 290, color: COLORS[3] },
+        { name: 'Funções Executivas', sessions: 260, color: COLORS[4] },
       ]);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
