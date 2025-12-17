@@ -5,9 +5,91 @@ export async function fetchSessionsData(
   supabase: SupabaseClient,
   userId: string,
   startDate: string,
-  endDate: string
+  endDate: string,
+  childId?: string
 ): Promise<SessionsQueryResult> {
-  // Fetch learning sessions
+  // If childId is provided, prefer game_sessions for that child
+  if (childId) {
+    console.log(`📊 Fetching game_sessions for child ${childId}...`);
+
+    const { data: gameSessions, error } = await supabase
+      .from('game_sessions')
+      .select(`
+        id,
+        child_profile_id,
+        game_id,
+        created_at,
+        completed_at,
+        completed,
+        score,
+        accuracy_percentage,
+        duration_seconds,
+        difficulty_level,
+        avg_reaction_time_ms,
+        cognitive_games ( name, cognitive_domains )
+      `)
+      .eq('child_profile_id', childId)
+      .gte('created_at', startDate)
+      .lte('created_at', endDate)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching game sessions (child):', error);
+      return { sessions: [], trailsData: {} };
+    }
+
+    if (!gameSessions || gameSessions.length === 0) {
+      console.log('No game sessions found for child');
+      return { sessions: [], trailsData: {} };
+    }
+
+    console.log(`✅ Found ${gameSessions.length} game_sessions for child`);
+
+    // Transform to SessionData with a cognitive category derived from cognitive_domains
+    const sessions = gameSessions.map((s: any) => {
+      const domain = Array.isArray(s.cognitive_games?.cognitive_domains) && s.cognitive_games.cognitive_domains.length > 0
+        ? String(s.cognitive_games.cognitive_domains[0])
+        : 'general';
+
+      return {
+        id: s.id,
+        user_id: userId,
+        trail_id: null,
+        created_at: s.created_at,
+        completed_at: s.completed_at || s.created_at,
+        cognitive_category: domain,
+        current_level: s.difficulty_level || 1,
+        total_xp: s.score || 0,
+        performance_data: {
+          accuracy: typeof s.accuracy_percentage === 'number' ? s.accuracy_percentage : Number(s.accuracy_percentage ?? 0),
+          score: s.score || 0,
+          reaction_time: s.avg_reaction_time_ms || 0,
+          duration: s.duration_seconds || 0,
+          game_name: s.cognitive_games?.name,
+        },
+        struggles_detected: (typeof s.accuracy_percentage === 'number' ? s.accuracy_percentage : Number(s.accuracy_percentage ?? 0)) < 60 ? ['low_accuracy'] : []
+      };
+    });
+
+    const trailsData: { [category: string]: any } = {};
+    for (const domain of [...new Set(sessions.map((x) => x.cognitive_category))]) {
+      const domainSessions = sessions.filter((x) => x.cognitive_category === domain);
+      const accuracies = domainSessions
+        .map((x) => (typeof x.performance_data.accuracy === 'number' ? x.performance_data.accuracy : null))
+        .filter((v): v is number => typeof v === 'number' && Number.isFinite(v));
+      const avgAccuracy = accuracies.length ? accuracies.reduce((a, b) => a + b, 0) / accuracies.length : 0;
+
+      trailsData[domain] = {
+        initialLevel: 1,
+        currentLevel: Math.min(Math.ceil(avgAccuracy / 20) + 1, 10),
+        totalXP: domainSessions.reduce((sum, x) => sum + (x.total_xp || 0), 0),
+      };
+    }
+
+    return { sessions, trailsData };
+  }
+
+  // Fetch learning sessions (user-based)
   const { data: sessions, error: sessionsError } = await supabase
     .from('learning_sessions')
     .select(`
@@ -43,20 +125,21 @@ export async function fetchSessionsData(
       const pd = session.performance_data || {};
       const accuracy = pd.accuracy ?? pd.accuracy_percentage ?? pd.accuracyPercentage ?? 0;
       const reactionTime = pd.avg_reaction_time_ms ?? pd.reaction_time ?? pd.reactionTime ?? 0;
-      
+
       return {
         id: session.id,
         user_id: session.user_id,
         trail_id: null,
         created_at: session.created_at,
-        completed_at: pd.completed_at || session.created_at,
-        cognitive_category: session.game_type || 'general',
-        current_level: pd.difficulty || 1,
-        total_xp: pd.score || (session.session_duration_seconds ? Math.round(session.session_duration_seconds / 10) : 0),
+        completed_at: (pd.completed_at as string) || session.created_at,
+        cognitive_category: (pd.cognitive_area as string) || session.game_type || 'general',
+        current_level: (pd.difficulty_level as number) || (pd.difficulty as number) || 1,
+        total_xp: (pd.score as number) || (session.session_duration_seconds ? Math.round(session.session_duration_seconds / 10) : 0),
         performance_data: {
           accuracy: accuracy,
-          score: pd.score || 0,
-          reaction_time: reactionTime,
+          score: (pd.score as number) || 0,
+          reaction_time: (pd.reaction_time_ms as number) || reactionTime,
+          duration: session.session_duration_seconds || 0,
         },
         struggles_detected: accuracy < 60 ? ['low_accuracy'] : []
       };
@@ -65,7 +148,7 @@ export async function fetchSessionsData(
     // Create trails data summary
     const trailsData: { [category: string]: any } = {};
     const categories = [...new Set(enrichedSessions.map(s => s.cognitive_category))];
-    
+
     categories.forEach(category => {
       const categorySessions = enrichedSessions.filter(s => s.cognitive_category === category);
       const avgAccuracy = categorySessions.reduce((sum, s) => sum + (s.performance_data.accuracy || 0), 0) / categorySessions.length;
@@ -383,12 +466,13 @@ export async function fetchAllAvailableData(
   supabase: SupabaseClient,
   userId: string,
   startDate: string,
-  endDate: string
+  endDate: string,
+  childId?: string
 ): Promise<{ sessions: SessionsQueryResult; screenings: SessionsQueryResult; insights: SessionsQueryResult }> {
   console.log('🔍 Fetching all available data sources...');
   
   const [sessions, screenings, insights] = await Promise.all([
-    fetchSessionsData(supabase, userId, startDate, endDate),
+    fetchSessionsData(supabase, userId, startDate, endDate, childId),
     fetchScreeningsData(supabase, userId, startDate, endDate),
     fetchBehavioralInsightsData(supabase, userId, startDate, endDate)
   ]);

@@ -1,8 +1,9 @@
 export interface ReportRequest {
   userId: string;
+  childId?: string;
   startDate: string;
   endDate: string;
-  reportType: 'comprehensive' | 'progress' | 'diagnostic';
+  reportType: 'clinical' | 'pedagogical' | 'familiar' | 'comprehensive' | 'behavioral' | 'progress';
 }
 
 export interface ReportResponse {
