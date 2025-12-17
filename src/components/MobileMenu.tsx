@@ -60,7 +60,7 @@ export function MobileMenu() {
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
         { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck, badge: 'Novo' },
         { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope, badge: 'Novo' },
-        { title: 'Relatórios', path: '/reports', icon: BarChart3 },
+        { title: 'Relatório Familiar', path: '/reports', icon: FileText },
         { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
         { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
         { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
