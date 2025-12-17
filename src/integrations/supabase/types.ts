@@ -6558,6 +6558,153 @@ export type Database = {
           },
         ]
       }
+      skills_inventory: {
+        Row: {
+          aee_teacher_name: string | null
+          arts_motor_coordination: Json | null
+          assessment_date: string | null
+          assessor_id: string | null
+          body_image: Json | null
+          caregiver_name: string | null
+          child_id: string | null
+          communication: Json | null
+          completion_percentage: number | null
+          created_at: string | null
+          diagnosis: string | null
+          grade: string | null
+          id: string
+          identity_autonomy_literacy: Json | null
+          math_concepts: Json | null
+          motor_independence: Json | null
+          no_count: number | null
+          notes: string | null
+          object_localization: Json | null
+          partial_count: number | null
+          pei_plan_id: string | null
+          school_year: string | null
+          senses: Json | null
+          shift: string | null
+          size_concepts: Json | null
+          socialization: Json | null
+          spatial_temporal_orientation: Json | null
+          status: string | null
+          teacher_name: string | null
+          time_measurement: Json | null
+          total_items: number | null
+          updated_at: string | null
+          writing_motor_coordination: Json | null
+          yes_count: number | null
+        }
+        Insert: {
+          aee_teacher_name?: string | null
+          arts_motor_coordination?: Json | null
+          assessment_date?: string | null
+          assessor_id?: string | null
+          body_image?: Json | null
+          caregiver_name?: string | null
+          child_id?: string | null
+          communication?: Json | null
+          completion_percentage?: number | null
+          created_at?: string | null
+          diagnosis?: string | null
+          grade?: string | null
+          id?: string
+          identity_autonomy_literacy?: Json | null
+          math_concepts?: Json | null
+          motor_independence?: Json | null
+          no_count?: number | null
+          notes?: string | null
+          object_localization?: Json | null
+          partial_count?: number | null
+          pei_plan_id?: string | null
+          school_year?: string | null
+          senses?: Json | null
+          shift?: string | null
+          size_concepts?: Json | null
+          socialization?: Json | null
+          spatial_temporal_orientation?: Json | null
+          status?: string | null
+          teacher_name?: string | null
+          time_measurement?: Json | null
+          total_items?: number | null
+          updated_at?: string | null
+          writing_motor_coordination?: Json | null
+          yes_count?: number | null
+        }
+        Update: {
+          aee_teacher_name?: string | null
+          arts_motor_coordination?: Json | null
+          assessment_date?: string | null
+          assessor_id?: string | null
+          body_image?: Json | null
+          caregiver_name?: string | null
+          child_id?: string | null
+          communication?: Json | null
+          completion_percentage?: number | null
+          created_at?: string | null
+          diagnosis?: string | null
+          grade?: string | null
+          id?: string
+          identity_autonomy_literacy?: Json | null
+          math_concepts?: Json | null
+          motor_independence?: Json | null
+          no_count?: number | null
+          notes?: string | null
+          object_localization?: Json | null
+          partial_count?: number | null
+          pei_plan_id?: string | null
+          school_year?: string | null
+          senses?: Json | null
+          shift?: string | null
+          size_concepts?: Json | null
+          socialization?: Json | null
+          spatial_temporal_orientation?: Json | null
+          status?: string | null
+          teacher_name?: string | null
+          time_measurement?: Json | null
+          total_items?: number | null
+          updated_at?: string | null
+          writing_motor_coordination?: Json | null
+          yes_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skills_inventory_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "skills_inventory_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "skills_inventory_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "skills_inventory_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "skills_inventory_pei_plan_id_fkey"
+            columns: ["pei_plan_id"]
+            isOneToOne: false
+            referencedRelation: "pei_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sla_configurations: {
         Row: {
           alert_threshold_percent: number | null
