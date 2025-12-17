@@ -8,7 +8,7 @@ export const focusForestPhases: GamePhase[] = [
     description: 'Plante sua primeira árvore da atenção',
     difficulty: 1,
     objectives: [
-      'Manter foco por 5 minutos',
+      'Manter foco por 1 minuto',
       'Sem distrações',
       'Cultivar primeira árvore'
     ],
@@ -16,7 +16,7 @@ export const focusForestPhases: GamePhase[] = [
     isCompleted: false,
     stars: 0,
     gameConfig: {
-      duration: 300,
+      duration: 60,
       customSettings: {
         treeType: 'sapling',
         distractionLevel: 'low'
@@ -35,8 +35,8 @@ export const focusForestPhases: GamePhase[] = [
     description: 'Cultive múltiplas árvores jovens',
     difficulty: 2,
     objectives: [
-      'Focar por 10 minutos',
-      'Cultivar 3 árvores',
+      'Focar por 2 minutos',
+      'Cultivar 2 árvores',
       'Taxa de conclusão > 80%'
     ],
     isLocked: true,
@@ -47,10 +47,10 @@ export const focusForestPhases: GamePhase[] = [
       minStars: 1
     },
     gameConfig: {
-      duration: 600,
+      duration: 120,
       customSettings: {
         treeType: 'young',
-        forestSize: 3,
+        forestSize: 2,
         distractionLevel: 'medium'
       }
     },
@@ -67,8 +67,8 @@ export const focusForestPhases: GamePhase[] = [
     description: 'Desenvolva um pequeno bosque',
     difficulty: 2,
     objectives: [
-      'Sessão de 15 minutos',
-      'Cultivar 5 árvores maduras',
+      'Sessão de 2.5 minutos',
+      'Cultivar 3 árvores maduras',
       'Manter streak de 3 dias'
     ],
     isLocked: true,
@@ -79,10 +79,10 @@ export const focusForestPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 900,
+      duration: 150,
       customSettings: {
         treeType: 'mature',
-        forestSize: 5,
+        forestSize: 3,
         distractionLevel: 'medium'
       }
     },
@@ -99,8 +99,8 @@ export const focusForestPhases: GamePhase[] = [
     description: 'Crie uma floresta densa e próspera',
     difficulty: 3,
     objectives: [
-      'Sessão de 20 minutos',
-      'Cultivar 8 árvores',
+      'Sessão de 3 minutos',
+      'Cultivar 4 árvores',
       'Desbloquear árvores especiais'
     ],
     isLocked: true,
@@ -111,10 +111,10 @@ export const focusForestPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 1200,
+      duration: 180,
       customSettings: {
         treeType: 'special',
-        forestSize: 8,
+        forestSize: 4,
         distractionLevel: 'high',
         specialTrees: true
       }
@@ -132,8 +132,8 @@ export const focusForestPhases: GamePhase[] = [
     description: 'Construa um refúgio de tranquilidade',
     difficulty: 4,
     objectives: [
-      'Sessão de 30 minutos',
-      'Cultivar 12 árvores variadas',
+      'Sessão de 4 minutos',
+      'Cultivar 5 árvores variadas',
       'Streak de 7 dias'
     ],
     isLocked: true,
@@ -144,10 +144,10 @@ export const focusForestPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 1800,
+      duration: 240,
       customSettings: {
         treeType: 'ancient',
-        forestSize: 12,
+        forestSize: 5,
         distractionLevel: 'high',
         specialTrees: true,
         weatherEffects: true
@@ -166,8 +166,8 @@ export const focusForestPhases: GamePhase[] = [
     description: 'Cultive a floresta lendária',
     difficulty: 5,
     objectives: [
-      'Sessão de 45 minutos',
-      'Cultivar 20 árvores místicas',
+      'Sessão de 5 minutos',
+      'Cultivar 6 árvores místicas',
       'Desbloquear todas as espécies'
     ],
     isLocked: true,
@@ -178,10 +178,10 @@ export const focusForestPhases: GamePhase[] = [
       minStars: 3
     },
     gameConfig: {
-      duration: 2700,
+      duration: 300,
       customSettings: {
         treeType: 'legendary',
-        forestSize: 20,
+        forestSize: 6,
         distractionLevel: 'extreme',
         allFeatures: true
       }
