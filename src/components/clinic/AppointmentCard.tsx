@@ -93,6 +93,14 @@ export function AppointmentCard({
               <Badge variant={status.variant} className="text-xs">
                 {status.label}
               </Badge>
+              {appointment.service_mode && (
+                <Badge 
+                  variant={appointment.service_mode === 'premium' ? 'default' : 'secondary'}
+                  className="text-xs"
+                >
+                  {appointment.service_mode === 'premium' ? '🌟 Premium' : '👥 Grupo'}
+                </Badge>
+              )}
             </div>
 
             <div className="space-y-1">

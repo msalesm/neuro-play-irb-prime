@@ -40,6 +40,7 @@ const formSchema = z.object({
   parent_id: z.string().optional(),
   professional_id: z.string().min(1, 'Selecione um profissional'),
   appointment_type_id: z.string().optional(),
+  service_mode: z.enum(['premium', 'standard']).default('premium'),
   scheduled_date: z.date({ required_error: 'Selecione uma data' }),
   scheduled_time: z.string().min(1, 'Informe o horário'),
   internal_notes: z.string().optional(),
@@ -57,6 +58,7 @@ interface AppointmentFormProps {
     parent_id?: string;
     professional_id: string;
     appointment_type_id?: string;
+    service_mode: 'premium' | 'standard';
     scheduled_date: string;
     scheduled_time: string;
     internal_notes?: string;
@@ -83,6 +85,7 @@ export function AppointmentForm({
       scheduled_date: initialDate || new Date(),
       scheduled_time: '08:00',
       professional_id: initialProfessional || '',
+      service_mode: 'premium',
     },
   });
 
@@ -114,6 +117,7 @@ export function AppointmentForm({
       parent_id: selectedChild?.parent_id || data.parent_id,
       professional_id: data.professional_id,
       appointment_type_id: data.appointment_type_id,
+      service_mode: data.service_mode,
       scheduled_date: format(data.scheduled_date, 'yyyy-MM-dd'),
       scheduled_time: data.scheduled_time,
       internal_notes: data.internal_notes,
@@ -181,6 +185,38 @@ export function AppointmentForm({
                           {prof.full_name}
                         </SelectItem>
                       ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="service_mode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Modalidade de Atendimento *</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione a modalidade" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="premium">
+                        <div className="flex flex-col">
+                          <span className="font-medium">🌟 Premium (Individual)</span>
+                          <span className="text-xs text-muted-foreground">Atendimento personalizado 1:1</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="standard">
+                        <div className="flex flex-col">
+                          <span className="font-medium">👥 Padrão (Grupo)</span>
+                          <span className="text-xs text-muted-foreground">Até 4 pacientes por sala</span>
+                        </div>
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
