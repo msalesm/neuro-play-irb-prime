@@ -8,16 +8,16 @@ export const executiveProcessingPhases: GamePhase[] = [
     description: 'Aprenda a inibir respostas automáticas',
     difficulty: 1,
     objectives: [
-      'Responder corretamente a 10 sinais',
+      'Responder corretamente a 8 sinais',
       'Evitar 3 erros impulsivos',
-      'Completar em menos de 2 minutos'
+      'Completar em menos de 1 minuto'
     ],
     isLocked: false,
     isCompleted: false,
     stars: 0,
     gameConfig: {
-      duration: 120,
-      targetCount: 10,
+      duration: 60,
+      targetCount: 8,
       speedMultiplier: 0.7,
       rulesEnabled: ['go-nogo-basic']
     },
@@ -46,8 +46,8 @@ export const executiveProcessingPhases: GamePhase[] = [
       minStars: 1
     },
     gameConfig: {
-      duration: 180,
-      targetCount: 15,
+      duration: 90,
+      targetCount: 10,
       speedMultiplier: 0.85,
       rulesEnabled: ['go-nogo-intermediate']
     },
@@ -75,8 +75,8 @@ export const executiveProcessingPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 240,
-      targetCount: 20,
+      duration: 90,
+      targetCount: 12,
       speedMultiplier: 1.0,
       rulesEnabled: ['rule-switching', 'conflicting-stimuli']
     },
@@ -106,8 +106,8 @@ export const executiveProcessingPhases: GamePhase[] = [
       minAccuracy: 88
     },
     gameConfig: {
-      duration: 180,
-      targetCount: 30,
+      duration: 90,
+      targetCount: 15,
       speedMultiplier: 1.3,
       rulesEnabled: ['high-speed', 'conflicting-stimuli']
     },
@@ -136,8 +136,8 @@ export const executiveProcessingPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 300,
-      targetCount: 35,
+      duration: 120,
+      targetCount: 18,
       speedMultiplier: 1.2,
       rulesEnabled: ['triple-rule', 'conflicting-stimuli', 'variable-timing']
     },
@@ -167,8 +167,8 @@ export const executiveProcessingPhases: GamePhase[] = [
       minAccuracy: 92
     },
     gameConfig: {
-      duration: 360,
-      targetCount: 40,
+      duration: 150,
+      targetCount: 20,
       speedMultiplier: 1.4,
       rulesEnabled: ['master-challenge', 'all-distractors', 'adaptive-difficulty']
     },

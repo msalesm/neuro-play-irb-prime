@@ -9,15 +9,15 @@ export const focoRapidoPhases: GamePhase[] = [
     difficulty: 1,
     objectives: [
       'Reagir em menos de 1000ms',
-      'Acertar 15 alvos',
+      'Acertar 10 alvos',
       'Precisão > 75%'
     ],
     isLocked: false,
     isCompleted: false,
     stars: 0,
     gameConfig: {
-      duration: 120,
-      targetCount: 15,
+      duration: 60,
+      targetCount: 10,
       speedMultiplier: 0.6,
       rulesEnabled: ['basic-speed']
     },
@@ -35,7 +35,7 @@ export const focoRapidoPhases: GamePhase[] = [
     difficulty: 2,
     objectives: [
       'Tempo médio < 800ms',
-      'Acertar 20 alvos',
+      'Acertar 12 alvos',
       'Precisão > 80%'
     ],
     isLocked: true,
@@ -46,8 +46,8 @@ export const focoRapidoPhases: GamePhase[] = [
       minStars: 1
     },
     gameConfig: {
-      duration: 150,
-      targetCount: 20,
+      duration: 75,
+      targetCount: 12,
       speedMultiplier: 0.8,
       rulesEnabled: ['medium-speed']
     },
@@ -64,7 +64,7 @@ export const focoRapidoPhases: GamePhase[] = [
     difficulty: 3,
     objectives: [
       'Tempo médio < 600ms',
-      'Acertar 25 alvos móveis',
+      'Acertar 15 alvos móveis',
       'Precisão > 85%'
     ],
     isLocked: true,
@@ -75,8 +75,8 @@ export const focoRapidoPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 180,
-      targetCount: 25,
+      duration: 90,
+      targetCount: 15,
       speedMultiplier: 1.0,
       rulesEnabled: ['moving-targets', 'precision']
     },
@@ -94,7 +94,7 @@ export const focoRapidoPhases: GamePhase[] = [
     difficulty: 4,
     objectives: [
       'Tempo médio < 500ms',
-      'Acertar 30 alvos complexos',
+      'Acertar 18 alvos complexos',
       'Precisão > 88%'
     ],
     isLocked: true,
@@ -106,8 +106,8 @@ export const focoRapidoPhases: GamePhase[] = [
       minAccuracy: 85
     },
     gameConfig: {
-      duration: 180,
-      targetCount: 30,
+      duration: 90,
+      targetCount: 18,
       speedMultiplier: 1.2,
       rulesEnabled: ['complex-targets', 'rapid-decision']
     },
@@ -125,7 +125,7 @@ export const focoRapidoPhases: GamePhase[] = [
     difficulty: 4,
     objectives: [
       'Tempo médio < 400ms',
-      'Acertar 35 alvos',
+      'Acertar 20 alvos',
       'Precisão > 90%'
     ],
     isLocked: true,
@@ -136,8 +136,8 @@ export const focoRapidoPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 200,
-      targetCount: 35,
+      duration: 100,
+      targetCount: 20,
       speedMultiplier: 1.4,
       rulesEnabled: ['extreme-speed', 'multiple-stimuli']
     },
@@ -155,7 +155,7 @@ export const focoRapidoPhases: GamePhase[] = [
     difficulty: 5,
     objectives: [
       'Tempo médio < 350ms',
-      'Acertar 40 alvos imprevisíveis',
+      'Acertar 25 alvos imprevisíveis',
       'Precisão > 92%'
     ],
     isLocked: true,
@@ -167,8 +167,8 @@ export const focoRapidoPhases: GamePhase[] = [
       minAccuracy: 90
     },
     gameConfig: {
-      duration: 240,
-      targetCount: 40,
+      duration: 120,
+      targetCount: 25,
       speedMultiplier: 1.6,
       rulesEnabled: ['maximum-speed', 'unpredictable', 'master-challenge']
     },

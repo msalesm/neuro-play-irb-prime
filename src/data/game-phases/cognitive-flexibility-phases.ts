@@ -9,7 +9,7 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
     description: 'Aprenda a combinar cartas por cor. Regra única e simples para começar.',
     difficulty: 1,
     objectives: [
-      'Complete 10 tentativas',
+      'Complete 8 tentativas',
       'Alcance 70% de precisão',
       'Compreenda a regra de combinação por cor'
     ],
@@ -17,8 +17,8 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
     isCompleted: false,
     stars: 0,
     gameConfig: {
-      duration: 120,
-      targetCount: 10,
+      duration: 60,
+      targetCount: 8,
       speedMultiplier: 0.8,
       rulesEnabled: ['color'],
       customSettings: {
@@ -39,10 +39,10 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
     id: 'flex-phase-2',
     phaseNumber: 2,
     name: 'Dança das Formas',
-    description: 'Agora combine por cor OU forma. A regra alterna a cada 5 acertos.',
+    description: 'Agora combine por cor OU forma. A regra alterna a cada 4 acertos.',
     difficulty: 2,
     objectives: [
-      'Complete 15 tentativas',
+      'Complete 10 tentativas',
       'Alcance 70% de precisão',
       'Adapte-se a 2 mudanças de regra'
     ],
@@ -54,13 +54,13 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
       minStars: 1
     },
     gameConfig: {
-      duration: 180,
-      targetCount: 15,
+      duration: 90,
+      targetCount: 10,
       speedMultiplier: 0.9,
       rulesEnabled: ['color', 'shape'],
       customSettings: {
         showHints: true,
-        ruleChangeAfter: 5,
+        ruleChangeAfter: 4,
         maxErrors: 7
       }
     },
@@ -79,10 +79,9 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
     description: 'Combine por cor, forma OU número. Mudanças mais frequentes!',
     difficulty: 3,
     objectives: [
-      'Complete 20 tentativas',
+      'Complete 12 tentativas',
       'Alcance 75% de precisão',
-      'Adapte-se a 4 mudanças de regra',
-      'Mantenha menos de 3 erros consecutivos'
+      'Adapte-se a 3 mudanças de regra'
     ],
     isLocked: true,
     isCompleted: false,
@@ -93,8 +92,8 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
       minAccuracy: 0.7
     },
     gameConfig: {
-      duration: 240,
-      targetCount: 20,
+      duration: 90,
+      targetCount: 12,
       speedMultiplier: 1.0,
       rulesEnabled: ['color', 'shape', 'number'],
       customSettings: {
@@ -119,10 +118,9 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
     description: 'Regras mudam sem aviso prévio. Confie apenas no feedback!',
     difficulty: 4,
     objectives: [
-      'Complete 25 tentativas',
+      'Complete 15 tentativas',
       'Alcance 80% de precisão',
-      'Adapte-se a 6 mudanças de regra',
-      'Menos de 20% de erros perseverativos'
+      'Adapte-se a 4 mudanças de regra'
     ],
     isLocked: true,
     isCompleted: false,
@@ -133,8 +131,8 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
       minAccuracy: 0.75
     },
     gameConfig: {
-      duration: 300,
-      targetCount: 25,
+      duration: 120,
+      targetCount: 15,
       speedMultiplier: 1.1,
       rulesEnabled: ['color', 'shape', 'number'],
       customSettings: {
@@ -156,14 +154,12 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
     id: 'flex-phase-5',
     phaseNumber: 5,
     name: 'Vórtice Supremo',
-    description: 'Teste final: 30 tentativas, mudanças rápidas, pressão temporal!',
+    description: 'Teste final: 18 tentativas, mudanças rápidas, pressão temporal!',
     difficulty: 5,
     objectives: [
-      'Complete 30 tentativas',
+      'Complete 18 tentativas',
       'Alcance 85% de precisão',
-      'Adapte-se a 8 mudanças de regra',
-      'Custo de troca < 150ms',
-      'Zero erros perseverativos no final'
+      'Adapte-se a 6 mudanças de regra'
     ],
     isLocked: true,
     isCompleted: false,
@@ -174,8 +170,8 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
       minAccuracy: 0.8
     },
     gameConfig: {
-      duration: 360,
-      targetCount: 30,
+      duration: 150,
+      targetCount: 18,
       speedMultiplier: 1.3,
       rulesEnabled: ['color', 'shape', 'number'],
       customSettings: {
@@ -195,15 +191,15 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
     }
   },
 
-  // FASE 6: Desafio Infinito (Opcional)
+  // FASE 6: Desafio Final
   {
     id: 'flex-phase-6',
     phaseNumber: 6,
-    name: 'Infinitude Adaptativa',
-    description: 'Modo desafio: quanto tempo você aguenta? Dificuldade progressiva!',
+    name: 'Desafio Adaptativo',
+    description: 'Modo desafio: dificuldade progressiva em 3 minutos!',
     difficulty: 5,
     objectives: [
-      'Sobreviva o máximo de tempo possível',
+      'Sobreviva 3 minutos',
       'Mantenha 90% de precisão',
       'Estabeleça novo recorde pessoal'
     ],
@@ -215,16 +211,15 @@ export const cognitiveFlexibilityPhases: GamePhase[] = [
       minStars: 3
     },
     gameConfig: {
-      duration: -1, // infinite
-      targetCount: -1,
+      duration: 180,
+      targetCount: 20,
       speedMultiplier: 1.5,
       rulesEnabled: ['color', 'shape', 'number'],
       customSettings: {
         showHints: false,
         silentRuleChanges: true,
         adaptiveDifficulty: true,
-        survivalMode: true,
-        maxErrors: 3 // game over after 3 errors
+        maxErrors: 3
       }
     },
     rewards: {
