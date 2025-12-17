@@ -44,7 +44,7 @@ export function MobileMenu() {
       title: 'Meu Espaço',
       items: [
         { title: 'Meu Dia', path: '/student-hub', icon: Home },
-        { title: 'Meus Planetas', path: '/sistema-planeta-azul', icon: Sparkles },
+        { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
         { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
         { title: 'Minhas Conquistas', path: '/learning-dashboard', icon: Trophy },
         { title: 'Meu Perfil', path: '/profile', icon: User },
@@ -95,7 +95,7 @@ export function MobileMenu() {
       title: 'Pacientes',
       items: [
         { title: 'Meu Dia', path: '/student-hub', icon: Home },
-        { title: 'Meus Planetas', path: '/sistema-planeta-azul', icon: Sparkles },
+        { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
         { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
         { title: 'Conquistas', path: '/learning-dashboard', icon: Trophy },
       ],

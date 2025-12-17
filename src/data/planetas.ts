@@ -3,7 +3,7 @@ import type { Planeta } from '@/types/planeta';
 export const planetas: Planeta[] = [
   {
     id: 'aurora',
-    nome: 'Planeta Aurora',
+    nome: 'TEA',
     diagnostico: 'TEA',
     cor: '#7C3AED', // Roxo para TEA
     descricao: 'Um planeta envolto em névoas sensoriais que se dissipam à medida que você domina a comunicação e o processamento sensorial',
@@ -76,7 +76,7 @@ export const planetas: Planeta[] = [
   },
   {
     id: 'vortex',
-    nome: 'Planeta Vortex',
+    nome: 'TDAH',
     diagnostico: 'TDAH',
     cor: '#EF4444', // Vermelho para TDAH
     descricao: 'Um planeta em constante movimento onde você aprende a dominar a atenção, controlar impulsos e estabilizar o campo magnético',
@@ -171,7 +171,7 @@ export const planetas: Planeta[] = [
   },
   {
     id: 'lumen',
-    nome: 'Planeta Lumen',
+    nome: 'Dislexia',
     diagnostico: 'Dislexia',
     cor: '#F59E0B', // Dourado/Amarelo para Dislexia
     descricao: 'Um planeta obscurecido onde cada conquista fonológica ilumina novas regiões e revela palavras escondidas',
@@ -233,7 +233,7 @@ export const planetas: Planeta[] = [
   },
   {
     id: 'calm',
-    nome: 'Planeta Calm',
+    nome: 'Regulação Emocional',
     diagnostico: 'Regulação Emocional',
     cor: '#10B981', // Verde para calma
     descricao: 'Um planeta oceânico onde você aprende a regular emoções e estabilizar as marés internas através da respiração',
@@ -285,7 +285,7 @@ export const planetas: Planeta[] = [
   },
   {
     id: 'order',
-    nome: 'Planeta Order',
+    nome: 'Funções Executivas',
     diagnostico: 'Funções Executivas',
     cor: '#3B82F6', // Azul para ordem
     descricao: 'Um planeta de engrenagens e órbitas onde organização e planejamento alinham os satélites do sistema',

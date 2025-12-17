@@ -25,7 +25,7 @@ export default function PlatformManual() {
       description: 'Recomendamos iniciar com a Triagem Unificada NeuroPlay para identificar necessidades específicas em 6 dimensões: TEA, TDAH, Dislexia, Discalculia, DLD e Perfil Sensorial.',
     },
     {
-      title: '4. Explorar o Sistema Planeta Azul',
+      title: '4. Explorar o Planeta Azul',
       description: 'Navegue pelos 5 planetas temáticos e escolha jogos apropriados. Nossa IA sugere a melhor missão diária baseada no perfil.',
     },
     {
@@ -70,11 +70,11 @@ export default function PlatformManual() {
       ],
     },
     {
-      category: '🌍 Sistema Planeta Azul',
+      category: '🌍 Planeta Azul',
       items: [
         {
           question: 'O que são os planetas?',
-          answer: '5 planetas temáticos: Aurora (TEA/Cognição Social), Vortex (TDAH/Atenção), Lumen (Dislexia/Linguagem), Calm (Regulação Emocional), Order (Funções Executivas). Cada planeta tem jogos específicos.',
+          answer: '5 planetas temáticos: TEA (Cognição Social), TDAH (Atenção), Dislexia (Linguagem), Regulação Emocional (Calma), Funções Executivas (Organização). Cada planeta tem jogos específicos.',
         },
         {
           question: 'Como funcionam as missões diárias?',

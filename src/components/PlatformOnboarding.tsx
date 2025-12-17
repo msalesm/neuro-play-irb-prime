@@ -207,7 +207,7 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
         target: 'body',
         content: (
           <div>
-            <h2 className="text-xl font-bold mb-2">Sistema Planeta Azul 🌌</h2>
+            <h2 className="text-xl font-bold mb-2">Planeta Azul 🌌</h2>
             <p>Um universo gamificado para o desenvolvimento terapêutico!</p>
           </div>
         ),

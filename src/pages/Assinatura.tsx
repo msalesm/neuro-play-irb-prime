@@ -23,7 +23,7 @@ const PLANS = [
       "Relatórios de progresso",
       "Histórias sociais",
       "Chat terapêutico com IA",
-      "Sistema Planeta Azul completo",
+      "Planeta Azul completo",
       "Suporte por email"
     ]
   },

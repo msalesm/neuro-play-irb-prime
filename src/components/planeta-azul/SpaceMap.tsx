@@ -265,7 +265,7 @@ export function SpaceMap({ planetas, onPlanetClick, selectedPlanetId }: SpaceMap
 
       {/* Legend */}
       <div className="absolute bottom-4 left-4 bg-background/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-        <p className="text-xs font-semibold mb-2">Sistema Planeta Azul</p>
+        <p className="text-xs font-semibold mb-2">Planeta Azul</p>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-accent" />

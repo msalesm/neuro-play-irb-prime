@@ -227,7 +227,7 @@ export default function SistemaPlanetaAzul() {
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                Sistema Planeta Azul
+                Planeta Azul
               </motion.h1>
               <p className="text-white/80 text-lg flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#c7923e]" />

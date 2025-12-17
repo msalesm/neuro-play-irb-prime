@@ -80,7 +80,7 @@ const Index = () => {
             variants={fadeInUp}
           >
             <Badge className="mb-4 bg-accent text-accent-foreground border-accent/50">
-              Novo • Sistema Planeta Azul 🪐
+              Novo • Planeta Azul 🪐
             </Badge>
             <h2 className="text-4xl font-bold text-white mb-6">
               Universo Terapêutico Gamificado

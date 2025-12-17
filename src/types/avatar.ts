@@ -194,7 +194,7 @@ export const AVATAR_ACCESSORIES: AvatarAccessory[] = [
   // Special Planet Achievements
   {
     id: 'aurora-badge',
-    name: 'Guardião de Aurora',
+    name: 'Guardião TEA',
     emoji: '🌈',
     type: 'badge',
     unlockCondition: { type: 'planets_completed', value: 1, planetId: 'aurora' },
@@ -202,7 +202,7 @@ export const AVATAR_ACCESSORIES: AvatarAccessory[] = [
   },
   {
     id: 'vortex-badge',
-    name: 'Mestre do Vortex',
+    name: 'Mestre TDAH',
     emoji: '🌀',
     type: 'badge',
     unlockCondition: { type: 'planets_completed', value: 1, planetId: 'vortex' },
@@ -210,7 +210,7 @@ export const AVATAR_ACCESSORIES: AvatarAccessory[] = [
   },
   {
     id: 'lumen-badge',
-    name: 'Sábio de Lumen',
+    name: 'Sábio Dislexia',
     emoji: '📚',
     type: 'badge',
     unlockCondition: { type: 'planets_completed', value: 1, planetId: 'lumen' },

@@ -223,7 +223,7 @@ export const translations = {
     
     // Planet System
     planetSystem: {
-      title: 'Sistema Planeta Azul',
+      title: 'Planeta Azul',
       subtitle: 'Explore universos terapêuticos e domine habilidades cognitivas',
       backToDashboard: 'Voltar ao Dashboard',
       overallProgress: 'Progresso Geral',

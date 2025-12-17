@@ -103,8 +103,8 @@ export const generateNeurodiversityPDF = () => {
       items: ['Geracao automatica por IA', 'Editor de metas/estrategias', 'Notas de progresso', 'Compartilhamento escola/terapeuta']
     },
     {
-      title: '9. Sistema Planeta Azul (Universo Gamificado)',
-      description: 'Modelo de gamificacao baseado em universo com 5 planetas tematicos: Aurora (TEA), Vortex (TDAH), Lumen (Dislexia), Calm (Regulacao Emocional), Order (Funcoes Executivas). Progressao nao-linear cross-planet.',
+      title: '9. Planeta Azul (Universo Gamificado)',
+      description: 'Modelo de gamificacao baseado em universo com 5 planetas tematicos: TEA, TDAH, Dislexia, Regulacao Emocional, Funcoes Executivas. Progressao nao-linear cross-planet.',
       items: ['5 planetas tematicos', 'Missoes diarias IA', 'Progressao cross-planet', 'Aneis do Sistema (recompensa semanal)']
     },
     {
