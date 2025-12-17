@@ -93,11 +93,13 @@ export function AppSidebar() {
       title: 'Agendar Consultas',
       path: '/agenda',
       icon: CalendarCheck,
+      badge: 'Novo',
     },
     {
       title: 'Minhas Teleconsultas',
       path: '/minhas-teleconsultas',
       icon: Stethoscope,
+      badge: 'Novo',
     },
     {
       title: 'Relatórios',
@@ -118,11 +120,13 @@ export function AppSidebar() {
       title: 'Mensagens',
       path: '/messages',
       icon: Mail,
+      badge: 'Novo',
     },
     {
       title: 'Clube dos Pais',
       path: '/clube-pais',
       icon: Gem,
+      badge: 'Novo',
     },
     {
       title: 'Microlearning',
@@ -133,6 +137,7 @@ export function AppSidebar() {
       title: 'Minha Assinatura',
       path: '/subscription',
       icon: CreditCard,
+      badge: 'Novo',
     },
   ];
 
@@ -142,6 +147,7 @@ export function AppSidebar() {
       title: 'Agenda do Dia',
       path: '/agenda',
       icon: Calendar,
+      badge: 'Novo',
     },
     {
       title: 'Meus Pacientes',
@@ -178,6 +184,7 @@ export function AppSidebar() {
       title: 'Mensagens',
       path: '/messages',
       icon: Mail,
+      badge: 'Novo',
     },
     {
       title: 'Analytics',
@@ -192,11 +199,13 @@ export function AppSidebar() {
       title: 'Centro de Operações',
       path: '/operations',
       icon: TrendingUp,
+      badge: 'Novo',
     },
     {
       title: 'Dashboard Institucional',
       path: '/institutional',
       icon: Building2,
+      badge: 'Novo',
     },
     {
       title: 'Dashboard Geral',
