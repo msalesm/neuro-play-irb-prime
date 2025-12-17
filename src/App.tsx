@@ -112,7 +112,7 @@ import StoryReader from "./pages/StoryReader";
 import AdminStories from "./pages/AdminStories";
 import AcceptInvite from "./pages/AcceptInvite";
 import RelationshipsManager from "./pages/admin/RelationshipsManager";
-import IntelligentReports from "./pages/IntelligentReports";
+import UnifiedReports from "./pages/UnifiedReports";
 import ProntuarioUnificado from "./pages/ProntuarioUnificado";
 import StudentHub from "./pages/StudentHub";
 import StoryEditor from "./pages/StoryEditor";
@@ -336,10 +336,10 @@ const App = () => (
           <Route path="/stories/:storyId" element={<StoryReader />} />
           <Route path="/admin/stories" element={<AdminStories />} />
           
-          {/* Relatórios Inteligentes */}
-          <Route path="/reports" element={<IntelligentReports />} />
-          <Route path="/relatorios" element={<IntelligentReports />} />
-          <Route path="/intelligent-reports" element={<IntelligentReports />} />
+          {/* Relatórios Unificados */}
+          <Route path="/reports" element={<UnifiedReports />} />
+          <Route path="/relatorios" element={<UnifiedReports />} />
+          <Route path="/intelligent-reports" element={<UnifiedReports />} />
           
           {/* Phase 3 Routes */}
           <Route path="/student-hub" element={<StudentHub />} />
