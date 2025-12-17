@@ -50,46 +50,107 @@ export default function ClinicalDashboard() {
 
   const fetchClinicalData = async () => {
     try {
-      // Get first child
-      const { data: children } = await supabase
+      let childIds: string[] = [];
+      let profileIds: string[] = [];
+
+      // Try to get children as parent first
+      const { data: parentChildren } = await supabase
         .from('children')
         .select('id')
-        .eq('parent_id', user?.id)
-        .limit(1)
-        .single();
+        .eq('parent_id', user?.id);
 
-      if (children) {
-        setChildId(children.id);
+      if (parentChildren && parentChildren.length > 0) {
+        childIds = parentChildren.map(c => c.id);
+        setChildId(parentChildren[0].id);
       }
 
-      const { data: profiles } = await supabase
+      // Also get children via child_access (for therapists)
+      const { data: accessChildren } = await supabase
+        .from('child_access')
+        .select('child_id')
+        .eq('professional_id', user?.id)
+        .eq('is_active', true)
+        .eq('approval_status', 'approved');
+
+      if (accessChildren && accessChildren.length > 0) {
+        const accessChildIds = accessChildren.map(a => a.child_id);
+        childIds = [...new Set([...childIds, ...accessChildIds])];
+        if (!childId && accessChildIds.length > 0) {
+          setChildId(accessChildIds[0]);
+        }
+      }
+
+      // Get child_profiles for parent
+      const { data: parentProfiles } = await supabase
         .from('child_profiles')
         .select('id')
         .eq('parent_user_id', user?.id);
 
-      const profileIds = profiles?.map(p => p.id) || [];
+      if (parentProfiles) {
+        profileIds = parentProfiles.map(p => p.id);
+      }
 
-      const { data: sessions } = await supabase
-        .from('game_sessions')
-        .select('score, completed')
-        .in('child_profile_id', profileIds);
+      // Get child_profiles linked to accessed children
+      if (childIds.length > 0) {
+        const { data: linkedProfiles } = await supabase
+          .from('child_profiles')
+          .select('id')
+          .in('id', childIds);
 
+        if (linkedProfiles) {
+          profileIds = [...new Set([...profileIds, ...linkedProfiles.map(p => p.id)])];
+        }
+      }
+
+      // Get sessions from game_sessions table
+      let totalSessions = 0;
+      let averageScore = 0;
+
+      if (profileIds.length > 0) {
+        const { data: sessions } = await supabase
+          .from('game_sessions')
+          .select('score, completed')
+          .in('child_profile_id', profileIds);
+
+        totalSessions = sessions?.length || 0;
+        averageScore = sessions && sessions.length > 0
+          ? sessions.reduce((sum, s) => sum + (s.score || 0), 0) / sessions.length
+          : 0;
+      }
+
+      // Also check learning_sessions for child IDs
+      if (childIds.length > 0) {
+        const { data: learningSessions } = await supabase
+          .from('learning_sessions')
+          .select('performance_data')
+          .in('user_id', childIds);
+
+        if (learningSessions && learningSessions.length > 0) {
+          totalSessions += learningSessions.length;
+          const scores = learningSessions
+            .map(s => (s.performance_data as any)?.score || 0)
+            .filter(score => score > 0);
+          if (scores.length > 0) {
+            const learningAvg = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+            averageScore = totalSessions > 0 ? (averageScore + learningAvg) / 2 : learningAvg;
+          }
+        }
+      }
+
+      // Get screenings
       const { data: screenings } = await supabase
         .from('screenings')
         .select('id')
-        .eq('user_id', user?.id);
+        .or(`user_id.eq.${user?.id}${childIds.length > 0 ? `,child_id.in.(${childIds.join(',')})` : ''}`);
 
-      const totalSessions = sessions?.length || 0;
       const completedTests = screenings?.length || 0;
-      const averageScore = sessions && sessions.length > 0
-        ? sessions.reduce((sum, s) => sum + (s.score || 0), 0) / sessions.length
-        : 0;
+      const activeProfiles = Math.max(childIds.length, profileIds.length);
 
       setStats({
         totalSessions,
         completedTests,
         averageScore: Math.round(averageScore),
-        activeProfiles: profileIds.length
+        activeProfiles
       });
     } catch (error) {
       console.error('Error fetching clinical data:', error);
