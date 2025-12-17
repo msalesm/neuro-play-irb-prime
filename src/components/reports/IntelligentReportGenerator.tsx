@@ -62,10 +62,22 @@ interface ReportData {
   }>;
 }
 
+const domainLabels: Record<string, string> = {
+  attention: 'Atenção',
+  memory: 'Memória',
+  language: 'Linguagem',
+  logic: 'Lógica',
+  emotion: 'Emoções',
+  coordination: 'Coordenação',
+  flexibility: 'Flexibilidade',
+  inhibition: 'Controle Inibitório',
+};
+
 export function IntelligentReportGenerator() {
   const { user } = useAuth();
   const { role, isAdmin, isTherapist, isParent } = useUserRole();
   const [selectedChild, setSelectedChild] = useState<string>('');
+  const [children, setChildren] = useState<Array<{ id: string; name: string }>>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<string>('30');
   const [generating, setGenerating] = useState<string | null>(null);
   const [reports, setReports] = useState<Record<string, ReportData | null>>({
@@ -73,6 +85,77 @@ export function IntelligentReportGenerator() {
     pedagogical: null,
     familiar: null,
   });
+
+  useEffect(() => {
+    const fetchChildren = async () => {
+      if (!user) return;
+      try {
+        // ADMIN: all active children
+        if (isAdmin) {
+          const { data, error } = await supabase
+            .from('children')
+            .select('id, name')
+            .eq('is_active', true)
+            .order('created_at', { ascending: false })
+            .limit(200);
+          if (error) throw error;
+          const list = (data || []).map((c: any) => ({ id: c.id, name: c.name }));
+          setChildren(list);
+          if (!selectedChild && list.length > 0) setSelectedChild(list[0].id);
+          return;
+        }
+
+        // PARENT: own children
+        if (isParent) {
+          const { data: childrenData, error: childrenError } = await supabase
+            .from('children')
+            .select('id, name')
+            .eq('parent_id', user.id)
+            .eq('is_active', true);
+
+          if (!childrenError && childrenData && childrenData.length > 0) {
+            const list = childrenData.map((c: any) => ({ id: c.id, name: c.name }));
+            setChildren(list);
+            if (!selectedChild && list.length > 0) setSelectedChild(list[0].id);
+            return;
+          }
+
+          // fallback: child_profiles for legacy flows
+          const { data: profilesData } = await supabase
+            .from('child_profiles')
+            .select('id, name')
+            .eq('parent_user_id', user.id);
+
+          const list = (profilesData || []).map((p: any) => ({ id: p.id, name: p.name }));
+          setChildren(list);
+          if (!selectedChild && list.length > 0) setSelectedChild(list[0].id);
+          return;
+        }
+
+        // THERAPIST: approved access
+        if (isTherapist) {
+          const { data, error } = await supabase
+            .from('child_access')
+            .select(`child_id, children (id, name)`)
+            .eq('professional_id', user.id)
+            .eq('is_active', true)
+            .eq('approval_status', 'approved');
+
+          if (error) throw error;
+          const list = (data || [])
+            .filter((a: any) => a.children)
+            .map((a: any) => ({ id: a.children.id, name: a.children.name }));
+          setChildren(list);
+          if (!selectedChild && list.length > 0) setSelectedChild(list[0].id);
+        }
+      } catch (e) {
+        console.error('Erro ao carregar pacientes/crianças:', e);
+      }
+    };
+
+    fetchChildren();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, isAdmin, isTherapist, isParent]);
 
   // Determine which tab to show based on role
   const getDefaultTab = () => {
@@ -291,6 +374,17 @@ export function IntelligentReportGenerator() {
     }
   };
 
+  const domainLabels: Record<string, string> = {
+    attention: 'Atenção',
+    memory: 'Memória',
+    language: 'Linguagem',
+    logic: 'Lógica',
+    emotion: 'Emoções',
+    coordination: 'Coordenação',
+    flexibility: 'Flexibilidade',
+    inhibition: 'Controle Inibitório',
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -305,7 +399,22 @@ export function IntelligentReportGenerator() {
           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
+          {(isAdmin || isTherapist || isParent) && children.length > 0 && (
+            <Select value={selectedChild} onValueChange={setSelectedChild}>
+              <SelectTrigger className="w-[240px]">
+                <SelectValue placeholder={isParent ? 'Selecione a criança' : 'Selecione o paciente'} />
+              </SelectTrigger>
+              <SelectContent>
+                {children.map((c) => (
+                  <SelectItem key={c.id} value={c.id}>
+                    {c.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+
           <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
             <SelectTrigger className="w-[180px]">
               <Calendar className="h-4 w-4 mr-2" />
@@ -500,7 +609,7 @@ function ReportPanel({
               {Object.entries(report.cognitiveProfile).map(([domain, value]) => (
                 <div key={domain}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="capitalize">{domain}</span>
+                    <span>{domainLabels[domain] || domain}</span>
                     <span>{value}%</span>
                   </div>
                   <Progress value={value} className="h-2" />

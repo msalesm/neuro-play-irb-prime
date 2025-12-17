@@ -27,7 +27,10 @@ interface ClinicalReportCardProps {
 const reportTypeLabels = {
   comprehensive: 'Completo',
   cognitive: 'Cognitivo',
-  behavioral: 'Comportamental'
+  behavioral: 'Comportamental',
+  clinical: 'Clínico',
+  pedagogical: 'Pedagógico',
+  familiar: 'Familiar'
 };
 
 export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalReportCardProps) => {

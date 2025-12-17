@@ -53,6 +53,16 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
   const cognitiveScores = report.detailed_analysis?.cognitiveScores || {};
   const progressIndicators = report.progress_indicators || {};
 
+  const domainLabels: Record<string, string> = {
+    attention: 'Atenção',
+    memory: 'Memória',
+    language: 'Linguagem',
+    logic: 'Lógica',
+    emotion: 'Emoções',
+    coordination: 'Coordenação',
+    flexibility: 'Flexibilidade',
+    inhibition: 'Controle Inibitório',
+  };
   const handleDownloadPDF = () => {
     try {
       const pdf = new jsPDF();
@@ -222,7 +232,7 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
                   {Object.entries(cognitiveScores).map(([key, value]) => (
                     <div key={key}>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="capitalize">{key.replace(/_/g, ' ')}</span>
+                        <span>{domainLabels[key] || key.replace(/_/g, ' ')}</span>
                         <span className="font-medium">{Math.round(Number(value))}/100</span>
                       </div>
                       <Progress value={Number(value)} className="h-2" />

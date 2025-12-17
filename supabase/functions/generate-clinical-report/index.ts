@@ -67,13 +67,47 @@ serve(async (req) => {
       );
     }
 
-    const { userId, startDate, endDate, reportType } = requestBody;
+    const { userId, childId, startDate, endDate, reportType } = requestBody;
 
-    console.log(`Generating ${reportType} report for user ${userId} from ${startDate} to ${endDate}`);
+    console.log(`Generating ${reportType} report for user ${userId}${childId ? ` (child ${childId})` : ''} from ${startDate} to ${endDate}`);
 
     // Step 1: Fetch all necessary data from all sources
     console.log('🔍 Fetching data from all sources...');
-    const allData = await fetchAllAvailableData(supabase, userId, startDate, endDate);
+
+    // If a childId is provided, validate access (unless admin)
+    if (childId && !isAdmin) {
+      const { data: childRow, error: childErr } = await supabase
+        .from('children')
+        .select('id, parent_id')
+        .eq('id', childId)
+        .maybeSingle();
+
+      const isParentOfChild = !!childRow && childRow.parent_id === user.id;
+
+      let hasProfessionalAccess = false;
+      if (!isParentOfChild) {
+        const { data: accessRow } = await supabase
+          .from('child_access')
+          .select('id')
+          .eq('professional_id', user.id)
+          .eq('child_id', childId)
+          .eq('is_active', true)
+          .eq('approval_status', 'approved')
+          .maybeSingle();
+        hasProfessionalAccess = !!accessRow;
+      }
+
+      if (!isParentOfChild && !hasProfessionalAccess) {
+        return new Response(
+          JSON.stringify({ status: 'error', message: 'Acesso negado para este paciente.' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      if (childErr) console.warn('Warning checking child access:', childErr.message);
+    }
+
+    const allData = await fetchAllAvailableData(supabase, userId, startDate, endDate, childId);
     
     // Combine all sessions from different sources
     const combinedSessions = [

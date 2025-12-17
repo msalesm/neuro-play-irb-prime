@@ -50,10 +50,17 @@ export function validateReportRequest(data: any, authenticatedUserId: string, is
   if (!data.reportType || typeof data.reportType !== 'string') {
     errors.push({ field: 'reportType', message: 'Report type is required' });
   } else if (!validTypes.includes(data.reportType)) {
-    errors.push({ 
-      field: 'reportType', 
-      message: `Report type must be one of: ${validTypes.join(', ')}` 
+    errors.push({
+      field: 'reportType',
+      message: `Report type must be one of: ${validTypes.join(', ')}`
     });
+  }
+
+  // Validate childId (optional)
+  if (data.childId !== undefined) {
+    if (typeof data.childId !== 'string' || !UUID_REGEX.test(data.childId)) {
+      errors.push({ field: 'childId', message: 'Invalid child ID format' });
+    }
   }
 
   // Cross-field validations (only if individual fields are valid)
