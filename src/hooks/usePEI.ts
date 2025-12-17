@@ -41,6 +41,51 @@ export function usePEI() {
     }
   };
 
+  const getPEIByUserId = async (userId: string) => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('pei_plans')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .maybeSingle();
+
+      if (error) throw error;
+
+      setCurrentPlan(data);
+      return data;
+    } catch (error: any) {
+      console.error('Error fetching PEI by user:', error);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getAllPEIsForUser = async (userId: string) => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('pei_plans')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        setCurrentPlan(data[0]);
+      }
+      return data || [];
+    } catch (error: any) {
+      console.error('Error fetching PEIs:', error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createPlan = async (screeningId: string, userId: string) => {
     try {
       setLoading(true);
@@ -101,6 +146,8 @@ export function usePEI() {
     currentPlan,
     peiPlan: currentPlan,
     getPEIByScreening,
+    getPEIByUserId,
+    getAllPEIsForUser,
     createPlan,
     updatePlan: updatePEI,
     updatePEI,
