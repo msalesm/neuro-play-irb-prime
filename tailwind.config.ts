@@ -65,9 +65,9 @@ export default {
         },
       },
       fontFamily: {
-        'heading': ['Open Sans', 'system-ui', 'sans-serif'],
-        'body': ['OpenDyslexic', 'Open Sans', 'system-ui', 'sans-serif'],
-        'dyslexic': ['OpenDyslexic', 'Open Sans', 'system-ui', 'sans-serif'],
+        'heading': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'body': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'dyslexic': ['OpenDyslexic', 'Inter', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-hero': 'var(--gradient-hero)',
