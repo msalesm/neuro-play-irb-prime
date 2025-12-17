@@ -53,15 +53,15 @@ export function AppSidebar() {
     );
   };
 
-  // Principal - Navegação do aluno/criança
-  const principalNavigation = [
+  // ========== PACIENTE (criança/adolescente) ==========
+  const patientNavigation = [
     {
-      title: 'Hub do Aluno',
+      title: 'Meu Dia',
       path: '/student-hub',
-      icon: Rocket,
+      icon: Home,
     },
     {
-      title: 'Sistema de Planetas',
+      title: 'Meus Planetas',
       path: '/sistema-planeta-azul',
       icon: Sparkles,
     },
@@ -70,28 +70,19 @@ export function AppSidebar() {
       path: '/social-stories',
       icon: Drama,
     },
-  ];
-
-  // Home - Navegação clínica focada
-  const homeNavigation = [
     {
-      title: 'Avaliações Clínicas',
-      path: '/diagnostic-tests',
-      icon: ClipboardCheck,
-    },
-    {
-      title: t('nav.progress'),
+      title: 'Minhas Conquistas',
       path: '/learning-dashboard',
-      icon: TrendingUp,
+      icon: Trophy,
     },
     {
-      title: t('nav.profile'),
+      title: 'Meu Perfil',
       path: '/profile',
       icon: User,
     },
   ];
 
-  // Pais
+  // ========== PAIS/RESPONSÁVEIS ==========
   const parentsNavigation = [
     {
       title: 'Dashboard',
@@ -99,24 +90,24 @@ export function AppSidebar() {
       icon: Home,
     },
     {
+      title: 'Agendar Consultas',
+      path: '/agenda',
+      icon: CalendarCheck,
+    },
+    {
       title: 'Minhas Teleconsultas',
       path: '/minhas-teleconsultas',
       icon: Stethoscope,
     },
     {
-      title: 'Mensagens',
-      path: '/messages',
-      icon: Mail,
-    },
-    {
-      title: 'Relatórios Inteligentes',
+      title: 'Relatórios',
       path: '/reports',
       icon: BarChart3,
     },
     {
-      title: 'Microlearning',
-      path: '/training',
-      icon: BookOpen,
+      title: 'Progresso dos Filhos',
+      path: '/learning-dashboard',
+      icon: TrendingUp,
     },
     {
       title: 'Histórico Emocional',
@@ -124,9 +115,9 @@ export function AppSidebar() {
       icon: Heart,
     },
     {
-      title: 'Minha Assinatura',
-      path: '/subscription',
-      icon: CreditCard,
+      title: 'Mensagens',
+      path: '/messages',
+      icon: Mail,
     },
     {
       title: 'Clube dos Pais',
@@ -134,28 +125,33 @@ export function AppSidebar() {
       icon: Gem,
     },
     {
-      title: 'Manual da Plataforma',
-      path: '/platform-manual',
+      title: 'Microlearning',
+      path: '/training',
       icon: BookOpen,
+    },
+    {
+      title: 'Minha Assinatura',
+      path: '/subscription',
+      icon: CreditCard,
     },
   ];
 
-  // Terapeuta
+  // ========== TERAPEUTA ==========
   const therapistNavigation = [
     {
-      title: 'Agenda Clínica',
+      title: 'Agenda do Dia',
       path: '/agenda',
       icon: Calendar,
+    },
+    {
+      title: 'Meus Pacientes',
+      path: '/therapist/patients',
+      icon: Users,
     },
     {
       title: 'Teleconsultas',
       path: '/teleconsultas',
       icon: Stethoscope,
-    },
-    {
-      title: 'Pacientes',
-      path: '/therapist/patients',
-      icon: Users,
     },
     {
       title: 'Prontuário Eletrônico',
@@ -168,59 +164,30 @@ export function AppSidebar() {
       icon: Brain,
     },
     {
-      title: 'Mensagens',
-      path: '/messages',
-      icon: Mail,
+      title: 'Avaliações Clínicas',
+      path: '/diagnostic-tests',
+      icon: ClipboardCheck,
     },
-    {
-      title: 'Analytics Profissional',
-      path: '/professional-analytics',
-      icon: BarChart3,
-    },
-  ];
-
-  // Triagem
-  const triagemNavigation = [
     {
       title: 'Inventário de Habilidades',
       path: '/inventario-habilidades',
       icon: ClipboardList,
       badge: 'Novo',
-      highlight: true,
-    },
-  ];
-
-  // Escola
-  const teacherNavigation = [
-    {
-      title: 'Turmas',
-      path: '/teacher/classes',
-      icon: School,
     },
     {
-      title: 'Relatórios Pedagógicos',
-      path: '/reports',
+      title: 'Mensagens',
+      path: '/messages',
+      icon: Mail,
+    },
+    {
+      title: 'Analytics',
+      path: '/professional-analytics',
       icon: BarChart3,
     },
-    {
-      title: 'PEI Escolar',
-      path: '/teacher-dashboard',
-      icon: GraduationCap,
-    },
-    {
-      title: 'Estratégias',
-      path: '/training',
-      icon: BookOpen,
-    },
   ];
 
-  // Gestor Público / Admin
+  // ========== ADMIN ==========
   const adminNavigation = [
-    {
-      title: 'IA Contextual',
-      path: '/contextual-ai',
-      icon: Brain,
-    },
     {
       title: 'Centro de Operações',
       path: '/operations',
@@ -242,19 +209,14 @@ export function AppSidebar() {
       icon: Users,
     },
     {
-      title: 'Gerenciador de Conteúdo',
-      path: '/content-manager',
-      icon: Folder,
-    },
-    {
       title: 'Relacionamentos',
       path: '/admin/relationships',
       icon: Heart,
     },
     {
-      title: 'Analytics Profissional',
-      path: '/professional-analytics',
-      icon: TrendingUp,
+      title: 'Gerenciador de Conteúdo',
+      path: '/content-manager',
+      icon: Folder,
     },
     {
       title: 'Editor de Histórias',
@@ -272,7 +234,12 @@ export function AppSidebar() {
       icon: Settings,
     },
     {
-      title: 'Clube dos Pais',
+      title: 'IA Contextual',
+      path: '/contextual-ai',
+      icon: Brain,
+    },
+    {
+      title: 'Clube dos Pais (Admin)',
       path: '/admin/clube-pais',
       icon: Gem,
     },
@@ -287,66 +254,59 @@ export function AppSidebar() {
     },
   ];
 
-  // Organize navigation groups based on role
-  // Admins can see ALL menus
+  // ========== BUILD NAVIGATION BY ROLE ==========
   const navigationGroups = [];
 
-  // Always show Principal section first (student-facing)
-  navigationGroups.push({
-    id: 'principal',
-    label: 'Principal',
-    items: principalNavigation,
-  });
+  // PACIENTE - vê apenas seu próprio menu
+  if (role === 'patient') {
+    navigationGroups.push({
+      id: 'patient',
+      label: 'Meu Espaço',
+      items: patientNavigation,
+    });
+  }
 
-  // Always show Home section
-  navigationGroups.push({
-    id: 'home',
-    label: 'Home',
-    items: homeNavigation,
-  });
-
-  // Show Parents section if user is admin, parent, or no role defined
-  if (isAdmin || role === 'parent' || !role) {
+  // PAIS - vê dashboard dos filhos e clube
+  if (role === 'parent' || (!role && !isAdmin)) {
     navigationGroups.push({
       id: 'parents',
-      label: 'Pais',
+      label: 'Área dos Pais',
       items: parentsNavigation,
     });
   }
 
-  // Show Therapist section if user is admin or therapist
-  if (isAdmin || role === 'therapist') {
+  // TERAPEUTA - vê agenda, pacientes, teleconsultas
+  if (role === 'therapist') {
     navigationGroups.push({
       id: 'therapist',
+      label: 'Área Clínica',
+      items: therapistNavigation,
+    });
+  }
+
+  // ADMIN - vê tudo
+  if (isAdmin) {
+    navigationGroups.push({
+      id: 'admin-patients',
+      label: 'Pacientes',
+      items: patientNavigation,
+    });
+    navigationGroups.push({
+      id: 'admin-parents',
+      label: 'Pais',
+      items: parentsNavigation,
+    });
+    navigationGroups.push({
+      id: 'admin-therapist',
       label: 'Terapeuta',
       items: therapistNavigation,
     });
-
-    // Show Triagem section for therapists and admins
     navigationGroups.push({
-      id: 'triagem',
-      label: 'Triagem',
-      items: triagemNavigation,
+      id: 'admin',
+      label: 'Administração',
+      items: adminNavigation,
     });
   }
-
-  // Show School section if user is admin, parent, or no role defined
-  if (isAdmin || role === 'parent' || !role) {
-    navigationGroups.push({
-      id: 'teacher',
-      label: 'Escola',
-      items: teacherNavigation,
-    });
-  }
-
-  // DEPRECATED: Gestor Público menu removed
-  // if (isAdmin) {
-  //   navigationGroups.push({
-  //     id: 'admin',
-  //     label: 'Gestor Público',
-  //     items: adminNavigation,
-  //   });
-  // }
 
   // Always show Settings
   navigationGroups.push({
@@ -431,6 +391,12 @@ export function AppSidebar() {
                 <Badge className="bg-gradient-to-r from-amber-600 to-orange-600 text-white border-0 gap-1.5">
                   <UserCircle className="w-3 h-3" />
                   Pai/Mãe
+                </Badge>
+              )}
+              {role === 'patient' && (
+                <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0 gap-1.5">
+                  <Gamepad2 className="w-3 h-3" />
+                  Paciente
                 </Badge>
               )}
               {!role && (

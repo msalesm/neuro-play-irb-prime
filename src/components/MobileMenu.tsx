@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, Brain, Stethoscope, Settings, User, 
-  Users, School, TrendingUp, Menu, Sparkles, Gamepad2,
-  FileText, ClipboardCheck, GraduationCap, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, CalendarCheck, Rocket, Mail, Folder, Globe
+  Users, TrendingUp, Menu, Sparkles, Gamepad2,
+  FileText, ClipboardCheck, Heart, BookOpen,
+  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, Calendar, Mail, Folder, Gem, CreditCard, CalendarCheck, Building2
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -35,94 +35,106 @@ export function MobileMenu() {
     return location.pathname.startsWith(path) && path !== '/';
   };
 
-  const menuSections = [
-    {
-      title: 'Principal',
-      items: [
-        { title: 'Hub do Aluno', path: '/student-hub', icon: Rocket },
-        { title: 'Sistema de Planetas', path: '/sistema-planeta-azul', icon: Sparkles },
-        { title: 'Minhas Rotinas', path: '/rotinas', icon: CalendarCheck },
-        { title: 'Jogos Cognitivos', path: '/games', icon: Gamepad2 },
-        { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
-        { title: 'Comunidade', path: '/community', icon: Users },
-        { title: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
-      ],
-    },
-    {
-      title: 'Planetas Terapêuticos',
-      items: [
-        { title: 'Aurora (TEA)', path: '/planeta/aurora', icon: Sparkles },
-        { title: 'Vortex (TDAH)', path: '/planeta/vortex', icon: Sparkles },
-        { title: 'Lumen (Dislexia)', path: '/planeta/lumen', icon: Sparkles },
-        { title: 'Calm (Regulação)', path: '/planeta/calm', icon: Sparkles },
-        { title: 'Order (Executivas)', path: '/planeta/order', icon: Sparkles },
-      ],
-    },
-    {
-      title: 'Avaliação & Triagem',
-      items: [
-        { title: 'Testes Diagnósticos', path: '/diagnostic-tests', icon: FileText },
-        { title: 'Triagem TUNP', path: '/screening', icon: ClipboardCheck },
-      ],
-    },
-  ];
+  // ========== BUILD MENU BY ROLE ==========
+  const menuSections: { title: string; items: { title: string; path: string; icon: any; badge?: string }[] }[] = [];
 
-  // Adiciona seções baseadas no papel do usuário
-  // Admins veem TODOS os menus
-  if (isAdmin || role === 'parent' || !role) {
+  // PACIENTE - vê apenas seu próprio menu
+  if (role === 'patient') {
+    menuSections.push({
+      title: 'Meu Espaço',
+      items: [
+        { title: 'Meu Dia', path: '/student-hub', icon: Home },
+        { title: 'Meus Planetas', path: '/sistema-planeta-azul', icon: Sparkles },
+        { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
+        { title: 'Minhas Conquistas', path: '/learning-dashboard', icon: Trophy },
+        { title: 'Meu Perfil', path: '/profile', icon: User },
+      ],
+    });
+  }
+
+  // PAIS - vê dashboard dos filhos e clube
+  if (role === 'parent' || (!role && !isAdmin)) {
+    menuSections.push({
+      title: 'Área dos Pais',
+      items: [
+        { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
+        { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck },
+        { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
+        { title: 'Relatórios', path: '/reports', icon: BarChart3 },
+        { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
+        { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
+        { title: 'Mensagens', path: '/messages', icon: Mail },
+        { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem },
+        { title: 'Microlearning', path: '/training', icon: BookOpen },
+        { title: 'Minha Assinatura', path: '/subscription', icon: CreditCard },
+      ],
+    });
+  }
+
+  // TERAPEUTA - vê agenda, pacientes, teleconsultas
+  if (role === 'therapist') {
+    menuSections.push({
+      title: 'Área Clínica',
+      items: [
+        { title: 'Agenda do Dia', path: '/agenda', icon: Calendar },
+        { title: 'Meus Pacientes', path: '/therapist/patients', icon: Users },
+        { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
+        { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
+        { title: 'PEI Inteligente', path: '/pei', icon: Brain },
+        { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
+        { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck, badge: 'Novo' },
+        { title: 'Mensagens', path: '/messages', icon: Mail },
+        { title: 'Analytics', path: '/professional-analytics', icon: BarChart3 },
+      ],
+    });
+  }
+
+  // ADMIN - vê tudo
+  if (isAdmin) {
+    menuSections.push({
+      title: 'Pacientes',
+      items: [
+        { title: 'Meu Dia', path: '/student-hub', icon: Home },
+        { title: 'Meus Planetas', path: '/sistema-planeta-azul', icon: Sparkles },
+        { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
+        { title: 'Conquistas', path: '/learning-dashboard', icon: Trophy },
+      ],
+    });
     menuSections.push({
       title: 'Pais',
       items: [
         { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
-        { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
-        { title: 'Mensagens', path: '/messages', icon: Mail },
-        { title: 'Microlearning', path: '/training', icon: BookOpen },
+        { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck },
+        { title: 'Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
+        { title: 'Relatórios', path: '/reports', icon: BarChart3 },
         { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
-        { title: 'Manual da Plataforma', path: '/platform-manual', icon: BookOpen },
+        { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem },
       ],
     });
-  }
-
-  if (isAdmin || role === 'therapist') {
     menuSections.push({
       title: 'Terapeuta',
       items: [
-        { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
+        { title: 'Agenda do Dia', path: '/agenda', icon: Calendar },
         { title: 'Pacientes', path: '/therapist/patients', icon: Users },
+        { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
         { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
-        { title: 'PEI Inteligente', path: '/pei', icon: Brain },
-        { title: 'Mensagens', path: '/messages', icon: Mail },
+        { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
       ],
     });
-  }
-
-  if (isAdmin || role === 'parent' || !role) {
     menuSections.push({
-      title: 'Escola',
+      title: 'Administração',
       items: [
-        { title: 'Turmas', path: '/teacher/classes', icon: School },
-        { title: 'PEI Escolar', path: '/teacher-dashboard', icon: GraduationCap },
-        { title: 'Estratégias', path: '/training', icon: BookOpen },
-      ],
-    });
-  }
-
-  if (isAdmin) {
-    menuSections.push({
-      title: 'Gestor Público',
-      items: [
+        { title: 'Centro de Operações', path: '/operations', icon: TrendingUp },
+        { title: 'Dashboard Institucional', path: '/institutional', icon: Building2 },
         { title: 'Dashboard Geral', path: '/admin/network', icon: BarChart3 },
         { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
         { title: 'Gerenciador de Conteúdo', path: '/content-manager', icon: Folder },
-        { title: 'Mapas de Risco', path: '/admin/risk-maps', icon: TrendingUp },
-        { title: 'IA Contextual', path: '/contextual-ai', icon: Brain },
-        { title: 'Analytics Profissional', path: '/professional-analytics', icon: BarChart3 },
-        { title: 'Editor de Histórias', path: '/admin/story-editor', icon: BookOpen },
-        { title: 'Dashboard Institucional', path: '/institutional', icon: Briefcase },
+        { title: 'Clube dos Pais (Admin)', path: '/admin/clube-pais', icon: Gem },
       ],
     });
   }
 
+  // Always show Settings
   menuSections.push({
     title: 'Configurações',
     items: [
@@ -158,25 +170,31 @@ export function MobileMenu() {
             {role === 'admin' && (
               <Badge className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-0 gap-1.5">
                 <Shield className="w-3 h-3" />
-                {t('nav.admin') || 'Administrador'}
+                Administrador
               </Badge>
             )}
             {role === 'therapist' && (
               <Badge className="bg-gradient-to-r from-cyan-600 to-teal-600 text-white border-0 gap-1.5">
                 <Briefcase className="w-3 h-3" />
-                {t('nav.therapist') || 'Terapeuta'}
+                Terapeuta
               </Badge>
             )}
             {role === 'parent' && (
               <Badge className="bg-gradient-to-r from-amber-600 to-orange-600 text-white border-0 gap-1.5">
                 <UserCircle className="w-3 h-3" />
-                {t('nav.parent') || 'Pai/Mãe'}
+                Pai/Mãe
+              </Badge>
+            )}
+            {role === 'patient' && (
+              <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0 gap-1.5">
+                <Gamepad2 className="w-3 h-3" />
+                Paciente
               </Badge>
             )}
             {!role && (
               <Badge variant="secondary" className="gap-1.5">
                 <User className="w-3 h-3" />
-                {t('nav.user') || 'Usuário'}
+                Usuário
               </Badge>
             )}
           </div>
@@ -195,7 +213,7 @@ export function MobileMenu() {
                     
                     return (
                       <Link
-                        key={item.path}
+                        key={item.path + item.title}
                         to={item.path}
                         onClick={() => setOpen(false)}
                         className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
@@ -206,6 +224,11 @@ export function MobileMenu() {
                       >
                         <Icon className={`h-5 w-5 ${active ? 'text-primary' : ''}`} />
                         <span className="text-sm">{item.title}</span>
+                        {item.badge && (
+                          <Badge variant="default" className="text-[10px] px-1.5 py-0 h-4 bg-primary text-primary-foreground ml-auto">
+                            {item.badge}
+                          </Badge>
+                        )}
                       </Link>
                     );
                   })}
