@@ -85,32 +85,56 @@ export function useTherapistPatientProgress() {
           const today = new Date();
           const age = today.getFullYear() - birthDate.getFullYear();
 
-          // Get child_profile linked to this child (if exists)
-          const { data: childProfile } = await supabase
-            .from('child_profiles')
-            .select('id')
-            .eq('name', child.name)
-            .maybeSingle();
-
+          // Try to get game sessions using child.id as child_profile_id (most common case)
+          // Children table IDs often match child_profiles IDs for sample data
           let gameSessions: any[] = [];
-          if (childProfile) {
-            const { data: sessions } = await supabase
-              .from('game_sessions')
-              .select(`
-                id,
-                score,
-                accuracy_percentage,
-                duration_seconds,
-                created_at,
-                completed,
-                cognitive_games (name, cognitive_domains)
-              `)
-              .eq('child_profile_id', childProfile.id)
-              .eq('completed', true)
-              .order('created_at', { ascending: false })
-              .limit(20);
+          
+          // First try with child.id directly
+          const { data: directSessions } = await supabase
+            .from('game_sessions')
+            .select(`
+              id,
+              score,
+              accuracy_percentage,
+              duration_seconds,
+              created_at,
+              completed,
+              cognitive_games (name, cognitive_domains)
+            `)
+            .eq('child_profile_id', child.id)
+            .eq('completed', true)
+            .order('created_at', { ascending: false })
+            .limit(20);
+          
+          if (directSessions && directSessions.length > 0) {
+            gameSessions = directSessions;
+          } else {
+            // Fallback: try to find child_profile by name
+            const { data: childProfile } = await supabase
+              .from('child_profiles')
+              .select('id')
+              .eq('name', child.name)
+              .maybeSingle();
             
-            gameSessions = sessions || [];
+            if (childProfile) {
+              const { data: sessions } = await supabase
+                .from('game_sessions')
+                .select(`
+                  id,
+                  score,
+                  accuracy_percentage,
+                  duration_seconds,
+                  created_at,
+                  completed,
+                  cognitive_games (name, cognitive_domains)
+                `)
+                .eq('child_profile_id', childProfile.id)
+                .eq('completed', true)
+                .order('created_at', { ascending: false })
+                .limit(20);
+              
+              gameSessions = sessions || [];
+            }
           }
 
           // Calculate metrics
@@ -173,9 +197,17 @@ export function useTherapistPatientProgress() {
             date: s.created_at
           }));
 
-          const conditions = Array.isArray(child.neurodevelopmental_conditions)
-            ? child.neurodevelopmental_conditions
-            : [];
+          // Parse conditions - can be array or object
+          let conditions: string[] = [];
+          const rawConditions = child.neurodevelopmental_conditions;
+          if (Array.isArray(rawConditions)) {
+            conditions = rawConditions;
+          } else if (rawConditions && typeof rawConditions === 'object') {
+            // Object format like {TEA: true, nivel: "leve"}
+            conditions = Object.keys(rawConditions).filter(k => 
+              rawConditions[k] === true || k === 'TEA' || k === 'TDAH' || k === 'Dislexia'
+            );
+          }
 
           return {
             id: access.id,
