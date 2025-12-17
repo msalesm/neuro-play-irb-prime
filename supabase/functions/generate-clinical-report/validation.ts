@@ -14,7 +14,7 @@ export interface ValidationResult {
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
-export function validateReportRequest(data: any, authenticatedUserId: string): ValidationResult {
+export function validateReportRequest(data: any, authenticatedUserId: string, isAdmin: boolean = false): ValidationResult {
   const errors: ValidationError[] = [];
 
   // Validate userId
@@ -22,7 +22,8 @@ export function validateReportRequest(data: any, authenticatedUserId: string): V
     errors.push({ field: 'userId', message: 'User ID is required' });
   } else if (!UUID_REGEX.test(data.userId)) {
     errors.push({ field: 'userId', message: 'Invalid user ID format' });
-  } else if (data.userId !== authenticatedUserId) {
+  } else if (data.userId !== authenticatedUserId && !isAdmin) {
+    // Allow admins to generate reports for any user
     errors.push({ field: 'userId', message: 'Cannot generate reports for other users' });
   }
 

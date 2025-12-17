@@ -37,11 +37,21 @@ serve(async (req) => {
       throw new Error('Unauthorized');
     }
 
+    // Check if user is admin
+    const { data: userRole } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single();
+    
+    const isAdmin = userRole?.role === 'admin';
+    console.log(`User ${user.id} isAdmin: ${isAdmin}`);
+
     // Parse and validate request body
     const requestBody: ReportRequest = await req.json();
     
-    // Server-side validation
-    const validationResult = validateReportRequest(requestBody, user.id);
+    // Server-side validation (allow admins to generate for any user)
+    const validationResult = validateReportRequest(requestBody, user.id, isAdmin);
     if (!validationResult.valid) {
       console.error('Validation errors:', validationResult.errors);
       return new Response(
