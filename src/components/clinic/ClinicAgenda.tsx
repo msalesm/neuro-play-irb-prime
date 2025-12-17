@@ -106,10 +106,10 @@ export function ClinicAgenda() {
 
         <div className="flex items-center gap-2 flex-wrap">
           <Select value={selectedProfessional || 'all'} onValueChange={(v) => setSelectedProfessional(v === 'all' ? null : v)}>
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Todos profissionais" />
+            <SelectTrigger className="w-[200px] bg-background border-border">
+              <SelectValue placeholder="Filtrar por profissional" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-popover">
               <SelectItem value="all">Todos profissionais</SelectItem>
               {professionals.map((prof) => (
                 <SelectItem key={prof.id} value={prof.id}>
