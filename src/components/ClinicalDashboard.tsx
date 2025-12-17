@@ -17,6 +17,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { useClinicalReports } from '@/hooks/useClinicalReports';
@@ -32,6 +33,7 @@ interface ClinicalStats {
 
 export default function ClinicalDashboard() {
   const { user } = useAuth();
+  const { role, isAdmin } = useUserRole();
   const [childId, setChildId] = useState<string | null>(null);
   const { reports, loading: reportsLoading, generating, generateReport } = useClinicalReports(childId || undefined);
   const [stats, setStats] = useState<ClinicalStats>({
@@ -46,118 +48,181 @@ export default function ClinicalDashboard() {
     if (user) {
       fetchClinicalData();
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   const fetchClinicalData = async () => {
     try {
       let childIds: string[] = [];
       let profileIds: string[] = [];
-
-      // Try to get children as parent first
-      const { data: parentChildren } = await supabase
-        .from('children')
-        .select('id')
-        .eq('parent_id', user?.id);
-
-      if (parentChildren && parentChildren.length > 0) {
-        childIds = parentChildren.map(c => c.id);
-        setChildId(parentChildren[0].id);
-      }
-
-      // Also get children via child_access (for therapists)
-      const { data: accessChildren } = await supabase
-        .from('child_access')
-        .select('child_id')
-        .eq('professional_id', user?.id)
-        .eq('is_active', true)
-        .eq('approval_status', 'approved');
-
-      if (accessChildren && accessChildren.length > 0) {
-        const accessChildIds = accessChildren.map(a => a.child_id);
-        childIds = [...new Set([...childIds, ...accessChildIds])];
-        if (!childId && accessChildIds.length > 0) {
-          setChildId(accessChildIds[0]);
-        }
-      }
-
-      // Get child_profiles for parent
-      const { data: parentProfiles } = await supabase
-        .from('child_profiles')
-        .select('id')
-        .eq('parent_user_id', user?.id);
-
-      if (parentProfiles) {
-        profileIds = parentProfiles.map(p => p.id);
-      }
-
-      // Get child_profiles linked to accessed children
-      if (childIds.length > 0) {
-        const { data: linkedProfiles } = await supabase
-          .from('child_profiles')
-          .select('id')
-          .in('id', childIds);
-
-        if (linkedProfiles) {
-          profileIds = [...new Set([...profileIds, ...linkedProfiles.map(p => p.id)])];
-        }
-      }
-
-      // Get sessions from game_sessions table
       let totalSessions = 0;
       let averageScore = 0;
 
-      if (profileIds.length > 0) {
-        const { data: sessions } = await supabase
-          .from('game_sessions')
-          .select('score, completed')
-          .in('child_profile_id', profileIds);
-
-        totalSessions = sessions?.length || 0;
-        averageScore = sessions && sessions.length > 0
-          ? sessions.reduce((sum, s) => sum + (s.score || 0), 0) / sessions.length
-          : 0;
-      }
-
-      // Also check learning_sessions for the current authenticated user
-      // (learning_sessions.user_id refers to the logged-in user, not a child id)
-      const { data: learningSessions, error: learningSessionsError } = await supabase
-        .from('learning_sessions')
-        .select('performance_data')
-        .eq('user_id', user?.id);
-
-      if (learningSessionsError) throw learningSessionsError;
-
-      if (learningSessions && learningSessions.length > 0) {
-        totalSessions += learningSessions.length;
-
-        const scores = learningSessions
-          .map(s => Number((s.performance_data as any)?.score ?? 0))
-          .filter(score => Number.isFinite(score) && score > 0);
-
-        if (scores.length > 0) {
-          const learningAvg = scores.reduce((sum, s) => sum + s, 0) / scores.length;
-          // keep it simple: blend the two sources if we have both
-          averageScore = averageScore > 0 ? (averageScore + learningAvg) / 2 : learningAvg;
+      // ADMIN: fetch ALL data without user-specific filters
+      if (isAdmin) {
+        // Get all children
+        const { data: allChildren } = await supabase
+          .from('children')
+          .select('id')
+          .eq('is_active', true);
+        
+        if (allChildren) {
+          childIds = allChildren.map(c => c.id);
+          if (allChildren.length > 0) setChildId(allChildren[0].id);
         }
+
+        // Get all child_profiles
+        const { data: allProfiles } = await supabase
+          .from('child_profiles')
+          .select('id');
+        
+        if (allProfiles) {
+          profileIds = allProfiles.map(p => p.id);
+        }
+
+        // Get ALL game_sessions
+        const { data: allGameSessions } = await supabase
+          .from('game_sessions')
+          .select('score, completed');
+        
+        if (allGameSessions && allGameSessions.length > 0) {
+          totalSessions = allGameSessions.length;
+          averageScore = allGameSessions.reduce((sum, s) => sum + (s.score || 0), 0) / allGameSessions.length;
+        }
+
+        // Get ALL learning_sessions
+        const { data: allLearningSessions } = await supabase
+          .from('learning_sessions')
+          .select('performance_data');
+        
+        if (allLearningSessions && allLearningSessions.length > 0) {
+          totalSessions += allLearningSessions.length;
+          const scores = allLearningSessions
+            .map(s => Number((s.performance_data as any)?.score ?? 0))
+            .filter(score => Number.isFinite(score) && score > 0);
+          if (scores.length > 0) {
+            const learningAvg = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+            averageScore = averageScore > 0 ? (averageScore + learningAvg) / 2 : learningAvg;
+          }
+        }
+
+        // Get ALL screenings
+        const { data: allScreenings } = await supabase
+          .from('screenings')
+          .select('id');
+
+        const completedTests = allScreenings?.length || 0;
+        const activeProfiles = Math.max(childIds.length, profileIds.length);
+
+        setStats({
+          totalSessions,
+          completedTests,
+          averageScore: Math.round(averageScore),
+          activeProfiles
+        });
+      } else {
+        // NON-ADMIN: original logic (user-specific)
+        
+        // Try to get children as parent first
+        const { data: parentChildren } = await supabase
+          .from('children')
+          .select('id')
+          .eq('parent_id', user?.id);
+
+        if (parentChildren && parentChildren.length > 0) {
+          childIds = parentChildren.map(c => c.id);
+          setChildId(parentChildren[0].id);
+        }
+
+        // Also get children via child_access (for therapists)
+        const { data: accessChildren } = await supabase
+          .from('child_access')
+          .select('child_id')
+          .eq('professional_id', user?.id)
+          .eq('is_active', true)
+          .eq('approval_status', 'approved');
+
+        if (accessChildren && accessChildren.length > 0) {
+          const accessChildIds = accessChildren.map(a => a.child_id);
+          childIds = [...new Set([...childIds, ...accessChildIds])];
+          if (!childId && accessChildIds.length > 0) {
+            setChildId(accessChildIds[0]);
+          }
+        }
+
+        // Get child_profiles for parent
+        const { data: parentProfiles } = await supabase
+          .from('child_profiles')
+          .select('id')
+          .eq('parent_user_id', user?.id);
+
+        if (parentProfiles) {
+          profileIds = parentProfiles.map(p => p.id);
+        }
+
+        // Get child_profiles linked to accessed children
+        if (childIds.length > 0) {
+          const { data: linkedProfiles } = await supabase
+            .from('child_profiles')
+            .select('id')
+            .in('id', childIds);
+
+          if (linkedProfiles) {
+            profileIds = [...new Set([...profileIds, ...linkedProfiles.map(p => p.id)])];
+          }
+        }
+
+        // Get sessions from game_sessions table
+        if (profileIds.length > 0) {
+          const { data: sessions } = await supabase
+            .from('game_sessions')
+            .select('score, completed')
+            .in('child_profile_id', profileIds);
+
+          totalSessions = sessions?.length || 0;
+          averageScore = sessions && sessions.length > 0
+            ? sessions.reduce((sum, s) => sum + (s.score || 0), 0) / sessions.length
+            : 0;
+        }
+
+        // Also check learning_sessions for the current authenticated user
+        const { data: learningSessions, error: learningSessionsError } = await supabase
+          .from('learning_sessions')
+          .select('performance_data')
+          .eq('user_id', user?.id);
+
+        if (learningSessionsError) throw learningSessionsError;
+
+        if (learningSessions && learningSessions.length > 0) {
+          totalSessions += learningSessions.length;
+
+          const scores = learningSessions
+            .map(s => Number((s.performance_data as any)?.score ?? 0))
+            .filter(score => Number.isFinite(score) && score > 0);
+
+          if (scores.length > 0) {
+            const learningAvg = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+            averageScore = averageScore > 0 ? (averageScore + learningAvg) / 2 : learningAvg;
+          }
+        }
+
+        // Get screenings (screenings are stored per user_id)
+        const { data: screenings, error: screeningsError } = await supabase
+          .from('screenings')
+          .select('id')
+          .eq('user_id', user?.id);
+
+        if (screeningsError) throw screeningsError;
+
+        const completedTests = screenings?.length || 0;
+        const activeProfiles = Math.max(childIds.length, profileIds.length);
+
+        setStats({
+          totalSessions,
+          completedTests,
+          averageScore: Math.round(averageScore),
+          activeProfiles
+        });
       }
-
-      // Get screenings (screenings are stored per user_id)
-      const { data: screenings, error: screeningsError } = await supabase
-        .from('screenings')
-        .select('id')
-        .eq('user_id', user?.id);
-
-      if (screeningsError) throw screeningsError;
-
-      const completedTests = screenings?.length || 0;
-      const activeProfiles = Math.max(childIds.length, profileIds.length);
-
-      setStats({
-        totalSessions,
-        completedTests,
-        averageScore: Math.round(averageScore),
-        activeProfiles
-      });
     } catch (error) {
       console.error('Error fetching clinical data:', error);
     } finally {
@@ -228,13 +293,23 @@ export default function ClinicalDashboard() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Painel Clínico</h1>
-                <p className="text-muted-foreground">Análise comportamental com IA</p>
+                <p className="text-muted-foreground">
+                  {isAdmin ? 'Visão agregada de todos os pacientes' : 'Análise comportamental com IA'}
+                </p>
               </div>
             </div>
-            <Badge variant="secondary" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0">
-              <Brain className="w-3 h-3 mr-1" aria-hidden="true" />
-              IA Ativada
-            </Badge>
+            <div className="flex items-center gap-2">
+              {isAdmin && (
+                <Badge variant="outline" className="border-amber-500 text-amber-600">
+                  <Users className="w-3 h-3 mr-1" aria-hidden="true" />
+                  Admin
+                </Badge>
+              )}
+              <Badge variant="secondary" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0">
+                <Brain className="w-3 h-3 mr-1" aria-hidden="true" />
+                IA Ativada
+              </Badge>
+            </div>
           </div>
         </div>
 
@@ -285,7 +360,7 @@ export default function ClinicalDashboard() {
           </Card>
         </div>
 
-        {stats.activeProfiles === 0 && (
+        {stats.activeProfiles === 0 && !isAdmin && (
           <div className="flex items-start gap-3 p-4 bg-muted/40 border border-border rounded-lg" role="status" aria-live="polite">
             <AlertCircle className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" aria-hidden="true" />
             <div className="space-y-1">
