@@ -109,11 +109,31 @@ export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {
   const { data: screenings, isLoading: loadingScreenings, refetch: refetchScreenings } = useQuery({
     queryKey: ['screenings', childId],
     queryFn: async (): Promise<ScreeningResult[]> => {
-      // Try to get screenings for this child (via child_id column or user_id)
+      // Screenings are stored per user_id. Resolve the responsible user (parent) for this child.
+      const { data: child } = await supabase
+        .from('children')
+        .select('parent_id')
+        .eq('id', childId)
+        .maybeSingle();
+
+      let responsibleUserId = child?.parent_id ?? null;
+
+      if (!responsibleUserId) {
+        const { data: profile } = await supabase
+          .from('child_profiles')
+          .select('parent_user_id')
+          .eq('id', childId)
+          .maybeSingle();
+
+        responsibleUserId = (profile as any)?.parent_user_id ?? null;
+      }
+
+      if (!responsibleUserId) return [];
+
       const { data } = await supabase
         .from('screenings')
         .select('*')
-        .or(`child_id.eq.${childId},user_id.eq.${childId}`)
+        .eq('user_id', responsibleUserId)
         .order('created_at', { ascending: false })
         .limit(20);
       

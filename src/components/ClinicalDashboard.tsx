@@ -137,11 +137,13 @@ export default function ClinicalDashboard() {
         }
       }
 
-      // Get screenings
-      const { data: screenings } = await supabase
+      // Get screenings (screenings are stored per user_id)
+      const { data: screenings, error: screeningsError } = await supabase
         .from('screenings')
         .select('id')
-        .or(`user_id.eq.${user?.id}${childIds.length > 0 ? `,child_id.in.(${childIds.join(',')})` : ''}`);
+        .eq('user_id', user?.id);
+
+      if (screeningsError) throw screeningsError;
 
       const completedTests = screenings?.length || 0;
       const activeProfiles = Math.max(childIds.length, profileIds.length);
