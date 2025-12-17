@@ -221,8 +221,8 @@ export default function StoryReader() {
                   
                   {currentStep.description && (
                     <p 
-                      className="text-muted-foreground leading-relaxed"
-                      style={{ fontSize: `${profile.fontScale}rem` }}
+                      className="text-muted-foreground leading-loose pb-2"
+                      style={{ fontSize: `${profile.fontScale}rem`, lineHeight: 1.8 }}
                     >
                       {currentStep.description}
                     </p>
