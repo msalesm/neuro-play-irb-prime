@@ -390,8 +390,8 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
                           : "hover:bg-muted"
                       )}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium truncate">{cat.name}</span>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-sm font-medium leading-tight">{cat.name}</span>
                         <ChevronRight className="h-4 w-4 shrink-0" />
                       </div>
                       <div className="flex items-center gap-2 mt-1">
