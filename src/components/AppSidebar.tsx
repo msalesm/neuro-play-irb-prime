@@ -166,10 +166,9 @@ export function AppSidebar() {
       icon: ClipboardCheck,
     },
     {
-      title: 'Relatórios',
+      title: 'Relatório Clínico',
       path: '/reports',
-      icon: BarChart3,
-      description: 'Todos os relatórios clínicos',
+      icon: FileText,
     },
     {
       title: 'Mensagens',

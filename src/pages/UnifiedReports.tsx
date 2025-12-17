@@ -14,7 +14,8 @@ import {
   TrendingUp,
   AlertTriangle,
   CheckCircle,
-  Target
+  Target,
+  UserCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -56,6 +57,11 @@ interface ReportData {
   }>;
 }
 
+interface PatientOption {
+  id: string;
+  name: string;
+}
+
 const reportTypes = [
   {
     type: 'familiar' as const,
@@ -90,6 +96,9 @@ export default function UnifiedReports() {
   const { trackScreenView } = useTelemetry();
   const [selectedPeriod, setSelectedPeriod] = useState<string>('30');
   const [generating, setGenerating] = useState<string | null>(null);
+  const [selectedPatient, setSelectedPatient] = useState<string>('');
+  const [patients, setPatients] = useState<PatientOption[]>([]);
+  const [loadingPatients, setLoadingPatients] = useState(false);
   const [reports, setReports] = useState<Record<string, ReportData | null>>({
     clinical: null,
     pedagogical: null,
@@ -98,10 +107,48 @@ export default function UnifiedReports() {
 
   useEffect(() => {
     trackScreenView('unified_reports');
-  }, [trackScreenView]);
+    if (isTherapist) {
+      loadPatients();
+    }
+  }, [trackScreenView, isTherapist]);
+
+  const loadPatients = async () => {
+    if (!user) return;
+    setLoadingPatients(true);
+    try {
+      const { data, error } = await supabase
+        .from('child_access')
+        .select(`child_id, children (id, name)`)
+        .eq('professional_id', user.id)
+        .eq('is_active', true)
+        .eq('approval_status', 'approved');
+
+      if (error) throw error;
+      const list = (data || [])
+        .filter((a: any) => a.children)
+        .map((a: any) => ({ id: a.children.id, name: a.children.name }));
+      setPatients(list);
+      if (list.length > 0 && !selectedPatient) {
+        setSelectedPatient(list[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading patients:', error);
+    } finally {
+      setLoadingPatients(false);
+    }
+  };
 
   const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
     if (!user) return;
+
+    // Therapist must select a patient
+    if (isTherapist && !selectedPatient) {
+      toast({
+        title: 'Selecione um paciente',
+        description: 'É necessário selecionar um paciente para gerar o relatório.',
+      });
+      return;
+    }
 
     setGenerating(type);
     
@@ -111,7 +158,8 @@ export default function UnifiedReports() {
 
       const { data, error } = await supabase.functions.invoke('generate-clinical-report', {
         body: {
-          userId: user.id,
+          userId: isTherapist ? selectedPatient : user.id,
+          childId: isTherapist ? selectedPatient : undefined,
           reportType: type,
           startDate: startDate.toISOString().split('T')[0],
           endDate: endDate.toISOString().split('T')[0],
@@ -227,25 +275,78 @@ export default function UnifiedReports() {
     }
   };
 
+  // For therapists, show only clinical report
+  const displayReportTypes = isTherapist 
+    ? reportTypes.filter(r => r.type === 'clinical')
+    : reportTypes;
+
+  const selectedPatientName = patients.find(p => p.id === selectedPatient)?.name;
+
   return (
     <div className="min-h-screen bg-background pb-24">
-      <div className="container max-w-6xl mx-auto px-4 py-6">
+      <div className="container max-w-4xl mx-auto px-4 py-6">
         {/* Header */}
-        <div className="flex items-center justify-between gap-4 mb-6">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-bold text-foreground">Relatórios</h1>
-                {isAdmin && <Badge variant="secondary">Admin</Badge>}
-              </div>
-              <p className="text-muted-foreground">Visão unificada de todos os relatórios</p>
+        <div className="flex items-center gap-4 mb-6">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-foreground">
+                {isTherapist ? 'Relatório Clínico' : 'Relatórios'}
+              </h1>
+              {isAdmin && <Badge variant="secondary">Admin</Badge>}
             </div>
+            <p className="text-muted-foreground">
+              {isTherapist ? 'Gerar relatório clínico do paciente' : 'Visão unificada de todos os relatórios'}
+            </p>
           </div>
+        </div>
 
-          <div className="flex gap-2">
+        {/* Therapist: Patient Selector */}
+        {isTherapist && (
+          <Card className="mb-6">
+            <CardContent className="pt-6">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <label className="text-sm font-medium mb-2 block">Selecionar Paciente</label>
+                  <Select value={selectedPatient} onValueChange={setSelectedPatient}>
+                    <SelectTrigger className="w-full">
+                      <UserCircle className="h-4 w-4 mr-2" />
+                      <SelectValue placeholder={loadingPatients ? "Carregando..." : "Selecione um paciente"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {patients.map((patient) => (
+                        <SelectItem key={patient.id} value={patient.id}>
+                          {patient.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Período</label>
+                  <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                    <SelectTrigger className="w-[160px]">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      <SelectValue placeholder="Período" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="7">7 dias</SelectItem>
+                      <SelectItem value="30">30 dias</SelectItem>
+                      <SelectItem value="90">3 meses</SelectItem>
+                      <SelectItem value="180">6 meses</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Non-therapist: Period selector in header */}
+        {!isTherapist && (
+          <div className="flex justify-end gap-2 mb-6">
             <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
               <SelectTrigger className="w-[160px]">
                 <Calendar className="h-4 w-4 mr-2" />
@@ -268,11 +369,11 @@ export default function UnifiedReports() {
               Gerar Todos
             </Button>
           </div>
-        </div>
+        )}
 
         {/* Report Cards Grid */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {reportTypes.map((reportType) => {
+        <div className={`grid gap-6 ${isTherapist ? 'md:grid-cols-1 max-w-lg mx-auto' : 'md:grid-cols-3'}`}>
+          {displayReportTypes.map((reportType) => {
             const report = reports[reportType.type];
             const Icon = reportType.icon;
             const isGenerating = generating === reportType.type;
@@ -282,7 +383,7 @@ export default function UnifiedReports() {
                 key={reportType.type}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: reportTypes.indexOf(reportType) * 0.1 }}
+                transition={{ delay: displayReportTypes.indexOf(reportType) * 0.1 }}
               >
                 <Card className="h-full flex flex-col">
                   <CardHeader className="pb-3">
@@ -291,7 +392,12 @@ export default function UnifiedReports() {
                         <Icon className={`h-5 w-5 ${reportType.color}`} />
                       </div>
                       <div className="flex-1">
-                        <CardTitle className="text-base">{reportType.title}</CardTitle>
+                        <CardTitle className="text-base">
+                          {reportType.title}
+                          {isTherapist && selectedPatientName && (
+                            <span className="font-normal text-muted-foreground"> - {selectedPatientName}</span>
+                          )}
+                        </CardTitle>
                         <CardDescription className="text-xs mt-1">
                           {reportType.description}
                         </CardDescription>
@@ -391,7 +497,7 @@ export default function UnifiedReports() {
         </div>
 
         {/* Recommendations Section */}
-        {(reports.clinical || reports.pedagogical || reports.familiar) && (
+        {reports.clinical && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -401,33 +507,18 @@ export default function UnifiedReports() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5 text-primary" />
-                  Recomendações Consolidadas
+                  Recomendações {isTherapist && selectedPatientName ? `- ${selectedPatientName}` : ''}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {reportTypes.map((reportType) => {
-                    const report = reports[reportType.type];
-                    if (!report) return null;
-
-                    return (
-                      <div key={reportType.type} className="space-y-2">
-                        <h4 className="font-medium text-sm flex items-center gap-2">
-                          <reportType.icon className={`h-4 w-4 ${reportType.color}`} />
-                          {reportType.title}
-                        </h4>
-                        <ul className="space-y-1">
-                          {report.summary.recommendations.slice(0, 3).map((rec, idx) => (
-                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
-                              <span className="text-primary">•</span>
-                              {rec}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  })}
-                </div>
+                <ul className="space-y-2">
+                  {reports.clinical.summary.recommendations.slice(0, 5).map((rec, idx) => (
+                    <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
+                      <span className="text-primary mt-1">•</span>
+                      {rec}
+                    </li>
+                  ))}
+                </ul>
               </CardContent>
             </Card>
           </motion.div>
