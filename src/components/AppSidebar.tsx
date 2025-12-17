@@ -142,17 +142,18 @@ export function AppSidebar() {
   ];
 
   // ========== TERAPEUTA ==========
+  // Menu simplificado do terapeuta - PACIENTES como foco central
   const therapistNavigation = [
     {
-      title: 'Agenda do Dia',
-      path: '/agenda',
-      icon: Calendar,
-      badge: 'Novo',
-    },
-    {
-      title: 'Meus Pacientes',
+      title: 'Pacientes',
       path: '/therapist/patients',
       icon: Users,
+      description: 'Prontuário, PEI e acompanhamento',
+    },
+    {
+      title: 'Agenda',
+      path: '/agenda',
+      icon: Calendar,
     },
     {
       title: 'Teleconsultas',
@@ -160,36 +161,20 @@ export function AppSidebar() {
       icon: Stethoscope,
     },
     {
-      title: 'Prontuário Eletrônico',
-      path: '/clinical',
-      icon: FileText,
-    },
-    {
-      title: 'PEI Inteligente',
-      path: '/pei',
-      icon: Brain,
-    },
-    {
-      title: 'Avaliações Clínicas',
+      title: 'Avaliações',
       path: '/diagnostic-tests',
       icon: ClipboardCheck,
-    },
-    {
-      title: 'Triagem',
-      path: '/inventario-habilidades',
-      icon: ClipboardList,
-      badge: 'Novo',
     },
     {
       title: 'Relatórios',
       path: '/reports',
       icon: BarChart3,
+      description: 'Todos os relatórios clínicos',
     },
     {
       title: 'Mensagens',
       path: '/messages',
       icon: Mail,
-      badge: 'Novo',
     },
   ];
 

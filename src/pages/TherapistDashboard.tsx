@@ -61,7 +61,7 @@ export default function TherapistDashboard() {
   const [reports, setReports] = useState<ClinicalReport[]>([]);
   const [insights, setInsights] = useState<BehavioralInsight[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('evolution');
+  const [activeTab, setActiveTab] = useState('prontuario');
   const [sessionNotes, setSessionNotes] = useState('');
   const [savingNotes, setSavingNotes] = useState(false);
 
@@ -390,15 +390,103 @@ export default function TherapistDashboard() {
             </Card>
           </div>
 
-          {/* Main Content */}
+          {/* Main Content - Tabs simplificadas */}
           <Tabs value={activeTab} onValueChange={setActiveTab} data-tour="clinical-tabs">
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="evolution">Evolução</TabsTrigger>
-              <TabsTrigger value="sessions">Sessões</TabsTrigger>
-              <TabsTrigger value="alerts">Alertas</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="prontuario">Prontuário</TabsTrigger>
               <TabsTrigger value="pei">PEI</TabsTrigger>
-              <TabsTrigger value="chat">Chat</TabsTrigger>
+              <TabsTrigger value="evolution">Evolução</TabsTrigger>
+              <TabsTrigger value="alerts">Alertas</TabsTrigger>
             </TabsList>
+
+            {/* Prontuário Tab - Nova aba central */}
+            <TabsContent value="prontuario" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5" />
+                    Prontuário Eletrônico
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-lg bg-muted/50">
+                      <h4 className="font-medium mb-2">Última Consulta</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {sessions.length > 0 
+                          ? format(new Date(sessions[0].completed_at), "dd/MM/yyyy", { locale: ptBR })
+                          : 'Nenhuma sessão registrada'}
+                      </p>
+                    </div>
+                    <div className="p-4 rounded-lg bg-muted/50">
+                      <h4 className="font-medium mb-2">Total de Sessões</h4>
+                      <p className="text-sm text-muted-foreground">{totalSessions} sessões registradas</p>
+                    </div>
+                  </div>
+
+                  {/* Relatórios Integrados */}
+                  <div className="border-t pt-4">
+                    <h4 className="font-medium mb-3 flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4" />
+                      Relatórios Clínicos
+                    </h4>
+                    {reports.length > 0 ? (
+                      <div className="space-y-2">
+                        {reports.slice(0, 3).map((report) => (
+                          <div key={report.id} className="p-3 rounded-lg bg-muted/30 flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium capitalize">{report.report_type.replace('_', ' ')}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {format(new Date(report.generated_date), 'dd/MM/yyyy', { locale: ptBR })}
+                              </p>
+                            </div>
+                            <Button size="sm" variant="ghost">
+                              <Download className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground">Nenhum relatório gerado ainda</p>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2 pt-4">
+                    <Button className="flex-1" onClick={() => navigate(`/prontuario/${patientId}`)}>
+                      <FileText className="w-4 h-4 mr-2" />
+                      Abrir Prontuário Completo
+                    </Button>
+                    <Button variant="outline" onClick={generateReport}>
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Gerar Relatório IA
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Registrar Notas da Sessão */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5" />
+                    Registrar Sessão
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <Textarea
+                      placeholder="Notas da sessão: observações, progressos, dificuldades..."
+                      value={sessionNotes}
+                      onChange={(e) => setSessionNotes(e.target.value)}
+                      rows={4}
+                    />
+                    <Button onClick={saveSession} className="w-full" disabled={savingNotes}>
+                      {savingNotes ? 'Salvando...' : 'Salvar Sessão'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
             {/* Evolution Tab */}
             <TabsContent value="evolution" className="space-y-6">
@@ -467,97 +555,6 @@ export default function TherapistDashboard() {
               )}
             </TabsContent>
 
-            {/* Sessions Tab */}
-            <TabsContent value="sessions" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Brain className="w-5 h-5" />
-                      Domínios Cognitivos
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {[
-                        { domain: 'Atenção Sustentada', score: avgAccuracy + 5 },
-                        { domain: 'Memória de Trabalho', score: avgAccuracy - 3 },
-                        { domain: 'Flexibilidade Cognitiva', score: avgAccuracy + 10 },
-                        { domain: 'Controle Inibitório', score: avgAccuracy - 5 }
-                      ].map((item, idx) => (
-                        <div key={idx} className="flex items-center justify-between">
-                          <span className="text-sm">{item.domain}</span>
-                          <Badge variant="outline">{Math.min(100, Math.max(0, item.score))}%</Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <BarChart3 className="w-5 h-5" />
-                      Últimas Sessões
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {sessions.length > 0 ? (
-                      <div className="space-y-3">
-                        {sessions.slice(0, 5).map((session) => (
-                          <div key={session.id} className="flex items-center justify-between p-2 rounded-lg bg-muted/30">
-                            <div>
-                              <p className="text-sm font-medium">{session.game_id}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {format(new Date(session.completed_at), 'dd/MM HH:mm', { locale: ptBR })}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-sm font-medium">{session.accuracy_percentage || 0}%</p>
-                              <p className="text-xs text-muted-foreground">
-                                {Math.round((session.duration_seconds || 0) / 60)} min
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-center text-muted-foreground py-8">
-                        Nenhuma sessão registrada ainda
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5" />
-                    Padrões de Comportamento
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
-                      <p className="text-sm font-medium text-green-700 dark:text-green-400">
-                        Melhor desempenho pela manhã
-                      </p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                      <p className="text-sm font-medium text-blue-700 dark:text-blue-400">
-                        Sessões curtas (10-15min) mais efetivas
-                      </p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                      <p className="text-sm font-medium text-yellow-700 dark:text-yellow-400">
-                        Maior engajamento em jogos visuais
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
 
             {/* Alerts Tab */}
             <TabsContent value="alerts" className="space-y-6">
@@ -682,54 +679,6 @@ export default function TherapistDashboard() {
                       <FileText className="w-4 h-4 mr-2" />
                       Editar PEI Completo
                     </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Register Session */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar className="w-5 h-5" />
-                    Registrar Sessão
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <Textarea
-                      placeholder="Notas da sessão: observações, progressos, dificuldades..."
-                      value={sessionNotes}
-                      onChange={(e) => setSessionNotes(e.target.value)}
-                      rows={6}
-                    />
-                    <Button onClick={saveSession} className="w-full" disabled={savingNotes}>
-                      {savingNotes ? 'Salvando...' : 'Salvar Sessão'}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Chat Tab */}
-            <TabsContent value="chat" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5" />
-                    Chat Técnico com Pais
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-96 flex items-center justify-center border rounded-lg bg-muted/20">
-                    <div className="text-center">
-                      <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-                      <p className="text-muted-foreground">
-                        Sistema de chat em desenvolvimento
-                      </p>
-                      <Button className="mt-4" variant="outline">
-                        Enviar Email aos Pais
-                      </Button>
-                    </div>
                   </div>
                 </CardContent>
               </Card>

@@ -72,19 +72,17 @@ export function MobileMenu() {
   }
 
   // TERAPEUTA - vê agenda, pacientes, teleconsultas
+  // Menu simplificado do terapeuta - PACIENTES como foco central
   if (role === 'therapist') {
     menuSections.push({
       title: 'Área Clínica',
       items: [
-        { title: 'Agenda do Dia', path: '/agenda', icon: Calendar, badge: 'Novo' },
-        { title: 'Meus Pacientes', path: '/therapist/patients', icon: Users },
+        { title: 'Pacientes', path: '/therapist/patients', icon: Users },
+        { title: 'Agenda', path: '/agenda', icon: Calendar },
         { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
-        { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
-        { title: 'PEI Inteligente', path: '/pei', icon: Brain },
-        { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
-        { title: 'Triagem', path: '/inventario-habilidades', icon: ClipboardCheck, badge: 'Novo' },
+        { title: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
         { title: 'Relatórios', path: '/reports', icon: BarChart3 },
-        { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
+        { title: 'Mensagens', path: '/messages', icon: Mail },
       ],
     });
   }
