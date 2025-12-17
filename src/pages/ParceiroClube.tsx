@@ -22,14 +22,23 @@ const ParceiroClube = () => {
   const { partner, myServices, myBookings, loading, createService, updateBookingStatus } = useClubPartner();
   const [isNewServiceOpen, setIsNewServiceOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
-  const [newService, setNewService] = useState({
+  const [newService, setNewService] = useState<{
+    name: string;
+    description: string;
+    category_id: string;
+    duration_minutes: number;
+    price: number;
+    discount_percentage: number;
+    location_type: 'clinic' | 'external' | 'online';
+    cancellation_policy: string;
+  }>({
     name: '',
     description: '',
     category_id: '',
     duration_minutes: 60,
     price: 0,
     discount_percentage: 0,
-    location_type: 'clinic' as const,
+    location_type: 'clinic',
     cancellation_policy: ''
   });
 

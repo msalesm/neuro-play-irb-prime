@@ -140,6 +140,9 @@ import BillingDashboard from "./pages/BillingDashboard";
 import ImpactDashboard from "./pages/ImpactDashboard";
 import AgendaClinica from "./pages/AgendaClinica";
 import InventarioHabilidades from "./pages/InventarioHabilidades";
+import ClubePais from "./pages/ClubePais";
+import ParceiroClube from "./pages/ParceiroClube";
+import AdminClubePais from "./pages/AdminClubePais";
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -393,6 +396,11 @@ const App = () => (
           {/* Sprint 19 - PWA Install */}
           <Route path="/install" element={<InstallApp />} />
           <Route path="/instalar" element={<InstallApp />} />
+          
+          {/* Clube dos Pais */}
+          <Route path="/clube-pais" element={<ClubePais />} />
+          <Route path="/parceiro-clube" element={<ParceiroClube />} />
+          <Route path="/admin/clube-pais" element={<AdminClubePais />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
                 </Routes>

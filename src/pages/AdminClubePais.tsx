@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useClubAdmin } from '@/hooks/useParentsClub';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
