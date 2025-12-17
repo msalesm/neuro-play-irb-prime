@@ -166,9 +166,15 @@ serve(async (req) => {
 
         if (aiResponse.ok) {
           const aiData = await aiResponse.json();
-          const aiContent = aiData.choices?.[0]?.message?.content;
+          let aiContent = aiData.choices?.[0]?.message?.content;
           
           if (aiContent) {
+            // Clean markdown code blocks from AI response
+            aiContent = aiContent
+              .replace(/```json\s*/gi, '')
+              .replace(/```\s*/g, '')
+              .trim();
+            
             try {
               // Try to parse as JSON
               aiAnalysis = JSON.parse(aiContent);
@@ -214,7 +220,7 @@ serve(async (req) => {
         generated_date: new Date().toISOString().split('T')[0],
         report_period_start: startDate,
         report_period_end: endDate,
-        summary_insights: aiAnalysis?.executiveSummary || 
+        summary_insights: (typeof aiAnalysis?.executiveSummary === 'string' ? aiAnalysis.executiveSummary : null) || 
           `Relatório gerado com ${generalMetrics.totalSessions} sessões. Acurácia média: ${generalMetrics.avgAccuracy?.toFixed(1)}%.`,
         detailed_analysis: {
           dataSource: dataSource,
