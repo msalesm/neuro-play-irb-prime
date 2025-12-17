@@ -19,6 +19,7 @@ export interface Appointment {
   parent_id: string | null;
   professional_id: string;
   appointment_type_id: string | null;
+  service_mode: 'premium' | 'standard';
   scheduled_date: string;
   scheduled_time: string;
   end_time: string | null;
@@ -190,6 +191,7 @@ export function useClinicAgenda() {
     parent_id?: string;
     professional_id: string;
     appointment_type_id?: string;
+    service_mode: 'premium' | 'standard';
     scheduled_date: string;
     scheduled_time: string;
     internal_notes?: string;
