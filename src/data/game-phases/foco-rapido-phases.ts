@@ -16,7 +16,7 @@ export const focoRapidoPhases: GamePhase[] = [
     isCompleted: false,
     stars: 0,
     gameConfig: {
-      duration: 60,
+      duration: 45,
       targetCount: 10,
       speedMultiplier: 0.6,
       rulesEnabled: ['basic-speed']
@@ -46,7 +46,7 @@ export const focoRapidoPhases: GamePhase[] = [
       minStars: 1
     },
     gameConfig: {
-      duration: 75,
+      duration: 45,
       targetCount: 12,
       speedMultiplier: 0.8,
       rulesEnabled: ['medium-speed']
@@ -75,7 +75,7 @@ export const focoRapidoPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 90,
+      duration: 50,
       targetCount: 15,
       speedMultiplier: 1.0,
       rulesEnabled: ['moving-targets', 'precision']
@@ -106,7 +106,7 @@ export const focoRapidoPhases: GamePhase[] = [
       minAccuracy: 85
     },
     gameConfig: {
-      duration: 90,
+      duration: 50,
       targetCount: 18,
       speedMultiplier: 1.2,
       rulesEnabled: ['complex-targets', 'rapid-decision']
@@ -136,7 +136,7 @@ export const focoRapidoPhases: GamePhase[] = [
       minStars: 2
     },
     gameConfig: {
-      duration: 100,
+      duration: 55,
       targetCount: 20,
       speedMultiplier: 1.4,
       rulesEnabled: ['extreme-speed', 'multiple-stimuli']
@@ -167,7 +167,7 @@ export const focoRapidoPhases: GamePhase[] = [
       minAccuracy: 90
     },
     gameConfig: {
-      duration: 120,
+      duration: 60,
       targetCount: 25,
       speedMultiplier: 1.6,
       rulesEnabled: ['maximum-speed', 'unpredictable', 'master-challenge']
