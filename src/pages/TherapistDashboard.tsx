@@ -74,9 +74,12 @@ export default function TherapistDashboard() {
   const loadAllPatientData = async () => {
     try {
       setLoading(true);
+
+      // IMPORTANT: load patient first (we need name/id) then load the rest
+      const child = await loadPatientData();
+
       await Promise.all([
-        loadPatientData(),
-        loadGameSessions(),
+        loadGameSessions(child),
         loadClinicalReports(),
         loadBehavioralInsights()
       ]);
@@ -91,9 +94,10 @@ export default function TherapistDashboard() {
         .from('children')
         .select('*')
         .eq('id', patientId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
+      if (!childData) return null;
 
       const birthDate = new Date(childData.birth_date);
       const age = new Date().getFullYear() - birthDate.getFullYear();
@@ -109,27 +113,52 @@ export default function TherapistDashboard() {
         avatar_url: childData.avatar_url,
         conditions
       });
+
+      return childData;
     } catch (error) {
       console.error('Error loading patient:', error);
       toast.error('Erro ao carregar dados do paciente');
+      return null;
     }
   };
 
-  const loadGameSessions = async () => {
+  const loadGameSessions = async (childData?: any | null) => {
     try {
-      // First get child_profile for this child
-      const { data: profileData } = await supabase
+      if (!patientId) return;
+
+      // 1) Prefer direct linkage: children.id == game_sessions.child_profile_id (common in sample data)
+      const { data: directSessions, error: directError } = await supabase
+        .from('game_sessions')
+        .select('*')
+        .eq('child_profile_id', patientId)
+        .eq('completed', true)
+        .order('completed_at', { ascending: false })
+        .limit(20);
+
+      if (directError) throw directError;
+
+      if (directSessions && directSessions.length > 0) {
+        setSessions(directSessions);
+        return;
+      }
+
+      // 2) Fallback: resolve a child_profile by name (when children.id != child_profiles.id)
+      const childName = childData?.name || patient?.name;
+      if (!childName) return;
+
+      const { data: childProfile, error: profileError } = await supabase
         .from('child_profiles')
         .select('id')
-        .eq('name', patient?.name || '')
-        .limit(1);
+        .eq('name', childName)
+        .maybeSingle();
 
-      if (!profileData?.length) return;
+      if (profileError) throw profileError;
+      if (!childProfile?.id) return;
 
       const { data: sessionData, error } = await supabase
         .from('game_sessions')
         .select('*')
-        .eq('child_profile_id', profileData[0].id)
+        .eq('child_profile_id', childProfile.id)
         .eq('completed', true)
         .order('completed_at', { ascending: false })
         .limit(20);
@@ -138,6 +167,7 @@ export default function TherapistDashboard() {
       setSessions(sessionData || []);
     } catch (error) {
       console.error('Error loading sessions:', error);
+      setSessions([]);
     }
   };
 
@@ -176,6 +206,7 @@ export default function TherapistDashboard() {
     try {
       const { error } = await supabase.functions.invoke('generate-clinical-report', {
         body: {
+          childId: patientId,
           startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           endDate: new Date().toISOString().split('T')[0],
           reportType: 'comprehensive'

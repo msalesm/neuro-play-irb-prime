@@ -78,14 +78,14 @@ export default function TherapistPatients() {
           const birthDate = new Date(child.birth_date);
           const age = new Date().getFullYear() - birthDate.getFullYear();
 
-          // Get last session
-          const { data: sessions } = await supabase
-            .from('game_sessions')
-            .select('completed_at')
-            .eq('child_profile_id', child.id)
-            .order('completed_at', { ascending: false })
-            .limit(1)
-            .single();
+           // Get last session
+           const { data: sessions } = await supabase
+             .from('game_sessions')
+             .select('completed_at')
+             .eq('child_profile_id', child.id)
+             .order('completed_at', { ascending: false })
+             .limit(1)
+             .maybeSingle();
 
           // Calculate risk level and trend (simplified)
           const riskLevel: 'low' | 'medium' | 'high' = 'medium';
