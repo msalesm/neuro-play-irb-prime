@@ -18,6 +18,7 @@ interface PEIPlan {
 export function usePEI() {
   const [loading, setLoading] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<PEIPlan | null>(null);
+  const [allPlans, setAllPlans] = useState<PEIPlan[]>([]);
 
   const getPEIByScreening = async (screeningId: string) => {
     try {
@@ -77,6 +78,7 @@ export function usePEI() {
       if (data && data.length > 0) {
         setCurrentPlan(data[0]);
       }
+      setAllPlans(data || []);
       return data || [];
     } catch (error: any) {
       console.error('Error fetching PEIs:', error);
@@ -84,6 +86,34 @@ export function usePEI() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Admin function to get all PEI plans
+  const getAllPEIs = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('pei_plans')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setAllPlans(data || []);
+      if (data && data.length > 0) {
+        setCurrentPlan(data[0]);
+      }
+      return data || [];
+    } catch (error: any) {
+      console.error('Error fetching all PEIs:', error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const selectPlan = (plan: PEIPlan) => {
+    setCurrentPlan(plan);
   };
 
   const createPlan = async (screeningId: string, userId: string) => {
@@ -144,10 +174,13 @@ export function usePEI() {
   return {
     loading,
     currentPlan,
+    allPlans,
     peiPlan: currentPlan,
     getPEIByScreening,
     getPEIByUserId,
     getAllPEIsForUser,
+    getAllPEIs,
+    selectPlan,
     createPlan,
     updatePlan: updatePEI,
     updatePEI,

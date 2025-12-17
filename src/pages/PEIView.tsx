@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { usePEI } from '@/hooks/usePEI';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,9 +11,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Brain, Target, Lightbulb, ClipboardCheck, 
-  Plus, Save, TrendingUp, AlertCircle, ArrowLeft, FileDown 
+  Plus, Save, TrendingUp, AlertCircle, ArrowLeft, FileDown, Shield
 } from 'lucide-react';
 import { generatePEIPdf, getClassificationLabel, getDefaultBNCCSkills } from '@/lib/peiPdfGenerator';
 import { toast } from 'sonner';
@@ -40,8 +42,9 @@ export default function PEIView() {
   const [searchParams] = useSearchParams();
   const screeningId = searchParams.get('screening');
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const navigate = useNavigate();
-  const { currentPlan, loading, getPEIByScreening, getPEIByUserId, getAllPEIsForUser, updatePEI, createPlan } = usePEI();
+  const { currentPlan, allPlans, loading, getPEIByScreening, getPEIByUserId, getAllPEIs, selectPlan, updatePEI, createPlan } = usePEI();
   
   const [goals, setGoals] = useState<PEIGoal[]>([]);
   const [accommodations, setAccommodations] = useState<PEIAccommodation[]>([]);
@@ -60,7 +63,7 @@ export default function PEIView() {
     }
 
     loadPEI();
-  }, [user, screeningId, patientId]);
+  }, [user, screeningId, patientId, isAdmin]);
 
   const loadPEI = async () => {
     let plan = null;
@@ -73,22 +76,39 @@ export default function PEIView() {
     else if (patientId) {
       plan = await getPEIByUserId(patientId);
     }
+    // Admin: fetch all PEIs
+    else if (isAdmin) {
+      const plans = await getAllPEIs();
+      if (plans.length > 0) {
+        plan = plans[0];
+      }
+    }
     // Otherwise fetch for current user
     else if (user) {
       plan = await getPEIByUserId(user.id);
     }
     
     if (plan) {
-      // Load goals and accommodations from plan with type safety
-      const planGoals = Array.isArray(plan.goals) ? (plan.goals as unknown as PEIGoal[]) : [];
-      const planAccommodations = Array.isArray(plan.accommodations) ? (plan.accommodations as unknown as PEIAccommodation[]) : [];
-      
-      setGoals(planGoals);
-      setAccommodations(planAccommodations);
+      loadPlanData(plan);
     } else {
       // No plan found - reset state
       setGoals([]);
       setAccommodations([]);
+    }
+  };
+
+  const loadPlanData = (plan: any) => {
+    const planGoals = Array.isArray(plan.goals) ? (plan.goals as unknown as PEIGoal[]) : [];
+    const planAccommodations = Array.isArray(plan.accommodations) ? (plan.accommodations as unknown as PEIAccommodation[]) : [];
+    setGoals(planGoals);
+    setAccommodations(planAccommodations);
+  };
+
+  const handlePlanSelect = (planId: string) => {
+    const plan = allPlans.find(p => p.id === planId);
+    if (plan) {
+      selectPlan(plan);
+      loadPlanData(plan);
     }
   };
 
@@ -199,31 +219,59 @@ const getStatusLabel = (status: string) => {
   return (
     <ModernPageLayout>
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold mb-2">PEI Inteligente</h1>
+              <div className="flex items-center gap-2 mb-2">
+                <h1 className="text-3xl font-bold">PEI Inteligente</h1>
+                {isAdmin && (
+                  <Badge variant="outline" className="flex items-center gap-1">
+                    <Shield className="h-3 w-3" />
+                    Admin
+                  </Badge>
+                )}
+              </div>
               <p className="text-muted-foreground">Plano Educacional Individualizado baseado em dados cognitivos</p>
             </div>
           </div>
-          <div className="flex gap-2">
-            <Button variant="secondary" onClick={handleExportPDF} className="text-foreground">
-              <FileDown className="h-4 w-4 mr-2" />
-              Exportar PDF
+          
+          {/* Admin: Plan Selector */}
+          {isAdmin && allPlans.length > 0 && (
+            <div className="flex items-center gap-2">
+              <Label className="text-sm text-muted-foreground">Selecionar PEI:</Label>
+              <Select value={currentPlan?.id || ''} onValueChange={handlePlanSelect}>
+                <SelectTrigger className="w-[250px]">
+                  <SelectValue placeholder="Selecione um plano" />
+                </SelectTrigger>
+                <SelectContent>
+                  {allPlans.map((plan) => (
+                    <SelectItem key={plan.id} value={plan.id}>
+                      {new Date(plan.created_at).toLocaleDateString('pt-BR')} - {plan.status}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </div>
+        
+        <div className="mb-4 flex gap-2">
+          <Button variant="secondary" onClick={handleExportPDF} className="text-foreground">
+            <FileDown className="h-4 w-4 mr-2" />
+            Exportar PDF
+          </Button>
+          <Button variant="secondary" onClick={() => setIsEditing(!isEditing)} className="text-foreground">
+            {isEditing ? 'Cancelar' : 'Editar PEI'}
+          </Button>
+          {isEditing && (
+            <Button onClick={handleSavePEI}>
+              <Save className="h-4 w-4 mr-2" />
+              Salvar Alterações
             </Button>
-            <Button variant="secondary" onClick={() => setIsEditing(!isEditing)} className="text-foreground">
-              {isEditing ? 'Cancelar' : 'Editar PEI'}
-            </Button>
-            {isEditing && (
-              <Button onClick={handleSavePEI}>
-                <Save className="h-4 w-4 mr-2" />
-                Salvar Alterações
-              </Button>
-            )}
-          </div>
+          )}
         </div>
 
         <div className="space-y-6">
