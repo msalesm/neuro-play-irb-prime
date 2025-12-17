@@ -49,7 +49,7 @@ export function FloatingActionButton({
           id: 'admin-reports',
           label: 'Relatórios',
           icon: <BarChart3 className="w-4 h-4" />,
-          href: '/admin/reports',
+          href: '/reports',
           color: 'bg-blue-500 hover:bg-blue-600'
         },
         {
