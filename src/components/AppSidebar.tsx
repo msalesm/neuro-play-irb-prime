@@ -102,9 +102,9 @@ export function AppSidebar() {
       badge: 'Novo',
     },
     {
-      title: 'Relatórios',
+      title: 'Relatório Familiar',
       path: '/reports',
-      icon: BarChart3,
+      icon: FileText,
     },
     {
       title: 'Progresso dos Filhos',

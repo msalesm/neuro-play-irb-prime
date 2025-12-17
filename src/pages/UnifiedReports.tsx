@@ -96,9 +96,9 @@ export default function UnifiedReports() {
   const { trackScreenView } = useTelemetry();
   const [selectedPeriod, setSelectedPeriod] = useState<string>('30');
   const [generating, setGenerating] = useState<string | null>(null);
-  const [selectedPatient, setSelectedPatient] = useState<string>('');
-  const [patients, setPatients] = useState<PatientOption[]>([]);
-  const [loadingPatients, setLoadingPatients] = useState(false);
+  const [selectedChild, setSelectedChild] = useState<string>('');
+  const [children, setChildren] = useState<PatientOption[]>([]);
+  const [loadingChildren, setLoadingChildren] = useState(false);
   const [reports, setReports] = useState<Record<string, ReportData | null>>({
     clinical: null,
     pedagogical: null,
@@ -108,13 +108,15 @@ export default function UnifiedReports() {
   useEffect(() => {
     trackScreenView('unified_reports');
     if (isTherapist) {
-      loadPatients();
+      loadPatientsForTherapist();
+    } else if (isParent) {
+      loadChildrenForParent();
     }
-  }, [trackScreenView, isTherapist]);
+  }, [trackScreenView, isTherapist, isParent]);
 
-  const loadPatients = async () => {
+  const loadPatientsForTherapist = async () => {
     if (!user) return;
-    setLoadingPatients(true);
+    setLoadingChildren(true);
     try {
       const { data, error } = await supabase
         .from('child_access')
@@ -127,25 +129,47 @@ export default function UnifiedReports() {
       const list = (data || [])
         .filter((a: any) => a.children)
         .map((a: any) => ({ id: a.children.id, name: a.children.name }));
-      setPatients(list);
-      if (list.length > 0 && !selectedPatient) {
-        setSelectedPatient(list[0].id);
+      setChildren(list);
+      if (list.length > 0 && !selectedChild) {
+        setSelectedChild(list[0].id);
       }
     } catch (error) {
       console.error('Error loading patients:', error);
     } finally {
-      setLoadingPatients(false);
+      setLoadingChildren(false);
+    }
+  };
+
+  const loadChildrenForParent = async () => {
+    if (!user) return;
+    setLoadingChildren(true);
+    try {
+      const { data, error } = await supabase
+        .from('children')
+        .select('id, name')
+        .eq('parent_id', user.id)
+        .eq('is_active', true);
+
+      if (error) throw error;
+      setChildren(data || []);
+      if (data && data.length > 0 && !selectedChild) {
+        setSelectedChild(data[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading children:', error);
+    } finally {
+      setLoadingChildren(false);
     }
   };
 
   const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
     if (!user) return;
 
-    // Therapist must select a patient
-    if (isTherapist && !selectedPatient) {
+    // Therapist or parent must select a child
+    if ((isTherapist || isParent) && !selectedChild) {
       toast({
-        title: 'Selecione um paciente',
-        description: 'É necessário selecionar um paciente para gerar o relatório.',
+        title: isTherapist ? 'Selecione um paciente' : 'Selecione um filho',
+        description: 'É necessário selecionar para gerar o relatório.',
       });
       return;
     }
@@ -156,10 +180,12 @@ export default function UnifiedReports() {
       const endDate = new Date();
       const startDate = subDays(endDate, parseInt(selectedPeriod));
 
+      const targetId = (isTherapist || isParent) ? selectedChild : user.id;
+
       const { data, error } = await supabase.functions.invoke('generate-clinical-report', {
         body: {
-          userId: isTherapist ? selectedPatient : user.id,
-          childId: isTherapist ? selectedPatient : undefined,
+          userId: targetId,
+          childId: (isTherapist || isParent) ? selectedChild : undefined,
           reportType: type,
           startDate: startDate.toISOString().split('T')[0],
           endDate: endDate.toISOString().split('T')[0],
@@ -275,12 +301,26 @@ export default function UnifiedReports() {
     }
   };
 
-  // For therapists, show only clinical report
+  // For therapists show clinical, for parents show familiar, for others show all
   const displayReportTypes = isTherapist 
     ? reportTypes.filter(r => r.type === 'clinical')
-    : reportTypes;
+    : isParent 
+      ? reportTypes.filter(r => r.type === 'familiar')
+      : reportTypes;
 
-  const selectedPatientName = patients.find(p => p.id === selectedPatient)?.name;
+  const selectedChildName = children.find(c => c.id === selectedChild)?.name;
+
+  const getPageTitle = () => {
+    if (isTherapist) return 'Relatório Clínico';
+    if (isParent) return 'Relatório Familiar';
+    return 'Relatórios';
+  };
+
+  const getPageDescription = () => {
+    if (isTherapist) return 'Gerar relatório clínico do paciente';
+    if (isParent) return 'Gerar relatório de progresso do seu filho';
+    return 'Visão unificada de todos os relatórios';
+  };
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -292,33 +332,31 @@ export default function UnifiedReports() {
           </Button>
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-foreground">
-                {isTherapist ? 'Relatório Clínico' : 'Relatórios'}
-              </h1>
+              <h1 className="text-2xl font-bold text-foreground">{getPageTitle()}</h1>
               {isAdmin && <Badge variant="secondary">Admin</Badge>}
             </div>
-            <p className="text-muted-foreground">
-              {isTherapist ? 'Gerar relatório clínico do paciente' : 'Visão unificada de todos os relatórios'}
-            </p>
+            <p className="text-muted-foreground">{getPageDescription()}</p>
           </div>
         </div>
 
-        {/* Therapist: Patient Selector */}
-        {isTherapist && (
+        {/* Therapist/Parent: Child Selector */}
+        {(isTherapist || isParent) && (
           <Card className="mb-6">
             <CardContent className="pt-6">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
-                  <label className="text-sm font-medium mb-2 block">Selecionar Paciente</label>
-                  <Select value={selectedPatient} onValueChange={setSelectedPatient}>
+                  <label className="text-sm font-medium mb-2 block">
+                    {isTherapist ? 'Selecionar Paciente' : 'Selecionar Filho'}
+                  </label>
+                  <Select value={selectedChild} onValueChange={setSelectedChild}>
                     <SelectTrigger className="w-full">
                       <UserCircle className="h-4 w-4 mr-2" />
-                      <SelectValue placeholder={loadingPatients ? "Carregando..." : "Selecione um paciente"} />
+                      <SelectValue placeholder={loadingChildren ? "Carregando..." : isTherapist ? "Selecione um paciente" : "Selecione um filho"} />
                     </SelectTrigger>
                     <SelectContent>
-                      {patients.map((patient) => (
-                        <SelectItem key={patient.id} value={patient.id}>
-                          {patient.name}
+                      {children.map((child) => (
+                        <SelectItem key={child.id} value={child.id}>
+                          {child.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -394,8 +432,8 @@ export default function UnifiedReports() {
                       <div className="flex-1">
                         <CardTitle className="text-base">
                           {reportType.title}
-                          {isTherapist && selectedPatientName && (
-                            <span className="font-normal text-muted-foreground"> - {selectedPatientName}</span>
+                          {(isTherapist || isParent) && selectedChildName && (
+                            <span className="font-normal text-muted-foreground"> - {selectedChildName}</span>
                           )}
                         </CardTitle>
                         <CardDescription className="text-xs mt-1">
@@ -497,7 +535,7 @@ export default function UnifiedReports() {
         </div>
 
         {/* Recommendations Section */}
-        {reports.clinical && (
+        {(reports.clinical || reports.familiar) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -507,12 +545,12 @@ export default function UnifiedReports() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5 text-primary" />
-                  Recomendações {isTherapist && selectedPatientName ? `- ${selectedPatientName}` : ''}
+                  Recomendações {selectedChildName ? `- ${selectedChildName}` : ''}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {reports.clinical.summary.recommendations.slice(0, 5).map((rec, idx) => (
+                  {(reports.clinical || reports.familiar)?.summary.recommendations.slice(0, 5).map((rec, idx) => (
                     <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
                       <span className="text-primary mt-1">•</span>
                       {rec}
