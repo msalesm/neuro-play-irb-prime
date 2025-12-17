@@ -181,15 +181,15 @@ export function AppSidebar() {
       badge: 'Novo',
     },
     {
+      title: 'Relatórios',
+      path: '/reports',
+      icon: BarChart3,
+    },
+    {
       title: 'Mensagens',
       path: '/messages',
       icon: Mail,
       badge: 'Novo',
-    },
-    {
-      title: 'Analytics',
-      path: '/professional-analytics',
-      icon: BarChart3,
     },
   ];
 
