@@ -78,10 +78,11 @@ export const IntegratedTimeline = ({ childId }: IntegratedTimelineProps) => {
     queryFn: async (): Promise<TimelineEvent[]> => {
       const allEvents: TimelineEvent[] = [];
 
-      // Fetch game sessions (cognitive events)
+      // Fetch game sessions (cognitive events) for this child
       const { data: sessions } = await supabase
         .from('game_sessions')
         .select('*')
+        .eq('child_profile_id', childId)
         .order('created_at', { ascending: false })
         .limit(30);
 
@@ -98,10 +99,11 @@ export const IntegratedTimeline = ({ childId }: IntegratedTimelineProps) => {
         });
       }
 
-      // Fetch emotional check-ins
+      // Fetch emotional check-ins for this child
       const { data: checkIns } = await supabase
         .from('emotional_checkins')
         .select('*')
+        .eq('child_profile_id', childId)
         .order('scheduled_for', { ascending: false })
         .limit(20);
 
@@ -119,10 +121,11 @@ export const IntegratedTimeline = ({ childId }: IntegratedTimelineProps) => {
         });
       }
 
-      // Fetch behavioral insights (interventions)
+      // Fetch behavioral insights (interventions) for this child
       const { data: insights } = await supabase
         .from('behavioral_insights')
         .select('*')
+        .eq('child_profile_id', childId)
         .order('created_at', { ascending: false })
         .limit(15);
 
@@ -139,32 +142,42 @@ export const IntegratedTimeline = ({ childId }: IntegratedTimelineProps) => {
         });
       }
 
-      // Fetch achievements
-      const { data: achievements } = await supabase
-        .from('user_achievements')
-        .select('*, achievements(*)')
-        .order('unlocked_at', { ascending: false })
-        .limit(10);
+      // Fetch achievements - get child's parent first
+      const { data: childData } = await supabase
+        .from('children')
+        .select('parent_id')
+        .eq('id', childId)
+        .maybeSingle();
 
-      if (achievements) {
-        achievements.forEach(a => {
-          const achievement = a.achievements as any;
-          if (achievement) {
-            allEvents.push({
-              id: `achievement-${a.id}`,
-              type: 'achievement',
-              title: `Conquista: ${achievement.name}`,
-              description: achievement.description,
-              timestamp: new Date(a.unlocked_at || Date.now())
-            });
-          }
-        });
+      if (childData?.parent_id) {
+        const { data: achievements } = await supabase
+          .from('user_achievements')
+          .select('*, achievements(*)')
+          .eq('user_id', childData.parent_id)
+          .order('unlocked_at', { ascending: false })
+          .limit(10);
+
+        if (achievements) {
+          achievements.forEach(a => {
+            const achievement = a.achievements as any;
+            if (achievement) {
+              allEvents.push({
+                id: `achievement-${a.id}`,
+                type: 'achievement',
+                title: `Conquista: ${achievement.name}`,
+                description: achievement.description,
+                timestamp: new Date(a.unlocked_at || Date.now())
+              });
+            }
+          });
+        }
       }
 
-      // Fetch screenings (diagnostic tests)
+      // Fetch screenings (diagnostic tests) for this child
       const { data: screenings } = await supabase
         .from('screenings')
         .select('*')
+        .or(`child_id.eq.${childId},user_id.eq.${childId}`)
         .order('created_at', { ascending: false })
         .limit(15);
 

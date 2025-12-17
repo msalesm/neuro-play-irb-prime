@@ -34,19 +34,21 @@ export const useRoutineData = (childId: string) => {
   return useQuery({
     queryKey: ['routine-data', childId],
     queryFn: async (): Promise<RoutineAnalysis> => {
-      // Fetch emotional check-ins as proxy for routine data
+      // Fetch emotional check-ins for this child as proxy for routine data
       const { data: checkIns, error: checkInsError } = await supabase
         .from('emotional_checkins')
         .select('*')
+        .eq('child_profile_id', childId)
         .order('scheduled_for', { ascending: false })
         .limit(30);
 
       if (checkInsError) throw checkInsError;
 
-      // Fetch game sessions to correlate with routine
+      // Fetch game sessions to correlate with routine for this child
       const { data: sessions, error: sessionsError } = await supabase
         .from('game_sessions')
         .select('*')
+        .eq('child_profile_id', childId)
         .order('created_at', { ascending: false })
         .limit(100);
 

@@ -216,20 +216,14 @@ export function useUnifiedPatientData(childId?: string) {
     setError(null);
 
     try {
-      // Load all data in parallel
-      const [
-        childResult,
-        profileResult,
-        sessionsResult,
-        checkinsResult,
-        insightsResult
-      ] = await Promise.all([
-        supabase.from('children').select('*').eq('id', childId).single(),
-        supabase.from('child_profiles').select('*').eq('id', childId).maybeSingle(),
-        supabase.from('game_sessions').select('*').order('completed_at', { ascending: false }).limit(50),
-        supabase.from('emotional_checkins').select('*').order('created_at', { ascending: false }).limit(30),
-        supabase.from('behavioral_insights').select('*').order('created_at', { ascending: false }).limit(20)
-      ]);
+      // Load child data
+      const childResult = await supabase.from('children').select('*').eq('id', childId).maybeSingle();
+      const profileResult = await supabase.from('child_profiles').select('*').eq('id', childId).maybeSingle();
+      
+      // Load related data filtered by childId/child_profile_id
+      const sessionsResult = await supabase.from('game_sessions').select('*').eq('child_profile_id', childId).order('completed_at', { ascending: false }).limit(50);
+      const checkinsResult = await supabase.from('emotional_checkins').select('*').eq('child_profile_id', childId).order('created_at', { ascending: false }).limit(30);
+      const insightsResult = await supabase.from('behavioral_insights').select('*').eq('child_profile_id', childId).order('created_at', { ascending: false }).limit(20);
 
       // Get child data from either table
       const childData = childResult.data || profileResult.data;
@@ -244,11 +238,8 @@ export function useUnifiedPatientData(childId?: string) {
       const birthDate = birthDateStr ? new Date(birthDateStr) : new Date();
       const age = Math.floor((Date.now() - birthDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000));
 
-      // Filter sessions for this child if available
-      const sessions = sessionsResult.data?.filter(s => 
-        s.child_profile_id === childId || 
-        profileResult.data?.id === s.child_profile_id
-      ) || sessionsResult.data || [];
+      // Get sessions - already filtered by childId in query
+      const sessions = sessionsResult.data || [];
 
       const checkins = checkinsResult.data || [];
       const insights = insightsResult.data || [];

@@ -39,14 +39,44 @@ export const useClinicalReports = (userId?: string) => {
     try {
       setLoading(true);
       
+      // Get child IDs this user has access to (as parent or therapist)
+      let childIds: string[] = [];
+      
+      // Get children as parent
+      const { data: parentChildren } = await supabase
+        .from('children')
+        .select('id')
+        .eq('parent_id', user.id);
+      
+      if (parentChildren) {
+        childIds = parentChildren.map(c => c.id);
+      }
+      
+      // Get children via child_access (for therapists)
+      const { data: accessChildren } = await supabase
+        .from('child_access')
+        .select('child_id')
+        .eq('professional_id', user.id)
+        .eq('is_active', true)
+        .eq('approval_status', 'approved');
+      
+      if (accessChildren) {
+        childIds = [...new Set([...childIds, ...accessChildren.map(a => a.child_id)])];
+      }
+      
       let query = supabase
         .from('clinical_reports')
         .select('*')
         .order('generated_date', { ascending: false });
 
-      // Se não é admin, filtra pelo userId fornecido ou do usuário atual
-      if (!isAdmin) {
-        query = query.eq('user_id', userId || user.id);
+      // Filter by specific userId if provided, otherwise by accessible children/user
+      if (userId) {
+        query = query.eq('user_id', userId);
+      } else if (!isAdmin && childIds.length > 0) {
+        // Include reports for user's accessible children + their own user_id
+        query = query.or(`user_id.eq.${user.id},user_id.in.(${childIds.join(',')})`);
+      } else if (!isAdmin) {
+        query = query.eq('user_id', user.id);
       }
 
       const { data, error } = await query;
