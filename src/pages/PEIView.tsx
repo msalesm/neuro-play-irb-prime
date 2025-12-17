@@ -41,7 +41,7 @@ export default function PEIView() {
   const screeningId = searchParams.get('screening');
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { currentPlan, loading, getPEIByScreening, updatePEI, createPlan } = usePEI();
+  const { currentPlan, loading, getPEIByScreening, getPEIByUserId, getAllPEIsForUser, updatePEI, createPlan } = usePEI();
   
   const [goals, setGoals] = useState<PEIGoal[]>([]);
   const [accommodations, setAccommodations] = useState<PEIAccommodation[]>([]);
@@ -59,15 +59,24 @@ export default function PEIView() {
       return;
     }
 
-    if (screeningId) {
-      loadPEI();
-    }
-  }, [user, screeningId]);
+    loadPEI();
+  }, [user, screeningId, patientId]);
 
   const loadPEI = async () => {
-    if (!screeningId) return;
+    let plan = null;
 
-    const plan = await getPEIByScreening(screeningId);
+    // If screeningId is provided, fetch by screening
+    if (screeningId) {
+      plan = await getPEIByScreening(screeningId);
+    } 
+    // If patientId is provided (therapist viewing patient), fetch by patient
+    else if (patientId) {
+      plan = await getPEIByUserId(patientId);
+    }
+    // Otherwise fetch for current user
+    else if (user) {
+      plan = await getPEIByUserId(user.id);
+    }
     
     if (plan) {
       // Load goals and accommodations from plan with type safety
@@ -76,8 +85,10 @@ export default function PEIView() {
       
       setGoals(planGoals);
       setAccommodations(planAccommodations);
-    } else if (user) {
-      await createPlan(screeningId, user.id);
+    } else {
+      // No plan found - reset state
+      setGoals([]);
+      setAccommodations([]);
     }
   };
 
