@@ -138,6 +138,7 @@ import Phase5Dashboard from "./pages/Phase5Dashboard";
 import ComplianceDashboard from "./pages/ComplianceDashboard";
 import BillingDashboard from "./pages/BillingDashboard";
 import ImpactDashboard from "./pages/ImpactDashboard";
+import AgendaClinica from "./pages/AgendaClinica";
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -292,6 +293,7 @@ const App = () => (
                   <Route path="/chat" element={<TherapeuticChatPage />} />
                   
           {/* Therapist Routes */}
+          <Route path="/agenda" element={<AgendaClinica />} />
           <Route path="/teleconsultas" element={<Teleconsultas />} />
           <Route path="/teleconsulta/:sessionId" element={<TeleconsultaSession />} />
           <Route path="/teleconsulta-demo" element={<TeleconsultaDemo />} />
