@@ -82,7 +82,7 @@ export function MobileMenu() {
         { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
         { title: 'PEI Inteligente', path: '/pei', icon: Brain },
         { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
-        { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck, badge: 'Novo' },
+        { title: 'Triagem', path: '/inventario-habilidades', icon: ClipboardCheck, badge: 'Novo' },
         { title: 'Relatórios', path: '/reports', icon: BarChart3 },
         { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
       ],

@@ -175,7 +175,7 @@ export function AppSidebar() {
       icon: ClipboardCheck,
     },
     {
-      title: 'Inventário de Habilidades',
+      title: 'Triagem',
       path: '/inventario-habilidades',
       icon: ClipboardList,
       badge: 'Novo',

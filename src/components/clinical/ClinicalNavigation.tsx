@@ -34,6 +34,12 @@ const clinicalNavigation: NavItem[] = [
     description: 'Lista de pacientes e priorização'
   },
   {
+    title: 'Triagem',
+    path: '/inventario-habilidades',
+    icon: ClipboardCheck,
+    description: 'Inventário de habilidades'
+  },
+  {
     title: 'Avaliações',
     path: '/diagnostic-tests',
     icon: ClipboardCheck,
