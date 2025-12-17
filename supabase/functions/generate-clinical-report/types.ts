@@ -22,9 +22,18 @@ export interface ReportData {
   general: {
     totalSessions: number;
     totalDurationMinutes: number;
+    totalPlayTime?: number;
     avgAccuracy: number;
     avgReactionTime: number;
     completionRate: number;
+  };
+  cognitive?: {
+    attention: number;
+    memory: number;
+    language: number;
+    logic: number;
+    emotion: number;
+    coordination: number;
   };
   cognitiveScores: {
     [category: string]: {
@@ -34,7 +43,7 @@ export interface ReportData {
       sessionsCompleted: number;
       avgAccuracy: number;
       improvement: number;
-    };
+    } | number;
   };
   temporalEvolution: Array<{
     date: string;

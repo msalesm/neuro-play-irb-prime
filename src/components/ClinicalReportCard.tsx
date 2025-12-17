@@ -77,7 +77,12 @@ export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalRepor
           {/* Summary */}
           {report.summary_insights && (
             <p className="text-sm text-muted-foreground line-clamp-2">
-              {report.summary_insights}
+              {report.summary_insights
+                .replace(/```json\s*/gi, '')
+                .replace(/```\s*/g, '')
+                .replace(/^\s*{\s*"executiveSummary":\s*"/i, '')
+                .replace(/"\s*,?\s*"domainAnalysis".*$/is, '')
+                .trim()}
             </p>
           )}
 

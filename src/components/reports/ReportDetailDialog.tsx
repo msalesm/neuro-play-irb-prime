@@ -185,7 +185,26 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
                   <CardTitle className="text-base">Resumo</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">{report.summary_insights}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {(() => {
+                      let summary = report.summary_insights
+                        .replace(/```json\s*/gi, '')
+                        .replace(/```\s*/g, '')
+                        .trim();
+                      
+                      // Try to extract executiveSummary from JSON if present
+                      try {
+                        const parsed = JSON.parse(summary);
+                        return parsed.executiveSummary || summary;
+                      } catch {
+                        // Not JSON, return cleaned string
+                        return summary
+                          .replace(/^\s*{\s*"executiveSummary":\s*"/i, '')
+                          .replace(/"\s*,?\s*"domainAnalysis".*$/is, '')
+                          .trim();
+                      }
+                    })()}
+                  </p>
                 </CardContent>
               </Card>
             )}
