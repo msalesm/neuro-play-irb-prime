@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { Play, Clock, Users, Target, Lock, ClipboardCheck, AlertTriangle } from "lucide-react";
+import { Play, Clock, Users, Target, Lock, ClipboardCheck, AlertTriangle, BarChart3 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 const diagnosticTests = [
@@ -262,22 +262,21 @@ export default function DiagnosticTests() {
 
         {/* CTA to Clinical Dashboard */}
         <div className="text-center">
-          <Card className="max-w-2xl mx-auto p-8 backdrop-blur-sm bg-gradient-to-br from-purple-500/10 to-blue-500/10 border-white/20">
+          <Card className="max-w-2xl mx-auto p-8 backdrop-blur-sm bg-gradient-to-br from-primary/10 to-primary/5 border-border">
             <CardContent>
-              <h3 className="font-heading text-2xl font-bold mb-4 text-white">
-                Relatório de Padrões Comportamentais
+              <h3 className="font-heading text-2xl font-bold mb-4 text-foreground">
+                Relatórios Clínicos
               </h3>
-              <p className="text-white/70 mb-6">
-                Acesse relatórios detalhados de padrões observados no painel de observação comportamental
+              <p className="text-muted-foreground mb-6">
+                Acesse todos os relatórios clínicos, análises de IA e histórico de avaliações
               </p>
               <Button 
                 size="lg" 
                 asChild
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
               >
-                <Link to="/clinical" className="flex items-center gap-2">
-                  <ClipboardCheck className="h-5 w-5" />
-                  Acessar Painel de Observação
+                <Link to="/reports" className="flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5" />
+                  Ver Relatórios
                 </Link>
               </Button>
             </CardContent>

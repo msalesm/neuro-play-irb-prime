@@ -40,16 +40,16 @@ const clinicalNavigation: NavItem[] = [
     description: 'Avaliações em 3 blocos'
   },
   {
+    title: 'Relatórios',
+    path: '/reports',
+    icon: BarChart3,
+    description: 'Todos os relatórios clínicos'
+  },
+  {
     title: 'Fila de Atendimento',
     path: '/operations',
     icon: TrendingUp,
     description: 'Priorização por risco'
-  },
-  {
-    title: 'Relatórios Clínicos',
-    path: '/reports',
-    icon: BarChart3,
-    description: 'Relatórios com ação'
   },
 ];
 
