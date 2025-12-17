@@ -34,10 +34,16 @@ const reportTypeLabels = {
 };
 
 export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalReportCardProps) => {
-  const cognitiveScores = report.detailed_analysis?.cognitiveScores || {};
-  const avgScore = Object.values(cognitiveScores).length > 0
-    ? (Object.values(cognitiveScores).reduce((a: any, b: any) => Number(a) + Number(b), 0) as number) / Object.values(cognitiveScores).length
-    : 0;
+  // Extract cognitive scores from various possible locations in the data structure
+  const rawCognitiveScores = report.detailed_analysis?.cognitiveScores || 
+    report.detailed_analysis?.aiAnalysis?.domainAnalysis || 
+    {};
+  
+  // Filter out non-numeric values and calculate average
+  const numericScores = Object.values(rawCognitiveScores).filter(v => typeof v === 'number' && !isNaN(v)) as number[];
+  const avgScore = numericScores.length > 0
+    ? numericScores.reduce((a, b) => a + b, 0) / numericScores.length
+    : (report.detailed_analysis?.avgAccuracy || 0);
 
   return (
     <motion.div
@@ -80,12 +86,25 @@ export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalRepor
           {/* Summary */}
           {report.summary_insights && (
             <p className="text-sm text-muted-foreground line-clamp-2">
-              {report.summary_insights
-                .replace(/```json\s*/gi, '')
-                .replace(/```\s*/g, '')
-                .replace(/^\s*{\s*"executiveSummary":\s*"/i, '')
-                .replace(/"\s*,?\s*"domainAnalysis".*$/is, '')
-                .trim()}
+              {(() => {
+                let summary = report.summary_insights
+                  .replace(/```json\s*/gi, '')
+                  .replace(/```\s*/g, '')
+                  .trim();
+                
+                // Try to extract executiveSummary from JSON if present
+                try {
+                  const parsed = JSON.parse(summary);
+                  return parsed.executiveSummary || parsed.summary || summary;
+                } catch {
+                  // Not JSON, clean up and return
+                  return summary
+                    .replace(/^\s*{\s*"executiveSummary":\s*"/i, '')
+                    .replace(/"\s*,?\s*"domainAnalysis".*$/is, '')
+                    .replace(/^"|"$/g, '')
+                    .trim();
+                }
+              })()}
             </p>
           )}
 
