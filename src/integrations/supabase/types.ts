@@ -2071,6 +2071,420 @@ export type Database = {
         }
         Relationships: []
       }
+      club_bookings: {
+        Row: {
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          clinic_commission: number
+          created_at: string | null
+          discount_applied: number | null
+          duration_minutes: number
+          final_price: number
+          id: string
+          notes: string | null
+          parent_id: string
+          partner_amount: number
+          partner_id: string
+          price: number
+          scheduled_date: string
+          scheduled_time: string
+          service_id: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          clinic_commission: number
+          created_at?: string | null
+          discount_applied?: number | null
+          duration_minutes: number
+          final_price: number
+          id?: string
+          notes?: string | null
+          parent_id: string
+          partner_amount: number
+          partner_id: string
+          price: number
+          scheduled_date: string
+          scheduled_time: string
+          service_id: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          clinic_commission?: number
+          created_at?: string | null
+          discount_applied?: number | null
+          duration_minutes?: number
+          final_price?: number
+          id?: string
+          notes?: string | null
+          parent_id?: string
+          partner_amount?: number
+          partner_id?: string
+          price?: number
+          scheduled_date?: string
+          scheduled_time?: string
+          service_id?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_bookings_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "club_bookings_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "club_bookings_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "club_partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "club_bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "club_services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_partner_availability: {
+        Row: {
+          created_at: string | null
+          day_of_week: number
+          end_time: string
+          id: string
+          is_active: boolean | null
+          partner_id: string
+          start_time: string
+        }
+        Insert: {
+          created_at?: string | null
+          day_of_week: number
+          end_time: string
+          id?: string
+          is_active?: boolean | null
+          partner_id: string
+          start_time: string
+        }
+        Update: {
+          created_at?: string | null
+          day_of_week?: number
+          end_time?: string
+          id?: string
+          is_active?: boolean | null
+          partner_id?: string
+          start_time?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_partner_availability_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "club_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_partners: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          avatar_url: string | null
+          bank_account: Json | null
+          bio: string | null
+          commission_rate: number | null
+          created_at: string | null
+          documents: Json | null
+          id: string
+          is_active: boolean | null
+          is_approved: boolean | null
+          name: string
+          specialty: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          avatar_url?: string | null
+          bank_account?: Json | null
+          bio?: string | null
+          commission_rate?: number | null
+          created_at?: string | null
+          documents?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_approved?: boolean | null
+          name: string
+          specialty?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          avatar_url?: string | null
+          bank_account?: Json | null
+          bio?: string | null
+          commission_rate?: number | null
+          created_at?: string | null
+          documents?: Json | null
+          id?: string
+          is_active?: boolean | null
+          is_approved?: boolean | null
+          name?: string
+          specialty?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_partners_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "club_partners_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_payments: {
+        Row: {
+          amount: number
+          booking_id: string
+          created_at: string | null
+          id: string
+          paid_at: string | null
+          payment_method: string | null
+          payment_status: string | null
+          receipt_url: string | null
+          refunded_at: string | null
+          stripe_payment_id: string | null
+          stripe_session_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          created_at?: string | null
+          id?: string
+          paid_at?: string | null
+          payment_method?: string | null
+          payment_status?: string | null
+          receipt_url?: string | null
+          refunded_at?: string | null
+          stripe_payment_id?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          created_at?: string | null
+          id?: string
+          paid_at?: string | null
+          payment_method?: string | null
+          payment_status?: string | null
+          receipt_url?: string | null
+          refunded_at?: string | null
+          stripe_payment_id?: string | null
+          stripe_session_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_payments_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "club_bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_service_categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      club_services: {
+        Row: {
+          cancellation_policy: string | null
+          category_id: string | null
+          created_at: string | null
+          description: string | null
+          discount_percentage: number | null
+          duration_minutes: number
+          id: string
+          is_active: boolean | null
+          location_address: string | null
+          location_type: string | null
+          name: string
+          partner_id: string
+          price: number
+          updated_at: string | null
+        }
+        Insert: {
+          cancellation_policy?: string | null
+          category_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          discount_percentage?: number | null
+          duration_minutes?: number
+          id?: string
+          is_active?: boolean | null
+          location_address?: string | null
+          location_type?: string | null
+          name: string
+          partner_id: string
+          price: number
+          updated_at?: string | null
+        }
+        Update: {
+          cancellation_policy?: string | null
+          category_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          discount_percentage?: number | null
+          duration_minutes?: number
+          id?: string
+          is_active?: boolean | null
+          location_address?: string | null
+          location_type?: string | null
+          name?: string
+          partner_id?: string
+          price?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_services_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "club_service_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "club_services_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "club_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      club_subscriptions: {
+        Row: {
+          benefits: Json | null
+          cancelled_at: string | null
+          created_at: string | null
+          discount_percentage: number | null
+          expires_at: string | null
+          id: string
+          parent_id: string
+          plan_name: string
+          price_monthly: number
+          started_at: string | null
+          status: string | null
+          stripe_subscription_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          benefits?: Json | null
+          cancelled_at?: string | null
+          created_at?: string | null
+          discount_percentage?: number | null
+          expires_at?: string | null
+          id?: string
+          parent_id: string
+          plan_name?: string
+          price_monthly: number
+          started_at?: string | null
+          status?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          benefits?: Json | null
+          cancelled_at?: string | null
+          created_at?: string | null
+          discount_percentage?: number | null
+          expires_at?: string | null
+          id?: string
+          parent_id?: string
+          plan_name?: string
+          price_monthly?: number
+          started_at?: string | null
+          status?: string | null
+          stripe_subscription_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "club_subscriptions_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "club_subscriptions_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cognitive_games: {
         Row: {
           active: boolean | null
@@ -8955,7 +9369,13 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "therapist" | "parent" | "user" | "patient"
+      app_role:
+        | "admin"
+        | "therapist"
+        | "parent"
+        | "user"
+        | "patient"
+        | "club_partner"
       message_type: "text" | "feedback" | "recommendation" | "alert"
       story_category:
         | "rotinas"
@@ -9100,7 +9520,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "therapist", "parent", "user", "patient"],
+      app_role: [
+        "admin",
+        "therapist",
+        "parent",
+        "user",
+        "patient",
+        "club_partner",
+      ],
       message_type: ["text", "feedback", "recommendation", "alert"],
       story_category: [
         "rotinas",
