@@ -276,9 +276,11 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
                             <Brain className="w-4 h-4 text-primary" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium">{session.gameName}</p>
+                            <p className="text-sm font-medium">
+                              Sessão de {format(new Date(session.date), "dd/MM/yyyy", { locale: ptBR })}
+                            </p>
                             <p className="text-xs text-muted-foreground">
-                              {format(new Date(session.date), 'dd/MM HH:mm', { locale: ptBR })}
+                              {format(new Date(session.date), 'HH:mm', { locale: ptBR })} • {Math.round(session.duration / 60)} min
                             </p>
                           </div>
                         </div>
