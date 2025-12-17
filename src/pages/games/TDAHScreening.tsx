@@ -41,8 +41,8 @@ export default function TDAHScreening() {
     const trials: Trial[] = [];
     const colors = ['bg-green-500', 'bg-blue-500', 'bg-red-500', 'bg-yellow-500'];
     
-    // 70% go trials, 30% no-go trials
-    for (let i = 0; i < 40; i++) {
+    // 70% go trials, 30% no-go trials - reduced to 15 trials for ~5 min max
+    for (let i = 0; i < 15; i++) {
       const isGo = Math.random() < 0.7;
       trials.push({
         id: i,
@@ -195,7 +195,7 @@ export default function TDAHScreening() {
                 <li>• Quando ver um CÍRCULO (●), pressione o botão rapidamente</li>
                 <li>• Quando ver um QUADRADO (■), NÃO pressione o botão</li>
                 <li>• Fique atento e responda o mais rápido possível</li>
-                <li>• São 40 tentativas ao todo</li>
+                <li>• São 15 tentativas ao todo (~3 minutos)</li>
               </ul>
             </div>
 
