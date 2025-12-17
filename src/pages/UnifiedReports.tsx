@@ -1,0 +1,438 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  ArrowLeft, 
+  FileText, 
+  Stethoscope, 
+  GraduationCap, 
+  Users,
+  Calendar,
+  Brain,
+  Loader2,
+  Download,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle,
+  Target
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
+import { useTelemetry } from '@/hooks/useTelemetry';
+import { toast } from '@/hooks/use-toast';
+import { format, subDays } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+interface ReportData {
+  type: 'clinical' | 'pedagogical' | 'familiar';
+  period: string;
+  generatedAt: string;
+  summary: {
+    overallProgress: number;
+    sessionsCompleted: number;
+    averageAccuracy: number;
+    totalPlayTime: number;
+    strengths: string[];
+    areasOfConcern: string[];
+    recommendations: string[];
+  };
+  cognitiveProfile: {
+    attention: number;
+    memory: number;
+    language: number;
+    logic: number;
+    emotion: number;
+    coordination: number;
+  };
+  alerts: Array<{
+    type: 'warning' | 'success' | 'info';
+    message: string;
+  }>;
+}
+
+const reportTypes = [
+  {
+    type: 'familiar' as const,
+    title: 'Relatório Familiar',
+    description: 'Progresso semanal/mensal, conquistas e próximos passos',
+    icon: Users,
+    color: 'text-blue-500',
+    bgColor: 'bg-blue-500/10',
+  },
+  {
+    type: 'clinical' as const,
+    title: 'Relatório Clínico',
+    description: 'Evolução terapêutica, alertas de risco e plano automatizado',
+    icon: Stethoscope,
+    color: 'text-green-500',
+    bgColor: 'bg-green-500/10',
+  },
+  {
+    type: 'pedagogical' as const,
+    title: 'Relatório Pedagógico',
+    description: 'Evolução cognitiva, desempenho por área e atividades sugeridas',
+    icon: GraduationCap,
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-500/10',
+  },
+];
+
+export default function UnifiedReports() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { isAdmin, isTherapist, isParent } = useUserRole();
+  const { trackScreenView } = useTelemetry();
+  const [selectedPeriod, setSelectedPeriod] = useState<string>('30');
+  const [generating, setGenerating] = useState<string | null>(null);
+  const [reports, setReports] = useState<Record<string, ReportData | null>>({
+    clinical: null,
+    pedagogical: null,
+    familiar: null,
+  });
+
+  useEffect(() => {
+    trackScreenView('unified_reports');
+  }, [trackScreenView]);
+
+  const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
+    if (!user) return;
+
+    setGenerating(type);
+    
+    try {
+      const endDate = new Date();
+      const startDate = subDays(endDate, parseInt(selectedPeriod));
+
+      const { data, error } = await supabase.functions.invoke('generate-clinical-report', {
+        body: {
+          userId: user.id,
+          reportType: type,
+          startDate: startDate.toISOString().split('T')[0],
+          endDate: endDate.toISOString().split('T')[0],
+        },
+      });
+
+      if (error) {
+        const errorBody = error.context?.body || error.message;
+        if (typeof errorBody === 'string' && errorBody.includes('Nenhum dado encontrado')) {
+          toast({
+            title: 'Nenhum dado encontrado',
+            description: 'Complete alguns jogos primeiro para gerar um relatório.',
+          });
+          return;
+        }
+        throw error;
+      }
+
+      if (data?.status === 'error') {
+        toast({
+          title: data.message || 'Erro ao gerar relatório',
+          description: data.suggestion || 'Tente novamente mais tarde.',
+        });
+        return;
+      }
+
+      const apiData = data.data || data;
+      const generalData = apiData?.general || {};
+      const aiAnalysis = apiData?.aiAnalysis || {};
+      const cognitiveData = apiData?.cognitive || {};
+      
+      const transformedReport: ReportData = {
+        type,
+        period: `${format(startDate, 'dd/MM/yyyy', { locale: ptBR })} - ${format(endDate, 'dd/MM/yyyy', { locale: ptBR })}`,
+        generatedAt: new Date().toISOString(),
+        summary: {
+          overallProgress: Number(generalData.avgAccuracy) || 0,
+          sessionsCompleted: Number(generalData.totalSessions) || 0,
+          averageAccuracy: Number(generalData.avgAccuracy) || 0,
+          totalPlayTime: Number(generalData.totalPlayTime) || 0,
+          strengths: Array.isArray(aiAnalysis.strengths) && aiAnalysis.strengths.length > 0 
+            ? aiAnalysis.strengths 
+            : ['Engajamento consistente'],
+          areasOfConcern: Array.isArray(aiAnalysis.areasOfConcern) 
+            ? aiAnalysis.areasOfConcern 
+            : [],
+          recommendations: Array.isArray(aiAnalysis.recommendations) && aiAnalysis.recommendations.length > 0 
+            ? aiAnalysis.recommendations 
+            : ['Continuar praticando regularmente'],
+        },
+        cognitiveProfile: {
+          attention: Number(cognitiveData.attention) || 0,
+          memory: Number(cognitiveData.memory) || 0,
+          language: Number(cognitiveData.language) || 0,
+          logic: Number(cognitiveData.logic) || 0,
+          emotion: Number(cognitiveData.emotion) || 0,
+          coordination: Number(cognitiveData.coordination) || 0,
+        },
+        alerts: transformAlerts(aiAnalysis),
+      };
+
+      setReports(prev => ({ ...prev, [type]: transformedReport }));
+
+      toast({
+        title: 'Relatório gerado',
+        description: `Relatório ${getReportTypeName(type)} gerado com sucesso.`,
+      });
+    } catch (error: any) {
+      console.error('Error generating report:', error);
+      toast({
+        title: 'Erro ao gerar relatório',
+        description: 'Tente novamente mais tarde.',
+        variant: 'destructive',
+      });
+    } finally {
+      setGenerating(null);
+    }
+  };
+
+  const transformAlerts = (aiAnalysis: any): ReportData['alerts'] => {
+    const alerts: ReportData['alerts'] = [];
+    
+    if (aiAnalysis?.areasOfConcern?.length > 0) {
+      aiAnalysis.areasOfConcern.forEach((concern: string) => {
+        alerts.push({ type: 'warning' as const, message: concern });
+      });
+    }
+    
+    if (aiAnalysis?.strengths?.length > 0) {
+      alerts.push({ 
+        type: 'success' as const, 
+        message: `Ponto forte: ${aiAnalysis.strengths[0]}` 
+      });
+    }
+    
+    return alerts.length > 0 ? alerts : [
+      { type: 'info' as const, message: 'Continue praticando para receber insights personalizados!' }
+    ];
+  };
+
+  const getReportTypeName = (type: string) => {
+    const names: Record<string, string> = {
+      clinical: 'Clínico',
+      pedagogical: 'Pedagógico',
+      familiar: 'Familiar',
+    };
+    return names[type] || type;
+  };
+
+  const generateAllReports = async () => {
+    for (const reportType of reportTypes) {
+      await generateReport(reportType.type);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background pb-24">
+      <div className="container max-w-6xl mx-auto px-4 py-6">
+        {/* Header */}
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-foreground">Relatórios</h1>
+                {isAdmin && <Badge variant="secondary">Admin</Badge>}
+              </div>
+              <p className="text-muted-foreground">Visão unificada de todos os relatórios</p>
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+              <SelectTrigger className="w-[160px]">
+                <Calendar className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Período" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="7">7 dias</SelectItem>
+                <SelectItem value="30">30 dias</SelectItem>
+                <SelectItem value="90">3 meses</SelectItem>
+                <SelectItem value="180">6 meses</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Button onClick={generateAllReports} disabled={generating !== null}>
+              {generating ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Brain className="h-4 w-4 mr-2" />
+              )}
+              Gerar Todos
+            </Button>
+          </div>
+        </div>
+
+        {/* Report Cards Grid */}
+        <div className="grid gap-6 md:grid-cols-3">
+          {reportTypes.map((reportType) => {
+            const report = reports[reportType.type];
+            const Icon = reportType.icon;
+            const isGenerating = generating === reportType.type;
+
+            return (
+              <motion.div
+                key={reportType.type}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: reportTypes.indexOf(reportType) * 0.1 }}
+              >
+                <Card className="h-full flex flex-col">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-lg ${reportType.bgColor}`}>
+                        <Icon className={`h-5 w-5 ${reportType.color}`} />
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="text-base">{reportType.title}</CardTitle>
+                        <CardDescription className="text-xs mt-1">
+                          {reportType.description}
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="flex-1 flex flex-col gap-4">
+                    {report ? (
+                      <>
+                        {/* Summary Stats */}
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="text-center p-2 bg-muted/50 rounded-lg">
+                            <p className="text-xs text-muted-foreground">Progresso</p>
+                            <p className="text-lg font-bold">{report.summary.overallProgress}%</p>
+                          </div>
+                          <div className="text-center p-2 bg-muted/50 rounded-lg">
+                            <p className="text-xs text-muted-foreground">Sessões</p>
+                            <p className="text-lg font-bold">{report.summary.sessionsCompleted}</p>
+                          </div>
+                        </div>
+
+                        {/* Alerts */}
+                        <div className="flex-1 space-y-2">
+                          {report.alerts.slice(0, 2).map((alert, idx) => (
+                            <div 
+                              key={idx} 
+                              className={`flex items-start gap-2 text-xs p-2 rounded-lg ${
+                                alert.type === 'warning' ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400' :
+                                alert.type === 'success' ? 'bg-green-500/10 text-green-700 dark:text-green-400' :
+                                'bg-blue-500/10 text-blue-700 dark:text-blue-400'
+                              }`}
+                            >
+                              {alert.type === 'warning' ? <AlertTriangle className="h-3 w-3 mt-0.5 flex-shrink-0" /> :
+                               alert.type === 'success' ? <CheckCircle className="h-3 w-3 mt-0.5 flex-shrink-0" /> :
+                               <Target className="h-3 w-3 mt-0.5 flex-shrink-0" />}
+                              <span className="line-clamp-2">{alert.message}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div>
+                          <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                            <span>Precisão média</span>
+                            <span>{report.summary.averageAccuracy}%</span>
+                          </div>
+                          <Progress value={report.summary.averageAccuracy} className="h-2" />
+                        </div>
+
+                        <p className="text-xs text-muted-foreground text-center">
+                          Período: {report.period}
+                        </p>
+                      </>
+                    ) : (
+                      <div className="flex-1 flex flex-col items-center justify-center text-center py-6">
+                        <FileText className="h-10 w-10 text-muted-foreground/50 mb-3" />
+                        <p className="text-sm text-muted-foreground">
+                          Nenhum relatório gerado
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Clique em gerar para criar
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Action Button */}
+                    <Button
+                      variant={report ? 'outline' : 'default'}
+                      size="sm"
+                      className="w-full"
+                      onClick={() => generateReport(reportType.type)}
+                      disabled={isGenerating}
+                    >
+                      {isGenerating ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Gerando...
+                        </>
+                      ) : report ? (
+                        <>
+                          <Brain className="h-4 w-4 mr-2" />
+                          Atualizar
+                        </>
+                      ) : (
+                        <>
+                          <Brain className="h-4 w-4 mr-2" />
+                          Gerar Relatório
+                        </>
+                      )}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Recommendations Section */}
+        {(reports.clinical || reports.pedagogical || reports.familiar) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="h-5 w-5 text-primary" />
+                  Recomendações Consolidadas
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {reportTypes.map((reportType) => {
+                    const report = reports[reportType.type];
+                    if (!report) return null;
+
+                    return (
+                      <div key={reportType.type} className="space-y-2">
+                        <h4 className="font-medium text-sm flex items-center gap-2">
+                          <reportType.icon className={`h-4 w-4 ${reportType.color}`} />
+                          {reportType.title}
+                        </h4>
+                        <ul className="space-y-1">
+                          {report.summary.recommendations.slice(0, 3).map((rec, idx) => (
+                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
+                              <span className="text-primary">•</span>
+                              {rec}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
