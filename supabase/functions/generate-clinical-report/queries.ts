@@ -28,22 +28,39 @@ export async function fetchSessionsData(
     console.error('Error fetching sessions:', sessionsError);
   }
 
-  if (sessions && sessions.length > 0) {
-    console.log(`✅ Found ${sessions.length} learning_sessions`);
-    
+  // Filter sessions that have actual performance data with accuracy
+  const validSessions = (sessions || []).filter(session => {
+    const pd = session.performance_data || {};
+    const accuracy = pd.accuracy ?? pd.accuracy_percentage ?? pd.accuracyPercentage ?? null;
+    return typeof accuracy === 'number' && accuracy > 0;
+  });
+
+  console.log(`✅ Found ${sessions?.length || 0} learning_sessions, ${validSessions.length} with valid accuracy`);
+
+  if (validSessions.length > 0) {
     // Transform sessions to expected format
-    const enrichedSessions = sessions.map(session => ({
-      id: session.id,
-      user_id: session.user_id,
-      trail_id: null,
-      created_at: session.created_at,
-      completed_at: session.created_at,
-      cognitive_category: session.game_type || 'general',
-      current_level: 1,
-      total_xp: session.session_duration_seconds ? Math.round(session.session_duration_seconds / 10) : 0,
-      performance_data: session.performance_data || {},
-      struggles_detected: []
-    }));
+    const enrichedSessions = validSessions.map(session => {
+      const pd = session.performance_data || {};
+      const accuracy = pd.accuracy ?? pd.accuracy_percentage ?? pd.accuracyPercentage ?? 0;
+      const reactionTime = pd.avg_reaction_time_ms ?? pd.reaction_time ?? pd.reactionTime ?? 0;
+      
+      return {
+        id: session.id,
+        user_id: session.user_id,
+        trail_id: null,
+        created_at: session.created_at,
+        completed_at: pd.completed_at || session.created_at,
+        cognitive_category: session.game_type || 'general',
+        current_level: pd.difficulty || 1,
+        total_xp: pd.score || (session.session_duration_seconds ? Math.round(session.session_duration_seconds / 10) : 0),
+        performance_data: {
+          accuracy: accuracy,
+          score: pd.score || 0,
+          reaction_time: reactionTime,
+        },
+        struggles_detected: accuracy < 60 ? ['low_accuracy'] : []
+      };
+    });
 
     // Create trails data summary
     const trailsData: { [category: string]: any } = {};
@@ -51,9 +68,10 @@ export async function fetchSessionsData(
     
     categories.forEach(category => {
       const categorySessions = enrichedSessions.filter(s => s.cognitive_category === category);
+      const avgAccuracy = categorySessions.reduce((sum, s) => sum + (s.performance_data.accuracy || 0), 0) / categorySessions.length;
       trailsData[category] = {
         initialLevel: 1,
-        currentLevel: Math.min(Math.ceil(categorySessions.length / 5) + 1, 10),
+        currentLevel: Math.min(Math.ceil(avgAccuracy / 20) + 1, 10),
         totalXP: categorySessions.reduce((sum, s) => sum + s.total_xp, 0)
       };
     });
@@ -61,7 +79,7 @@ export async function fetchSessionsData(
     return { sessions: enrichedSessions, trailsData };
   }
 
-  // Fallback to game_sessions
+  // Fallback to game_sessions if no valid learning_sessions
   return fetchGameSessionsData(supabase, userId, startDate, endDate);
 }
 
@@ -145,23 +163,38 @@ async function fetchGameSessionsData(
 }
 
 function transformGameSessions(gameSessions: any[], userId: string): SessionsQueryResult {
-  const enrichedSessions = gameSessions.map(session => ({
-    id: session.id,
-    user_id: userId,
-    trail_id: null,
-    created_at: session.created_at,
-    completed_at: session.completed_at || session.created_at,
-    cognitive_category: session.game_id || 'general',
-    current_level: session.difficulty_level || 1,
-    total_xp: session.score || 0,
-    performance_data: {
-      accuracy: session.accuracy_percentage || 0,
-      score: session.score || 0,
-      duration: session.duration_seconds || 0,
-      reactionTime: session.avg_reaction_time_ms || 0
-    },
-    struggles_detected: (session.accuracy_percentage || 0) < 60 ? ['low_accuracy'] : []
-  }));
+  // Filter sessions with actual accuracy data
+  const validSessions = gameSessions.filter(session => {
+    const accuracy = session.accuracy_percentage ?? session.session_data?.accuracy ?? null;
+    return typeof accuracy === 'number';
+  });
+
+  console.log(`📊 transformGameSessions: ${gameSessions.length} total, ${validSessions.length} with accuracy`);
+
+  const enrichedSessions = validSessions.map(session => {
+    // Get accuracy from multiple possible sources
+    const accuracy = session.accuracy_percentage ?? session.session_data?.accuracy ?? 0;
+    const reactionTime = session.avg_reaction_time_ms ?? session.session_data?.reactionTime ?? 0;
+    const score = session.score ?? session.session_data?.score ?? 0;
+
+    return {
+      id: session.id,
+      user_id: userId,
+      trail_id: null,
+      created_at: session.created_at,
+      completed_at: session.completed_at || session.created_at,
+      cognitive_category: session.game_id || 'general',
+      current_level: session.difficulty_level || 1,
+      total_xp: score,
+      performance_data: {
+        accuracy: accuracy,
+        score: score,
+        duration: session.duration_seconds || 0,
+        reaction_time: reactionTime
+      },
+      struggles_detected: accuracy < 60 ? ['low_accuracy'] : []
+    };
+  });
 
   // Create trails data summary
   const trailsData: { [category: string]: any } = {};
@@ -169,11 +202,14 @@ function transformGameSessions(gameSessions: any[], userId: string): SessionsQue
   
   categories.forEach(category => {
     const categorySessions = enrichedSessions.filter(s => s.cognitive_category === category);
-    const avgAccuracy = categorySessions.reduce((sum, s) => sum + (s.performance_data.accuracy || 0), 0) / categorySessions.length;
+    const avgAccuracy = categorySessions.length > 0 
+      ? categorySessions.reduce((sum, s) => sum + (s.performance_data.accuracy || 0), 0) / categorySessions.length
+      : 0;
     trailsData[category] = {
       initialLevel: 1,
       currentLevel: Math.min(Math.ceil(avgAccuracy / 20) + 1, 10),
-      totalXP: categorySessions.reduce((sum, s) => sum + s.total_xp, 0)
+      totalXP: categorySessions.reduce((sum, s) => sum + s.total_xp, 0),
+      avgAccuracy: Math.round(avgAccuracy * 100) / 100
     };
   });
 
