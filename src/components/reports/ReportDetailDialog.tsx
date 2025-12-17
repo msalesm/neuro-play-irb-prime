@@ -38,13 +38,78 @@ const reportTypeLabels: Record<string, string> = {
   behavioral: 'Comportamental',
   clinical: 'Clínico',
   pedagogical: 'Pedagógico',
-  familiar: 'Familiar'
+  familiar: 'Familiar',
+  monthly: 'Mensal',
+  weekly: 'Semanal',
+  daily: 'Diário',
+  quarterly: 'Trimestral'
+};
+
+const progressIndicatorLabels: Record<string, string> = {
+  'Memory Trend': 'Tendência de Memória',
+  'Attention Trend': 'Tendência de Atenção',
+  'Overall Progress': 'Progresso Geral',
+  'overallProgress': 'Progresso Geral',
+  'memoryTrend': 'Tendência de Memória',
+  'attentionTrend': 'Tendência de Atenção',
+  'languageTrend': 'Tendência de Linguagem',
+  'executiveTrend': 'Tendência Executiva',
+  'cognitive': 'Cognitivo',
+  'behavioral': 'Comportamental',
+  'socioemotional': 'Socioemocional'
+};
+
+const trendValueLabels: Record<string, string> = {
+  'stable': 'estável',
+  'improving': 'melhorando',
+  'declining': 'declinando',
+  'up': 'subindo',
+  'down': 'descendo'
 };
 
 const getTrendIcon = (trend?: string) => {
-  if (trend === 'improving') return <TrendingUp className="w-4 h-4 text-green-500" />;
-  if (trend === 'declining') return <TrendingDown className="w-4 h-4 text-red-500" />;
+  if (trend === 'improving' || trend === 'up') return <TrendingUp className="w-4 h-4 text-green-500" />;
+  if (trend === 'declining' || trend === 'down') return <TrendingDown className="w-4 h-4 text-red-500" />;
   return <Minus className="w-4 h-4 text-muted-foreground" />;
+};
+
+// Helper to parse recommendation text
+const parseRecommendation = (rec: any): string => {
+  if (typeof rec === 'string') {
+    // Try to parse JSON string
+    try {
+      const parsed = JSON.parse(rec);
+      return parsed.description || parsed.recommendation || parsed.title || rec;
+    } catch {
+      return rec;
+    }
+  }
+  if (typeof rec === 'object') {
+    return rec.description || rec.recommendation || rec.title || JSON.stringify(rec);
+  }
+  return String(rec);
+};
+
+// Helper to translate trend values
+const translateValue = (value: any): string => {
+  if (typeof value === 'string') {
+    return trendValueLabels[value.toLowerCase()] || value;
+  }
+  if (typeof value === 'number') {
+    return String(value);
+  }
+  if (typeof value === 'object' && value !== null) {
+    const v = value.value || value.score;
+    const trend = value.trend;
+    if (v !== undefined) {
+      const translatedV = typeof v === 'string' ? (trendValueLabels[v.toLowerCase()] || v) : v;
+      return String(translatedV);
+    }
+    if (trend) {
+      return trendValueLabels[trend.toLowerCase()] || trend;
+    }
+  }
+  return '-';
 };
 
 export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailDialogProps) {
@@ -121,7 +186,8 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
         pdf.setFontSize(10);
         pdf.setTextColor(60, 60, 60);
         Object.entries(cognitiveScores).forEach(([key, value]) => {
-          pdf.text(`${key}: ${Math.round(Number(value))}/100`, margin, y);
+          const label = domainLabels[key] || key.replace(/_/g, ' ');
+          pdf.text(`${label}: ${Math.round(Number(value))}/100`, margin, y);
           y += 5;
         });
         y += 10;
@@ -136,7 +202,7 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
         pdf.setFontSize(10);
         pdf.setTextColor(60, 60, 60);
         report.intervention_recommendations.forEach((rec, idx) => {
-          const text = typeof rec === 'string' ? rec : rec.recommendation || rec.title || JSON.stringify(rec);
+          const text = parseRecommendation(rec);
           const lines = pdf.splitTextToSize(`${idx + 1}. ${text}`, 170);
           pdf.text(lines, margin, y);
           y += lines.length * 5 + 3;
@@ -272,11 +338,11 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
                     {Object.entries(progressIndicators).map(([key, data]: [string, any]) => (
                       <div key={key} className="p-3 bg-muted/50 rounded-lg">
                         <div className="flex items-center justify-between">
-                          <span className="text-sm capitalize">{key.replace(/_/g, ' ')}</span>
-                          {getTrendIcon(data?.trend)}
+                          <span className="text-sm">{progressIndicatorLabels[key] || key.replace(/_/g, ' ')}</span>
+                          {getTrendIcon(typeof data === 'object' ? data?.trend : data)}
                         </div>
                         <p className="text-lg font-semibold mt-1">
-                          {typeof data === 'object' ? data.value || data.score || '-' : data}
+                          {translateValue(data)}
                         </p>
                       </div>
                     ))}
@@ -300,7 +366,7 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
                       <li key={idx} className="flex gap-2 text-sm">
                         <span className="text-primary font-medium">{idx + 1}.</span>
                         <span className="text-muted-foreground">
-                          {typeof rec === 'string' ? rec : rec.recommendation || rec.title || JSON.stringify(rec)}
+                          {parseRecommendation(rec)}
                         </span>
                       </li>
                     ))}
