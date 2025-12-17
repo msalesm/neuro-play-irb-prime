@@ -95,7 +95,8 @@ export const useClinicalReports = (userId?: string) => {
   const generateReport = async (params: {
     startDate: string;
     endDate: string;
-    reportType: 'comprehensive' | 'cognitive' | 'behavioral';
+    reportType: 'comprehensive' | 'cognitive' | 'behavioral' | 'clinical' | 'pedagogical' | 'familiar';
+    childId?: string;
   }) => {
     const targetUserId = userId || user?.id;
     
@@ -111,6 +112,7 @@ export const useClinicalReports = (userId?: string) => {
       const { data, error } = await supabase.functions.invoke('generate-clinical-report', {
         body: {
           userId: targetUserId,
+          childId: params.childId,
           startDate: params.startDate,
           endDate: params.endDate,
           reportType: params.reportType

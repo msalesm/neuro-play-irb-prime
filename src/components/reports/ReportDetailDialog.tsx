@@ -50,8 +50,21 @@ const getTrendIcon = (trend?: string) => {
 export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailDialogProps) {
   if (!report) return null;
 
-  const cognitiveScores = report.detailed_analysis?.cognitiveScores || {};
+  // Extract cognitive scores from various possible locations
+  const cognitiveScores = report.detailed_analysis?.cognitiveScores || 
+    report.detailed_analysis?.aiAnalysis?.domainAnalysis ||
+    {};
+  
+  // Extract progress indicators  
   const progressIndicators = report.progress_indicators || {};
+  
+  // Get AI analysis data
+  const aiAnalysis = report.detailed_analysis?.aiAnalysis || {};
+  
+  // Get real metrics from detailed_analysis
+  const totalSessions = report.detailed_analysis?.totalSessions || report.detailed_analysis?.sessionsAnalyzed || 0;
+  const avgAccuracy = report.detailed_analysis?.avgAccuracy || 0;
+  const avgReactionTime = report.detailed_analysis?.avgReactionTime || 0;
 
   const domainLabels: Record<string, string> = {
     attention: 'Atenção',
@@ -62,6 +75,9 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
     coordination: 'Coordenação',
     flexibility: 'Flexibilidade',
     inhibition: 'Controle Inibitório',
+    cognitive: 'Cognitivo',
+    behavioral: 'Comportamental',
+    socioemotional: 'Socioemocional',
   };
   const handleDownloadPDF = () => {
     try {
@@ -318,44 +334,58 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
             )}
 
             {/* Detailed Analysis */}
-            {report.detailed_analysis && Object.keys(report.detailed_analysis).length > 0 && (
+            {report.detailed_analysis && (
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base">Análise Detalhada</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {report.detailed_analysis.totalSessions !== undefined && (
-                      <div className="p-3 bg-muted/50 rounded-lg text-center">
-                        <p className="text-2xl font-bold text-primary">{report.detailed_analysis.totalSessions}</p>
-                        <p className="text-xs text-muted-foreground">Sessões Totais</p>
-                      </div>
-                    )}
-                    {report.detailed_analysis.averageScore !== undefined && (
-                      <div className="p-3 bg-muted/50 rounded-lg text-center">
-                        <p className="text-2xl font-bold text-primary">{Math.round(report.detailed_analysis.averageScore)}</p>
-                        <p className="text-xs text-muted-foreground">Pontuação Média</p>
-                      </div>
-                    )}
-                    {report.detailed_analysis.completionRate !== undefined && (
-                      <div className="p-3 bg-muted/50 rounded-lg text-center">
-                        <p className="text-2xl font-bold text-primary">{Math.round(report.detailed_analysis.completionRate)}%</p>
-                        <p className="text-xs text-muted-foreground">Taxa de Conclusão</p>
-                      </div>
-                    )}
-                    {report.detailed_analysis.gamesPlayed !== undefined && (
-                      <div className="p-3 bg-muted/50 rounded-lg text-center">
-                        <p className="text-2xl font-bold text-primary">{report.detailed_analysis.gamesPlayed}</p>
-                        <p className="text-xs text-muted-foreground">Jogos Realizados</p>
-                      </div>
-                    )}
-                    {report.detailed_analysis.totalPlayTime !== undefined && (
-                      <div className="p-3 bg-muted/50 rounded-lg text-center">
-                        <p className="text-2xl font-bold text-primary">{report.detailed_analysis.totalPlayTime}</p>
-                        <p className="text-xs text-muted-foreground">Tempo Total (min)</p>
+                    <div className="p-3 bg-muted/50 rounded-lg text-center">
+                      <p className="text-2xl font-bold text-primary">{totalSessions}</p>
+                      <p className="text-xs text-muted-foreground">Sessões Analisadas</p>
+                    </div>
+                    <div className="p-3 bg-muted/50 rounded-lg text-center">
+                      <p className="text-2xl font-bold text-primary">{avgAccuracy > 0 ? `${Math.round(avgAccuracy)}%` : '-'}</p>
+                      <p className="text-xs text-muted-foreground">Acurácia Média</p>
+                    </div>
+                    <div className="p-3 bg-muted/50 rounded-lg text-center">
+                      <p className="text-2xl font-bold text-primary">{avgReactionTime > 0 ? `${Math.round(avgReactionTime)}ms` : '-'}</p>
+                      <p className="text-xs text-muted-foreground">Tempo de Reação</p>
+                    </div>
+                    {report.detailed_analysis.dataSource && (
+                      <div className="p-3 bg-muted/50 rounded-lg text-center col-span-2 md:col-span-3">
+                        <p className="text-sm font-medium text-primary">{report.detailed_analysis.dataSource}</p>
+                        <p className="text-xs text-muted-foreground">Fontes de Dados</p>
                       </div>
                     )}
                   </div>
+                  
+                  {/* AI Strengths & Areas of Concern */}
+                  {(aiAnalysis.strengths?.length > 0 || aiAnalysis.areasOfConcern?.length > 0) && (
+                    <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {aiAnalysis.strengths?.length > 0 && (
+                        <div className="p-3 bg-green-500/10 rounded-lg">
+                          <p className="text-sm font-medium text-green-700 mb-2">Pontos Fortes</p>
+                          <ul className="text-xs text-muted-foreground space-y-1">
+                            {aiAnalysis.strengths.map((s: string, i: number) => (
+                              <li key={i}>• {s}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {aiAnalysis.areasOfConcern?.length > 0 && (
+                        <div className="p-3 bg-amber-500/10 rounded-lg">
+                          <p className="text-sm font-medium text-amber-700 mb-2">Áreas de Atenção</p>
+                          <ul className="text-xs text-muted-foreground space-y-1">
+                            {aiAnalysis.areasOfConcern.map((a: string, i: number) => (
+                              <li key={i}>• {a}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}

@@ -244,7 +244,8 @@ export default function ClinicalDashboard() {
     await generateReport({
       startDate,
       endDate,
-      reportType: 'comprehensive'
+      reportType: 'comprehensive',
+      childId: childId
     });
   };
 
