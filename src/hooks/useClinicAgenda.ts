@@ -113,9 +113,28 @@ export function useClinicAgenda() {
   };
 
   const fetchProfessionals = async () => {
+    // Fetch only clinical professionals (therapists, specialists)
+    const { data: roleData, error: roleError } = await supabase
+      .from('user_roles')
+      .select('user_id')
+      .in('role', ['therapist', 'admin']);
+
+    if (roleError) {
+      console.error('Error fetching professional roles:', roleError);
+      return;
+    }
+
+    const professionalIds = roleData?.map(r => r.user_id) || [];
+
+    if (professionalIds.length === 0) {
+      setProfessionals([]);
+      return;
+    }
+
     const { data, error } = await supabase
       .from('profiles')
       .select('id, full_name')
+      .in('id', professionalIds)
       .order('full_name');
 
     if (error) {
@@ -123,7 +142,6 @@ export function useClinicAgenda() {
       return;
     }
 
-    // Filter to only therapists (could be improved with role check)
     setProfessionals(data || []);
   };
 
