@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useParentsClub, ClubService } from '@/hooks/useParentsClub';
+import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ServiceBookingDialog } from '@/components/club/ServiceBookingDialog';
 import { 
   Sparkles, Scissors, Heart, Apple, Brain, Sun, Users,
   Clock, MapPin, Calendar as CalendarIcon, Search, Star,
@@ -30,12 +30,11 @@ const iconMap: Record<string, React.ReactNode> = {
 
 const ClubePais = () => {
   const { t } = useLanguage();
-  const { categories, services, bookings, loading, createBooking, cancelBooking } = useParentsClub();
+  const { user } = useAuth();
+  const { categories, services, bookings, loading, createBooking, cancelBooking } = useParentsClub(user?.id);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedService, setSelectedService] = useState<ClubService | null>(null);
-  const [bookingDate, setBookingDate] = useState<Date | undefined>();
-  const [bookingTime, setBookingTime] = useState<string>('');
   const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
 
   const filteredServices = services.filter(service => {
@@ -57,29 +56,22 @@ const ClubePais = () => {
 
   const handleBookService = (service: ClubService) => {
     setSelectedService(service);
-    setBookingDate(undefined);
-    setBookingTime('');
     setIsBookingDialogOpen(true);
   };
 
-  const confirmBooking = async () => {
-    if (!selectedService || !bookingDate || !bookingTime) return;
+  const handleConfirmBooking = async (date: string, time: string) => {
+    if (!selectedService) return;
     
     await createBooking(
       selectedService.id,
       selectedService.partner_id,
-      format(bookingDate, 'yyyy-MM-dd'),
-      bookingTime,
+      date,
+      time,
       selectedService
     );
     
-    setIsBookingDialogOpen(false);
     setSelectedService(null);
   };
-
-  const timeSlots = [
-    '08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00'
-  ];
 
   if (loading) {
     return (
@@ -364,65 +356,12 @@ const ClubePais = () => {
       </Tabs>
 
       {/* Booking Dialog */}
-      <Dialog open={isBookingDialogOpen} onOpenChange={setIsBookingDialogOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Agendar Serviço</DialogTitle>
-          </DialogHeader>
-          {selectedService && (
-            <div className="space-y-4">
-              <div className="p-4 bg-muted rounded-lg">
-                <h4 className="font-medium">{selectedService.name}</h4>
-                <p className="text-sm text-muted-foreground">{selectedService.partner?.name}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{selectedService.duration_minutes} minutos</span>
-                </div>
-                <p className="text-lg font-bold text-primary mt-2">
-                  R$ {(selectedService.price * (1 - selectedService.discount_percentage / 100)).toFixed(2)}
-                </p>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium mb-2 block">Data</label>
-                <Calendar
-                  mode="single"
-                  selected={bookingDate}
-                  onSelect={setBookingDate}
-                  disabled={(date) => date < new Date() || date.getDay() === 0}
-                  className="rounded-md border"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium mb-2 block">Horário</label>
-                <Select value={bookingTime} onValueChange={setBookingTime}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione um horário" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {timeSlots.map(time => (
-                      <SelectItem key={time} value={time}>{time}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          )}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsBookingDialogOpen(false)}>
-              Cancelar
-            </Button>
-            <Button 
-              onClick={confirmBooking}
-              disabled={!bookingDate || !bookingTime}
-            >
-              <CreditCard className="h-4 w-4 mr-2" />
-              Confirmar Agendamento
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ServiceBookingDialog
+        open={isBookingDialogOpen}
+        onOpenChange={setIsBookingDialogOpen}
+        service={selectedService}
+        onConfirm={handleConfirmBooking}
+      />
     </div>
   );
 };
