@@ -98,8 +98,45 @@ export default function PEIView() {
   };
 
   const loadPlanData = (plan: any) => {
-    const planGoals = Array.isArray(plan.goals) ? (plan.goals as unknown as PEIGoal[]) : [];
-    const planAccommodations = Array.isArray(plan.accommodations) ? (plan.accommodations as unknown as PEIAccommodation[]) : [];
+    const rawGoals = Array.isArray(plan?.goals) ? plan.goals : [];
+
+    // Normalize legacy shapes coming from the database
+    const planGoals: PEIGoal[] = rawGoals.map((g: any, idx: number) => {
+      const strategiesArray = Array.isArray(g?.strategies)
+        ? g.strategies
+        : typeof g?.strategies === 'string'
+          ? g.strategies.split('\n').filter((s: string) => s.trim())
+          : [];
+
+      return {
+        id: String(g?.id ?? g?.goal_id ?? idx ?? Date.now()),
+        area: String(g?.area ?? ''),
+        objective: String(g?.objective ?? g?.goal ?? ''),
+        strategies: strategiesArray,
+        timeline: String(g?.timeline ?? g?.deadline ?? ''),
+        progress: Number(g?.progress ?? 0),
+        status: (g?.status as any) ?? 'pending',
+      } as PEIGoal;
+    }).filter((g: PEIGoal) => Boolean(g.area || g.objective));
+
+    const rawAccommodations = Array.isArray(plan?.accommodations) ? plan.accommodations : [];
+    const planAccommodations: PEIAccommodation[] = rawAccommodations.map((a: any, idx: number) => {
+      if (typeof a === 'string') {
+        return {
+          id: String(idx),
+          type: 'Acomodação',
+          description: a,
+          context: 'Geral',
+        };
+      }
+      return {
+        id: String(a?.id ?? idx),
+        type: String(a?.type ?? 'Acomodação'),
+        description: String(a?.description ?? ''),
+        context: String(a?.context ?? 'Geral'),
+      };
+    }).filter((a) => Boolean(a.description));
+
     setGoals(planGoals);
     setAccommodations(planAccommodations);
   };
@@ -360,7 +397,7 @@ const getStatusLabel = (status: string) => {
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        {goal.strategies.length > 0 && (
+                        {Array.isArray(goal.strategies) && goal.strategies.length > 0 && (
                           <div>
                             <h4 className="text-sm font-semibold mb-2">Estratégias:</h4>
                             <ul className="space-y-1">

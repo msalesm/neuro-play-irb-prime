@@ -1,5 +1,41 @@
 import { SessionData, GeneralMetrics, BehavioralPatterns, TemporalDataPoint, SessionsQueryResult } from "./types.ts";
 
+const getAccuracyPercent = (session: SessionData): number | null => {
+  const pd = session.performance_data || {};
+
+  // Support multiple shapes from different game modules
+  const raw =
+    (pd as any).accuracy ??
+    (pd as any).accuracy_percentage ??
+    (pd as any).accuracyPercentage ??
+    (pd as any).accuracyPercent ??
+    (session as any).accuracy_percentage ??
+    (session as any).accuracy ??
+    null;
+
+  if (typeof raw !== 'number' || Number.isNaN(raw)) return null;
+
+  // If value looks like a ratio (0..1), convert to percent
+  if (raw >= 0 && raw <= 1) return Math.round(raw * 10000) / 100;
+
+  return Math.max(0, Math.min(100, Math.round(raw * 100) / 100));
+};
+
+const getReactionTimeMs = (session: SessionData): number | null => {
+  const pd = session.performance_data || {};
+  const raw =
+    (pd as any).reaction_time ??
+    (pd as any).reaction_time_ms ??
+    (pd as any).avg_reaction_time_ms ??
+    (pd as any).reactionTime ??
+    (session as any).avg_reaction_time_ms ??
+    (session as any).reaction_time_ms ??
+    null;
+
+  if (typeof raw !== 'number' || Number.isNaN(raw)) return null;
+  return Math.max(0, Math.round(raw));
+};
+
 export function calculateMetrics(sessionsData: SessionsQueryResult): GeneralMetrics {
   const { sessions, trailsData } = sessionsData;
 
@@ -22,9 +58,10 @@ export function calculateMetrics(sessionsData: SessionsQueryResult): GeneralMetr
   let validAccuracyCount = 0;
   let validReactionTimeCount = 0;
 
+
   sessions.forEach(session => {
-    const accuracy = session.performance_data?.accuracy;
-    const reactionTime = session.performance_data?.reaction_time;
+    const accuracy = getAccuracyPercent(session);
+    const reactionTime = getReactionTimeMs(session);
 
     if (typeof accuracy === 'number') {
       totalAccuracy += accuracy;
@@ -62,7 +99,7 @@ export function calculateMetrics(sessionsData: SessionsQueryResult): GeneralMetr
 
   Object.entries(categoryGroups).forEach(([category, categorySessions]) => {
     const categoryAccuracies = categorySessions
-      .map(s => s.performance_data?.accuracy)
+      .map(s => getAccuracyPercent(s))
       .filter((a): a is number => typeof a === 'number');
 
     const avgCategoryAccuracy = categoryAccuracies.length > 0
@@ -73,11 +110,11 @@ export function calculateMetrics(sessionsData: SessionsQueryResult): GeneralMetr
     
     // Calculate improvement
     const firstSessionAccuracies = categorySessions.slice(0, Math.ceil(categorySessions.length * 0.2))
-      .map(s => s.performance_data?.accuracy)
+      .map(s => getAccuracyPercent(s))
       .filter((a): a is number => typeof a === 'number');
-    
+
     const lastSessionAccuracies = categorySessions.slice(-Math.ceil(categorySessions.length * 0.2))
-      .map(s => s.performance_data?.accuracy)
+      .map(s => getAccuracyPercent(s))
       .filter((a): a is number => typeof a === 'number');
 
     const initialAvg = firstSessionAccuracies.length > 0
@@ -128,11 +165,11 @@ export function analyzeTemporalEvolution(sessions: SessionData[]): TemporalDataP
   const evolution: TemporalDataPoint[] = Object.entries(dateGroups)
     .map(([date, dateSessions]) => {
       const accuracies = dateSessions
-        .map(s => s.performance_data?.accuracy)
+        .map(s => getAccuracyPercent(s))
         .filter((a): a is number => typeof a === 'number');
 
       const reactionTimes = dateSessions
-        .map(s => s.performance_data?.reaction_time)
+        .map(s => getReactionTimeMs(s))
         .filter((r): r is number => typeof r === 'number');
 
       const avgAccuracy = accuracies.length > 0
@@ -196,8 +233,8 @@ export function analyzeBehavioralPatterns(sessions: SessionData[]): BehavioralPa
   
   sessions.forEach(session => {
     const hour = new Date(session.created_at).getHours();
-    const accuracy = session.performance_data?.accuracy;
-    
+    const accuracy = getAccuracyPercent(session);
+
     if (typeof accuracy === 'number') {
       if (!hourGroups[hour]) {
         hourGroups[hour] = [];
@@ -223,7 +260,7 @@ export function analyzeBehavioralPatterns(sessions: SessionData[]): BehavioralPa
 
   // Calculate consistency score (inverse of standard deviation)
   const accuracies = sessions
-    .map(s => s.performance_data?.accuracy)
+    .map(s => getAccuracyPercent(s))
     .filter((a): a is number => typeof a === 'number');
 
   let consistencyScore = 5;
