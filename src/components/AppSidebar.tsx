@@ -329,14 +329,14 @@ export function AppSidebar() {
     });
   }
 
-  // Show Admin section if user is admin
-  if (isAdmin) {
-    navigationGroups.push({
-      id: 'admin',
-      label: 'Gestor Público',
-      items: adminNavigation,
-    });
-  }
+  // DEPRECATED: Gestor Público menu removed
+  // if (isAdmin) {
+  //   navigationGroups.push({
+  //     id: 'admin',
+  //     label: 'Gestor Público',
+  //     items: adminNavigation,
+  //   });
+  // }
 
   // Always show Settings
   navigationGroups.push({
