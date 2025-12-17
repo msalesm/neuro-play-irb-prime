@@ -617,6 +617,42 @@ export type Database = {
           },
         ]
       }
+      appointment_types: {
+        Row: {
+          color: string | null
+          created_at: string | null
+          description: string | null
+          duration_minutes: number
+          id: string
+          is_active: boolean | null
+          name: string
+          price: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          is_active?: boolean | null
+          name: string
+          price?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string | null
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          price?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -1506,6 +1542,157 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "teacher_student_relationships"
             referencedColumns: ["class_id"]
+          },
+        ]
+      }
+      clinic_appointments: {
+        Row: {
+          appointment_type_id: string | null
+          cancellation_reason: string | null
+          check_in_at: string | null
+          child_id: string | null
+          confirmed_at: string | null
+          confirmed_via: string | null
+          created_at: string | null
+          created_by: string | null
+          end_time: string | null
+          id: string
+          internal_notes: string | null
+          parent_id: string | null
+          professional_id: string
+          recurrence_parent_id: string | null
+          recurrence_rule: string | null
+          scheduled_date: string
+          scheduled_time: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          appointment_type_id?: string | null
+          cancellation_reason?: string | null
+          check_in_at?: string | null
+          child_id?: string | null
+          confirmed_at?: string | null
+          confirmed_via?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          end_time?: string | null
+          id?: string
+          internal_notes?: string | null
+          parent_id?: string | null
+          professional_id: string
+          recurrence_parent_id?: string | null
+          recurrence_rule?: string | null
+          scheduled_date: string
+          scheduled_time: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          appointment_type_id?: string | null
+          cancellation_reason?: string | null
+          check_in_at?: string | null
+          child_id?: string | null
+          confirmed_at?: string | null
+          confirmed_via?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          end_time?: string | null
+          id?: string
+          internal_notes?: string | null
+          parent_id?: string | null
+          professional_id?: string
+          recurrence_parent_id?: string | null
+          recurrence_rule?: string | null
+          scheduled_date?: string
+          scheduled_time?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinic_appointments_appointment_type_id_fkey"
+            columns: ["appointment_type_id"]
+            isOneToOne: false
+            referencedRelation: "appointment_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinic_appointments_recurrence_parent_id_fkey"
+            columns: ["recurrence_parent_id"]
+            isOneToOne: false
+            referencedRelation: "clinic_appointments"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -7839,6 +8026,118 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      waiting_list: {
+        Row: {
+          appointment_type_id: string | null
+          child_id: string | null
+          contacted_at: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          parent_id: string | null
+          preferred_days: string[] | null
+          preferred_times: string[] | null
+          priority: number | null
+          professional_id: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          appointment_type_id?: string | null
+          child_id?: string | null
+          contacted_at?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          parent_id?: string | null
+          preferred_days?: string[] | null
+          preferred_times?: string[] | null
+          priority?: number | null
+          professional_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          appointment_type_id?: string | null
+          child_id?: string | null
+          contacted_at?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          parent_id?: string | null
+          preferred_days?: string[] | null
+          preferred_times?: string[] | null
+          priority?: number | null
+          professional_id?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waiting_list_appointment_type_id_fkey"
+            columns: ["appointment_type_id"]
+            isOneToOne: false
+            referencedRelation: "appointment_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waiting_list_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waiting_list_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "waiting_list_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waiting_list_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waiting_list_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waiting_list_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waiting_list_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waiting_list_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       wearable_connections: {
         Row: {
