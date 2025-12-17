@@ -173,13 +173,33 @@ export const IntegratedTimeline = ({ childId }: IntegratedTimelineProps) => {
         }
       }
 
-      // Fetch screenings (diagnostic tests) for this child
-      const { data: screenings } = await supabase
-        .from('screenings')
-        .select('*')
-        .or(`child_id.eq.${childId},user_id.eq.${childId}`)
-        .order('created_at', { ascending: false })
-        .limit(15);
+      // Fetch screenings (diagnostic tests) for this child (stored per user_id of the responsible party)
+      const { data: childForScreenings } = await supabase
+        .from('children')
+        .select('parent_id')
+        .eq('id', childId)
+        .maybeSingle();
+
+      let responsibleUserId = childForScreenings?.parent_id ?? null;
+
+      if (!responsibleUserId) {
+        const { data: profileForScreenings } = await supabase
+          .from('child_profiles')
+          .select('parent_user_id')
+          .eq('id', childId)
+          .maybeSingle();
+
+        responsibleUserId = (profileForScreenings as any)?.parent_user_id ?? null;
+      }
+
+      const { data: screenings } = responsibleUserId
+        ? await supabase
+            .from('screenings')
+            .select('*')
+            .eq('user_id', responsibleUserId)
+            .order('created_at', { ascending: false })
+            .limit(15)
+        : { data: [] as any[] };
 
       if (screenings) {
         const screeningLabels: Record<string, string> = {
