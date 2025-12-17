@@ -65,19 +65,74 @@ export function useProfessionalAnalytics() {
     try {
       const { start, end } = getDateRange();
 
-      // Fetch game sessions
-      const { data: sessions } = await supabase
+      // Get accessible child IDs for non-admin users
+      let childIds: string[] = [];
+      const isAdminOrManager = role === 'admin';
+
+      if (!isAdminOrManager) {
+        // Get children as parent
+        const { data: parentChildren } = await supabase
+          .from('children')
+          .select('id')
+          .eq('parent_id', user?.id);
+        
+        if (parentChildren) {
+          childIds = parentChildren.map(c => c.id);
+        }
+        
+        // Get children via child_access (for therapists)
+        const { data: accessChildren } = await supabase
+          .from('child_access')
+          .select('child_id')
+          .eq('professional_id', user?.id)
+          .eq('is_active', true)
+          .eq('approval_status', 'approved');
+        
+        if (accessChildren) {
+          childIds = [...new Set([...childIds, ...accessChildren.map(a => a.child_id)])];
+        }
+
+        // Also get child_profiles for parent
+        const { data: parentProfiles } = await supabase
+          .from('child_profiles')
+          .select('id')
+          .eq('parent_user_id', user?.id);
+        
+        if (parentProfiles) {
+          childIds = [...new Set([...childIds, ...parentProfiles.map(p => p.id)])];
+        }
+      }
+
+      // Fetch game sessions - filter by accessible children if not admin
+      let sessionsQuery = supabase
         .from('game_sessions')
         .select('*')
         .gte('created_at', start)
         .lte('created_at', end);
 
-      // Fetch learning sessions
-      const { data: learningSessions } = await supabase
+      if (!isAdminOrManager && childIds.length > 0) {
+        sessionsQuery = sessionsQuery.in('child_profile_id', childIds);
+      } else if (!isAdminOrManager && childIds.length === 0) {
+        // No accessible children - return empty
+        sessionsQuery = sessionsQuery.eq('child_profile_id', 'no-access');
+      }
+
+      const { data: sessions } = await sessionsQuery;
+
+      // Fetch learning sessions - filter by accessible children if not admin
+      let learningQuery = supabase
         .from('learning_sessions')
         .select('*')
         .gte('created_at', start)
         .lte('created_at', end);
+
+      if (!isAdminOrManager && childIds.length > 0) {
+        learningQuery = learningQuery.in('user_id', childIds);
+      } else if (!isAdminOrManager && childIds.length === 0) {
+        learningQuery = learningQuery.eq('user_id', 'no-access');
+      }
+
+      const { data: learningSessions } = await learningQuery;
 
       // Fetch cognitive games for names
       const { data: games } = await supabase

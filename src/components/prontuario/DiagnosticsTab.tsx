@@ -109,10 +109,11 @@ export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {
   const { data: screenings, isLoading: loadingScreenings, refetch: refetchScreenings } = useQuery({
     queryKey: ['screenings', childId],
     queryFn: async (): Promise<ScreeningResult[]> => {
-      // Try to get user screenings (screenings table doesn't have child_id directly)
+      // Try to get screenings for this child (via child_id column or user_id)
       const { data } = await supabase
         .from('screenings')
         .select('*')
+        .or(`child_id.eq.${childId},user_id.eq.${childId}`)
         .order('created_at', { ascending: false })
         .limit(20);
       

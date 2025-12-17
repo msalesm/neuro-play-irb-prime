@@ -33,12 +33,45 @@ export const RecentScreeningsCard = () => {
 
   const loadScreenings = async () => {
     try {
-      const { data, error } = await supabase
+      // Get child IDs this user has access to (as parent or therapist)
+      let childIds: string[] = [];
+      
+      // Get children as parent
+      const { data: parentChildren } = await supabase
+        .from('children')
+        .select('id')
+        .eq('parent_id', user?.id);
+      
+      if (parentChildren) {
+        childIds = parentChildren.map(c => c.id);
+      }
+      
+      // Get children via child_access (for therapists)
+      const { data: accessChildren } = await supabase
+        .from('child_access')
+        .select('child_id')
+        .eq('professional_id', user?.id)
+        .eq('is_active', true)
+        .eq('approval_status', 'approved');
+      
+      if (accessChildren) {
+        childIds = [...new Set([...childIds, ...accessChildren.map(a => a.child_id)])];
+      }
+
+      // Build query to get screenings for user or their accessible children
+      let query = supabase
         .from('screenings')
         .select('*')
-        .eq('user_id', user?.id)
         .order('created_at', { ascending: false })
         .limit(5);
+
+      if (childIds.length > 0) {
+        query = query.or(`user_id.eq.${user?.id},child_id.in.(${childIds.join(',')})`);
+      } else {
+        query = query.eq('user_id', user?.id);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
       setScreenings(data || []);
