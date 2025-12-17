@@ -118,22 +118,26 @@ export default function ClinicalDashboard() {
           : 0;
       }
 
-      // Also check learning_sessions for child IDs
-      if (childIds.length > 0) {
-        const { data: learningSessions } = await supabase
-          .from('learning_sessions')
-          .select('performance_data')
-          .in('user_id', childIds);
+      // Also check learning_sessions for the current authenticated user
+      // (learning_sessions.user_id refers to the logged-in user, not a child id)
+      const { data: learningSessions, error: learningSessionsError } = await supabase
+        .from('learning_sessions')
+        .select('performance_data')
+        .eq('user_id', user?.id);
 
-        if (learningSessions && learningSessions.length > 0) {
-          totalSessions += learningSessions.length;
-          const scores = learningSessions
-            .map(s => (s.performance_data as any)?.score || 0)
-            .filter(score => score > 0);
-          if (scores.length > 0) {
-            const learningAvg = scores.reduce((sum, s) => sum + s, 0) / scores.length;
-            averageScore = totalSessions > 0 ? (averageScore + learningAvg) / 2 : learningAvg;
-          }
+      if (learningSessionsError) throw learningSessionsError;
+
+      if (learningSessions && learningSessions.length > 0) {
+        totalSessions += learningSessions.length;
+
+        const scores = learningSessions
+          .map(s => Number((s.performance_data as any)?.score ?? 0))
+          .filter(score => Number.isFinite(score) && score > 0);
+
+        if (scores.length > 0) {
+          const learningAvg = scores.reduce((sum, s) => sum + s, 0) / scores.length;
+          // keep it simple: blend the two sources if we have both
+          averageScore = averageScore > 0 ? (averageScore + learningAvg) / 2 : learningAvg;
         }
       }
 
@@ -280,6 +284,18 @@ export default function ClinicalDashboard() {
             </CardContent>
           </Card>
         </div>
+
+        {stats.activeProfiles === 0 && (
+          <div className="flex items-start gap-3 p-4 bg-muted/40 border border-border rounded-lg" role="status" aria-live="polite">
+            <AlertCircle className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" aria-hidden="true" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-foreground">Nenhum perfil vinculado</p>
+              <p className="text-sm text-muted-foreground">
+                Para carregar dados do prontuário e métricas do painel, é necessário ter ao menos uma criança/paciente vinculada ao seu usuário.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Quick Actions */}
         <Card>
