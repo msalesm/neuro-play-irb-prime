@@ -4,7 +4,7 @@ import {
   Home, Gamepad2, FileText, GraduationCap, Settings, 
   User, Trophy, TrendingUp, Brain, Stethoscope, Heart,
   ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3,
-  Shield, UserCircle, Briefcase, Building2, Drama, CalendarCheck, Rocket, Mail, CreditCard, Folder, Calendar
+  Shield, UserCircle, Briefcase, Building2, Drama, CalendarCheck, Rocket, Mail, CreditCard, Folder, Calendar, ClipboardList
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -174,6 +174,15 @@ export function AppSidebar() {
     },
   ];
 
+  // Triagem
+  const triagemNavigation = [
+    {
+      title: 'Inventário de Habilidades',
+      path: '/inventario-habilidades',
+      icon: ClipboardList,
+    },
+  ];
+
   // Escola
   const teacherNavigation = [
     {
@@ -299,6 +308,13 @@ export function AppSidebar() {
       id: 'therapist',
       label: 'Terapeuta',
       items: therapistNavigation,
+    });
+
+    // Show Triagem section for therapists and admins
+    navigationGroups.push({
+      id: 'triagem',
+      label: 'Triagem',
+      items: triagemNavigation,
     });
   }
 
