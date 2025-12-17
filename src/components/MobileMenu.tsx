@@ -122,12 +122,10 @@ export function MobileMenu() {
     menuSections.push({
       title: 'Administração',
       items: [
-        { title: 'Centro de Operações', path: '/operations', icon: TrendingUp, badge: 'Novo' },
-        { title: 'Dashboard Institucional', path: '/institutional', icon: Building2, badge: 'Novo' },
-        { title: 'Dashboard Geral', path: '/admin/network', icon: BarChart3 },
+        { title: 'Dashboard Institucional', path: '/institutional', icon: Building2 },
+        { title: 'Centro de Operações', path: '/operations', icon: TrendingUp },
         { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
-        { title: 'Gerenciador de Conteúdo', path: '/content-manager', icon: Folder },
-        { title: 'Clube dos Pais (Admin)', path: '/admin/clube-pais', icon: Gem },
+        { title: 'Clube dos Pais', path: '/admin/clube-pais', icon: Gem },
       ],
     });
   }

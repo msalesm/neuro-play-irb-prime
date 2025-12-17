@@ -176,25 +176,17 @@ export function AppSidebar() {
       icon: Mail,
     },
   ];
-
   // ========== ADMIN ==========
   const adminNavigation = [
-    {
-      title: 'Centro de Operações',
-      path: '/operations',
-      icon: TrendingUp,
-      badge: 'Novo',
-    },
     {
       title: 'Dashboard Institucional',
       path: '/institutional',
       icon: Building2,
-      badge: 'Novo',
     },
     {
-      title: 'Dashboard Geral',
-      path: '/admin/network',
-      icon: BarChart3,
+      title: 'Centro de Operações',
+      path: '/operations',
+      icon: TrendingUp,
     },
     {
       title: 'Gerenciar Usuários',
@@ -202,37 +194,7 @@ export function AppSidebar() {
       icon: Users,
     },
     {
-      title: 'Relacionamentos',
-      path: '/admin/relationships',
-      icon: Heart,
-    },
-    {
-      title: 'Gerenciador de Conteúdo',
-      path: '/content-manager',
-      icon: Folder,
-    },
-    {
-      title: 'Editor de Histórias',
-      path: '/admin/story-editor',
-      icon: BookOpen,
-    },
-    {
-      title: 'Mapas de Risco',
-      path: '/admin/risk-maps',
-      icon: TrendingUp,
-    },
-    {
-      title: 'Gestão de Rede',
-      path: '/admin/network-management',
-      icon: Settings,
-    },
-    {
-      title: 'IA Contextual',
-      path: '/contextual-ai',
-      icon: Brain,
-    },
-    {
-      title: 'Clube dos Pais (Admin)',
+      title: 'Clube dos Pais',
       path: '/admin/clube-pais',
       icon: Gem,
     },
