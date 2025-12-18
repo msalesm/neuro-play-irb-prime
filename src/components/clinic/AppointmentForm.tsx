@@ -89,6 +89,7 @@ interface AppointmentFormProps {
   }) => Promise<any>;
   initialDate?: Date;
   initialProfessional?: string;
+  initialRoom?: string;
 }
 
 export function AppointmentForm({
@@ -99,6 +100,7 @@ export function AppointmentForm({
   onSubmit,
   initialDate,
   initialProfessional,
+  initialRoom,
 }: AppointmentFormProps) {
   const { user } = useAuth();
   const [children, setChildren] = useState<{ id: string; name: string; parent_id: string }[]>([]);
@@ -119,8 +121,9 @@ export function AppointmentForm({
       fetchChildren();
       if (initialDate) form.setValue('scheduled_date', initialDate);
       if (initialProfessional) form.setValue('professional_id', initialProfessional);
+      if (initialRoom) form.setValue('room', initialRoom);
     }
-  }, [open, initialDate, initialProfessional]);
+  }, [open, initialDate, initialProfessional, initialRoom]);
 
   const fetchChildren = async () => {
     if (!user) return;

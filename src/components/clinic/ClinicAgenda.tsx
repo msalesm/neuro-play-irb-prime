@@ -18,7 +18,8 @@ import {
   Calendar as CalendarIcon,
   List,
   LayoutGrid,
-  RefreshCw
+  RefreshCw,
+  DoorOpen
 } from 'lucide-react';
 import { format, addDays, startOfWeek, isSameDay, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -27,6 +28,7 @@ import { useClinicAgenda, Appointment, WaitingListItem } from '@/hooks/useClinic
 import { AppointmentCard } from './AppointmentCard';
 import { AppointmentForm } from './AppointmentForm';
 import { WaitingListPanel } from './WaitingListPanel';
+import { RoomOccupancyDashboard } from './RoomOccupancyDashboard';
 
 const HOURS = Array.from({ length: 13 }, (_, i) => i + 7); // 7:00 to 19:00
 
@@ -52,8 +54,9 @@ export function ClinicAgenda() {
   } = useClinicAgenda();
 
   const [formOpen, setFormOpen] = useState(false);
-  const [view, setView] = useState<'week' | 'day' | 'list'>('week');
+  const [view, setView] = useState<'week' | 'day' | 'list' | 'rooms'>('week');
   const [formInitialDate, setFormInitialDate] = useState<Date | undefined>();
+  const [formInitialRoom, setFormInitialRoom] = useState<string | undefined>();
 
   const weekStart = startOfWeek(selectedDate, { weekStartsOn: 0 });
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
@@ -62,9 +65,14 @@ export function ClinicAgenda() {
   const handleNextWeek = () => setSelectedDate(addDays(selectedDate, 7));
   const handleToday = () => setSelectedDate(new Date());
 
-  const handleNewAppointment = (date?: Date) => {
+  const handleNewAppointment = (date?: Date, room?: string) => {
     setFormInitialDate(date);
+    setFormInitialRoom(room);
     setFormOpen(true);
+  };
+
+  const handleRoomClick = (room: string) => {
+    handleNewAppointment(selectedDate, room);
   };
 
   const handleScheduleFromWaitingList = (item: WaitingListItem) => {
@@ -124,6 +132,7 @@ export function ClinicAgenda() {
               variant={view === 'week' ? 'secondary' : 'ghost'}
               size="sm"
               onClick={() => setView('week')}
+              title="Semana"
             >
               <LayoutGrid className="h-4 w-4" />
             </Button>
@@ -131,6 +140,7 @@ export function ClinicAgenda() {
               variant={view === 'day' ? 'secondary' : 'ghost'}
               size="sm"
               onClick={() => setView('day')}
+              title="Dia"
             >
               <CalendarIcon className="h-4 w-4" />
             </Button>
@@ -138,8 +148,17 @@ export function ClinicAgenda() {
               variant={view === 'list' ? 'secondary' : 'ghost'}
               size="sm"
               onClick={() => setView('list')}
+              title="Lista"
             >
               <List className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={view === 'rooms' ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => setView('rooms')}
+              title="Salas"
+            >
+              <DoorOpen className="h-4 w-4" />
             </Button>
           </div>
 
@@ -310,6 +329,24 @@ export function ClinicAgenda() {
                   </div>
                 </ScrollArea>
               )}
+
+              {view === 'rooms' && (
+                <div className="p-4">
+                  <div className="mb-4">
+                    <h3 className="font-medium">
+                      Ocupação de Salas - {format(selectedDate, "EEEE, d 'de' MMMM", { locale: ptBR })}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Clique em uma sala para agendar
+                    </p>
+                  </div>
+                  <RoomOccupancyDashboard
+                    appointments={appointments}
+                    selectedDate={selectedDate}
+                    onRoomClick={handleRoomClick}
+                  />
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -362,6 +399,7 @@ export function ClinicAgenda() {
         onSubmit={createAppointment}
         initialDate={formInitialDate}
         initialProfessional={selectedProfessional || undefined}
+        initialRoom={formInitialRoom}
       />
     </div>
   );
