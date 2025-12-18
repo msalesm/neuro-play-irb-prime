@@ -221,12 +221,12 @@ export default function DiagnosticTests() {
                 </div>
 
                 <Button 
-                  className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white border-0 shadow-lg hover:shadow-red-500/25 transition-all duration-300"
+                  className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white border-0 shadow-lg hover:shadow-red-500/25 transition-all duration-300 text-sm py-2"
                   asChild
                 >
-                  <Link to={`/games/${test.id}`} className="flex items-center gap-2">
-                    <Play className="h-4 w-4" />
-                    Iniciar Avaliação
+                  <Link to={test.id.includes('-phases') ? `/games/${test.id}` : `/games/${test.id}`} className="flex items-center gap-2 justify-center">
+                    <Play className="h-3 w-3" />
+                    Iniciar
                   </Link>
                 </Button>
               </div>

@@ -254,6 +254,7 @@ const App = () => (
           <Route path="/games/attention-sustained-play" element={<AttentionSustainedPlay />} />
           
           <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
+          <Route path="/games/foco-rapido-play" element={<FocoRapido />} />
           <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
           <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibilityPlay />} />
           
