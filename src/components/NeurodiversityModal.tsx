@@ -77,7 +77,7 @@ const neurodiversityInfo = {
       "Celebre marcos de progresso",
       "Mantenha sessões curtas e dinâmicas"
     ],
-    games: ["Focus Forest", "BalanceQuest", "VisualSync"]
+    games: ["BalanceQuest", "VisualSync", "Tower Defense"]
   },
   dislexia: {
     name: "Dislexia - Dificuldades de Processamento",
@@ -131,7 +131,7 @@ const neurodiversityInfo = {
       "Celebre o processo, não apenas resultados",
       "Conecte aprendizados a interesses especiais"
     ],
-    games: ["Focus Forest Pro", "Social Scenarios Plus", "BalanceQuest Elite"]
+    games: ["Social Scenarios Plus", "BalanceQuest Elite", "Tower Defense Pro"]
   }
 };
 

@@ -18,18 +18,6 @@ const pilotGames = [
     route: "/games/mindful-breath"
   },
   {
-    title: "Focus Forest",
-    category: "Atenção & Foco",
-    description: "Cultive uma floresta mágica mantendo a atenção em tarefas progressivamente mais desafiadoras, com recompensas visuais satisfatórias.",
-    features: ["Atenção sustentada", "Níveis adaptativos", "Recompensas naturais"],
-    ageRange: "8-25 anos",
-    duration: "15-30 min",
-    players: "1-2 jogadores",
-    status: "Alpha testing",
-    color: "bg-blue-100 text-blue-800",
-    route: "/games/focus-forest"
-  },
-  {
     title: "Social Scenarios Simulator",
     category: "Social Skills",
     description: "Pratique interações sociais em ambientes seguros e controlados, com feedback construtivo e múltiplas abordagens possíveis.",

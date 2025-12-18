@@ -26,7 +26,6 @@ import SilabaMagica from './pages/games/SilabaMagica';
 import QuebraCabecaMagico from './pages/games/QuebraCabecaMagico';
 import AventuraNumeros from './pages/games/AventuraNumeros';
 import ContadorHistorias from './pages/games/ContadorHistorias';
-import FocusForest from "./pages/games/FocusForest";
 import FocusQuest from "./pages/games/FocusQuest";
 import SocialScenarios from "./pages/games/SocialScenarios";
 import SocialCompass from "./pages/games/SocialCompass";
@@ -47,7 +46,7 @@ import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
 import CognitiveFlexibilityPhases from "./pages/games/CognitiveFlexibilityPhases";
 import CognitiveFlexibilityPlay from "./pages/games/CognitiveFlexibilityPlay";
 import ExecutiveProcessingPhases from "./pages/games/ExecutiveProcessingPhases";
-import FocusForestPhases from "./pages/games/FocusForestPhases";
+
 import FocoRapidoPhases from "./pages/games/FocoRapidoPhases";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import MemoryWorkload from "./pages/games/MemoryWorkload";
@@ -234,7 +233,6 @@ const App = () => (
                   <Route path="/games/aventura-numeros" element={<AventuraNumeros />} />
                   <Route path="/games/contador-historias" element={<ContadorHistorias />} />
                   <Route path="/games/mindful-breath" element={<MindfulBreath />} />
-                  <Route path="/games/focus-forest" element={<FocusForest />} />
                   <Route path="/games/focus-quest" element={<FocusQuest />} />
                   <Route path="/games/social-scenarios" element={<SocialScenarios />} />
                   <Route path="/games/social-compass" element={<SocialCompass />} />
@@ -254,7 +252,7 @@ const App = () => (
           <Route path="/games/executive-processing-phases" element={<ExecutiveProcessingPhases />} />
           <Route path="/games/attention-sustained-phases" element={<AttentionSustainedPhases />} />
           <Route path="/games/attention-sustained-play" element={<AttentionSustainedPlay />} />
-          <Route path="/games/focus-forest-phases" element={<FocusForestPhases />} />
+          
           <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
           <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
           <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibilityPlay />} />

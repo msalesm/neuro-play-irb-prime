@@ -25,17 +25,6 @@ export default function ModernIndex() {
 
   const popularGames = [
     {
-      id: 'focus-forest',
-      title: t('games.focusForest'),
-      description: t('games.descriptions.focusForest'),
-      icon: Brain,
-      gradient: 'gradient-focus',
-      progress: { current: 12, total: 50 },
-      difficulty: t('games.difficulty.intermediate'),
-      duration: '5-10 min',
-      path: '/games/focus-forest'
-    },
-    {
       id: 'memoria-colorida',
       title: t('games.memoriaColorida'),
       description: t('games.descriptions.memoriaColorida'),

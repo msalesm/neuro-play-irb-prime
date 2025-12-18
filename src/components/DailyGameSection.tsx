@@ -15,17 +15,6 @@ export function DailyGameSection() {
   // Jogos que podem ser sugeridos como "jogo diário"
   const dailyGames = [
     {
-      id: 'focus-forest',
-      title: t('games.focusForest'),
-      subtitle: t('games.subtitles.sustainedAttention'),
-      description: t('games.dailyGame.focusCapacity'),
-      duration: '5-10 min',
-      difficulty: t('games.difficulty.adaptive'),
-      icon: Brain,
-      gradient: 'gradient-focus',
-      path: '/games/focus-forest'
-    },
-    {
       id: 'memoria-colorida',
       title: t('games.memoriaColorida'),
       subtitle: t('games.subtitles.visualMemory'),
