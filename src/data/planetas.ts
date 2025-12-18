@@ -302,7 +302,7 @@ export const planetas: Planeta[] = [
         descricao: 'Adapte-se rapidamente a novas regras e padrões',
         duracao: 10,
         dificuldade: 3,
-        rota: '/games/cognitive-flexibility',
+        rota: '/games/cognitive-flexibility-phases',
         icone: '🔄',
         completado: false
       },
