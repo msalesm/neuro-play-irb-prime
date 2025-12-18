@@ -7015,6 +7015,7 @@ export type Database = {
           spatial_temporal_orientation: Json | null
           status: string | null
           teacher_name: string | null
+          therapeutic_companion: string | null
           time_measurement: Json | null
           total_items: number | null
           updated_at: string | null
@@ -7051,6 +7052,7 @@ export type Database = {
           spatial_temporal_orientation?: Json | null
           status?: string | null
           teacher_name?: string | null
+          therapeutic_companion?: string | null
           time_measurement?: Json | null
           total_items?: number | null
           updated_at?: string | null
@@ -7087,6 +7089,7 @@ export type Database = {
           spatial_temporal_orientation?: Json | null
           status?: string | null
           teacher_name?: string | null
+          therapeutic_companion?: string | null
           time_measurement?: Json | null
           total_items?: number | null
           updated_at?: string | null
