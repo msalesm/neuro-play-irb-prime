@@ -13,7 +13,7 @@ const diagnosticTests = [
     description: "Observe padrões de retenção e manipulação de informações na memória de trabalho.",
     features: ["Sequência numérica", "Span de dígitos", "Manipulação mental", "Capacidade limitada"],
     ageRange: "6-18 anos",
-    duration: "10-15 min",
+    duration: "~5 min",
     players: "1 jogador",
     status: "Observação",
     color: "bg-purple-100 text-purple-800",
@@ -29,7 +29,7 @@ const diagnosticTests = [
     description: "Observe padrões de compreensão de pensamentos e sentimentos dos outros.",
     features: ["Falsa crença", "Perspectiva visual", "Compreensão social", "Empatia cognitiva"],
     ageRange: "4-16 anos",
-    duration: "15-20 min",
+    duration: "~5 min",
     players: "1 jogador",
     status: "Observação",
     color: "bg-cyan-100 text-cyan-800",
@@ -45,7 +45,7 @@ const diagnosticTests = [
     description: "Observe padrões de capacidade de manter atenção focada durante períodos prolongados.",
     features: ["Vigilância sustentada", "Tempo de reação", "Controle inibitório", "Declínio da atenção"],
     ageRange: "6-18 anos",
-    duration: "8-12 min",
+    duration: "~5 min",
     players: "1 jogador",
     status: "Observação",
     color: "bg-red-100 text-red-800",
@@ -61,7 +61,7 @@ const diagnosticTests = [
     description: "Atividade baseada no Wisconsin Card Sorting para observar padrões de adaptação e flexibilidade cognitiva.",
     features: ["Mudança de regras", "Adaptabilidade", "Função executiva", "Perseveração"],
     ageRange: "8-18 anos",
-    duration: "10-15 min",
+    duration: "~5 min",
     players: "1 jogador",
     status: "Observação",
     color: "bg-indigo-100 text-indigo-800",
@@ -77,7 +77,7 @@ const diagnosticTests = [
     description: "Observe padrões de habilidades de consciência fonológica e processamento de sons da fala.",
     features: ["Rimas", "Segmentação", "Síntese", "Manipulação fonêmica"],
     ageRange: "5-16 anos",
-    duration: "6-10 min",
+    duration: "~5 min",
     players: "1 jogador",
     status: "Observação",
     color: "bg-teal-100 text-teal-800",
@@ -93,7 +93,7 @@ const diagnosticTests = [
     description: "Atividade baseada na Torre de Londres para observar padrões de planejamento e organização.",
     features: ["Planejamento", "Organização", "Controle inibitório", "Flexibilidade mental"],
     ageRange: "8-18 anos",
-    duration: "12-18 min",
+    duration: "~5 min",
     players: "1 jogador",
     status: "Observação",
     color: "bg-purple-100 text-purple-800",
@@ -159,18 +159,18 @@ export default function DiagnosticTests() {
         </div>
 
         {/* Diagnostic Tests Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
           {diagnosticTests.map((test) => (
             <Card 
               key={test.id}
-              className="p-8 border-white/20 backdrop-blur-sm bg-white/10 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-red-500/20 hover:-translate-y-2 group relative overflow-hidden"
+              className="p-4 border-white/20 backdrop-blur-sm bg-white/10 hover:bg-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/20 hover:-translate-y-1 group relative overflow-hidden"
             >
               {/* Gradient background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${test.gradient} opacity-20`} />
               
               <div className="relative z-10">
-                <div className="flex justify-between items-start mb-6">
-                  <Badge className="bg-gradient-to-r from-red-500/80 to-orange-500/80 text-white border-0 shadow-lg font-semibold">
+                <div className="flex justify-between items-start mb-3">
+                  <Badge className="bg-gradient-to-r from-red-500/80 to-orange-500/80 text-white border-0 shadow-lg font-semibold text-xs">
                     {test.category}
                   </Badge>
                   <Badge variant="outline" className="text-xs bg-white/20 text-white border-white/30">
@@ -178,45 +178,46 @@ export default function DiagnosticTests() {
                   </Badge>
                 </div>
 
-                <h3 className="font-heading text-2xl font-bold mb-4 text-white group-hover:text-red-200 transition-colors">
+                <h3 className="font-heading text-lg font-bold mb-2 text-white group-hover:text-red-200 transition-colors">
                   {test.title}
                 </h3>
 
-                <p className="text-white/70 mb-6 leading-relaxed">
+                <p className="text-white/70 mb-3 leading-relaxed text-sm line-clamp-2">
                   {test.description}
                 </p>
 
                 {/* Scientific Basis */}
-                <div className="mb-6 p-4 bg-white/10 rounded-lg backdrop-blur-sm">
-                  <p className="text-sm font-semibold text-white/80 mb-1">Base Científica:</p>
-                  <p className="text-sm text-white/70">{test.scientificBasis}</p>
+                <div className="mb-3 p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+                  <p className="text-xs font-semibold text-white/80 mb-0.5">Base Científica:</p>
+                  <p className="text-xs text-white/70">{test.scientificBasis}</p>
                 </div>
 
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center gap-3 text-sm text-white/70">
-                    <Target className="h-4 w-4" />
+                <div className="flex flex-wrap gap-3 mb-4 text-xs text-white/70">
+                  <div className="flex items-center gap-1.5">
+                    <Target className="h-3 w-3" />
                     <span>{test.ageRange}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-sm text-white/70">
-                    <Clock className="h-4 w-4" />
-                    <span>{test.duration}</span>
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="h-3 w-3" />
+                    <span className="font-semibold text-green-300">{test.duration}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-sm text-white/70">
-                    <Users className="h-4 w-4" />
+                  <div className="flex items-center gap-1.5">
+                    <Users className="h-3 w-3" />
                     <span>{test.players}</span>
                   </div>
                 </div>
 
-                <div className="space-y-3 mb-8">
-                  <h4 className="font-semibold text-sm uppercase tracking-wide text-white/80">
-                    Características Avaliadas
+                <div className="mb-4">
+                  <h4 className="font-semibold text-xs uppercase tracking-wide text-white/80 mb-2">
+                    Características
                   </h4>
-                  {test.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center text-sm text-white/70">
-                      <div className="w-2 h-2 bg-gradient-to-r from-red-400 to-orange-400 rounded-full mr-3" />
-                      {feature}
-                    </div>
-                  ))}
+                  <div className="flex flex-wrap gap-1">
+                    {test.features.map((feature, idx) => (
+                      <span key={idx} className="text-xs bg-white/10 px-2 py-0.5 rounded-full text-white/70">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
                 <Button 
