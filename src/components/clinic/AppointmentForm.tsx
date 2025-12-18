@@ -33,6 +33,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import { AppointmentType } from '@/hooks/useClinicAgenda';
 
 const CLINIC_ROOMS = [
@@ -99,6 +100,7 @@ export function AppointmentForm({
   initialDate,
   initialProfessional,
 }: AppointmentFormProps) {
+  const { user } = useAuth();
   const [children, setChildren] = useState<{ id: string; name: string; parent_id: string }[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -121,13 +123,38 @@ export function AppointmentForm({
   }, [open, initialDate, initialProfessional]);
 
   const fetchChildren = async () => {
-    const { data } = await supabase
-      .from('children')
-      .select('id, name, parent_id')
-      .eq('is_active', true)
-      .order('name');
-
-    setChildren(data || []);
+    if (!user) return;
+    
+    // Check user role to determine which children to show
+    const { data: roleData } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single();
+    
+    const userRole = roleData?.role;
+    const isStaff = userRole === 'admin' || userRole === 'therapist';
+    
+    if (isStaff) {
+      // Staff can see all active children
+      const { data } = await supabase
+        .from('children')
+        .select('id, name, parent_id')
+        .eq('is_active', true)
+        .order('name');
+      
+      setChildren(data || []);
+    } else {
+      // Parents can only see their own children
+      const { data } = await supabase
+        .from('children')
+        .select('id, name, parent_id')
+        .eq('parent_id', user.id)
+        .eq('is_active', true)
+        .order('name');
+      
+      setChildren(data || []);
+    }
   };
 
   const handleSubmit = async (data: FormData) => {
