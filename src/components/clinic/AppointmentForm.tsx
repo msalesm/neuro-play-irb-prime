@@ -35,12 +35,34 @@ import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { AppointmentType } from '@/hooks/useClinicAgenda';
 
+const CLINIC_ROOMS = [
+  'Fonoaudiologia - Cabine',
+  'Psicopedagogia',
+  'Mini Casa',
+  'Fisioterapia',
+  'Psicomotricidade',
+  'Integração Sensorial',
+  'T. Ocupacional Sensorial',
+  'Musicoterapia',
+  'Arteterapia',
+  'Cozinha Experimental',
+  'Psicologia 01',
+  'Psicologia Acústica 02',
+  'Psicologia 03',
+  'Psicologia 04',
+  'Psicologia 05',
+  'Psicologia 06',
+  'Psicologia 07',
+  'Integração Casa/Escola',
+] as const;
+
 const formSchema = z.object({
   child_id: z.string().optional(),
   parent_id: z.string().optional(),
   professional_id: z.string().min(1, 'Selecione um profissional'),
   appointment_type_id: z.string().optional(),
   service_mode: z.enum(['premium', 'standard']).default('premium'),
+  room: z.string().optional(),
   scheduled_date: z.date({ required_error: 'Selecione uma data' }),
   scheduled_time: z.string().min(1, 'Informe o horário'),
   internal_notes: z.string().optional(),
@@ -59,6 +81,7 @@ interface AppointmentFormProps {
     professional_id: string;
     appointment_type_id?: string;
     service_mode: 'premium' | 'standard';
+    room?: string;
     scheduled_date: string;
     scheduled_time: string;
     internal_notes?: string;
@@ -118,6 +141,7 @@ export function AppointmentForm({
       professional_id: data.professional_id,
       appointment_type_id: data.appointment_type_id,
       service_mode: data.service_mode,
+      room: data.room,
       scheduled_date: format(data.scheduled_date, 'yyyy-MM-dd'),
       scheduled_time: data.scheduled_time,
       internal_notes: data.internal_notes,
@@ -217,6 +241,31 @@ export function AppointmentForm({
                           <span className="text-xs text-muted-foreground">Até 4 pacientes por sala</span>
                         </div>
                       </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="room"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Sala</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione a sala" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {CLINIC_ROOMS.map((room) => (
+                        <SelectItem key={room} value={room}>
+                          {room}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />

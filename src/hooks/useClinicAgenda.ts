@@ -210,6 +210,7 @@ export function useClinicAgenda() {
     professional_id: string;
     appointment_type_id?: string;
     service_mode: 'premium' | 'standard';
+    room?: string;
     scheduled_date: string;
     scheduled_time: string;
     internal_notes?: string;

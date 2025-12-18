@@ -1568,6 +1568,7 @@ export type Database = {
           professional_id: string
           recurrence_parent_id: string | null
           recurrence_rule: string | null
+          room: string | null
           scheduled_date: string
           scheduled_time: string
           service_mode: string | null
@@ -1590,6 +1591,7 @@ export type Database = {
           professional_id: string
           recurrence_parent_id?: string | null
           recurrence_rule?: string | null
+          room?: string | null
           scheduled_date: string
           scheduled_time: string
           service_mode?: string | null
@@ -1612,6 +1614,7 @@ export type Database = {
           professional_id?: string
           recurrence_parent_id?: string | null
           recurrence_rule?: string | null
+          room?: string | null
           scheduled_date?: string
           scheduled_time?: string
           service_mode?: string | null
