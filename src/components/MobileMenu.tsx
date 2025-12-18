@@ -118,6 +118,7 @@ export function MobileMenu() {
         { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
         { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
         { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
+        { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
       ],
     });
     menuSections.push({
