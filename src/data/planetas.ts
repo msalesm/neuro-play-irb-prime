@@ -131,16 +131,6 @@ export const planetas: Planeta[] = [
         completado: false
       },
       {
-        id: 'focus-forest',
-        nome: 'Floresta do Foco',
-        descricao: 'Cultive sua árvore da atenção através de sessões focadas - 6 fases progressivas',
-        duracao: 15,
-        dificuldade: 2,
-        rota: '/games/focus-forest-phases',
-        icone: '🌳',
-        completado: false
-      },
-      {
         id: 'executive-processing',
         nome: 'Desvio de Impulsos',
         descricao: 'Pratique controle inibitório respondendo seletivamente - 6 fases progressivas',

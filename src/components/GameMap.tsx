@@ -45,9 +45,9 @@ const neurodiversityTracks = {
     gradient: "from-accent/20 to-accent/5",
     description: "Fortaleça foco, atenção e autorregulação",
     games: [
-      { id: "focus-forest", name: "Focus Forest", unlocked: true, completed: false },
       { id: "balance-quest", name: "BalanceQuest", unlocked: true, completed: false },
-      { id: "visual-sync", name: "VisualSync", unlocked: false, completed: false }
+      { id: "visual-sync", name: "VisualSync", unlocked: true, completed: false },
+      { id: "tower-defense", name: "Tower Defense", unlocked: false, completed: false }
     ]
   },
   dislexia: {
@@ -69,9 +69,9 @@ const neurodiversityTracks = {
     gradient: "from-purple-500/20 to-purple-500/5",
     description: "Desafios avançados para mentes excepcionais",
     games: [
-      { id: "focus-forest", name: "Focus Forest Pro", unlocked: true, completed: false },
       { id: "social-scenarios", name: "Social Scenarios Plus", unlocked: true, completed: false },
-      { id: "balance-quest", name: "BalanceQuest Elite", unlocked: false, completed: false }
+      { id: "balance-quest", name: "BalanceQuest Elite", unlocked: true, completed: false },
+      { id: "tower-defense", name: "Tower Defense Pro", unlocked: false, completed: false }
     ]
   }
 };

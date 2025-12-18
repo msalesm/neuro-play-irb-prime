@@ -25,18 +25,6 @@ import {
 const neuroplasticityGames = [
   // Atenção & Foco
   {
-    id: 'focus-forest',
-    title: 'Focus Forest',
-    description: 'Desenvolva atenção sustentada plantando árvores virtuais',
-    icon: Brain,
-    gradient: 'bg-gradient-to-br from-green-500 to-emerald-600',
-    category: 'attention',
-    categoryName: 'Atenção & Foco',
-    difficulty: 'Adaptável',
-    duration: '5-15 min',
-    path: '/games/focus-forest'
-  },
-  {
     id: 'caca-foco',
     title: 'Caça ao Foco',
     description: 'Encontre objetos específicos desenvolvendo atenção seletiva',

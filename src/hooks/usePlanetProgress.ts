@@ -140,8 +140,6 @@ export const usePlanetProgress = (childId: string | null) => {
       'crystal-match': 'vortex',
       'attention-sustained': 'vortex',
       'attention-sustained-phases': 'vortex',
-      'focus-forest': 'vortex',
-      'focus-forest-phases': 'vortex',
       'executive-processing': 'vortex',
       'executive-processing-phases': 'vortex',
       'foco-rapido': 'vortex',

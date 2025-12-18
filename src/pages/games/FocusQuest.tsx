@@ -8,9 +8,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Play, Pause, RotateCcw, Zap, Star, Home, Target, Settings, Trophy, Focus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { useFocusForestStats } from "@/hooks/useFocusForestStats";
-import { FocusForestStats } from "@/components/FocusForestStats";
-import { FocusForestAchievements } from "@/components/FocusForestAchievements";
 
 interface FocusPower {
   id: number;
@@ -91,7 +88,6 @@ type DifficultyMode = 'adaptive' | 'easy' | 'normal' | 'hard';
 export default function FocusQuest() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { stats, achievements, loading, saveGameSession } = useFocusForestStats();
   
   // Game state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -124,9 +120,7 @@ export default function FocusQuest() {
   
   // Check if biome is unlocked based on total focus time
   const isBiomeUnlocked = (biomeIndex: number) => {
-    const totalFocusMinutes = stats?.totalSessions ? 
-      (stats.totalSessions * 5) / 60 : 0; // Rough estimate
-    return totalFocusMinutes >= questBiomes[biomeIndex].unlockRequirement;
+    return true; // All biomes unlocked for standalone game
   };
 
   // Adaptive difficulty adjustment
@@ -361,7 +355,7 @@ export default function FocusQuest() {
         difficulty_modifier: difficulty
       };
 
-      await saveGameSession(sessionData);
+      console.log('Session data:', sessionData);
 
       toast({
         title: "🏆 Missão Focus Quest Completa!",
@@ -627,27 +621,6 @@ export default function FocusQuest() {
               </CardContent>
             </Card>
 
-            {/* Overall Stats */}
-            <FocusForestStats 
-              stats={stats}
-              currentSession={{
-                hits: focusStreak,
-                misses: 0,
-                accuracy: focusStreak > 0 ? 95 : 0,
-                treesGrown: Math.round(focusTime / 10000),
-                level: currentBiome + 1
-              }}
-            />
-
-            <FocusForestAchievements 
-              achievements={achievements}
-              currentSession={{
-                hits: focusStreak,
-                accuracy: focusStreak > 0 ? 95 : 0,
-                level: currentBiome + 1,
-                duration_seconds: Math.round(gameTime / 1000)
-              }}
-            />
           </div>
         </div>
       </div>
