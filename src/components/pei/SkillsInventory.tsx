@@ -379,14 +379,14 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
       </Card>
 
       {/* Categories Navigation + Content */}
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
         {/* Sidebar Navigation */}
-        <Card className="xl:col-span-1">
+        <Card className="lg:w-64 lg:shrink-0">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm">Áreas de Avaliação</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <ScrollArea className="h-[400px] xl:h-[500px]">
+            <ScrollArea className="h-[300px] lg:h-[500px]">
               <div className="space-y-1 p-2">
                 {skillsInventoryCategories.map((cat) => {
                   const progress = getCategoryProgress(cat.id);
@@ -418,7 +418,7 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
         </Card>
 
         {/* Questions Content */}
-        <Card className="xl:col-span-4">
+        <Card className="flex-1 min-w-0">
           <CardHeader>
             {skillsInventoryCategories.find(c => c.id === activeCategory) && (
               <>
@@ -448,27 +448,27 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
                         <RadioGroup
                           value={response?.response || ''}
                           onValueChange={(value) => setResponseForItem(activeCategory, item.id, value as ResponseType)}
-                          className="flex flex-col sm:flex-row gap-3 sm:gap-6"
+                          className="flex items-center gap-6"
                         >
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center gap-2">
                             <RadioGroupItem value="yes" id={`${item.id}-yes`} />
-                            <Label htmlFor={`${item.id}-yes`} className="flex items-center gap-1.5 cursor-pointer">
-                              <CheckCircle2 className="h-4 w-4 text-green-500" />
-                              <span>Sim</span>
+                            <Label htmlFor={`${item.id}-yes`} className="flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+                              <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+                              Sim
                             </Label>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center gap-2">
                             <RadioGroupItem value="no" id={`${item.id}-no`} />
-                            <Label htmlFor={`${item.id}-no`} className="flex items-center gap-1.5 cursor-pointer">
-                              <XCircle className="h-4 w-4 text-red-500" />
-                              <span>Não</span>
+                            <Label htmlFor={`${item.id}-no`} className="flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+                              <XCircle className="h-4 w-4 text-red-500 shrink-0" />
+                              Não
                             </Label>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center gap-2">
                             <RadioGroupItem value="partial" id={`${item.id}-partial`} />
-                            <Label htmlFor={`${item.id}-partial`} className="flex items-center gap-1.5 cursor-pointer">
-                              <MinusCircle className="h-4 w-4 text-yellow-500" />
-                              <span>Parcialmente</span>
+                            <Label htmlFor={`${item.id}-partial`} className="flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
+                              <MinusCircle className="h-4 w-4 text-yellow-500 shrink-0" />
+                              Parcialmente
                             </Label>
                           </div>
                         </RadioGroup>
