@@ -40,6 +40,7 @@ interface StudentInfo {
   teacherName: string;
   caregiverName: string;
   aeeTeacherName: string;
+  therapeuticCompanion: string;
   schoolYear: string;
 }
 
@@ -57,6 +58,7 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
     teacherName: '',
     caregiverName: '',
     aeeTeacherName: '',
+    therapeuticCompanion: '',
     schoolYear: new Date().getFullYear().toString(),
   });
   
@@ -91,6 +93,7 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
           teacherName: data.teacher_name || '',
           caregiverName: data.caregiver_name || '',
           aeeTeacherName: data.aee_teacher_name || '',
+          therapeuticCompanion: (data as any).therapeutic_companion || '',
           schoolYear: data.school_year || new Date().getFullYear().toString(),
         });
         setNotes(data.notes || '');
@@ -200,6 +203,7 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
         teacher_name: studentInfo.teacherName,
         caregiver_name: studentInfo.caregiverName,
         aee_teacher_name: studentInfo.aeeTeacherName,
+        therapeutic_companion: studentInfo.therapeuticCompanion,
         total_items: totalItems,
         yes_count: stats.yesCount,
         no_count: stats.noCount,
@@ -356,11 +360,18 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
                 onChange={(e) => setStudentInfo(prev => ({ ...prev, caregiverName: e.target.value }))}
               />
             </div>
-            <div className="md:col-span-3">
+            <div>
               <Label>Professor(a) do AEE</Label>
               <Input 
                 value={studentInfo.aeeTeacherName} 
                 onChange={(e) => setStudentInfo(prev => ({ ...prev, aeeTeacherName: e.target.value }))}
+              />
+            </div>
+            <div>
+              <Label>Acompanhante Terapêutico</Label>
+              <Input 
+                value={studentInfo.therapeuticCompanion} 
+                onChange={(e) => setStudentInfo(prev => ({ ...prev, therapeuticCompanion: e.target.value }))}
               />
             </div>
           </div>
@@ -437,25 +448,25 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
                         <RadioGroup
                           value={response?.response || ''}
                           onValueChange={(value) => setResponseForItem(activeCategory, item.id, value as ResponseType)}
-                          className="flex gap-4"
+                          className="flex flex-wrap gap-2 sm:gap-4"
                         >
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-1.5">
                             <RadioGroupItem value="yes" id={`${item.id}-yes`} />
-                            <Label htmlFor={`${item.id}-yes`} className="flex items-center gap-1 cursor-pointer">
+                            <Label htmlFor={`${item.id}-yes`} className="flex items-center gap-1 cursor-pointer text-sm">
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
                               Sim
                             </Label>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-1.5">
                             <RadioGroupItem value="no" id={`${item.id}-no`} />
-                            <Label htmlFor={`${item.id}-no`} className="flex items-center gap-1 cursor-pointer">
+                            <Label htmlFor={`${item.id}-no`} className="flex items-center gap-1 cursor-pointer text-sm">
                               <XCircle className="h-4 w-4 text-red-500" />
                               Não
                             </Label>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-1.5">
                             <RadioGroupItem value="partial" id={`${item.id}-partial`} />
-                            <Label htmlFor={`${item.id}-partial`} className="flex items-center gap-1 cursor-pointer">
+                            <Label htmlFor={`${item.id}-partial`} className="flex items-center gap-1 cursor-pointer text-sm whitespace-nowrap">
                               <MinusCircle className="h-4 w-4 text-yellow-500" />
                               Parcialmente
                             </Label>
