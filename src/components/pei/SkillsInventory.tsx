@@ -379,14 +379,14 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
       </Card>
 
       {/* Categories Navigation + Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
         {/* Sidebar Navigation */}
-        <Card className="lg:col-span-1">
-          <CardHeader>
+        <Card className="xl:col-span-1">
+          <CardHeader className="pb-2">
             <CardTitle className="text-sm">Áreas de Avaliação</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <ScrollArea className="h-[500px]">
+            <ScrollArea className="h-[400px] xl:h-[500px]">
               <div className="space-y-1 p-2">
                 {skillsInventoryCategories.map((cat) => {
                   const progress = getCategoryProgress(cat.id);
@@ -395,15 +395,15 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
                       key={cat.id}
                       onClick={() => setActiveCategory(cat.id)}
                       className={cn(
-                        "w-full text-left p-3 rounded-lg transition-colors",
+                        "w-full text-left p-2.5 rounded-lg transition-colors",
                         activeCategory === cat.id 
                           ? "bg-primary text-primary-foreground" 
                           : "hover:bg-muted"
                       )}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-sm font-medium leading-tight">{cat.name}</span>
-                        <ChevronRight className="h-4 w-4 shrink-0" />
+                        <span className="text-xs font-medium leading-tight line-clamp-2">{cat.name}</span>
+                        <ChevronRight className="h-3 w-3 shrink-0" />
                       </div>
                       <div className="flex items-center gap-2 mt-1">
                         <Progress value={progress} className="h-1 flex-1" />
@@ -418,11 +418,11 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
         </Card>
 
         {/* Questions Content */}
-        <Card className="lg:col-span-3">
+        <Card className="xl:col-span-4">
           <CardHeader>
             {skillsInventoryCategories.find(c => c.id === activeCategory) && (
               <>
-                <CardTitle>{skillsInventoryCategories.find(c => c.id === activeCategory)?.name}</CardTitle>
+                <CardTitle className="text-lg">{skillsInventoryCategories.find(c => c.id === activeCategory)?.name}</CardTitle>
                 <CardDescription>
                   Área: {skillsInventoryCategories.find(c => c.id === activeCategory)?.area}
                 </CardDescription>
@@ -448,27 +448,27 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
                         <RadioGroup
                           value={response?.response || ''}
                           onValueChange={(value) => setResponseForItem(activeCategory, item.id, value as ResponseType)}
-                          className="flex flex-wrap gap-2 sm:gap-4"
+                          className="flex flex-col sm:flex-row gap-3 sm:gap-6"
                         >
-                          <div className="flex items-center space-x-1.5">
+                          <div className="flex items-center space-x-2">
                             <RadioGroupItem value="yes" id={`${item.id}-yes`} />
-                            <Label htmlFor={`${item.id}-yes`} className="flex items-center gap-1 cursor-pointer text-sm">
+                            <Label htmlFor={`${item.id}-yes`} className="flex items-center gap-1.5 cursor-pointer">
                               <CheckCircle2 className="h-4 w-4 text-green-500" />
-                              Sim
+                              <span>Sim</span>
                             </Label>
                           </div>
-                          <div className="flex items-center space-x-1.5">
+                          <div className="flex items-center space-x-2">
                             <RadioGroupItem value="no" id={`${item.id}-no`} />
-                            <Label htmlFor={`${item.id}-no`} className="flex items-center gap-1 cursor-pointer text-sm">
+                            <Label htmlFor={`${item.id}-no`} className="flex items-center gap-1.5 cursor-pointer">
                               <XCircle className="h-4 w-4 text-red-500" />
-                              Não
+                              <span>Não</span>
                             </Label>
                           </div>
-                          <div className="flex items-center space-x-1.5">
+                          <div className="flex items-center space-x-2">
                             <RadioGroupItem value="partial" id={`${item.id}-partial`} />
-                            <Label htmlFor={`${item.id}-partial`} className="flex items-center gap-1 cursor-pointer text-sm whitespace-nowrap">
+                            <Label htmlFor={`${item.id}-partial`} className="flex items-center gap-1.5 cursor-pointer">
                               <MinusCircle className="h-4 w-4 text-yellow-500" />
-                              Parcialmente
+                              <span>Parcialmente</span>
                             </Label>
                           </div>
                         </RadioGroup>
