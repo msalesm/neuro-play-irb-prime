@@ -20,6 +20,7 @@ export interface Appointment {
   professional_id: string;
   appointment_type_id: string | null;
   service_mode: 'premium' | 'standard';
+  room: string | null;
   scheduled_date: string;
   scheduled_time: string;
   end_time: string | null;
