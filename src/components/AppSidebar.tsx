@@ -166,6 +166,11 @@ export function AppSidebar() {
       icon: ClipboardCheck,
     },
     {
+      title: 'Inventário de Habilidades',
+      path: '/inventario-habilidades',
+      icon: ClipboardCheck,
+    },
+    {
       title: 'Relatório Clínico',
       path: '/reports',
       icon: FileText,

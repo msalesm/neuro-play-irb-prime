@@ -81,6 +81,7 @@ export function MobileMenu() {
         { title: 'Agenda', path: '/agenda', icon: Calendar },
         { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
         { title: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
+        { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
         { title: 'Relatório Clínico', path: '/reports', icon: FileText },
         { title: 'Mensagens', path: '/messages', icon: Mail },
       ],
