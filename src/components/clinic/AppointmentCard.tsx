@@ -111,15 +111,21 @@ export function AppointmentCard({
                 </div>
               )}
 
-              {appointment.appointment_type && (
-                <div className="text-xs text-muted-foreground">
-                  {appointment.appointment_type.name}
+              {appointment.professional && (
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <span className="truncate">👨‍⚕️ {appointment.professional.full_name}</span>
                 </div>
               )}
 
-              {appointment.parent && (
+              {appointment.room && (
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <span>🚪 {appointment.room}</span>
+                </div>
+              )}
+
+              {appointment.appointment_type && (
                 <div className="text-xs text-muted-foreground">
-                  Resp: {appointment.parent.full_name}
+                  {appointment.appointment_type.name}
                 </div>
               )}
             </div>
