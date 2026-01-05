@@ -28,9 +28,28 @@ import {
   User, 
   LogIn,
   FileText,
-  Phone
+  Phone,
+  Stethoscope,
+  UserRound,
+  DoorOpen
 } from 'lucide-react';
 import { Appointment } from '@/hooks/useClinicAgenda';
+
+// Helper to get display name from profile (handles email as full_name case)
+const getDisplayName = (fullName: string | undefined | null): string => {
+  if (!fullName) return 'Não informado';
+  // If it looks like an email, extract the part before @
+  if (fullName.includes('@')) {
+    const namePart = fullName.split('@')[0];
+    // Capitalize first letter of each word
+    return namePart
+      .replace(/[._]/g, ' ')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
+  return fullName;
+};
 
 interface AppointmentCardProps {
   appointment: Appointment;
@@ -105,27 +124,30 @@ export function AppointmentCard({
 
             <div className="space-y-1">
               {appointment.child && (
-                <div className="flex items-center gap-1 text-sm">
-                  <User className="h-3 w-3 text-muted-foreground" />
+                <div className="flex items-center gap-1.5 text-sm">
+                  <User className="h-3.5 w-3.5 text-primary" />
                   <span className="font-medium truncate">{appointment.child.name}</span>
                 </div>
               )}
 
               {appointment.professional && (
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <span className="truncate">👨‍⚕️ {appointment.professional.full_name}</span>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <UserRound className="h-3 w-3" />
+                  <span className="truncate">{getDisplayName(appointment.professional.full_name)}</span>
                 </div>
               )}
 
               {appointment.room && (
-                <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                  <span>🚪 {appointment.room}</span>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <DoorOpen className="h-3 w-3" />
+                  <span>{appointment.room}</span>
                 </div>
               )}
 
               {appointment.appointment_type && (
-                <div className="text-xs text-muted-foreground">
-                  {appointment.appointment_type.name}
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Stethoscope className="h-3 w-3" />
+                  <span>{appointment.appointment_type.name}</span>
                 </div>
               )}
             </div>
