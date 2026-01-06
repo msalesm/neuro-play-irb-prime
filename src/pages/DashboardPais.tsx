@@ -117,40 +117,12 @@ export default function DashboardPais() {
 
   useEffect(() => {
     if (selectedChild) {
-      checkAvatarSelection();
       // Run predictive crisis detection on load
       setTimeout(() => {
         detectCrisisRisk(14); // Analyze last 14 days for crisis patterns
       }, 2000);
     }
   }, [selectedChild]);
-
-  const checkAvatarSelection = async () => {
-    if (!selectedChild) return;
-    
-    try {
-      // Check if child has avatar customization data
-      const { data: childData, error } = await supabase
-        .from('child_profiles')
-        .select('id')
-        .eq('id', selectedChild)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Error checking avatar:', error);
-        return;
-      }
-
-      // Always show avatar modal on first visit if no avatar selected yet
-      if (childData && !selectedChildData?.avatar_url) {
-        setTimeout(() => {
-          setShowAvatarModal(true);
-        }, 500);
-      }
-    } catch (error) {
-      console.error('Error checking avatar:', error);
-    }
-  };
 
   useEffect(() => {
     if (selectedChild) {

@@ -57,6 +57,12 @@ const CLINIC_ROOMS = [
   'Integração Casa/Escola',
 ] as const;
 
+// Time options for the dropdown (full-hour slots from 07:00 to 20:00)
+const TIME_OPTIONS = [
+  '07:00', '08:00', '09:00', '10:00', '11:00', '12:00',
+  '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'
+];
+
 const formSchema = z.object({
   child_id: z.string().optional(),
   parent_id: z.string().optional(),
@@ -65,7 +71,7 @@ const formSchema = z.object({
   service_mode: z.enum(['premium', 'standard']).default('premium'),
   room: z.string().optional(),
   scheduled_date: z.date({ required_error: 'Selecione uma data' }),
-  scheduled_time: z.string().min(1, 'Informe o horário'),
+  scheduled_times: z.array(z.string()).min(1, 'Selecione ao menos um horário'),
   internal_notes: z.string().optional(),
 });
 
@@ -110,7 +116,7 @@ export function AppointmentForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       scheduled_date: initialDate || new Date(),
-      scheduled_time: '08:00',
+      scheduled_times: ['08:00'],
       professional_id: initialProfessional || '',
       service_mode: 'premium',
     },
@@ -139,14 +145,30 @@ export function AppointmentForm({
     const isStaff = userRole === 'admin' || userRole === 'therapist';
     
     if (isStaff) {
-      // Staff can see all active children
-      const { data } = await supabase
+      // First try: get children through child_access (therapist-approved patients)
+      const { data: accessData } = await supabase
+        .from('child_access')
+        .select('child_id')
+        .eq('professional_id', user.id)
+        .eq('is_active', true);
+      
+      const accessChildIds = accessData?.map(a => a.child_id) || [];
+      
+      // Also fetch all active children (admin sees all, therapist sees by access)
+      const { data: allChildren } = await supabase
         .from('children')
         .select('id, name, parent_id')
         .eq('is_active', true)
         .order('name');
       
-      setChildren(data || []);
+      if (userRole === 'admin') {
+        // Admin sees all children
+        setChildren(allChildren || []);
+      } else {
+        // Therapist sees only children they have access to
+        const filtered = (allChildren || []).filter(c => accessChildIds.includes(c.id));
+        setChildren(filtered);
+      }
     } else {
       // Parents can only see their own children
       const { data } = await supabase
@@ -164,22 +186,31 @@ export function AppointmentForm({
     setLoading(true);
     
     const selectedChild = children.find(c => c.id === data.child_id);
+    const times = data.scheduled_times || [];
     
-    const result = await onSubmit({
-      child_id: data.child_id,
-      parent_id: selectedChild?.parent_id || data.parent_id,
-      professional_id: data.professional_id,
-      appointment_type_id: data.appointment_type_id,
-      service_mode: data.service_mode,
-      room: data.room,
-      scheduled_date: format(data.scheduled_date, 'yyyy-MM-dd'),
-      scheduled_time: data.scheduled_time,
-      internal_notes: data.internal_notes,
-    });
+    // Create one appointment per selected time slot
+    let success = true;
+    for (const time of times) {
+      const result = await onSubmit({
+        child_id: data.child_id,
+        parent_id: selectedChild?.parent_id || data.parent_id,
+        professional_id: data.professional_id,
+        appointment_type_id: data.appointment_type_id,
+        service_mode: data.service_mode,
+        room: data.room,
+        scheduled_date: format(data.scheduled_date, 'yyyy-MM-dd'),
+        scheduled_time: time,
+        internal_notes: data.internal_notes,
+      });
+      if (!result) {
+        success = false;
+        break;
+      }
+    }
 
     setLoading(false);
 
-    if (result) {
+    if (success) {
       form.reset();
       onOpenChange(false);
     }
@@ -381,16 +412,40 @@ export function AppointmentForm({
 
             <FormField
               control={form.control}
-              name="scheduled_time"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Horário *</FormLabel>
-                  <FormControl>
-                    <Input type="time" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              name="scheduled_times"
+              render={({ field }) => {
+                const selectedTimes = field.value || [];
+                const toggleTime = (time: string) => {
+                  if (selectedTimes.includes(time)) {
+                    field.onChange(selectedTimes.filter(t => t !== time));
+                  } else {
+                    field.onChange([...selectedTimes, time].sort());
+                  }
+                };
+                return (
+                  <FormItem>
+                    <FormLabel>Horário(s) * {selectedTimes.length > 1 && `(${selectedTimes.length} selecionados)`}</FormLabel>
+                    <div className="flex flex-wrap gap-2">
+                      {TIME_OPTIONS.map((time) => (
+                        <Button
+                          key={time}
+                          type="button"
+                          variant={selectedTimes.includes(time) ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => toggleTime(time)}
+                          className="w-16"
+                        >
+                          {time}
+                        </Button>
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Clique para selecionar um ou mais horários (ex: sessão dupla)
+                    </p>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
 
             <FormField
