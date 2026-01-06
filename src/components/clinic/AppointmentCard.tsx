@@ -105,9 +105,17 @@ export function AppointmentCard({
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
+              {appointment.appointment_type && (
+                <div 
+                  className="flex items-center justify-center h-6 w-6 rounded-full"
+                  style={{ backgroundColor: typeColor }}
+                  title={appointment.appointment_type.name}
+                >
+                  <Stethoscope className="h-3.5 w-3.5 text-white" />
+                </div>
+              )}
               <span className="font-medium text-sm">
                 {appointment.scheduled_time.slice(0, 5)}
-                {appointment.end_time && ` - ${appointment.end_time.slice(0, 5)}`}
               </span>
               <Badge variant={status.variant} className="text-xs">
                 {status.label}
@@ -141,13 +149,6 @@ export function AppointmentCard({
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <DoorOpen className="h-3 w-3" />
                   <span>{appointment.room}</span>
-                </div>
-              )}
-
-              {appointment.appointment_type && (
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <Stethoscope className="h-3 w-3" />
-                  <span>{appointment.appointment_type.name}</span>
                 </div>
               )}
             </div>
