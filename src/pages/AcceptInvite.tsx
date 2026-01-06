@@ -5,12 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Loader2, Gift, Check, UserPlus, ArrowLeft } from 'lucide-react';
+import { Loader2, Gift, Check, UserPlus, ArrowLeft, LogOut } from 'lucide-react';
 
 const inviteCodeSchema = z.object({
   code: z.string().min(8, 'Código deve ter 8 caracteres').max(8, 'Código deve ter 8 caracteres'),
@@ -31,7 +32,8 @@ interface InvitationData {
 export default function AcceptInvite() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
+  const { isTherapist, isAdmin, loading: roleLoading } = useUserRole();
   const [loading, setLoading] = useState(false);
   const [invitation, setInvitation] = useState<InvitationData | null>(null);
   const [accepted, setAccepted] = useState(false);
@@ -92,6 +94,17 @@ export default function AcceptInvite() {
     if (!user || !invitation) {
       toast.error('Você precisa estar logado para aceitar o convite');
       navigate('/auth');
+      return;
+    }
+
+    if (roleLoading) {
+      toast.error('Aguarde um instante e tente novamente');
+      return;
+    }
+
+    // Prevent professionals/admins from consuming parent/family invite links.
+    if (isTherapist || isAdmin) {
+      toast.error('Este convite é destinado aos responsáveis. Entre com uma conta de responsável para aceitar.');
       return;
     }
 
@@ -266,6 +279,26 @@ export default function AcceptInvite() {
                 </p>
               )}
 
+              {user && !roleLoading && (isTherapist || isAdmin) && (
+                <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md space-y-2">
+                  <p>
+                    Você está logado como <strong>profissional</strong>. Este convite é destinado aos responsáveis.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    onClick={async () => {
+                      await signOut();
+                      navigate('/auth');
+                    }}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sair e entrar com outra conta
+                  </Button>
+                </div>
+              )}
+
               <div className="flex gap-2">
                 <Button 
                   variant="outline" 
@@ -277,7 +310,7 @@ export default function AcceptInvite() {
                 <Button 
                   className="flex-1"
                   onClick={user ? acceptInvitation : () => navigate('/auth')}
-                  disabled={loading}
+                  disabled={loading || roleLoading || (user && (isTherapist || isAdmin))}
                 >
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {user ? 'Aceitar Convite' : 'Fazer Login'}
