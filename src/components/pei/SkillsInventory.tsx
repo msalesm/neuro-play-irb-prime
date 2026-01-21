@@ -186,14 +186,17 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
   };
 
   const handleSave = async () => {
-    if (!user || !childId) return;
+    if (!user) {
+      toast.error('Você precisa estar autenticado para salvar');
+      return;
+    }
     
     setSaving(true);
     try {
       const stats = calculateStats();
       
       const inventoryData: any = {
-        child_id: childId,
+        child_id: childId || null,
         pei_plan_id: peiPlanId || null,
         assessor_id: user.id,
         school_year: studentInfo.schoolYear,
