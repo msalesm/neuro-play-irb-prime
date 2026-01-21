@@ -139,6 +139,7 @@ import BillingDashboard from "./pages/BillingDashboard";
 import ImpactDashboard from "./pages/ImpactDashboard";
 import AgendaClinica from "./pages/AgendaClinica";
 import InventarioHabilidades from "./pages/InventarioHabilidades";
+import AnamneseInfantil from "./pages/AnamneseInfantil";
 import ClubePais from "./pages/ClubePais";
 import ParceiroClube from "./pages/ParceiroClube";
 import AdminClubePais from "./pages/AdminClubePais";
@@ -307,6 +308,7 @@ const App = () => (
           <Route path="/therapist/patients" element={<TherapistPatients />} />
           <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
           <Route path="/prontuario/:childId" element={<ProntuarioUnificado />} />
+          <Route path="/anamnese/:childId" element={<AnamneseInfantil />} />
           
           {/* Teacher Routes */}
           <Route path="/teacher/classes" element={<TeacherClasses />} />

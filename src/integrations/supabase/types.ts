@@ -1307,6 +1307,107 @@ export type Database = {
           },
         ]
       }
+      child_development_anamnesis: {
+        Row: {
+          autonomy_routine: Json | null
+          birth: Json | null
+          child_id: string
+          cognitive_development: Json | null
+          completed_at: string | null
+          created_at: string
+          general_health: Json | null
+          general_observations: string | null
+          generated_summary: Json | null
+          id: string
+          identification: Json | null
+          language_development: Json | null
+          main_complaint: string | null
+          neuropsychomotor: Json | null
+          pregnancy_prenatal: Json | null
+          professional_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          social_emotional: Json | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          autonomy_routine?: Json | null
+          birth?: Json | null
+          child_id: string
+          cognitive_development?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          general_health?: Json | null
+          general_observations?: string | null
+          generated_summary?: Json | null
+          id?: string
+          identification?: Json | null
+          language_development?: Json | null
+          main_complaint?: string | null
+          neuropsychomotor?: Json | null
+          pregnancy_prenatal?: Json | null
+          professional_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          social_emotional?: Json | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          autonomy_routine?: Json | null
+          birth?: Json | null
+          child_id?: string
+          cognitive_development?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          general_health?: Json | null
+          general_observations?: string | null
+          generated_summary?: Json | null
+          id?: string
+          identification?: Json | null
+          language_development?: Json | null
+          main_complaint?: string | null
+          neuropsychomotor?: Json | null
+          pregnancy_prenatal?: Json | null
+          professional_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          social_emotional?: Json | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "child_development_anamnesis_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "child_development_anamnesis_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "child_development_anamnesis_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "child_development_anamnesis_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       child_profiles: {
         Row: {
           cognitive_baseline: Json | null

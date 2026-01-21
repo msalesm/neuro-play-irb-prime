@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Video, Calendar, Clock, FileText, Play, 
-  Brain, Heart, Users, TrendingUp, TrendingDown
+  Brain, Heart, Users, TrendingUp, TrendingDown, ClipboardList
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
@@ -35,8 +36,10 @@ interface AssessmentSummary {
 }
 
 export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps) {
+  const navigate = useNavigate();
   const [sessions, setSessions] = useState<TeleconsultHistory[]>([]);
   const [assessments, setAssessments] = useState<AssessmentSummary[]>([]);
+  const [hasAnamnesis, setHasAnamnesis] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,6 +77,17 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
         behavioral_risk: a.behavioral_risk || 'medium',
         socioemotional_risk: a.socioemotional_risk || 'medium'
       })));
+
+      // Check for existing anamnesis
+      const { data: anamnesisData } = await supabase
+        .from('child_development_anamnesis')
+        .select('id, status')
+        .eq('child_id', childId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      setHasAnamnesis(!!anamnesisData);
     } catch (error) {
       console.error('Error loading teleconsult data:', error);
     } finally {
@@ -110,6 +124,57 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
 
   return (
     <div className="space-y-6">
+      {/* Anamnesis Alert */}
+      {!hasAnamnesis && (
+        <Card className="border-orange-200 bg-orange-50 dark:bg-orange-950/20">
+          <CardContent className="py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <ClipboardList className="w-5 h-5 text-orange-600" />
+                <div>
+                  <p className="font-medium text-orange-800 dark:text-orange-200">
+                    Anamnese de Desenvolvimento Pendente
+                  </p>
+                  <p className="text-sm text-orange-600 dark:text-orange-400">
+                    Preencha a anamnese antes de iniciar teleconsultas
+                  </p>
+                </div>
+              </div>
+              <Button 
+                onClick={() => navigate(`/anamnese/${childId}`)}
+                className="bg-orange-600 hover:bg-orange-700"
+              >
+                <ClipboardList className="w-4 h-4 mr-2" />
+                Preencher Anamnese
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {hasAnamnesis && (
+        <Card className="border-green-200 bg-green-50 dark:bg-green-950/20">
+          <CardContent className="py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <ClipboardList className="w-5 h-5 text-green-600" />
+                <div>
+                  <p className="font-medium text-green-800 dark:text-green-200">
+                    Anamnese de Desenvolvimento Preenchida
+                  </p>
+                </div>
+              </div>
+              <Button 
+                variant="outline"
+                onClick={() => navigate(`/anamnese/${childId}`)}
+              >
+                Ver/Editar Anamnese
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Latest Assessment Summary */}
       {latestAssessment && (
         <Card>

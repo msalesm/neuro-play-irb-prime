@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { 
   FileText, Stethoscope, Users, Brain, 
-  BarChart3, ClipboardCheck, TrendingUp, AlertTriangle
+  BarChart3, ClipboardCheck, TrendingUp, AlertTriangle, ClipboardList
 } from 'lucide-react';
 import { useUserRole } from '@/hooks/useUserRole';
 import { cn } from '@/lib/utils';
