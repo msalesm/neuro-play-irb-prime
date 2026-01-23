@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import {
   Brain, TrendingUp, AlertCircle, Calendar, MessageSquare,
   FileText, ArrowLeft, Download, Sparkles, Target, Activity,
-  Clock, Star, BarChart3
+  Clock, Star, BarChart3, ClipboardList
 } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 import { Progress } from '@/components/ui/progress';
@@ -451,10 +451,14 @@ export default function TherapistDashboard() {
                     )}
                   </div>
 
-                  <div className="flex gap-2 pt-4">
+                  <div className="flex flex-wrap gap-2 pt-4">
                     <Button className="flex-1" onClick={() => navigate(`/prontuario/${patientId}`)}>
                       <FileText className="w-4 h-4 mr-2" />
                       Abrir Prontuário Completo
+                    </Button>
+                    <Button variant="outline" onClick={() => navigate(`/anamnese/${patientId}`)}>
+                      <ClipboardList className="w-4 h-4 mr-2" />
+                      Anamnese
                     </Button>
                     <Button variant="outline" onClick={generateReport}>
                       <Sparkles className="w-4 h-4 mr-2" />
