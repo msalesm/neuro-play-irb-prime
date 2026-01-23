@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Video, Calendar, Clock, User, Plus, FileText,
-  Play, AlertCircle, CheckCircle, Share2
+  Play, AlertCircle, CheckCircle, Share2, ClipboardList
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -30,6 +31,7 @@ interface TeleconsultListProps {
 }
 
 export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultListProps) {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [sessions, setSessions] = useState<TeleconsultSession[]>([]);
   const [loading, setLoading] = useState(true);
@@ -217,6 +219,15 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
                       title="Enviar convite"
                     >
                       <Share2 className="w-4 h-4" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => session.children?.id && navigate(`/anamnese/${session.children.id}`)}
+                      title="Preencher Anamnese"
+                    >
+                      <ClipboardList className="w-4 h-4 mr-1" />
+                      Anamnese
                     </Button>
                     <Button 
                       variant="outline" 
