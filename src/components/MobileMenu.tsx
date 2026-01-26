@@ -4,7 +4,7 @@ import {
   Home, Brain, Stethoscope, Settings, User, 
   Users, TrendingUp, Menu, Sparkles, Gamepad2,
   FileText, ClipboardCheck, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, Calendar, Mail, Folder, Gem, CreditCard, CalendarCheck, Building2
+  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, Calendar, Mail, Folder, Gem, CreditCard, CalendarCheck, Building2, ClipboardList
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -82,6 +82,7 @@ export function MobileMenu() {
         { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
         { title: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
         { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
+        { title: 'Anamnese', path: '/anamnese', icon: ClipboardList, badge: 'Novo' },
         { title: 'Relatório Clínico', path: '/reports', icon: FileText },
         { title: 'Mensagens', path: '/messages', icon: Mail },
       ],
