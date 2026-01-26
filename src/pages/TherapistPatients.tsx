@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus, LayoutGrid, List } from 'lucide-react';
+import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus, LayoutGrid, List, ClipboardList, FileText } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 import { AddPatientModal } from '@/components/AddPatientModal';
 import { TherapistPatientSection } from '@/components/TherapistPatientSection';
@@ -240,13 +240,41 @@ export default function TherapistPatients() {
 
                   {/* Last Session */}
                   {patient.lastSession && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                       <Calendar className="w-4 h-4" />
                       <span>
                         Última sessão: {new Date(patient.lastSession).toLocaleDateString('pt-BR')}
                       </span>
                     </div>
                   )}
+
+                  {/* Quick Actions */}
+                  <div className="flex gap-2 pt-3 border-t">
+                    <Button 
+                      variant="default"
+                      size="sm"
+                      className="flex-1 bg-primary hover:bg-primary/90"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/anamnese/${patient.id}`);
+                      }}
+                    >
+                      <ClipboardList className="w-4 h-4 mr-1" />
+                      📋 Anamnese
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/prontuario/${patient.id}`);
+                      }}
+                    >
+                      <FileText className="w-4 h-4 mr-1" />
+                      Prontuário
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
