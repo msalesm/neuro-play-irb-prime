@@ -221,13 +221,14 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
                       <Share2 className="w-4 h-4" />
                     </Button>
                     <Button 
-                      variant="outline" 
+                      variant="default"
                       size="sm"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-sm"
                       onClick={() => session.children?.id && navigate(`/anamnese/${session.children.id}`)}
-                      title="Preencher Anamnese"
+                      title="Preencher Anamnese do Desenvolvimento Infantil"
                     >
                       <ClipboardList className="w-4 h-4 mr-1" />
-                      Anamnese
+                      📋 Anamnese
                     </Button>
                     <Button 
                       variant="outline" 
