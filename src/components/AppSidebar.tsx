@@ -171,6 +171,12 @@ export function AppSidebar() {
       icon: ClipboardCheck,
     },
     {
+      title: 'Anamnese',
+      path: '/anamnese',
+      icon: ClipboardList,
+      badge: 'Novo',
+    },
+    {
       title: 'Relatório Clínico',
       path: '/reports',
       icon: FileText,
