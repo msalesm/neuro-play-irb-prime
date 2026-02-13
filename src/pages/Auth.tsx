@@ -56,7 +56,7 @@ export default function Auth() {
                 navigate('/teacher/classes');
                 break;
               case 'admin':
-                navigate('/admin/network');
+                navigate('/institutional');
                 break;
               default:
                 navigate('/dashboard-pais');
@@ -271,9 +271,9 @@ export default function Auth() {
               <CardContent>
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white/80">Email</Label>
+                    <Label htmlFor="email" className="text-foreground">Email</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/60" />
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="email"
                         type="email"
@@ -321,17 +321,17 @@ export default function Auth() {
 
             <TabsContent value="signup">
               <CardHeader>
-                <CardTitle className="text-white text-center">Criar sua conta</CardTitle>
-                <CardDescription className="text-white/70 text-center">
+                <CardTitle className="text-foreground text-center">Criar sua conta</CardTitle>
+                <CardDescription className="text-muted-foreground text-center">
                   Comece sua jornada de desenvolvimento com jogos terapêuticos
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-white/80">Nome</Label>
+                    <Label htmlFor="name" className="text-foreground">Nome</Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/60" />
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="name"
                         type="text"
