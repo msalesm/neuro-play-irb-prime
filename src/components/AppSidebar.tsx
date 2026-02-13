@@ -80,6 +80,11 @@ export function AppSidebar() {
       path: '/profile',
       icon: User,
     },
+    {
+      title: 'Histórico Emocional',
+      path: '/emotional-history',
+      icon: Heart,
+    },
   ];
 
   // ========== PAIS/RESPONSÁVEIS ==========
@@ -110,11 +115,6 @@ export function AppSidebar() {
       title: 'Progresso dos Filhos',
       path: '/learning-dashboard',
       icon: TrendingUp,
-    },
-    {
-      title: 'Histórico Emocional',
-      path: '/emotional-history',
-      icon: Heart,
     },
     {
       title: 'Mensagens',

@@ -48,6 +48,7 @@ export function MobileMenu() {
         { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
         { title: 'Minhas Conquistas', path: '/learning-dashboard', icon: Trophy },
         { title: 'Meu Perfil', path: '/profile', icon: User },
+        { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
       ],
     });
   }
@@ -62,7 +63,6 @@ export function MobileMenu() {
         { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope, badge: 'Novo' },
         { title: 'Relatório Familiar', path: '/reports', icon: FileText },
         { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
-        { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
         { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
         { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem, badge: 'Novo' },
         { title: 'Microlearning', path: '/training', icon: BookOpen },
@@ -107,7 +107,6 @@ export function MobileMenu() {
         { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck },
         { title: 'Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
         { title: 'Relatórios', path: '/reports', icon: BarChart3 },
-        { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
         { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem },
       ],
     });
