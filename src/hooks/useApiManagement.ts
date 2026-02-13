@@ -104,8 +104,12 @@ export function useApiManagement() {
       if (genError) throw genError;
 
       const keyPrefix = keyValue.substring(0, 10);
-      // In production, hash the key before storing
-      const keyHash = keyValue; // Simplified - should use proper hashing
+      // Hash the key with SHA-256 before storing
+      const encoder = new TextEncoder();
+      const keyData = encoder.encode(keyValue);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', keyData);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const keyHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
       const { data, error } = await supabase
         .from('api_keys')
