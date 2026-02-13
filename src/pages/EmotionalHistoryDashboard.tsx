@@ -310,7 +310,7 @@ export default function EmotionalHistoryDashboard() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
-                {isPatient ? (
+                {isPatient || childProfiles.length === 0 ? (
                   <EmotionCaptureCamera
                     onEmotionCaptured={handleEmotionCaptured}
                     onClose={() => setShowCamera(false)}
