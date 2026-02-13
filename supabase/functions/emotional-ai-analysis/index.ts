@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -41,6 +42,12 @@ serve(async (req) => {
     }
 
     console.log('Authenticated user:', user.id);
+
+    // Rate limit: 15 requests per 60 minutes for AI analysis
+    const allowed = await checkRateLimit(user.id, 'emotional-ai-analysis', 15, 60);
+    if (!allowed) {
+      return rateLimitResponse(corsHeaders);
+    }
 
     const { childId, analysisType } = await req.json();
     

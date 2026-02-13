@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -60,6 +61,12 @@ serve(async (req) => {
     }
 
     console.log('Authenticated user:', user.id);
+
+    // Rate limit: 10 cognitive analyses per 60 minutes
+    const allowed = await checkRateLimit(user.id, 'cognitive-analysis', 10, 60);
+    if (!allowed) {
+      return rateLimitResponse(corsHeaders);
+    }
 
     const { performanceData, userAge, userProfile }: AnalysisRequest = await req.json();
     

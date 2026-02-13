@@ -6526,6 +6526,27 @@ export type Database = {
           },
         ]
       }
+      rate_limit_requests: {
+        Row: {
+          endpoint: string
+          id: string
+          requested_at: string
+          user_id: string
+        }
+        Insert: {
+          endpoint: string
+          id?: string
+          requested_at?: string
+          user_id: string
+        }
+        Update: {
+          endpoint?: string
+          id?: string
+          requested_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       regional_pricing: {
         Row: {
           country_code: string
@@ -9352,8 +9373,18 @@ export type Database = {
           sample_size: number
         }[]
       }
+      check_rate_limit: {
+        Args: {
+          p_endpoint: string
+          p_max_requests?: number
+          p_user_id: string
+          p_window_minutes?: number
+        }
+        Returns: boolean
+      }
       check_sla_alerts: { Args: never; Returns: undefined }
       classify_risk_level: { Args: { p_score: number }; Returns: string }
+      cleanup_rate_limits: { Args: never; Returns: undefined }
       decrypt_sensitive_value: {
         Args: { p_encrypted: string }
         Returns: string
