@@ -200,6 +200,11 @@ export function AppSidebar() {
       icon: TrendingUp,
     },
     {
+      title: 'Neuro Play Educação',
+      path: '/educacao',
+      icon: School,
+    },
+    {
       title: 'Gerenciar Usuários',
       path: '/admin/users',
       icon: Users,
