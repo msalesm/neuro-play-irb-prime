@@ -9354,6 +9354,11 @@ export type Database = {
       }
       check_sla_alerts: { Args: never; Returns: undefined }
       classify_risk_level: { Args: { p_score: number }; Returns: string }
+      decrypt_sensitive_value: {
+        Args: { p_encrypted: string }
+        Returns: string
+      }
+      encrypt_sensitive_value: { Args: { p_value: string }; Returns: string }
       generate_api_key: { Args: never; Returns: string }
       generate_invoice_number: { Args: never; Returns: string }
       get_admin_institution_ids: {
