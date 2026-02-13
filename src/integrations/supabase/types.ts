@@ -1452,13 +1452,28 @@ export type Database = {
       }
       children: {
         Row: {
+          address_city: string | null
+          address_complement: string | null
+          address_neighborhood: string | null
+          address_number: string | null
+          address_state: string | null
+          address_street: string | null
+          address_zipcode: string | null
           avatar_url: string | null
           birth_date: string
           consent_data_usage: boolean | null
           consent_research: boolean | null
+          cpf: string | null
           created_at: string | null
           gender: string | null
+          guardian_email: string | null
+          guardian_name: string | null
+          guardian_phone: string | null
           id: string
+          insurance_expiry: string | null
+          insurance_name: string | null
+          insurance_number: string | null
+          insurance_plan: string | null
           is_active: boolean | null
           name: string
           neurodevelopmental_conditions: Json | null
@@ -1468,13 +1483,28 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          address_city?: string | null
+          address_complement?: string | null
+          address_neighborhood?: string | null
+          address_number?: string | null
+          address_state?: string | null
+          address_street?: string | null
+          address_zipcode?: string | null
           avatar_url?: string | null
           birth_date: string
           consent_data_usage?: boolean | null
           consent_research?: boolean | null
+          cpf?: string | null
           created_at?: string | null
           gender?: string | null
+          guardian_email?: string | null
+          guardian_name?: string | null
+          guardian_phone?: string | null
           id?: string
+          insurance_expiry?: string | null
+          insurance_name?: string | null
+          insurance_number?: string | null
+          insurance_plan?: string | null
           is_active?: boolean | null
           name: string
           neurodevelopmental_conditions?: Json | null
@@ -1484,13 +1514,28 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          address_city?: string | null
+          address_complement?: string | null
+          address_neighborhood?: string | null
+          address_number?: string | null
+          address_state?: string | null
+          address_street?: string | null
+          address_zipcode?: string | null
           avatar_url?: string | null
           birth_date?: string
           consent_data_usage?: boolean | null
           consent_research?: boolean | null
+          cpf?: string | null
           created_at?: string | null
           gender?: string | null
+          guardian_email?: string | null
+          guardian_name?: string | null
+          guardian_phone?: string | null
           id?: string
+          insurance_expiry?: string | null
+          insurance_name?: string | null
+          insurance_number?: string | null
+          insurance_plan?: string | null
           is_active?: boolean | null
           name?: string
           neurodevelopmental_conditions?: Json | null
