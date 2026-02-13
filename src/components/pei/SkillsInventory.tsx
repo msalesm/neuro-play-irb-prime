@@ -12,8 +12,9 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { 
   ClipboardList, Save, CheckCircle2, XCircle, 
-  MinusCircle, FileDown, ChevronRight
+  MinusCircle, FileDown, ChevronRight, Brain
 } from 'lucide-react';
+import { SkillsInventoryReport } from './SkillsInventoryReport';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -63,6 +64,7 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
   });
   
   const [responses, setResponses] = useState<Record<string, SkillResponse[]>>({});
+  const [reportOpen, setReportOpen] = useState(false);
   const [notes, setNotes] = useState('');
 
   const totalItems = getTotalItems();
@@ -281,6 +283,10 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
             <Button onClick={handleSave} disabled={saving}>
               <Save className="h-4 w-4 mr-2" />
               {saving ? 'Salvando...' : 'Salvar'}
+            </Button>
+            <Button variant="outline" onClick={() => setReportOpen(true)} disabled={!inventoryId}>
+              <Brain className="h-4 w-4 mr-2" />
+              Relatório IA
             </Button>
           </div>
         </CardHeader>
@@ -505,6 +511,13 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
           />
         </CardContent>
       </Card>
+
+      <SkillsInventoryReport
+        inventoryId={inventoryId}
+        childName={childName}
+        open={reportOpen}
+        onOpenChange={setReportOpen}
+      />
     </div>
   );
 }
