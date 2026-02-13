@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -36,6 +37,12 @@ serve(async (req) => {
     }
 
     const { imageBase64, childId } = await req.json();
+
+    // Rate limit: 20 emotion analyses per 60 minutes
+    const allowed = await checkRateLimit(user.id, 'analyze-emotion', 20, 60);
+    if (!allowed) {
+      return rateLimitResponse(corsHeaders);
+    }
     
     if (!imageBase64) {
       return new Response(JSON.stringify({ error: 'Image base64 is required' }), {

@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -51,6 +52,12 @@ serve(async (req) => {
     }
 
     console.log('Authenticated user:', user.id);
+
+    // Rate limit: 10 requests per 60 minutes for heavy AI analysis
+    const allowed = await checkRateLimit(user.id, 'predictive-analysis', 10, 60);
+    if (!allowed) {
+      return rateLimitResponse(corsHeaders);
+    }
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
     const { childProfileId, analysisType, timeRangeDays = 30 } = await req.json() as PredictiveAnalysisRequest;

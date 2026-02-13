@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.3";
 import { ReportRequest, ReportResponse } from "./types.ts";
+import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { fetchAllAvailableData, fetchNeurodiversityProfile } from "./queries.ts";
 import { calculateMetrics, analyzeTemporalEvolution, analyzeBehavioralPatterns } from "./metrics.ts";
 import { generateAIPrompt } from "./ai-prompts.ts";
@@ -35,6 +36,12 @@ serve(async (req) => {
     
     if (authError || !user) {
       throw new Error('Unauthorized');
+    }
+
+    // Rate limit: 5 reports per 60 minutes
+    const allowed = await checkRateLimit(user.id, 'generate-clinical-report', 5, 60);
+    if (!allowed) {
+      return rateLimitResponse(corsHeaders);
     }
 
     // Check if user is admin
