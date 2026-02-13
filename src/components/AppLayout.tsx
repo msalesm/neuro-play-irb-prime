@@ -51,7 +51,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             <ScreenReaderAnnouncer />
             <SkipLinks />
             <MobileMenu />
-            <main id="main-content" className="pb-20">
+            <main id="main-content" className="pt-16 pb-24">
               {children}
             </main>
             <BottomNavigation />
