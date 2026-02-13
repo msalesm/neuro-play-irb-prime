@@ -1,46 +1,69 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles } from 'lucide-react';
+import { Home, Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles, Users, Calendar, Stethoscope, Heart, Trophy, TrendingUp, Building2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export function BottomNavigation() {
   const { user } = useAuth();
+  const { role, isAdmin } = useUserRole();
   const location = useLocation();
   const { t } = useLanguage();
-  
-  const navigationItems = [
-    {
-      name: 'Planeta Azul',
-      path: '/sistema-planeta-azul',
-      icon: Sparkles,
-    },
-    {
-      name: t('nav.games'),
-      path: '/games',
-      icon: Gamepad2,
-    },
-    {
-      name: t('nav.tests'),
-      path: '/diagnostic-tests',
-      icon: FileText,
-    },
-    {
-      name: t('nav.screening'),
-      path: '/screening',
-      icon: ClipboardCheck,
-    },
-    {
-      name: t('nav.learning'),
-      path: '/learning-dashboard',
-      icon: GraduationCap,
-    },
-  ];
 
   if (!user) return null;
 
+  // Role-based navigation items
+  const getNavigationItems = () => {
+    if (role === 'patient') {
+      return [
+        { name: 'Meu Dia', path: '/student-hub', icon: Home },
+        { name: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
+        { name: 'Conquistas', path: '/learning-dashboard', icon: Trophy },
+        { name: 'Emoções', path: '/emotional-history', icon: Heart },
+      ];
+    }
+
+    if (role === 'parent') {
+      return [
+        { name: 'Dashboard', path: '/dashboard-pais', icon: Home },
+        { name: 'Agenda', path: '/agenda', icon: Calendar },
+        { name: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
+        { name: 'Relatórios', path: '/reports', icon: FileText },
+      ];
+    }
+
+    if (role === 'therapist') {
+      return [
+        { name: 'Pacientes', path: '/therapist/patients', icon: Users },
+        { name: 'Agenda', path: '/agenda', icon: Calendar },
+        { name: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
+        { name: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
+      ];
+    }
+
+    if (isAdmin) {
+      return [
+        { name: 'Institucional', path: '/institutional', icon: Building2 },
+        { name: 'Operações', path: '/operations', icon: TrendingUp },
+        { name: 'Usuários', path: '/admin/users', icon: Users },
+        { name: 'Agenda', path: '/agenda', icon: Calendar },
+      ];
+    }
+
+    // Default (no role / user)
+    return [
+      { name: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
+      { name: t('nav.games'), path: '/games', icon: Gamepad2 },
+      { name: t('nav.learning'), path: '/learning-dashboard', icon: GraduationCap },
+      { name: 'Relatórios', path: '/reports', icon: FileText },
+    ];
+  };
+
+  const navigationItems = getNavigationItems();
+
   const isActive = (path: string) => {
-    if (path === '/dashboard' && location.pathname === '/') return true;
-    return location.pathname.startsWith(path);
+    if (path === '/' && location.pathname === '/') return true;
+    return location.pathname.startsWith(path) && path !== '/';
   };
 
   return (

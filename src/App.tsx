@@ -247,7 +247,6 @@ const App = () => (
           <Route path="/games/crystal-match" element={<CrystalMatch />} />
           <Route path="/games/tower-defense" element={<TowerDefense />} />
           <Route path="/games/biofeedback-demo" element={<BiofeedbackDemo />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/games/touch-mapper" element={<TouchMapper />} />
                   <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
           {/* Jogos com sistema de fases */}
@@ -268,7 +267,6 @@ const App = () => (
           <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/diagnostic-tests" element={<DiagnosticTests />} />
                   <Route path="/clinical" element={
                     <Suspense fallback={<Loading />}>
                       <ClinicalDashboard />
