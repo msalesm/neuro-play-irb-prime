@@ -20,8 +20,8 @@ export default function InstitutionalDashboard() {
   if (loading) {
     return (
       <ModernPageLayout>
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Dashboard Institucional</h1>
+        <div className="container mx-auto px-4 py-4">
+          <h1 className="text-xl md:text-2xl font-bold text-foreground mb-4">Dashboard Institucional</h1>
           <div className="flex items-center justify-center h-64">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
@@ -33,8 +33,8 @@ export default function InstitutionalDashboard() {
   if (!institution) {
     return (
       <ModernPageLayout>
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Dashboard Institucional</h1>
+        <div className="container mx-auto px-4 py-4">
+          <h1 className="text-xl md:text-2xl font-bold text-foreground mb-4">Dashboard Institucional</h1>
           <Card className="max-w-lg mx-auto">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -58,11 +58,11 @@ export default function InstitutionalDashboard() {
 
   return (
     <ModernPageLayout>
-      <div className="container mx-auto px-4 py-8 space-y-6">
+      <div className="container mx-auto px-4 py-4 space-y-6">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-foreground">{institution.name}</h1>
-          <p className="text-muted-foreground">Painel de Gestão Institucional</p>
+        <div className="mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground">{institution.name}</h1>
+          <p className="text-muted-foreground text-sm">Painel de Gestão Institucional</p>
         </div>
 
         {/* Stats Cards */}

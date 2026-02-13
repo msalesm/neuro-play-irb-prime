@@ -105,7 +105,7 @@ export function AccessibilityQuickPanel() {
       <Button
         variant="default"
         size="icon"
-        className="fixed top-20 right-4 z-50 rounded-full shadow-lg w-12 h-12 md:top-4 p-1"
+        className="fixed top-4 right-4 z-50 rounded-full shadow-lg w-10 h-10 md:w-12 md:h-12 p-1"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         aria-label="Menu de acessibilidade"

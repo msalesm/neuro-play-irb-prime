@@ -68,12 +68,13 @@ export function BottomNavigation() {
 
   return (
     <nav 
-      className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border safe-area-bottom"
       role="navigation"
       aria-label="Navegação principal"
       data-mobile-tour="bottom-nav"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
-      <div className="flex justify-around items-center py-2">
+      <div className="flex justify-around items-center py-1.5">
         {navigationItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.path);
@@ -82,7 +83,7 @@ export function BottomNavigation() {
             <Link
               key={item.name}
               to={item.path}
-              className={`flex flex-col items-center py-2 px-3 rounded-lg transition-smooth min-w-[60px] ${
+              className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-smooth min-w-[64px] min-h-[48px] ${
                 active
                   ? 'text-primary'
                   : 'text-muted-foreground hover:text-foreground'
@@ -90,8 +91,8 @@ export function BottomNavigation() {
               aria-label={item.name}
               aria-current={active ? 'page' : undefined}
             >
-              <Icon className={`h-6 w-6 mb-1 ${active ? 'text-primary' : ''}`} aria-hidden="true" />
-              <span className={`text-xs font-medium ${active ? 'text-primary' : ''}`}>
+              <Icon className={`h-5 w-5 mb-0.5 ${active ? 'text-primary' : ''}`} aria-hidden="true" />
+              <span className={`text-[11px] font-medium leading-tight ${active ? 'text-primary' : ''}`}>
                 {item.name}
               </span>
             </Link>

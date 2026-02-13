@@ -20,7 +20,7 @@ export function ModernPageLayout({
 
   return (
     <div className={cn(
-      'min-h-screen text-white pb-24',
+      'min-h-screen text-white pb-28',
       backgroundClass[background],
       className
     )}>
