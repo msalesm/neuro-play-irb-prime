@@ -144,6 +144,7 @@ import AnamneseList from "./pages/AnamneseList";
 import ClubePais from "./pages/ClubePais";
 import ParceiroClube from "./pages/ParceiroClube";
 import AdminClubePais from "./pages/AdminClubePais";
+import EducacaoDashboard from "./pages/EducacaoDashboard";
 // Lazy loaded components - Critical path optimization
 const ModernIndex = lazy(() => import("./pages/ModernIndex"));
 const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
@@ -402,6 +403,9 @@ const App = () => (
           <Route path="/clube-pais" element={<ClubePais />} />
           <Route path="/parceiro-clube" element={<ParceiroClube />} />
           <Route path="/admin/clube-pais" element={<AdminClubePais />} />
+          {/* Neuro Play Educação */}
+          <Route path="/educacao" element={<EducacaoDashboard />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
                 </Routes>
