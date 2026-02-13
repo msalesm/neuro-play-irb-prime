@@ -21,6 +21,7 @@ import {
   Camera
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { supabase } from '@/integrations/supabase/client';
 import { useBehavioralReport } from '@/hooks/useBehavioralReport';
 import { EmotionCaptureCamera } from '@/components/emotional/EmotionCaptureCamera';
@@ -52,6 +53,7 @@ interface EmotionalCheckIn {
 
 export default function EmotionalHistoryDashboard() {
   const { user } = useAuth();
+  const { isPatient } = useUserRole();
   const { generatePDF, generating } = useBehavioralReport();
   const { toast } = useToast();
   const [checkIns, setCheckIns] = useState<EmotionalCheckIn[]>([]);
@@ -68,15 +70,18 @@ export default function EmotionalHistoryDashboard() {
     moodRating: number;
     confidence: number;
   }) => {
-    if (!user || !selectedChildId) return;
+    if (!user) return;
     
     try {
-      // Create a new emotional check-in for the child
+      const profileId = isPatient ? user.id : selectedChildId;
+      if (!profileId) return;
+      
+      // Create a new emotional check-in
       const { error } = await supabase
         .from('emotional_checkins')
         .insert({
           user_id: user.id,
-          child_profile_id: selectedChildId,
+          child_profile_id: profileId,
           scheduled_for: new Date().toISOString(),
           completed_at: new Date().toISOString(),
           mood_rating: result.moodRating,
@@ -86,7 +91,9 @@ export default function EmotionalHistoryDashboard() {
       
       if (error) throw error;
       
-      const childName = childProfiles.find(c => c.id === selectedChildId)?.name || 'Criança';
+      const childName = isPatient 
+        ? 'Você' 
+        : (childProfiles.find(c => c.id === selectedChildId)?.name || 'Criança');
       
       toast({
         title: 'Check-in registrado!',
@@ -303,7 +310,13 @@ export default function EmotionalHistoryDashboard() {
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
-                {!selectedChildId ? (
+                {isPatient ? (
+                  <EmotionCaptureCamera
+                    onEmotionCaptured={handleEmotionCaptured}
+                    onClose={() => setShowCamera(false)}
+                    childId={user?.id}
+                  />
+                ) : !selectedChildId ? (
                   <div className="space-y-4">
                     <DialogHeader>
                       <DialogTitle>Selecione a Criança</DialogTitle>
