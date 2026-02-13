@@ -205,6 +205,11 @@ export function AppSidebar() {
       icon: School,
     },
     {
+      title: 'Secretaria Municipal',
+      path: '/secretaria-educacao',
+      icon: Building2,
+    },
+    {
       title: 'Gerenciar Usuários',
       path: '/admin/users',
       icon: Users,

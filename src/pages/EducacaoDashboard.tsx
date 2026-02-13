@@ -7,14 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { 
   School, Users, AlertTriangle, CheckCircle2, Clock, 
-  ClipboardCheck, Eye, ChevronRight, UserCheck
+  ClipboardCheck, ChevronRight, UserCheck, MapPin, Sparkles
 } from 'lucide-react';
 import { format, startOfWeek, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { VulnerabilityMap } from '@/components/educacao/VulnerabilityMap';
+import { StudentReportButton } from '@/components/educacao/StudentReportPDF';
+import { AISuggestions } from '@/components/educacao/AISuggestions';
 
 interface ClassStudent {
   id: string;
@@ -56,9 +60,9 @@ const LEVEL_LABELS = [
 ];
 
 function getRiskColor(level: string | null) {
-  if (level === 'high') return 'text-red-600 bg-red-50 border-red-200';
-  if (level === 'moderate') return 'text-amber-600 bg-amber-50 border-amber-200';
-  return 'text-emerald-600 bg-emerald-50 border-emerald-200';
+  if (level === 'high') return 'text-destructive bg-destructive/10 border-destructive/20';
+  if (level === 'moderate') return 'text-chart-4 bg-chart-4/10 border-chart-4/20';
+  return 'text-chart-3 bg-chart-3/10 border-chart-3/20';
 }
 
 function getRiskLabel(level: string | null) {
@@ -74,6 +78,7 @@ export default function EducacaoDashboard() {
   const [checkinOpen, setCheckinOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<ClassStudent | null>(null);
   const [observation, setObservation] = useState<ObservationData>(DEFAULT_OBSERVATION);
+  const [activeTab, setActiveTab] = useState('painel');
 
   const currentWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
   const weekLabel = `${format(currentWeek, "dd/MM", { locale: ptBR })} – ${format(addDays(currentWeek, 6), "dd/MM", { locale: ptBR })}`;
@@ -93,7 +98,6 @@ export default function EducacaoDashboard() {
     enabled: !!user,
   });
 
-  // Auto-select first class
   React.useEffect(() => {
     if (classes.length > 0 && !selectedClassId) {
       setSelectedClassId(classes[0].id);
@@ -120,7 +124,7 @@ export default function EducacaoDashboard() {
     enabled: !!selectedClassId,
   });
 
-  // Fetch this week's observations for class
+  // Fetch this week's observations
   const { data: observations = [] } = useQuery({
     queryKey: ['student-observations', selectedClassId, currentWeek.toISOString()],
     queryFn: async () => {
@@ -136,7 +140,22 @@ export default function EducacaoDashboard() {
     enabled: !!selectedClassId,
   });
 
-  // Compute class indicators
+  // Fetch all observations for reports
+  const { data: allObservations = [] } = useQuery({
+    queryKey: ['all-student-observations', selectedClassId],
+    queryFn: async () => {
+      if (!selectedClassId) return [];
+      const { data, error } = await supabase
+        .from('student_observations')
+        .select('*')
+        .eq('class_id', selectedClassId)
+        .order('observation_week', { ascending: true });
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!selectedClassId,
+  });
+
   const classIndicators = useMemo(() => {
     const total = students.length;
     if (total === 0) return { total: 0, observed: 0, low: 0, moderate: 0, high: 0 };
@@ -147,7 +166,6 @@ export default function EducacaoDashboard() {
     return { total, observed, low, moderate, high };
   }, [students, observations]);
 
-  // Build student list with observation status
   const studentList = useMemo(() => {
     return students.map(s => {
       const obs = observations.find((o: any) => o.child_id === s.child_id);
@@ -163,7 +181,6 @@ export default function EducacaoDashboard() {
     });
   }, [students, observations]);
 
-  // Save observation mutation
   const saveMutation = useMutation({
     mutationFn: async () => {
       if (!selectedStudent || !selectedClassId || !user) throw new Error('Missing data');
@@ -182,6 +199,7 @@ export default function EducacaoDashboard() {
     onSuccess: () => {
       toast.success('Observação registrada!');
       queryClient.invalidateQueries({ queryKey: ['student-observations'] });
+      queryClient.invalidateQueries({ queryKey: ['all-student-observations'] });
       setCheckinOpen(false);
       setSelectedStudent(null);
       setObservation(DEFAULT_OBSERVATION);
@@ -209,16 +227,18 @@ export default function EducacaoDashboard() {
     setCheckinOpen(true);
   };
 
+  const selectedClassName = classes.find(c => c.id === selectedClassId);
+
   return (
     <div className="min-h-screen bg-background pb-28">
-      <div className="max-w-3xl mx-auto px-4 pt-20">
+      <div className="max-w-4xl mx-auto px-4 pt-6">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <div className="flex items-center gap-2 mb-1">
             <School className="h-6 w-6 text-primary" />
             <h1 className="text-xl font-bold text-foreground">Neuro Play Educação</h1>
           </div>
-          <p className="text-sm text-muted-foreground">Painel da Turma • Semana {weekLabel}</p>
+          <p className="text-sm text-muted-foreground">Semana {weekLabel}</p>
         </div>
 
         {/* Class selector */}
@@ -251,119 +271,165 @@ export default function EducacaoDashboard() {
 
         {selectedClassId && (
           <>
-            {/* Indicators */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              <Card className="border-border">
-                <CardContent className="p-4 flex items-center gap-3">
-                  <Users className="h-7 w-7 text-primary shrink-0" />
-                  <div>
-                    <p className="text-2xl font-bold">{classIndicators.total}</p>
-                    <p className="text-xs text-muted-foreground">Alunos</p>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="border-border">
-                <CardContent className="p-4 flex items-center gap-3">
-                  <CheckCircle2 className="h-7 w-7 text-emerald-500 shrink-0" />
-                  <div>
-                    <p className="text-2xl font-bold">{classIndicators.observed}</p>
-                    <p className="text-xs text-muted-foreground">Observados</p>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="border-border">
-                <CardContent className="p-4 flex items-center gap-3">
-                  <Eye className="h-7 w-7 text-amber-500 shrink-0" />
-                  <div>
-                    <p className="text-2xl font-bold">{classIndicators.moderate}</p>
-                    <p className="text-xs text-muted-foreground">Atenção</p>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="border-border">
-                <CardContent className="p-4 flex items-center gap-3">
-                  <AlertTriangle className="h-7 w-7 text-red-500 shrink-0" />
-                  <div>
-                    <p className="text-2xl font-bold">{classIndicators.high}</p>
-                    <p className="text-xs text-muted-foreground">Prioridade</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            {/* Tabs */}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="painel" className="gap-1.5">
+                  <ClipboardCheck className="h-4 w-4" />
+                  <span className="hidden sm:inline">Painel</span>
+                </TabsTrigger>
+                <TabsTrigger value="mapa" className="gap-1.5">
+                  <MapPin className="h-4 w-4" />
+                  <span className="hidden sm:inline">Vulnerabilidade</span>
+                </TabsTrigger>
+                <TabsTrigger value="ia" className="gap-1.5">
+                  <Sparkles className="h-4 w-4" />
+                  <span className="hidden sm:inline">IA</span>
+                </TabsTrigger>
+              </TabsList>
 
-            {/* Progress bar */}
-            <Card className="mb-6 border-border">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium">Progresso do check-in semanal</span>
-                  <span className="text-sm text-muted-foreground">
-                    {classIndicators.observed}/{classIndicators.total}
-                  </span>
+              {/* === TAB: Painel da Turma + Check-in === */}
+              <TabsContent value="painel" className="space-y-4 mt-4">
+                {/* Indicators */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <Card className="border-border">
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <Users className="h-7 w-7 text-primary shrink-0" />
+                      <div>
+                        <p className="text-2xl font-bold">{classIndicators.total}</p>
+                        <p className="text-xs text-muted-foreground">Alunos</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-border">
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <CheckCircle2 className="h-7 w-7 text-chart-3 shrink-0" />
+                      <div>
+                        <p className="text-2xl font-bold">{classIndicators.observed}</p>
+                        <p className="text-xs text-muted-foreground">Observados</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-border">
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <AlertTriangle className="h-7 w-7 text-chart-4 shrink-0" />
+                      <div>
+                        <p className="text-2xl font-bold">{classIndicators.moderate}</p>
+                        <p className="text-xs text-muted-foreground">Atenção</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-border">
+                    <CardContent className="p-4 flex items-center gap-3">
+                      <AlertTriangle className="h-7 w-7 text-destructive shrink-0" />
+                      <div>
+                        <p className="text-2xl font-bold">{classIndicators.high}</p>
+                        <p className="text-xs text-muted-foreground">Prioridade</p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-primary rounded-full transition-all"
-                    style={{ width: classIndicators.total > 0 ? `${(classIndicators.observed / classIndicators.total) * 100}%` : '0%' }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Student list */}
-            <Card className="border-border">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <ClipboardCheck className="h-5 w-5" />
-                  Lista de Alunos
-                </CardTitle>
-                <CardDescription>Toque em um aluno para registrar a observação semanal</CardDescription>
-              </CardHeader>
-              <CardContent className="p-0">
-                {studentList.length === 0 ? (
-                  <div className="p-8 text-center text-muted-foreground">
-                    <Users className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                    <p>Nenhum aluno matriculado nesta turma.</p>
-                  </div>
-                ) : (
-                  <div className="divide-y divide-border">
-                    {studentList.map((student) => {
-                      const obs = student.observation as any;
-                      const hasObs = !!obs;
-                      return (
-                        <button
-                          key={student.id}
-                          onClick={() => openCheckin(student)}
-                          className="w-full flex items-center gap-3 p-4 hover:bg-muted/50 transition-colors text-left"
-                        >
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                            <span className="text-sm font-semibold text-primary">
-                              {student.children.name.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium truncate">{student.children.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {hasObs ? `Registrado em ${format(new Date(obs.updated_at || obs.created_at), "dd/MM HH:mm")}` : 'Aguardando check-in'}
-                            </p>
-                          </div>
-                          {hasObs ? (
-                            <Badge variant="outline" className={`${getRiskColor(obs.risk_level)} shrink-0`}>
-                              {getRiskLabel(obs.risk_level)}
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-muted-foreground border-dashed shrink-0">
-                              <Clock className="h-3 w-3 mr-1" />
-                              Pendente
-                            </Badge>
-                          )}
-                          <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                {/* Progress bar */}
+                <Card className="border-border">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium">Progresso do check-in semanal</span>
+                      <span className="text-sm text-muted-foreground">
+                        {classIndicators.observed}/{classIndicators.total}
+                      </span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary rounded-full transition-all"
+                        style={{ width: classIndicators.total > 0 ? `${(classIndicators.observed / classIndicators.total) * 100}%` : '0%' }}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Student list */}
+                <Card className="border-border">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <ClipboardCheck className="h-5 w-5" />
+                      Lista de Alunos
+                    </CardTitle>
+                    <CardDescription>Toque em um aluno para registrar a observação semanal</CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    {studentList.length === 0 ? (
+                      <div className="p-8 text-center text-muted-foreground">
+                        <Users className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                        <p>Nenhum aluno matriculado nesta turma.</p>
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-border">
+                        {studentList.map((student) => {
+                          const obs = student.observation as any;
+                          const hasObs = !!obs;
+                          const studentAllObs = allObservations.filter((o: any) => o.child_id === student.child_id);
+                          return (
+                            <button
+                              key={student.id}
+                              onClick={() => openCheckin(student)}
+                              className="w-full flex items-center gap-3 p-4 hover:bg-muted/50 transition-colors text-left"
+                            >
+                              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                <span className="text-sm font-semibold text-primary">
+                                  {student.children.name.charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium truncate">{student.children.name}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {hasObs ? `Registrado em ${format(new Date(obs.updated_at || obs.created_at), "dd/MM HH:mm")}` : 'Aguardando check-in'}
+                                </p>
+                              </div>
+                              <StudentReportButton
+                                student={student.children}
+                                observations={studentAllObs}
+                                className={selectedClassName?.name}
+                              />
+                              {hasObs ? (
+                                <Badge variant="outline" className={`${getRiskColor(obs.risk_level)} shrink-0`}>
+                                  {getRiskLabel(obs.risk_level)}
+                                </Badge>
+                              ) : (
+                                <Badge variant="outline" className="text-muted-foreground border-dashed shrink-0">
+                                  <Clock className="h-3 w-3 mr-1" />
+                                  Pendente
+                                </Badge>
+                              )}
+                              <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* === TAB: Mapa de Vulnerabilidade === */}
+              <TabsContent value="mapa" className="mt-4">
+                <VulnerabilityMap
+                  observations={observations}
+                  students={students}
+                  className={selectedClassName?.name}
+                  weekLabel={weekLabel}
+                />
+              </TabsContent>
+
+              {/* === TAB: Sugestões IA === */}
+              <TabsContent value="ia" className="mt-4">
+                <AISuggestions
+                  observations={observations}
+                  students={students}
+                  className={selectedClassName?.name}
+                />
+              </TabsContent>
+            </Tabs>
           </>
         )}
 
