@@ -1,14 +1,31 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles, Users, Calendar, Stethoscope, Heart, Trophy, TrendingUp, Building2 } from 'lucide-react';
+import { Home, Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles, Users, Calendar, Stethoscope, Heart, Trophy, TrendingUp, Building2, School } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 export function BottomNavigation() {
   const { user } = useAuth();
   const { role, isAdmin } = useUserRole();
   const location = useLocation();
   const { t } = useLanguage();
+
+  // Detect if user is a teacher (has classes assigned)
+  const { data: isTeacher } = useQuery({
+    queryKey: ['is-teacher', user?.id],
+    queryFn: async () => {
+      if (!user) return false;
+      const { count } = await supabase
+        .from('school_classes')
+        .select('id', { count: 'exact', head: true })
+        .eq('teacher_id', user.id);
+      return (count ?? 0) > 0;
+    },
+    enabled: !!user,
+    staleTime: 5 * 60 * 1000,
+  });
 
   if (!user) return null;
 
@@ -38,6 +55,15 @@ export function BottomNavigation() {
         { name: 'Agenda', path: '/agenda', icon: Calendar },
         { name: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
         { name: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
+      ];
+    }
+
+    if (isTeacher) {
+      return [
+        { name: 'Educação', path: '/educacao', icon: School },
+        { name: 'Turmas', path: '/teacher/classes', icon: Users },
+        { name: 'Avaliações', path: '/screening', icon: ClipboardCheck },
+        { name: 'Relatórios', path: '/reports', icon: FileText },
       ];
     }
 

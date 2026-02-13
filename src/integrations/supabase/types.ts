@@ -7643,6 +7643,120 @@ export type Database = {
           },
         ]
       }
+      student_observations: {
+        Row: {
+          aggressiveness: number | null
+          behavior_change: number | null
+          child_id: string
+          class_id: string
+          created_at: string
+          focus_difficulty: number | null
+          id: string
+          notes: string | null
+          observation_week: string
+          participation: number | null
+          performance_drop: number | null
+          persistent_sadness: number | null
+          risk_level: string | null
+          social_isolation: number | null
+          teacher_id: string
+          updated_at: string
+        }
+        Insert: {
+          aggressiveness?: number | null
+          behavior_change?: number | null
+          child_id: string
+          class_id: string
+          created_at?: string
+          focus_difficulty?: number | null
+          id?: string
+          notes?: string | null
+          observation_week: string
+          participation?: number | null
+          performance_drop?: number | null
+          persistent_sadness?: number | null
+          risk_level?: string | null
+          social_isolation?: number | null
+          teacher_id: string
+          updated_at?: string
+        }
+        Update: {
+          aggressiveness?: number | null
+          behavior_change?: number | null
+          child_id?: string
+          class_id?: string
+          created_at?: string
+          focus_difficulty?: number | null
+          id?: string
+          notes?: string | null
+          observation_week?: string
+          participation?: number | null
+          performance_drop?: number | null
+          persistent_sadness?: number | null
+          risk_level?: string | null
+          social_isolation?: number | null
+          teacher_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_observations_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_observations_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "student_observations_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_observations_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_observations_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "school_classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_observations_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_relationships"
+            referencedColumns: ["class_id"]
+          },
+          {
+            foreignKeyName: "student_observations_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_observations_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       student_subgroups: {
         Row: {
           class_id: string
