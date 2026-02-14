@@ -47,3 +47,6 @@ verify_jwt = true
 
 [functions.generate-skills-report]
 verify_jwt = false
+
+[functions.education-ai-suggestions]
+verify_jwt = true
