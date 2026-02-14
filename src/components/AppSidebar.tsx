@@ -32,7 +32,7 @@ import {
 
 export function AppSidebar() {
   const { user } = useAuth();
-  const { role, isAdmin } = useUserRole();
+  const { role, isAdmin, isTherapist } = useUserRole();
   const { t } = useLanguage();
   const location = useLocation();
   const { open } = useSidebar();
@@ -187,6 +187,22 @@ export function AppSidebar() {
       icon: Mail,
     },
   ];
+
+  // ========== PROFESSOR ==========
+  const teacherNavigation = [
+    {
+      title: 'Neuro Play Educação',
+      path: '/educacao',
+      icon: School,
+      description: 'Turmas, check-in e relatórios',
+    },
+    {
+      title: 'Mensagens',
+      path: '/messages',
+      icon: Mail,
+    },
+  ];
+
   // ========== ADMIN ==========
   const adminNavigation = [
     {
@@ -257,6 +273,15 @@ export function AppSidebar() {
       id: 'therapist',
       label: 'Área Clínica',
       items: therapistNavigation,
+    });
+  }
+
+  // PROFESSOR - vê módulo educação
+  if (role === 'teacher') {
+    navigationGroups.push({
+      id: 'teacher',
+      label: 'Área do Professor',
+      items: teacherNavigation,
     });
   }
 
