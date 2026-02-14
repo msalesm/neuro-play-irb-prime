@@ -34,11 +34,11 @@ const ROLES = [
     color: 'irb-petrol',
   },
   {
-    id: 'user' as const,
+    id: 'teacher' as const,
     title: 'Professor',
     description: 'Acompanhar alunos e implementar estratégias educacionais',
     icon: GraduationCap,
-    features: ['Painel escolar', 'Turmas e alunos', 'Capacitação docente', 'Comunicação família-escola'],
+    features: ['Painel escolar', 'Turmas e alunos', 'Check-in semanal', 'Sugestões com IA'],
     color: 'irb-gold',
   },
   {

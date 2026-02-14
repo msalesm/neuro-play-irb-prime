@@ -19,6 +19,7 @@ import { ptBR } from 'date-fns/locale';
 import { VulnerabilityMap } from '@/components/educacao/VulnerabilityMap';
 import { StudentReportButton } from '@/components/educacao/StudentReportPDF';
 import { AISuggestions } from '@/components/educacao/AISuggestions';
+import { ClassManager } from '@/components/educacao/ClassManager';
 
 interface ClassStudent {
   id: string;
@@ -238,7 +239,16 @@ export default function EducacaoDashboard() {
             <School className="h-6 w-6 text-primary" />
             <h1 className="text-xl font-bold text-foreground">Neuro Play Educação</h1>
           </div>
-          <p className="text-sm text-muted-foreground">Semana {weekLabel}</p>
+           <p className="text-sm text-muted-foreground">Semana {weekLabel}</p>
+         </div>
+
+        {/* Class management actions */}
+        <div className="mb-4">
+          <ClassManager
+            classes={classes}
+            selectedClassId={selectedClassId}
+            onClassCreated={(id) => setSelectedClassId(id)}
+          />
         </div>
 
         {/* Class selector */}
@@ -263,8 +273,8 @@ export default function EducacaoDashboard() {
           <Card className="border-border">
             <CardContent className="p-8 text-center">
               <School className="h-12 w-12 mx-auto mb-3 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">Nenhuma turma atribuída a você.</p>
-              <p className="text-xs text-muted-foreground mt-1">Peça ao administrador para vincular suas turmas.</p>
+              <p className="text-muted-foreground">Nenhuma turma encontrada.</p>
+              <p className="text-xs text-muted-foreground mt-1">Clique em "Nova Turma" acima para começar.</p>
             </CardContent>
           </Card>
         )}

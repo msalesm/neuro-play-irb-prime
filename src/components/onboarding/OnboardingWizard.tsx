@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 
 export type OnboardingData = {
   // Step 1: Role Selection
-  selectedRole: 'parent' | 'therapist' | 'user' | 'admin' | 'patient' | null;
+  selectedRole: 'parent' | 'therapist' | 'teacher' | 'admin' | 'patient' | null;
   
   // Step 2: User Data
   fullName: string;
@@ -223,8 +223,8 @@ export function OnboardingWizard() {
         case 'therapist':
           navigate('/therapist/patients');
           break;
-        case 'user': // teacher
-          navigate('/teacher/classes');
+        case 'teacher':
+          navigate('/educacao');
           break;
         case 'admin':
           navigate('/admin/network');

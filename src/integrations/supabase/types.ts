@@ -9687,6 +9687,7 @@ export type Database = {
         | "user"
         | "patient"
         | "club_partner"
+        | "teacher"
       message_type: "text" | "feedback" | "recommendation" | "alert"
       story_category:
         | "rotinas"
@@ -9838,6 +9839,7 @@ export const Constants = {
         "user",
         "patient",
         "club_partner",
+        "teacher",
       ],
       message_type: ["text", "feedback", "recommendation", "alert"],
       story_category: [
