@@ -4,7 +4,7 @@ import {
   Home, Brain, Stethoscope, Settings, User, 
   Users, TrendingUp, Menu, Sparkles, Gamepad2,
   FileText, ClipboardCheck, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, Calendar, Mail, Folder, Gem, CreditCard, CalendarCheck, Building2, ClipboardList
+  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, Calendar, Mail, Folder, Gem, CreditCard, CalendarCheck, Building2, ClipboardList, School
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -63,10 +63,24 @@ export function MobileMenu() {
         { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope, badge: 'Novo' },
         { title: 'Relatório Familiar', path: '/reports', icon: FileText },
         { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
+        { title: 'Microlearning', path: '/training', icon: BookOpen, badge: 'Novo' },
         { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
         { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem, badge: 'Novo' },
-        { title: 'Microlearning', path: '/training', icon: BookOpen },
         { title: 'Minha Assinatura', path: '/subscription', icon: CreditCard, badge: 'Novo' },
+      ],
+    });
+  }
+
+  // PROFESSOR - vê turmas, alunos e educação
+  if (role === 'teacher') {
+    menuSections.push({
+      title: 'Área do Professor',
+      items: [
+        { title: 'Neuro Play Educação', path: '/educacao', icon: School },
+        { title: 'Minhas Turmas', path: '/teacher/classes', icon: Users },
+        { title: 'Triagem Escolar', path: '/screening', icon: ClipboardCheck },
+        { title: 'Relatórios', path: '/reports', icon: FileText },
+        { title: 'Mensagens', path: '/messages', icon: Mail },
       ],
     });
   }
@@ -187,6 +201,12 @@ export function MobileMenu() {
               <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0 gap-1.5">
                 <Gamepad2 className="w-3 h-3" />
                 Paciente
+              </Badge>
+            )}
+            {role === 'teacher' && (
+              <Badge className="bg-gradient-to-r from-blue-600 to-sky-600 text-white border-0 gap-1.5">
+                <School className="w-3 h-3" />
+                Professor
               </Badge>
             )}
             {!role && (

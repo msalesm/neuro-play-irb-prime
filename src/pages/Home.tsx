@@ -33,6 +33,12 @@ export default function Home() {
       case 'therapist':
         navigate('/therapist/patients', { replace: true });
         break;
+      case 'teacher':
+        navigate('/educacao', { replace: true });
+        break;
+      case 'patient':
+        navigate('/student-hub', { replace: true });
+        break;
       case 'parent':
       case 'user':
       default:
