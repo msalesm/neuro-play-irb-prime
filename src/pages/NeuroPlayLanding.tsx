@@ -366,6 +366,91 @@ const CTASection = () => (
   </section>
 );
 
+// Soluções Educacionais - inspirado no layout Giulia
+const SolucoesSection = () => (
+  <section className="py-24 bg-background">
+    <div className="container mx-auto px-6">
+      <div className="max-w-4xl mx-auto text-center mb-16">
+        <span className="text-sm font-semibold text-primary uppercase tracking-wider mb-3 block">Nossas Soluções</span>
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+          Vamos construir juntos o futuro do desenvolvimento humano
+        </h2>
+        <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+          Contribuímos com a evolução de clínicas, escolas e instituições por todo o Brasil, 
+          com soluções integradas que proporcionam inovação e embasamento ao processo de cuidado e aprendizagem.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        {[
+          {
+            image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80",
+            badge: "Clínicas",
+            title: "Avaliação Neurocognitiva",
+            description: "Diagnóstico estruturado em 3 blocos com relatórios automáticos e mapa cognitivo via radar.",
+            link: "/diagnostico-completo"
+          },
+          {
+            image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",
+            badge: "Escolas",
+            title: "Neuro Play Educação",
+            description: "Plataforma completa para professores com triagem escolar, turmas e acompanhamento de alunos.",
+            link: "/educacao"
+          },
+          {
+            image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80",
+            badge: "Teleconsulta",
+            title: "Atendimento Integrado",
+            description: "Vídeo WebRTC com split-screen: consulta de um lado, prontuário do outro. Anotações em tempo real.",
+            link: "/teleconsulta"
+          },
+          {
+            image: "https://images.unsplash.com/photo-1491308056676-205b7c9a7dc1?w=600&q=80",
+            badge: "Famílias",
+            title: "Acompanhamento Familiar",
+            description: "Dashboard para pais com progresso dos filhos, microlearning e comunicação com profissionais.",
+            link: "/dashboard-pais"
+          }
+        ].map((item, index) => (
+          <Link 
+            key={index} 
+            to={item.link}
+            className="group block rounded-2xl overflow-hidden border border-border/50 bg-card hover:border-primary/40 hover:shadow-xl transition-all duration-300"
+          >
+            <div className="aspect-[4/3] overflow-hidden">
+              <img 
+                src={item.image} 
+                alt={item.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-5">
+              <span className="text-xs font-semibold text-primary uppercase tracking-wider">{item.badge}</span>
+              <h3 className="text-lg font-bold text-card-foreground mt-1 mb-2 group-hover:text-primary transition-colors">
+                {item.title}
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-primary mt-3 group-hover:gap-2 transition-all">
+                Saiba mais <ArrowRight className="w-4 h-4" />
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="text-center mt-12">
+        <Button size="lg" variant="outline" asChild>
+          <Link to="/auth" className="flex items-center gap-2">
+            Ver todas as soluções
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </Button>
+      </div>
+    </div>
+  </section>
+);
+
 // PDF Info
 const PDFInfoSection = () => (
   <section className="py-12 bg-muted/50">
@@ -388,6 +473,7 @@ const NeuroPlayLanding = () => {
       <HeroSection />
       <AboutSection />
       <CoreFeaturesSection />
+      <SolucoesSection />
       <EvolutionSection />
       <AudienceSection />
       <ScaleSection />
