@@ -3,8 +3,6 @@ import { Home, Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles, User
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 
 export function BottomNavigation() {
   const { user } = useAuth();
@@ -12,20 +10,7 @@ export function BottomNavigation() {
   const location = useLocation();
   const { t } = useLanguage();
 
-  // Detect if user is a teacher (has classes assigned)
-  const { data: isTeacher } = useQuery({
-    queryKey: ['is-teacher', user?.id],
-    queryFn: async () => {
-      if (!user) return false;
-      const { count } = await supabase
-        .from('school_classes')
-        .select('id', { count: 'exact', head: true })
-        .eq('teacher_id', user.id);
-      return (count ?? 0) > 0;
-    },
-    enabled: !!user,
-    staleTime: 5 * 60 * 1000,
-  });
+
 
   if (!user) return null;
 
@@ -58,7 +43,7 @@ export function BottomNavigation() {
       ];
     }
 
-    if (isTeacher) {
+    if (role === 'teacher') {
       return [
         { name: 'Educação', path: '/educacao', icon: School },
         { name: 'Turmas', path: '/teacher/classes', icon: Users },
