@@ -80,6 +80,7 @@ export function MobileMenu() {
         { title: 'Minhas Turmas', path: '/teacher/classes', icon: Users },
         { title: 'Triagem Escolar', path: '/screening', icon: ClipboardCheck },
         { title: 'Relatórios', path: '/reports', icon: FileText },
+        { title: 'Microlearning', path: '/training', icon: BookOpen, badge: 'Novo' },
         { title: 'Mensagens', path: '/messages', icon: Mail },
       ],
     });
@@ -133,6 +134,14 @@ export function MobileMenu() {
         { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
         { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
         { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
+      ],
+    });
+    menuSections.push({
+      title: 'Professor',
+      items: [
+        { title: 'Neuro Play Educação', path: '/educacao', icon: School },
+        { title: 'Turmas', path: '/teacher/classes', icon: Users },
+        { title: 'Triagem Escolar', path: '/screening', icon: ClipboardCheck },
       ],
     });
     menuSections.push({
