@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -54,8 +54,37 @@ const priorityColor: Record<string, string> = {
 
 export function SkillsInventoryReport({ inventoryId, childName, open, onOpenChange }: SkillsInventoryReportProps) {
   const [loading, setLoading] = useState(false);
+  const [loadingSaved, setLoadingSaved] = useState(false);
   const [report, setReport] = useState<ReportData | null>(null);
   const [generatedAt, setGeneratedAt] = useState<string | null>(null);
+
+  // Load previously saved report when dialog opens
+  useEffect(() => {
+    if (open && inventoryId && !report) {
+      loadSavedReport();
+    }
+  }, [open, inventoryId]);
+
+  const loadSavedReport = async () => {
+    if (!inventoryId) return;
+    setLoadingSaved(true);
+    try {
+      const { data, error } = await supabase
+        .from('skills_inventory')
+        .select('ai_report, ai_report_generated_at')
+        .eq('id', inventoryId)
+        .single();
+
+      if (!error && data?.ai_report) {
+        setReport(data.ai_report as unknown as ReportData);
+        setGeneratedAt(data.ai_report_generated_at);
+      }
+    } catch (err) {
+      console.error('Error loading saved report:', err);
+    } finally {
+      setLoadingSaved(false);
+    }
+  };
 
   const generateReport = async () => {
     if (!inventoryId) {
@@ -77,7 +106,7 @@ export function SkillsInventoryReport({ inventoryId, childName, open, onOpenChan
 
       setReport(data.report);
       setGeneratedAt(data.generatedAt);
-      toast.success('Relatório gerado com sucesso!');
+      toast.success('Relatório gerado e salvo com sucesso!');
     } catch (err) {
       console.error('Error generating report:', err);
       toast.error('Erro ao gerar relatório. Tente novamente.');

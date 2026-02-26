@@ -229,11 +229,21 @@ IMPORTANTE:
       report = { resumoExecutivo: content, pontosFortes: [], areasAtencao: [], recomendacoes: [], analiseDetalhada: {}, sugestoesAtividadesAEE: [], orientacoesEquipe: '', conclusao: '' };
     }
 
+    // Persist the AI report in the database
+    const generatedAt = new Date().toISOString();
+    await supabase
+      .from('skills_inventory')
+      .update({ 
+        ai_report: report, 
+        ai_report_generated_at: generatedAt 
+      })
+      .eq('id', inventoryId);
+
     return new Response(JSON.stringify({ 
       status: 'success', 
       report,
       childName,
-      generatedAt: new Date().toISOString(),
+      generatedAt,
       inventoryStats: { totalItems, totalYes, totalNo, totalPartial, completionPct },
       categorySummaries
     }), {
