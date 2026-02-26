@@ -7154,6 +7154,8 @@ export type Database = {
       skills_inventory: {
         Row: {
           aee_teacher_name: string | null
+          ai_report: Json | null
+          ai_report_generated_at: string | null
           arts_motor_coordination: Json | null
           assessment_date: string | null
           assessor_id: string | null
@@ -7191,6 +7193,8 @@ export type Database = {
         }
         Insert: {
           aee_teacher_name?: string | null
+          ai_report?: Json | null
+          ai_report_generated_at?: string | null
           arts_motor_coordination?: Json | null
           assessment_date?: string | null
           assessor_id?: string | null
@@ -7228,6 +7232,8 @@ export type Database = {
         }
         Update: {
           aee_teacher_name?: string | null
+          ai_report?: Json | null
+          ai_report_generated_at?: string | null
           arts_motor_coordination?: Json | null
           assessment_date?: string | null
           assessor_id?: string | null
