@@ -9,9 +9,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus, LayoutGrid, List, ClipboardList, FileText } from 'lucide-react';
+import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus, LayoutGrid, List, ClipboardList, FileText, Pencil } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 import { AddPatientModal } from '@/components/AddPatientModal';
+import { EditPatientModal } from '@/components/EditPatientModal';
 import { TherapistPatientSection } from '@/components/TherapistPatientSection';
 
 interface Patient {
@@ -33,7 +34,7 @@ export default function TherapistPatients() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
-
+  const [editPatientId, setEditPatientId] = useState<string | null>(null);
   useEffect(() => {
     if (user) {
       loadPatients();
@@ -251,6 +252,17 @@ export default function TherapistPatients() {
                   {/* Quick Actions */}
                   <div className="flex gap-2 pt-3 border-t">
                     <Button 
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setEditPatientId(patient.id);
+                      }}
+                    >
+                      <Pencil className="w-4 h-4 mr-1" />
+                      Editar
+                    </Button>
+                    <Button 
                       variant="default"
                       size="sm"
                       className="flex-1 bg-primary hover:bg-primary/90"
@@ -260,7 +272,7 @@ export default function TherapistPatients() {
                       }}
                     >
                       <ClipboardList className="w-4 h-4 mr-1" />
-                      📋 Anamnese
+                      Anamnese
                     </Button>
                     <Button 
                       variant="outline"
@@ -296,6 +308,14 @@ export default function TherapistPatients() {
       <AddPatientModal
         open={showAddModal}
         onClose={() => setShowAddModal(false)}
+        onSuccess={loadPatients}
+      />
+
+      {/* Edit Patient Modal */}
+      <EditPatientModal
+        open={!!editPatientId}
+        patientId={editPatientId}
+        onClose={() => setEditPatientId(null)}
         onSuccess={loadPatients}
       />
     </ModernPageLayout>
