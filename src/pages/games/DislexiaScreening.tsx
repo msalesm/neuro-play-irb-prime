@@ -175,6 +175,12 @@ export default function DislexiaScreening() {
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
+            <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 text-sm text-amber-800 dark:text-amber-300">
+              <strong>⚠️ Triagem de rastreio:</strong> Este teste avalia habilidades de consciência fonológica e leitura com {questions.length} questões. 
+              Não substitui instrumentos validados como PROLEC, TDE-II ou avaliação neuropsicológica completa. 
+              Resultados indicam áreas para investigação, não diagnóstico.
+            </div>
+
             <div className="space-y-4">
               <h3 className="font-semibold">O que vamos avaliar:</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
