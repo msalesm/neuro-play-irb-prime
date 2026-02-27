@@ -7,11 +7,32 @@ export interface ScreeningResult {
   id: string;
   type: string;
   score: number;
-  percentile: number;
+  performanceLevel: 'above_average' | 'average' | 'attention' | 'referral';
   recommended_action: string;
   gameData?: any;
   duration?: number;
+  /** @deprecated Use performanceLevel instead. Mantido para compatibilidade. */
+  percentile: number;
 }
+
+/**
+ * Classifica o desempenho com base no score bruto (0-100).
+ * NÃO utiliza percentis normativos — esta é uma classificação relativa
+ * ao instrumento interno da plataforma, sem validação clínica externa.
+ */
+function classifyPerformance(score: number): ScreeningResult['performanceLevel'] {
+  if (score >= 75) return 'above_average';
+  if (score >= 50) return 'average';
+  if (score >= 30) return 'attention';
+  return 'referral';
+}
+
+const PERFORMANCE_LABELS: Record<ScreeningResult['performanceLevel'], string> = {
+  above_average: 'Desempenho acima da média da plataforma',
+  average: 'Desempenho dentro da média da plataforma',
+  attention: 'Desempenho abaixo da média — atenção recomendada',
+  referral: 'Desempenho significativamente abaixo da média — encaminhamento recomendado',
+};
 
 export function useScreening() {
   const { user } = useAuth();
@@ -19,35 +40,22 @@ export function useScreening() {
   const [screenings, setScreenings] = useState<ScreeningResult[]>([]);
   const [currentScreeningType, setCurrentScreeningType] = useState<string>('');
 
-  const calculatePercentile = (score: number): number => {
-    // Percentile calculation based on score distribution
-    // Assuming normal distribution with mean=50, std=15
-    if (score >= 90) return 95;
-    if (score >= 80) return 85;
-    if (score >= 70) return 70;
-    if (score >= 60) return 55;
-    if (score >= 50) return 40;
-    if (score >= 40) return 25;
-    if (score >= 30) return 15;
-    return 10;
-  };
-
   const getRecommendedAction = (score: number, type: string): string => {
-    const percentile = calculatePercentile(score);
-    
-    if (percentile >= 60) {
-      return `Desempenho acima da média para ${type.toUpperCase()}. Continue com o acompanhamento regular e incentive o desenvolvimento através dos jogos cognitivos disponíveis na plataforma.`;
+    const level = classifyPerformance(score);
+    const typeLabel = type.toUpperCase();
+
+    const DISCLAIMER = '\n\n⚠️ IMPORTANTE: Este resultado é uma triagem inicial de rastreio, NÃO um diagnóstico clínico. Os valores apresentados são relativos ao instrumento interno da plataforma e não possuem validação normativa em população brasileira. Para avaliação diagnóstica, consulte um profissional especializado (neuropsicólogo, neuropediatra ou equipe multidisciplinar).';
+
+    switch (level) {
+      case 'above_average':
+        return `Bom desempenho na triagem de ${typeLabel}. Continue com o acompanhamento regular e utilize os jogos cognitivos da plataforma para reforço.${DISCLAIMER}`;
+      case 'average':
+        return `Desempenho dentro da média esperada na triagem de ${typeLabel}. Recomenda-se continuar o acompanhamento e utilizar os jogos educativos para reforço das habilidades avaliadas.${DISCLAIMER}`;
+      case 'attention':
+        return `Desempenho abaixo da média na triagem de ${typeLabel}. Recomenda-se atenção especial e consulta com profissional especializado para avaliação mais detalhada. Um Plano Educacional Individualizado (PEI) foi gerado para apoiar o desenvolvimento.${DISCLAIMER}`;
+      case 'referral':
+        return `Desempenho significativamente abaixo da média na triagem de ${typeLabel}. Encaminhamento profissional recomendado. Os resultados sugerem a necessidade de avaliação clínica especializada com instrumentos validados (como CPT-3 para TDAH, M-CHAT/SCQ para TEA, ou PROLEC para Dislexia).${DISCLAIMER}`;
     }
-    
-    if (percentile >= 40) {
-      return `Desempenho dentro da média esperada. Recomenda-se continuar o acompanhamento e utilizar os jogos educativos para reforço das habilidades avaliadas.`;
-    }
-    
-    if (percentile >= 20) {
-      return `Recomenda-se atenção especial. Considere consultar um profissional especializado para avaliação mais detalhada e implementar estratégias de suporte pedagógico através do PEI.`;
-    }
-    
-    return `Encaminhamento profissional recomendado. Os resultados sugerem a necessidade de avaliação clínica especializada. Um Plano Educacional Individualizado (PEI) foi gerado para apoiar o desenvolvimento.`;
   };
 
   const startScreening = async (type: string) => {
@@ -64,8 +72,10 @@ export function useScreening() {
     setLoading(true);
 
     try {
-      const percentile = calculatePercentile(data.score);
+      const performanceLevel = classifyPerformance(data.score);
       const recommended_action = getRecommendedAction(data.score, currentScreeningType);
+      // Percentil mantido para compatibilidade com banco existente, mas usando score direto
+      const percentile = Math.round(data.score);
 
       const { data: screening, error } = await supabase
         .from('screenings')
@@ -88,6 +98,7 @@ export function useScreening() {
         type: screening.type,
         score: screening.score,
         percentile: screening.percentile,
+        performanceLevel,
         recommended_action: screening.recommended_action,
         gameData: screening.test_data,
         duration: screening.duration,
@@ -122,6 +133,7 @@ export function useScreening() {
         type: data.type,
         score: data.score,
         percentile: data.percentile,
+        performanceLevel: classifyPerformance(data.score),
         recommended_action: data.recommended_action,
         gameData: data.test_data,
         duration: data.duration,
