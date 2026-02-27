@@ -275,7 +275,7 @@ export default function DiagnosticTests() {
                 size="lg" 
                 asChild
               >
-                <Link to="/reports" className="flex items-center gap-2">
+                <Link to="/relatorios" className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
                   Ver Relatórios
                 </Link>
