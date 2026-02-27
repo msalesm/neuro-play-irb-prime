@@ -177,20 +177,7 @@ export default function MindfulBreath() {
         });
       }
 
-      // TODO: Uncomment when therapy_sessions table is created
-      // await supabase.from('therapy_sessions').insert({
-      //   user_id: user.id,
-      //   session_type: 'breathing',
-      //   title: `Sessão de ${pattern.name}`,
-      //   content: {
-      //     pattern: pattern.name,
-      //     cycles_completed: totalCycles,
-      //     duration_seconds: sessionTime,
-      //     pattern_details: pattern
-      //   },
-      //   duration_minutes: Math.round(sessionTime / 60),
-      //   completion_status: 'completed'
-      // });
+      // Session data is persisted via useGameSession hook (game_sessions table)
 
       // Record activity
       await supabase.from('user_activities').insert({

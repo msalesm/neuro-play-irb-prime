@@ -190,11 +190,8 @@ export default function TouchMapper() {
         completed_at: new Date().toISOString()
       };
 
-      // TODO: Uncomment when touch_mapper_sessions table is created
-      // const { error } = await supabase
-      //   .from('touch_mapper_sessions')
-      //   .insert(sessionData);
-      // if (error) throw error;
+      // NOTE: Granular touch data not persisted — needs useGameSession integration
+      console.debug('[TouchMapper] Session data:', sessionData);
 
       toast({
         title: "🖐️ Sessão salva!",
