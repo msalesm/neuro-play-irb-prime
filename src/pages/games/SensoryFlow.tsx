@@ -203,11 +203,8 @@ export default function SensoryFlow() {
         completed_at: new Date().toISOString()
       };
 
-      // TODO: Uncomment when sensory_flow_sessions table is created
-      // const { error } = await supabase
-      //   .from('sensory_flow_sessions')
-      //   .insert(sessionData);
-      // if (error) throw error;
+      // NOTE: Granular sensory data not persisted — needs useGameSession integration
+      console.debug('[SensoryFlow] Session data:', sessionData);
 
       toast({
         title: "🎵 Sessão salva!",
