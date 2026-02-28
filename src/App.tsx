@@ -170,6 +170,7 @@ const App = () => (
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/landing" element={<Index />} />
                   <Route path="/onboarding" element={<OnboardingWizard />} />
                   <Route path="/diagnostico-completo" element={<DiagnosticoCompleto />} />
                   <Route path="/dashboard-pais" element={<DashboardPais />} />
