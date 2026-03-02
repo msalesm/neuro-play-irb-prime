@@ -158,10 +158,6 @@ export default function TherapeuticChat({
           {userRole === 'therapist' && 'Suporte clínico para profissionais de saúde mental com insights automáticos'}
           {!userRole || (userRole !== 'parent' && userRole !== 'therapist') && 'Orientação sobre desenvolvimento cognitivo e neurociência infantil'}
         </p>
-        <p className="text-xs text-muted-foreground/70 px-4 max-w-2xl mx-auto">
-          ⚠️ Este assistente utiliza inteligência artificial e <strong>não substitui</strong> acompanhamento profissional. 
-          Não fornece diagnósticos. Em situações de crise, procure atendimento presencial imediato.
-        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3" data-tour="quick-actions">

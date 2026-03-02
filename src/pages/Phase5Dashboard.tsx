@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { EmotionalAIPanel } from '@/components/phase5/EmotionalAIPanel';
-
+import { WearablesDashboard } from '@/components/phase5/WearablesDashboard';
 import { MarketplaceGrid } from '@/components/phase5/MarketplaceGrid';
 import { TeleorientationPanel } from '@/components/phase5/TeleorientationPanel';
 import { PremiumAvatarCustomizer } from '@/components/phase5/PremiumAvatarCustomizer';
@@ -58,6 +58,13 @@ export default function Phase5Dashboard() {
             >
               <Brain className="h-4 w-4" />
               <span className="hidden sm:inline">{t('phase5.emotionalAI.title')}</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="wearables"
+              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              <Watch className="h-4 w-4" />
+              <span className="hidden sm:inline">{t('phase5.wearables.title')}</span>
             </TabsTrigger>
             <TabsTrigger 
               value="marketplace"
@@ -120,6 +127,10 @@ export default function Phase5Dashboard() {
             </div>
           </TabsContent>
 
+          {/* Wearables Dashboard */}
+          <TabsContent value="wearables">
+            <WearablesDashboard childId={selectedChildId} />
+          </TabsContent>
 
           {/* Marketplace */}
           <TabsContent value="marketplace">

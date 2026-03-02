@@ -325,9 +325,11 @@ export default function BalanceQuest() {
         completed_at: new Date().toISOString()
       };
 
-      // Session data is persisted via useGameSession hook (game_sessions table)
-      // Granular balance data logged for debugging only
-      console.debug('[BalanceQuest] Session data:', sessionData);
+      // TODO: Uncomment when balance_quest_sessions table is created
+      // const { error } = await supabase
+      //   .from('balance_quest_sessions')
+      //   .insert(sessionData);
+      // if (error) throw error;
 
       toast({
         title: "⚖️ Sessão salva!",

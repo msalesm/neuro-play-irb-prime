@@ -11,6 +11,7 @@ import { AppLayout } from "@/components/AppLayout";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
+import { AudioEngineDemo } from '@/components/AudioEngineDemo';
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import GameMap from "./components/GameMap";
@@ -47,11 +48,12 @@ import CognitiveFlexibilityPlay from "./pages/games/CognitiveFlexibilityPlay";
 import ExecutiveProcessingPhases from "./pages/games/ExecutiveProcessingPhases";
 
 import FocoRapidoPhases from "./pages/games/FocoRapidoPhases";
-import { PhonologicalProcessing } from "./pages/games/PhonologicalProcessing";
+import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
 import MemoryWorkload from "./pages/games/MemoryWorkload";
 import TheoryOfMind from "./pages/games/TheoryOfMind";
 import EmotionLab from "./pages/games/EmotionLab";
 import SpatialArchitect from "./pages/games/SpatialArchitect";
+import FocoRapido from "./pages/games/FocoRapido";
 import CognitiveAnalysisDemo from "./pages/CognitiveAnalysisDemo";
 import SistemaPlanetaAzul from "./pages/SistemaPlanetaAzul";
 import PlanetaDetalhes from "./pages/PlanetaDetalhes";
@@ -78,12 +80,14 @@ import TeleconsultaSession from "./pages/TeleconsultaSession";
 import TeleconsultaDemo from "./pages/TeleconsultaDemo";
 import MinhasTeleconsultas from "./pages/MinhasTeleconsultas";
 import AgendarTeleconsulta from "./pages/AgendarTeleconsulta";
+import CameraTest from "./pages/CameraTest";
 import TeacherClasses from "./pages/TeacherClasses";
 import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
 import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
 import AdminRiskMaps from "./pages/AdminRiskMaps";
 import OperationsCenter from "./pages/OperationsCenter";
+// ParentChildActivities removed - feature deprecated
 import CooperativePuzzle from "./pages/games/CooperativePuzzle";
 import RiskAnalysisPage from "./pages/RiskAnalysisPage";
 import EmotionalHistoryDashboard from "./pages/EmotionalHistoryDashboard";
@@ -92,8 +96,12 @@ import PlatformManual from "./pages/PlatformManual";
 import AdminUserManagement from "./pages/AdminUserManagement";
 import BeneficiosTerapeuticos from "./pages/BeneficiosTerapeuticos";
 
+// Neuro Play v2.0 pages
+import NeuroPlayV2 from "./pages/NeuroPlayV2";
+import NeuroPlayLanding from "./pages/NeuroPlayLanding";
 import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
 import DashboardPais from "./pages/DashboardPais";
+import IRBPrimeLanding from "./pages/IRBPrimeLanding";
 import Home from "./pages/Home";
 import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
 import AchievementsPage from "./pages/AchievementsPage";
@@ -138,8 +146,9 @@ import ParceiroClube from "./pages/ParceiroClube";
 import AdminClubePais from "./pages/AdminClubePais";
 import EducacaoDashboard from "./pages/EducacaoDashboard";
 import SecretariaDashboard from "./pages/SecretariaDashboard";
-
-// Lazy loaded components
+// Lazy loaded components - Critical path optimization
+const ModernIndex = lazy(() => import("./pages/ModernIndex"));
+const NeuroPlayIndex = lazy(() => import("./pages/NeuroPlayIndex"));
 const CognitiveDiagnostic = lazy(() => import("./pages/CognitiveDiagnostic"));
 const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -170,10 +179,22 @@ const App = () => (
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/landing" element={<Index />} />
+                  <Route path="/landing" element={<IRBPrimeLanding />} />
                   <Route path="/onboarding" element={<OnboardingWizard />} />
+                  <Route path="/neuroplay" element={
+                    <Suspense fallback={<Loading />}>
+                      <NeuroPlayIndex />
+                    </Suspense>
+                  } />
+                  <Route path="/v2" element={<NeuroPlayV2 />} />
+                  <Route path="/neuro-play" element={<NeuroPlayLanding />} />
                   <Route path="/diagnostico-completo" element={<DiagnosticoCompleto />} />
                   <Route path="/dashboard-pais" element={<DashboardPais />} />
+                  <Route path="/old-home" element={
+                    <Suspense fallback={<Loading />}>
+                      <ModernIndex />
+                    </Suspense>
+                  } />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/aceitar-convite" element={<AcceptInvite />} />
                   <Route path="/cognitive-diagnostic" element={
@@ -187,12 +208,13 @@ const App = () => (
                       <Games />
                     </Suspense>
                   } />
-                  <Route path="/neuroplasticity" element={<Neuroplasticity />} />
-                  <Route path="/learning-dashboard" element={
-                    <Suspense fallback={<Loading />}>
-                      <LearningDashboard />
-                    </Suspense>
-                  } />
+            <Route path="/neuroplasticity" element={<Neuroplasticity />} />
+            <Route path="/learning-dashboard" element={
+              <Suspense fallback={<Loading />}>
+                <LearningDashboard />
+              </Suspense>
+            } />
+                  <Route path="/audio-demo" element={<AudioEngineDemo />} />
                   <Route path="/diagnostic-tests" element={
                     <Suspense fallback={<Loading />}>
                       <DiagnosticTests />
@@ -205,8 +227,6 @@ const App = () => (
                   <Route path="/therapeutic-chat" element={<TherapeuticChatPage />} />
                   <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
                   <Route path="/achievements" element={<AchievementsPage />} />
-                  
-                  {/* Game Routes */}
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
                   <Route path="/games/caca-foco" element={<CacaFoco />} />
                   <Route path="/games/logica-rapida" element={<LogicaRapida />} />
@@ -224,31 +244,29 @@ const App = () => (
                   <Route path="/games/balance-quest" element={<BalanceQuest />} />
                   <Route path="/games/sensory-flow" element={<SensoryFlow />} />
                   <Route path="/games/visual-sync" element={<VisualSync />} />
-                  <Route path="/games/stack-tower" element={<StackTower />} />
-                  <Route path="/games/cosmic-sequence" element={<CosmicSequence />} />
-                  <Route path="/games/crystal-match" element={<CrystalMatch />} />
-                  <Route path="/games/tower-defense" element={<TowerDefense />} />
-                  <Route path="/games/biofeedback-demo" element={<BiofeedbackDemo />} />
+          <Route path="/games/stack-tower" element={<StackTower />} />
+          <Route path="/games/cosmic-sequence" element={<CosmicSequence />} />
+          <Route path="/games/crystal-match" element={<CrystalMatch />} />
+          <Route path="/games/tower-defense" element={<TowerDefense />} />
+          <Route path="/games/biofeedback-demo" element={<BiofeedbackDemo />} />
                   <Route path="/games/touch-mapper" element={<TouchMapper />} />
                   <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
-                  
-                  {/* Jogos com sistema de fases */}
-                  <Route path="/games/executive-processing-phases" element={<ExecutiveProcessingPhases />} />
-                  <Route path="/games/attention-sustained-phases" element={<AttentionSustainedPhases />} />
-                  <Route path="/games/attention-sustained-play" element={<AttentionSustainedPlay />} />
-                  <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
-                  <Route path="/games/foco-rapido-play" element={<CacaFoco />} />
-                  <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
-                  <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibilityPlay />} />
-                  
-                  {/* Jogos standalone */}
-                  <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
-                  <Route path="/games/memory-workload" element={<MemoryWorkload />} />
-                  <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
-                  <Route path="/games/emotion-lab" element={<EmotionLab />} />
-                  <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
-                  <Route path="/games/cooperative-puzzle" element={<CooperativePuzzle />} />
-                  
+          {/* Jogos com sistema de fases */}
+          <Route path="/games/executive-processing-phases" element={<ExecutiveProcessingPhases />} />
+          <Route path="/games/attention-sustained-phases" element={<AttentionSustainedPhases />} />
+          <Route path="/games/attention-sustained-play" element={<AttentionSustainedPlay />} />
+          
+          <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
+          <Route path="/games/foco-rapido-play" element={<FocoRapido />} />
+          <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
+          <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibilityPlay />} />
+          
+          {/* Jogos standalone */}
+          <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
+          <Route path="/games/memory-workload" element={<MemoryWorkload />} />
+          <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
+          <Route path="/games/emotion-lab" element={<EmotionLab />} />
+          <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/clinical" element={
@@ -266,105 +284,132 @@ const App = () => (
                       <Dashboard />
                     </Suspense>
                   } />
-                  
-                  {/* Screening Routes */}
+                  {/* Screening Routes - Neuro Play EDU */}
                   <Route path="/screening" element={<ScreeningSelection />} />
                   <Route path="/screening/dislexia" element={<DislexiaScreening />} />
                   <Route path="/screening/tdah" element={<TDAHScreening />} />
                   <Route path="/screening/tea" element={<TEAScreening />} />
                   <Route path="/screening/result" element={<ScreeningResult />} />
                   <Route path="/pei" element={<PEIView />} />
-                  <Route path="/pei/:patientId" element={<PEIView />} />
                   <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-                  <Route path="/parent-training" element={<ParentTraining />} />
-                  <Route path="/training" element={<ParentTraining />} />
+          <Route path="/parent-training" element={<ParentTraining />} />
+          <Route path="/training" element={<ParentTraining />} />
                   <Route path="/training/:moduleId" element={<TrainingModule />} />
                   <Route path="/chat" element={<TherapeuticChatPage />} />
                   
-                  {/* Therapist Routes */}
-                  <Route path="/agenda" element={<AgendaClinica />} />
-                  <Route path="/inventario-habilidades" element={<InventarioHabilidades />} />
-                  <Route path="/teleconsultas" element={<Teleconsultas />} />
-                  <Route path="/teleconsulta/:sessionId" element={<TeleconsultaSession />} />
-                  <Route path="/teleconsulta-demo" element={<TeleconsultaDemo />} />
-                  <Route path="/minhas-teleconsultas" element={<MinhasTeleconsultas />} />
-                  <Route path="/agendar-teleconsulta" element={<AgendarTeleconsulta />} />
-                  <Route path="/therapist/patients" element={<TherapistPatients />} />
-                  <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
-                  <Route path="/prontuario/:childId" element={<ProntuarioUnificado />} />
-                  <Route path="/anamnese" element={<AnamneseList />} />
-                  <Route path="/anamnese/:childId" element={<AnamneseInfantil />} />
-                  
-                  {/* Teacher Routes */}
-                  <Route path="/teacher/classes" element={<TeacherClasses />} />
-                  <Route path="/teacher/class/:classId" element={<TeacherClassView />} />
-                  <Route path="/teacher/student/:studentId" element={<TeacherStudentView />} />
-                  <Route path="/admin/risk-maps" element={<AdminRiskMaps />} />
-                  <Route path="/risk-analysis" element={<RiskAnalysisPage />} />
-                  <Route path="/platform-manual" element={<PlatformManual />} />
-                  <Route path="/beneficios-terapeuticos" element={<BeneficiosTerapeuticos />} />
-                  
-                  {/* Admin Routes */}
-                  <Route path="/admin/network" element={<AdminNetworkDashboard />} />
-                  <Route path="/admin/users" element={<AdminUserManagement />} />
-                  <Route path="/admin/relationships" element={<RelationshipsManager />} />
-                  <Route path="/operations" element={<OperationsCenter />} />
-                  
-                  {/* Acessibilidade e Histórias Sociais */}
-                  <Route path="/accessibility" element={<AccessibilitySettings />} />
-                  <Route path="/social-stories" element={<SocialStories />} />
-                  <Route path="/stories/:storyId" element={<StoryReader />} />
-                  <Route path="/admin/stories" element={<AdminStories />} />
-                  
-                  {/* Relatórios */}
-                  <Route path="/relatorios" element={<UnifiedReports />} />
-                  
-                  {/* Student Hub & Rotinas */}
-                  <Route path="/student-hub" element={<StudentHub />} />
-                  <Route path="/rotinas" element={<RoutinesPage />} />
-                  <Route path="/rotinas/:routineId" element={<RoutineViewer />} />
-                  <Route path="/admin/story-editor" element={<StoryEditor />} />
-                  <Route path="/admin/story-editor/:storyId" element={<StoryEditor />} />
-                  <Route path="/analytics" element={<SimpleAnalytics />} />
-                  
-                  {/* Institutional & Subscription */}
-                  <Route path="/institutional" element={<InstitutionalDashboard />} />
-                  <Route path="/assinatura" element={<Assinatura />} />
-                  <Route path="/mensagens" element={<SecureMessaging />} />
-                  <Route path="/content-manager" element={<ContentManager />} />
-                  <Route path="/professional-analytics" element={<ProfessionalAnalytics />} />
-                  <Route path="/ia-contextual" element={<ContextualAIDashboard />} />
-                  
-                  {/* Community */}
-                  <Route path="/comunidade" element={<Community />} />
-                  
-                  {/* Phase 5 */}
-                  <Route path="/fase5" element={<Phase5Dashboard />} />
-                  
-                  {/* Compliance */}
-                  <Route path="/consentimentos" element={<ConsentManagement />} />
-                  <Route path="/admin/compliance" element={<ComplianceDashboard />} />
-                  <Route path="/governanca-dados" element={<DataGovernance />} />
-                  <Route path="/integracoes-api" element={<ApiIntegrations />} />
-                  
-                  {/* Billing & Impact */}
-                  <Route path="/faturamento" element={<BillingDashboard />} />
-                  <Route path="/impacto" element={<ImpactDashboard />} />
-                  
-                  {/* Privacy & Install */}
-                  <Route path="/privacidade" element={<PrivacyPortal />} />
-                  <Route path="/instalar" element={<InstallApp />} />
-                  
-                  {/* Clube dos Pais */}
-                  <Route path="/clube-pais" element={<ClubePais />} />
-                  <Route path="/parceiro-clube" element={<ParceiroClube />} />
-                  <Route path="/admin/clube-pais" element={<AdminClubePais />} />
-                  
-                  {/* Educação */}
-                  <Route path="/educacao" element={<EducacaoDashboard />} />
-                  <Route path="/secretaria-educacao" element={<SecretariaDashboard />} />
-                  
-                  <Route path="*" element={<NotFound />} />
+          {/* Therapist Routes */}
+          <Route path="/agenda" element={<AgendaClinica />} />
+          <Route path="/inventario-habilidades" element={<InventarioHabilidades />} />
+          <Route path="/teleconsultas" element={<Teleconsultas />} />
+          <Route path="/teleconsulta/:sessionId" element={<TeleconsultaSession />} />
+          <Route path="/teleconsulta-demo" element={<TeleconsultaDemo />} />
+          <Route path="/minhas-teleconsultas" element={<MinhasTeleconsultas />} />
+          <Route path="/agendar-teleconsulta" element={<AgendarTeleconsulta />} />
+          <Route path="/camera-test" element={<CameraTest />} />
+          <Route path="/therapist/patients" element={<TherapistPatients />} />
+          <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
+          <Route path="/prontuario/:childId" element={<ProntuarioUnificado />} />
+          <Route path="/anamnese" element={<AnamneseList />} />
+          <Route path="/anamnese/:childId" element={<AnamneseInfantil />} />
+          
+          {/* Teacher Routes */}
+          <Route path="/teacher/classes" element={<TeacherClasses />} />
+          <Route path="/teacher/class/:classId" element={<TeacherClassView />} />
+          <Route path="/teacher/student/:studentId" element={<TeacherStudentView />} />
+          <Route path="/admin/risk-maps" element={<AdminRiskMaps />} />
+          <Route path="/games/cooperative-puzzle" element={<CooperativePuzzle />} />
+          <Route path="/risk-analysis" element={<RiskAnalysisPage />} />
+          <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
+          <Route path="/platform-manual" element={<PlatformManual />} />
+          <Route path="/beneficios-terapeuticos" element={<BeneficiosTerapeuticos />} />
+          <Route path="/pei" element={<PEIView />} />
+          <Route path="/pei/:patientId" element={<PEIView />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/network" element={<AdminNetworkDashboard />} />
+          <Route path="/admin/network-management" element={<AdminNetworkDashboard />} />
+          <Route path="/admin/users" element={<AdminUserManagement />} />
+          <Route path="/admin/relationships" element={<RelationshipsManager />} />
+          <Route path="/operations" element={<OperationsCenter />} />
+          
+          {/* Acessibilidade e Histórias Sociais */}
+          <Route path="/accessibility" element={<AccessibilitySettings />} />
+          <Route path="/social-stories" element={<SocialStories />} />
+          <Route path="/stories" element={<SocialStories />} />
+          <Route path="/stories/:storyId" element={<StoryReader />} />
+          <Route path="/admin/stories" element={<AdminStories />} />
+          
+          {/* Relatórios Unificados */}
+          <Route path="/reports" element={<UnifiedReports />} />
+          <Route path="/relatorios" element={<UnifiedReports />} />
+          <Route path="/intelligent-reports" element={<UnifiedReports />} />
+          
+          {/* Phase 3 Routes */}
+          <Route path="/student-hub" element={<StudentHub />} />
+          <Route path="/hub" element={<StudentHub />} />
+          <Route path="/rotinas" element={<RoutinesPage />} />
+          <Route path="/routines" element={<RoutinesPage />} />
+          <Route path="/rotinas/:routineId" element={<RoutineViewer />} />
+          <Route path="/admin/story-editor" element={<StoryEditor />} />
+          <Route path="/admin/story-editor/:storyId" element={<StoryEditor />} />
+          <Route path="/analytics" element={<SimpleAnalytics />} />
+          
+          {/* Phase 4 Routes */}
+          <Route path="/institutional" element={<InstitutionalDashboard />} />
+          <Route path="/subscription" element={<Assinatura />} />
+          <Route path="/assinatura" element={<Assinatura />} />
+          <Route path="/planos" element={<Assinatura />} />
+          <Route path="/messages" element={<SecureMessaging />} />
+          <Route path="/mensagens" element={<SecureMessaging />} />
+          <Route path="/content-manager" element={<ContentManager />} />
+          <Route path="/admin/content" element={<ContentManager />} />
+          <Route path="/professional-analytics" element={<ProfessionalAnalytics />} />
+          <Route path="/contextual-ai" element={<ContextualAIDashboard />} />
+          <Route path="/ia-contextual" element={<ContextualAIDashboard />} />
+          
+          {/* Phase 3 - Community */}
+          <Route path="/community" element={<Community />} />
+          <Route path="/comunidade" element={<Community />} />
+          
+          {/* Phase 5 Routes */}
+          <Route path="/phase5" element={<Phase5Dashboard />} />
+          <Route path="/fase5" element={<Phase5Dashboard />} />
+          
+          {/* Phase 6 - Compliance Routes */}
+          <Route path="/consents" element={<ConsentManagement />} />
+          <Route path="/consentimentos" element={<ConsentManagement />} />
+          <Route path="/admin/compliance" element={<ComplianceDashboard />} />
+          <Route path="/data-governance" element={<DataGovernance />} />
+          <Route path="/governanca-dados" element={<DataGovernance />} />
+          <Route path="/api-integrations" element={<ApiIntegrations />} />
+          <Route path="/integracoes-api" element={<ApiIntegrations />} />
+          
+          {/* Sprint 5 - Billing */}
+          <Route path="/billing" element={<BillingDashboard />} />
+          <Route path="/faturamento" element={<BillingDashboard />} />
+          
+          {/* Sprint 6 - Impact */}
+          <Route path="/impact" element={<ImpactDashboard />} />
+          <Route path="/impacto" element={<ImpactDashboard />} />
+          
+          {/* Sprint 20 - Privacy Portal LGPD */}
+          <Route path="/privacy" element={<PrivacyPortal />} />
+          <Route path="/privacidade" element={<PrivacyPortal />} />
+          
+          {/* Sprint 19 - PWA Install */}
+          <Route path="/install" element={<InstallApp />} />
+          <Route path="/instalar" element={<InstallApp />} />
+          
+          {/* Clube dos Pais */}
+          <Route path="/clube-pais" element={<ClubePais />} />
+          <Route path="/parceiro-clube" element={<ParceiroClube />} />
+          <Route path="/admin/clube-pais" element={<AdminClubePais />} />
+          {/* Neuro Play Educação */}
+          <Route path="/educacao" element={<EducacaoDashboard />} />
+          <Route path="/secretaria-educacao" element={<SecretariaDashboard />} />
+          
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
                 </Routes>
                 <FloatingActionButton />
               </AppLayout>

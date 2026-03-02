@@ -260,8 +260,11 @@ export default function TouchMapperKeyboard() {
         completed_at: new Date().toISOString()
       };
 
-      // NOTE: Granular touch data not persisted — needs useGameSession integration
-      console.debug('[TouchMapperKeyboard] Session data:', sessionData);
+      // TODO: Uncomment when touch_mapper_sessions table is created
+      // const { error } = await supabase
+      //   .from('touch_mapper_sessions')
+      //   .insert(sessionData);
+      // if (error) throw error;
 
       toast({
         title: "🖐️ Sessão salva!",

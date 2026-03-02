@@ -333,8 +333,22 @@ export default function EmotionalWeather() {
       const averageIntensity = emotionHistory.reduce((sum, h) => sum + h.intensity, 0) / emotionHistory.length;
       const toolsDiversity = new Set(toolsUsed).size;
       
-      // NOTE: Emotional session data not persisted — needs useGameSession integration
-      console.debug('[EmotionalWeather] Session data:', { emotionHistory, toolsUsed, selfRegulationScore });
+      // TODO: Uncomment when therapy_sessions table is created
+      // await supabase.from('therapy_sessions').insert({
+      //   user_id: user.id,
+      //   session_type: 'emotional_regulation',
+      //   title: 'Sessão de Clima Emocional',
+      //   content: {
+      //     emotion_history: emotionHistory,
+      //     tools_used: toolsUsed,
+      //     self_regulation_score: selfRegulationScore,
+      //     emotion_variability: emotionVariability,
+      //     average_intensity: averageIntensity,
+      //     tools_diversity: toolsDiversity
+      //   },
+      //   duration_minutes: Math.round(sessionTime / 60),
+      //   completion_status: 'completed'
+      // });
 
       // Record activity
       await supabase.from('user_activities').insert({

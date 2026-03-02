@@ -110,14 +110,11 @@ export function FloatingAIAssistant() {
         content: data?.response || 'Desculpe, não consegui processar sua solicitação.' 
       };
       setMessages(prev => [...prev, assistantMessage]);
-    } catch (error: any) {
+    } catch (error) {
       console.error('AI Assistant error:', error);
-      const isRateLimit = error?.message?.includes('429');
       const errorMessage: Message = { 
         role: 'assistant', 
-        content: isRateLimit 
-          ? '⚠️ Limite de requisições atingido. Aguarde alguns minutos antes de tentar novamente.'
-          : '⚠️ Serviço de IA temporariamente indisponível. As demais funcionalidades da plataforma continuam funcionando normalmente. Tente novamente em instantes.' 
+        content: 'Desculpe, ocorreu um erro. Por favor, tente novamente.' 
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {

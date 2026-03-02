@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Copy, Check, Mail, Share2 } from 'lucide-react';
+import { Copy, Check, MessageCircle, Mail, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface TeleconsultInviteProps {
@@ -80,13 +80,9 @@ Dicas:
     }
   };
 
-  const copyLinkOnly = async () => {
-    try {
-      await navigator.clipboard.writeText(inviteLink);
-      toast.success('Link copiado!');
-    } catch {
-      toast.error('Erro ao copiar');
-    }
+  const shareViaWhatsApp = () => {
+    const encodedMessage = encodeURIComponent(inviteMessage);
+    window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
   };
 
   const shareViaEmail = () => {
@@ -158,11 +154,11 @@ Dicas:
             <div className="grid grid-cols-3 gap-2">
               <Button
                 variant="outline"
-                onClick={copyLinkOnly}
+                onClick={shareViaWhatsApp}
                 className="flex flex-col gap-1 h-auto py-3"
               >
-                <Copy className="w-5 h-5 text-green-500" />
-                <span className="text-xs">Copiar Link</span>
+                <MessageCircle className="w-5 h-5 text-green-500" />
+                <span className="text-xs">WhatsApp</span>
               </Button>
               <Button
                 variant="outline"
