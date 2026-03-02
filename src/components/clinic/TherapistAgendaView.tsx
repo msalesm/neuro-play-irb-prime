@@ -146,7 +146,7 @@ export function TherapistAgendaView() {
   return (
     <div className="space-y-6">
       {/* Navigation */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon" onClick={() => setSelectedDate(addDays(selectedDate, -7))}>
             <ChevronLeft className="h-4 w-4" />
@@ -155,20 +155,20 @@ export function TherapistAgendaView() {
           <Button variant="outline" size="icon" onClick={() => setSelectedDate(addDays(selectedDate, 7))}>
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <span className="font-medium ml-2">
-            {format(weekStart, "d 'de' MMMM", { locale: ptBR })} - {format(addDays(weekStart, 6), "d 'de' MMMM, yyyy", { locale: ptBR })}
-          </span>
+          <Button variant="outline" size="icon" onClick={fetchAppointments}>
+            <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
+          </Button>
         </div>
-        <Button variant="outline" size="icon" onClick={fetchAppointments}>
-          <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
-        </Button>
+        <span className="text-sm font-medium text-muted-foreground">
+          {format(weekStart, "d MMM", { locale: ptBR })} - {format(addDays(weekStart, 6), "d MMM yyyy", { locale: ptBR })}
+        </span>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
         {/* Left: Week overview */}
         <div className="lg:col-span-2 space-y-4">
           {/* Week day selector */}
-          <div className="grid grid-cols-7 gap-2">
+          <div className="flex gap-1.5 overflow-x-auto pb-2 sm:grid sm:grid-cols-7 sm:gap-2 sm:overflow-visible sm:pb-0">
             {weekDays.map((day) => {
               const daySchedule = getScheduleForDay(day.getDay());
               const dayAppts = getAppointmentsForDay(day);
@@ -179,7 +179,7 @@ export function TherapistAgendaView() {
                   key={day.toISOString()}
                   onClick={() => setSelectedDate(day)}
                   className={cn(
-                    "p-3 rounded-lg border text-center transition-colors",
+                    "min-w-[3.25rem] flex-shrink-0 p-2 sm:p-3 rounded-lg border text-center transition-colors",
                     isSelected && "border-primary bg-primary/10",
                     isToday(day) && !isSelected && "border-primary/50",
                     !daySchedule && "opacity-50"
@@ -188,11 +188,11 @@ export function TherapistAgendaView() {
                   <div className="text-xs text-muted-foreground">
                     {format(day, 'EEE', { locale: ptBR })}
                   </div>
-                  <div className={cn("text-lg font-semibold", isToday(day) && "text-primary")}>
+                  <div className={cn("text-base sm:text-lg font-semibold", isToday(day) && "text-primary")}>
                     {format(day, 'd')}
                   </div>
                   {daySchedule && (
-                    <div className="text-[10px] text-muted-foreground">
+                    <div className="text-[10px] text-muted-foreground hidden sm:block">
                       {daySchedule.start_time.slice(0, 5)}-{daySchedule.end_time.slice(0, 5)}
                     </div>
                   )}
@@ -202,7 +202,7 @@ export function TherapistAgendaView() {
                     </Badge>
                   )}
                   {!daySchedule && (
-                    <div className="text-[10px] text-muted-foreground">Folga</div>
+                    <div className="text-[10px] text-muted-foreground hidden sm:block">Folga</div>
                   )}
                 </button>
               );

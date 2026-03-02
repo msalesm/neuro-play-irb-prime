@@ -180,9 +180,10 @@ export function ClinicAgenda() {
             <CardContent className="p-0">
               {view === 'week' && (
                 <div className="overflow-x-auto">
+                  <div className="min-w-[640px]">
                   {/* Week Header */}
                   <div className="grid grid-cols-8 border-b sticky top-0 bg-background z-10">
-                    <div className="p-2 text-center text-sm text-muted-foreground border-r w-16">
+                    <div className="p-2 text-center text-sm text-muted-foreground border-r">
                       Hora
                     </div>
                     {weekDays.map((day) => (
@@ -218,7 +219,7 @@ export function ClinicAgenda() {
                     <div className="relative">
                       {HOURS.map((hour) => (
                         <div key={hour} className="grid grid-cols-8 border-b h-[60px]">
-                          <div className="p-1 text-xs text-muted-foreground border-r w-16 text-center">
+                          <div className="p-1 text-xs text-muted-foreground border-r text-center">
                             {hour.toString().padStart(2, '0')}:00
                           </div>
                           {weekDays.map((day) => (
@@ -261,6 +262,7 @@ export function ClinicAgenda() {
                       })}
                     </div>
                   </ScrollArea>
+                  </div>
                 </div>
               )}
 
