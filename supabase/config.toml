@@ -50,3 +50,6 @@ verify_jwt = false
 
 [functions.education-ai-suggestions]
 verify_jwt = true
+
+[functions.aba-sync]
+verify_jwt = false
