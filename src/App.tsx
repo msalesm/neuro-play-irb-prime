@@ -124,6 +124,7 @@ import RoutineViewer from "./pages/RoutineViewer";
 import ConsentManagement from "./pages/ConsentManagement";
 import DataGovernance from "./pages/DataGovernance";
 import ApiIntegrations from "./pages/ApiIntegrations";
+import AbaIntegration from "./pages/AbaIntegration";
 
 // Phase 4 pages
 import InstitutionalDashboard from "./pages/InstitutionalDashboard";
@@ -331,6 +332,7 @@ const App = () => (
           <Route path="/admin/users" element={<AdminUserManagement />} />
           <Route path="/admin/relationships" element={<RelationshipsManager />} />
           <Route path="/operations" element={<OperationsCenter />} />
+          <Route path="/aba-integration" element={<AbaIntegration />} />
           
           {/* Acessibilidade e Histórias Sociais */}
           <Route path="/accessibility" element={<AccessibilitySettings />} />

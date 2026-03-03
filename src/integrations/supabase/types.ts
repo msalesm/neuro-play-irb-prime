@@ -14,6 +14,398 @@ export type Database = {
   }
   public: {
     Tables: {
+      aba_agendamentos: {
+        Row: {
+          codigo_agendamento: string | null
+          codigo_aprendiz: string | null
+          codigo_profissional: string | null
+          data_fim: string | null
+          data_inicio: string | null
+          id: string
+          raw_json: Json | null
+          situacao: string | null
+          synced_at: string | null
+          tipo: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          codigo_agendamento?: string | null
+          codigo_aprendiz?: string | null
+          codigo_profissional?: string | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          raw_json?: Json | null
+          situacao?: string | null
+          synced_at?: string | null
+          tipo?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          codigo_agendamento?: string | null
+          codigo_aprendiz?: string | null
+          codigo_profissional?: string | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          id?: string
+          raw_json?: Json | null
+          situacao?: string | null
+          synced_at?: string | null
+          tipo?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_agendamentos_codigo_aprendiz_fkey"
+            columns: ["codigo_aprendiz"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes"
+            referencedColumns: ["codigo_aprendiz"]
+          },
+          {
+            foreignKeyName: "aba_agendamentos_codigo_profissional_fkey"
+            columns: ["codigo_profissional"]
+            isOneToOne: false
+            referencedRelation: "aba_profissionais"
+            referencedColumns: ["codigo_profissional"]
+          },
+        ]
+      }
+      aba_aprendizes: {
+        Row: {
+          ativo: boolean | null
+          child_id: string | null
+          codigo_aprendiz: string
+          convenio: string | null
+          cpf: string | null
+          data_nascimento: string | null
+          id: string
+          nivel_suporte: string | null
+          nome: string
+          raw_json: Json | null
+          sexo: string | null
+          synced_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          child_id?: string | null
+          codigo_aprendiz: string
+          convenio?: string | null
+          cpf?: string | null
+          data_nascimento?: string | null
+          id?: string
+          nivel_suporte?: string | null
+          nome: string
+          raw_json?: Json | null
+          sexo?: string | null
+          synced_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          child_id?: string | null
+          codigo_aprendiz?: string
+          convenio?: string | null
+          cpf?: string | null
+          data_nascimento?: string | null
+          id?: string
+          nivel_suporte?: string | null
+          nome?: string
+          raw_json?: Json | null
+          sexo?: string | null
+          synced_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_aprendizes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_aprendizes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_aprendizes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_aprendizes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aba_atendimentos: {
+        Row: {
+          codigo_aprendiz: string | null
+          data_alteracao: string | null
+          data_fim: string | null
+          data_inicio: string | null
+          falta: boolean | null
+          id: string
+          identificador: string | null
+          observacoes: string | null
+          raw_json: Json | null
+          synced_at: string | null
+          tipo: string | null
+        }
+        Insert: {
+          codigo_aprendiz?: string | null
+          data_alteracao?: string | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          falta?: boolean | null
+          id?: string
+          identificador?: string | null
+          observacoes?: string | null
+          raw_json?: Json | null
+          synced_at?: string | null
+          tipo?: string | null
+        }
+        Update: {
+          codigo_aprendiz?: string | null
+          data_alteracao?: string | null
+          data_fim?: string | null
+          data_inicio?: string | null
+          falta?: boolean | null
+          id?: string
+          identificador?: string | null
+          observacoes?: string | null
+          raw_json?: Json | null
+          synced_at?: string | null
+          tipo?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_atendimentos_codigo_aprendiz_fkey"
+            columns: ["codigo_aprendiz"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes"
+            referencedColumns: ["codigo_aprendiz"]
+          },
+        ]
+      }
+      aba_certificados: {
+        Row: {
+          ativo: boolean | null
+          certificado_hash: string
+          created_at: string | null
+          id: string
+          updated_at: string | null
+          valido_ate: string
+        }
+        Insert: {
+          ativo?: boolean | null
+          certificado_hash: string
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          valido_ate: string
+        }
+        Update: {
+          ativo?: boolean | null
+          certificado_hash?: string
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          valido_ate?: string
+        }
+        Relationships: []
+      }
+      aba_desempenho: {
+        Row: {
+          codigo_aprendiz: string | null
+          habilidade: string | null
+          id: string
+          identificador_programa: string | null
+          identificador_sessao: string | null
+          nivel_independencia: string | null
+          percentual_ajuda: number | null
+          percentual_erro: number | null
+          percentual_independencia: number | null
+          programa: string | null
+          raw_json: Json | null
+          synced_at: string | null
+        }
+        Insert: {
+          codigo_aprendiz?: string | null
+          habilidade?: string | null
+          id?: string
+          identificador_programa?: string | null
+          identificador_sessao?: string | null
+          nivel_independencia?: string | null
+          percentual_ajuda?: number | null
+          percentual_erro?: number | null
+          percentual_independencia?: number | null
+          programa?: string | null
+          raw_json?: Json | null
+          synced_at?: string | null
+        }
+        Update: {
+          codigo_aprendiz?: string | null
+          habilidade?: string | null
+          id?: string
+          identificador_programa?: string | null
+          identificador_sessao?: string | null
+          nivel_independencia?: string | null
+          percentual_ajuda?: number | null
+          percentual_erro?: number | null
+          percentual_independencia?: number | null
+          programa?: string | null
+          raw_json?: Json | null
+          synced_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_desempenho_codigo_aprendiz_fkey"
+            columns: ["codigo_aprendiz"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes"
+            referencedColumns: ["codigo_aprendiz"]
+          },
+        ]
+      }
+      aba_neuro_scores: {
+        Row: {
+          alert_message: string | null
+          alert_type: string | null
+          calculated_at: string | null
+          codigo_aprendiz: string | null
+          id: string
+          score: number
+          score_components: Json | null
+        }
+        Insert: {
+          alert_message?: string | null
+          alert_type?: string | null
+          calculated_at?: string | null
+          codigo_aprendiz?: string | null
+          id?: string
+          score: number
+          score_components?: Json | null
+        }
+        Update: {
+          alert_message?: string | null
+          alert_type?: string | null
+          calculated_at?: string | null
+          codigo_aprendiz?: string | null
+          id?: string
+          score?: number
+          score_components?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_neuro_scores_codigo_aprendiz_fkey"
+            columns: ["codigo_aprendiz"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes"
+            referencedColumns: ["codigo_aprendiz"]
+          },
+        ]
+      }
+      aba_profissionais: {
+        Row: {
+          ativo: boolean | null
+          cargo: string | null
+          codigo_profissional: string
+          cpf: string | null
+          especialidade: string | null
+          id: string
+          nome: string
+          profile_id: string | null
+          raw_json: Json | null
+          synced_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          ativo?: boolean | null
+          cargo?: string | null
+          codigo_profissional: string
+          cpf?: string | null
+          especialidade?: string | null
+          id?: string
+          nome: string
+          profile_id?: string | null
+          raw_json?: Json | null
+          synced_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          cargo?: string | null
+          codigo_profissional?: string
+          cpf?: string | null
+          especialidade?: string | null
+          id?: string
+          nome?: string
+          profile_id?: string | null
+          raw_json?: Json | null
+          synced_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_profissionais_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_profissionais_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aba_sync_logs: {
+        Row: {
+          completed_at: string | null
+          error_message: string | null
+          id: string
+          metadata: Json | null
+          records_synced: number | null
+          started_at: string | null
+          status: string
+          sync_type: string
+        }
+        Insert: {
+          completed_at?: string | null
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          records_synced?: number | null
+          started_at?: string | null
+          status?: string
+          sync_type: string
+        }
+        Update: {
+          completed_at?: string | null
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          records_synced?: number | null
+          started_at?: string | null
+          status?: string
+          sync_type?: string
+        }
+        Relationships: []
+      }
       abandonment_alerts: {
         Row: {
           alert_type: string
