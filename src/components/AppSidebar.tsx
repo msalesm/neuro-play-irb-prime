@@ -182,6 +182,12 @@ export function AppSidebar() {
       icon: FileText,
     },
     {
+      title: 'ABA+',
+      path: '/aba-integration',
+      icon: Activity,
+      badge: 'Novo',
+    },
+    {
       title: 'Mensagens',
       path: '/messages',
       icon: Mail,
@@ -229,6 +235,12 @@ export function AppSidebar() {
       title: 'Gerenciar Usuários',
       path: '/admin/users',
       icon: Users,
+    },
+    {
+      title: 'ABA+',
+      path: '/aba-integration',
+      icon: Activity,
+      badge: 'Novo',
     },
     {
       title: 'Clube dos Pais',
