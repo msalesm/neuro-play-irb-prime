@@ -146,7 +146,7 @@ export function FloatingAIAssistant() {
           >
             <motion.button
               onClick={() => setIsOpen(true)}
-              className="h-14 w-14 rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(194,100%,22%)] shadow-lg hover:shadow-xl transition-all flex items-center justify-center text-white active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              className="h-14 w-14 rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(194,100%,22%)] shadow-lg hover:shadow-xl transition-all flex items-center justify-center text-primary-foreground active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -193,7 +193,7 @@ export function FloatingAIAssistant() {
                     >
                       <Sparkles className="h-5 w-5 text-[hsl(var(--accent))]" />
                     </motion.div>
-                    <CardTitle className="text-lg text-white">Assistente IA</CardTitle>
+                    <CardTitle className="text-lg text-primary-foreground">Assistente IA</CardTitle>
                     <Badge variant="secondary" className="text-xs">Beta</Badge>
                   </div>
                   <div className="flex items-center gap-1">
@@ -201,7 +201,7 @@ export function FloatingAIAssistant() {
                       variant="ghost"
                       size="icon"
                       onClick={() => setIsMinimized(!isMinimized)}
-                      className="h-8 w-8 text-white hover:bg-white/20"
+                      className="h-8 w-8 text-primary-foreground hover:bg-primary-foreground/20"
                     >
                       <ChevronDown className={`h-4 w-4 transition-transform ${isMinimized ? 'rotate-180' : ''}`} />
                     </Button>
@@ -209,7 +209,7 @@ export function FloatingAIAssistant() {
                       variant="ghost"
                       size="icon"
                       onClick={() => setIsOpen(false)}
-                      className="h-8 w-8 text-white hover:bg-white/20"
+                      className="h-8 w-8 text-primary-foreground hover:bg-primary-foreground/20"
                     >
                       <X className="h-4 w-4" />
                     </Button>

@@ -75,8 +75,8 @@ export function ParentDashboardContent({
                 <ChildAvatarDisplay avatar={selectedChildData.avatar_url} name={selectedChildData.name} size="xl" level={5} showEffects />
                 <div className="absolute -bottom-2 -right-2 bg-warning text-warning-foreground rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold border-2 border-background">5</div>
                 {!selectedChildData.avatar_url && (
-                  <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">Clique</span>
+                  <div className="absolute inset-0 bg-background/50 rounded-full flex items-center justify-center">
+                    <span className="text-foreground text-xs font-bold">Clique</span>
                   </div>
                 )}
               </div>
@@ -175,8 +175,8 @@ export function ParentDashboardContent({
                 <div className="space-y-2">
                   <div className="flex items-center justify-between"><span className="text-sm font-medium">Badge Atual</span><span className="text-2xl">{getBadgeIcon(badgeProgress.level)}</span></div>
                   <div className={`p-3 rounded-lg bg-gradient-to-br ${getBadgeColor(badgeProgress.level)}`}>
-                    <p className="text-white font-semibold capitalize">{badgeProgress.level}</p>
-                    <p className="text-white/80 text-xs">{badgeProgress.current} conquistas</p>
+                    <p className="text-primary-foreground font-semibold capitalize">{badgeProgress.level}</p>
+                    <p className="text-primary-foreground/80 text-xs">{badgeProgress.current} conquistas</p>
                   </div>
                 </div>
                 <div className="space-y-2">

@@ -115,17 +115,17 @@ export function StackTowerGame() {
 
       {/* Score Display */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 text-center z-10">
-        <div className="text-6xl font-bold text-white drop-shadow-lg">
+        <div className="text-6xl font-bold text-primary-foreground drop-shadow-lg">
           {score}
         </div>
       </div>
 
       {/* Game Over Screen */}
       {gameOver && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-20 bg-black/50 p-8 rounded-lg backdrop-blur-sm">
-          <h2 className="text-4xl font-bold text-white mb-4">Game Over!</h2>
-          <p className="text-2xl text-white mb-2">Score: {score}</p>
-          <p className="text-xl text-white/80 mb-6">High Score: {highScore}</p>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-20 bg-background/50 p-8 rounded-lg backdrop-blur-sm">
+          <h2 className="text-4xl font-bold text-foreground mb-4">Game Over!</h2>
+          <p className="text-2xl text-foreground mb-2">Score: {score}</p>
+          <p className="text-xl text-muted-foreground mb-6">High Score: {highScore}</p>
           <Button onClick={handleReset} size="lg">
             Jogar Novamente
           </Button>

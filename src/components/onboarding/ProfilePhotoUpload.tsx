@@ -99,8 +99,8 @@ export function ProfilePhotoUpload({
         </Avatar>
 
         {uploading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full">
-            <Loader2 className="h-6 w-6 animate-spin text-white" />
+          <div className="absolute inset-0 flex items-center justify-center bg-background/40 rounded-full">
+            <Loader2 className="h-6 w-6 animate-spin text-primary-foreground" />
           </div>
         )}
 
