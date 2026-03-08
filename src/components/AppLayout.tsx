@@ -17,6 +17,7 @@ import {
   SensoryReducedMode
 } from '@/components/accessibility';
 import { FloatingAIAssistant } from '@/components/ai/FloatingAIAssistant';
+import { ClinicalDisclaimerModal } from '@/components/clinical/ClinicalDisclaimerModal';
 
 interface AppLayoutProps {
   children: React.ReactNode;
