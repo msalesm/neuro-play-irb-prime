@@ -5,7 +5,7 @@ import {
   Brain, Target, TrendingUp, ArrowRight, GraduationCap, 
   Zap, BookOpen, BarChart3, Award, Heart, Shield, Users, 
   Stethoscope, Gamepad2, CalendarCheck, MessageCircle, Star,
-  CheckCircle2
+  CheckCircle2, Smartphone, Apple, Monitor
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
