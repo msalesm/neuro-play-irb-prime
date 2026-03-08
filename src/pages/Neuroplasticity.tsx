@@ -164,11 +164,11 @@ export default function Neuroplasticity() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-12 pb-24 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-background via-primary/20 to-background text-foreground py-12 pb-24 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Acesso Restrito</h1>
-            <p className="text-white/70 mb-6">Faça login para acessar os jogos de neuroplasticidade</p>
+            <p className="text-muted-foreground mb-6">Faça login para acessar os jogos de neuroplasticidade</p>
             <Button asChild>
               <Link to="/auth">Fazer Login</Link>
             </Button>
@@ -180,14 +180,14 @@ export default function Neuroplasticity() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-12 pb-24 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-background via-primary/20 to-background text-foreground py-12 pb-24 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Neuroplasticidade</h1>
-            <p className="text-white/70 mb-6">Carregando seus dados...</p>
+            <p className="text-muted-foreground mb-6">Carregando seus dados...</p>
             <div className="animate-pulse space-y-4">
-              <div className="h-4 bg-white/20 rounded"></div>
-              <div className="h-4 bg-white/20 rounded w-3/4 mx-auto"></div>
+              <div className="h-4 bg-primary-foreground/20 rounded"></div>
+              <div className="h-4 bg-primary-foreground/20 rounded w-3/4 mx-auto"></div>
             </div>
           </div>
         </div>
@@ -200,7 +200,7 @@ export default function Neuroplasticity() {
   const totalSessions = neuroplasticityData.total_sessions;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white py-12 pb-32 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/20 to-background text-foreground py-12 pb-32 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-4 w-72 h-72 bg-secondary/10 rounded-full blur-3xl" />
@@ -211,17 +211,17 @@ export default function Neuroplasticity() {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-purple-500/25">
-              <Brain className="h-8 w-8 text-white" />
+            <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-2xl shadow-primary/25">
+              <Brain className="h-8 w-8 text-primary-foreground" />
             </div>
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-white">
+            <h1 className="font-heading text-4xl md:text-5xl font-bold">
               Neuro
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-info bg-clip-text text-transparent">
                 plasticidade
               </span>
             </h1>
           </div>
-          <p className="text-xl text-white/70 max-w-3xl mx-auto text-balance">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-balance">
             Desenvolva seu cérebro através de jogos cientificamente validados
           </p>
         </div>
@@ -247,7 +247,7 @@ export default function Neuroplasticity() {
       {/* Progresso por Categoria */}
       <div className="mb-8">
         <h2 className="text-2xl font-bold mb-6 text-center">
-          <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-primary to-info bg-clip-text text-transparent">
             Progresso por Categoria
           </span>
         </h2>
@@ -261,11 +261,11 @@ export default function Neuroplasticity() {
           }).map(([key, label]) => {
             const progress = getCategoryProgress(key as any);
             return (
-              <div key={key} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-                <h3 className="font-semibold text-sm mb-2 text-white/90">{label}</h3>
+              <div key={key} className="bg-card/50 backdrop-blur-sm rounded-xl p-4 border border-border">
+                <h3 className="font-semibold text-sm mb-2 text-foreground/90">{label}</h3>
                 <div className="flex items-center gap-2 mb-2">
                   <Progress value={progress} className="flex-1 h-2" />
-                  <span className="text-xs text-white/70">{Math.round(progress)}%</span>
+                  <span className="text-xs text-muted-foreground">{Math.round(progress)}%</span>
                 </div>
               </div>
             );
@@ -279,8 +279,8 @@ export default function Neuroplasticity() {
         
         return (
           <div key={categoryKey} className="mb-12">
-            <h2 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-              <div className="w-6 h-6 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg"></div>
+            <h2 className="text-xl font-bold mb-6 text-foreground flex items-center gap-2">
+              <div className="w-6 h-6 bg-gradient-primary rounded-lg"></div>
               {categoryName}
             </h2>
             
@@ -304,12 +304,12 @@ export default function Neuroplasticity() {
       })}
 
       {/* Call to Action */}
-      <div className="text-center py-8 bg-white/5 rounded-2xl border border-white/10">
-        <Brain className="w-16 h-16 mx-auto mb-4 text-purple-400" />
-        <h3 className="text-xl font-bold mb-2 text-white">
+      <div className="text-center py-8 bg-card/30 rounded-2xl border border-border">
+        <Brain className="w-16 h-16 mx-auto mb-4 text-primary" />
+        <h3 className="text-xl font-bold mb-2 text-foreground">
           Continue Desenvolvendo sua Neuroplasticidade
         </h3>
-        <p className="text-white/70 mb-6 max-w-md mx-auto">
+        <p className="text-muted-foreground mb-6 max-w-md mx-auto">
           Cada jogo é baseado em pesquisas científicas sobre neuroplasticidade e desenvolvimento cognitivo.
         </p>
         <Button 

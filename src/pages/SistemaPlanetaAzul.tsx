@@ -153,7 +153,7 @@ export default function SistemaPlanetaAzul() {
           {[...Array(100)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-white rounded-full"
+              className="absolute w-1 h-1 bg-primary-foreground rounded-full"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -178,7 +178,7 @@ export default function SistemaPlanetaAzul() {
               <Button 
                 variant="ghost" 
                 onClick={() => navigate('/dashboard-pais')}
-                className="text-white hover:bg-white/10"
+                className="text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Voltar ao Dashboard
@@ -190,7 +190,7 @@ export default function SistemaPlanetaAzul() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="border-white/30 bg-white/10 text-white hover:bg-white/20 gap-2"
+                      className="border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20 gap-2"
                     >
                       <Camera className="h-4 w-4" />
                       Como estou?
@@ -206,13 +206,13 @@ export default function SistemaPlanetaAzul() {
                   </DialogContent>
                 </Dialog>
                 
-                <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
+                <div className="flex items-center gap-3 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-2 border border-primary-foreground/20">
                   <ChildAvatarDisplay
                     avatar={childAvatar}
                     name={childName}
                     size="md"
                   />
-                  <span className="text-white font-semibold">{childName}</span>
+                  <span className="text-primary-foreground font-semibold">{childName}</span>
                 </div>
               </div>
             </div>
@@ -220,13 +220,13 @@ export default function SistemaPlanetaAzul() {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
               <div>
                 <motion.h1 
-                  className="text-5xl font-bold mb-2 bg-gradient-to-r from-white via-accent to-white bg-clip-text text-transparent"
+                  className="text-5xl font-bold mb-2 bg-gradient-to-r from-primary-foreground via-accent to-primary-foreground bg-clip-text text-transparent"
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
                   Planeta Azul
                 </motion.h1>
-                <p className="text-white/80 text-lg flex items-center gap-2">
+                <p className="text-primary-foreground/80 text-lg flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-accent" />
                   Explore universos terapêuticos e domine habilidades cognitivas
                 </p>
@@ -236,7 +236,7 @@ export default function SistemaPlanetaAzul() {
                 <Button
                   variant={viewMode === 'mapa' ? 'default' : 'outline'}
                   onClick={() => setViewMode('mapa')}
-                  className={viewMode === 'mapa' ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : 'border-white/30 bg-white/10 text-white hover:bg-white/20'}
+                  className={viewMode === 'mapa' ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : 'border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20'}
                 >
                   <Map className="w-4 h-4 mr-2" />
                   Mapa Espacial
@@ -244,7 +244,7 @@ export default function SistemaPlanetaAzul() {
                 <Button
                   variant={viewMode === 'grid' ? 'default' : 'outline'}
                   onClick={() => setViewMode('grid')}
-                  className={viewMode === 'grid' ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : 'border-white/30 bg-white/10 text-white hover:bg-white/20'}
+                  className={viewMode === 'grid' ? 'bg-accent hover:bg-accent/90 text-accent-foreground' : 'border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground hover:bg-primary-foreground/20'}
                 >
                   <Grid3x3 className="w-4 h-4 mr-2" />
                   Visualização em Grade
@@ -254,50 +254,50 @@ export default function SistemaPlanetaAzul() {
 
             {/* Overall Progress */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+              <Card className="bg-primary-foreground/10 backdrop-blur-md border-primary-foreground/20">
                 <CardContent className="p-4 flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
                     <Trophy className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <p className="text-white/60 text-sm">Progresso Geral</p>
-                    <p className="text-white text-2xl font-bold">{Math.round(progressoGeral)}%</p>
+                    <p className="text-primary-foreground/60 text-sm">Progresso Geral</p>
+                    <p className="text-primary-foreground text-2xl font-bold">{Math.round(progressoGeral)}%</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+              <Card className="bg-primary-foreground/10 backdrop-blur-md border-primary-foreground/20">
                 <CardContent className="p-4 flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
                     <Rocket className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="text-white/60 text-sm">Missões</p>
-                    <p className="text-white text-2xl font-bold">{missoesCompletas}/{totalMissoes}</p>
+                    <p className="text-primary-foreground/60 text-sm">Missões</p>
+                    <p className="text-primary-foreground text-2xl font-bold">{missoesCompletas}/{totalMissoes}</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+              <Card className="bg-primary-foreground/10 backdrop-blur-md border-primary-foreground/20">
                 <CardContent className="p-4 flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-neuroplay-green/20 flex items-center justify-center">
                     <Sparkles className="w-6 h-6 text-neuroplay-green" />
                   </div>
                   <div>
-                    <p className="text-white/60 text-sm">Planetas Completos</p>
-                    <p className="text-white text-2xl font-bold">{planetasCompletos}/{planetas.length}</p>
+                    <p className="text-primary-foreground/60 text-sm">Planetas Completos</p>
+                    <p className="text-primary-foreground text-2xl font-bold">{planetasCompletos}/{planetas.length}</p>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+              <Card className="bg-primary-foreground/10 backdrop-blur-md border-primary-foreground/20">
                 <CardContent className="p-4 flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center">
                     <span className="text-2xl">🪐</span>
                   </div>
                   <div>
-                    <p className="text-white/60 text-sm">Planetas Ativos</p>
-                    <p className="text-white text-2xl font-bold">{planetas.filter(p => p.desbloqueado).length}</p>
+                    <p className="text-primary-foreground/60 text-sm">Planetas Ativos</p>
+                    <p className="text-primary-foreground text-2xl font-bold">{planetas.filter(p => p.desbloqueado).length}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -358,31 +358,31 @@ export default function SistemaPlanetaAzul() {
           </AnimatePresence>
 
           {/* Footer Info */}
-          <Card className="mt-8 bg-white/10 backdrop-blur-md border-white/20">
+          <Card className="mt-8 bg-primary-foreground/10 backdrop-blur-md border-primary-foreground/20">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
                   <Sparkles className="w-6 h-6 text-accent" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-white text-lg font-semibold mb-2">
+                  <h3 className="text-primary-foreground text-lg font-semibold mb-2">
                     Como funciona o Sistema Planeta Azul?
                   </h3>
-                  <p className="text-white/70 text-sm leading-relaxed mb-3">
+                  <p className="text-primary-foreground/70 text-sm leading-relaxed mb-3">
                     Cada planeta representa uma área terapêutica específica com jogos e desafios personalizados. 
                     Complete missões para desbloquear recompensas, revelar novos conteúdos e dominar habilidades cognitivas essenciais.
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
+                    <Badge variant="secondary" className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20">
                       🎮 {totalMissoes} Jogos Terapêuticos
                     </Badge>
-                    <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
+                    <Badge variant="secondary" className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20">
                       🎯 Adaptação por IA
                     </Badge>
-                    <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
+                    <Badge variant="secondary" className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20">
                       📊 Análise em Tempo Real
                     </Badge>
-                    <Badge variant="secondary" className="bg-white/10 text-white border-white/20">
+                    <Badge variant="secondary" className="bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20">
                       🏆 Sistema de Recompensas
                     </Badge>
                   </div>
