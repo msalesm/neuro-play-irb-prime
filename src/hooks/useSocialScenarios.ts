@@ -1,18 +1,32 @@
 import { useState, useCallback } from 'react';
 
-interface SocialScenario {
+export interface SocialScenario {
   id: string;
   title: string;
   description: string;
   category: string;
   difficulty: number;
-  options: { text: string; isCorrect: boolean; feedback: string }[];
+  difficulty_level: 'beginner' | 'intermediate' | 'advanced';
+  skills_focus: string[];
+  options: { text: string; isCorrect: boolean; feedback: string; empathy?: number; assertiveness?: number; communication?: number }[];
 }
 
-interface SocialSession {
+export interface SocialSession {
   id: string;
   score: number;
   completed_at: string;
+}
+
+export interface SocialProgress {
+  totalSessions: number;
+  avgScore: number;
+}
+
+export interface SocialAchievement {
+  id: string;
+  key: string;
+  name: string;
+  unlocked: boolean;
 }
 
 const defaultScenarios: SocialScenario[] = [
@@ -22,9 +36,11 @@ const defaultScenarios: SocialScenario[] = [
     description: 'Seu amigo quer brincar com o seu brinquedo favorito. O que você faz?',
     category: 'sharing',
     difficulty: 1,
+    difficulty_level: 'beginner',
+    skills_focus: ['communication', 'empathy'],
     options: [
-      { text: 'Divido o brinquedo com meu amigo', isCorrect: true, feedback: 'Ótimo! Compartilhar é muito legal!' },
-      { text: 'Não divido', isCorrect: false, feedback: 'Tente compartilhar, seus amigos vão gostar!' },
+      { text: 'Divido o brinquedo com meu amigo', isCorrect: true, feedback: 'Ótimo! Compartilhar é muito legal!', empathy: 5, assertiveness: 3, communication: 4 },
+      { text: 'Não divido', isCorrect: false, feedback: 'Tente compartilhar, seus amigos vão gostar!', empathy: 1, assertiveness: 2, communication: 1 },
     ],
   },
   {
@@ -33,25 +49,38 @@ const defaultScenarios: SocialScenario[] = [
     description: 'Você encontra um colega na escola. O que você faz?',
     category: 'greeting',
     difficulty: 1,
+    difficulty_level: 'beginner',
+    skills_focus: ['communication'],
     options: [
-      { text: 'Digo "Oi!" e aceno', isCorrect: true, feedback: 'Perfeito! Cumprimentar é muito educado!' },
-      { text: 'Ignoro', isCorrect: false, feedback: 'Cumprimentar as pessoas é gentil!' },
+      { text: 'Digo "Oi!" e aceno', isCorrect: true, feedback: 'Perfeito! Cumprimentar é muito educado!', empathy: 3, assertiveness: 4, communication: 5 },
+      { text: 'Ignoro', isCorrect: false, feedback: 'Cumprimentar as pessoas é gentil!', empathy: 1, assertiveness: 1, communication: 1 },
     ],
   },
 ];
 
 export function useSocialScenarios(userId?: string) {
   const [scenarios] = useState<SocialScenario[]>(defaultScenarios);
-  const [sessions] = useState<SocialSession[]>([]);
+  const [userSessions] = useState<SocialSession[]>([]);
+  const [userProgress] = useState<SocialProgress>({ totalSessions: 0, avgScore: 0 });
+  const [achievements] = useState<SocialAchievement[]>([]);
+  const [unlockedAchievements] = useState<SocialAchievement[]>([]);
   const [loading] = useState(false);
 
-  const completeSession = useCallback(async (score: number) => {
-    console.log('Session completed with score:', score);
+  const completeSession = useCallback(async (
+    scenarioId: string,
+    choices: any[],
+    scores: { empathy: number; assertiveness: number; communication: number },
+    completionTime: number
+  ) => {
+    console.log('Session completed:', { scenarioId, scores, completionTime });
   }, []);
 
   return {
     scenarios,
-    sessions,
+    userProgress,
+    userSessions,
+    achievements,
+    unlockedAchievements,
     loading,
     completeSession,
   };
