@@ -148,6 +148,7 @@ export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPa
         .from('children')
         .update({
           name: data.name,
+          avatar_url: photoUrl || null,
           birth_date: data.birth_date,
           gender: data.gender || null,
           cpf: data.cpf || null,
@@ -204,6 +205,13 @@ export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPa
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   Dados do Paciente
                 </h3>
+
+                <ProfilePhotoUpload
+                  currentPhotoUrl={photoUrl}
+                  name={form.watch('name') || 'Paciente'}
+                  onPhotoUploaded={setPhotoUrl}
+                  size="lg"
+                />
 
                 <FormField control={form.control} name="name" render={({ field }) => (
                   <FormItem>
