@@ -59,8 +59,8 @@ export function SmartInsightsPanel({ childId, compact = false }: SmartInsightsPa
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'bg-destructive/10 text-destructive border-destructive/20';
-      case 'medium': return 'bg-amber-500/10 text-amber-600 border-amber-500/20';
-      case 'low': return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+      case 'medium': return 'bg-warning/10 text-warning border-warning/20';
+      case 'low': return 'bg-success/10 text-success border-success/20';
       default: return 'bg-muted text-muted-foreground';
     }
   };
@@ -68,8 +68,8 @@ export function SmartInsightsPanel({ childId, compact = false }: SmartInsightsPa
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case 'critical': return <AlertTriangle className="h-4 w-4 text-destructive" />;
-      case 'warning': return <AlertTriangle className="h-4 w-4 text-amber-500" />;
-      case 'positive': return <TrendingUp className="h-4 w-4 text-emerald-500" />;
+      case 'warning': return <AlertTriangle className="h-4 w-4 text-warning" />;
+      case 'positive': return <TrendingUp className="h-4 w-4 text-success" />;
       default: return <Lightbulb className="h-4 w-4 text-primary" />;
     }
   };
@@ -162,12 +162,12 @@ export function SmartInsightsPanel({ childId, compact = false }: SmartInsightsPa
               <p className="text-xs text-muted-foreground">Sessões/semana</p>
             </div>
             <div className="bg-background/80 rounded-lg p-3 text-center">
-              <Target className="h-4 w-4 mx-auto mb-1 text-emerald-500" />
+              <Target className="h-4 w-4 mx-auto mb-1 text-success" />
               <p className="text-lg font-bold">{childContext.recentPerformance.averageAccuracy.toFixed(0)}%</p>
               <p className="text-xs text-muted-foreground">Acurácia média</p>
             </div>
             <div className="bg-background/80 rounded-lg p-3 text-center">
-              <Zap className="h-4 w-4 mx-auto mb-1 text-amber-500" />
+              <Zap className="h-4 w-4 mx-auto mb-1 text-warning" />
               <p className="text-lg font-bold capitalize">{childContext.recentPerformance.trend === 'improving' ? '↑' : childContext.recentPerformance.trend === 'declining' ? '↓' : '→'}</p>
               <p className="text-xs text-muted-foreground">Tendência</p>
             </div>
@@ -298,7 +298,7 @@ export function SmartInsightsPanel({ childId, compact = false }: SmartInsightsPa
                   disabled={isLoading || !childId}
                   className="flex-col h-auto py-3"
                 >
-                  <Sparkles className="h-5 w-5 mb-1 text-amber-500" />
+                  <Sparkles className="h-5 w-5 mb-1 text-warning" />
                   <span className="text-xs">Intervenções</span>
                 </Button>
               </div>
@@ -320,8 +320,8 @@ export function SmartInsightsPanel({ childId, compact = false }: SmartInsightsPa
                         <Badge 
                           variant="outline" 
                           className={insight.severity === 'critical' ? 'border-destructive text-destructive' :
-                                    insight.severity === 'warning' ? 'border-amber-500 text-amber-600' :
-                                    insight.severity === 'positive' ? 'border-emerald-500 text-emerald-600' : ''}
+                                    insight.severity === 'warning' ? 'border-warning text-warning' :
+                                    insight.severity === 'positive' ? 'border-success text-success' : ''}
                         >
                           {insight.severity}
                         </Badge>

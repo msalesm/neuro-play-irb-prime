@@ -310,7 +310,7 @@ export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-amber-500" />
+            <AlertTriangle className="h-5 w-5 text-warning" />
             Histórico de Triagens
           </CardTitle>
         </CardHeader>
@@ -365,8 +365,8 @@ export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {
                         </div>
                       </div>
                       {screening.recommended_action && (
-                        <div className="mt-3 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                          <p className="text-sm text-amber-700 flex items-center gap-2">
+                        <div className="mt-3 p-2 rounded-lg bg-warning/10 border border-warning/20">
+                          <p className="text-sm text-warning flex items-center gap-2">
                             <AlertTriangle className="w-4 h-4" />
                             {screening.recommended_action}
                           </p>

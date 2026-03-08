@@ -93,12 +93,12 @@ export function EducationalAlerts({ students, observations, allObservations }: E
   };
 
   return (
-    <Card className="border-amber-500/20 bg-amber-500/5">
+    <Card className="border-warning/20 bg-warning/5">
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center gap-2">
-          <AlertTriangle className="h-5 w-5 text-amber-500" />
+          <AlertTriangle className="h-5 w-5 text-warning" />
           Alertas Educacionais
-          <Badge variant="outline" className="ml-auto bg-amber-500/10 text-amber-700 border-amber-500/20">
+          <Badge variant="outline" className="ml-auto bg-warning/10 text-warning border-warning/20">
             {alerts.length}
           </Badge>
         </CardTitle>
@@ -109,11 +109,11 @@ export function EducationalAlerts({ students, observations, allObservations }: E
             key={`${alert.childId}-${alert.type}-${idx}`}
             className={`flex items-start gap-3 p-3 rounded-lg border ${
               alert.severity === 'critical' 
-                ? 'bg-red-500/5 border-red-500/20' 
-                : 'bg-amber-500/5 border-amber-500/20'
+                ? 'bg-destructive/5 border-destructive/20' 
+                : 'bg-warning/5 border-warning/20'
             }`}
           >
-            <div className={`mt-0.5 ${alert.severity === 'critical' ? 'text-red-500' : 'text-amber-500'}`}>
+            <div className={`mt-0.5 ${alert.severity === 'critical' ? 'text-destructive' : 'text-warning'}`}>
               {getAlertIcon(alert.type)}
             </div>
             <div className="flex-1 min-w-0">
@@ -123,8 +123,8 @@ export function EducationalAlerts({ students, observations, allObservations }: E
               variant="outline" 
               className={`shrink-0 text-xs ${
                 alert.severity === 'critical' 
-                  ? 'bg-red-500/10 text-red-700 border-red-500/20' 
-                  : 'bg-amber-500/10 text-amber-700 border-amber-500/20'
+                  ? 'bg-destructive/10 text-destructive border-destructive/20' 
+                  : 'bg-warning/10 text-warning border-warning/20'
               }`}
             >
               {alert.severity === 'critical' ? 'Urgente' : 'Atenção'}

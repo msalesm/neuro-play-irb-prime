@@ -36,24 +36,24 @@ export function HapticSettings() {
         <CardContent className="space-y-4">
           {isIOS ? (
             <>
-              <div className="flex items-start gap-3 p-4 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-4 bg-warning/10 border border-warning/20 rounded-lg">
+                <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-orange-900 dark:text-orange-200">
+                  <p className="text-sm font-medium text-foreground">
                     Limitação do iPhone/iPad
                   </p>
-                  <p className="text-sm text-orange-800 dark:text-orange-300">
+                  <p className="text-sm text-muted-foreground">
                     A Apple não permite vibração em aplicativos web abertos no Safari. 
                     Esta é uma restrição de segurança do iOS.
                   </p>
                 </div>
               </div>
               
-              <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-lg p-4">
-                <p className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-2">
+              <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                <p className="text-sm font-medium text-foreground mb-2">
                   💡 Quer ter vibração no iPhone?
                 </p>
-                <p className="text-sm text-blue-800 dark:text-blue-300">
+                <p className="text-sm text-muted-foreground">
                   Para ter feedback háptico funcionando no iPhone, é necessário transformar 
                   o NeuroPlay em um aplicativo nativo (disponível na App Store). 
                   Entre em contato com o suporte para saber mais.
@@ -106,7 +106,7 @@ export function HapticSettings() {
             <RadioGroupItem value="light" id="light" />
             <Label htmlFor="light" className="flex-1 cursor-pointer">
               <div className="flex items-center gap-2">
-                <Volume1 className="w-4 h-4 text-blue-500" />
+                <Volume1 className="w-4 h-4 text-primary" />
                 <div>
                   <p className="font-medium">Leve</p>
                   <p className="text-sm text-muted-foreground">Vibrações suaves e curtas</p>
@@ -119,7 +119,7 @@ export function HapticSettings() {
             <RadioGroupItem value="medium" id="medium" />
             <Label htmlFor="medium" className="flex-1 cursor-pointer">
               <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-purple-500" />
+                <Volume2 className="w-4 h-4 text-secondary" />
                 <div>
                   <p className="font-medium">Média</p>
                   <p className="text-sm text-muted-foreground">Feedback balanceado (recomendado)</p>
@@ -132,7 +132,7 @@ export function HapticSettings() {
             <RadioGroupItem value="strong" id="strong" />
             <Label htmlFor="strong" className="flex-1 cursor-pointer">
               <div className="flex items-center gap-2">
-                <Vibrate className="w-4 h-4 text-orange-500" />
+                <Vibrate className="w-4 h-4 text-warning" />
                 <div>
                   <p className="font-medium">Forte</p>
                   <p className="text-sm text-muted-foreground">Vibrações intensas e longas</p>
@@ -154,16 +154,16 @@ export function HapticSettings() {
           </Button>
         </div>
 
-        <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-lg p-4">
-          <p className="text-sm text-blue-900 dark:text-blue-200">
+        <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+          <p className="text-sm text-foreground">
             <strong>Dica:</strong> O feedback háptico ajuda a reforçar o aprendizado através do tato, 
             especialmente útil para crianças com TDAH e TEA que se beneficiam de estímulos multissensoriais.
           </p>
         </div>
 
         {isNative && (
-          <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 rounded-lg p-4">
-            <p className="text-sm text-green-900 dark:text-green-200">
+          <div className="bg-success/10 border border-success/20 rounded-lg p-4">
+            <p className="text-sm text-foreground">
               ✓ <strong>App Nativo Detectado:</strong> Usando feedback háptico nativo do sistema operacional 
               para melhor desempenho e precisão.
             </p>

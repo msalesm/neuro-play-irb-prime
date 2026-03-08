@@ -22,11 +22,11 @@ interface RiskIndicatorCardProps {
 export function RiskIndicatorCard({ riskIndicator, onViewDetails, onRefresh, loading }: RiskIndicatorCardProps) {
   const getRiskColor = (level: string) => {
     switch (level) {
-      case 'critical': return 'text-red-600 bg-red-50 border-red-200';
-      case 'high': return 'text-orange-600 bg-orange-50 border-orange-200';
-      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'low': return 'text-green-600 bg-green-50 border-green-200';
-      default: return 'text-gray-600 bg-gray-50 border-gray-200';
+      case 'critical': return 'text-destructive bg-destructive/10 border-destructive/30';
+      case 'high': return 'text-warning bg-warning/10 border-warning/30';
+      case 'medium': return 'text-warning bg-warning/5 border-warning/20';
+      case 'low': return 'text-success bg-success/10 border-success/30';
+      default: return 'text-muted-foreground bg-muted border-border';
     }
   };
 
@@ -101,10 +101,10 @@ export function RiskIndicatorCard({ riskIndicator, onViewDetails, onRefresh, loa
           <Progress 
             value={riskIndicator.score} 
             className={`h-3 ${
-              riskIndicator.level === 'critical' ? '[&>div]:bg-red-600' :
-              riskIndicator.level === 'high' ? '[&>div]:bg-orange-600' :
-              riskIndicator.level === 'medium' ? '[&>div]:bg-yellow-600' :
-              '[&>div]:bg-green-600'
+              riskIndicator.level === 'critical' ? '[&>div]:bg-destructive' :
+              riskIndicator.level === 'high' ? '[&>div]:bg-warning' :
+              riskIndicator.level === 'medium' ? '[&>div]:bg-warning' :
+              '[&>div]:bg-success'
             }`}
           />
         </div>
@@ -129,10 +129,10 @@ export function RiskIndicatorCard({ riskIndicator, onViewDetails, onRefresh, loa
               <li key={i} className="flex items-start gap-2 text-sm">
                 <span className={`mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0 ${
                   riskIndicator.level === 'critical' || riskIndicator.level === 'high' 
-                    ? 'bg-red-500' 
+                    ? 'bg-destructive' 
                     : riskIndicator.level === 'medium' 
-                    ? 'bg-yellow-500' 
-                    : 'bg-green-500'
+                    ? 'bg-warning' 
+                    : 'bg-success'
                 }`} />
                 <span className="text-muted-foreground">{indicator}</span>
               </li>

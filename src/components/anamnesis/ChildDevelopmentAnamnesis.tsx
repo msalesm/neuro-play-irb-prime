@@ -981,9 +981,9 @@ export function ChildDevelopmentAnamnesis({
 
                   {anamnesis.generated_summary.attention_points && 
                    anamnesis.generated_summary.attention_points.length > 0 && (
-                    <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
+                    <div className="p-4 bg-warning/10 rounded-lg">
                       <h4 className="font-medium mb-2 flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4 text-orange-600" />
+                        <AlertCircle className="w-4 h-4 text-warning" />
                         Pontos de Atenção
                       </h4>
                       <ul className="text-sm space-y-1">
@@ -996,7 +996,7 @@ export function ChildDevelopmentAnamnesis({
 
                   {anamnesis.generated_summary.development_areas && 
                    Object.keys(anamnesis.generated_summary.development_areas).length > 0 && (
-                    <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                    <div className="p-4 bg-primary/10 rounded-lg">
                       <h4 className="font-medium mb-2">Áreas do Desenvolvimento</h4>
                       <div className="grid grid-cols-2 gap-2 text-sm">
                         {Object.entries(anamnesis.generated_summary.development_areas).map(([area, desc]) => (

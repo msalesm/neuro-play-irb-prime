@@ -291,7 +291,7 @@ export default function ClinicalDashboard() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
                 <Activity className="w-6 h-6 text-white" aria-hidden="true" />
               </div>
               <div>
@@ -303,12 +303,12 @@ export default function ClinicalDashboard() {
             </div>
             <div className="flex items-center gap-2">
               {isAdmin && (
-                <Badge variant="outline" className="border-amber-500 text-amber-600">
+                <Badge variant="outline" className="border-warning text-warning">
                   <Users className="w-3 h-3 mr-1" aria-hidden="true" />
                   Admin
                 </Badge>
               )}
-              <Badge variant="secondary" className="bg-gradient-to-r from-purple-500 to-blue-500 text-white border-0">
+              <Badge variant="secondary" className="bg-gradient-to-r from-secondary to-primary text-primary-foreground border-0">
                 <Brain className="w-3 h-3 mr-1" aria-hidden="true" />
                 IA Ativada
               </Badge>
@@ -470,13 +470,13 @@ export default function ClinicalDashboard() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {stats.totalSessions === 0 ? (
-                  <div className="flex items-start gap-3 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-                    <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-3 p-4 bg-warning/10 border border-warning/20 rounded-lg">
+                    <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-amber-900">
+                      <p className="text-sm font-medium text-foreground">
                         Nenhuma sessão de jogo encontrada
                       </p>
-                      <p className="text-sm text-amber-700">
+                      <p className="text-sm text-muted-foreground">
                         Complete pelo menos 5 sessões de jogos diferentes para gerar uma análise completa com IA.
                       </p>
                       <Button variant="outline" size="sm" asChild className="mt-2">

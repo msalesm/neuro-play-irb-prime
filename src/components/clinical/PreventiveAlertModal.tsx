@@ -93,9 +93,9 @@ export function PreventiveAlertModal({ open, onClose, alert }: PreventiveAlertMo
                 {alert.indicators.map((indicator, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm p-3 bg-muted/50 rounded-lg">
                     <span className={`mt-0.5 w-2 h-2 rounded-full flex-shrink-0 ${
-                      alert.level === 'critical' ? 'bg-red-500 animate-pulse' :
-                      alert.level === 'high' ? 'bg-orange-500' :
-                      'bg-yellow-500'
+                      alert.level === 'critical' ? 'bg-destructive animate-pulse' :
+                      alert.level === 'high' ? 'bg-warning' :
+                      'bg-warning/70'
                     }`} />
                     <span>{indicator}</span>
                   </li>
@@ -124,16 +124,16 @@ export function PreventiveAlertModal({ open, onClose, alert }: PreventiveAlertMo
 
           {/* Emergency Options */}
           {alert.level === 'critical' && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <p className="text-sm font-semibold text-red-800 mb-3">
+            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+              <p className="text-sm font-semibold text-destructive mb-3">
                 ⚠️ Se a situação for urgente:
               </p>
               <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm text-red-700">
+                <div className="flex items-center gap-2 text-sm text-destructive">
                   <Phone className="w-4 h-4" />
                   <span>Ligue para emergência: 192 (SAMU) ou 188 (CVV)</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-red-700">
+                <div className="flex items-center gap-2 text-sm text-destructive">
                   <MessageCircle className="w-4 h-4" />
                   <span>Entre em contato com o terapeuta imediatamente</span>
                 </div>
@@ -153,9 +153,9 @@ export function PreventiveAlertModal({ open, onClose, alert }: PreventiveAlertMo
             onClick={handleEmergencyChat}
             className={
               alert.level === 'critical' 
-                ? 'bg-red-600 hover:bg-red-700' 
+                ? 'bg-destructive hover:bg-destructive/90' 
                 : alert.level === 'high'
-                ? 'bg-orange-600 hover:bg-orange-700'
+                ? 'bg-warning hover:bg-warning/90 text-warning-foreground'
                 : ''
             }
           >

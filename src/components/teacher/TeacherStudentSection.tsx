@@ -149,7 +149,7 @@ function StudentCard({ student, formatPlayTime, onViewDetails }: StudentCardProp
             <div className="flex items-center gap-2">
               <h3 className="font-semibold">{student.name}</h3>
               {needsAttention && (
-                <AlertCircle className="h-4 w-4 text-amber-500" />
+                <AlertCircle className="h-4 w-4 text-warning" />
               )}
             </div>
             <div className="flex items-center gap-2 flex-wrap">

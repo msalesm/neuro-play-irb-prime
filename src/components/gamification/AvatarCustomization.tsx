@@ -18,7 +18,7 @@ const rarityColors = {
   common: 'bg-muted-foreground',
   rare: 'bg-primary',
   epic: 'bg-accent',
-  legendary: 'bg-amber-500'
+  legendary: 'bg-warning'
 };
 
 export const AvatarCustomization = ({ evolution, onEquipAccessory }: AvatarCustomizationProps) => {

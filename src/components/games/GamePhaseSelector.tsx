@@ -19,13 +19,13 @@ export const GamePhaseSelector: React.FC<GamePhaseSelectorProps> = ({
 }) => {
   const getDifficultyColor = (difficulty: number) => {
     const colors = {
-      1: 'bg-green-500',
-      2: 'bg-blue-500',
-      3: 'bg-yellow-500',
-      4: 'bg-orange-500',
-      5: 'bg-red-500'
+      1: 'bg-success',
+      2: 'bg-primary',
+      3: 'bg-warning',
+      4: 'bg-accent',
+      5: 'bg-destructive'
     };
-    return colors[difficulty as keyof typeof colors] || 'bg-gray-500';
+    return colors[difficulty as keyof typeof colors] || 'bg-muted-foreground';
   };
 
   const getDifficultyLabel = (difficulty: number) => {
@@ -112,8 +112,8 @@ export const GamePhaseSelector: React.FC<GamePhaseSelectorProps> = ({
                       key={star}
                       className={`w-5 h-5 ${
                         star <= phase.stars
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-gray-300'
+                          ? 'fill-warning text-warning'
+                          : 'text-muted'
                       }`}
                     />
                   ))}

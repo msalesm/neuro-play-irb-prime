@@ -119,8 +119,8 @@ export function TermsStep({ data, updateData }: Props) {
         </div>
       </div>
 
-      <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg">
-        <p className="text-sm text-amber-900">
+      <div className="bg-warning/10 border border-warning/20 p-4 rounded-lg">
+        <p className="text-sm text-foreground">
           <strong>Importante:</strong> Ao aceitar estes termos, você confirma que compreende a natureza 
           terapêutica complementar da plataforma e que manterá acompanhamento profissional especializado.
         </p>

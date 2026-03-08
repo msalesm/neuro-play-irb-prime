@@ -70,12 +70,12 @@ export function EscalationPanel({ escalations, onResolve }: Props) {
             pendingEscalations.map(escalation => (
               <div 
                 key={escalation.id}
-                className="p-4 rounded-lg border border-orange-200 bg-orange-50"
+                className="p-4 rounded-lg border border-warning/20 bg-warning/5"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <AlertTriangle className="w-4 h-4 text-orange-500" />
+                      <AlertTriangle className="w-4 h-4 text-warning" />
                       <Badge className={getLevelBadge(escalation.escalation_level)}>
                         Nível {escalation.escalation_level}
                       </Badge>

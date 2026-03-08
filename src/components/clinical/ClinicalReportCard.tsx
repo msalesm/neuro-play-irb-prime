@@ -67,7 +67,7 @@ export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalRepor
             
             <div className="flex gap-1">
               {report.generated_by_ai && (
-                <Badge variant="secondary" className="bg-purple-500/10 text-purple-700 border-purple-500/20">
+                <Badge variant="secondary" className="bg-secondary/10 text-secondary border-secondary/20">
                   <Brain className="w-3 h-3 mr-1" />
                   IA
                 </Badge>
@@ -143,11 +143,11 @@ export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalRepor
 
           {/* Alert Flags */}
           {report.alert_flags && report.alert_flags.length > 0 && (
-            <div className="flex items-start gap-2 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-              <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2 p-3 bg-warning/10 border border-warning/20 rounded-lg">
+              <AlertCircle className="w-4 h-4 text-warning flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm font-medium text-amber-900">Áreas de Atenção</p>
-                <p className="text-xs text-amber-700">
+                <p className="text-sm font-medium text-foreground">Áreas de Atenção</p>
+                <p className="text-xs text-muted-foreground">
                   {report.alert_flags.length} indicador(es) requerem acompanhamento
                 </p>
               </div>

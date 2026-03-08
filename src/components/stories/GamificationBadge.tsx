@@ -21,8 +21,8 @@ export function GamificationBadge({ points, completedCount, streak = 0 }: Gamifi
             className="flex items-center gap-2"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="p-2 rounded-full bg-amber-500/20">
-              <Star className="h-5 w-5 text-amber-500" />
+            <div className="p-2 rounded-full bg-warning/20">
+              <Star className="h-5 w-5 text-warning" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Pontos</p>

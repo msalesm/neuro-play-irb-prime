@@ -204,8 +204,8 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-purple-100">
-                <Clock className="w-5 h-5 text-purple-600" />
+              <div className="p-2 rounded-lg bg-secondary/20">
+                <Clock className="w-5 h-5 text-secondary" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.avgWaitTime}min</p>
@@ -217,8 +217,8 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-teal-100">
-                <TrendingUp className="w-5 h-5 text-teal-600" />
+              <div className="p-2 rounded-lg bg-accent/20">
+                <TrendingUp className="w-5 h-5 text-accent-foreground" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.slaCompliance}%</p>
@@ -231,10 +231,10 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
 
       {/* Alerts Banner */}
       {alerts.length > 0 && (
-        <Card className="border-orange-300 bg-orange-50">
+        <Card className="border-warning/30 bg-warning/5">
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <Bell className="w-4 h-4 text-orange-600" />
+              <Bell className="w-4 h-4 text-warning" />
               Alertas Operacionais ({alerts.length})
             </CardTitle>
           </CardHeader>
