@@ -97,6 +97,14 @@ export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPa
 
       if (error) throw error;
 
+      // Load photo URL
+      const avatarUrl = data.avatar_url;
+      if (avatarUrl && typeof avatarUrl === 'string' && avatarUrl.startsWith('http')) {
+        setPhotoUrl(avatarUrl);
+      } else {
+        setPhotoUrl(null);
+      }
+
       const conditionsArray = Array.isArray(data.neurodevelopmental_conditions)
         ? (data.neurodevelopmental_conditions as string[])
         : [];
