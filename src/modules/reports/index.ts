@@ -2,21 +2,13 @@
  * 📊 Reports Module
  * 
  * Domain: Clinical, educational, family reports. PDF export, charts, analytics.
- * 
- * Structure:
- *   modules/reports/
- *     ├── engine/        → report-engine.ts
- *     ├── components/    → report UI components
- *     ├── hooks/         → useReportEngine, useProfessionalAnalytics, etc.
- *     ├── services/      → report-service.ts
- *     └── index.ts       → this file (public API)
  */
 
-// ── Engine ────────────────────────────────────────────────
+// ── Engine (local) ────────────────────────────────────────
 export { 
   type ReportConfig,
   type GeneratedReport,
-} from '@/core/report-engine';
+} from './engine';
 
 // ── Hooks ─────────────────────────────────────────────────
 export { useReportEngine } from '@/hooks/useReportEngine';
@@ -24,8 +16,8 @@ export { useProfessionalAnalytics } from '@/hooks/useProfessionalAnalytics';
 export { useImpactEvidence } from '@/hooks/useImpactEvidence';
 export { useContextualAI } from '@/hooks/useContextualAI';
 
-// ── Services ──────────────────────────────────────────────
+// ── Services (local) ─────────────────────────────────────
 export { 
   fetchClinicalReports,
   insertClinicalReport,
-} from '@/services/report-service';
+} from './service';

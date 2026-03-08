@@ -13,7 +13,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { generateUnifiedProfile, type ProfileDataSources, type UnifiedProfile } from '@/core/behavioral-profile-engine';
+import { generateUnifiedProfile, type ProfileDataSources, type UnifiedProfile } from '@/modules/behavioral/engine';
 import type { SocioemotionalMetrics } from '@/hooks/useStoryEngine';
 import type { ExecutiveMetrics } from '@/hooks/useExecutiveRoutine';
 
