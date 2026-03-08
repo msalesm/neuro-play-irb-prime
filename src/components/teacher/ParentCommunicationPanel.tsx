@@ -90,7 +90,7 @@ export function ParentCommunicationPanel({ classId, students = [] }: ParentCommu
             .from('children')
             .select('name')
             .eq('id', comm.child_id)
-            .single();
+            .maybeSingle();
 
           return {
             ...comm,

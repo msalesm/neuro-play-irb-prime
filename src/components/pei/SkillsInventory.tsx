@@ -84,7 +84,7 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
         .eq('child_id', childId)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (data && !error) {
         setInventoryId(data.id);
