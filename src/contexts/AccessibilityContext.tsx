@@ -197,7 +197,9 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
           .select('*')
           .eq('user_id', user.id)
           .is('game_id', null)
-          .single();
+          .order('updated_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
         
         if (!error && data) {
           const loadedProfile = data.profile as unknown as AccessibilityProfile;
