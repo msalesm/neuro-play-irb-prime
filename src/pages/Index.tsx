@@ -8,7 +8,8 @@ import {
   CheckCircle2, Smartphone, Apple, Monitor, Activity, 
   FileText, Lightbulb, Database, School, Sparkles, Eye,
   LineChart, ClipboardList, RefreshCw, Radar, AlertTriangle,
-  BellRing, Compass
+  BellRing, Compass, Layers, Lock, Cpu, Server, PieChart,
+  Fingerprint, Globe
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -314,7 +315,7 @@ const Index = () => {
       </motion.section>
 
       {/* ═══════════════════════════════════════════
-          5 SISTEMAS ESTRATÉGICOS
+          ARQUITETURA EM 7 CAMADAS
       ═══════════════════════════════════════════ */}
       <motion.section 
         className="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-secondary/5"
@@ -325,12 +326,48 @@ const Index = () => {
       >
         <div className="container mx-auto px-4 md:px-6">
           <SectionHeader
-            badge="Inteligência Avançada"
-            title="6 sistemas estratégicos integrados"
-            subtitle="Módulos de inteligência artificial que transformam dados comportamentais em intervenções clínicas e pedagógicas."
+            badge="Arquitetura de Produto"
+            title="7 camadas de inteligência integradas"
+            subtitle="Cada camada alimenta a seguinte, criando um sistema impossível de replicar."
             stars={5}
           />
 
+          {/* Architecture Stack */}
+          <motion.div className="max-w-3xl mx-auto mb-12" variants={fadeIn}>
+            <Card className="border-2 border-primary/20 shadow-glow bg-card/80 backdrop-blur-sm">
+              <CardContent className="p-6 md:p-8">
+                <div className="space-y-2">
+                  {[
+                    { icon: Compass, label: "AI Layer", desc: "Copilot + Insight Engine + Predição", color: "bg-primary text-primary-foreground" },
+                    { icon: PieChart, label: "Analytics Layer", desc: "Behavioral Dataset + Metrics + Snapshots", color: "bg-primary/90 text-primary-foreground" },
+                    { icon: Database, label: "Data Layer", desc: "Postgres + RLS + Audit Logs + Encryption", color: "bg-primary/80 text-primary-foreground" },
+                    { icon: Server, label: "Service Layer", desc: "Edge Functions + API + AI Gateway", color: "bg-primary/70 text-primary-foreground" },
+                    { icon: Cpu, label: "Domain Engines", desc: "Games · ABA · Behavioral · Assessment · Routines · Stories", color: "bg-primary/60 text-primary-foreground" },
+                    { icon: Layers, label: "Application Layer", desc: "Hooks + State + Role-Based Views", color: "bg-primary/50 text-primary-foreground" },
+                    { icon: Monitor, label: "Client Layer", desc: "React PWA + Mobile + Acessibilidade", color: "bg-primary/40 text-primary-foreground" },
+                  ].map((layer, i) => (
+                    <motion.div 
+                      key={layer.label}
+                      className={`flex items-center gap-4 p-3 md:p-4 rounded-xl ${layer.color}`}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.08 }}
+                      viewport={{ once: true }}
+                    >
+                      <layer.icon className="w-5 h-5 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-sm">{layer.label}</p>
+                        <p className="text-xs opacity-80 truncate">{layer.desc}</p>
+                      </div>
+                      {i < 6 && <ArrowRight className="w-4 h-4 opacity-50 rotate-90 shrink-0 hidden md:block" />}
+                    </motion.div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Domain Engines Detail */}
           <motion.div 
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             variants={stagger}
@@ -340,40 +377,40 @@ const Index = () => {
           >
             {[
               {
+                icon: Gamepad2,
+                title: "Game Engine",
+                desc: "Sessões, trials, métricas cognitivas reais: reaction_time, response_variability, omission_errors, post_error_latency.",
+                badge: "Core",
+              },
+              {
+                icon: BarChart3,
+                title: "ABA Engine",
+                desc: "Programas, sessões, tentativas com cálculo automático de independence score, prompt fading e accuracy trend.",
+                badge: "Clínico",
+              },
+              {
                 icon: Activity,
-                title: "Intervenção Adaptativa",
-                desc: "Motor de IA que ajusta dificuldade, frequência e tipo de atividade conforme o desempenho em tempo real.",
-                badge: "IA",
+                title: "Behavioral Engine",
+                desc: "Integra jogos, ABA, rotinas e histórias para produzir attention_index, persistence_index e emotional_regulation.",
+                badge: "Cross-Domain",
               },
               {
                 icon: LineChart,
-                title: "Avaliação Cognitiva",
-                desc: "Scores automáticos de atenção, memória, controle inibitório, flexibilidade e persistência (0–100).",
+                title: "Assessment Engine",
+                desc: "Scores automáticos de atenção, memória operacional, controle inibitório, flexibilidade e persistência (0–100).",
                 badge: "Assessment",
               },
               {
                 icon: Lightbulb,
-                title: "Recomendações",
-                desc: "Sugestões práticas personalizadas para pais, professores e terapeutas baseadas no perfil da criança.",
+                title: "Recommendation Engine",
+                desc: "Sugestões baseadas em regras e IA personalizadas para cada papel: pais, professores e terapeutas.",
                 badge: "Actionable",
               },
               {
-                icon: Database,
-                title: "Dataset Comportamental",
-                desc: "Registro estruturado de métricas de jogos, ABA, rotinas e histórias para análise correlacional.",
-                badge: "Big Data",
-              },
-              {
-                icon: School,
-                title: "Dashboard Institucional",
-                desc: "Indicadores agregados por turma e escola: atenção, persistência, autorregulação e engajamento.",
-                badge: "Gestão",
-              },
-              {
                 icon: Compass,
-                title: "Copilot de Desenvolvimento",
-                desc: "Inteligência contínua que integra jogos, ABA, rotina, histórias e avaliações para orientar cada criança de forma personalizada.",
-                badge: "Copilot IA",
+                title: "Copilot Engine",
+                desc: "Inteligência contínua que cruza 5 fontes comportamentais para alertas precoces, diagnóstico e orientação.",
+                badge: "IA",
               },
             ].map((mod) => (
               <motion.div key={mod.title} variants={scaleIn}>
@@ -604,31 +641,82 @@ const Index = () => {
             ))}
           </motion.div>
 
-          {/* Differentiator */}
-          <motion.div className="mt-12 max-w-3xl mx-auto text-center" variants={fadeIn}>
-            <Card className="border-2 border-primary/20 bg-primary/5">
-              <CardContent className="p-6 md:p-8">
-                <Compass className="w-10 h-10 text-primary mx-auto mb-4" />
-                <h3 className="text-lg md:text-xl font-bold mb-3">
-                  Por que o Copilot é revolucionário?
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  Plataformas existentes fazem <strong>jogos cognitivos</strong> ou <strong>ABA digital</strong> isoladamente. 
-                  O NeuroPlay Copilot integra <strong>5 fontes comportamentais simultâneas</strong> para criar uma compreensão 
-                  profunda e única da criança — transformando dados em ação.
-                </p>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="p-3 bg-muted/50 rounded-lg">
-                    <p className="font-bold text-muted-foreground mb-1">Sem Copilot</p>
-                    <p className="text-xs text-muted-foreground">App educacional / plataforma ABA</p>
+          {/* Competitive Moat */}
+          <motion.div 
+            className="mt-12 max-w-5xl mx-auto"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.div className="text-center mb-8" variants={fadeIn}>
+              <Badge className="bg-warning/10 text-warning border-warning/20 mb-3">Vantagem Competitiva</Badge>
+              <h3 className="text-xl md:text-2xl font-bold">3 barreiras impossíveis de copiar</h3>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Database,
+                  title: "Dataset Comportamental",
+                  desc: "Dados longitudinais de jogos, ABA, rotina, histórias e avaliações — reaction time, error patterns, decision speed, task persistence, emotional choices.",
+                  impact: "Permite modelos preditivos e pesquisa científica",
+                },
+                {
+                  icon: Cpu,
+                  title: "Motor Cognitivo",
+                  desc: "Métricas reais de comportamento — response_variability, omission_errors, post_error_latency — que a maioria dos apps nem coleta.",
+                  impact: "Pode virar Cognitive Assessment Engine independente",
+                },
+                {
+                  icon: Compass,
+                  title: "Copilot de Desenvolvimento",
+                  desc: "Insights personalizados que cruzam 5 fontes comportamentais simultâneas para cada criança, profissional e família.",
+                  impact: "Transforma app em plataforma de inteligência",
+                },
+              ].map((moat) => (
+                <motion.div key={moat.title} variants={scaleIn}>
+                  <Card className="h-full shadow-card border-t-4 border-t-warning/40">
+                    <CardContent className="p-6">
+                      <div className="w-12 h-12 bg-warning/10 rounded-2xl flex items-center justify-center mb-4">
+                        <moat.icon className="w-6 h-6 text-warning" />
+                      </div>
+                      <h4 className="font-bold mb-2">{moat.title}</h4>
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">{moat.desc}</p>
+                      <div className="bg-warning/5 rounded-lg p-3 border-l-2 border-warning/30">
+                        <p className="text-xs text-muted-foreground italic">{moat.impact}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Positioning */}
+            <motion.div className="mt-8" variants={fadeIn}>
+              <Card className="border-2 border-primary/20 bg-primary/5">
+                <CardContent className="p-6 md:p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div>
+                      <p className="font-bold text-muted-foreground text-sm mb-2">Sem essa arquitetura:</p>
+                      <ul className="space-y-1.5 text-sm text-muted-foreground">
+                        <li className="flex items-center gap-2"><span className="text-destructive">✕</span> App educacional</li>
+                        <li className="flex items-center gap-2"><span className="text-destructive">✕</span> Plataforma ABA isolada</li>
+                        <li className="flex items-center gap-2"><span className="text-destructive">✕</span> Jogo cognitivo genérico</li>
+                      </ul>
+                    </div>
+                    <div className="bg-primary/10 rounded-xl p-5 border border-primary/20">
+                      <p className="font-bold text-primary text-sm mb-2">Com NeuroPlay:</p>
+                      <ul className="space-y-1.5 text-sm">
+                        <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> Plataforma de inteligência de desenvolvimento infantil</li>
+                        <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> Baseada em dados comportamentais reais</li>
+                        <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> Com 7 camadas e 6 engines integrados</li>
+                      </ul>
+                    </div>
                   </div>
-                  <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
-                    <p className="font-bold text-primary mb-1">Com Copilot</p>
-                    <p className="text-xs text-muted-foreground">Plataforma de inteligência comportamental infantil</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
           </motion.div>
         </div>
       </motion.section>
@@ -964,12 +1052,12 @@ const Index = () => {
             variants={stagger}
           >
             {[
+              { value: "7", label: "Camadas de Arquitetura" },
+              { value: "6", label: "Domain Engines" },
               { value: "25+", label: "Jogos Cognitivos" },
-              { value: "6", label: "Dimensões Analisadas" },
-              { value: "6", label: "Sistemas Estratégicos" },
               { value: "5", label: "Fontes Comportamentais" },
               { value: "5", label: "Planetas Temáticos" },
-              { value: "16", label: "Insígnias Colecionáveis" },
+              { value: "3", label: "Barreiras Competitivas" },
               { value: "🧭", label: "Copilot IA" },
               { value: "100%", label: "LGPD Compliant" },
             ].map((stat) => (
@@ -1157,7 +1245,7 @@ const Index = () => {
           </motion.div>
 
           <p className="text-xs text-muted-foreground mt-8">
-            NeuroPlay · Plataforma de Inteligência Cognitiva Infantil · Baseada em Dados Comportamentais · LGPD Compliant
+            NeuroPlay · Plataforma de Inteligência de Desenvolvimento Infantil · 7 Camadas · 6 Engines · Behavioral Dataset · LGPD Compliant
           </p>
         </div>
       </motion.section>
