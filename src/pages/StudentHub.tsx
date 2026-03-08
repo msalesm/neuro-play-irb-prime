@@ -71,7 +71,7 @@ export default function StudentHub() {
         .from('user_gamification')
         .select('*')
         .eq('user_id', user?.id)
-        .single();
+        .maybeSingle();
 
       if (gamification) {
         setChildData({

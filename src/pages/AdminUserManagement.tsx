@@ -80,7 +80,7 @@ export default function AdminUserManagement() {
               .from('user_roles')
               .select('role')
               .eq('user_id', authUser.id)
-              .single();
+              .maybeSingle();
 
             return {
               id: authUser.id,

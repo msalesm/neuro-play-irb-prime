@@ -69,7 +69,7 @@ export default function CooperativePuzzle() {
       .from('cooperative_sessions')
       .select('*')
       .eq('id', sessionId)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Error loading session:', error);
@@ -84,7 +84,7 @@ export default function CooperativePuzzle() {
       .from('child_profiles')
       .select('parent_user_id')
       .eq('id', data.host_profile_id)
-      .single();
+      .maybeSingle();
 
     setIsHost(profiles?.parent_user_id === user?.id);
   };

@@ -48,7 +48,7 @@ const SocialScenarios = () => {
         .select('id')
         .eq('parent_user_id', user.id)
         .limit(1)
-        .single();
+        .maybeSingle();
       if (profiles) {
         setChildProfileId(profiles.id);
       }
