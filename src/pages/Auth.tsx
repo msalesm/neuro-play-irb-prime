@@ -234,22 +234,22 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background flex items-center justify-center p-6 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-4 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-3/4 -right-4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/4 -left-4 w-72 h-72 bg-secondary/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-3/4 -right-4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
       </div>
 
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-white/30 shadow-2xl">
-            <Brain className="h-10 w-10 text-white" />
+          <div className="w-20 h-20 bg-primary-foreground/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm border border-primary-foreground/30 shadow-2xl">
+            <Brain className="h-10 w-10 text-primary-foreground" />
           </div>
-          <h1 className="font-heading text-4xl font-bold text-white mb-3 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+          <h1 className="font-heading text-4xl font-bold text-primary-foreground mb-3 bg-gradient-to-r from-primary-foreground via-secondary/60 to-info/60 bg-clip-text text-transparent">
             NeuroPlay
           </h1>
-          <p className="text-white/80 text-lg">
+          <p className="text-primary-foreground/80 text-lg">
             Jogos Terapêuticos para Neurodiversidade
           </p>
         </div>

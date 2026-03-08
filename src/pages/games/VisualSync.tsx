@@ -321,7 +321,7 @@ export default function VisualSync() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-info/10 to-primary/10 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -407,7 +407,7 @@ export default function VisualSync() {
                 {/* Game Area */}
                 <div 
                   ref={gameAreaRef}
-                  className="relative w-full h-96 bg-gradient-to-b from-sky-100 to-blue-100 rounded-lg border-4 border-blue-300 overflow-hidden cursor-crosshair"
+                  className="relative w-full h-96 bg-gradient-to-b from-info/20 to-info/30 rounded-lg border-4 border-info/40 overflow-hidden cursor-crosshair"
                   style={{
                     background: `
                       radial-gradient(circle at ${eyeTracking.x}px ${eyeTracking.y}px, rgba(59, 130, 246, 0.1) 0%, transparent 100px),
@@ -440,7 +440,7 @@ export default function VisualSync() {
                   {/* Eye tracking cursor */}
                   {isPlaying && (
                     <div
-                      className="absolute w-4 h-4 bg-white border-2 border-blue-500 rounded-full pointer-events-none"
+                      className="absolute w-4 h-4 bg-card border-2 border-info rounded-full pointer-events-none"
                       style={{
                         left: eyeTracking.x - 8,
                         top: eyeTracking.y - 8,
