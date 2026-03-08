@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
-import { AvatarCustomization } from '@/components/AvatarCustomization';
+import { AvatarCustomization } from '@/components/gamification/AvatarCustomization';
 import { useAuth } from '@/hooks/useAuth';
 import { useAvatarEvolution } from '@/hooks/useAvatarEvolution';
 import { supabase } from '@/integrations/supabase/client';

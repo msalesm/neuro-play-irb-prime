@@ -5,7 +5,7 @@ import { Baby, Calendar, Users, Brain, Volume2, Sun, Hand, Eye } from 'lucide-re
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
-import { AvatarSelection } from '@/components/AvatarSelection';
+import { AvatarSelection } from '@/components/gamification/AvatarSelection';
 
 type Props = {
   data: OnboardingData;

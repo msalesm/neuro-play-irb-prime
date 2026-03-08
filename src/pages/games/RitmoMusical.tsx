@@ -6,8 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Play, Pause, RotateCcw, Music, Trophy, Volume2, VolumeX, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { LevelProgress } from "@/components/LevelProgress";
-import { GameAchievements } from "@/components/GameAchievement";
+import { LevelProgress } from "@/components/gamification";
+import { GameAchievements } from "@/components/games";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 type BeatType = 'kick' | 'snare' | 'hihat' | 'crash';

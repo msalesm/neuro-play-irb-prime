@@ -1,4 +1,4 @@
-import { StackTowerGame } from '@/components/StackTowerGame';
+import { StackTowerGame } from '@/components/games';
 import { GameExitButton } from '@/components/games';
 import { Trophy, Target, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';

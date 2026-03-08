@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CosmicSequenceGame } from '@/components/CosmicSequenceGame';
+import { CosmicSequenceGame } from '@/components/games';
 import { GameExitButton } from '@/components/games';
 import { useGameSession } from '@/hooks/useGameSession';
 import { useGameProfile } from '@/hooks/useGameProfile';

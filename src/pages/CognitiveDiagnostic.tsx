@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowLeft, Brain, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCognitiveAnalysis } from '@/hooks/useCognitiveAnalysis';
-import { CognitiveReportCard } from '@/components/CognitiveReportCard';
+import { CognitiveReportCard } from '@/components/clinical/CognitiveReportCard';
 import type { GamePerformanceData } from '@/types/cognitive-analysis';
 
 export default function CognitiveDiagnostic() {

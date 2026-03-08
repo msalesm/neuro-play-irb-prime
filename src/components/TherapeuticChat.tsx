@@ -9,7 +9,7 @@ import { MessageCircle, Send, Bot, User, Sparkles, Heart, Brain, RotateCcw, File
 import { useTherapeuticChat } from '@/hooks/useTherapeuticChat';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useBehavioralReport } from '@/hooks/useBehavioralReport';
-import ChatInsights from './ChatInsights';
+import ChatInsights from './clinical/ChatInsights';
 const EmotionalCheckInScheduler = (_props: any) => null;
 
 interface TherapeuticChatProps {

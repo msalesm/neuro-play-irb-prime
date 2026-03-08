@@ -38,7 +38,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { TeacherStudentSection } from '@/components/TeacherStudentSection';
+import { TeacherStudentSection } from '@/components/teacher/TeacherStudentSection';
 
 interface StudentScreening {
   id: string;

@@ -7,7 +7,7 @@ import { ArrowLeft, Play, Pause, RotateCcw, Target, Clock, Eye } from 'lucide-re
 import { useToast } from '@/hooks/use-toast';
 import { useGameProfile } from '@/hooks/useGameProfile';
 import { useGameSession } from '@/hooks/useGameSession';
-import { GameCompatibilityCheck } from '@/components/GameCompatibilityCheck';
+import { GameCompatibilityCheck } from '@/components/games';
 
 /**
  * BATERIA MÍNIMA - DOMÍNIO 1: Atenção Sustentada (CPT-like)

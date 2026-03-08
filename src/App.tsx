@@ -32,7 +32,6 @@ const Games = lazy(() => import("./pages/Games"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 // Games - Navigation & Map
-const GameMap = lazy(() => import("./components/GameMap").then(m => ({ default: m.default })));
 const Neuroplasticity = lazy(() => import("./pages/Neuroplasticity"));
 const CognitiveBattery = lazy(() => import("./pages/CognitiveBattery"));
 
@@ -179,7 +178,6 @@ const BeneficiosTerapeuticos = lazy(() => import("./pages/BeneficiosTerapeuticos
 // Clube dos Pais
 const ClubePais = lazy(() => import("./pages/ClubePais"));
 const ParceiroClube = lazy(() => import("./pages/ParceiroClube"));
-const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 
 // Helper for Suspense wrapping
 const L = ({ children }: { children: React.ReactNode }) => (
@@ -225,7 +223,6 @@ const App = () => (
                   <Route path="/clinical" element={<L><ClinicalDashboard /></L>} />
                   
                   {/* Games - Navigation */}
-                  <Route path="/game-map" element={<L><GameMap /></L>} />
                   <Route path="/games" element={<L><Games /></L>} />
                   <Route path="/neuroplasticity" element={<L><Neuroplasticity /></L>} />
                   <Route path="/learning-dashboard" element={<L><LearningDashboard /></L>} />

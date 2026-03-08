@@ -1,7 +1,6 @@
 import { useAuth } from '@/hooks/useAuth';
 import { useNeuroplasticity } from '@/hooks/useNeuroplasticity';
-import { ModernGameCard } from '@/components/ModernGameCard';
-import { ModernMetricCard } from '@/components/ModernMetricCard';
+import { ModernGameCard, ModernMetricCard } from '@/components/games';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Link } from 'react-router-dom';

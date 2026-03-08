@@ -6,9 +6,9 @@ import { CheckCircle2, TrendingUp, AlertCircle, Brain, Calendar, Award, Sparkles
 import { Link, useNavigate } from 'react-router-dom';
 import { ChildAvatarDisplay, DailyMissionSection, TourAchievementsPanel } from '@/components/gamification';
 import { SmartInsightsPanel } from '@/components/ai';
-import { RecentScreeningsCard } from '@/components/RecentScreeningsCard';
-import { RiskIndicatorCard } from '@/components/RiskIndicatorCard';
-import { FamilyProgressSection } from '@/components/FamilyProgressSection';
+import { RecentScreeningsCard } from '@/components/clinical/RecentScreeningsCard';
+import { RiskIndicatorCard } from '@/components/clinical/RiskIndicatorCard';
+import { FamilyProgressSection } from '@/components/dashboard/FamilyProgressSection';
 import { BehavioralProfileWidget } from '@/components/dashboard/BehavioralProfileWidget';
 import { ReportGeneratorWidget } from '@/components/dashboard/ReportGeneratorWidget';
 import type { ChildProfile, SessionData, CognitiveScores } from '@/hooks/useParentDashboard';

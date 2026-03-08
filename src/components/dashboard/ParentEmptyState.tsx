@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Activity, Users, UserPlus } from 'lucide-react';
-import { FamilyProgressSection } from '@/components/FamilyProgressSection';
+import { FamilyProgressSection } from '@/components/dashboard/FamilyProgressSection';
 import type { SessionData } from '@/hooks/useParentDashboard';
 
 interface ParentEmptyStateProps {

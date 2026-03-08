@@ -6,7 +6,7 @@ import * as PIXI from "pixi.js";
 import { useGameProfile } from "@/hooks/useGameProfile";
 import { useGameSession } from "@/hooks/useGameSession";
 import { toast } from "sonner";
-import { GameCompatibilityCheck } from "@/components/GameCompatibilityCheck";
+import { GameCompatibilityCheck } from "@/components/games";
 import { addUniversalEventListener, getEventCoordinates } from "@/lib/browserCompat";
 
 const TowerDefense = () => {

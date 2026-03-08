@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { useGameSession } from '@/hooks/useGameSession';
 import { Button } from '@/components/ui/button';
 import { Pause, Play, RotateCcw } from 'lucide-react';
-import { GameCompatibilityCheck } from '@/components/GameCompatibilityCheck';
+import { GameCompatibilityCheck } from '@/components/games/GameCompatibilityCheck';
 import { safeStorage } from '@/lib/browserCompat';
 
 const GAME_STATE_PLAYING = 0;
