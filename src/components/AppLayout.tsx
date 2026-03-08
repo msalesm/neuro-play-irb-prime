@@ -56,6 +56,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               {children}
             </main>
             <BottomNavigation />
+            <ClinicalDisclaimerModal />
             <MobileTour />
             <AccessibilityQuickPanel />
             <FloatingAIAssistant />
@@ -115,6 +116,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             </div>
             
             <AccessibilityQuickPanel />
+            <ClinicalDisclaimerModal />
             <FloatingAIAssistant />
           </div>
         </SidebarProvider>
