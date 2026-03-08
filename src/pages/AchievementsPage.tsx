@@ -41,7 +41,7 @@ export default function AchievementsPage() {
           .from('user_gamification')
           .select('experience_points, current_streak, total_stars')
           .eq('user_id', user!.id)
-          .single(),
+          .maybeSingle(),
       ]);
 
       if (achResult.data) {

@@ -81,13 +81,13 @@ export default function SecureMessaging() {
           .from('profiles')
           .select('full_name, email')
           .eq('id', msg.sender_id)
-          .single();
+          .maybeSingle();
 
         const { data: recipient } = await supabase
           .from('profiles')
           .select('full_name, email')
           .eq('id', msg.recipient_id)
-          .single();
+          .maybeSingle();
 
         return { ...msg, sender, recipient };
       }));

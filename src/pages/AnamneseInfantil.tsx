@@ -30,7 +30,7 @@ export default function AnamneseInfantil() {
         .from('children')
         .select('id, name, birth_date')
         .eq('id', childId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setChild(data);

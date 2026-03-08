@@ -22,7 +22,7 @@ export function useHapticFeedback(childProfileId?: string | null) {
           .from('child_profiles')
           .select('sensory_profile')
           .eq('id', childProfileId)
-          .single();
+          .maybeSingle();
 
         if (error) throw error;
 
@@ -67,7 +67,7 @@ export function useHapticFeedback(childProfileId?: string | null) {
         .from('child_profiles')
         .select('sensory_profile')
         .eq('id', childProfileId)
-        .single();
+        .maybeSingle();
 
       const currentProfile = (currentData?.sensory_profile as any) || {};
 

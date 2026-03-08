@@ -93,7 +93,7 @@ export default function StoryEditor() {
         .from('social_stories')
         .select('*')
         .eq('id', storyId)
-        .single();
+        .maybeSingle();
 
       if (storyError) throw storyError;
 
