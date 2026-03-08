@@ -58,9 +58,9 @@ const CHECKLIST_ITEMS = [
 ] as const;
 
 const LEVEL_LABELS = [
-  { value: 1, label: 'Adequado', color: 'bg-emerald-500' },
-  { value: 2, label: 'Atenção', color: 'bg-amber-500' },
-  { value: 3, label: 'Prioridade', color: 'bg-red-500' },
+  { value: 1, label: 'Adequado', color: 'bg-success' },
+  { value: 2, label: 'Atenção', color: 'bg-warning' },
+  { value: 3, label: 'Prioridade', color: 'bg-destructive' },
 ];
 
 function getRiskColor(level: string | null) {
@@ -495,7 +495,7 @@ export default function EducacaoDashboard() {
                           onClick={() => setObservation(prev => ({ ...prev, [item.key]: level.value }))}
                           className={`py-2 px-3 rounded-lg text-xs font-medium border-2 transition-all ${
                             value === level.value
-                              ? `${level.color} text-white border-transparent scale-105`
+                              ? `${level.color} text-primary-foreground border-transparent scale-105`
                               : 'bg-muted/50 text-muted-foreground border-transparent hover:border-border'
                           }`}
                         >

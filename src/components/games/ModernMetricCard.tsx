@@ -29,7 +29,7 @@ export function ModernMetricCard({
   value,
   description,
   icon: Icon,
-  gradient = 'from-purple-500/20 to-blue-500/20',
+  gradient = 'from-secondary/20 to-primary/20',
   progress,
   badge,
   trend,

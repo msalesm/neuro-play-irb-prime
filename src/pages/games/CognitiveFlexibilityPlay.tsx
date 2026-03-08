@@ -19,10 +19,10 @@ interface GameCard {
 }
 
 const COLORS = {
-  red: 'bg-red-500',
-  blue: 'bg-blue-500',
-  green: 'bg-green-500',
-  yellow: 'bg-yellow-500'
+  red: 'bg-destructive',
+  blue: 'bg-primary',
+  green: 'bg-success',
+  yellow: 'bg-warning'
 };
 
 const SHAPES = {
@@ -257,7 +257,7 @@ export default function CognitiveFlexibilityPlay() {
         </div>
         
         {isTestMode && (
-          <span className="px-2 py-1 bg-yellow-500/20 text-yellow-600 rounded text-xs">
+          <span className="px-2 py-1 bg-warning/20 text-warning rounded text-xs">
             Modo Teste
           </span>
         )}
@@ -280,7 +280,7 @@ export default function CognitiveFlexibilityPlay() {
             </div>
             <div>
               <div className="flex items-center justify-center gap-1 text-2xl font-bold">
-                <Zap className="w-5 h-5 text-yellow-500" />
+                <Zap className="w-5 h-5 text-warning" />
                 {streak}
               </div>
               <div className="text-xs text-muted-foreground">Sequência</div>
@@ -351,18 +351,18 @@ export default function CognitiveFlexibilityPlay() {
                 <div className="text-3xl font-bold text-primary">{score}</div>
                 <div className="text-sm text-muted-foreground">Pontuação</div>
               </div>
-              <div className="p-4 bg-green-500/10 rounded-lg">
-                <div className="text-3xl font-bold text-green-600">{accuracy.toFixed(0)}%</div>
-                <div className="text-sm text-muted-foreground">Precisão</div>
-              </div>
-              <div className="p-4 bg-blue-500/10 rounded-lg">
-                <div className="text-3xl font-bold text-blue-600">{correct}</div>
-                <div className="text-sm text-muted-foreground">Acertos</div>
-              </div>
-              <div className="p-4 bg-purple-500/10 rounded-lg">
-                <div className="text-3xl font-bold text-purple-600">{ruleChanges}</div>
-                <div className="text-sm text-muted-foreground">Mudanças de Regra</div>
-              </div>
+               <div className="p-4 bg-success/10 rounded-lg">
+                 <div className="text-3xl font-bold text-success">{accuracy.toFixed(0)}%</div>
+                 <div className="text-sm text-muted-foreground">Precisão</div>
+               </div>
+               <div className="p-4 bg-info/10 rounded-lg">
+                 <div className="text-3xl font-bold text-info">{correct}</div>
+                 <div className="text-sm text-muted-foreground">Acertos</div>
+               </div>
+               <div className="p-4 bg-secondary/10 rounded-lg">
+                 <div className="text-3xl font-bold text-secondary">{ruleChanges}</div>
+                 <div className="text-sm text-muted-foreground">Mudanças de Regra</div>
+               </div>
             </div>
             
             <div className="flex gap-3 justify-center">

@@ -325,15 +325,15 @@ export default function SocialCompass() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-accent/10 to-info/10 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-              Social Compass
-            </h1>
-            <p className="text-teal-700">
+             <h1 className="font-heading text-4xl font-bold mb-2 bg-gradient-to-r from-accent to-info bg-clip-text text-transparent">
+               Social Compass
+             </h1>
+             <p className="text-accent">
               Navegue situações sociais com seu radar emocional
             </p>
           </div>
@@ -352,7 +352,7 @@ export default function SocialCompass() {
               <div className="space-y-6">
                 <Card className="p-6 bg-card border-0 shadow-card">
                   <div className="text-center mb-6">
-                    <Compass className="h-16 w-16 mx-auto mb-4 text-teal-500" />
+                    <Compass className="h-16 w-16 mx-auto mb-4 text-accent" />
                     <h2 className="text-2xl font-bold mb-2">Escolha seu Cenário Social</h2>
                     <p className="text-muted-foreground">
                       Use seu radar emocional para navegar interações sociais complexas
@@ -399,7 +399,7 @@ export default function SocialCompass() {
                             <Button 
                               onClick={() => startContext(context)}
                               size="sm"
-                              className="bg-teal-600 hover:bg-teal-700"
+                              className="bg-accent hover:bg-accent/90"
                             >
                               Iniciar Cenário
                               <ArrowRight className="ml-2 h-4 w-4" />
@@ -417,7 +417,7 @@ export default function SocialCompass() {
               <Card className="p-8 bg-card border-0 shadow-card">
                 <div className="space-y-6">
                   <div className="text-center">
-                    <Badge className="mb-4 bg-teal-100 text-teal-800">
+                    <Badge className="mb-4 bg-accent/10 text-accent">
                       {currentContext.setting === 'school' ? 'Escola' :
                        currentContext.setting === 'family' ? 'Família' : currentContext.setting}
                     </Badge>
@@ -427,12 +427,12 @@ export default function SocialCompass() {
                     </p>
                   </div>
 
-                  <div className="bg-teal-50 p-6 rounded-lg">
-                    <h3 className="font-semibold mb-4 flex items-center gap-2">
-                      <Brain className="h-5 w-5 text-teal-600" />
-                      Objetivo Social:
-                    </h3>
-                    <p className="text-teal-800">{currentContext.socialGoal}</p>
+                   <div className="bg-accent/10 p-6 rounded-lg">
+                     <h3 className="font-semibold mb-4 flex items-center gap-2">
+                       <Brain className="h-5 w-5 text-accent" />
+                       Objetivo Social:
+                     </h3>
+                     <p className="text-accent">{currentContext.socialGoal}</p>
                   </div>
 
                   <div className="space-y-4">
@@ -543,7 +543,7 @@ export default function SocialCompass() {
                                 {radar?.detected && (
                                   <div className="space-y-1">
                                     {radar.clues.map((clue, idx) => (
-                                      <p key={idx} className="text-xs text-teal-600 bg-teal-50 px-2 py-1 rounded">
+                                      <p key={idx} className="text-xs text-accent bg-accent/10 px-2 py-1 rounded">
                                         💡 {clue}
                                       </p>
                                     ))}
@@ -600,7 +600,7 @@ export default function SocialCompass() {
                   
                   <div className="grid grid-cols-3 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-teal-600">{socialScore}</div>
+                      <div className="text-2xl font-bold text-accent">{socialScore}</div>
                       <div className="text-xs text-muted-foreground">Pontos Sociais</div>
                     </div>
                     <div className="text-center">
@@ -639,7 +639,7 @@ export default function SocialCompass() {
             {/* Game Instructions */}
             <Card className="p-6 bg-card border-0 shadow-card">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <Compass className="h-5 w-5 text-teal-600" />
+                <Compass className="h-5 w-5 text-accent" />
                 Como Jogar
               </h3>
               <div className="space-y-3 text-sm">

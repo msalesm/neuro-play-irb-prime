@@ -6,25 +6,25 @@ const steps = [
     icon: Gamepad2,
     title: 'Jogue',
     description: 'Escolha jogos divertidos e estimulantes',
-    color: 'from-blue-500 to-cyan-500',
+    color: 'from-primary to-info',
   },
   {
     icon: Brain,
     title: 'IA Analisa',
     description: 'Algoritmo avalia seu desempenho em tempo real',
-    color: 'from-purple-500 to-pink-500',
+    color: 'from-secondary to-destructive/70',
   },
   {
     icon: BarChart3,
     title: 'Receba Relatório',
     description: 'Entenda seu perfil cognitivo único',
-    color: 'from-green-500 to-emerald-500',
+    color: 'from-success to-accent',
   },
   {
     icon: TrendingUp,
     title: 'Evolua',
     description: 'Acompanhe seu progresso diário',
-    color: 'from-orange-500 to-yellow-500',
+    color: 'from-warning to-warning/70',
   },
 ];
 

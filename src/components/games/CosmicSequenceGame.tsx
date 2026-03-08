@@ -24,19 +24,19 @@ interface CosmicSequenceGameProps {
 const gameObjects = [
   { 
     id: 0, 
-    color: 'from-green-400 to-emerald-600', 
+    color: 'from-success to-accent', 
     glowColor: 'rgba(34, 197, 94, 0.6)',
     frequency: 329.63 // E4
   },
   { 
     id: 1, 
-    color: 'from-purple-400 to-fuchsia-600', 
+    color: 'from-secondary to-secondary/70', 
     glowColor: 'rgba(192, 38, 211, 0.6)',
     frequency: 392.00 // G4
   },
   { 
     id: 2, 
-    color: 'from-orange-400 to-amber-600', 
+    color: 'from-warning to-warning/70', 
     glowColor: 'rgba(251, 146, 60, 0.6)',
     frequency: 523.25 // C5
   },

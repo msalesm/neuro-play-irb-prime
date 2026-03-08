@@ -28,8 +28,8 @@ export default function CosmicSequence() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-fuchsia-950">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-400" />
+       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-primary/90 via-secondary/80 to-secondary">
+         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary" />
       </div>
     );
   }
@@ -104,7 +104,7 @@ export default function CosmicSequence() {
 
   return (
     <HapticProvider childProfileId={childProfileId}>
-      <div className="relative min-h-screen bg-gradient-to-br from-indigo-950 via-purple-900 to-fuchsia-950 overflow-hidden">
+      <div className="relative min-h-screen bg-gradient-to-br from-primary/90 via-secondary/80 to-secondary overflow-hidden">
       {/* Animated Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-64 h-64 bg-secondary/20 rounded-full blur-3xl animate-pulse" />

@@ -255,7 +255,7 @@ export default function PlanetaDetalhes() {
                     <Card className="bg-primary-foreground/5 border-primary-foreground/10 hover:bg-primary-foreground/10 transition-all duration-300 relative">
                       {jogo.novo && (
                         <Badge 
-                          className="absolute -top-2 -right-2 h-6 px-2 text-xs bg-gradient-to-r from-amber-500 to-orange-500 border-0 shadow-lg animate-pulse z-10"
+                          className="absolute -top-2 -right-2 h-6 px-2 text-xs bg-gradient-to-r from-warning to-accent border-0 shadow-lg animate-pulse z-10"
                         >
                           🌟 NOVO
                         </Badge>

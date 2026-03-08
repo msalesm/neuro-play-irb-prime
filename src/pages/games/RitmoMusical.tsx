@@ -771,7 +771,7 @@ export default function RitmoMusical() {
                     </div>
 
                     {/* Interactive Drum Kit */}
-                    <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-6">
+                    <div className="bg-gradient-to-br from-muted to-muted/80 dark:from-muted dark:to-muted/60 rounded-xl p-6">
                       <h4 className="text-sm font-medium text-center text-muted-foreground mb-4">Kit de Bateria Virtual</h4>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         {Object.entries(BEAT_SOUNDS).map(([beatType, config]) => (

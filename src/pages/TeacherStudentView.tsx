@@ -162,10 +162,10 @@ export default function TeacherStudentView() {
 
   const getOccurrenceTypeBadge = (type: string) => {
     const types: Record<string, { label: string; className: string }> = {
-      behavioral: { label: 'Comportamental', className: 'bg-yellow-500/10 text-yellow-700' },
-      academic: { label: 'Acadêmico', className: 'bg-blue-500/10 text-blue-700' },
-      social: { label: 'Social', className: 'bg-purple-500/10 text-purple-700' },
-      positive: { label: 'Positivo', className: 'bg-green-500/10 text-green-700' },
+      behavioral: { label: 'Comportamental', className: 'bg-warning/10 text-warning' },
+      academic: { label: 'Acadêmico', className: 'bg-info/10 text-info' },
+      social: { label: 'Social', className: 'bg-secondary/10 text-secondary' },
+      positive: { label: 'Positivo', className: 'bg-success/10 text-success' },
     };
     return types[type] || types.behavioral;
   };
@@ -173,9 +173,9 @@ export default function TeacherStudentView() {
   const getSeverityBadge = (severity?: string) => {
     if (!severity) return null;
     const severities: Record<string, { label: string; className: string }> = {
-      low: { label: 'Baixa', className: 'bg-green-500/10 text-green-700' },
-      medium: { label: 'Média', className: 'bg-yellow-500/10 text-yellow-700' },
-      high: { label: 'Alta', className: 'bg-red-500/10 text-red-700' },
+      low: { label: 'Baixa', className: 'bg-success/10 text-success' },
+      medium: { label: 'Média', className: 'bg-warning/10 text-warning' },
+      high: { label: 'Alta', className: 'bg-destructive/10 text-destructive' },
     };
     const sev = severities[severity];
     return sev ? <Badge className={sev.className}>{sev.label}</Badge> : null;
@@ -293,21 +293,21 @@ export default function TeacherStudentView() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Atenção Sustentada</span>
                     <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-green-500" />
+                      <TrendingUp className="w-4 h-4 text-success" />
                       <Badge variant="secondary">75%</Badge>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Memória de Trabalho</span>
                     <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-yellow-500" />
+                      <TrendingUp className="w-4 h-4 text-warning" />
                       <Badge variant="secondary">60%</Badge>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Processamento Fonológico</span>
                     <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-green-500" />
+                      <TrendingUp className="w-4 h-4 text-success" />
                       <Badge variant="secondary">82%</Badge>
                     </div>
                   </div>

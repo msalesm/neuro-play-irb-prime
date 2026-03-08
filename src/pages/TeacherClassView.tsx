@@ -164,7 +164,7 @@ export default function TeacherClassView() {
                   <Card
                     key={student.id}
                     className={`hover:shadow-lg transition-all cursor-pointer ${
-                      student.needsAttention ? 'border-amber-300 bg-amber-50/50 dark:bg-amber-950/20' : ''
+                      student.needsAttention ? 'border-warning bg-warning/5 dark:bg-warning/10' : ''
                     }`}
                     onClick={() => navigate(`/teacher/student/${student.id}`)}
                   >
@@ -212,7 +212,7 @@ export default function TeacherClassView() {
                       )}
 
                       {student.needsAttention && (
-                        <Badge className="mt-2 bg-amber-500/10 text-amber-700 text-xs">
+                        <Badge className="mt-2 bg-warning/10 text-warning text-xs">
                           Precisa de atenção
                         </Badge>
                       )}

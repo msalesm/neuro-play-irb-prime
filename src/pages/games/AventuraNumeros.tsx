@@ -297,7 +297,7 @@ export default function AventuraNumeros() {
   const progress = (treasures.filter(t => t.collected).length / treasures.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-orange-50 to-red-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-warning/20 via-accent/10 to-destructive/10 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -361,7 +361,7 @@ export default function AventuraNumeros() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="relative h-96 bg-gradient-to-br from-green-200 via-yellow-100 to-brown-200 rounded-lg border-4 border-brown-400 overflow-hidden">
+              <div className="relative h-96 bg-gradient-to-br from-success/30 via-warning/20 to-warning/30 rounded-lg border-4 border-warning/40 overflow-hidden">
                 {/* Decorative elements */}
                 <div className="absolute top-4 left-4 text-2xl">🏔️</div>
                 <div className="absolute top-4 right-4 text-2xl">🌴</div>
@@ -474,12 +474,12 @@ export default function AventuraNumeros() {
                   <div className="text-sm text-warning/80">Tesouros Descobertos</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-orange-600">{coins}</div>
-                  <div className="text-sm text-orange-500">Moedas Coletadas</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-red-600">{level}</div>
-                  <div className="text-sm text-red-500">Nível Atual</div>
+                   <div className="text-2xl font-bold text-warning">{coins}</div>
+                   <div className="text-sm text-warning/80">Moedas Coletadas</div>
+                 </div>
+                 <div>
+                   <div className="text-2xl font-bold text-destructive">{level}</div>
+                   <div className="text-sm text-destructive/80">Nível Atual</div>
                 </div>
               </div>
             </CardContent>

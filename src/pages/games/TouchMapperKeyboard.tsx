@@ -21,11 +21,11 @@ interface TexturePattern {
 type SensitivityLevel = 'low' | 'medium' | 'high';
 
 const textureTypes = {
-  smooth: { name: 'Liso', color: 'bg-blue-200', description: 'Superfície lisa e uniforme', symbol: '▓' },
-  rough: { name: 'Áspero', color: 'bg-yellow-300', description: 'Superfície irregular', symbol: '▒' },
-  bumpy: { name: 'Com Relevos', color: 'bg-green-300', description: 'Pequenas elevações', symbol: '░' },
-  soft: { name: 'Macio', color: 'bg-pink-200', description: 'Textura suave', symbol: '▪' },
-  rigid: { name: 'Rígido', color: 'bg-gray-300', description: 'Superfície firme', symbol: '▫' }
+  smooth: { name: 'Liso', color: 'bg-primary/30', description: 'Superfície lisa e uniforme', symbol: '▓' },
+  rough: { name: 'Áspero', color: 'bg-warning/40', description: 'Superfície irregular', symbol: '▒' },
+  bumpy: { name: 'Com Relevos', color: 'bg-success/40', description: 'Pequenas elevações', symbol: '░' },
+  soft: { name: 'Macio', color: 'bg-destructive/20', description: 'Textura suave', symbol: '▪' },
+  rigid: { name: 'Rígido', color: 'bg-muted', description: 'Superfície firme', symbol: '▫' }
 };
 
 const sensitivityLevels = {
@@ -313,17 +313,17 @@ export default function TouchMapperKeyboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-warning/10 to-destructive/10 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 text-orange-900 flex items-center gap-3">
-              <Keyboard className="w-10 h-10" />
-              TouchMapper - Teclado
-            </h1>
-            <p className="text-orange-700">
-              Versão adaptada para notebooks - Use WASD ou setas para navegar
+             <h1 className="font-heading text-4xl font-bold mb-2 text-foreground flex items-center gap-3">
+               <Keyboard className="w-10 h-10" />
+               TouchMapper - Teclado
+             </h1>
+             <p className="text-muted-foreground">
+               Versão adaptada para notebooks - Use WASD ou setas para navegar
             </p>
           </div>
           <div className="flex gap-2">
@@ -346,27 +346,27 @@ export default function TouchMapperKeyboard() {
           {/* Main Game Area */}
           <div className="lg:col-span-3 space-y-4">
             {/* Keyboard Controls Guide */}
-            <Card className="shadow-card bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+            <Card className="shadow-card bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <Keyboard className="h-6 w-6 text-blue-600" />
-                    <div>
-                      <h3 className="font-semibold text-blue-900 mb-1">Controles do Teclado</h3>
-                      <div className="flex gap-4 text-sm text-blue-700">
+                     <Keyboard className="h-6 w-6 text-primary" />
+                     <div>
+                       <h3 className="font-semibold text-primary mb-1">Controles do Teclado</h3>
+                       <div className="flex gap-4 text-sm text-primary/80">
                         <div className="flex items-center gap-1">
-                          <kbd className="px-2 py-1 bg-blue-100 rounded text-xs">WASD</kbd>
-                          <span>ou</span>
-                          <div className="flex gap-1">
-                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">↑</kbd>
-                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">↓</kbd>
-                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">←</kbd>
-                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">→</kbd>
+                           <kbd className="px-2 py-1 bg-primary/10 rounded text-xs">WASD</kbd>
+                           <span>ou</span>
+                           <div className="flex gap-1">
+                             <kbd className="px-1 py-1 bg-primary/10 rounded text-xs">↑</kbd>
+                             <kbd className="px-1 py-1 bg-primary/10 rounded text-xs">↓</kbd>
+                             <kbd className="px-1 py-1 bg-primary/10 rounded text-xs">←</kbd>
+                             <kbd className="px-1 py-1 bg-primary/10 rounded text-xs">→</kbd>
                           </div>
                           <span>Mover</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <kbd className="px-2 py-1 bg-blue-100 rounded text-xs">ESPAÇO</kbd>
+                          <kbd className="px-2 py-1 bg-primary/10 rounded text-xs">ESPAÇO</kbd>
                           <span>Explorar</span>
                         </div>
                       </div>
@@ -392,18 +392,18 @@ export default function TouchMapperKeyboard() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-glow bg-white/80 backdrop-blur">
+            <Card className="shadow-glow bg-card/80 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Hand className="h-6 w-6 text-orange-600" />
-                  Mapeamento Tátil - Nível {level}
-                </CardTitle>
-                <div className="flex gap-4 text-sm">
-                  <span className="text-orange-600 font-medium">Score: {score}</span>
-                  <span className="text-blue-600 font-medium">Precisão: {accuracy.toFixed(1)}%</span>
-                  <span className="text-green-600 font-medium">
-                    Descobertas: {discoveredPatterns.length}/{currentPatterns.length}
-                  </span>
+                   <Hand className="h-6 w-6 text-warning" />
+                   Mapeamento Tátil - Nível {level}
+                 </CardTitle>
+                 <div className="flex gap-4 text-sm">
+                   <span className="text-warning font-medium">Score: {score}</span>
+                   <span className="text-info font-medium">Precisão: {accuracy.toFixed(1)}%</span>
+                   <span className="text-success font-medium">
+                     Descobertas: {discoveredPatterns.length}/{currentPatterns.length}
+                   </span>
                 </div>
               </CardHeader>
               
@@ -411,7 +411,7 @@ export default function TouchMapperKeyboard() {
                 {/* Current Texture Display */}
                 {currentTexture && (
                   <div className="text-center mb-4">
-                    <Badge className="bg-orange-100 text-orange-800 text-lg px-4 py-2">
+                    <Badge className="bg-warning/10 text-warning text-lg px-4 py-2">
                       <Hand className="h-4 w-4 mr-2" />
                       {currentTexture}
                     </Badge>
@@ -420,7 +420,7 @@ export default function TouchMapperKeyboard() {
 
                 {/* Exploration Area */}
                 <div 
-                  className="relative w-full h-96 bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg border-4 border-orange-300 overflow-hidden select-none"
+                  className="relative w-full h-96 bg-gradient-to-b from-muted to-muted/80 rounded-lg border-4 border-warning/40 overflow-hidden select-none"
                   style={{
                     background: `
                       radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.1) 0%, transparent 50%),
@@ -434,14 +434,14 @@ export default function TouchMapperKeyboard() {
                     {Array.from({ length: 20 }, (_, i) => (
                       <div
                         key={`v-${i}`}
-                        className="absolute top-0 bottom-0 w-px bg-gray-400"
+                        className="absolute top-0 bottom-0 w-px bg-border"
                         style={{ left: `${(i + 1) * gridSize}px` }}
                       />
                     ))}
                     {Array.from({ length: 15 }, (_, i) => (
                       <div
                         key={`h-${i}`}
-                        className="absolute left-0 right-0 h-px bg-gray-400"
+                        className="absolute left-0 right-0 h-px bg-border"
                         style={{ top: `${(i + 1) * gridSize}px` }}
                       />
                     ))}
@@ -449,13 +449,13 @@ export default function TouchMapperKeyboard() {
 
                   {/* Cursor */}
                   <div
-                    className="absolute w-6 h-6 bg-blue-500 rounded-full border-2 border-white shadow-lg transition-all duration-150 flex items-center justify-center"
-                    style={{
-                      left: cursorPosition.x - 12,
-                      top: cursorPosition.y - 12,
-                    }}
-                  >
-                    <div className="w-2 h-2 bg-white rounded-full" />
+                     className="absolute w-6 h-6 bg-primary rounded-full border-2 border-primary-foreground shadow-lg transition-all duration-150 flex items-center justify-center"
+                     style={{
+                       left: cursorPosition.x - 12,
+                       top: cursorPosition.y - 12,
+                     }}
+                   >
+                     <div className="w-2 h-2 bg-primary-foreground rounded-full" />
                   </div>
 
                   {/* Texture Patterns */}
@@ -464,7 +464,7 @@ export default function TouchMapperKeyboard() {
                       key={pattern.id}
                       className={`absolute rounded-full transition-all duration-300 ${
                         pattern.discovered
-                          ? `${textureTypes[pattern.type].color} opacity-80 border-4 border-orange-400`
+                          ? `${textureTypes[pattern.type].color} opacity-80 border-4 border-warning`
                           : 'bg-transparent'
                       }`}
                       style={{
@@ -476,7 +476,7 @@ export default function TouchMapperKeyboard() {
                       }}
                     >
                       {pattern.discovered && (
-                        <div className="flex items-center justify-center h-full text-xs font-bold text-gray-700">
+                        <div className="flex items-center justify-center h-full text-xs font-bold text-foreground/70">
                           {textureTypes[pattern.type].symbol}
                         </div>
                       )}
@@ -486,8 +486,8 @@ export default function TouchMapperKeyboard() {
                   {/* Instructions overlay */}
                   {!isPlaying && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-orange-700 bg-white/90 p-6 rounded-lg">
-                        <Keyboard className="h-16 w-16 mx-auto mb-4 text-orange-500" />
+                       <div className="text-center text-foreground bg-card/90 p-6 rounded-lg">
+                         <Keyboard className="h-16 w-16 mx-auto mb-4 text-warning" />
                         <p className="text-xl font-semibold mb-2">Explore com o teclado</p>
                         <p className="text-sm mb-2">Use WASD ou setas para mover</p>
                         <p className="text-sm">Pressione ESPAÇO para explorar texturas</p>
@@ -502,7 +502,7 @@ export default function TouchMapperKeyboard() {
                     <p className="text-sm font-medium mb-2">Texturas descobertas:</p>
                     <div className="flex gap-2 flex-wrap">
                       {discoveredPatterns.map((pattern, index) => (
-                        <Badge key={index} className={`${textureTypes[pattern.type].color} text-gray-800`}>
+                        <Badge key={index} className={`${textureTypes[pattern.type].color} text-foreground/80`}>
                           {textureTypes[pattern.type].symbol} {textureTypes[pattern.type].name}
                         </Badge>
                       ))}
@@ -530,7 +530,7 @@ export default function TouchMapperKeyboard() {
                   </Button>
                   
                   {discoveredPatterns.length >= 3 && (
-                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700">
+                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-warning hover:bg-warning/90">
                       <Hand className="h-5 w-5" />
                       Concluir Sessão
                     </Button>
@@ -610,11 +610,11 @@ export default function TouchMapperKeyboard() {
             </Card>
 
             {/* Therapeutic Benefits */}
-            <Card className="shadow-card bg-gradient-to-b from-green-50 to-emerald-50 border-green-200">
-              <CardHeader>
-                <CardTitle className="text-lg text-green-800">Benefícios Terapêuticos</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-sm text-green-700">
+             <Card className="shadow-card bg-gradient-to-b from-success/10 to-accent/10 border-success/20">
+               <CardHeader>
+                 <CardTitle className="text-lg text-success">Benefícios Terapêuticos</CardTitle>
+               </CardHeader>
+               <CardContent className="space-y-2 text-sm text-success/80">
                 <div>• Desenvolve coordenação motora</div>
                 <div>• Melhora processamento sensorial</div>
                 <div>• Fortalece atenção espacial</div>
