@@ -76,7 +76,7 @@ export async function fetchChildById(childId: string) {
 
 export async function createChild(child: {
   name: string;
-  birth_date?: string;
+  birth_date: string;
   parent_id: string;
 }) {
   const { data, error } = await supabase
