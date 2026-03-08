@@ -520,7 +520,7 @@ export default function SilabaMagica() {
                 {gameState === 'failed' && (
                   <div className="text-center space-y-4">
                     <div className="text-6xl">😅</div>
-                    <h2 className="text-xl font-bold text-red-500">Tente novamente!</h2>
+                    <h2 className="text-xl font-bold text-destructive">Tente novamente!</h2>
                     <p className="text-muted-foreground">
                       Não foi dessa vez. Vamos tentar de novo?
                     </p>
@@ -535,7 +535,7 @@ export default function SilabaMagica() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Trophy className="w-5 h-5 text-yellow-500" />
+                  <Trophy className="w-5 h-5 text-warning" />
                   Conquistas
                 </CardTitle>
               </CardHeader>

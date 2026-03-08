@@ -234,7 +234,7 @@ const Assinatura = () => {
                   </Badge>
                 )}
                 {isCurrentPlan && (
-                  <Badge className="absolute -top-3 right-4 bg-green-600">
+                  <Badge className="absolute -top-3 right-4 bg-success">
                     Seu Plano
                   </Badge>
                 )}
@@ -255,7 +255,7 @@ const Assinatura = () => {
                   <ul className="space-y-3 mb-6">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <Check className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                        <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
                         <span className="text-sm">{feature}</span>
                       </li>
                     ))}
