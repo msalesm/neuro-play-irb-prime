@@ -57,8 +57,8 @@ const eventTypeConfig = {
   },
   achievement: {
     icon: Trophy,
-    color: 'text-[#c7923e]',
-    bgColor: 'bg-[#c7923e]/10',
+    color: 'text-warning',
+    bgColor: 'bg-warning/10',
     label: 'Conquista'
   },
   screening: {

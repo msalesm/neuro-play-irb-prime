@@ -226,7 +226,7 @@ export function TeleconsultSession({
       {/* Clinical Panel */}
       <div className="flex-1 overflow-auto p-4">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid grid-cols-4 mb-4">
+            <TabsList className="grid grid-cols-2 sm:grid-cols-4 mb-4">
               <TabsTrigger value="cognitive" className="text-xs">
                 <Brain className="w-4 h-4 mr-1" />
                 Cognitivo

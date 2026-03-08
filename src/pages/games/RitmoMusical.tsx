@@ -625,10 +625,10 @@ export default function RitmoMusical() {
           />
           
           {/* Quick Stats */}
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-green-600">{stats.score}</div>
+                <div className="text-lg font-bold text-success">{stats.score}</div>
                 <div className="text-xs text-muted-foreground">Pontos</div>
               </CardContent>
             </Card>

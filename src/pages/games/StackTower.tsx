@@ -28,7 +28,7 @@ export default function StackTower() {
         <h1 className="text-3xl font-bold text-white mb-2">Torre Perfeita</h1>
         <p className="text-white/80 text-sm">Planeta Vortex - Foco e Precisão</p>
         {isTestMode && (
-          <Badge className="mt-2 bg-[#c7923e] text-white">
+          <Badge className="mt-2 bg-warning text-warning-foreground">
             🎮 Modo Teste
           </Badge>
         )}
