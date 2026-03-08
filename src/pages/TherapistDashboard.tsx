@@ -18,6 +18,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { BehavioralProfileWidget } from '@/components/dashboard/BehavioralProfileWidget';
+import { ReportGeneratorWidget } from '@/components/dashboard/ReportGeneratorWidget';
 
 interface PatientData {
   id: string;
@@ -388,6 +390,12 @@ export default function TherapistDashboard() {
                 </div>
               </CardContent>
             </Card>
+          </div>
+
+          {/* Behavioral Profile & Reports Widgets */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <BehavioralProfileWidget childId={patientId!} />
+            <ReportGeneratorWidget childId={patientId!} childName={patient.name} />
           </div>
 
           {/* Main Content - Tabs simplificadas */}
