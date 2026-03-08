@@ -104,7 +104,7 @@ import NeuroPlayV2 from "./pages/NeuroPlayV2";
 import NeuroPlayLanding from "./pages/NeuroPlayLanding";
 import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
 import DashboardPais from "./pages/DashboardPais";
-import NeuroPlayMainLanding from "./pages/IRBPrimeLanding";
+import NeuroPlayMainLanding from "./pages/NeuroPlayMainLanding";
 import Home from "./pages/Home";
 import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
 import AchievementsPage from "./pages/AchievementsPage";
