@@ -257,7 +257,7 @@ export function OnboardingWizard() {
         }
         return (
           <div className="text-center py-12">
-            <h3 className="text-xl font-semibold text-irb-petrol mb-2">Pronto para começar!</h3>
+            <h3 className="text-xl font-semibold text-primary mb-2">Pronto para começar!</h3>
             <p className="text-muted-foreground">
               Clique em Finalizar para acessar sua área profissional.
             </p>

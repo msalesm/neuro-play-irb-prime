@@ -367,7 +367,7 @@ export default function PlatformManual() {
                       <li>Tente fazer logout e login novamente</li>
                       <li>Limpe o cache do navegador (Ctrl+Shift+Delete)</li>
                       <li>Verifique sua conexão com a internet</li>
-                      <li>Entre em contato com suporte: suporte@irbprime.com.br</li>
+                      <li>Entre em contato com suporte: suporte@neuroplay.com.br</li>
                     </ul>
                   </CardContent>
                 </Card>

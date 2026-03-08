@@ -3,19 +3,19 @@ import { cn } from '@/lib/utils';
 interface ModernPageLayoutProps {
   children: React.ReactNode;
   className?: string;
-  background?: 'default' | 'gradient' | 'minimal' | 'irb';
+  background?: 'default' | 'gradient' | 'minimal' | 'brand';
 }
 
 export function ModernPageLayout({ 
   children, 
   className,
-  background = 'irb'
+  background = 'brand'
 }: ModernPageLayoutProps) {
   const backgroundClass = {
     default: 'bg-gradient-to-br from-primary via-secondary to-primary',
     gradient: 'bg-gradient-to-br from-primary via-secondary/80 to-primary', 
     minimal: 'bg-gradient-to-br from-primary to-primary/90',
-    irb: 'bg-gradient-to-b from-primary via-secondary to-primary'
+    brand: 'bg-gradient-to-b from-primary via-secondary to-primary'
   };
 
   return (
