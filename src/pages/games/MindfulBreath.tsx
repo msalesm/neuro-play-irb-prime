@@ -266,7 +266,7 @@ export default function MindfulBreath() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-success/10 py-12">
       <div className="container mx-auto px-6 max-w-4xl">
         {recoveredSession && !isPlaying && (
           <Card className="max-w-md mx-auto mb-4 p-4">
@@ -327,7 +327,7 @@ export default function MindfulBreath() {
                 {/* Breathing Circle */}
                 <div className="flex justify-center">
                   <div 
-                    className={`w-64 h-64 rounded-full bg-gradient-to-br from-blue-200 to-green-200 flex items-center justify-center transition-transform duration-1000 ease-in-out shadow-lg ${getPhaseColor()}`}
+                    className={`w-64 h-64 rounded-full bg-gradient-to-br from-primary/30 to-success/30 flex items-center justify-center transition-transform duration-1000 ease-in-out shadow-lg ${getPhaseColor()}`}
                     style={{ transform: `scale(${circleScale()})` }}
                   >
                     <div className="text-center">
