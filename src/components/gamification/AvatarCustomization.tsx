@@ -64,7 +64,7 @@ export const AvatarCustomization = ({ evolution, onEquipAccessory }: AvatarCusto
                   <Badge
                     key={accId}
                     variant="secondary"
-                    className={cn('text-white border-0', rarityColors[accessory.rarity])}
+                    className={cn('text-primary-foreground border-0', rarityColors[accessory.rarity])}
                   >
                     {accessory.emoji} {accessory.name}
                   </Badge>
@@ -143,7 +143,7 @@ export const AvatarCustomization = ({ evolution, onEquipAccessory }: AvatarCusto
                           <span className="font-semibold">{accessory.name}</span>
                           <Badge
                             variant="secondary"
-                            className={cn('text-white text-xs border-0', rarityColors[accessory.rarity])}
+                            className={cn('text-primary-foreground text-xs border-0', rarityColors[accessory.rarity])}
                           >
                             {accessory.rarity}
                           </Badge>
@@ -194,7 +194,7 @@ export const AvatarCustomization = ({ evolution, onEquipAccessory }: AvatarCusto
                             <span className="font-semibold">{accessory.name}</span>
                             <Badge
                               variant="secondary"
-                              className={cn('text-white text-xs border-0', rarityColors[accessory.rarity])}
+                              className={cn('text-primary-foreground text-xs border-0', rarityColors[accessory.rarity])}
                             >
                               {accessory.rarity}
                             </Badge>

@@ -35,8 +35,8 @@ export function GamificationBadge({ points, completedCount, streak = 0 }: Gamifi
             className="flex items-center gap-2"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="p-2 rounded-full bg-purple-500/20">
-              <Trophy className="h-5 w-5 text-purple-500" />
+            <div className="p-2 rounded-full bg-primary/20">
+              <Trophy className="h-5 w-5 text-primary" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Nível</p>
@@ -49,8 +49,8 @@ export function GamificationBadge({ points, completedCount, streak = 0 }: Gamifi
             className="flex items-center gap-2"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="p-2 rounded-full bg-green-500/20">
-              <Award className="h-5 w-5 text-green-500" />
+            <div className="p-2 rounded-full bg-success/20">
+              <Award className="h-5 w-5 text-success" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Concluídos</p>
@@ -66,8 +66,8 @@ export function GamificationBadge({ points, completedCount, streak = 0 }: Gamifi
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             >
-              <div className="p-2 rounded-full bg-orange-500/20">
-                <Flame className="h-5 w-5 text-orange-500" />
+              <div className="p-2 rounded-full bg-warning/20">
+                <Flame className="h-5 w-5 text-warning" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Sequência</p>

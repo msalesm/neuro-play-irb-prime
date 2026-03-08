@@ -109,7 +109,7 @@ export default function AchievementsPage() {
   return (
     <div className="min-h-screen bg-background pb-28">
       {/* Header stats */}
-      <div className="bg-gradient-to-br from-[hsl(var(--neuroplay-orange))] to-[hsl(var(--neuroplay-yellow))] p-6 text-white">
+      <div className="bg-gradient-to-br from-[hsl(var(--neuroplay-orange))] to-[hsl(var(--neuroplay-yellow))] p-6 text-primary-foreground">
         <div className="max-w-lg mx-auto">
           <h1 className="text-xl font-bold flex items-center gap-2 mb-4">
             <Trophy className="h-5 w-5" />
@@ -117,30 +117,30 @@ export default function AchievementsPage() {
           </h1>
 
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white/15 rounded-xl p-3 text-center backdrop-blur-sm">
+            <div className="bg-primary-foreground/15 rounded-xl p-3 text-center backdrop-blur-sm">
               <span className="text-2xl">{levelInfo.icon}</span>
               <p className="text-xs mt-1 font-medium">Nível {levelInfo.level}</p>
             </div>
-            <div className="bg-white/15 rounded-xl p-3 text-center backdrop-blur-sm">
+            <div className="bg-primary-foreground/15 rounded-xl p-3 text-center backdrop-blur-sm">
               <Flame className="h-6 w-6 mx-auto" />
               <p className="text-xs mt-1 font-medium">{streak} dias</p>
             </div>
-            <div className="bg-white/15 rounded-xl p-3 text-center backdrop-blur-sm">
+            <div className="bg-primary-foreground/15 rounded-xl p-3 text-center backdrop-blur-sm">
               <Star className="h-6 w-6 mx-auto" />
               <p className="text-xs mt-1 font-medium">{totalStars} ⭐</p>
             </div>
           </div>
 
           {/* XP bar */}
-          <div className="mt-4 bg-white/10 rounded-xl p-3">
+          <div className="mt-4 bg-primary-foreground/10 rounded-xl p-3">
             <div className="flex justify-between text-xs mb-1">
               <span>{levelInfo.title}</span>
               <span>{nextLevel ? `${nextLevel.xpRequired - userXP} XP restantes` : 'Nível máximo!'}</span>
             </div>
-            <Progress value={progress} className="h-2 bg-white/20" />
+            <Progress value={progress} className="h-2 bg-primary-foreground/20" />
           </div>
 
-          <p className="text-center text-sm mt-3 text-white/80">
+          <p className="text-center text-sm mt-3 text-primary-foreground/80">
             {totalUnlocked} / {BADGES.length} conquistas desbloqueadas
           </p>
         </div>

@@ -231,7 +231,7 @@ export const GameResultsDashboard = ({
               <div className="text-sm text-muted-foreground">Pontuação</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-card border">
-              <Target className="w-8 h-8 mx-auto mb-2 text-green-500" />
+              <Target className="w-8 h-8 mx-auto mb-2 text-success" />
               <div className="text-2xl font-bold">{session.accuracy}%</div>
               <div className="text-sm text-muted-foreground">Precisão</div>
             </div>

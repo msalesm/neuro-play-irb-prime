@@ -33,7 +33,7 @@ export function GameCompatibilityCheck({ onContinue, showWarnings = true }: Game
   // Critical errors (game won't work)
   if (!compatibility.compatible) {
     return (
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
         <Alert variant="destructive" className="max-w-lg">
           <AlertCircle className="h-5 w-5" />
           <AlertTitle className="text-lg font-bold">Navegador Não Suportado</AlertTitle>
