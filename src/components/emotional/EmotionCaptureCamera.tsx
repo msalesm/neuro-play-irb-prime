@@ -196,13 +196,13 @@ export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId, chil
                 alt="Analyzed"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <div className="flex items-center gap-3">
                   <span className="text-4xl">{moodEmojis[result.moodRating]}</span>
                   <div>
-                    <p className="text-white font-semibold text-lg">{result.primaryEmotion}</p>
-                    <p className="text-white/80 text-sm">{result.confidence}% confiança</p>
+                    <p className="text-foreground font-semibold text-lg">{result.primaryEmotion}</p>
+                    <p className="text-muted-foreground text-sm">{result.confidence}% confiança</p>
                   </div>
                 </div>
               </div>
@@ -212,8 +212,8 @@ export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId, chil
           <canvas ref={canvasRef} className="hidden" />
           
           {isCapturing && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <Loader2 className="h-8 w-8 text-white animate-spin" />
+            <div className="absolute inset-0 bg-background/50 flex items-center justify-center">
+              <Loader2 className="h-8 w-8 text-primary-foreground animate-spin" />
             </div>
           )}
           
@@ -236,7 +236,7 @@ export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId, chil
               {result.detectedEmotions.map((emotion, i) => (
                 <Badge
                   key={i}
-                  className={`${emotionColors[emotion] || 'bg-muted-foreground'} text-white`}
+                  className={`${emotionColors[emotion] || 'bg-muted-foreground'} text-primary-foreground`}
                 >
                   {emotion}
                 </Badge>

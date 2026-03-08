@@ -43,24 +43,24 @@ export function SimonDisplay({
         </div>
 
         {/* Digital Display */}
-        <div className="bg-black rounded-lg p-4 mb-3 font-mono">
+        <div className="bg-foreground/95 rounded-lg p-4 mb-3 font-mono">
           <div className="text-center mb-2">
-            <div className="text-green-500 text-3xl font-bold tracking-wider">
+            <div className="text-success text-3xl font-bold tracking-wider">
               {level.toString().padStart(2, '0')}
             </div>
-            <div className="text-green-500/60 text-xs">NÍVEL</div>
+            <div className="text-success/60 text-xs">NÍVEL</div>
           </div>
           
-          <div className="border-t border-green-900/50 pt-2">
-            <div className="text-green-500 text-xl text-center font-bold">
+          <div className="border-t border-success/20 pt-2">
+            <div className="text-success text-xl text-center font-bold">
               {score.toString().padStart(4, '0')}
             </div>
-            <div className="text-green-500/60 text-xs text-center">PONTOS</div>
+            <div className="text-success/60 text-xs text-center">PONTOS</div>
           </div>
 
           {highScore > 0 && (
-            <div className="border-t border-green-900/50 pt-2 mt-2">
-              <div className="text-yellow-500/80 text-sm text-center">
+            <div className="border-t border-success/20 pt-2 mt-2">
+              <div className="text-warning/80 text-sm text-center">
                 🏆 {highScore}
               </div>
             </div>

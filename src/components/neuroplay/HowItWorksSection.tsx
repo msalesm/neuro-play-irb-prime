@@ -53,7 +53,7 @@ export function HowItWorksSection() {
                 <CardContent className="p-6 pt-8">
                   {/* Icon with Gradient */}
                   <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center mb-4`}>
-                    <step.icon className="w-8 h-8 text-white" />
+                    <step.icon className="w-8 h-8 text-primary-foreground" />
                   </div>
 
                   {/* Title */}

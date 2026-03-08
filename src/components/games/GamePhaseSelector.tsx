@@ -59,7 +59,7 @@ export const GamePhaseSelector: React.FC<GamePhaseSelectorProps> = ({
             {/* Difficulty Badge */}
             <div className="absolute top-4 right-4 z-10">
               <Badge
-                className={`${getDifficultyColor(phase.difficulty)} text-white`}
+                className={`${getDifficultyColor(phase.difficulty)} text-primary-foreground`}
               >
                 {getDifficultyLabel(phase.difficulty)}
               </Badge>
