@@ -41,7 +41,7 @@ const getScoreColor = (score: number) => {
 const getScoreLabel = (score: number) => {
   if (score >= 75) return EDUCATIONAL_LABELS.adequate;
   if (score >= 50) return EDUCATIONAL_LABELS.monitoring;
-  if (score >= 25) return EDUCATIONAL_LABELS['attention'];
+  if (score >= 25) return EDUCATIONAL_LABELS.needsSupport;
   return EDUCATIONAL_LABELS.intervention;
 };
 
