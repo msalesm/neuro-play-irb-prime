@@ -143,10 +143,10 @@ function BiofeedbackDemoGame() {
                   <div 
                     className={`h-full rounded-full transition-all duration-500 ${
                       state.emotionalEnergy > 70 
-                        ? 'bg-gradient-to-r from-red-500 to-orange-500' 
+                        ? 'bg-gradient-to-r from-destructive to-accent' 
                         : state.emotionalEnergy > 40 
-                        ? 'bg-gradient-to-r from-yellow-400 to-orange-400'
-                        : 'bg-gradient-to-r from-green-400 to-blue-400'
+                        ? 'bg-gradient-to-r from-warning to-accent'
+                        : 'bg-gradient-to-r from-success to-info'
                     } ${state.emotionalEnergy > 70 ? 'animate-pulse' : ''}`}
                     style={{ width: `${Math.min(state.emotionalEnergy, 100)}%` }}
                   />

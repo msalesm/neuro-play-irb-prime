@@ -297,12 +297,12 @@ export default function VisuomotorCoordination() {
                 <div className="text-2xl font-bold text-primary">{avgMetrics.deviation}px</div>
                 <div className="text-xs text-muted-foreground">Desvio Médio</div>
               </div>
-              <div className="p-3 bg-blue-500/10 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">{Math.round(avgMetrics.time / 1000)}s</div>
+              <div className="p-3 bg-info/10 rounded-lg">
+                <div className="text-2xl font-bold text-info">{Math.round(avgMetrics.time / 1000)}s</div>
                 <div className="text-xs text-muted-foreground">Tempo Médio</div>
               </div>
-              <div className="p-3 bg-orange-500/10 rounded-lg">
-                <div className="text-2xl font-bold text-orange-600">{avgMetrics.corrections}</div>
+              <div className="p-3 bg-accent/10 rounded-lg">
+                <div className="text-2xl font-bold text-accent">{avgMetrics.corrections}</div>
                 <div className="text-xs text-muted-foreground">Correções</div>
               </div>
             </div>

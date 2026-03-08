@@ -174,7 +174,7 @@ export default function CooperativePuzzle() {
   const progress = ((pieces.length - unplacedPieces.length) / pieces.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-info/10 to-secondary/10 p-4">
       <div className="container mx-auto max-w-6xl">
         <Button 
           variant="ghost" 

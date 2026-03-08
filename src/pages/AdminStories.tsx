@@ -242,7 +242,7 @@ export default function AdminStories() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-3xl font-bold text-green-500">
+                      <div className="text-3xl font-bold text-success">
                         {telemetryStats.reduce((sum, s) => sum + s.completions, 0)}
                       </div>
                     </CardContent>
