@@ -28,6 +28,8 @@ import { RiskIndicatorCard } from '@/components/RiskIndicatorCard';
 import { PreventiveAlertModal } from '@/components/PreventiveAlertModal';
 import { AddChildModal } from '@/components/AddChildModal';
 import { FamilyProgressSection } from '@/components/FamilyProgressSection';
+import { BehavioralProfileWidget } from '@/components/dashboard/BehavioralProfileWidget';
+import { ReportGeneratorWidget } from '@/components/dashboard/ReportGeneratorWidget';
 
 interface ChildProfile {
   id: string;

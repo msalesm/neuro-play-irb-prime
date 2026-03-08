@@ -18,6 +18,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { BehavioralProfileWidget } from '@/components/dashboard/BehavioralProfileWidget';
+import { ReportGeneratorWidget } from '@/components/dashboard/ReportGeneratorWidget';
 
 interface PatientData {
   id: string;
