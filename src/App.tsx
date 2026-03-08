@@ -8,7 +8,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Loading } from "@/components/Loading";
 import { AppLayout } from "@/components/AppLayout";
-import { FloatingActionButton } from "@/components/FloatingActionButton";
+
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
 
@@ -385,7 +385,7 @@ const App = () => (
                   {/* Catch-all */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-                <FloatingActionButton />
+                
               </AppLayout>
             </BrowserRouter>
             </TooltipProvider>

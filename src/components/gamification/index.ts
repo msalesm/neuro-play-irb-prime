@@ -17,8 +17,6 @@ export { default as ProgressTrail } from './ProgressTrail';
 export { TourAchievementModal } from './TourAchievementModal';
 export { TourAchievementsPanel } from './TourAchievementsPanel';
 
-// Still at root level
-export { default as IslandMap } from '../IslandMap';
 
 // Stub components (were deleted as orphans but still referenced in dashboards)
 export const DailyMissionSection = (_props: any) => null;
