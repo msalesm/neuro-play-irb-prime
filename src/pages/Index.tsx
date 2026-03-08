@@ -86,7 +86,7 @@ const Index = () => {
             <motion.div className="flex flex-col sm:flex-row gap-3 md:gap-4" variants={fadeIn}>
               {user ? (
                 <Button asChild size="lg" className="text-base shadow-glow">
-                  <Link to="/dashboard" className="flex items-center gap-2">
+                  <Link to="/" className="flex items-center gap-2">
                     Acessar Painel <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
@@ -561,7 +561,7 @@ const Index = () => {
           <motion.div className="flex flex-col sm:flex-row gap-3 justify-center" variants={fadeIn}>
             {user ? (
               <Button asChild size="lg" className="text-base shadow-glow">
-                <Link to="/dashboard" className="flex items-center gap-2">
+                <Link to="/" className="flex items-center gap-2">
                   Ir para o Dashboard <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
