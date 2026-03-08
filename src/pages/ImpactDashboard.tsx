@@ -116,7 +116,7 @@ export default function ImpactDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <Target className="w-8 h-8 text-green-500" />
+                <Target className="w-8 h-8 text-success" />
                 <div>
                   <p className="text-xl font-bold">{effectiveness.length}</p>
                   <p className="text-xs text-muted-foreground">Intervenções Avaliadas</p>
@@ -127,7 +127,7 @@ export default function ImpactDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <FileText className="w-8 h-8 text-blue-500" />
+                <FileText className="w-8 h-8 text-info" />
                 <div>
                   <p className="text-xl font-bold">{reports.length}</p>
                   <p className="text-xs text-muted-foreground">Relatórios Gerados</p>
@@ -138,7 +138,7 @@ export default function ImpactDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <TrendingUp className="w-8 h-8 text-orange-500" />
+                <TrendingUp className="w-8 h-8 text-warning" />
                 <div>
                   <p className="text-xl font-bold">
                     {domainData.length > 0 ? Math.round(domainData.reduce((s, d) => s + d.score, 0) / domainData.length) : 0}%
@@ -259,7 +259,7 @@ export default function ImpactDashboard() {
                                 report.report_type === 'quarterly' ? 'Trimestral' : 'Anual'}
                             </span>
                             {report.is_published ? (
-                              <Badge className="bg-green-100 text-green-800">Publicado</Badge>
+                              <Badge className="bg-success/10 text-success">Publicado</Badge>
                             ) : (
                               <Badge variant="outline">Rascunho</Badge>
                             )}

@@ -102,7 +102,7 @@ const weatherTools: WeatherTool[] = [
     effectiveness: {
       happy: 20, sad: 85, angry: 60, anxious: 90, calm: 30, excited: 40
     },
-    color: 'bg-blue-500'
+    color: 'bg-info'
   },
   {
     id: 'calm_lightning_rod',
@@ -112,7 +112,7 @@ const weatherTools: WeatherTool[] = [
     effectiveness: {
       happy: 30, sad: 40, angry: 95, anxious: 70, calm: 20, excited: 80
     },
-    color: 'bg-purple-500'
+    color: 'bg-primary'
   },
   {
     id: 'emotional_thermometer',
@@ -122,7 +122,7 @@ const weatherTools: WeatherTool[] = [
     effectiveness: {
       happy: 60, sad: 60, angry: 80, anxious: 85, calm: 40, excited: 70
     },
-    color: 'bg-red-500'
+    color: 'bg-destructive'
   },
   {
     id: 'wind_anchor',
@@ -132,7 +132,7 @@ const weatherTools: WeatherTool[] = [
     effectiveness: {
       happy: 25, sad: 70, angry: 60, anxious: 95, calm: 50, excited: 65
     },
-    color: 'bg-green-500'
+    color: 'bg-success'
   },
   {
     id: 'sunshine_lens',
@@ -142,7 +142,7 @@ const weatherTools: WeatherTool[] = [
     effectiveness: {
       happy: 90, sad: 80, angry: 50, anxious: 60, calm: 70, excited: 85
     },
-    color: 'bg-yellow-500'
+    color: 'bg-warning'
   },
   {
     id: 'warmth_generator',
