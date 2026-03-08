@@ -160,7 +160,7 @@ export function ParentDashboardContent({
             </CardContent>
           </Card>
 
-          <div data-tour="daily-mission"><DailyMissionSection missions={missions} loading={missionsLoading} /></div>
+          <div data-tour="daily-mission"><DailyMissionSection /></div>
           <RecentScreeningsCard />
 
           {/* Achievement Preview */}

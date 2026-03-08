@@ -52,11 +52,8 @@ export default function DashboardPais() {
       )}
 
       <BadgeUnlockModal
-        open={showBadgeModal}
+        badgeKey={showBadgeModal ? unlockedBadge?.key : undefined}
         onClose={() => setShowBadgeModal(false)}
-        badgeName={unlockedBadge?.name || ''}
-        badgeDescription={unlockedBadge?.description || ''}
-        badgeIcon={unlockedBadge?.icon || '🏆'}
       />
 
       {preventiveAlert && (
