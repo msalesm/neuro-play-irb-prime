@@ -83,10 +83,10 @@ export function TeacherClassStats({ stats, className }: TeacherClassStatsProps) 
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground mb-1">
-              <AlertTriangle className="h-4 w-4 text-amber-500" />
+              <AlertTriangle className="h-4 w-4 text-warning" />
               <span className="text-xs">Precisam Atenção</span>
             </div>
-            <p className="text-2xl font-bold text-amber-600">{stats.studentsNeedingAttention}</p>
+            <p className="text-2xl font-bold text-warning">{stats.studentsNeedingAttention}</p>
           </CardContent>
         </Card>
 
