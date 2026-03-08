@@ -209,7 +209,7 @@ export default function TDAHScreening() {
                 Voltar
               </Button>
               <Button onClick={startGame} className="flex-1">
-                Iniciar Triagem
+                Iniciar Atividade
               </Button>
             </div>
           </CardContent>
