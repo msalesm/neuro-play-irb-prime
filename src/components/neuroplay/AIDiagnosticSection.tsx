@@ -5,11 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const metrics = [
-  { label: 'Velocidade de reação', value: '285ms', icon: Zap, color: 'text-yellow-500' },
-  { label: 'Precisão', value: '94%', icon: Target, color: 'text-green-500' },
-  { label: 'Persistência', value: 'Alta', icon: TrendingUp, color: 'text-blue-500' },
-  { label: 'Consistência', value: '88%', icon: Activity, color: 'text-purple-500' },
-  { label: 'Tempo de foco', value: '12min', icon: Clock, color: 'text-orange-500' },
+  { label: 'Velocidade de reação', value: '285ms', icon: Zap, color: 'text-warning' },
+  { label: 'Precisão', value: '94%', icon: Target, color: 'text-success' },
+  { label: 'Persistência', value: 'Alta', icon: TrendingUp, color: 'text-info' },
+  { label: 'Consistência', value: '88%', icon: Activity, color: 'text-secondary' },
+  { label: 'Tempo de foco', value: '12min', icon: Clock, color: 'text-warning' },
 ];
 
 export function AIDiagnosticSection() {
@@ -62,7 +62,7 @@ export function AIDiagnosticSection() {
             <Card className="border-2 shadow-glow">
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                  <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
                   <span className="font-semibold">Análise em Tempo Real</span>
                 </div>
 

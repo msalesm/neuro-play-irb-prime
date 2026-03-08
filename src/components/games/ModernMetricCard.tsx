@@ -36,14 +36,14 @@ export function ModernMetricCard({
   className
 }: ModernMetricCardProps) {
   const trendColors = {
-    up: 'text-green-400',
-    down: 'text-red-400',
-    stable: 'text-blue-400'
+    up: 'text-success',
+    down: 'text-destructive',
+    stable: 'text-info'
   };
 
   return (
     <Card className={cn(
-      'relative overflow-hidden backdrop-blur-sm bg-white/10 border-white/20 hover:bg-white/15 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/20',
+      'relative overflow-hidden backdrop-blur-sm bg-card/10 border-border/20 hover:bg-card/15 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20',
       className
     )}>
       {/* Gradient Background */}

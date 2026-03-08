@@ -99,15 +99,15 @@ export function ParentAgendaView() {
   const getStatusInfo = (status: string) => {
     switch (status) {
       case 'confirmado':
-        return { label: 'Confirmado', variant: 'default' as const, icon: CheckCircle, color: 'text-green-600' };
+        return { label: 'Confirmado', variant: 'default' as const, icon: CheckCircle, color: 'text-success' };
       case 'agendado':
-        return { label: 'Aguardando confirmação', variant: 'secondary' as const, icon: AlertCircle, color: 'text-yellow-600' };
+        return { label: 'Aguardando confirmação', variant: 'secondary' as const, icon: AlertCircle, color: 'text-warning' };
       case 'realizado':
-        return { label: 'Realizado', variant: 'outline' as const, icon: CheckCircle, color: 'text-blue-600' };
+        return { label: 'Realizado', variant: 'outline' as const, icon: CheckCircle, color: 'text-info' };
       case 'cancelado':
-        return { label: 'Cancelado', variant: 'destructive' as const, icon: XCircle, color: 'text-red-600' };
+        return { label: 'Cancelado', variant: 'destructive' as const, icon: XCircle, color: 'text-destructive' };
       case 'faltou':
-        return { label: 'Falta', variant: 'destructive' as const, icon: XCircle, color: 'text-red-600' };
+        return { label: 'Falta', variant: 'destructive' as const, icon: XCircle, color: 'text-destructive' };
       default:
         return { label: status, variant: 'outline' as const, icon: AlertCircle, color: 'text-muted-foreground' };
     }

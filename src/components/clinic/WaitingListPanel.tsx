@@ -11,11 +11,11 @@ interface WaitingListPanelProps {
 }
 
 const priorityLabels: Record<number, { label: string; color: string }> = {
-  1: { label: 'Urgente', color: 'bg-red-500' },
-  2: { label: 'Alta', color: 'bg-orange-500' },
-  3: { label: 'Média', color: 'bg-yellow-500' },
-  4: { label: 'Normal', color: 'bg-blue-500' },
-  5: { label: 'Baixa', color: 'bg-gray-500' },
+  1: { label: 'Urgente', color: 'bg-destructive' },
+  2: { label: 'Alta', color: 'bg-warning' },
+  3: { label: 'Média', color: 'bg-warning/70' },
+  4: { label: 'Normal', color: 'bg-info' },
+  5: { label: 'Baixa', color: 'bg-muted-foreground' },
 };
 
 export function WaitingListPanel({ items, onSchedule }: WaitingListPanelProps) {

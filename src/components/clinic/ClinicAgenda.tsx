@@ -533,19 +533,19 @@ export function ClinicAgenda() {
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Confirmados</span>
-                <span className="font-medium text-green-600">
+                <span className="font-medium text-success">
                   {appointments.filter(a => a.status === 'confirmado').length}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Aguardando</span>
-                <span className="font-medium text-yellow-600">
+                <span className="font-medium text-warning">
                   {appointments.filter(a => a.status === 'agendado').length}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Realizados</span>
-                <span className="font-medium text-blue-600">
+                <span className="font-medium text-info">
                   {appointments.filter(a => a.status === 'realizado').length}
                 </span>
               </div>

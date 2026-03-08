@@ -114,9 +114,9 @@ export function ConsentsStep({ data, updateData }: Props) {
         </p>
       </div>
 
-      <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-        <div className="h-2 w-2 rounded-full bg-green-500" />
-        <p className="text-sm text-green-900">
+      <div className="flex items-center gap-2 p-3 bg-success/10 border border-success/20 rounded-lg">
+        <div className="h-2 w-2 rounded-full bg-success" />
+        <p className="text-sm text-success">
           Conformidade total com Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018)
         </p>
       </div>

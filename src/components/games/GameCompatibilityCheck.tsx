@@ -82,9 +82,9 @@ export function GameCompatibilityCheck({ onContinue, showWarnings = true }: Game
 
   return (
     <div className="fixed top-4 right-4 z-50 max-w-md animate-in slide-in-from-right">
-      <Alert variant="default" className="bg-yellow-50 border-yellow-300 dark:bg-yellow-950 dark:border-yellow-800">
-        <AlertCircle className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-        <AlertTitle className="text-yellow-800 dark:text-yellow-300 flex items-center justify-between">
+      <Alert variant="default" className="bg-warning/10 border-warning/30">
+        <AlertCircle className="h-4 w-4 text-warning" />
+        <AlertTitle className="text-warning flex items-center justify-between">
           Recursos Limitados
           <Button
             variant="ghost"
@@ -95,7 +95,7 @@ export function GameCompatibilityCheck({ onContinue, showWarnings = true }: Game
             <X className="h-4 w-4" />
           </Button>
         </AlertTitle>
-        <AlertDescription className="text-yellow-700 dark:text-yellow-400 text-sm mt-2 space-y-1">
+        <AlertDescription className="text-warning/80 text-sm mt-2 space-y-1">
           {warnings.map((warning, idx) => (
             <p key={idx}>• {warning}</p>
           ))}
@@ -107,7 +107,7 @@ export function GameCompatibilityCheck({ onContinue, showWarnings = true }: Game
                 setDismissed(true);
                 onContinue?.();
               }}
-              className="bg-yellow-100 hover:bg-yellow-200 text-yellow-900 dark:bg-yellow-900 dark:hover:bg-yellow-800 dark:text-yellow-100"
+              className="bg-warning/20 hover:bg-warning/30 text-warning-foreground"
             >
               Continuar Mesmo Assim
             </Button>
