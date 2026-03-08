@@ -135,9 +135,9 @@ export function DigitalPrescription({ childId, childName, sessionId }: DigitalPr
 
   const getStatusBadge = (status: string) => {
     const styles = {
-      active: 'bg-green-500/10 text-green-600 border-green-600',
-      completed: 'bg-blue-500/10 text-blue-600 border-blue-600',
-      cancelled: 'bg-red-500/10 text-red-600 border-red-600',
+      active: 'bg-success/10 text-success border-success',
+      completed: 'bg-info/10 text-info border-info',
+      cancelled: 'bg-destructive/10 text-destructive border-destructive',
       expired: 'bg-muted text-muted-foreground'
     };
     const labels = {
@@ -319,7 +319,7 @@ export function DigitalPrescription({ childId, childName, sessionId }: DigitalPr
                             </Badge>
                           )}
                           {prescription.signed_at && (
-                            <Badge variant="outline" className="text-xs text-green-600">
+                            <Badge variant="outline" className="text-xs text-success">
                               <CheckCircle className="w-3 h-3 mr-1" />
                               Assinada
                             </Badge>

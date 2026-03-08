@@ -134,8 +134,8 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-red-500/10">
-                <Heart className="w-6 h-6 text-red-500" />
+              <div className="p-2 rounded-lg bg-destructive/10">
+                <Heart className="w-6 h-6 text-destructive" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Estabilidade Emocional</p>
@@ -148,8 +148,8 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-500/10">
-                <Activity className="w-6 h-6 text-green-500" />
+              <div className="p-2 rounded-lg bg-success/10">
+                <Activity className="w-6 h-6 text-success" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Engajamento</p>
@@ -330,8 +330,8 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
                         <Badge 
                           variant="outline" 
                           className={
-                            pattern.trend === 'improving' ? 'text-green-600 border-green-600' :
-                            pattern.trend === 'declining' ? 'text-red-600 border-red-600' :
+                            pattern.trend === 'improving' ? 'text-success border-success' :
+                            pattern.trend === 'declining' ? 'text-destructive border-destructive' :
                             'text-muted-foreground'
                           }
                         >

@@ -167,7 +167,7 @@ export const ImmediateInterventions = ({ childId }: ImmediateInterventionsProps)
           </div>
         ) : (
           <div className="text-center py-6 text-muted-foreground">
-            <ThumbsUp className="h-8 w-8 mx-auto mb-2 text-green-500" />
+            <ThumbsUp className="h-8 w-8 mx-auto mb-2 text-success" />
             <p className="text-sm">Nenhuma intervenção necessária no momento</p>
             <p className="text-xs mt-1">O desempenho está dentro do esperado</p>
           </div>
