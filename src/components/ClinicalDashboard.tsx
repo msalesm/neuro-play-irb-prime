@@ -423,7 +423,7 @@ export default function ClinicalDashboard() {
 
         {/* Clinical Tabs */}
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="analysis">Análise IA</TabsTrigger>
             <TabsTrigger value="reports">Relatórios</TabsTrigger>

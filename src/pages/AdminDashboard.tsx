@@ -274,7 +274,7 @@ export default function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="students" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
             <TabsTrigger value="students" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
               Estudantes

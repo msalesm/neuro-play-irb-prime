@@ -126,7 +126,7 @@ export default function RelationshipsManager() {
 
         {/* Tabs */}
         <Tabs defaultValue="parent-child" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
             <TabsTrigger value="parent-child" className="flex items-center gap-2">
               <Baby className="h-4 w-4" />
               <span className="hidden sm:inline">Pais-Filhos</span>

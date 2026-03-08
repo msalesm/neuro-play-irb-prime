@@ -99,7 +99,7 @@ export default function AdminStories() {
         </div>
 
         <Tabs defaultValue="stories" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
             <TabsTrigger value="stories">
               <BookOpen className="h-4 w-4 mr-2" />
               Histórias

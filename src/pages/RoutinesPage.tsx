@@ -82,7 +82,7 @@ export default function RoutinesPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-          <TabsList className="grid w-full grid-cols-3 bg-white/10">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 bg-white/10">
             <TabsTrigger value="all" className="text-white data-[state=active]:bg-white/20">
               Todas
             </TabsTrigger>
