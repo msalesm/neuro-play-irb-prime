@@ -8,7 +8,7 @@ Este guia explica como transformar o NeuroPlay em aplicativo nativo para iOS e A
 2. **Plugin Haptics** - Feedback háptico nativo (funciona no iPhone!)
 3. **Sistema híbrido** - Detecta automaticamente web vs nativo
 4. **Hot-reload ativo** - Testa mudanças direto no dispositivo
-5. **Ícones e Splash Screens customizados** - Branding IRB Prime consistente
+5. **Ícones e Splash Screens customizados** - Branding NeuroPlay consistente
 
 ## 🚀 Como testar no seu iPhone ou Android
 
