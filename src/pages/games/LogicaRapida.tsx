@@ -572,11 +572,11 @@ export default function LogicaRapida() {
                 {showAnswer && (
                   <div className="text-center">
                     {answerFeedback === 'correct' ? (
-                      <div className="text-green-600 font-semibold">
+                      <div className="text-success font-semibold">
                         ✅ Correto! +{20 * stats.level} pontos
                       </div>
                     ) : (
-                      <div className="text-red-600 font-semibold">
+                      <div className="text-destructive font-semibold">
                         ❌ Incorreto. A resposta era: {currentPattern.correctAnswer}
                       </div>
                     )}
@@ -594,11 +594,11 @@ export default function LogicaRapida() {
                   </p>
                   <div className="flex justify-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
-                      <CheckCircle className="w-4 h-4 text-green-500" />
+                      <CheckCircle className="w-4 h-4 text-success" />
                       Acertos: {stats.correctAnswers}/{stats.totalQuestions}
                     </div>
                     <div className="flex items-center gap-1">
-                      <Trophy className="w-4 h-4 text-purple-500" />
+                      <Trophy className="w-4 h-4 text-secondary" />
                       Precisão: {accuracy}%
                     </div>
                   </div>
@@ -672,7 +672,7 @@ export default function LogicaRapida() {
         <Card>
           <CardContent className="p-6">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" />
+              <Trophy className="w-5 h-5 text-warning" />
               Benefícios Terapêuticos
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

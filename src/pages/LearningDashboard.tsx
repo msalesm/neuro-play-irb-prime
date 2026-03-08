@@ -206,7 +206,7 @@ export default function LearningDashboard() {
                               {Math.round(session.duration / 60)}min • {session.score}% acurácia
                             </div>
                           </div>
-                          <Badge className="bg-green-100 text-green-800">
+                          <Badge className="bg-success/10 text-success">
                             +{Math.floor(session.score / 10)} XP
                           </Badge>
                         </div>
@@ -225,29 +225,29 @@ export default function LearningDashboard() {
           <TabsContent value="achievements" className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Achievement cards */}
-              <Card className="p-4 text-center border-yellow-200 bg-yellow-50">
-                <Trophy className="w-12 h-12 text-yellow-500 mx-auto mb-2" />
+              <Card className="p-4 text-center border-warning/30 bg-warning/5">
+                <Trophy className="w-12 h-12 text-warning mx-auto mb-2" />
                 <h3 className="font-bold">{t('achievements.firstWin')}</h3>
                 <p className="text-sm text-muted-foreground">{t('achievements.firstWinDesc')}</p>
-                <Badge className="mt-2 bg-yellow-100 text-yellow-800">
+                <Badge className="mt-2 bg-warning/10 text-warning">
                   {t('achievements.unlocked')}
                 </Badge>
               </Card>
 
-              <Card className="p-4 text-center border-blue-200 bg-blue-50">
-                <Zap className="w-12 h-12 text-blue-500 mx-auto mb-2" />
+              <Card className="p-4 text-center border-info/30 bg-info/5">
+                <Zap className="w-12 h-12 text-info mx-auto mb-2" />
                 <h3 className="font-bold">{t('achievements.speedster')}</h3>
                 <p className="text-sm text-muted-foreground">{t('achievements.speedsterDesc')}</p>
-                <Badge className="mt-2 bg-blue-100 text-blue-800">
+                <Badge className="mt-2 bg-info/10 text-info">
                   {t('achievements.unlocked')}
                 </Badge>
               </Card>
 
-              <Card className="p-4 text-center border-green-200 bg-green-50">
-                <Target className="w-12 h-12 text-green-500 mx-auto mb-2" />
+              <Card className="p-4 text-center border-success/30 bg-success/5">
+                <Target className="w-12 h-12 text-success mx-auto mb-2" />
                 <h3 className="font-bold">{t('achievements.focused')}</h3>
                 <p className="text-sm text-muted-foreground">{t('achievements.focusedDesc')}</p>
-                <Badge className="mt-2 bg-green-100 text-green-800">
+                <Badge className="mt-2 bg-success/10 text-success">
                   {t('achievements.unlocked')}
                 </Badge>
               </Card>
@@ -316,7 +316,7 @@ export default function LearningDashboard() {
         </Tabs>
 
         {/* Quick Actions */}
-        <Card className="p-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white overflow-hidden">
+        <Card className="p-6 bg-gradient-primary text-primary-foreground overflow-hidden">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="text-center md:text-left">
               <h3 className="text-xl font-bold mb-2 break-words">{t('dashboard.readyToPlay')}</h3>

@@ -515,28 +515,28 @@ export default function CacaFoco() {
           
           <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
-              <div className={`text-xl font-bold text-green-600 ${stats.score > 0 ? 'animate-bounce-in' : ''}`}>{stats.score}</div>
+              <div className={`text-xl font-bold text-success ${stats.score > 0 ? 'animate-bounce-in' : ''}`}>{stats.score}</div>
               <div className="text-xs text-muted-foreground">Pontos</div>
             </CardContent>
           </Card>
           
           <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
-              <div className={`text-xl font-bold ${stats.timeLeft < 10 ? 'text-red-600 animate-pulse' : 'text-orange-600'}`}>{stats.timeLeft}s</div>
+              <div className={`text-xl font-bold ${stats.timeLeft < 10 ? 'text-destructive animate-pulse' : 'text-accent'}`}>{stats.timeLeft}s</div>
               <div className="text-xs text-muted-foreground">Tempo</div>
             </CardContent>
           </Card>
           
           <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-purple-600">{accuracy}%</div>
+              <div className="text-xl font-bold text-secondary">{accuracy}%</div>
               <div className="text-xs text-muted-foreground">Precisão</div>
             </CardContent>
           </Card>
           
           <Card className="transition-all duration-300 hover:shadow-lg">
             <CardContent className="p-3 text-center">
-              <div className={`text-xl font-bold text-yellow-600 ${stats.streak > 0 ? 'animate-pulse-success' : ''}`}>
+              <div className={`text-xl font-bold text-warning ${stats.streak > 0 ? 'animate-pulse-success' : ''}`}>
                 {stats.streak > 0 ? '🔥 ' : ''}{stats.streak}
               </div>
               <div className="text-xs text-muted-foreground">Sequência</div>
@@ -616,7 +616,7 @@ export default function CacaFoco() {
             )}
 
             {(gameState === 'playing' && items.length > 0) && (
-              <div className={`relative min-h-96 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border-2 border-dashed border-primary/30 overflow-hidden ${shakeGame ? 'animate-shake' : ''}`}>
+              <div className={`relative min-h-96 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-2xl p-4 border-2 border-dashed border-primary/30 overflow-hidden ${shakeGame ? 'animate-shake' : ''}`}>
                 {/* Game Items */}
                 {items.map((item, index) => (
                   <button
@@ -624,7 +624,7 @@ export default function CacaFoco() {
                     onClick={() => handleItemClick(item)}
                     disabled={item.clicked}
                     className={`absolute text-2xl sm:text-3xl transition-all duration-200 cursor-pointer transform -translate-x-1/2 -translate-y-1/2 p-2 rounded-full 
-                      ${!item.clicked ? 'hover:scale-125 hover:bg-white/50' : ''} 
+                      ${!item.clicked ? 'hover:scale-125 hover:bg-card/50' : ''} 
                       ${item.animate === 'success' ? 'animate-pulse-success' : ''} 
                       ${item.animate === 'error' ? 'animate-shake opacity-50' : ''}
                       ${!item.animate && !item.clicked ? 'animate-bounce-in' : ''}`}
@@ -679,11 +679,11 @@ export default function CacaFoco() {
                   </p>
                   <div className="flex justify-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
-                      <Target className="w-4 h-4 text-green-500" />
+                      <Target className="w-4 h-4 text-success" />
                       Acertos: {stats.correctClicks}/{stats.correctClicks + items.filter(i => i.isTarget).length}
                     </div>
                     <div className="flex items-center gap-1">
-                      <Trophy className="w-4 h-4 text-purple-500" />
+                      <Trophy className="w-4 h-4 text-secondary" />
                       Precisão: {accuracy}%
                     </div>
                   </div>
@@ -757,7 +757,7 @@ export default function CacaFoco() {
         <Card>
           <CardContent className="p-6">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" />
+              <Trophy className="w-5 h-5 text-warning" />
               Benefícios Terapêuticos
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
