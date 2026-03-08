@@ -471,7 +471,7 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
                   <Separator className="my-4" />
                   <div className="mb-6">
                     <h3 className="font-semibold flex items-center gap-2 mb-3">
-                      <FileText className="h-4 w-4 text-purple-500" />
+                      <FileText className="h-4 w-4 text-secondary" />
                       Triagens Diagnósticas
                     </h3>
                     <div className="grid grid-cols-3 gap-3">
@@ -488,9 +488,9 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
                         </div>
                       )}
                       {generatedReport.screeningResults.tdah && (
-                        <div className="p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                        <div className="p-3 rounded-lg bg-warning/10 border border-warning/20">
                           <div className="flex items-center gap-2 mb-1">
-                            <Zap className="w-4 h-4 text-orange-500" />
+                            <Zap className="w-4 h-4 text-warning" />
                             <span className="text-xs font-medium">TDAH</span>
                           </div>
                           <p className="text-xl font-bold">{generatedReport.screeningResults.tdah.score.toFixed(0)}%</p>
@@ -500,9 +500,9 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
                         </div>
                       )}
                       {generatedReport.screeningResults.dislexia && (
-                        <div className="p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                        <div className="p-3 rounded-lg bg-secondary/10 border border-secondary/20">
                           <div className="flex items-center gap-2 mb-1">
-                            <BookOpen className="w-4 h-4 text-purple-500" />
+                            <BookOpen className="w-4 h-4 text-secondary" />
                             <span className="text-xs font-medium">Dislexia</span>
                           </div>
                           <p className="text-xl font-bold">{generatedReport.screeningResults.dislexia.score.toFixed(0)}%</p>
@@ -538,7 +538,7 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
               <Separator className="my-4" />
               <div className="mb-6">
                 <h3 className="font-semibold flex items-center gap-2 mb-3">
-                  <TrendingUp className="h-4 w-4 text-green-500" />
+                  <TrendingUp className="h-4 w-4 text-success" />
                   Correlações
                 </h3>
                 <ul className="space-y-1">
