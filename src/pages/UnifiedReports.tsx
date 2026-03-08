@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ClinicalReportDashboard } from '@/components/reports/ClinicalReportDashboard';
 import { motion } from 'framer-motion';
 import { 
   ArrowLeft, 
@@ -678,6 +679,21 @@ export default function UnifiedReports() {
                 </ul>
               </CardContent>
             </Card>
+          </motion.div>
+        )}
+
+        {/* Longitudinal Analysis */}
+        {selectedChild && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-8"
+          >
+            <ClinicalReportDashboard 
+              childId={selectedChild} 
+              childName={selectedChildName} 
+            />
           </motion.div>
         )}
       </div>
