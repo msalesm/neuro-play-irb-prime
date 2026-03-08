@@ -42,10 +42,11 @@ export default function SchoolDirectorDashboard() {
         return data || [];
       }
 
-      const { data: schools } = await (supabase
-        .from('schools')
+      const schoolsResult: any = await supabase
+        .from('schools' as any)
         .select('id')
-        .eq('institution_id', instId) as any);
+        .eq('institution_id', instId);
+      const schools = schoolsResult?.data;
 
       if (!schools?.length) return [];
 
