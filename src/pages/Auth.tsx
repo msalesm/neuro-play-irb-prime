@@ -302,7 +302,7 @@ export default function Auth() {
                   </div>
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-secondary to-primary hover:from-secondary/90 hover:to-primary/90 text-primary-foreground border-0 shadow-lg hover:shadow-secondary/25 transition-all duration-300"
                     disabled={isLoading}
                   >
                     {isLoading ? "Entrando..." : "Entrar"}
@@ -376,7 +376,7 @@ export default function Auth() {
                   </div>
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-secondary to-primary hover:from-secondary/90 hover:to-primary/90 text-primary-foreground border-0 shadow-lg hover:shadow-secondary/25 transition-all duration-300"
                     disabled={isLoading}
                   >
                     {isLoading ? "Criando conta..." : "Criar conta"}
@@ -426,7 +426,7 @@ export default function Auth() {
               <Button
                 type="submit"
                 disabled={sendingReset}
-                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                className="flex-1 bg-gradient-to-r from-secondary to-primary hover:from-secondary/90 hover:to-primary/90"
               >
                 {sendingReset ? "Enviando..." : "Enviar"}
               </Button>

@@ -97,7 +97,7 @@ const Index = () => {
                       Começar Agora <ArrowRight className="w-4 h-4" />
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="text-base bg-white/10 border-white/30 text-white hover:bg-white/20">
+                  <Button asChild size="lg" variant="outline" className="text-base bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20">
                     <Link to="/auth">Já tenho conta</Link>
                   </Button>
                 </>
@@ -419,7 +419,7 @@ const Index = () => {
                 className="w-full h-64 md:h-96 object-cover"
                 loading="lazy"
               />
-              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-card">
+              <div className="absolute top-4 right-4 bg-card/90 backdrop-blur-sm rounded-xl p-3 shadow-card">
                 <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 text-warning fill-warning" />
                   <div>
@@ -447,7 +447,7 @@ const Index = () => {
           {[...Array(15)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+              className="absolute w-1 h-1 bg-primary-foreground rounded-full animate-pulse"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -482,7 +482,7 @@ const Index = () => {
             ].map((planet) => (
               <motion.div 
                 key={planet.name}
-                className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-white/20"
+                className="bg-primary-foreground/10 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-primary-foreground/20"
                 variants={scaleIn}
                 whileHover={{ scale: 1.05 }}
               >
@@ -493,13 +493,13 @@ const Index = () => {
           </motion.div>
 
           {user ? (
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 shadow-glow">
+             <Button asChild size="lg" className="bg-background text-primary hover:bg-background/90 shadow-glow">
               <Link to="/sistema-planeta-azul" className="flex items-center gap-2">
                 🪐 Explorar Planetas <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
           ) : (
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 shadow-glow">
+            <Button asChild size="lg" className="bg-background text-primary hover:bg-background/90 shadow-glow">
               <Link to="/auth" className="flex items-center gap-2">
                 Criar Conta Gratuita <ArrowRight className="w-4 h-4" />
               </Link>
