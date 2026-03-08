@@ -55,7 +55,7 @@ export const GameOnboarding: React.FC<GameOnboardingProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-background/50 flex items-center justify-center p-4">
       <Card className="max-w-md w-full shadow-2xl animate-scale-in">
         <CardHeader className="text-center relative">
           <Button

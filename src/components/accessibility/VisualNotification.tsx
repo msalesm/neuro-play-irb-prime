@@ -61,7 +61,7 @@ export function VisualNotification({
             <motion.div
               animate={{ opacity: [1, 0.3, 1] }}
               transition={{ duration: 0.5, repeat: Infinity }}
-              className="absolute -left-1 -top-1 w-3 h-3 bg-red-500 rounded-full"
+              className="absolute -left-1 -top-1 w-3 h-3 bg-destructive rounded-full"
             />
           )}
           
@@ -71,7 +71,7 @@ export function VisualNotification({
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 hover:bg-black/10"
+            className="h-6 w-6 hover:bg-foreground/10"
             onClick={() => {
               setIsVisible(false);
               onClose?.();

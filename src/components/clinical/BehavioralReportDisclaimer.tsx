@@ -19,12 +19,12 @@ export const BehavioralReportDisclaimer: React.FC<BehavioralReportDisclaimerProp
   }
 
   return (
-    <Alert className={`bg-warning/10 border-warning/30 text-white ${className}`}>
+    <Alert className={`bg-warning/10 border-warning/30 ${className}`}>
       <AlertTriangle className="h-4 w-4 text-warning" />
-      <AlertTitle className="text-white font-semibold">
+      <AlertTitle className="text-foreground font-semibold">
         ⚠️ Importante: Ferramenta de Análise Comportamental Educacional
       </AlertTitle>
-      <AlertDescription className="text-white/90 text-sm">
+      <AlertDescription className="text-muted-foreground text-sm">
         <p className="mb-2">
           Este relatório apresenta <strong>PADRÕES COMPORTAMENTAIS</strong> observados durante atividades
           educacionais estruturadas, não constituindo avaliação clínica de qualquer condição.

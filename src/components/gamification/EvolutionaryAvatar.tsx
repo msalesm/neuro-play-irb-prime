@@ -71,7 +71,7 @@ export const EvolutionaryAvatar = ({
           {[...Array(8)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-yellow-400 rounded-full"
+              className="absolute w-1 h-1 bg-warning rounded-full"
               style={{
                 left: '50%',
                 top: '50%',

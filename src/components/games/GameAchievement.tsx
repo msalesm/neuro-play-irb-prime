@@ -45,7 +45,7 @@ export const GameAchievement: React.FC<GameAchievementProps> = ({
         <Card className="shadow-glow animate-scale-in bg-gradient-to-br from-background to-primary/10 border-primary/20">
           <CardContent className="p-6 text-center max-w-sm">
             <div className="text-4xl mb-3 animate-bounce">
-              <Trophy className="w-8 h-8 mx-auto text-yellow-500 mb-2" />
+              <Trophy className="w-8 h-8 mx-auto text-warning mb-2" />
               {achievement.icon}
             </div>
             <h3 className="font-bold text-lg mb-2 text-foreground">

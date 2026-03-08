@@ -279,11 +279,11 @@ export const CosmicSequenceGame = ({
           className="text-center space-y-4"
         >
           <div className="flex items-center justify-center gap-3">
-            <Sparkles className="w-12 h-12 text-purple-400" />
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent">
+            <Sparkles className="w-12 h-12 text-primary" />
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               Sequência Cósmica
             </h1>
-            <Sparkles className="w-12 h-12 text-purple-400" />
+            <Sparkles className="w-12 h-12 text-primary" />
           </div>
           <p className="text-lg text-muted-foreground max-w-md">
             Observe a sequência de luzes e repita na ordem correta!
@@ -293,7 +293,7 @@ export const CosmicSequenceGame = ({
         <Button
           onClick={startGame}
           size="lg"
-          className="px-12 py-6 text-xl font-bold bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700"
+          className="px-12 py-6 text-xl font-bold bg-gradient-primary"
         >
           <Zap className="w-6 h-6 mr-2" />
           Começar
@@ -310,16 +310,16 @@ export const CosmicSequenceGame = ({
           animate={{ scale: 1, opacity: 1 }}
           className="text-center space-y-6"
         >
-          <Trophy className="w-24 h-24 mx-auto text-yellow-400" />
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
+          <Trophy className="w-24 h-24 mx-auto text-warning" />
+          <h2 className="text-5xl font-bold bg-gradient-to-r from-destructive to-warning bg-clip-text text-transparent">
             Game Over!
           </h2>
           <div className="space-y-2">
             <p className="text-3xl font-bold text-foreground">
-              Pontuação Final: <span className="text-cyan-400">{gameState.score}</span>
+              Pontuação Final: <span className="text-primary">{gameState.score}</span>
             </p>
             <p className="text-xl text-muted-foreground">
-              Rodada Alcançada: <span className="text-yellow-400">{gameState.round}</span>
+              Rodada Alcançada: <span className="text-warning">{gameState.round}</span>
             </p>
           </div>
         </motion.div>
@@ -327,7 +327,7 @@ export const CosmicSequenceGame = ({
         <Button
           onClick={restartGame}
           size="lg"
-          className="px-12 py-6 text-xl font-bold bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700"
+          className="px-12 py-6 text-xl font-bold bg-gradient-accent"
         >
           Tentar Novamente
         </Button>
@@ -338,15 +338,15 @@ export const CosmicSequenceGame = ({
   return (
     <div className="flex flex-col items-center justify-center h-full gap-8 p-4">
       {/* Score Panel */}
-      <div className="flex gap-6 items-center bg-black/70 backdrop-blur-sm border border-cyan-500/30 rounded-xl px-8 py-4">
+      <div className="flex gap-6 items-center bg-background/70 backdrop-blur-sm border border-primary/30 rounded-xl px-8 py-4">
         <div className="text-center">
-          <p className="text-sm text-cyan-400 font-semibold">PONTUAÇÃO</p>
-          <p className="text-3xl font-bold text-white">{gameState.score}</p>
+          <p className="text-sm text-primary font-semibold">PONTUAÇÃO</p>
+          <p className="text-3xl font-bold text-foreground">{gameState.score}</p>
         </div>
-        <div className="h-12 w-px bg-gradient-to-b from-transparent via-cyan-500 to-transparent" />
+        <div className="h-12 w-px bg-gradient-to-b from-transparent via-primary to-transparent" />
         <div className="text-center">
-          <p className="text-sm text-yellow-400 font-semibold">RODADA</p>
-          <p className="text-3xl font-bold text-white">{gameState.round}</p>
+          <p className="text-sm text-warning font-semibold">RODADA</p>
+          <p className="text-3xl font-bold text-foreground">{gameState.round}</p>
         </div>
       </div>
 

@@ -292,7 +292,7 @@ export default function ClinicalDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
-                <Activity className="w-6 h-6 text-white" aria-hidden="true" />
+                <Activity className="w-6 h-6 text-primary-foreground" aria-hidden="true" />
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-foreground">Painel Clínico</h1>
