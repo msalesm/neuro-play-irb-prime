@@ -190,9 +190,9 @@ export const GameResultsDashboard = ({
 
   const getPerformanceLevel = (accuracy: number) => {
     if (accuracy >= 90) return { label: "Excelente", color: "text-primary", bg: "bg-primary/10" };
-    if (accuracy >= 75) return { label: "Muito Bom", color: "text-blue-500", bg: "bg-blue-500/10" };
-    if (accuracy >= 60) return { label: "Bom", color: "text-green-500", bg: "bg-green-500/10" };
-    return { label: "Em Progresso", color: "text-yellow-500", bg: "bg-yellow-500/10" };
+    if (accuracy >= 75) return { label: "Muito Bom", color: "text-accent-foreground", bg: "bg-accent/10" };
+    if (accuracy >= 60) return { label: "Bom", color: "text-success", bg: "bg-success/10" };
+    return { label: "Em Progresso", color: "text-warning", bg: "bg-warning/10" };
   };
 
   const performance = getPerformanceLevel(session.accuracy);
@@ -236,12 +236,12 @@ export const GameResultsDashboard = ({
               <div className="text-sm text-muted-foreground">Precisão</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-card border">
-              <Clock className="w-8 h-8 mx-auto mb-2 text-blue-500" />
+              <Clock className="w-8 h-8 mx-auto mb-2 text-primary" />
               <div className="text-2xl font-bold">{formatTime(session.timeSpent)}</div>
               <div className="text-sm text-muted-foreground">Tempo</div>
             </div>
             <div className="text-center p-4 rounded-lg bg-card border">
-              <Award className="w-8 h-8 mx-auto mb-2 text-yellow-500" />
+              <Award className="w-8 h-8 mx-auto mb-2 text-warning" />
               <div className="text-2xl font-bold">Nível {session.level}</div>
               <div className="text-sm text-muted-foreground">Dificuldade</div>
             </div>
@@ -358,9 +358,9 @@ export const GameResultsDashboard = ({
               <CardContent className="space-y-4">
                 {therapeuticInsights.map((insight, index) => {
                   const severityColors = {
-                    info: 'bg-blue-50 border-blue-500 dark:bg-blue-950/20',
-                    concern: 'bg-orange-50 border-orange-500 dark:bg-orange-950/20',
-                    alert: 'bg-red-50 border-red-500 dark:bg-red-950/20'
+                    info: 'bg-primary/10 border-primary dark:bg-primary/5',
+                    concern: 'bg-warning/10 border-warning dark:bg-warning/5',
+                    alert: 'bg-destructive/10 border-destructive dark:bg-destructive/5'
                   };
                   
                   const categoryIcons = {
@@ -439,16 +439,16 @@ export const GameResultsDashboard = ({
                       key={index}
                       className={cn(
                         "flex items-start gap-3 p-4 rounded-lg border-l-4 animate-fade-in",
-                        isStrength && "bg-green-50 border-green-500 dark:bg-green-950/20",
-                        isImprovement && "bg-orange-50 border-orange-500 dark:bg-orange-950/20",
-                        isRecommendation && "bg-blue-50 border-blue-500 dark:bg-blue-950/20"
+                        isStrength && "bg-success/10 border-success dark:bg-success/5",
+                        isImprovement && "bg-warning/10 border-warning dark:bg-warning/5",
+                        isRecommendation && "bg-primary/10 border-primary dark:bg-primary/5"
                       )}
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className="mt-0.5">
-                        {isStrength && <Trophy className="w-5 h-5 text-green-600" />}
-                        {isImprovement && <Target className="w-5 h-5 text-orange-600" />}
-                        {isRecommendation && <TrendingUp className="w-5 h-5 text-blue-600" />}
+                        {isStrength && <Trophy className="w-5 h-5 text-success" />}
+                        {isImprovement && <Target className="w-5 h-5 text-warning" />}
+                        {isRecommendation && <TrendingUp className="w-5 h-5 text-primary" />}
                       </div>
                       <div className="flex-1 space-y-1">
                         <p className="font-semibold text-sm">{insight.title}</p>
@@ -509,9 +509,9 @@ export const GameResultsDashboard = ({
                   </div>
                   <div className={cn(
                     "w-12 h-12 rounded-full flex items-center justify-center",
-                    evolutionTrend === 'improving' && "bg-green-100 text-green-600",
-                    evolutionTrend === 'stable' && "bg-blue-100 text-blue-600",
-                    evolutionTrend === 'declining' && "bg-orange-100 text-orange-600"
+                    evolutionTrend === 'improving' && "bg-success/20 text-success",
+                    evolutionTrend === 'stable' && "bg-primary/20 text-primary",
+                    evolutionTrend === 'declining' && "bg-warning/20 text-warning"
                   )}>
                     {evolutionTrend === 'improving' && <TrendingUp className="w-6 h-6" />}
                     {evolutionTrend === 'stable' && <Activity className="w-6 h-6" />}
