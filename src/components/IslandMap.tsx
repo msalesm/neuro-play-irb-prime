@@ -20,7 +20,13 @@ import {
   Mountain,
   Castle
 } from "lucide-react";
-import NeurodiversityModal from "./NeurodiversityModal";
+
+// NeurodiversityModal stub (component removed during cleanup)
+function NeurodiversityModal({ isOpen, onClose, trackId }: { isOpen: boolean; onClose: () => void; trackId: string }) {
+  if (!isOpen) return null;
+  return null;
+}
+
 
 interface IslandMapProps {
   neurodiversityTracks: any;
