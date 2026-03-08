@@ -68,12 +68,12 @@ export function ParentDashboardContent({
 
       {/* Child Profile Card */}
       {selectedChildData && (
-        <Card className="p-6 mb-8" data-tour="avatar-card">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4">
-              <div className="relative cursor-pointer" onClick={onShowAvatarModal}>
+        <Card className="p-4 sm:p-6 mb-8" data-tour="avatar-card">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="relative cursor-pointer shrink-0" onClick={onShowAvatarModal}>
                 <ChildAvatarDisplay avatar={selectedChildData.avatar_url} name={selectedChildData.name} size="xl" level={5} showEffects />
-                <div className="absolute -bottom-2 -right-2 bg-[#c7923e] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold border-2 border-background">5</div>
+                <div className="absolute -bottom-2 -right-2 bg-warning text-warning-foreground rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold border-2 border-background">5</div>
                 {!selectedChildData.avatar_url && (
                   <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
                     <span className="text-white text-xs font-bold">Clique</span>
@@ -101,7 +101,7 @@ export function ParentDashboardContent({
       )}
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/sistema-planeta-azul')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
