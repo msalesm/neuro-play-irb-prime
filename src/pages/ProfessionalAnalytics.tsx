@@ -243,11 +243,11 @@ export default function ProfessionalAnalytics() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20">
+          <Card className="bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
-                  <ListChecks className="w-5 h-5 text-purple-500" />
+                <div className="p-2 bg-secondary/20 rounded-lg">
+                  <ListChecks className="w-5 h-5 text-secondary" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{totalRoutines}</p>
@@ -257,11 +257,11 @@ export default function ProfessionalAnalytics() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/20">
+          <Card className="bg-gradient-to-br from-warning/10 to-warning/5 border-warning/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-500/20 rounded-lg">
-                  <Target className="w-5 h-5 text-orange-500" />
+                <div className="p-2 bg-warning/20 rounded-lg">
+                  <Target className="w-5 h-5 text-warning" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{avgEngagement.toFixed(1)}%</p>
