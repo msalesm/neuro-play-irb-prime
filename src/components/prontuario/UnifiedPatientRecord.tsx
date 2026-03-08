@@ -9,7 +9,7 @@ import {
   User, Brain, Heart, Activity, FileText, 
   Download, RefreshCw, Calendar, Clock,
   TrendingUp, AlertCircle, Target, Users, Sparkles, Video,
-  ClipboardCheck
+  ClipboardCheck, Layers
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -19,6 +19,9 @@ import { EmotionalTimeline } from './EmotionalTimeline';
 import { PredictiveInsightsPanel } from './PredictiveInsightsPanel';
 import { RoutineHub } from './RoutineHub';
 import { ImmediateInterventions } from './ImmediateInterventions';
+import { ExecutiveRoutinePanel } from './ExecutiveRoutinePanel';
+import { SocioemotionalPanel } from './SocioemotionalPanel';
+import { IntegratedProfilePanel } from './IntegratedProfilePanel';
 import { MultidisciplinaryPanel } from './MultidisciplinaryPanel';
 import { IntegratedTimeline } from './IntegratedTimeline';
 import { AIReportGenerator } from './AIReportGenerator';
@@ -212,6 +215,14 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
             <TrendingUp className="w-3 h-3" />
             <span className="hidden md:inline">Preditivo</span>
           </TabsTrigger>
+          <TabsTrigger value="socioemotional" className="flex items-center gap-1 text-xs px-2">
+            <Heart className="w-3 h-3" />
+            <span className="hidden md:inline">Socioemocional</span>
+          </TabsTrigger>
+          <TabsTrigger value="integrated" className="flex items-center gap-1 text-xs px-2">
+            <Layers className="w-3 h-3" />
+            <span className="hidden md:inline">360°</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -343,6 +354,7 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
 
         {/* Routine Tab */}
         <TabsContent value="routine" className="mt-6 space-y-6">
+          <ExecutiveRoutinePanel childId={childId} />
           <RoutineHub childId={childId} />
           <ImmediateInterventions childId={childId} />
         </TabsContent>
@@ -378,6 +390,16 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
             insights={predictiveInsights}
             correlations={correlations}
           />
+        </TabsContent>
+
+        {/* Socioemotional Tab */}
+        <TabsContent value="socioemotional" className="mt-6">
+          <SocioemotionalPanel childId={childId} />
+        </TabsContent>
+
+        {/* Integrated 360° Tab */}
+        <TabsContent value="integrated" className="mt-6">
+          <IntegratedProfilePanel childId={childId} />
         </TabsContent>
       </Tabs>
     </div>
