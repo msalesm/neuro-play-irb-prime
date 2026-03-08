@@ -110,17 +110,6 @@ export const planetas: Planeta[] = [
         novo: true
       },
       {
-        id: 'crystal-match',
-        nome: 'Crystal Match',
-        descricao: 'Combine 3 ou mais cristais para pontuar - trabalha atenção visual e planejamento',
-        duracao: 10,
-        dificuldade: 2,
-        rota: '/games/crystal-match',
-        icone: '💎',
-        completado: false,
-        novo: true
-      },
-      {
         id: 'attention-sustained',
         nome: 'Missão Cronometrada',
         descricao: 'Complete tarefas mantendo foco por períodos crescentes - 6 fases progressivas',
@@ -254,16 +243,6 @@ export const planetas: Planeta[] = [
         icone: '🌤️',
         completado: false
       },
-      {
-        id: 'balance-quest',
-        nome: 'Busca do Equilíbrio',
-        descricao: 'Encontre equilíbrio físico e emocional através de desafios',
-        duracao: 12,
-        dificuldade: 2,
-        rota: '/games/balance-quest',
-        icone: '⚖️',
-        completado: false
-      }
     ],
     recompensa: 'Estabilizar o oceano interior e criar um santuário de paz',
     icone: '🌊',

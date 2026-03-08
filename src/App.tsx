@@ -47,21 +47,13 @@ const SilabaMagica = lazy(() => import("./pages/games/SilabaMagica"));
 const QuebraCabecaMagico = lazy(() => import("./pages/games/QuebraCabecaMagico"));
 const AventuraNumeros = lazy(() => import("./pages/games/AventuraNumeros"));
 const ContadorHistorias = lazy(() => import("./pages/games/ContadorHistorias"));
-const FocusQuest = lazy(() => import("./pages/games/FocusQuest"));
 const SocialScenarios = lazy(() => import("./pages/games/SocialScenarios"));
-const SocialCompass = lazy(() => import("./pages/games/SocialCompass"));
 const EmotionalWeather = lazy(() => import("./pages/games/EmotionalWeather"));
-const BalanceQuest = lazy(() => import("./pages/games/BalanceQuest"));
 const SensoryFlow = lazy(() => import("./pages/games/SensoryFlow"));
 const VisualSync = lazy(() => import("./pages/games/VisualSync"));
 const StackTower = lazy(() => import("./pages/games/StackTower"));
 const CosmicSequence = lazy(() => import("./pages/games/CosmicSequence"));
-const CrystalMatch = lazy(() => import("./pages/games/CrystalMatch"));
 const TowerDefense = lazy(() => import("./pages/games/TowerDefense"));
-const BiofeedbackDemo = lazy(() => import("./pages/games/BiofeedbackDemo"));
-const TouchMapper = lazy(() => import("./pages/games/TouchMapper"));
-const TouchMapperKeyboard = lazy(() => import("./pages/games/TouchMapperKeyboard"));
-const CooperativePuzzle = lazy(() => import("./pages/games/CooperativePuzzle"));
 
 // Games - Phase System
 const AttentionSustainedPhases = lazy(() => import("./pages/games/AttentionSustainedPhases"));
@@ -74,7 +66,7 @@ const ExecutiveProcessingPhases = lazy(() => import("./pages/games/ExecutiveProc
 const ExecutiveProcessingPlay = lazy(() => import("./pages/games/ExecutiveProcessingPlay"));
 const VisuomotorCoordination = lazy(() => import("./pages/games/VisuomotorCoordination"));
 const BehavioralPersistence = lazy(() => import("./pages/games/BehavioralPersistence"));
-const MemorySequenceBuilder = lazy(() => import("./pages/games/MemorySequenceBuilder"));
+
 
 // Games - Standalone
 const PhonologicalProcessing = lazy(() => import("./pages/games/PhonologicalProcessingGame"));
@@ -249,21 +241,13 @@ const App = () => (
                   <Route path="/games/aventura-numeros" element={<P><AventuraNumeros /></P>} />
                   <Route path="/games/contador-historias" element={<P><ContadorHistorias /></P>} />
                   <Route path="/games/mindful-breath" element={<P><MindfulBreath /></P>} />
-                  <Route path="/games/focus-quest" element={<P><FocusQuest /></P>} />
                   <Route path="/games/social-scenarios" element={<P><SocialScenarios /></P>} />
-                  <Route path="/games/social-compass" element={<P><SocialCompass /></P>} />
                   <Route path="/games/emotional-weather" element={<P><EmotionalWeather /></P>} />
-                  <Route path="/games/balance-quest" element={<P><BalanceQuest /></P>} />
                   <Route path="/games/sensory-flow" element={<P><SensoryFlow /></P>} />
                   <Route path="/games/visual-sync" element={<P><VisualSync /></P>} />
                   <Route path="/games/stack-tower" element={<P><StackTower /></P>} />
                   <Route path="/games/cosmic-sequence" element={<P><CosmicSequence /></P>} />
-                  <Route path="/games/crystal-match" element={<P><CrystalMatch /></P>} />
                   <Route path="/games/tower-defense" element={<P><TowerDefense /></P>} />
-                  <Route path="/games/biofeedback-demo" element={<P><BiofeedbackDemo /></P>} />
-                  <Route path="/games/touch-mapper" element={<P><TouchMapper /></P>} />
-                  <Route path="/games/touch-mapper-keyboard" element={<P><TouchMapperKeyboard /></P>} />
-                  <Route path="/games/cooperative-puzzle" element={<P><CooperativePuzzle /></P>} />
                   
                   {/* Games - Phase System */}
                   <Route path="/games/executive-processing-phases" element={<P><ExecutiveProcessingPhases /></P>} />
@@ -284,7 +268,7 @@ const App = () => (
                   <Route path="/games/theory-of-mind" element={<P><TheoryOfMind /></P>} />
                   <Route path="/games/emotion-lab" element={<P><EmotionLab /></P>} />
                   <Route path="/games/spatial-architect" element={<P><SpatialArchitect /></P>} />
-                  <Route path="/games/memory-sequence-builder" element={<P><MemorySequenceBuilder /></P>} />
+                  
                   
                   {/* Gamification & Student */}
                   <Route path="/sistema-planeta-azul" element={<P><SistemaPlanetaAzul /></P>} />

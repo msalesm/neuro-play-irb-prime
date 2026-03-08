@@ -137,7 +137,7 @@ export const usePlanetProgress = (childId: string | null) => {
       // Planeta TDAH
       'tower-defense': 'vortex',
       'stack-tower': 'vortex',
-      'crystal-match': 'vortex',
+      
       'attention-sustained': 'vortex',
       'attention-sustained-phases': 'vortex',
       'executive-processing': 'vortex',
@@ -154,7 +154,7 @@ export const usePlanetProgress = (childId: string | null) => {
       // Planeta Regulação Emocional
       'mindful-breath': 'calm',
       'emotional-weather': 'calm',
-      'balance-quest': 'calm',
+      
       
       // Planeta Funções Executivas
       'memory-workload': 'order',
