@@ -94,11 +94,11 @@ export default function TherapistDashboard() {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} data-tour="clinical-tabs">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="prontuario">Prontuário</TabsTrigger>
-              <TabsTrigger value="pei">PEI</TabsTrigger>
-              <TabsTrigger value="evolution">Evolução</TabsTrigger>
-              <TabsTrigger value="alerts">Alertas</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+              <TabsTrigger value="prontuario" className="text-xs sm:text-sm">Prontuário</TabsTrigger>
+              <TabsTrigger value="pei" className="text-xs sm:text-sm">PEI</TabsTrigger>
+              <TabsTrigger value="evolution" className="text-xs sm:text-sm">Evolução</TabsTrigger>
+              <TabsTrigger value="alerts" className="text-xs sm:text-sm">Alertas</TabsTrigger>
             </TabsList>
 
             {/* Prontuário Tab */}
@@ -150,18 +150,18 @@ export default function TherapistDashboard() {
                     )}
                   </div>
 
-                  <div className="flex flex-wrap gap-2 pt-4">
-                    <Button className="flex-1" onClick={() => navigate(`/prontuario/${patientId}`)}>
+                  <div className="flex flex-col sm:flex-row gap-2 pt-4">
+                    <Button className="flex-1" size="sm" onClick={() => navigate(`/prontuario/${patientId}`)}>
                       <FileText className="w-4 h-4 mr-2" />
-                      Abrir Prontuário Completo
+                      Prontuário Completo
                     </Button>
-                    <Button variant="outline" onClick={() => navigate(`/anamnese/${patientId}`)}>
+                    <Button variant="outline" size="sm" onClick={() => navigate(`/anamnese/${patientId}`)}>
                       <ClipboardList className="w-4 h-4 mr-2" />
                       Anamnese
                     </Button>
-                    <Button variant="outline" onClick={generateReport}>
+                    <Button variant="outline" size="sm" onClick={generateReport}>
                       <Sparkles className="w-4 h-4 mr-2" />
-                      Gerar Relatório IA
+                      Relatório IA
                     </Button>
                   </div>
                 </CardContent>

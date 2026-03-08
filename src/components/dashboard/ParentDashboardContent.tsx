@@ -51,29 +51,29 @@ export function ParentDashboardContent({
   return (
     <>
       {/* Child Selector */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+        <div className="flex gap-2 overflow-x-auto w-full sm:w-auto pb-1">
           {childrenList.map((child) => (
-            <Button key={child.id} variant={selectedChild === child.id ? 'default' : 'outline'} onClick={() => setSelectedChild(child.id)} className="flex items-center gap-2">
+            <Button key={child.id} variant={selectedChild === child.id ? 'default' : 'outline'} onClick={() => setSelectedChild(child.id)} className="flex items-center gap-2 shrink-0" size="sm">
               <ChildAvatarDisplay avatar={child.avatar_url} name={child.name} size="sm" />
-              {child.name}
+              <span className="truncate max-w-[100px]">{child.name}</span>
             </Button>
           ))}
         </div>
-        <Button variant="outline" onClick={onShowAddChild}>
+        <Button variant="outline" onClick={onShowAddChild} size="sm" className="shrink-0">
           <UserPlus className="w-4 h-4 mr-2" />
-          Adicionar Filho
+          Adicionar
         </Button>
       </div>
 
       {/* Child Profile Card */}
       {selectedChildData && (
-        <Card className="p-6 mb-8" data-tour="avatar-card">
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-4">
-              <div className="relative cursor-pointer" onClick={onShowAvatarModal}>
+        <Card className="p-4 sm:p-6 mb-8" data-tour="avatar-card">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="relative cursor-pointer shrink-0" onClick={onShowAvatarModal}>
                 <ChildAvatarDisplay avatar={selectedChildData.avatar_url} name={selectedChildData.name} size="xl" level={5} showEffects />
-                <div className="absolute -bottom-2 -right-2 bg-[#c7923e] text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold border-2 border-background">5</div>
+                <div className="absolute -bottom-2 -right-2 bg-warning text-warning-foreground rounded-full w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-xs sm:text-sm font-bold border-2 border-background">5</div>
                 {!selectedChildData.avatar_url && (
                   <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
                     <span className="text-white text-xs font-bold">Clique</span>
@@ -90,18 +90,18 @@ export function ParentDashboardContent({
               </div>
             </div>
             <div className="flex gap-2 flex-wrap">
-              <Button variant="outline" onClick={() => navigate('/avatar-evolution')}>✨ Customizar Avatar</Button>
-              <Button variant="outline" onClick={() => navigate('/risk-analysis')} className="flex items-center gap-2"><Shield className="w-4 h-4" />Análise de Risco</Button>
-              <Button variant="outline" onClick={() => navigate('/platform-report')}><FileText className="w-4 h-4 mr-2" />Relatório Plataforma</Button>
-              <Button variant="outline" onClick={() => navigate('/platform-manual')}><BookOpen className="w-4 h-4 mr-2" />Manual</Button>
-              <Button onClick={generateReport}><Download className="w-4 h-4 mr-2" />Gerar Relatório Clínico</Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/avatar-evolution')}>✨ Avatar</Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/risk-analysis')} className="flex items-center gap-1"><Shield className="w-3 h-3" />Risco</Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/platform-report')}><FileText className="w-3 h-3 mr-1" />Relatório</Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/platform-manual')}><BookOpen className="w-3 h-3 mr-1" />Manual</Button>
+              <Button size="sm" onClick={generateReport}><Download className="w-3 h-3 mr-1" />PDF</Button>
             </div>
           </div>
         </Card>
       )}
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/sistema-planeta-azul')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
@@ -279,11 +279,11 @@ export function ParentDashboardContent({
 
       {/* Tabs */}
       <Tabs defaultValue="cognitive" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="cognitive">Perfil Cognitivo</TabsTrigger>
-          <TabsTrigger value="achievements">Conquistas</TabsTrigger>
-          <TabsTrigger value="progress">Progresso</TabsTrigger>
-          <TabsTrigger value="history">Histórico</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+          <TabsTrigger value="cognitive" className="text-xs sm:text-sm">Perfil Cognitivo</TabsTrigger>
+          <TabsTrigger value="achievements" className="text-xs sm:text-sm">Conquistas</TabsTrigger>
+          <TabsTrigger value="progress" className="text-xs sm:text-sm">Progresso</TabsTrigger>
+          <TabsTrigger value="history" className="text-xs sm:text-sm">Histórico</TabsTrigger>
         </TabsList>
 
         <TabsContent value="cognitive">
