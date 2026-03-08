@@ -225,7 +225,7 @@ export default function Games() {
   return (
     <>
       <PlatformOnboarding pageName="games" />
-      <div className="min-h-screen bg-gradient-to-b from-primary via-secondary to-primary text-white pb-28 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-b from-primary via-secondary to-primary text-primary-foreground pb-28 relative overflow-hidden">
         {/* Decorative background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -left-4 w-48 md:w-72 h-48 md:h-72 bg-secondary/20 rounded-full blur-3xl" />
@@ -239,7 +239,7 @@ export default function Games() {
               variant="ghost" 
               size="icon" 
               onClick={() => navigate(-1)}
-              className="text-white/70 hover:text-white hover:bg-white/10 absolute left-0 top-0"
+              className="text-primary-foreground/70 hover:text-primary-foreground hover:bg-primary-foreground/10 absolute left-0 top-0"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -248,20 +248,20 @@ export default function Games() {
               <div className="w-10 h-10 md:w-16 md:h-16 bg-primary/50 rounded-xl md:rounded-2xl flex items-center justify-center shadow-xl border border-accent/20">
                 <Gamepad2 className="h-5 w-5 md:h-8 md:w-8 text-accent" />
               </div>
-              <h1 className="font-heading text-2xl md:text-5xl font-bold text-white">
+              <h1 className="font-heading text-2xl md:text-5xl font-bold text-primary-foreground">
                 Jogos{' '}
                 <span className="bg-gradient-to-r from-accent to-warning bg-clip-text text-transparent">
                   Terapêuticos
                 </span>
               </h1>
             </div>
-            <p className="text-sm md:text-xl text-white/70 max-w-3xl mx-auto">
+            <p className="text-sm md:text-xl text-primary-foreground/70 max-w-3xl mx-auto">
               Desenvolva habilidades cognitivas através de jogos divertidos.
             </p>
           </div>
 
           {/* Clinical CTA - Compact on mobile */}
-          <Card className="mb-6 md:mb-12 bg-white/5 backdrop-blur-md border-accent/20 shadow-xl overflow-hidden max-w-4xl mx-auto">
+          <Card className="mb-6 md:mb-12 bg-primary-foreground/5 backdrop-blur-md border-accent/20 shadow-xl overflow-hidden max-w-4xl mx-auto">
             <CardContent className="p-4 md:p-8">
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                 <div className="hidden md:block shrink-0">
@@ -271,22 +271,22 @@ export default function Games() {
                 </div>
                 <div className="flex-1 text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-2 mb-1 md:mb-2">
-                    <h3 className="text-lg md:text-2xl font-bold text-white">Descubra Seu Perfil Cognitivo</h3>
+                    <h3 className="text-lg md:text-2xl font-bold text-primary-foreground">Descubra Seu Perfil Cognitivo</h3>
                     <Badge className="bg-secondary text-secondary-foreground border-0 shadow-lg text-xs">
                       IA
                     </Badge>
                   </div>
-                  <p className="text-white/70 text-xs md:text-sm leading-relaxed mb-3 md:mb-4 line-clamp-2 md:line-clamp-none">
+                  <p className="text-primary-foreground/70 text-xs md:text-sm leading-relaxed mb-3 md:mb-4 line-clamp-2 md:line-clamp-none">
                     Complete os <strong>testes diagnósticos</strong> e receba uma análise clínica detalhada gerada por IA.
                   </p>
-                  <div className="hidden md:flex flex-wrap gap-2 text-xs text-white/60">
-                    <span className="bg-white/10 px-3 py-1 rounded-full flex items-center gap-1">
+                  <div className="hidden md:flex flex-wrap gap-2 text-xs text-primary-foreground/60">
+                    <span className="bg-primary-foreground/10 px-3 py-1 rounded-full flex items-center gap-1">
                       <Target className="h-3 w-3" /> TDAH
                     </span>
-                    <span className="bg-white/10 px-3 py-1 rounded-full flex items-center gap-1">
+                    <span className="bg-primary-foreground/10 px-3 py-1 rounded-full flex items-center gap-1">
                       <Trophy className="h-3 w-3" /> TEA
                     </span>
-                    <span className="bg-white/10 px-3 py-1 rounded-full flex items-center gap-1">
+                    <span className="bg-primary-foreground/10 px-3 py-1 rounded-full flex items-center gap-1">
                       <Target className="h-3 w-3" /> Dislexia
                     </span>
                   </div>
@@ -298,7 +298,7 @@ export default function Games() {
                       <span className="text-xs md:text-sm">Painel Clínico</span>
                     </Link>
                   </Button>
-                  <Button variant="outline" size="sm" asChild className="flex-1 md:flex-none bg-white/5 border-white/20 text-white hover:bg-white/10">
+                  <Button variant="outline" size="sm" asChild className="flex-1 md:flex-none bg-primary-foreground/5 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10">
                     <Link to="/diagnostic-tests" className="flex items-center gap-2">
                       <Play className="h-4 w-4" />
                       <span className="text-xs md:text-sm">Testes</span>
@@ -322,7 +322,7 @@ export default function Games() {
                   key={game.id}
                   data-tour={index === 0 ? "game-card" : undefined}
                   className={cn(
-                    'border-white/10 backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all duration-300 group relative overflow-hidden',
+                    'border-primary-foreground/10 backdrop-blur-sm bg-primary-foreground/5 hover:bg-primary-foreground/10 transition-all duration-300 group relative overflow-hidden',
                     !game.unlocked && 'opacity-75'
                   )}
                 >
@@ -334,24 +334,24 @@ export default function Games() {
                     
                     <div className="relative z-10">
                       <div className="flex items-center gap-1.5 mb-2 md:mb-4">
-                        <div className="w-6 h-6 md:w-8 md:h-8 bg-white/10 rounded-lg flex items-center justify-center">
+                        <div className="w-6 h-6 md:w-8 md:h-8 bg-primary-foreground/10 rounded-lg flex items-center justify-center">
                           <GameIllustration gameId={game.id} className="w-3.5 h-3.5 md:w-5 md:h-5" animated />
                         </div>
-                        <Badge className="bg-secondary/60 text-white border-0 text-[9px] md:text-xs px-1.5 md:px-2 truncate max-w-[100px] md:max-w-none">
+                        <Badge className="bg-secondary/60 text-primary-foreground border-0 text-[9px] md:text-xs px-1.5 md:px-2 truncate max-w-[100px] md:max-w-none">
                           {game.category}
                         </Badge>
-                        {!game.unlocked && <Lock className="h-3 w-3 text-white/50 shrink-0" />}
+                        {!game.unlocked && <Lock className="h-3 w-3 text-primary-foreground/50 shrink-0" />}
                       </div>
 
-                      <h3 className="font-heading text-sm md:text-xl font-bold mb-1 md:mb-3 text-white line-clamp-1">
+                      <h3 className="font-heading text-sm md:text-xl font-bold mb-1 md:mb-3 text-primary-foreground line-clamp-1">
                         {game.title}
                       </h3>
 
-                      <p className="text-white/60 text-[10px] md:text-sm mb-2 md:mb-4 leading-relaxed line-clamp-2">
+                      <p className="text-primary-foreground/60 text-[10px] md:text-sm mb-2 md:mb-4 leading-relaxed line-clamp-2">
                         {game.description}
                       </p>
 
-                      <div className="hidden md:flex flex-col gap-1 mb-4 text-xs text-white/50">
+                      <div className="hidden md:flex flex-col gap-1 mb-4 text-xs text-primary-foreground/50">
                         <div className="flex items-center gap-2">
                           <Target className="h-3 w-3" />
                           <span>{game.ageRange}</span>
@@ -362,7 +362,7 @@ export default function Games() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-1 mb-2 md:hidden text-[9px] text-white/40">
+                      <div className="flex items-center gap-1 mb-2 md:hidden text-[9px] text-primary-foreground/40">
                         <Clock className="h-2.5 w-2.5" />
                         <span>{game.duration}</span>
                       </div>
@@ -372,7 +372,7 @@ export default function Games() {
                           'w-full text-xs md:text-sm transition-all',
                           game.unlocked 
                             ? 'bg-accent text-accent-foreground hover:bg-accent/90 shadow-md' 
-                            : 'bg-white/10 text-white/50 cursor-not-allowed'
+                            : 'bg-primary-foreground/10 text-primary-foreground/50 cursor-not-allowed'
                         )}
                         disabled={!game.unlocked}
                         asChild={game.unlocked}
