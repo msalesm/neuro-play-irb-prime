@@ -7,17 +7,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useAbaInterventions, useCreateIntervention, useAbaSkills, useAbaProgressStats } from '@/hooks/useAbaNeuroPlay';
-import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { ArrowLeft, Plus, Target, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { AbaTrialCollector } from './AbaTrialCollector';
 import { AbaProgressChart } from './AbaProgressChart';
 
-const methodLabels: Record<string, string> = {
+const METHOD_LABELS: Record<string, string> = {
   dtt: 'Discrete Trial Training (DTT)',
   net: 'Natural Environment Teaching (NET)',
   task_analysis: 'Análise de Tarefas',
   prompting: 'Prompting',
   shaping: 'Shaping',
+};
+
+const METHOD_SHORT: Record<string, string> = {
+  dtt: 'DTT',
+  net: 'NET',
+  task_analysis: 'Análise de Tarefas',
+  prompting: 'Prompting',
+  shaping: 'Shaping',
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  in_progress: 'Em Progresso',
+  mastered: 'Dominada',
+  paused: 'Pausada',
+  discontinued: 'Descontinuada',
 };
 
 interface Props {
@@ -27,7 +42,7 @@ interface Props {
 }
 
 export function AbaProgramDetail({ programId, childId, onBack }: Props) {
-  const { profile } = useAuth();
+  const { isTherapist, isAdmin } = useUserRole();
   const { data: interventions, isLoading } = useAbaInterventions(programId);
   const { data: skills } = useAbaSkills();
   const createIntervention = useCreateIntervention();
@@ -40,26 +55,19 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
     success_criteria: '',
   });
 
-  const isTherapist = profile?.role === 'therapist' || profile?.role === 'admin';
+  const isTherapistOrAdmin = isTherapist || isAdmin;
 
   const handleAdd = async () => {
     if (!form.skill_id) return;
     await createIntervention.mutateAsync({
       program_id: programId,
       skill_id: form.skill_id,
-      teaching_method: form.teaching_method,
+      teaching_method: form.teaching_method as any,
       target_level: parseInt(form.target_level),
       success_criteria: form.success_criteria,
     });
     setOpen(false);
     setForm({ skill_id: '', teaching_method: 'dtt', target_level: '80', success_criteria: '' });
-  };
-
-  const statusLabels: Record<string, string> = {
-    in_progress: 'Em Progresso',
-    mastered: 'Dominada',
-    paused: 'Pausada',
-    discontinued: 'Descontinuada',
   };
 
   if (selectedIntervention) {
@@ -69,7 +77,7 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
           <ArrowLeft className="h-4 w-4 mr-2" /> Voltar ao Programa
         </Button>
         <AbaProgressChart interventionId={selectedIntervention} />
-        {isTherapist && (
+        {isTherapistOrAdmin && (
           <AbaTrialCollector
             preSelectedInterventionId={selectedIntervention}
             preSelectedChildId={childId}
@@ -100,7 +108,7 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
             </CardTitle>
             <CardDescription>Clique para ver progresso e registrar tentativas</CardDescription>
           </div>
-          {isTherapist && (
+          {isTherapistOrAdmin && (
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <Button size="sm"><Plus className="h-4 w-4 mr-1" />Adicionar</Button>
@@ -124,7 +132,7 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
                     <Select value={form.teaching_method} onValueChange={v => setForm(f => ({ ...f, teaching_method: v }))}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        {Object.entries(methodLabels).map(([k, v]) => (
+                        {Object.entries(METHOD_LABELS).map(([k, v]) => (
                           <SelectItem key={k} value={k}>{v}</SelectItem>
                         ))}
                       </SelectContent>
@@ -168,7 +176,6 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
                   key={i.id}
                   intervention={i}
                   onClick={() => setSelectedIntervention(i.id)}
-                  statusLabels={statusLabels}
                 />
               ))}
             </div>
@@ -179,10 +186,10 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
   );
 }
 
-function InterventionRow({ intervention, onClick, statusLabels }: { intervention: any; onClick: () => void; statusLabels: Record<string, string> }) {
+function InterventionRow({ intervention, onClick }: { intervention: any; onClick: () => void }) {
   const stats = useAbaProgressStats(intervention.id);
   const TrendIcon = stats.trend === 'up' ? TrendingUp : stats.trend === 'down' ? TrendingDown : Minus;
-  const trendColor = stats.trend === 'up' ? 'text-emerald-500' : stats.trend === 'down' ? 'text-red-500' : 'text-muted-foreground';
+  const trendColor = stats.trend === 'up' ? 'text-emerald-500' : stats.trend === 'down' ? 'text-destructive' : 'text-muted-foreground';
 
   return (
     <div
@@ -192,7 +199,7 @@ function InterventionRow({ intervention, onClick, statusLabels }: { intervention
       <div>
         <p className="font-medium">{intervention.aba_np_skills?.skill_name || 'Habilidade'}</p>
         <p className="text-xs text-muted-foreground">
-          {methodLabels[intervention.teaching_method] || intervention.teaching_method} •
+          {METHOD_SHORT[intervention.teaching_method] || intervention.teaching_method} •
           Meta: {intervention.target_level}%
         </p>
       </div>
@@ -207,17 +214,9 @@ function InterventionRow({ intervention, onClick, statusLabels }: { intervention
           </>
         )}
         <Badge variant={intervention.status === 'mastered' ? 'default' : 'secondary'}>
-          {statusLabels[intervention.status]}
+          {STATUS_LABELS[intervention.status]}
         </Badge>
       </div>
     </div>
   );
 }
-
-const methodLabels: Record<string, string> = {
-  dtt: 'DTT',
-  net: 'NET',
-  task_analysis: 'Análise de Tarefas',
-  prompting: 'Prompting',
-  shaping: 'Shaping',
-};

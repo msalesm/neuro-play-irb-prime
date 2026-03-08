@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { Brain, BookOpen, Users, BarChart3 } from 'lucide-react';
 import { AbaProgramsList } from './AbaProgramsList';
 import { AbaSkillsLibrary } from './AbaSkillsLibrary';
@@ -8,7 +8,7 @@ import { AbaTrialCollector } from './AbaTrialCollector';
 import { AbaProgramDetail } from './AbaProgramDetail';
 
 export function AbaNeuroPlayDashboard() {
-  const { profile } = useAuth();
+  const { isTherapist, isAdmin } = useUserRole();
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
 
@@ -22,7 +22,7 @@ export function AbaNeuroPlayDashboard() {
     );
   }
 
-  const isTherapistOrAdmin = profile?.role === 'therapist' || profile?.role === 'admin';
+  const isTherapistOrAdmin = isTherapist || isAdmin;
 
   return (
     <div className="space-y-6">

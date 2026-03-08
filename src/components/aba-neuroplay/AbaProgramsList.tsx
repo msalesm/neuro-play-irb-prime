@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useAbaPrograms, useCreateProgram } from '@/hooks/useAbaNeuroPlay';
-import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Plus, ChevronRight } from 'lucide-react';
@@ -20,15 +20,14 @@ interface Props {
 }
 
 export function AbaProgramsList({ onSelectProgram }: Props) {
-  const { profile } = useAuth();
+  const { isTherapist, isAdmin } = useUserRole();
   const { data: programs, isLoading } = useAbaPrograms();
   const createProgram = useCreateProgram();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ child_id: '', program_name: '', notes: '' });
 
-  const isTherapistOrAdmin = profile?.role === 'therapist' || profile?.role === 'admin';
+  const isTherapistOrAdmin = isTherapist || isAdmin;
 
-  // Fetch children this user has access to
   const { data: children } = useQuery({
     queryKey: ['user-children-for-aba'],
     queryFn: async () => {
@@ -131,7 +130,7 @@ export function AbaProgramsList({ onSelectProgram }: Props) {
                 <div>
                   <p className="font-medium">{p.program_name}</p>
                   <p className="text-sm text-muted-foreground">
-                    Criado por {(p as any).profiles?.full_name || 'Desconhecido'} •{' '}
+                    Criado por {p.profiles?.full_name || 'Desconhecido'} •{' '}
                     {format(new Date(p.created_at), "dd/MM/yyyy", { locale: ptBR })}
                   </p>
                 </div>

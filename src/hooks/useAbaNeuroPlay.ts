@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { useAuth } from '@/hooks/useAuth';
 
 // ============ SKILLS ============
 export function useAbaSkills() {
@@ -12,7 +11,7 @@ export function useAbaSkills() {
         .from('aba_np_skills')
         .select('*')
         .eq('is_active', true)
-        .order('skill_category, skill_name');
+        .order('skill_category');
       if (error) throw error;
       return data;
     },
@@ -43,7 +42,6 @@ export function useCreateProgram() {
     mutationFn: async (program: {
       child_id: string;
       program_name: string;
-      reinforcement_strategy?: any;
       notes?: string;
     }) => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -97,7 +95,7 @@ export function useCreateIntervention() {
     }) => {
       const { data, error } = await supabase
         .from('aba_np_interventions')
-        .insert(intervention)
+        .insert([intervention as any])
         .select()
         .single();
       if (error) throw error;
@@ -147,7 +145,7 @@ export function useRecordTrial() {
       if (!user) throw new Error('Não autenticado');
       const { data, error } = await supabase
         .from('aba_np_trials')
-        .insert({ ...trial, recorded_by: user.id })
+        .insert([{ ...trial, recorded_by: user.id } as any])
         .select()
         .single();
       if (error) throw error;
@@ -180,19 +178,19 @@ export function useAbaProgressStats(interventionId?: string) {
   const { data: trials } = useAbaTrials(interventionId);
   
   if (!trials || trials.length === 0) {
-    return { accuracy: 0, independence: 0, totalTrials: 0, sessions: [], trend: 'stable' as const };
+    return { accuracy: 0, independence: 0, totalTrials: 0, sessions: [] as any[], trend: 'stable' as const };
   }
 
   const totalTrials = trials.length;
-  const correctTrials = trials.filter((t: any) => t.correct).length;
+  const correctTrials = trials.filter((t) => t.correct).length;
   const accuracy = Math.round((correctTrials / totalTrials) * 100);
   
-  const independentTrials = trials.filter((t: any) => t.prompt_level === 'independente').length;
+  const independentTrials = trials.filter((t) => t.prompt_level === 'independente').length;
   const independence = Math.round((independentTrials / totalTrials) * 100);
 
   // Group by session
   const sessionMap = new Map<number, { correct: number; total: number; independent: number }>();
-  for (const t of trials as any[]) {
+  for (const t of trials) {
     const sn = t.session_number || 1;
     const s = sessionMap.get(sn) || { correct: 0, total: 0, independent: 0 };
     s.total++;
@@ -209,7 +207,7 @@ export function useAbaProgressStats(interventionId?: string) {
       independence: Math.round((s.independent / s.total) * 100),
     }));
 
-  // Trend: compare last 3 sessions to first 3
+  // Trend
   let trend: 'up' | 'down' | 'stable' = 'stable';
   if (sessions.length >= 4) {
     const first3 = sessions.slice(0, 3).reduce((s, v) => s + v.accuracy, 0) / 3;
