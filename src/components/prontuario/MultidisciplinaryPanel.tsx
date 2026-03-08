@@ -81,7 +81,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
         <Card className="bg-muted/50">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Heart className="h-4 w-4 text-red-500" />
+              <Heart className="h-4 w-4 text-destructive" />
               <span className="text-sm font-medium">Humor Médio</span>
             </div>
             <div className="text-2xl font-bold">{metrics?.avgMood.toFixed(1)}/5</div>
@@ -92,7 +92,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
         <Card className="bg-muted/50">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Activity className="h-4 w-4 text-green-500" />
+              <Activity className="h-4 w-4 text-success" />
               <span className="text-sm font-medium">Engajamento</span>
             </div>
             <div className="text-2xl font-bold">{metrics?.totalSessions}</div>
@@ -130,7 +130,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
         <CardContent>
           <ul className="space-y-2 text-sm">
             <li className="flex items-start gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 mt-1.5" />
+              <div className="w-2 h-2 rounded-full bg-success mt-1.5" />
               <span>Mantenha uma rotina consistente de sono</span>
             </li>
             <li className="flex items-start gap-2">
@@ -165,7 +165,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
         <Card className="bg-muted/50">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Target className="h-4 w-4 text-green-500" />
+              <Target className="h-4 w-4 text-success" />
               <span className="text-sm font-medium">Controle Inibitório</span>
             </div>
             <div className="text-2xl font-bold">{metrics?.focusScore.toFixed(0)}%</div>
@@ -187,7 +187,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
         <Card className="bg-muted/50">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="h-4 w-4 text-red-500" />
+              <AlertTriangle className="h-4 w-4 text-destructive" />
               <span className="text-sm font-medium">Alertas Clínicos</span>
             </div>
             <div className="text-2xl font-bold">{metrics?.alertCount || 0}</div>

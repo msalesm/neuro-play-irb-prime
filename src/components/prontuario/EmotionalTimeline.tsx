@@ -98,12 +98,12 @@ export function EmotionalTimeline({ emotionalHistory, sessions }: EmotionalTimel
           <div className="flex items-center gap-2">
             <span className="text-2xl">{moodEmojis[Math.round(avgMood)]}</span>
             {moodTrend === 'improving' && (
-              <Badge variant="outline" className="text-green-600 border-green-600">
+              <Badge variant="outline" className="text-success border-success">
                 <TrendingUp className="w-3 h-3 mr-1" /> Melhorando
               </Badge>
             )}
             {moodTrend === 'declining' && (
-              <Badge variant="outline" className="text-red-600 border-red-600">
+              <Badge variant="outline" className="text-destructive border-destructive">
                 <TrendingDown className="w-3 h-3 mr-1" /> Atenção
               </Badge>
             )}

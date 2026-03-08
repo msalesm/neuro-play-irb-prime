@@ -13,16 +13,16 @@ interface PredictiveInsightsPanelProps {
 }
 
 const insightIcons: Record<string, React.ReactNode> = {
-  regression_risk: <AlertTriangle className="w-5 h-5 text-orange-500" />,
-  optimal_time: <Clock className="w-5 h-5 text-blue-500" />,
-  recommendation: <Lightbulb className="w-5 h-5 text-yellow-500" />,
-  progress: <TrendingUp className="w-5 h-5 text-green-500" />
+  regression_risk: <AlertTriangle className="w-5 h-5 text-warning" />,
+  optimal_time: <Clock className="w-5 h-5 text-info" />,
+  recommendation: <Lightbulb className="w-5 h-5 text-warning" />,
+  progress: <TrendingUp className="w-5 h-5 text-success" />
 };
 
 const severityColors: Record<string, string> = {
-  info: 'bg-blue-500/10 border-blue-500/30 text-blue-700',
-  warning: 'bg-orange-500/10 border-orange-500/30 text-orange-700',
-  critical: 'bg-red-500/10 border-red-500/30 text-red-700'
+  info: 'bg-info/10 border-info/30 text-info',
+  warning: 'bg-warning/10 border-warning/30 text-warning',
+  critical: 'bg-destructive/10 border-destructive/30 text-destructive'
 };
 
 export function PredictiveInsightsPanel({ insights, correlations }: PredictiveInsightsPanelProps) {

@@ -61,15 +61,15 @@ export const ExecutiveRoutinePanel = ({ childId }: ExecutiveRoutinePanelProps) =
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 70) return 'text-green-600';
-    if (score >= 40) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 70) return 'text-success';
+    if (score >= 40) return 'text-warning';
+    return 'text-destructive';
   };
 
   const getStatusBadge = (score: number) => {
-    if (score >= 70) return <Badge className="bg-green-500/10 text-green-600 border-green-500/20">Adequado</Badge>;
-    if (score >= 40) return <Badge className="bg-yellow-500/10 text-yellow-600 border-yellow-500/20">Monitorar</Badge>;
-    return <Badge className="bg-red-500/10 text-red-600 border-red-500/20">Atenção</Badge>;
+    if (score >= 70) return <Badge className="bg-success/10 text-success border-success/20">Adequado</Badge>;
+    if (score >= 40) return <Badge className="bg-warning/10 text-warning border-warning/20">Monitorar</Badge>;
+    return <Badge className="bg-destructive/10 text-destructive border-destructive/20">Atenção</Badge>;
   };
 
   return (
