@@ -571,7 +571,7 @@ function ReportPanel({
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-green-500" />
+                <TrendingUp className="h-5 w-5 text-success" />
                 Resumo do Período
               </CardTitle>
             </CardHeader>
@@ -601,7 +601,7 @@ function ReportPanel({
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Brain className="h-5 w-5 text-purple-500" />
+                <Brain className="h-5 w-5 text-secondary" />
                 Perfil Cognitivo
               </CardTitle>
             </CardHeader>
@@ -622,16 +622,16 @@ function ReportPanel({
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Target className="h-5 w-5 text-blue-500" />
+                <Target className="h-5 w-5 text-primary" />
                 Pontos Fortes e Atenção
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-medium text-sm mb-2 text-green-600">Pontos Fortes</h4>
+                <h4 className="font-medium text-sm mb-2 text-success">Pontos Fortes</h4>
                 <div className="flex flex-wrap gap-2">
                   {report.summary.strengths.map((strength, i) => (
-                    <Badge key={i} variant="secondary" className="bg-green-100 text-green-700">
+                    <Badge key={i} variant="secondary" className="bg-success/10 text-success">
                       <CheckCircle className="h-3 w-3 mr-1" />
                       {strength}
                     </Badge>
@@ -639,10 +639,10 @@ function ReportPanel({
                 </div>
               </div>
               <div>
-                <h4 className="font-medium text-sm mb-2 text-amber-600">Áreas de Atenção</h4>
+                <h4 className="font-medium text-sm mb-2 text-warning">Áreas de Atenção</h4>
                 <div className="flex flex-wrap gap-2">
                   {report.summary.areasOfConcern.map((concern, i) => (
-                    <Badge key={i} variant="secondary" className="bg-amber-100 text-amber-700">
+                    <Badge key={i} variant="secondary" className="bg-warning/10 text-warning">
                       <AlertTriangle className="h-3 w-3 mr-1" />
                       {concern}
                     </Badge>
@@ -656,7 +656,7 @@ function ReportPanel({
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-amber-500" />
+                <AlertTriangle className="h-5 w-5 text-warning" />
                 Alertas Inteligentes
               </CardTitle>
             </CardHeader>
@@ -666,10 +666,10 @@ function ReportPanel({
                   key={i}
                   className={`p-3 rounded-lg text-sm ${
                     alert.type === 'warning'
-                      ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                      ? 'bg-warning/10 text-warning border border-warning/20'
                       : alert.type === 'success'
-                      ? 'bg-green-50 text-green-700 border border-green-200'
-                      : 'bg-blue-50 text-blue-700 border border-blue-200'
+                      ? 'bg-success/10 text-success border border-success/20'
+                      : 'bg-primary/10 text-primary border border-primary/20'
                   }`}
                 >
                   {alert.message}

@@ -242,7 +242,7 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
             <FileText className="w-5 h-5 text-primary" />
             Relatório {reportTypeLabels[report.report_type] || report.report_type}
             {report.generated_by_ai && (
-              <Badge variant="secondary" className="ml-2 bg-purple-500/10 text-purple-700">
+              <Badge variant="secondary" className="ml-2 bg-secondary/10 text-secondary">
                 <Brain className="w-3 h-3 mr-1" />
                 IA
               </Badge>
@@ -377,9 +377,9 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
 
             {/* Alert Flags */}
             {report.alert_flags && report.alert_flags.length > 0 && (
-              <Card className="border-amber-500/30 bg-amber-500/5">
+              <Card className="border-warning/30 bg-warning/5">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-base flex items-center gap-2 text-amber-700">
+                  <CardTitle className="text-base flex items-center gap-2 text-warning">
                     <AlertCircle className="w-4 h-4" />
                     Alertas e Áreas de Atenção
                   </CardTitle>
@@ -387,7 +387,7 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
                 <CardContent>
                   <ul className="space-y-2">
                     {report.alert_flags.map((alert, idx) => (
-                      <li key={idx} className="flex gap-2 text-sm text-amber-800">
+                      <li key={idx} className="flex gap-2 text-sm text-warning">
                         <span>•</span>
                         <span>
                           {typeof alert === 'string' ? alert : alert.message || alert.title || JSON.stringify(alert)}
@@ -441,8 +441,8 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
                         </div>
                       )}
                       {aiAnalysis.areasOfConcern?.length > 0 && (
-                        <div className="p-3 bg-amber-500/10 rounded-lg">
-                          <p className="text-sm font-medium text-amber-700 mb-2">Áreas de Atenção</p>
+                        <div className="p-3 bg-warning/10 rounded-lg">
+                          <p className="text-sm font-medium text-warning mb-2">Áreas de Atenção</p>
                           <ul className="text-xs text-muted-foreground space-y-1">
                             {aiAnalysis.areasOfConcern.map((a: string, i: number) => (
                               <li key={i}>• {a}</li>

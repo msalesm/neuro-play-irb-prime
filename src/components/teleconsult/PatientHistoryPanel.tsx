@@ -191,19 +191,19 @@ export function PatientHistoryPanel({ patientId, patientName }: PatientHistoryPa
             <CardContent>
               <div className="grid grid-cols-3 gap-2">
                 <div className="text-center p-2 bg-muted/50 rounded">
-                  <Brain className="w-5 h-5 mx-auto mb-1 text-blue-500" />
+                  <Brain className="w-5 h-5 mx-auto mb-1 text-primary" />
                   <p className="text-xs text-muted-foreground">Cognitivo</p>
                   <p className="font-bold">{latestAssessment.cognitive_overall_score || '-'}%</p>
                   {getRiskBadge(latestAssessment.cognitive_risk)}
                 </div>
                 <div className="text-center p-2 bg-muted/50 rounded">
-                  <Users className="w-5 h-5 mx-auto mb-1 text-purple-500" />
+                  <Users className="w-5 h-5 mx-auto mb-1 text-secondary" />
                   <p className="text-xs text-muted-foreground">Comportamental</p>
                   <p className="font-bold">{latestAssessment.behavioral_overall_score || '-'}%</p>
                   {getRiskBadge(latestAssessment.behavioral_risk)}
                 </div>
                 <div className="text-center p-2 bg-muted/50 rounded">
-                  <Heart className="w-5 h-5 mx-auto mb-1 text-pink-500" />
+                  <Heart className="w-5 h-5 mx-auto mb-1 text-destructive" />
                   <p className="text-xs text-muted-foreground">Socioemocional</p>
                   <p className="font-bold">{latestAssessment.socioemotional_overall_score || '-'}%</p>
                   {getRiskBadge(latestAssessment.socioemotional_risk)}

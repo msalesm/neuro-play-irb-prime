@@ -126,7 +126,7 @@ export function ShiftHandoffManager({
           {/* Pending handoffs to acknowledge */}
           {pendingHandoffs.length > 0 && (
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-orange-600">
+              <h4 className="text-sm font-medium text-warning">
                 Aguardando seu reconhecimento
               </h4>
               {pendingHandoffs.map(handoff => (
@@ -188,7 +188,7 @@ export function ShiftHandoffManager({
                           Reconhecido
                         </Badge>
                       ) : (
-                        <Badge variant="outline" className="text-orange-600">
+                        <Badge variant="outline" className="text-warning">
                           Pendente
                         </Badge>
                       )}

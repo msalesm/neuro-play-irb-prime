@@ -222,7 +222,7 @@ export function AbaNeuroPlayDashboard() {
                           <p className="text-xs text-muted-foreground">Erro</p>
                         </div>
                         <div className="p-2 bg-muted rounded">
-                          <p className="font-bold text-amber-600">{d.percentualAjuda}%</p>
+                          <p className="font-bold text-warning">{d.percentualAjuda}%</p>
                           <p className="text-xs text-muted-foreground">Ajuda</p>
                         </div>
                         <div className="p-2 bg-muted rounded">
