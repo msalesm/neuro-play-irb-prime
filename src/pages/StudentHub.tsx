@@ -12,6 +12,7 @@ import { StudentHubRoutine } from '@/components/student-hub/StudentHubRoutine';
 import { StudentHubAchievements } from '@/components/student-hub/StudentHubAchievements';
 import { LevelProgressBar } from '@/components/gamification/LevelProgressBar';
 import { WeeklyMissionsCard } from '@/components/gamification/WeeklyMissionsCard';
+import { StudentHubWorlds } from '@/components/student-hub/StudentHubWorlds';
 import { Sparkles } from 'lucide-react';
 
 export interface DailyMission {
@@ -202,6 +203,8 @@ export default function StudentHub() {
         />
         
         <StudentHubRecommended />
+
+        <StudentHubWorlds currentLevel={childData.level} />
         
         <StudentHubRoutine 
           missions={missions} 
