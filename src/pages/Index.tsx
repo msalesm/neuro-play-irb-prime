@@ -1,8 +1,5 @@
-import { NeuroPlayHero } from "@/components/NeuroPlayHero";
-import { MVPGameModules } from "@/components/MVPGameModules";
-import { NeuroPlayFeatures } from "@/components/NeuroPlayFeatures";
 import { AccessibilityControls } from "@/components/AccessibilityControls";
-import { Footer } from "@/components/Footer";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
