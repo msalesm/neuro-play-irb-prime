@@ -108,7 +108,7 @@ export function NeuroAnamnesis({ childId, childName }: NeuroAnamnesisProps) {
         .eq('child_id', childId)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') throw error;
       

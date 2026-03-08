@@ -139,7 +139,7 @@ export function AppointmentForm({
       .from('user_roles')
       .select('role')
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle();
     
     const userRole = roleData?.role;
     const isStaff = userRole === 'admin' || userRole === 'therapist';

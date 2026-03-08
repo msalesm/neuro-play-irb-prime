@@ -73,7 +73,7 @@ export function SkillsInventoryReport({ inventoryId, childName, open, onOpenChan
         .from('skills_inventory')
         .select('ai_report, ai_report_generated_at')
         .eq('id', inventoryId)
-        .single();
+        .maybeSingle();
 
       if (!error && data?.ai_report) {
         setReport(data.ai_report as unknown as ReportData);

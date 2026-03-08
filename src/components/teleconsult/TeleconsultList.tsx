@@ -41,7 +41,7 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
 
   useEffect(() => {
     if (user) {
-      supabase.from('profiles').select('full_name').eq('id', user.id).single()
+      supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle()
         .then(({ data }) => setUserProfile(data));
     }
   }, [user]);

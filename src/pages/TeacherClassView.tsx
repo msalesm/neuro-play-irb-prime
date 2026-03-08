@@ -52,7 +52,7 @@ export default function TeacherClassView() {
         .select('*')
         .eq('id', classId)
         .eq('teacher_id', user?.id)
-        .single();
+        .maybeSingle();
 
       if (classError) throw classError;
 

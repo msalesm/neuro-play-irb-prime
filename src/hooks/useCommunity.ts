@@ -191,7 +191,7 @@ export function useCommunity() {
         .from('community_points')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') throw error;
 
@@ -359,7 +359,7 @@ export function useCommunity() {
         .from('profiles')
         .select('full_name')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
       setPosts(prev => prev.map(p => 
         p.id === postId 
