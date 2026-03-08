@@ -93,7 +93,7 @@ export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPa
         .from('children')
         .select('*')
         .eq('id', patientId)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
 

@@ -57,7 +57,7 @@ export function useContextualAI() {
         .from('child_profiles')
         .select('*')
         .eq('id', childId)
-        .single();
+        .maybeSingle();
 
       if (profileError) throw profileError;
 

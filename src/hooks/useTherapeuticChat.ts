@@ -59,7 +59,7 @@ export function useTherapeuticChat({
         .select('*')
         .eq('id', childProfileId)
         .eq('parent_user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setChildProfile(data);

@@ -108,7 +108,7 @@ export function useAbaAprendizDetail(codigoAprendiz: string | undefined) {
         .from('aba_aprendizes')
         .select('*')
         .eq('codigo_aprendiz', codigoAprendiz)
-        .single();
+        .maybeSingle();
       if (error) throw error;
       return data;
     },
