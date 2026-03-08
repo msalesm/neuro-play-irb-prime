@@ -544,7 +544,7 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
                 <ul className="space-y-1">
                   {generatedReport.correlations.map((cor, idx) => (
                     <li key={idx} className="text-sm flex items-start gap-2">
-                      <span className="text-green-500">•</span>
+                      <span className="text-success">•</span>
                       {cor}
                     </li>
                   ))}
@@ -557,13 +557,13 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
                   <Separator className="my-4" />
                   <div>
                     <h3 className="font-semibold flex items-center gap-2 mb-3">
-                      <AlertTriangle className="h-4 w-4 text-amber-500" />
+                      <AlertTriangle className="h-4 w-4 text-warning" />
                       Alertas
                     </h3>
                     <ul className="space-y-2">
                       {generatedReport.alerts.map((alert, idx) => (
-                        <li key={idx} className="text-sm flex items-start gap-2 p-2 rounded-lg bg-amber-500/10">
-                          <AlertTriangle className="h-4 w-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                        <li key={idx} className="text-sm flex items-start gap-2 p-2 rounded-lg bg-warning/10">
+                          <AlertTriangle className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
                           {alert}
                         </li>
                       ))}
