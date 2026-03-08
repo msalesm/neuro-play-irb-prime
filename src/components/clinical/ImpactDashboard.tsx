@@ -85,17 +85,17 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
   };
 
   const getTrendIcon = (value: number) => {
-    if (value > 5) return <TrendingUp className="w-4 h-4 text-green-500" />;
-    if (value < -5) return <TrendingDown className="w-4 h-4 text-red-500" />;
+    if (value > 5) return <TrendingUp className="w-4 h-4 text-success" />;
+    if (value < -5) return <TrendingDown className="w-4 h-4 text-destructive" />;
     return <Minus className="w-4 h-4 text-muted-foreground" />;
   };
 
   const getImprovementColor = (value: number) => {
-    if (value > 10) return 'text-green-600';
-    if (value > 0) return 'text-green-500';
+    if (value > 10) return 'text-success';
+    if (value > 0) return 'text-success';
     if (value === 0) return 'text-muted-foreground';
-    if (value > -10) return 'text-orange-500';
-    return 'text-red-500';
+    if (value > -10) return 'text-warning';
+    return 'text-destructive';
   };
 
   if (loading) {
@@ -154,7 +154,7 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
             {/* Comportamental */}
             <div className="text-center p-4 rounded-lg bg-muted/30">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Users className="w-5 h-5 text-[#005a70]" />
+                <Users className="w-5 h-5 text-secondary" />
                 {getTrendIcon(data.avg_behavioral_improvement)}
               </div>
               <p className={`text-2xl font-bold ${getImprovementColor(data.avg_behavioral_improvement)}`}>
@@ -166,7 +166,7 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
             {/* Socioemocional */}
             <div className="text-center p-4 rounded-lg bg-muted/30">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Heart className="w-5 h-5 text-red-500" />
+                <Heart className="w-5 h-5 text-destructive" />
                 {getTrendIcon(data.avg_socioemotional_improvement)}
               </div>
               <p className={`text-2xl font-bold ${getImprovementColor(data.avg_socioemotional_improvement)}`}>
@@ -198,11 +198,11 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
         <CardContent>
           <div className="grid grid-cols-4 gap-4 text-center">
             <div>
-              <p className="text-2xl font-bold text-green-600">{data.significant_improvements}</p>
+              <p className="text-2xl font-bold text-success">{data.significant_improvements}</p>
               <p className="text-xs text-muted-foreground">Melhora Significativa</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-green-500">{data.moderate_improvements}</p>
+              <p className="text-2xl font-bold text-accent">{data.moderate_improvements}</p>
               <p className="text-xs text-muted-foreground">Melhora Moderada</p>
             </div>
             <div>
@@ -210,7 +210,7 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
               <p className="text-xs text-muted-foreground">Estável</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-red-500">{data.declines}</p>
+              <p className="text-2xl font-bold text-destructive">{data.declines}</p>
               <p className="text-xs text-muted-foreground">Declínio</p>
             </div>
           </div>
@@ -218,19 +218,19 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
           {/* Barra de progresso visual */}
           <div className="mt-4 h-4 rounded-full overflow-hidden flex bg-muted">
             <div 
-              className="bg-green-600 h-full" 
+              className="bg-success h-full" 
               style={{ width: `${(data.significant_improvements / data.total_patients) * 100}%` }}
             />
             <div 
-              className="bg-green-400 h-full" 
+              className="bg-accent h-full" 
               style={{ width: `${(data.moderate_improvements / data.total_patients) * 100}%` }}
             />
             <div 
-              className="bg-gray-400 h-full" 
+              className="bg-muted-foreground/40 h-full" 
               style={{ width: `${(data.stable / data.total_patients) * 100}%` }}
             />
             <div 
-              className="bg-red-500 h-full" 
+              className="bg-destructive h-full" 
               style={{ width: `${(data.declines / data.total_patients) * 100}%` }}
             />
           </div>

@@ -241,7 +241,7 @@ export default function PlatformManual() {
           </Button>
           
           <div className="flex items-center gap-4 mb-4">
-            <BookOpen className="w-12 h-12 text-[#005a70]" />
+            <BookOpen className="w-12 h-12 text-primary" />
             <div>
               <h1 className="text-4xl md:text-5xl font-bold">
                 Manual da Plataforma
@@ -254,7 +254,7 @@ export default function PlatformManual() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
             <TabsTrigger value="getting-started">
               🚀 Início Rápido
             </TabsTrigger>
@@ -273,14 +273,14 @@ export default function PlatformManual() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-2xl flex items-center gap-2">
-                  <Video className="w-6 h-6 text-[#005a70]" />
+                  <Video className="w-6 h-6 text-primary" />
                   Primeiros Passos
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   {gettingStartedSteps.map((step, index) => (
-                    <Card key={index} className="border-l-4 border-l-[#005a70]">
+                    <Card key={index} className="border-l-4 border-l-primary">
                       <CardContent className="p-6">
                         <h3 className="text-lg font-bold mb-2">{step.title}</h3>
                         <p className="text-muted-foreground">{step.description}</p>
@@ -289,7 +289,7 @@ export default function PlatformManual() {
                   ))}
                 </div>
 
-                <Card className="mt-6 bg-gradient-to-r from-[#005a70]/10 to-[#0a1e35]/10 border-2 border-[#005a70]">
+                <Card className="mt-6 bg-gradient-to-r from-primary/10 to-secondary/10 border-2 border-primary">
                   <CardContent className="p-6">
                     <h3 className="text-lg font-bold mb-2">🎯 Recomendação de Fluxo Ideal</h3>
                     <p className="text-muted-foreground mb-4">
@@ -308,7 +308,7 @@ export default function PlatformManual() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-2xl flex items-center gap-2">
-                  <FileText className="w-6 h-6 text-[#005a70]" />
+                  <FileText className="w-6 h-6 text-primary" />
                   Guia de Funcionalidades
                 </CardTitle>
               </CardHeader>
@@ -379,14 +379,14 @@ export default function PlatformManual() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-2xl flex items-center gap-2">
-                  <Lightbulb className="w-6 h-6 text-[#c7923e]" />
+                  <Lightbulb className="w-6 h-6 text-warning" />
                   Dicas e Melhores Práticas
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {tips.map((tip, index) => (
-                    <Card key={index} className="border-l-4 border-l-[#c7923e]">
+                    <Card key={index} className="border-l-4 border-l-warning">
                       <CardContent className="p-4">
                         <h3 className="font-bold mb-2">{tip.title}</h3>
                         <p className="text-sm text-muted-foreground">{tip.description}</p>
@@ -395,7 +395,7 @@ export default function PlatformManual() {
                   ))}
                 </div>
 
-                <Card className="mt-6 bg-gradient-to-r from-[#c7923e]/10 to-[#005a70]/10 border-2 border-[#c7923e]">
+                <Card className="mt-6 bg-gradient-to-r from-warning/10 to-primary/10 border-2 border-warning">
                   <CardContent className="p-6">
                     <h3 className="text-lg font-bold mb-2">🌟 Maximizando Resultados Terapêuticos</h3>
                     <p className="text-muted-foreground mb-4">
