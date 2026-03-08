@@ -568,7 +568,7 @@ export default function MemoryWorkload() {
                 {renderCapacityGraph()}
               </div>
 
-              <div className="grid grid-cols-4 gap-4 mt-6 text-center">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 text-center">
                 <div>
                   <div className="text-lg font-bold text-emerald-600">{accuracy}%</div>
                   <div className="text-sm text-gray-500">Precisão</div>

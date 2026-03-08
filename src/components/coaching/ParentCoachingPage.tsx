@@ -185,7 +185,7 @@ export default function ParentCoachingPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Card>
           <CardContent className="p-4 text-center">
             <Lightbulb className="h-5 w-5 text-warning mx-auto mb-1" />

@@ -196,7 +196,7 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
           <CardTitle className="text-base">Distribuição de Desfechos</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-4 gap-4 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
             <div>
               <p className="text-2xl font-bold text-success">{data.significant_improvements}</p>
               <p className="text-xs text-muted-foreground">Melhora Significativa</p>
