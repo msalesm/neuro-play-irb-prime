@@ -1,77 +1,16 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles, Users, Calendar, Stethoscope, Heart, Trophy, TrendingUp, Building2, School, Map } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { getBottomNavItems } from '@/core/navigation';
 
 export function BottomNavigation() {
   const { user } = useAuth();
   const { role, isAdmin } = useUserRole();
   const location = useLocation();
-  const { t } = useLanguage();
-
-
 
   if (!user) return null;
 
-  // Role-based navigation items
-  const getNavigationItems = () => {
-    if (role === 'patient') {
-      return [
-        { name: 'Início', path: '/student-hub', icon: Home },
-        { name: 'Mapa', path: '/world-map', icon: Map },
-        { name: 'Jogos', path: '/sistema-planeta-azul', icon: Gamepad2 },
-        { name: 'Conquistas', path: '/achievements', icon: Trophy },
-        { name: 'Perfil', path: '/settings', icon: Users },
-      ];
-    }
-
-    if (role === 'parent') {
-      return [
-        { name: 'Dashboard', path: '/dashboard-pais', icon: Home },
-        { name: 'Agenda', path: '/agenda', icon: Calendar },
-        { name: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
-        { name: 'Relatórios', path: '/reports', icon: FileText },
-      ];
-    }
-
-    if (role === 'therapist') {
-      return [
-        { name: 'Pacientes', path: '/therapist/patients', icon: Users },
-        { name: 'Agenda', path: '/agenda', icon: Calendar },
-        { name: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
-        { name: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
-      ];
-    }
-
-    if (role === 'teacher') {
-      return [
-        { name: 'Educação', path: '/educacao', icon: School },
-        { name: 'Turmas', path: '/teacher/classes', icon: Users },
-        { name: 'Avaliações', path: '/screening', icon: ClipboardCheck },
-        { name: 'Relatórios', path: '/reports', icon: FileText },
-      ];
-    }
-
-    if (isAdmin) {
-      return [
-        { name: 'Institucional', path: '/institutional', icon: Building2 },
-        { name: 'Operações', path: '/operations', icon: TrendingUp },
-        { name: 'Usuários', path: '/admin/users', icon: Users },
-        { name: 'Agenda', path: '/agenda', icon: Calendar },
-      ];
-    }
-
-    // Default (no role / user)
-    return [
-      { name: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
-      { name: t('nav.games'), path: '/games', icon: Gamepad2 },
-      { name: t('nav.learning'), path: '/learning-dashboard', icon: GraduationCap },
-      { name: 'Relatórios', path: '/reports', icon: FileText },
-    ];
-  };
-
-  const navigationItems = getNavigationItems();
+  const navigationItems = getBottomNavItems(role, isAdmin);
 
   const isActive = (path: string) => {
     if (path === '/' && location.pathname === '/') return true;

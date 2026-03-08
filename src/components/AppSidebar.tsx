@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { 
-  Home, Gamepad2, FileText, GraduationCap, Settings, 
-  User, Trophy, TrendingUp, Brain, Stethoscope, Heart,
-  ChevronRight, Circle, Play, BookOpen, ClipboardCheck, Users, School, Sparkles, BarChart3,
-  Shield, UserCircle, Briefcase, Building2, Drama, CalendarCheck, Rocket, Mail, CreditCard, Folder, Calendar, ClipboardList, Gem, Activity
-} from 'lucide-react';
+import { Brain, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { Badge } from '@/components/ui/badge';
+import { getSidebarSections, getRoleBadge } from '@/core/navigation';
 import {
   Sidebar,
   SidebarContent,
@@ -19,24 +14,14 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarMenuSubButton,
   useSidebar,
 } from '@/components/ui/sidebar';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 
 export function AppSidebar() {
   const { user } = useAuth();
-  const { role, isAdmin, isTherapist } = useUserRole();
-  const { t } = useLanguage();
+  const { role, isAdmin } = useUserRole();
   const location = useLocation();
   const { open } = useSidebar();
-  const [openGroups, setOpenGroups] = useState<string[]>(['main']);
 
   if (!user) return null;
 
@@ -45,310 +30,8 @@ export function AppSidebar() {
     return location.pathname.startsWith(path) && path !== '/';
   };
 
-  const toggleGroup = (groupId: string) => {
-    setOpenGroups(prev => 
-      prev.includes(groupId) 
-        ? prev.filter(id => id !== groupId)
-        : [...prev, groupId]
-    );
-  };
-
-  // ========== PACIENTE (criança/adolescente) ==========
-  const patientNavigation = [
-    {
-      title: 'Meu Dia',
-      path: '/student-hub',
-      icon: Home,
-    },
-    {
-      title: 'Planeta Azul',
-      path: '/sistema-planeta-azul',
-      icon: Sparkles,
-    },
-    {
-      title: 'Histórias Sociais',
-      path: '/stories',
-      icon: Drama,
-    },
-    {
-      title: 'Minhas Conquistas',
-      path: '/learning-dashboard',
-      icon: Trophy,
-    },
-    {
-      title: 'Meu Perfil',
-      path: '/profile',
-      icon: User,
-    },
-    {
-      title: 'Histórico Emocional',
-      path: '/emotional-history',
-      icon: Heart,
-    },
-  ];
-
-  // ========== PAIS/RESPONSÁVEIS ==========
-  const parentsNavigation = [
-    {
-      title: 'Dashboard',
-      path: '/dashboard-pais',
-      icon: Home,
-    },
-    {
-      title: 'Agendar Consultas',
-      path: '/agenda',
-      icon: CalendarCheck,
-      badge: 'Novo',
-    },
-    {
-      title: 'Minhas Teleconsultas',
-      path: '/minhas-teleconsultas',
-      icon: Stethoscope,
-      badge: 'Novo',
-    },
-    {
-      title: 'Relatório Familiar',
-      path: '/reports',
-      icon: FileText,
-    },
-    {
-      title: 'Progresso dos Filhos',
-      path: '/learning-dashboard',
-      icon: TrendingUp,
-    },
-    {
-      title: 'Mensagens',
-      path: '/messages',
-      icon: Mail,
-      badge: 'Novo',
-    },
-    {
-      title: 'Clube dos Pais',
-      path: '/clube-pais',
-      icon: Gem,
-      badge: 'Novo',
-    },
-    {
-      title: 'Microlearning',
-      path: '/training',
-      icon: BookOpen,
-    },
-    {
-      title: 'Minha Assinatura',
-      path: '/subscription',
-      icon: CreditCard,
-      badge: 'Novo',
-    },
-  ];
-
-  // ========== TERAPEUTA ==========
-  // Menu simplificado do terapeuta - PACIENTES como foco central
-  const therapistNavigation = [
-    {
-      title: 'Pacientes',
-      path: '/therapist/patients',
-      icon: Users,
-      description: 'Prontuário, PEI e acompanhamento',
-    },
-    {
-      title: 'Agenda',
-      path: '/agenda',
-      icon: Calendar,
-    },
-    {
-      title: 'Teleconsultas',
-      path: '/teleconsultas',
-      icon: Stethoscope,
-    },
-    {
-      title: 'Avaliações',
-      path: '/diagnostic-tests',
-      icon: ClipboardCheck,
-    },
-    {
-      title: 'Inventário de Habilidades',
-      path: '/inventario-habilidades',
-      icon: ClipboardCheck,
-    },
-    {
-      title: 'Anamnese',
-      path: '/anamnese',
-      icon: ClipboardList,
-      badge: 'Novo',
-    },
-    {
-      title: 'Relatório Clínico',
-      path: '/reports',
-      icon: FileText,
-    },
-    {
-      title: 'ABA+',
-      path: '/aba-integration',
-      icon: Activity,
-      badge: 'Novo',
-    },
-    {
-      title: 'ABA NeuroPlay',
-      path: '/aba-neuroplay',
-      icon: Activity,
-      description: 'Programas de intervenção ABA',
-    },
-    {
-      title: 'Mensagens',
-      path: '/messages',
-      icon: Mail,
-    },
-  ];
-
-  // ========== PROFESSOR ==========
-  const teacherNavigation = [
-    {
-      title: 'Neuro Play Educação',
-      path: '/educacao',
-      icon: School,
-      description: 'Turmas, check-in e relatórios',
-    },
-    {
-      title: 'Dashboard da Escola',
-      path: '/escola-dashboard',
-      icon: Building2,
-      description: 'Visão macro da escola',
-    },
-    {
-      title: 'Mensagens',
-      path: '/messages',
-      icon: Mail,
-    },
-  ];
-
-  // ========== ADMIN ==========
-  const adminNavigation = [
-    {
-      title: 'Dashboard Institucional',
-      path: '/institutional',
-      icon: Building2,
-    },
-    {
-      title: 'Centro de Operações',
-      path: '/operations',
-      icon: TrendingUp,
-    },
-    {
-      title: 'Relatórios',
-      path: '/reports',
-      icon: FileText,
-    },
-    {
-      title: 'Pacientes',
-      path: '/therapist/patients',
-      icon: Users,
-    },
-    {
-      title: 'Teleconsultas',
-      path: '/teleconsultas',
-      icon: Stethoscope,
-    },
-    {
-      title: 'ABA+',
-      path: '/aba-integration',
-      icon: Activity,
-      badge: 'Novo',
-    },
-    {
-      title: 'ABA NeuroPlay',
-      path: '/aba-neuroplay',
-      icon: Activity,
-    },
-    {
-      title: 'Neuro Play Educação',
-      path: '/educacao',
-      icon: School,
-    },
-    {
-      title: 'Dashboard da Escola',
-      path: '/escola-dashboard',
-      icon: School,
-    },
-    {
-      title: 'Secretaria Municipal',
-      path: '/secretaria-educacao',
-      icon: Building2,
-    },
-    {
-      title: 'Gerenciar Usuários',
-      path: '/admin/users',
-      icon: Users,
-    },
-    {
-      title: 'Clube dos Pais',
-      path: '/admin/clube-pais',
-      icon: Gem,
-    },
-  ];
-
-  // Configurações (para todos)
-  const settingsNavigation = [
-    {
-      title: 'Configurações',
-      path: '/settings',
-      icon: Settings,
-    },
-  ];
-
-  // ========== BUILD NAVIGATION BY ROLE ==========
-  const navigationGroups = [];
-
-  // PACIENTE - vê apenas seu próprio menu
-  if (role === 'patient') {
-    navigationGroups.push({
-      id: 'patient',
-      label: 'Meu Espaço',
-      items: patientNavigation,
-    });
-  }
-
-  // PAIS - vê dashboard dos filhos e clube
-  if (role === 'parent' || (!role && !isAdmin)) {
-    navigationGroups.push({
-      id: 'parents',
-      label: 'Área dos Pais',
-      items: parentsNavigation,
-    });
-  }
-
-  // TERAPEUTA - vê agenda, pacientes, teleconsultas
-  if (role === 'therapist') {
-    navigationGroups.push({
-      id: 'therapist',
-      label: 'Área Clínica',
-      items: therapistNavigation,
-    });
-  }
-
-  // PROFESSOR - vê módulo educação
-  if (role === 'teacher') {
-    navigationGroups.push({
-      id: 'teacher',
-      label: 'Área do Professor',
-      items: teacherNavigation,
-    });
-  }
-
-  // ADMIN - consolidated single menu
-  if (isAdmin) {
-    navigationGroups.push({
-      id: 'admin',
-      label: 'Administração',
-      items: adminNavigation,
-    });
-  }
-
-  // Always show Settings
-  navigationGroups.push({
-    id: 'settings',
-    label: 'Configurações',
-    items: settingsNavigation,
-  });
+  const navigationGroups = getSidebarSections(role, isAdmin);
+  const roleBadge = getRoleBadge(role);
 
   return (
     <Sidebar className="bg-sidebar border-r border-sidebar-border">
@@ -378,14 +61,14 @@ export function AppSidebar() {
             )}
             <SidebarGroupContent>
               <SidebarMenu>
-                {group.items.map((item: any) => (
+                {group.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
                       <Link 
                         to={item.path}
-                        className={`text-sidebar-foreground ${item.highlight ? 'bg-primary/10 border border-primary/30' : ''} ${isActive(item.path) ? 'bg-sidebar-accent text-sidebar-accent-foreground' : 'hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground'}`}
+                        className={`text-sidebar-foreground ${isActive(item.path) ? 'bg-sidebar-accent text-sidebar-accent-foreground' : 'hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground'}`}
                       >
-                        <item.icon className={`w-4 h-4 ${item.highlight ? 'text-primary' : ''}`} />
+                        <item.icon className="w-4 h-4" />
                         {open && (
                           <span className="flex items-center gap-2">
                             {item.title}
@@ -405,36 +88,17 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
 
-        {/* User Info with Role Indicator */}
+        {/* User Info */}
         {open && (
           <div className="mt-auto p-4 border-t border-sidebar-border space-y-3">
             {/* Role Badge */}
             <div className="flex items-center gap-2">
-              {role === 'admin' && (
-                <Badge className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-0 gap-1.5">
-                  <Shield className="w-3 h-3" />
-                  Administrador
+              {roleBadge ? (
+                <Badge className={`${roleBadge.gradient} gap-1.5`}>
+                  <roleBadge.icon className="w-3 h-3" />
+                  {roleBadge.label}
                 </Badge>
-              )}
-              {role === 'therapist' && (
-                <Badge className="bg-gradient-to-r from-cyan-600 to-teal-600 text-white border-0 gap-1.5">
-                  <Briefcase className="w-3 h-3" />
-                  Terapeuta
-                </Badge>
-              )}
-              {role === 'parent' && (
-                <Badge className="bg-gradient-to-r from-amber-600 to-orange-600 text-white border-0 gap-1.5">
-                  <UserCircle className="w-3 h-3" />
-                  Pai/Mãe
-                </Badge>
-              )}
-              {role === 'patient' && (
-                <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0 gap-1.5">
-                  <Gamepad2 className="w-3 h-3" />
-                  Paciente
-                </Badge>
-              )}
-              {!role && (
+              ) : (
                 <Badge variant="secondary" className="gap-1.5">
                   <User className="w-3 h-3" />
                   Usuário

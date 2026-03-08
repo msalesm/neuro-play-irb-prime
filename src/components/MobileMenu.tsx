@@ -1,17 +1,12 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  Home, Brain, Stethoscope, Settings, User, 
-  Users, TrendingUp, Menu, Sparkles, Gamepad2,
-  FileText, ClipboardCheck, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, Calendar, Mail, Folder, Gem, CreditCard, CalendarCheck, Building2, ClipboardList, School, Activity
-} from 'lucide-react';
+import { Brain, User, Menu, Settings } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LanguageSelector } from '@/components/LanguageSelector';
+import { getMobileMenuSections, getRoleBadge } from '@/core/navigation';
 import {
   Sheet,
   SheetContent,
@@ -25,7 +20,6 @@ export function MobileMenu() {
   const { user } = useAuth();
   const { role, isAdmin } = useUserRole();
   const location = useLocation();
-  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
 
   if (!user) return null;
@@ -35,137 +29,8 @@ export function MobileMenu() {
     return location.pathname.startsWith(path) && path !== '/';
   };
 
-  // ========== BUILD MENU BY ROLE ==========
-  const menuSections: { title: string; items: { title: string; path: string; icon: any; badge?: string }[] }[] = [];
-
-  // PACIENTE - vê apenas seu próprio menu
-  if (role === 'patient') {
-    menuSections.push({
-      title: 'Meu Espaço',
-      items: [
-        { title: 'Meu Dia', path: '/student-hub', icon: Home },
-        { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
-        { title: 'Histórias Sociais', path: '/stories', icon: Drama },
-        { title: 'Minhas Conquistas', path: '/learning-dashboard', icon: Trophy },
-        { title: 'Meu Perfil', path: '/profile', icon: User },
-        { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
-      ],
-    });
-  }
-
-  // PAIS - vê dashboard dos filhos e clube
-  if (role === 'parent' || (!role && !isAdmin)) {
-    menuSections.push({
-      title: 'Área dos Pais',
-      items: [
-        { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
-        { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck, badge: 'Novo' },
-        { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope, badge: 'Novo' },
-        { title: 'Relatório Familiar', path: '/reports', icon: FileText },
-        { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
-        { title: 'Microlearning', path: '/training', icon: BookOpen, badge: 'Novo' },
-        { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
-        { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem, badge: 'Novo' },
-        { title: 'Minha Assinatura', path: '/subscription', icon: CreditCard, badge: 'Novo' },
-      ],
-    });
-  }
-
-  // PROFESSOR - vê turmas, alunos e educação
-  if (role === 'teacher') {
-    menuSections.push({
-      title: 'Área do Professor',
-      items: [
-        { title: 'Neuro Play Educação', path: '/educacao', icon: School },
-        { title: 'Dashboard da Escola', path: '/escola-dashboard', icon: School },
-        { title: 'Minhas Turmas', path: '/teacher/classes', icon: Users },
-        { title: 'Triagem Escolar', path: '/screening', icon: ClipboardCheck },
-        { title: 'Relatórios', path: '/reports', icon: FileText },
-        { title: 'Microlearning', path: '/training', icon: BookOpen, badge: 'Novo' },
-        { title: 'Mensagens', path: '/messages', icon: Mail },
-      ],
-    });
-  }
-
-  // TERAPEUTA - vê agenda, pacientes, teleconsultas
-  // Menu simplificado do terapeuta - PACIENTES como foco central
-  if (role === 'therapist') {
-    menuSections.push({
-      title: 'Área Clínica',
-      items: [
-        { title: 'Pacientes', path: '/therapist/patients', icon: Users },
-        { title: 'Agenda', path: '/agenda', icon: Calendar },
-        { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
-        { title: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
-        { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
-        { title: 'Anamnese', path: '/anamnese', icon: ClipboardList, badge: 'Novo' },
-        { title: 'Relatório Clínico', path: '/reports', icon: FileText },
-        { title: 'ABA NeuroPlay', path: '/aba-neuroplay', icon: Activity },
-        { title: 'Mensagens', path: '/messages', icon: Mail },
-      ],
-    });
-  }
-
-  // ADMIN - vê tudo
-  if (isAdmin) {
-    menuSections.push({
-      title: 'Pacientes',
-      items: [
-        { title: 'Meu Dia', path: '/student-hub', icon: Home },
-        { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
-        { title: 'Histórias Sociais', path: '/stories', icon: Drama },
-        { title: 'Conquistas', path: '/learning-dashboard', icon: Trophy },
-      ],
-    });
-    menuSections.push({
-      title: 'Pais',
-      items: [
-        { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
-        { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck },
-        { title: 'Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
-        { title: 'Relatórios', path: '/reports', icon: BarChart3 },
-        { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem },
-      ],
-    });
-    menuSections.push({
-      title: 'Terapeuta',
-      items: [
-        { title: 'Agenda do Dia', path: '/agenda', icon: Calendar },
-        { title: 'Pacientes', path: '/therapist/patients', icon: Users },
-        { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
-        { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
-        { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
-        { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
-      ],
-    });
-    menuSections.push({
-      title: 'Professor',
-      items: [
-        { title: 'Neuro Play Educação', path: '/educacao', icon: School },
-        { title: 'Dashboard da Escola', path: '/escola-dashboard', icon: School },
-        { title: 'Turmas', path: '/teacher/classes', icon: Users },
-        { title: 'Triagem Escolar', path: '/screening', icon: ClipboardCheck },
-      ],
-    });
-    menuSections.push({
-      title: 'Administração',
-      items: [
-        { title: 'Dashboard Institucional', path: '/institutional', icon: Building2 },
-        { title: 'Centro de Operações', path: '/operations', icon: TrendingUp },
-        { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
-        { title: 'Clube dos Pais', path: '/admin/clube-pais', icon: Gem },
-      ],
-    });
-  }
-
-  // Always show Settings
-  menuSections.push({
-    title: 'Configurações',
-    items: [
-      { title: 'Perfil', path: '/profile', icon: User },
-      { title: 'Configurações', path: '/settings', icon: Settings },
-    ],
-  });
+  const menuSections = getMobileMenuSections(role, isAdmin);
+  const roleBadge = getRoleBadge(role);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -191,37 +56,12 @@ export function MobileMenu() {
           
           {/* Role Badge */}
           <div className="flex items-center">
-            {role === 'admin' && (
-              <Badge className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-0 gap-1.5">
-                <Shield className="w-3 h-3" />
-                Administrador
+            {roleBadge ? (
+              <Badge className={`${roleBadge.gradient} gap-1.5`}>
+                <roleBadge.icon className="w-3 h-3" />
+                {roleBadge.label}
               </Badge>
-            )}
-            {role === 'therapist' && (
-              <Badge className="bg-gradient-to-r from-cyan-600 to-teal-600 text-white border-0 gap-1.5">
-                <Briefcase className="w-3 h-3" />
-                Terapeuta
-              </Badge>
-            )}
-            {role === 'parent' && (
-              <Badge className="bg-gradient-to-r from-amber-600 to-orange-600 text-white border-0 gap-1.5">
-                <UserCircle className="w-3 h-3" />
-                Pai/Mãe
-              </Badge>
-            )}
-            {role === 'patient' && (
-              <Badge className="bg-gradient-to-r from-green-600 to-emerald-600 text-white border-0 gap-1.5">
-                <Gamepad2 className="w-3 h-3" />
-                Paciente
-              </Badge>
-            )}
-            {role === 'teacher' && (
-              <Badge className="bg-gradient-to-r from-blue-600 to-sky-600 text-white border-0 gap-1.5">
-                <School className="w-3 h-3" />
-                Professor
-              </Badge>
-            )}
-            {!role && (
+            ) : (
               <Badge variant="secondary" className="gap-1.5">
                 <User className="w-3 h-3" />
                 Usuário
@@ -232,9 +72,9 @@ export function MobileMenu() {
         <ScrollArea className="h-[calc(100vh-80px)]">
           <div className="p-4 space-y-6">
             {menuSections.map((section) => (
-              <div key={section.title}>
+              <div key={section.id}>
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                  {section.title}
+                  {section.label}
                 </h3>
                 <div className="space-y-1">
                   {section.items.map((item) => {
