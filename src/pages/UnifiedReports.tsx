@@ -120,14 +120,39 @@ export default function UnifiedReports() {
 
   useEffect(() => {
     trackScreenView('unified_reports');
-    if (isTherapist) {
+    if (isAdmin) {
+      loadAllChildren();
+    } else if (isTherapist) {
       loadPatientsForTherapist();
     } else if (isParent) {
       loadChildrenForParent();
     } else if (isTeacher) {
       loadStudentsForTeacher();
     }
-  }, [trackScreenView, isTherapist, isParent, isTeacher]);
+  }, [trackScreenView, isAdmin, isTherapist, isParent, isTeacher]);
+
+  const loadAllChildren = async () => {
+    if (!user) return;
+    setLoadingChildren(true);
+    try {
+      const { data, error } = await supabase
+        .from('children')
+        .select('id, name')
+        .eq('is_active', true)
+        .order('name')
+        .limit(200);
+
+      if (error) throw error;
+      setChildren(data || []);
+      if (data && data.length > 0 && !selectedChild) {
+        setSelectedChild(data[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading children:', error);
+    } finally {
+      setLoadingChildren(false);
+    }
+  };
 
   const loadPatientsForTherapist = async () => {
     if (!user) return;
@@ -216,9 +241,9 @@ export default function UnifiedReports() {
   const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
     if (!user) return;
 
-    if ((isTherapist || isParent || isTeacher) && !selectedChild) {
+    if ((isAdmin || isTherapist || isParent || isTeacher) && !selectedChild) {
       toast({
-        title: isTherapist ? 'Selecione um paciente' : isTeacher ? 'Selecione um aluno' : 'Selecione um filho',
+        title: isTherapist ? 'Selecione um paciente' : isTeacher ? 'Selecione um aluno' : isAdmin ? 'Selecione uma criança' : 'Selecione um filho',
         description: 'É necessário selecionar para gerar o relatório.',
       });
       return;
@@ -230,12 +255,12 @@ export default function UnifiedReports() {
       const endDate = new Date();
       const startDate = subDays(endDate, parseInt(selectedPeriod));
 
-      const targetId = (isTherapist || isParent || isTeacher) ? selectedChild : user.id;
+      const targetId = (isAdmin || isTherapist || isParent || isTeacher) ? selectedChild : user.id;
 
       const { data, error } = await supabase.functions.invoke('generate-clinical-report', {
         body: {
           userId: targetId,
-          childId: (isTherapist || isParent || isTeacher) ? selectedChild : undefined,
+          childId: (isAdmin || isTherapist || isParent || isTeacher) ? selectedChild : undefined,
           reportType: type,
           startDate: startDate.toISOString().split('T')[0],
           endDate: endDate.toISOString().split('T')[0],
@@ -418,10 +443,10 @@ export default function UnifiedReports() {
             <CardContent className="pt-6">
               <div className="flex flex-col sm:flex-row gap-4 items-end">
                 {/* Child Selector */}
-                {(isTherapist || isParent || isTeacher) && (
+                {(isAdmin || isTherapist || isParent || isTeacher) && (
                   <div className="flex-1 w-full">
                     <label className="text-sm font-medium mb-2 block text-foreground">
-                      {isTherapist ? 'Paciente' : isTeacher ? 'Aluno' : 'Filho(a)'}
+                      {isTherapist ? 'Paciente' : isTeacher ? 'Aluno' : isAdmin ? 'Criança/Paciente' : 'Filho(a)'}
                     </label>
                     <Select value={selectedChild} onValueChange={setSelectedChild}>
                       <SelectTrigger className="w-full">
@@ -440,7 +465,7 @@ export default function UnifiedReports() {
                 )}
 
                 {/* Period */}
-                <div className={`${(isTherapist || isParent || isTeacher) ? '' : 'flex-1'} w-full sm:w-auto`}>
+                <div className={`${(isAdmin || isTherapist || isParent || isTeacher) ? '' : 'flex-1'} w-full sm:w-auto`}>
                   <label className="text-sm font-medium mb-2 block text-foreground">Período</label>
                   <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
                     <SelectTrigger className="w-full sm:w-[160px]">

@@ -234,6 +234,32 @@ export function AppSidebar() {
       icon: TrendingUp,
     },
     {
+      title: 'Relatórios',
+      path: '/reports',
+      icon: FileText,
+    },
+    {
+      title: 'Pacientes',
+      path: '/therapist/patients',
+      icon: Users,
+    },
+    {
+      title: 'Teleconsultas',
+      path: '/teleconsultas',
+      icon: Stethoscope,
+    },
+    {
+      title: 'ABA+',
+      path: '/aba-integration',
+      icon: Activity,
+      badge: 'Novo',
+    },
+    {
+      title: 'ABA NeuroPlay',
+      path: '/aba-neuroplay',
+      icon: Activity,
+    },
+    {
       title: 'Neuro Play Educação',
       path: '/educacao',
       icon: School,
@@ -252,12 +278,6 @@ export function AppSidebar() {
       title: 'Gerenciar Usuários',
       path: '/admin/users',
       icon: Users,
-    },
-    {
-      title: 'ABA+',
-      path: '/aba-integration',
-      icon: Activity,
-      badge: 'Novo',
     },
     {
       title: 'Clube dos Pais',
@@ -314,28 +334,8 @@ export function AppSidebar() {
     });
   }
 
-  // ADMIN - vê tudo
+  // ADMIN - consolidated single menu
   if (isAdmin) {
-    navigationGroups.push({
-      id: 'admin-patients',
-      label: 'Pacientes',
-      items: patientNavigation,
-    });
-    navigationGroups.push({
-      id: 'admin-parents',
-      label: 'Pais',
-      items: parentsNavigation,
-    });
-    navigationGroups.push({
-      id: 'admin-therapist',
-      label: 'Terapeuta',
-      items: therapistNavigation,
-    });
-    navigationGroups.push({
-      id: 'admin-teacher',
-      label: 'Professor',
-      items: teacherNavigation,
-    });
     navigationGroups.push({
       id: 'admin',
       label: 'Administração',
