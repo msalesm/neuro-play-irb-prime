@@ -391,6 +391,16 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
             correlations={correlations}
           />
         </TabsContent>
+
+        {/* Socioemotional Tab */}
+        <TabsContent value="socioemotional" className="mt-6">
+          <SocioemotionalPanel childId={childId} />
+        </TabsContent>
+
+        {/* Integrated 360° Tab */}
+        <TabsContent value="integrated" className="mt-6">
+          <IntegratedProfilePanel childId={childId} />
+        </TabsContent>
       </Tabs>
     </div>
   );
