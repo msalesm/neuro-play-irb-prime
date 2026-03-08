@@ -11,6 +11,7 @@ import { RiskIndicatorCard } from '@/components/clinical/RiskIndicatorCard';
 import { FamilyProgressSection } from '@/components/dashboard/FamilyProgressSection';
 import { BehavioralProfileWidget } from '@/components/dashboard/BehavioralProfileWidget';
 import { ReportGeneratorWidget } from '@/components/dashboard/ReportGeneratorWidget';
+import { AppointmentReminders } from '@/components/clinic/AppointmentReminders';
 import type { ChildProfile, SessionData, CognitiveScores } from '@/hooks/useParentDashboard';
 
 interface ParentDashboardContentProps {
