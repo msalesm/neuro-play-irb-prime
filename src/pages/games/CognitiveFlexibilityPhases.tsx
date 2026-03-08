@@ -94,8 +94,8 @@ export default function CognitiveFlexibilityPhases() {
 
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-1 mb-1">
-                    <Star className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                    <span className="text-3xl font-bold text-yellow-600">
+                    <Star className="w-6 h-6 fill-warning text-warning" />
+                    <span className="text-3xl font-bold text-warning">
                       {totalStars}/{maxStars}
                     </span>
                   </div>
