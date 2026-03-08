@@ -242,7 +242,7 @@ export default function MemorySequenceBuilder() {
 
   if (!gameStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-secondary/10 to-destructive/5 p-6">
         <Button 
           variant="ghost" 
           onClick={() => navigate('/games')}

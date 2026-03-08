@@ -325,15 +325,15 @@ export default function SocialCompass() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-accent/10 to-info/10 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">
-              Social Compass
-            </h1>
-            <p className="text-teal-700">
+             <h1 className="font-heading text-4xl font-bold mb-2 bg-gradient-to-r from-accent to-info bg-clip-text text-transparent">
+               Social Compass
+             </h1>
+             <p className="text-accent">
               Navegue situações sociais com seu radar emocional
             </p>
           </div>

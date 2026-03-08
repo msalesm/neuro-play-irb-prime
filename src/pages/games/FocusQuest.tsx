@@ -48,35 +48,35 @@ const focusPowers: FocusPower[] = [
 const questBiomes: Biome[] = [
   { 
     name: 'Jardim da Concentração', 
-    background: 'from-green-200 to-blue-200',
+    background: 'from-success/30 to-primary/30',
     unlockRequirement: 0,
     description: 'Onde a jornada do foco começa',
     powerUps: ['Laser Focus']
   },
   { 
     name: 'Floresta da Atenção', 
-    background: 'from-emerald-300 to-teal-300',
+    background: 'from-accent/40 to-accent/30',
     unlockRequirement: 15,
     description: 'Árvores antigas guardam segredos da concentração',
     powerUps: ['Laser Focus', 'Tempo Expandido']
   },
   { 
     name: 'Montanhas da Perseverança', 
-    background: 'from-slate-300 to-purple-300',
+    background: 'from-muted to-secondary/40',
     unlockRequirement: 45,
     description: 'Picos desafiadores testam sua determinação',
     powerUps: ['Tempo Expandido', 'Zona de Calma']
   },
   { 
     name: 'Cristais da Maestria', 
-    background: 'from-purple-300 to-pink-300',
+    background: 'from-secondary/40 to-destructive/20',
     unlockRequirement: 90,
     description: 'O domínio absoluto do foco é alcançado aqui',
     powerUps: ['Zona de Calma', 'Multiplicador']
   },
   { 
     name: 'Reino Infinito', 
-    background: 'from-gold-200 to-amber-300',
+    background: 'from-warning/30 to-warning/40',
     unlockRequirement: 180,
     description: 'Para mestres do foco - sem limites',
     powerUps: ['Laser Focus', 'Tempo Expandido', 'Zona de Calma', 'Multiplicador']
@@ -209,9 +209,9 @@ export default function FocusQuest() {
                          Math.random() < 0.3 ? 'power' : 'basic';
       
       const colors = {
-        basic: 'bg-gradient-to-r from-blue-400 to-cyan-400',
-        power: 'bg-gradient-to-r from-purple-400 to-pink-400',
-        checkpoint: 'bg-gradient-to-r from-green-400 to-emerald-400'
+        basic: 'bg-gradient-to-r from-primary to-info',
+        power: 'bg-gradient-to-r from-secondary to-destructive/70',
+        checkpoint: 'bg-gradient-to-r from-success to-accent'
       };
 
       const newTarget: QuestTarget = {
