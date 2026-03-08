@@ -31,7 +31,7 @@ export default function QuebraCabecaMagico() {
   // Generate puzzle pieces for current level
   useEffect(() => {
     const numPieces = Math.min(4 + level, 9); // 4-9 pieces based on level
-    const colors = ['bg-red-400', 'bg-blue-400', 'bg-green-400', 'bg-yellow-400', 'bg-purple-400', 'bg-pink-400', 'bg-orange-400', 'bg-cyan-400', 'bg-indigo-400'];
+    const colors = ['bg-destructive/70', 'bg-info/70', 'bg-success/70', 'bg-warning/70', 'bg-secondary/70', 'bg-primary/50', 'bg-warning/60', 'bg-accent/70', 'bg-primary/70'];
     const patterns = ['🌟', '💎', '🔥', '⚡', '🌈', '🎭', '🎨', '🎪', '🎯'];
     const newPieces: PuzzlePiece[] = [];
     
@@ -140,11 +140,11 @@ export default function QuebraCabecaMagico() {
       description: "Quando acertar, a peça ficará verde! Quando errar, receba uma dica do mago.",
       visual: (
         <div className="flex gap-3">
-          <div className="w-12 h-12 bg-green-100 border-2 border-green-400 rounded-lg flex items-center justify-center">
-            <Star className="w-6 h-6 text-yellow-500" />
+          <div className="w-12 h-12 bg-success/20 border-2 border-success rounded-lg flex items-center justify-center">
+            <Star className="w-6 h-6 text-warning" />
           </div>
           <div className="text-xl">vs</div>
-          <div className="w-12 h-12 bg-red-100 border-2 border-red-400 rounded-lg flex items-center justify-center text-red-500">
+          <div className="w-12 h-12 bg-destructive/20 border-2 border-destructive rounded-lg flex items-center justify-center text-destructive">
             ❌
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function QuebraCabecaMagico() {
   const progress = (pieces.filter(p => p.isPlaced).length / pieces.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-secondary/10 via-info/5 to-primary/10 p-4">
       {showOnboarding && (
         <GameOnboarding
           gameName="Quebra-Cabeça Mágico"
@@ -186,12 +186,12 @@ export default function QuebraCabecaMagico() {
               Como Jogar
             </Button>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-700">⭐ {score}</div>
-              <div className="text-sm text-purple-600">Pontos Mágicos</div>
+              <div className="text-2xl font-bold text-secondary">⭐ {score}</div>
+              <div className="text-sm text-secondary/80">Pontos Mágicos</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-700">🎯 {level}</div>
-              <div className="text-sm text-blue-600">Nível</div>
+              <div className="text-2xl font-bold text-info">🎯 {level}</div>
+              <div className="text-sm text-info/80">Nível</div>
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@ export default function QuebraCabecaMagico() {
         <Card className="mb-6">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Sparkles className="w-5 h-5 text-purple-500" />
+              <Sparkles className="w-5 h-5 text-secondary" />
               <Progress value={progress} className="flex-1" />
               <span className="text-sm font-medium">{Math.round(progress)}%</span>
             </div>
@@ -233,13 +233,13 @@ export default function QuebraCabecaMagico() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
+                <Trophy className="w-5 h-5 text-warning" />
                 Área do Puzzle
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div 
-                className={`grid gap-2 p-4 rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 ${
+                className={`grid gap-2 p-4 rounded-lg bg-gradient-to-br from-secondary/10 to-info/10 ${
                   Math.sqrt(pieces.length) === Math.floor(Math.sqrt(pieces.length)) 
                     ? `grid-cols-${Math.floor(Math.sqrt(pieces.length))}` 
                     : 'grid-cols-3'
@@ -255,8 +255,8 @@ export default function QuebraCabecaMagico() {
                       key={index}
                       className={`aspect-square border-2 border-dashed rounded-lg flex items-center justify-center text-4xl transition-all duration-300 ${
                         placedPiece 
-                          ? 'border-green-400 bg-green-100' 
-                          : 'border-purple-300 bg-white hover:bg-purple-50'
+                          ? 'border-success bg-success/20' 
+                          : 'border-secondary/40 bg-card hover:bg-secondary/10'
                       }`}
                       onDragOver={handleDragOver}
                       onDrop={() => handleDrop(index)}
@@ -267,7 +267,7 @@ export default function QuebraCabecaMagico() {
                             <div className="text-lg">{placedPiece.pattern}</div>
                             <div className="text-sm">{placedPiece.number}</div>
                           </div>
-                          <Star className="w-4 h-4 text-yellow-500 absolute -top-1 -right-1" />
+                          <Star className="w-4 h-4 text-warning absolute -top-1 -right-1" />
                         </div>
                       ) : (
                         <div className="text-muted-foreground text-lg">?</div>
@@ -305,7 +305,7 @@ export default function QuebraCabecaMagico() {
               {pieces.filter(p => !p.isPlaced).length === 0 && (
                 <div className="text-center py-8">
                   <div className="text-6xl mb-4">🎉</div>
-                  <p className="text-lg text-purple-700 font-semibold">
+                  <p className="text-lg text-secondary font-semibold">
                     Todas as peças foram colocadas!
                   </p>
                   <Button 
@@ -326,16 +326,16 @@ export default function QuebraCabecaMagico() {
           <CardContent className="p-4">
             <div className="flex justify-center gap-8 text-center">
               <div>
-                <div className="text-2xl font-bold text-purple-600">{completedPuzzles}</div>
-                <div className="text-sm text-purple-500">Puzzles Completos</div>
+                <div className="text-2xl font-bold text-secondary">{completedPuzzles}</div>
+                <div className="text-sm text-secondary/80">Puzzles Completos</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-blue-600">{Math.floor(score / 10)}</div>
-                <div className="text-sm text-blue-500">Peças Corretas</div>
+                <div className="text-2xl font-bold text-info">{Math.floor(score / 10)}</div>
+                <div className="text-sm text-info/80">Peças Corretas</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-green-600">{level}</div>
-                <div className="text-sm text-green-500">Nível Atual</div>
+                <div className="text-2xl font-bold text-success">{level}</div>
+                <div className="text-sm text-success/80">Nível Atual</div>
               </div>
             </div>
           </CardContent>

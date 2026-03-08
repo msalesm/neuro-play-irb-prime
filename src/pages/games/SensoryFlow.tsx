@@ -256,18 +256,18 @@ export default function SensoryFlow() {
   }
 
   const noteNames = ['Dó', 'Ré', 'Mi', 'Fá', 'Sol', 'Lá', 'Si'];
-  const noteColors = ['bg-red-400', 'bg-orange-400', 'bg-yellow-400', 'bg-green-400', 'bg-blue-400', 'bg-indigo-400', 'bg-purple-400'];
+  const noteColors = ['bg-destructive/70', 'bg-warning/70', 'bg-warning/50', 'bg-success/70', 'bg-info/70', 'bg-primary/70', 'bg-secondary/70'];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-secondary/10 to-primary/5 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 text-purple-900">
+            <h1 className="font-heading text-4xl font-bold mb-2 text-foreground">
               SensoryFlow
             </h1>
-            <p className="text-purple-700">
+            <p className="text-muted-foreground">
               Desenvolva seu processamento auditivo através de padrões sonoros
             </p>
           </div>
@@ -288,7 +288,7 @@ export default function SensoryFlow() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <Settings className="h-4 w-4 text-gray-600" />
+                      <Settings className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm font-medium">Dificuldade:</span>
                     </div>
                     <div className="flex gap-2">
@@ -403,7 +403,7 @@ export default function SensoryFlow() {
                   </Button>
                   
                   {patternsCompleted >= 3 && (
-                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700">
+                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-secondary hover:bg-secondary/90 text-secondary-foreground">
                       <Volume2 className="h-5 w-5" />
                       Concluir Sessão
                     </Button>
@@ -476,19 +476,19 @@ export default function SensoryFlow() {
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-secondary rounded-full mt-1.5 shrink-0" />
                   <span>Discriminação de frequências</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-secondary rounded-full mt-1.5 shrink-0" />
                   <span>Processamento sequencial</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-secondary rounded-full mt-1.5 shrink-0" />
                   <span>Memória auditiva de trabalho</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-secondary rounded-full mt-1.5 shrink-0" />
                   <span>Atenção auditiva sustentada</span>
                 </div>
               </CardContent>

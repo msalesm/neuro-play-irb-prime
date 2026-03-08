@@ -408,7 +408,7 @@ export default function BalanceQuest() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <Settings className="h-4 w-4 text-gray-600" />
+                      <Settings className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm font-medium">Sensibilidade:</span>
                     </div>
                     <div className="flex gap-2">
@@ -448,10 +448,10 @@ export default function BalanceQuest() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-glow bg-white/80 backdrop-blur">
+            <Card className="shadow-glow bg-card/80 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <CircleDot className="h-6 w-6 text-teal-600" />
+                  <CircleDot className="h-6 w-6 text-accent" />
                   Desafio de Equilíbrio - Nível {level}
                 </CardTitle>
                 <div className="flex gap-4 text-sm">
@@ -465,7 +465,7 @@ export default function BalanceQuest() {
                 {/* Current Challenge Info */}
                 {currentChallenge && (
                   <div className="text-center mb-4">
-                    <Badge className="bg-teal-100 text-teal-800 text-lg px-4 py-2">
+                    <Badge className="bg-accent/20 text-accent-foreground text-lg px-4 py-2">
                       Desafio {currentChallenge.id + 1}: {currentChallenge.type === 'static' ? 'Equilíbrio Estático' : 
                        currentChallenge.type === 'dynamic' ? 'Equilíbrio Dinâmico' : 'Equilíbrio Reativo'}
                     </Badge>
@@ -484,7 +484,7 @@ export default function BalanceQuest() {
                 {/* Game Area */}
                 <div 
                   ref={gameAreaRef}
-                  className="relative w-full h-96 bg-gradient-to-b from-teal-100 to-cyan-100 rounded-lg border-4 border-teal-300 overflow-hidden"
+                  className="relative w-full h-96 bg-gradient-to-b from-accent/20 to-info/20 rounded-lg border-4 border-accent/40 overflow-hidden"
                   style={{
                     background: `
                       radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.1) 0%, transparent 200px),
@@ -495,7 +495,7 @@ export default function BalanceQuest() {
                   {/* Target Zone */}
                   {currentChallenge && (
                     <div
-                      className="absolute rounded-full border-4 border-teal-400 bg-teal-200/30"
+                      className="absolute rounded-full border-4 border-accent/60 bg-accent/20"
                       style={{
                         left: currentChallenge.targetZone.x - currentChallenge.targetZone.radius,
                         top: currentChallenge.targetZone.y - currentChallenge.targetZone.radius,
@@ -503,7 +503,7 @@ export default function BalanceQuest() {
                         height: currentChallenge.targetZone.radius * 2,
                       }}
                     >
-                      <div className="flex items-center justify-center h-full text-xs font-bold text-teal-700">
+                      <div className="flex items-center justify-center h-full text-xs font-bold text-accent-foreground">
                         ZONA
                       </div>
                     </div>
@@ -511,19 +511,19 @@ export default function BalanceQuest() {
 
                   {/* Player */}
                   <div
-                    className="absolute w-6 h-6 bg-blue-500 border-3 border-white rounded-full transition-all duration-100 shadow-lg"
+                    className="absolute w-6 h-6 bg-info border-3 border-primary-foreground rounded-full transition-all duration-100 shadow-lg"
                     style={{
                       left: playerPosition.x - 12,
                       top: playerPosition.y - 12,
                       transform: `rotate(${deviceMotion.z * 10}deg)`,
                     }}
                   >
-                    <div className="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 rounded-full" />
+                    <div className="w-full h-full bg-gradient-to-br from-info/80 to-info rounded-full" />
                   </div>
 
                   {/* Motion indicator */}
                   {isPlaying && (
-                    <div className="absolute top-4 left-4 bg-white/80 p-2 rounded">
+                    <div className="absolute top-4 left-4 bg-card/80 p-2 rounded">
                       <div className="text-xs">
                         <div>X: {deviceMotion.x.toFixed(2)}</div>
                         <div>Y: {deviceMotion.y.toFixed(2)}</div>
@@ -535,8 +535,8 @@ export default function BalanceQuest() {
                   {/* Instructions overlay */}
                   {!isPlaying && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-teal-700 bg-white/90 p-6 rounded-lg">
-                        <CircleDot className="h-16 w-16 mx-auto mb-4 text-teal-500" />
+                      <div className="text-center text-accent-foreground bg-card/90 p-6 rounded-lg">
+                        <CircleDot className="h-16 w-16 mx-auto mb-4 text-accent" />
                         <p className="text-xl font-semibold mb-2">Desafio de Equilíbrio</p>
                         <p className="text-sm">
                           {hasMotionPermission 
@@ -588,7 +588,7 @@ export default function BalanceQuest() {
                   </Button>
                   
                   {challengesCompleted >= 2 && (
-                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700">
+                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground">
                       <CircleDot className="h-5 w-5" />
                       Concluir Sessão
                     </Button>
@@ -666,19 +666,19 @@ export default function BalanceQuest() {
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-teal-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-accent rounded-full mt-1.5 shrink-0" />
                   <span>Controle postural</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-teal-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-accent rounded-full mt-1.5 shrink-0" />
                   <span>Sistema vestibular</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-teal-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-accent rounded-full mt-1.5 shrink-0" />
                   <span>Coordenação motora</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-teal-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-accent rounded-full mt-1.5 shrink-0" />
                   <span>Propriocepção</span>
                 </div>
               </CardContent>

@@ -237,7 +237,7 @@ export default function AdminUserManagement() {
                             {ROLE_LABELS[user.role as AppRole]}
                           </Badge>
                         ) : (
-                          <Badge variant="outline" className="bg-gray-100 text-gray-500">
+                          <Badge variant="outline" className="bg-muted text-muted-foreground">
                             Sem role
                           </Badge>
                         )}
