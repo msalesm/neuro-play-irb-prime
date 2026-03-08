@@ -7,16 +7,15 @@
 import { supabase } from '@/integrations/supabase/client';
 
 export async function fetchSocialStories(status?: string) {
-  const query = supabase
+  const base = supabase
     .from('social_stories')
     .select('*')
     .order('created_at', { ascending: false });
 
-  const { data, error } = status 
-    ? await query.eq('status', status) 
-    : await query;
+  const { data, error } = await base;
   if (error) throw error;
-  return (data as any[]) || [];
+  const results = (data as any[]) || [];
+  return status ? results.filter((s: any) => s.status === status) : results;
 }
 
 export async function fetchStoryProgress(userId: string, storyId: string) {
