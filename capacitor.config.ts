@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.irbprime.neuroirbprime',
-  appName: 'Neuro IRB Prime',
+  appId: 'com.neuroplay.app',
+  appName: 'NeuroPlay',
   webDir: 'dist',
   // For production: remove server block or leave url empty
   // For development: uncomment to enable hot-reload
@@ -13,9 +13,9 @@ const config: CapacitorConfig = {
   plugins: {
     SplashScreen: {
       launchShowDuration: 2000,
-      backgroundColor: '#0a1e35',
+      backgroundColor: '#3A86FF',
       showSpinner: true,
-      spinnerColor: '#c7923e',
+      spinnerColor: '#FFD166',
       androidScaleType: 'CENTER_CROP',
       splashFullScreen: true,
       splashImmersive: true

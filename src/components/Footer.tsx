@@ -14,8 +14,8 @@ export const Footer = () => {
                 <Brain className="h-8 w-8 text-primary" />
               </div>
               <div>
-                <h3 className="font-heading text-2xl font-bold">Neuro IRB Prime</h3>
-                <p className="text-sm opacity-80">Plataforma Clínica Digital</p>
+                <h3 className="font-heading text-2xl font-bold">NeuroPlay</h3>
+                <p className="text-sm opacity-80">Aprendizado Cognitivo Interativo</p>
               </div>
             </div>
             <p className="text-lg opacity-90 mb-6 leading-relaxed">
@@ -80,7 +80,7 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-sm opacity-70">
-            © 2024 GameNeuro - Neuro.Lux. Todos os direitos reservados.
+            © 2024 NeuroPlay. Todos os direitos reservados.
           </div>
           <div className="flex gap-6 text-sm">
             <a href="#" className="opacity-70 hover:opacity-100 transition-opacity">Privacidade</a>
