@@ -314,8 +314,8 @@ export default function AventuraNumeros() {
               <div className="text-sm text-warning/80">Moedas</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-700">🎯 {level}</div>
-              <div className="text-sm text-orange-600">Nível</div>
+              <div className="text-2xl font-bold text-accent">🎯 {level}</div>
+              <div className="text-sm text-accent/80">Nível</div>
             </div>
           </div>
         </div>
@@ -445,7 +445,7 @@ export default function AventuraNumeros() {
               ) : (
                 <div className="text-center py-8">
                   <div className="text-6xl mb-4">🗺️</div>
-                  <p className="text-lg text-gray-600">
+                  <p className="text-lg text-muted-foreground">
                     Clique em um tesouro no mapa para começar a aventura!
                   </p>
                   
@@ -470,8 +470,8 @@ export default function AventuraNumeros() {
             <CardContent className="p-4">
               <div className="flex justify-center gap-8 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-yellow-600">{discoveredTreasures}</div>
-                  <div className="text-sm text-yellow-500">Tesouros Descobertos</div>
+                  <div className="text-2xl font-bold text-warning">{discoveredTreasures}</div>
+                  <div className="text-sm text-warning/80">Tesouros Descobertos</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-orange-600">{coins}</div>

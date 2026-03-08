@@ -123,7 +123,7 @@ export default function StoryReader() {
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: 'spring' }}
               >
-                <CheckCircle className="h-24 w-24 mx-auto mb-6 text-green-500" />
+                <CheckCircle className="h-24 w-24 mx-auto mb-6 text-success" />
               </motion.div>
               <h2 className="text-2xl font-bold mb-2 text-foreground">
                 Parabéns! 🎉

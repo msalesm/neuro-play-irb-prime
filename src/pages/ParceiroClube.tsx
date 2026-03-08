@@ -116,9 +116,9 @@ const ParceiroClube = () => {
   if (!partner.is_approved) {
     return (
       <div className="container mx-auto p-6">
-        <Card className="border-yellow-500/50 bg-yellow-500/5">
+        <Card className="border-warning/50 bg-warning/5">
           <CardContent className="p-12 text-center">
-            <AlertCircle className="h-16 w-16 mx-auto text-yellow-500 mb-4" />
+            <AlertCircle className="h-16 w-16 mx-auto text-warning mb-4" />
             <h2 className="text-2xl font-bold mb-2">Aguardando Aprovação</h2>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Seu cadastro como parceiro está em análise. Você será notificado 
@@ -194,7 +194,7 @@ const ParceiroClube = () => {
                 <p className="text-sm text-muted-foreground">Faturamento</p>
                 <p className="text-2xl font-bold">R$ {totalRevenue.toFixed(0)}</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-yellow-500" />
+              <TrendingUp className="h-8 w-8 text-warning" />
             </div>
           </CardContent>
         </Card>

@@ -210,8 +210,8 @@ export default function AgendarTeleconsulta() {
       <div className="min-h-screen bg-background p-4">
         <Card className="max-w-md mx-auto mt-20">
           <CardContent className="pt-6 text-center space-y-4">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-              <CheckCircle className="w-8 h-8 text-green-600" />
+            <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto">
+              <CheckCircle className="w-8 h-8 text-success" />
             </div>
             <h2 className="text-xl font-semibold">Teleconsulta Agendada!</h2>
             <p className="text-muted-foreground">

@@ -355,7 +355,7 @@ export default function PlatformManual() {
                   ))}
                 </Accordion>
 
-                <Card className="mt-6 bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200">
+                <Card className="mt-6 bg-warning/5 dark:bg-warning/10 border-warning/30">
                   <CardContent className="p-6">
                     <h3 className="font-bold mb-2 flex items-center gap-2">
                       ⚠️ Ainda com Problemas?
