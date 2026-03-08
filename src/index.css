@@ -39,6 +39,14 @@
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
+
+    /* Semantic Status Colors */
+    --success: 163 95% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 33 100% 55%;
+    --warning-foreground: 0 0% 10%;
+    --info: 220 100% 62%;
+    --info-foreground: 0 0% 100%;
     
     --border: 220 15% 90%;
     --input: 220 15% 90%;
