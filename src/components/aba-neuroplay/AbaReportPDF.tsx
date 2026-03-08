@@ -137,10 +137,7 @@ export function AbaReportPDF({ programId, childId }: Props) {
       // ===== SUMMARY =====
       addSection('Resumo Geral');
       
-      let allTrials: any[] = [];
-      trialQueries.forEach(q => {
-        if (q.data) allTrials = allTrials.concat(q.data);
-      });
+      const allTrials = allTrialsData || [];
 
       const totalTrials = allTrials.length;
       const correctTrials = allTrials.filter(t => t.correct).length;
@@ -159,7 +156,7 @@ export function AbaReportPDF({ programId, childId }: Props) {
       if (interventions?.length) {
         addSection('Habilidades e Progresso');
         interventions.forEach((intv: any, idx: number) => {
-          const trials = trialQueries[idx]?.data || [];
+          const trials = (allTrialsData || []).filter((t: any) => t.intervention_id === intv.id);
           const iTotal = trials.length;
           const iCorrect = trials.filter((t: any) => t.correct).length;
           const iIndep = trials.filter((t: any) => t.prompt_level === 'independente').length;
