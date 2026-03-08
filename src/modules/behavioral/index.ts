@@ -13,6 +13,13 @@ export {
   type ProfileDataSources,
 } from './engine';
 
+// ── Service (local) ───────────────────────────────────────
+export {
+  fetchBehavioralInsights,
+  fetchScreenings,
+  fetchEmotionalCheckins,
+} from './service';
+
 // ── Hooks ─────────────────────────────────────────────────
 export { useBehavioralProfile } from '@/hooks/useBehavioralProfile';
 export { useBehavioralAnalysis } from '@/hooks/useBehavioralAnalysis';
