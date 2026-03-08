@@ -174,8 +174,8 @@ export default function ContentManager() {
     <ModernPageLayout>
       <div className="container mx-auto px-4 py-8 space-y-6">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-white">Gerenciador de Conteúdo</h1>
-          <p className="text-white/70">CMS interno para administradores</p>
+          <h1 className="text-3xl font-bold text-foreground">Gerenciador de Conteúdo</h1>
+          <p className="text-muted-foreground">CMS interno para administradores</p>
         </div>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -387,8 +387,8 @@ export default function ContentManager() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-lg bg-green-500/10 flex items-center justify-center">
-                          <ListChecks className="w-8 h-8 text-green-500" />
+                        <div className="w-16 h-16 rounded-lg bg-success/10 flex items-center justify-center">
+                          <ListChecks className="w-8 h-8 text-success" />
                         </div>
                         <div>
                           <h3 className="font-semibold">{routine.title}</h3>
@@ -426,8 +426,8 @@ export default function ContentManager() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                          <Route className="w-8 h-8 text-purple-500" />
+                        <div className="w-16 h-16 rounded-lg bg-secondary/10 flex items-center justify-center">
+                          <Route className="w-8 h-8 text-secondary" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">

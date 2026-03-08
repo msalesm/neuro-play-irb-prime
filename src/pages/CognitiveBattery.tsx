@@ -11,7 +11,7 @@ const BATTERY_TASKS = [
     icon: Eye,
     path: '/games/attention-sustained-play',
     duration: '3 min',
-    color: 'text-blue-600',
+    color: 'text-info',
   },
   {
     domain: 'Controle Inibitório',
@@ -19,7 +19,7 @@ const BATTERY_TASKS = [
     icon: Hand,
     path: '/games/foco-rapido-play',
     duration: '~2 min',
-    color: 'text-red-600',
+    color: 'text-destructive',
   },
   {
     domain: 'Memória Operacional',
@@ -27,7 +27,7 @@ const BATTERY_TASKS = [
     icon: Brain,
     path: '/games/memory-sequence-builder',
     duration: '~3 min',
-    color: 'text-purple-600',
+    color: 'text-secondary',
   },
   {
     domain: 'Flexibilidade Cognitiva',
@@ -35,7 +35,7 @@ const BATTERY_TASKS = [
     icon: Layers,
     path: '/games/cognitive-flexibility-play',
     duration: '~2 min',
-    color: 'text-green-600',
+    color: 'text-success',
   },
   {
     domain: 'Coordenação Visuomotora',
@@ -43,7 +43,7 @@ const BATTERY_TASKS = [
     icon: Crosshair,
     path: '/games/visuomotor-coordination',
     duration: '~2 min',
-    color: 'text-orange-600',
+    color: 'text-accent',
   },
   {
     domain: 'Persistência Comportamental',
@@ -51,7 +51,7 @@ const BATTERY_TASKS = [
     icon: Flame,
     path: '/games/behavioral-persistence',
     duration: 'Variável',
-    color: 'text-pink-600',
+    color: 'text-warning',
   },
 ];
 
