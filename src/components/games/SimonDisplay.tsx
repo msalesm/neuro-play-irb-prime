@@ -83,10 +83,10 @@ export function SimonDisplay({
             variant="outline" 
             className={cn(
               'w-full justify-center text-xs',
-              gameState === 'showing' && 'bg-blue-500/20 text-blue-300 border-blue-500/50',
-              gameState === 'playing' && 'bg-green-500/20 text-green-300 border-green-500/50',
-              gameState === 'idle' && 'bg-gray-500/20 text-gray-300 border-gray-500/50',
-              gameState === 'gameOver' && 'bg-red-500/20 text-red-300 border-red-500/50'
+              gameState === 'showing' && 'bg-info/20 text-info border-info/50',
+              gameState === 'playing' && 'bg-success/20 text-success border-success/50',
+              gameState === 'idle' && 'bg-muted text-muted-foreground border-muted',
+              gameState === 'gameOver' && 'bg-destructive/20 text-destructive border-destructive/50'
             )}
           >
             {gameState === 'showing' && '👀 Observe'}

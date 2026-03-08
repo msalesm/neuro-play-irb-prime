@@ -132,7 +132,7 @@ export function ShiftHandoffManager({
               {pendingHandoffs.map(handoff => (
                 <div 
                   key={handoff.id}
-                  className="p-4 rounded-lg border border-orange-200 bg-orange-50"
+                  className="p-4 rounded-lg border border-warning/20 bg-warning/5"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>

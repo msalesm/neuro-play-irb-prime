@@ -17,7 +17,7 @@ export function StepCheckbox({ checked, onChange, disabled = false }: StepCheckb
       disabled={disabled}
       className={`flex-shrink-0 rounded-full border-4 flex items-center justify-center transition-all ${
         checked
-          ? 'bg-green-500 border-green-500 text-white'
+          ? 'bg-success border-success text-success-foreground'
           : 'bg-background border-muted-foreground/30 hover:border-primary/50'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       style={{

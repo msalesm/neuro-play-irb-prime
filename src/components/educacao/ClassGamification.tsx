@@ -85,7 +85,7 @@ export function ClassGamification({ totalStudents, observedStudents, className, 
             <div
               key={challenge.id}
               className={`p-3 rounded-lg border transition-colors ${
-                completed ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-muted/30 border-border'
+                completed ? 'bg-success/5 border-success/20' : 'bg-muted/30 border-border'
               }`}
             >
               <div className="flex items-center gap-3 mb-2">
@@ -95,7 +95,7 @@ export function ClassGamification({ totalStudents, observedStudents, className, 
                   <p className="text-xs text-muted-foreground">{challenge.description}</p>
                 </div>
                 {completed && (
-                  <Badge className="bg-emerald-500/10 text-emerald-700 border-emerald-500/20 text-xs">
+                  <Badge className="bg-success/10 text-success border-success/20 text-xs">
                     {challenge.reward}
                   </Badge>
                 )}
