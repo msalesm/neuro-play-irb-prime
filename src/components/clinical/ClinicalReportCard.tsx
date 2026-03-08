@@ -67,7 +67,7 @@ export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalRepor
             
             <div className="flex gap-1">
               {report.generated_by_ai && (
-                <Badge variant="secondary" className="bg-purple-500/10 text-purple-700 border-purple-500/20">
+                <Badge variant="secondary" className="bg-secondary/10 text-secondary border-secondary/20">
                   <Brain className="w-3 h-3 mr-1" />
                   IA
                 </Badge>

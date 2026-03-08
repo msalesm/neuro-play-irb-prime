@@ -231,10 +231,10 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
 
       {/* Alerts Banner */}
       {alerts.length > 0 && (
-        <Card className="border-orange-300 bg-orange-50">
+        <Card className="border-warning/30 bg-warning/5">
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <Bell className="w-4 h-4 text-orange-600" />
+              <Bell className="w-4 h-4 text-warning" />
               Alertas Operacionais ({alerts.length})
             </CardTitle>
           </CardHeader>
