@@ -66,7 +66,7 @@ const Index = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 md:mb-6 leading-tight"
               variants={fadeIn}
             >
               Desenvolvimento cognitivo
@@ -76,7 +76,7 @@ const Index = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-base md:text-xl text-white/85 mb-6 md:mb-8 max-w-lg leading-relaxed"
+              className="text-base md:text-xl text-primary-foreground/85 mb-6 md:mb-8 max-w-lg leading-relaxed"
               variants={fadeIn}
             >
               Jogos adaptativos, ABA digital, rotina executiva e histórias interativas — 
@@ -114,7 +114,7 @@ const Index = () => {
                 { icon: Brain, text: "Baseado em Evidências" },
                 { icon: Heart, text: "TEA · TDAH · Dislexia" },
               ].map((item) => (
-                <div key={item.text} className="flex items-center gap-2 text-white/70 text-xs md:text-sm">
+                <div key={item.text} className="flex items-center gap-2 text-primary-foreground/70 text-xs md:text-sm">
                   <item.icon className="w-4 h-4 text-primary" />
                   <span>{item.text}</span>
                 </div>
@@ -226,8 +226,8 @@ const Index = () => {
                     <Brain className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="text-white font-semibold text-sm">Radar Cognitivo</p>
-                    <p className="text-white/70 text-xs">6 dimensões analisadas em tempo real</p>
+                     <p className="text-primary-foreground font-semibold text-sm">Radar Cognitivo</p>
+                     <p className="text-primary-foreground/70 text-xs">6 dimensões analisadas em tempo real</p>
                   </div>
                 </div>
               </div>
@@ -460,10 +460,10 @@ const Index = () => {
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
           <motion.div variants={fadeIn}>
             <span className="text-4xl md:text-5xl mb-4 block">🪐</span>
-            <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground mb-4">
               Sistema Planeta Azul
             </h2>
-            <p className="text-white/85 text-base md:text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-primary-foreground/85 text-base md:text-lg max-w-2xl mx-auto mb-8">
               5 planetas temáticos com jogos adaptativos, missões diárias, avatares evolutivos 
               e um universo gamificado que transforma terapia em aventura.
             </p>
@@ -487,7 +487,7 @@ const Index = () => {
                 whileHover={{ scale: 1.05 }}
               >
                 <span className="text-2xl md:text-3xl block mb-1">{planet.emoji}</span>
-                <p className="text-white text-xs md:text-sm font-medium">{planet.name}</p>
+                <p className="text-primary-foreground text-xs md:text-sm font-medium">{planet.name}</p>
               </motion.div>
             ))}
           </motion.div>
