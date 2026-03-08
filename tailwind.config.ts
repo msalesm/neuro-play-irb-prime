@@ -65,12 +65,7 @@ export default {
           orange: "hsl(var(--neuroplay-orange))",
           yellow: "hsl(var(--neuroplay-yellow))",
         },
-        // Legacy aliases (mapped to new NeuroPlay tokens)
-        irb: {
-          petrol: "hsl(var(--primary))",
-          blue: "hsl(var(--secondary))",
-          gold: "hsl(var(--neuroplay-orange))",
-        },
+        // All legacy IRB aliases removed — use neuroplay tokens or semantic tokens
       },
       fontFamily: {
         'heading': ['Nunito', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
