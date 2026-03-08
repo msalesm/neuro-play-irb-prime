@@ -2,21 +2,24 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield, Download, Video, ClipboardList, Calendar, Activity } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import irbPrimeCareLogo from '@/assets/irb-prime-care-logo.png';
+// Logo removed - using text brand
 import heroImage from '@/assets/hero-children-learning.jpg';
 import childFocused from '@/assets/child-focused-learning.jpg';
 import groupTherapy from '@/assets/group-therapy-session.jpg';
 import { generatePlatformPresentation } from '@/lib/platformPresentationGenerator';
 
-export default function IRBPrimeLanding() {
+export default function NeuroPlayMainLanding() {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header - Gradiente Azul IRB */}
-      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-[#0a1e35] via-[#004a5a] to-[#005a70] shadow-lg">
+      {/* Header - Gradiente NeuroPlay */}
+      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-[#3A86FF] via-[#8338EC] to-[#3A86FF] shadow-lg">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <img src={irbPrimeCareLogo} alt="IRB Prime Care" className="h-14 hover-scale" />
+          <div className="flex items-center gap-2">
+            <Brain className="w-8 h-8 text-white" />
+            <span className="text-xl font-bold text-white">NeuroPlay</span>
+          </div>
           <nav className="hidden md:flex items-center gap-8">
             <a href="#sobre" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Sobre</a>
             <a href="#beneficios" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Benefícios</a>
@@ -30,7 +33,7 @@ export default function IRBPrimeLanding() {
             </Button>
             <Button 
               onClick={() => navigate('/auth')} 
-              className="bg-white text-[#0a1e35] hover:bg-white/90 font-semibold px-6"
+              className="bg-white text-[#3A86FF] hover:bg-white/90 font-semibold px-6"
             >
               Acessar Plataforma
             </Button>
@@ -42,15 +45,15 @@ export default function IRBPrimeLanding() {
       <section className="pt-32 pb-16 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-5xl mx-auto mb-16 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#005a70]/10 text-[#005a70] text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A86FF]/10 text-[#3A86FF] text-sm font-medium mb-6">
               <Sparkles className="w-4 h-4" />
-              IRB Prime Care - Excelência em Saúde
+              NeuroPlay - Aprendizado Cognitivo Interativo
             </div>
             
-            <h1 className="text-5xl md:text-6xl font-bold text-[#0a1e35] mb-6 leading-tight">
-              Neuro IRB Prime
+            <h1 className="text-5xl md:text-6xl font-bold text-[#3A86FF] mb-6 leading-tight">
+              NeuroPlay
               <br />
-              <span className="text-[#005a70]">por que você merece sempre o melhor</span>
+              <span className="text-[#8338EC]">porque cada mente é única</span>
             </h1>
             
             <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto mb-8">
@@ -783,12 +786,12 @@ export default function IRBPrimeLanding() {
                 Comece a transformar o desenvolvimento do seu filho hoje
               </h2>
               <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Junte-se às famílias que já confiam na tecnologia IRB Prime Care para o desenvolvimento cognitivo de suas crianças.
+                Junte-se às famílias que já confiam no NeuroPlay para o desenvolvimento cognitivo de suas crianças.
               </p>
               <Button 
                 size="lg" 
                 onClick={() => navigate('/auth')}
-                className="bg-white text-[#0a1e35] hover:bg-white/90 text-lg px-10 h-14 font-semibold"
+                className="bg-white text-[#3A86FF] hover:bg-white/90 text-lg px-10 h-14 font-semibold"
               >
                 Criar Conta Gratuita
               </Button>
@@ -798,12 +801,12 @@ export default function IRBPrimeLanding() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-[#0a1e35] via-[#004a5a] to-[#005a70] text-white py-12">
+      <footer className="bg-gradient-to-r from-[#3A86FF] via-[#8338EC] to-[#3A86FF] text-white py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-3">
-              <img src={irbPrimeCareLogo} alt="IRB Prime Care" className="h-10" />
-              <span className="text-sm text-white/80">© 2024 IRB Prime Care. Todos os direitos reservados.</span>
+              <Brain className="w-8 h-8 text-white" />
+              <span className="text-sm text-white/80">© 2024 NeuroPlay. Todos os direitos reservados.</span>
             </div>
             <div className="flex gap-6 text-sm text-white/80">
               <a href="#" className="hover:text-white transition-colors">Política de Privacidade</a>
