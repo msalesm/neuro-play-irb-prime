@@ -189,7 +189,7 @@ export function ParentDashboardContent({
             </div>
           </Card>
 
-          {selectedChild && <div data-tour="ai-recommendations"><AIGameRecommendations childProfileId={selectedChild} /></div>}
+          {selectedChild && <div data-tour="ai-recommendations"><SmartInsightsPanel childId={selectedChild} /></div>}
 
           {/* Quick Report */}
           <Card data-tour="quick-report">
