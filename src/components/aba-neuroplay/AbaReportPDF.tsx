@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useAbaInterventions, useAbaTrials, useAbaSessions, useAbaGoals, useAbaClinicalNotes } from '@/hooks/useAbaNeuroPlay';
+import { useAbaInterventions, useAbaSessions, useAbaGoals, useAbaClinicalNotes } from '@/hooks/useAbaNeuroPlay';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { FileDown, Loader2, FileText } from 'lucide-react';
