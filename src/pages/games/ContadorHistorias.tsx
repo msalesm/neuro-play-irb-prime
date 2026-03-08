@@ -6,7 +6,7 @@ import { ArrowLeft, BookOpen, Sparkles, Trophy, Heart, HelpCircle } from 'lucide
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { GameOnboarding } from '@/components/games';
-import { GameAchievements } from '@/components/GameAchievement';
+import { GameAchievements } from '@/components/games';
 
 interface StoryChapter {
   id: number;

@@ -21,7 +21,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { useClinicalReports } from '@/hooks/useClinicalReports';
-import { ClinicalReportCard } from './ClinicalReportCard';
+import { ClinicalReportCard } from './clinical/ClinicalReportCard';
 import { ReportDetailDialog } from './reports/ReportDetailDialog';
 import { toast } from 'sonner';
 

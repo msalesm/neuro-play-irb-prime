@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { hapticsEngine } from '@/lib/haptics';
-import { GameCompatibilityCheck } from '@/components/GameCompatibilityCheck';
+import { GameCompatibilityCheck } from '@/components/games';
 import { addUniversalEventListener } from '@/lib/browserCompat';
 
 export default function CrystalMatch() {

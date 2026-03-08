@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Loader2, MapPin, Phone, Shield, Save } from 'lucide-react';
-import { ProfilePhotoUpload } from './ProfilePhotoUpload';
+import { ProfilePhotoUpload } from '@/components/onboarding/ProfilePhotoUpload';
 
 const conditions = [
   { id: 'TEA', label: 'TEA (Transtorno do Espectro Autista)' },

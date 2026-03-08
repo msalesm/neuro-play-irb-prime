@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Joyride, { Step, CallBackProps, STATUS } from 'react-joyride';
 import { useLocation } from 'react-router-dom';
 import { useTourAchievements } from '@/hooks/useTourAchievements';
-import { TourAchievementModal } from './TourAchievementModal';
+import { TourAchievementModal } from './gamification/TourAchievementModal';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 

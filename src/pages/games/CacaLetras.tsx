@@ -6,8 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Target, Clock, Trophy, Volume2, VolumeX, Star } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { LevelProgress } from "@/components/LevelProgress";
-import { GameAchievements } from "@/components/GameAchievement";
+import { LevelProgress } from "@/components/gamification";
+import { GameAchievements } from "@/components/games";
 
 interface GameStats {
   level: number;

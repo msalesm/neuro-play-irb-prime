@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
-import { GameIllustration } from "@/components/GameIllustration";
+import { GameIllustration } from "@/components/games";
 import { PlatformOnboarding } from "@/components/PlatformOnboarding";
 
 const gamesList = [

@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import { BehavioralReportDisclaimer } from '@/components/BehavioralReportDisclaimer';
+import { BehavioralReportDisclaimer } from '@/components/clinical/BehavioralReportDisclaimer';
 import jsPDF from 'jspdf';
 
 interface SkillsInventoryReportProps {

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Puzzle, Sparkles, Trophy, Volume2, VolumeX, Star } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { LevelProgress } from '@/components/gamification';
-import { GameAchievements } from '@/components/GameAchievement';
+import { GameAchievements } from '@/components/games';
 import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton, GameResultsDashboard } from '@/components/games';
 import { toast } from 'sonner';
