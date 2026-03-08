@@ -455,9 +455,9 @@ export default function BalanceQuest() {
                   Desafio de Equilíbrio - Nível {level}
                 </CardTitle>
                 <div className="flex gap-4 text-sm">
-                  <span className="text-teal-600 font-medium">Score: {score}</span>
-                  <span className="text-blue-600 font-medium">Estabilidade: {stability.toFixed(1)}%</span>
-                  <span className="text-green-600 font-medium">Desafios: {challengesCompleted}/{challenges.length}</span>
+                  <span className="text-primary font-medium">Score: {score}</span>
+                  <span className="text-accent-foreground font-medium">Estabilidade: {stability.toFixed(1)}%</span>
+                  <span className="text-success font-medium">Desafios: {challengesCompleted}/{challenges.length}</span>
                 </div>
               </CardHeader>
               

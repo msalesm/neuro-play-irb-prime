@@ -93,7 +93,7 @@ export function InstitutionProgressTab({ institutionId }: InstitutionProgressTab
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-green-500">{data.avgSessionDuration}min</p>
+            <p className="text-3xl font-bold text-success">{data.avgSessionDuration}min</p>
             <p className="text-sm text-muted-foreground">Duração Média</p>
           </CardContent>
         </Card>

@@ -285,9 +285,9 @@ export default function BehavioralPersistence() {
                         showAsTarget
                           ? 'bg-primary border-primary'
                           : feedbackCorrect
-                          ? 'bg-green-500 border-green-500'
+                          ? 'bg-success border-success'
                           : feedbackWrong
-                          ? 'bg-red-500 border-red-500'
+                          ? 'bg-destructive border-destructive'
                           : isSelected
                           ? 'bg-primary/80 border-primary'
                           : 'bg-muted border-border hover:border-primary/50'
@@ -327,20 +327,20 @@ export default function BehavioralPersistence() {
                   <div className="text-2xl font-bold text-primary">{maxLevel}</div>
                   <div className="text-xs text-muted-foreground">Nível Máximo</div>
                 </div>
-                <div className="p-3 bg-blue-500/10 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">{totalTime}s</div>
+                <div className="p-3 bg-accent/10 rounded-lg">
+                  <div className="text-2xl font-bold text-accent-foreground">{totalTime}s</div>
                   <div className="text-xs text-muted-foreground">Tempo Investido</div>
                 </div>
-                <div className="p-3 bg-orange-500/10 rounded-lg">
-                  <div className="text-2xl font-bold text-orange-600">{totalAttempts}</div>
+                <div className="p-3 bg-warning/10 rounded-lg">
+                  <div className="text-2xl font-bold text-warning">{totalAttempts}</div>
                   <div className="text-xs text-muted-foreground">Tentativas</div>
                 </div>
-                <div className="p-3 bg-green-500/10 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">{recoveries}</div>
+                <div className="p-3 bg-success/10 rounded-lg">
+                  <div className="text-2xl font-bold text-success">{recoveries}</div>
                   <div className="text-xs text-muted-foreground">Recuperações</div>
                 </div>
-                <div className="p-3 bg-purple-500/10 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">{gaveUp ? 'Sim' : 'Não'}</div>
+                <div className="p-3 bg-secondary/10 rounded-lg">
+                  <div className="text-2xl font-bold text-secondary-foreground">{gaveUp ? 'Sim' : 'Não'}</div>
                   <div className="text-xs text-muted-foreground">Desistência</div>
                 </div>
               </div>

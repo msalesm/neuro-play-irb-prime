@@ -267,9 +267,9 @@ export function SkillsInventoryReport({ inventoryId, childName, open, onOpenChan
 
               {/* Pontos Fortes & Áreas de Atenção */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="border-green-500/20">
+                <Card className="border-success/20">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm flex items-center gap-2 text-green-600">
+                    <CardTitle className="text-sm flex items-center gap-2 text-success">
                       <CheckCircle2 className="h-4 w-4" />
                       Pontos Fortes
                     </CardTitle>
@@ -278,7 +278,7 @@ export function SkillsInventoryReport({ inventoryId, childName, open, onOpenChan
                     <ul className="space-y-1.5">
                       {report.pontosFortes?.map((p, i) => (
                         <li key={i} className="text-sm flex items-start gap-2">
-                          <span className="text-green-500 mt-0.5">✓</span>
+                          <span className="text-success mt-0.5">✓</span>
                           {p}
                         </li>
                       ))}

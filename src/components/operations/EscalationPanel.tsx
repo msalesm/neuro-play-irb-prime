@@ -42,9 +42,9 @@ export function EscalationPanel({ escalations, onResolve }: Props) {
 
   const getLevelBadge = (level: number) => {
     const colors = {
-      1: 'bg-yellow-100 text-yellow-800',
-      2: 'bg-orange-100 text-orange-800',
-      3: 'bg-red-100 text-red-800'
+      1: 'bg-warning/20 text-warning',
+      2: 'bg-accent/20 text-accent-foreground',
+      3: 'bg-destructive/20 text-destructive'
     };
     return colors[level as keyof typeof colors] || colors[1];
   };
@@ -144,7 +144,7 @@ export function EscalationPanel({ escalations, onResolve }: Props) {
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">{escalation.reason}</span>
-                      <Badge variant="outline" className="text-green-600">
+                      <Badge variant="outline" className="text-success">
                         <CheckCircle className="w-3 h-3 mr-1" />
                         Resolvida
                       </Badge>

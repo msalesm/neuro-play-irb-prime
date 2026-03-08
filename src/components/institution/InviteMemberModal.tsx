@@ -118,9 +118,9 @@ export function InviteMemberModal({ open, onOpenChange, onInvite }: InviteMember
           </div>
         ) : (
           <div className="space-y-4 py-4">
-            <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg text-center">
-              <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-2" />
-              <p className="font-medium text-green-500">Convite Gerado!</p>
+            <div className="p-4 bg-success/10 border border-success/20 rounded-lg text-center">
+              <CheckCircle2 className="w-12 h-12 text-success mx-auto mb-2" />
+              <p className="font-medium text-success">Convite Gerado!</p>
               <p className="text-sm text-muted-foreground mt-1">
                 Compartilhe o link abaixo com {email}
               </p>

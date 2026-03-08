@@ -100,12 +100,12 @@ export default function ParentTraining() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Trophy className="h-4 w-4 text-yellow-500" />
+                <Trophy className="h-4 w-4 text-warning" />
                 Score Médio
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-yellow-500">{totalScore}</div>
+              <div className="text-3xl font-bold text-warning">{totalScore}</div>
               <p className="text-xs text-muted-foreground mt-2">pontos de 100</p>
             </CardContent>
           </Card>
@@ -113,12 +113,12 @@ export default function ParentTraining() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Award className="h-4 w-4 text-green-500" />
+                <Award className="h-4 w-4 text-success" />
                 Certificados
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-green-500">{completedModules.length}</div>
+              <div className="text-3xl font-bold text-success">{completedModules.length}</div>
               <p className="text-xs text-muted-foreground mt-2">obtidos</p>
             </CardContent>
           </Card>
@@ -134,7 +134,7 @@ export default function ParentTraining() {
               <Card
                 key={module.id}
                 className={`group hover:shadow-lg transition-all duration-300 overflow-hidden ${
-                  isCompleted ? 'border-green-500/50' : ''
+                  isCompleted ? 'border-success/50' : ''
                 }`}
               >
                 <div className={`h-2 bg-gradient-to-r ${module.color}`} />
@@ -142,13 +142,13 @@ export default function ParentTraining() {
                   <div className="flex items-start justify-between mb-2">
                     <div className="text-4xl">{module.icon}</div>
                     {isCompleted && (
-                      <Badge className="bg-green-500/10 text-green-700">
+                      <Badge className="bg-success/10 text-success">
                         <CheckCircle2 className="h-3 w-3 mr-1" />
                         Concluído
                       </Badge>
                     )}
                     {isInProgress && (
-                      <Badge className="bg-blue-500/10 text-blue-700">Em Andamento</Badge>
+                      <Badge className="bg-primary/10 text-primary">Em Andamento</Badge>
                     )}
                   </div>
                   <CardTitle className="text-lg">{module.name}</CardTitle>
@@ -213,7 +213,7 @@ export default function ParentTraining() {
           <Card className="mt-8 border-2 border-primary/20 bg-gradient-to-br from-primary/10 to-background">
             <CardHeader>
               <div className="flex items-center gap-3">
-                <Trophy className="h-8 w-8 text-yellow-500" />
+                <Trophy className="h-8 w-8 text-warning" />
                 <div>
                   <CardTitle>Parabéns! Capacitação Completa</CardTitle>
                   <CardDescription>
