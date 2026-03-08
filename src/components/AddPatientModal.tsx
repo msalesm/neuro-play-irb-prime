@@ -122,6 +122,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
       const { data: childData, error: childError } = await supabase
         .from('children')
         .insert({
+          name: data.name,
           avatar_url: photoUrl || null,
           birth_date: data.birth_date,
           gender: data.gender || null,
