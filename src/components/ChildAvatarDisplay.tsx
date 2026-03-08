@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { EvolutionaryAvatar } from "./EvolutionaryAvatar";
 
@@ -35,15 +35,20 @@ export const ChildAvatarDisplay = ({
   showEffects = false,
   className 
 }: ChildAvatarDisplayProps) => {
-  // Parse avatar if it's a string
+  // Check if avatar is a URL (photo)
+  const isPhotoUrl = typeof avatar === 'string' && (
+    avatar.startsWith('http') || avatar.startsWith('/')
+  );
+
+  // Parse avatar if it's a JSON string
   let avatarData: AvatarData | null = null;
-  if (typeof avatar === 'string') {
+  if (typeof avatar === 'string' && !isPhotoUrl) {
     try {
       avatarData = JSON.parse(avatar);
     } catch {
       avatarData = null;
     }
-  } else if (avatar) {
+  } else if (avatar && typeof avatar === 'object') {
     avatarData = avatar;
   }
 
@@ -70,6 +75,9 @@ export const ChildAvatarDisplay = ({
 
   return (
     <Avatar className={cn(sizeClasses[size], className)}>
+      {isPhotoUrl && (
+        <AvatarImage src={avatar as string} alt={name} className="object-cover" />
+      )}
       {avatarData ? (
         <AvatarFallback className="bg-gradient-to-br from-primary/20 to-secondary/20 border-2 border-primary/30">
           <span>{avatarData.emoji}</span>
