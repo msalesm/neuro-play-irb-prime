@@ -316,8 +316,8 @@ export default function ContadorHistorias() {
           
           <div className="flex items-center gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-700">⭐ {score}</div>
-              <div className="text-sm text-purple-600">Pontos de História</div>
+              <div className="text-2xl font-bold text-secondary">⭐ {score}</div>
+              <div className="text-sm text-secondary/80">Pontos de História</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-pink-700">📚 {completedStories}</div>
@@ -350,7 +350,7 @@ export default function ContadorHistorias() {
         <Card className="mb-6">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <BookOpen className="w-5 h-5 text-purple-500" />
+              <BookOpen className="w-5 h-5 text-secondary" />
               <Progress value={progress} className="flex-1" />
               <span className="text-sm font-medium">{Math.round(progress)}%</span>
             </div>
@@ -363,7 +363,7 @@ export default function ContadorHistorias() {
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Heart className="w-5 h-5 text-red-500" />
+                <Heart className="w-5 h-5 text-destructive" />
                 {story.title}
               </CardTitle>
             </CardHeader>
@@ -387,7 +387,7 @@ export default function ContadorHistorias() {
                       onClick={() => handleOptionSelect(index)}
                       disabled={chapter.completed}
                     >
-                      <span className="mr-3 text-purple-500 font-bold">{index + 1}.</span>
+                      <span className="mr-3 text-secondary font-bold">{index + 1}.</span>
                       {option}
                     </Button>
                   ))}
@@ -404,9 +404,9 @@ export default function ContadorHistorias() {
                 )}
                 
                 {chapter.completed && (
-                  <div className="text-center mt-4 p-4 bg-green-100 rounded-lg">
+                  <div className="text-center mt-4 p-4 bg-success/10 rounded-lg">
                     <div className="text-2xl mb-2">🎉</div>
-                    <p className="text-green-700 font-semibold">Capítulo Completo!</p>
+                    <p className="text-success font-semibold">Capítulo Completo!</p>
                   </div>
                 )}
               </div>
@@ -428,8 +428,8 @@ export default function ContadorHistorias() {
                     key={storyIndex}
                     className={`p-3 rounded-lg border-2 transition-all ${
                       storyIndex === currentStory 
-                        ? 'border-purple-300 bg-purple-50' 
-                        : 'border-gray-200 bg-gray-50'
+                        ? 'border-secondary/50 bg-secondary/10' 
+                        : 'border-border bg-muted/50'
                     }`}
                   >
                     <div className="font-semibold text-sm mb-2">{storyItem.title}</div>
@@ -439,10 +439,10 @@ export default function ContadorHistorias() {
                           key={chapIndex}
                           className={`w-4 h-4 rounded-full ${
                             chap.completed 
-                              ? 'bg-green-400' 
+                              ? 'bg-success' 
                               : storyIndex === currentStory && chapIndex === currentChapter
-                                ? 'bg-purple-400'
-                                : 'bg-gray-300'
+                                ? 'bg-secondary'
+                                : 'bg-muted-foreground/30'
                           }`}
                         />
                       ))}
@@ -469,8 +469,8 @@ export default function ContadorHistorias() {
           <CardContent className="p-4">
             <div className="flex justify-center gap-8 text-center">
               <div>
-                <div className="text-2xl font-bold text-purple-600">{completedStories}</div>
-                <div className="text-sm text-purple-500">Histórias Completas</div>
+                <div className="text-2xl font-bold text-secondary">{completedStories}</div>
+                <div className="text-sm text-secondary/80">Histórias Completas</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-pink-600">{Math.floor(score / 10)}</div>
