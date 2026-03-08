@@ -42,7 +42,7 @@ export function ChildProfileStep({ data, updateData }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-irb-petrol mb-2">Perfil da Criança</h3>
+        <h3 className="text-lg font-semibold text-primary mb-2">Perfil da Criança</h3>
         <p className="text-sm text-muted-foreground">
           Configure o perfil terapêutico individual para personalização dos jogos e atividades.
         </p>
@@ -60,7 +60,7 @@ export function ChildProfileStep({ data, updateData }: Props) {
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="childName" className="flex items-center gap-2">
-            <Baby className="h-4 w-4 text-irb-blue" />
+            <Baby className="h-4 w-4 text-secondary" />
             Nome da Criança *
           </Label>
           <Input
@@ -68,14 +68,14 @@ export function ChildProfileStep({ data, updateData }: Props) {
             value={data.childName}
             onChange={(e) => updateData({ childName: e.target.value })}
             placeholder="Nome"
-            className="border-irb-blue/30 focus:border-irb-blue"
+            className="border-secondary/30 focus:border-secondary"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="childBirthDate" className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-irb-blue" />
+              <Calendar className="h-4 w-4 text-secondary" />
               Data de Nascimento *
             </Label>
             <Input
@@ -83,20 +83,20 @@ export function ChildProfileStep({ data, updateData }: Props) {
               type="date"
               value={data.childBirthDate}
               onChange={(e) => updateData({ childBirthDate: e.target.value })}
-              className="border-irb-blue/30 focus:border-irb-blue"
+              className="border-secondary/30 focus:border-secondary"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="childGender" className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-irb-blue" />
+              <Users className="h-4 w-4 text-secondary" />
               Gênero (Opcional)
             </Label>
             <Select
               value={data.childGender}
               onValueChange={(value) => updateData({ childGender: value })}
             >
-              <SelectTrigger className="border-irb-blue/30 focus:border-irb-blue">
+              <SelectTrigger className="border-secondary/30 focus:border-secondary">
                 <SelectValue placeholder="Selecione" />
               </SelectTrigger>
               <SelectContent>
@@ -113,7 +113,7 @@ export function ChildProfileStep({ data, updateData }: Props) {
       {/* Diagnosed Conditions */}
       <div className="space-y-3">
         <Label className="flex items-center gap-2">
-          <Brain className="h-4 w-4 text-irb-blue" />
+          <Brain className="h-4 w-4 text-secondary" />
           Condições Diagnósticas (Opcional)
         </Label>
         <p className="text-sm text-muted-foreground">
@@ -123,13 +123,13 @@ export function ChildProfileStep({ data, updateData }: Props) {
           {CONDITIONS.map((condition) => (
             <div
               key={condition.id}
-              className="flex items-center space-x-3 p-3 rounded-lg border border-irb-blue/30 hover:border-irb-blue/50 transition-colors"
+              className="flex items-center space-x-3 p-3 rounded-lg border border-secondary/30 hover:border-secondary/50 transition-colors"
             >
               <Checkbox
                 id={condition.id}
                 checked={data.diagnosedConditions.includes(condition.id)}
                 onCheckedChange={() => toggleCondition(condition.id)}
-                className="border-irb-blue data-[state=checked]:bg-irb-blue"
+                className="border-secondary data-[state=checked]:bg-secondary"
               />
               <Label htmlFor={condition.id} className="text-sm cursor-pointer flex-1">
                 {condition.label}
@@ -142,7 +142,7 @@ export function ChildProfileStep({ data, updateData }: Props) {
       {/* Sensory Profile */}
       <div className="space-y-4 pt-4 border-t">
         <div>
-          <h4 className="font-semibold text-irb-petrol mb-1">Perfil Sensorial</h4>
+          <h4 className="font-semibold text-primary mb-1">Perfil Sensorial</h4>
           <p className="text-sm text-muted-foreground">
             Configure a sensibilidade individual para personalizar estímulos visuais e sonoros
           </p>
@@ -151,7 +151,7 @@ export function ChildProfileStep({ data, updateData }: Props) {
         <div className="space-y-5">
           <div className="space-y-2">
             <Label className="flex items-center gap-2 text-sm">
-              <Volume2 className="h-4 w-4 text-irb-blue" />
+              <Volume2 className="h-4 w-4 text-secondary" />
               Sensibilidade a Sons
             </Label>
             <div className="flex items-center gap-4">
@@ -173,7 +173,7 @@ export function ChildProfileStep({ data, updateData }: Props) {
 
           <div className="space-y-2">
             <Label className="flex items-center gap-2 text-sm">
-              <Sun className="h-4 w-4 text-irb-blue" />
+              <Sun className="h-4 w-4 text-secondary" />
               Sensibilidade à Luz
             </Label>
             <div className="flex items-center gap-4">
@@ -195,7 +195,7 @@ export function ChildProfileStep({ data, updateData }: Props) {
 
           <div className="space-y-2">
             <Label className="flex items-center gap-2 text-sm">
-              <Hand className="h-4 w-4 text-irb-blue" />
+              <Hand className="h-4 w-4 text-secondary" />
               Sensibilidade ao Toque
             </Label>
             <div className="flex items-center gap-4">
@@ -217,7 +217,7 @@ export function ChildProfileStep({ data, updateData }: Props) {
 
           <div className="space-y-2">
             <Label className="flex items-center gap-2 text-sm">
-              <Eye className="h-4 w-4 text-irb-blue" />
+              <Eye className="h-4 w-4 text-secondary" />
               Preferência por Estimulação Visual
             </Label>
             <div className="flex items-center gap-4">
@@ -239,9 +239,9 @@ export function ChildProfileStep({ data, updateData }: Props) {
         </div>
       </div>
 
-      <div className="bg-secondary/20 p-4 rounded-lg border border-irb-blue/20">
+      <div className="bg-secondary/20 p-4 rounded-lg border border-secondary/20">
         <p className="text-sm text-muted-foreground">
-          <strong className="text-irb-petrol">Personalização Terapêutica:</strong> Este perfil será usado para 
+          <strong className="text-primary">Personalização Terapêutica:</strong> Este perfil será usado para 
           ajustar automaticamente intensidade de sons, cores, animações e feedback nos jogos, garantindo 
           experiência confortável e terapêutica.
         </p>

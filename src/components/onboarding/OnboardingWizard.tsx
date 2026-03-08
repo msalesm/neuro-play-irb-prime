@@ -257,7 +257,7 @@ export function OnboardingWizard() {
         }
         return (
           <div className="text-center py-12">
-            <h3 className="text-xl font-semibold text-irb-petrol mb-2">Pronto para começar!</h3>
+            <h3 className="text-xl font-semibold text-primary mb-2">Pronto para começar!</h3>
             <p className="text-muted-foreground">
               Clique em Finalizar para acessar sua área profissional.
             </p>
@@ -274,8 +274,8 @@ export function OnboardingWizard() {
         <CardHeader>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <CardTitle className="text-2xl font-bold text-irb-petrol">
-                Bem-vindo ao Neuro IRB Prime
+              <CardTitle className="text-2xl font-bold text-primary">
+                Bem-vindo ao NeuroPlay
               </CardTitle>
               <CardDescription className="text-base mt-1">
                 Configure seu perfil terapêutico em {data.selectedRole === 'parent' ? '5' : '4'} etapas
@@ -283,7 +283,7 @@ export function OnboardingWizard() {
             </div>
             <div className="text-right">
               <div className="text-sm text-muted-foreground">Etapa</div>
-              <div className="text-2xl font-bold text-irb-blue">
+              <div className="text-2xl font-bold text-secondary">
                 {currentStep} / {STEPS.length}
               </div>
             </div>
@@ -297,7 +297,7 @@ export function OnboardingWizard() {
                 key={step.id}
                 className={`min-w-[120px] flex-shrink-0 p-3 rounded-lg border-2 transition-all ${
                   step.id === currentStep
-                    ? 'border-irb-blue bg-secondary/10'
+                    ? 'border-secondary bg-secondary/10'
                     : step.id < currentStep
                     ? 'border-green-500 bg-green-50'
                     : 'border-border bg-muted/20'
@@ -338,7 +338,7 @@ export function OnboardingWizard() {
               <Button
                 onClick={handleNext}
                 disabled={!canProceed() || isSubmitting}
-                className="flex-1 bg-irb-blue hover:bg-irb-petrol"
+                className="flex-1 bg-secondary hover:bg-primary"
               >
                 Próximo
               </Button>

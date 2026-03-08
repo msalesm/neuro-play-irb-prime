@@ -124,7 +124,7 @@ export function generatePEIPdf(data: PEIReportData) {
   doc.setFontSize(12);
   doc.setTextColor(...primaryColor);
   doc.setFont('helvetica', 'bold');
-  doc.text(data.studentInfo.institution || 'NeuroPlay IRB Prime', pageWidth / 2, y, { align: 'center' });
+  doc.text(data.studentInfo.institution || 'NeuroPlay', pageWidth / 2, y, { align: 'center' });
   y += 8;
 
   // Title
@@ -355,7 +355,7 @@ export function generatePEIPdf(data: PEIReportData) {
     doc.setFontSize(8);
     doc.setTextColor(...grayColor);
     doc.setFont('helvetica', 'normal');
-    doc.text('by NeuroPlay IRB Prime 2025', pageWidth - margin, pageHeight - 10, { align: 'right' });
+    doc.text('by NeuroPlay 2025', pageWidth - margin, pageHeight - 10, { align: 'right' });
     doc.text(`Página ${i} de ${totalPages}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
   }
 

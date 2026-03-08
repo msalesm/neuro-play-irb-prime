@@ -82,7 +82,7 @@ export default function Settings() {
   };
 
   const handleRestartMobileTour = () => {
-    localStorage.removeItem('neuro-irb-prime-mobile-tour-completed');
+    localStorage.removeItem('neuroplay-mobile-tour-completed');
     toast.success('Tour reiniciado! Recarregue a página para ver o tour novamente.');
   };
 

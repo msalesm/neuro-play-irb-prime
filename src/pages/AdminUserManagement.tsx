@@ -168,8 +168,8 @@ export default function AdminUserManagement() {
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <Shield className="h-8 w-8 text-irb-blue" />
-          <h1 className="text-3xl font-bold text-irb-petrol">Gerenciamento de Usuários</h1>
+          <Shield className="h-8 w-8 text-secondary" />
+          <h1 className="text-3xl font-bold text-primary">Gerenciamento de Usuários</h1>
         </div>
         <p className="text-muted-foreground">
           Administre roles e permissões de todos os usuários da plataforma
@@ -318,7 +318,7 @@ export default function AdminUserManagement() {
         </CardContent>
       </Card>
 
-      <Card className="mt-6 bg-secondary/20 border-irb-blue/20">
+      <Card className="mt-6 bg-secondary/20 border-secondary/20">
         <CardHeader>
           <CardTitle className="text-lg">Hierarquia de Roles</CardTitle>
         </CardHeader>

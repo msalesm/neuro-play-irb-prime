@@ -13,7 +13,7 @@ export function TermsStep({ data, updateData }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-irb-petrol mb-2">Termos e Políticas</h3>
+        <h3 className="text-lg font-semibold text-primary mb-2">Termos e Políticas</h3>
         <p className="text-sm text-muted-foreground">
           Leia e aceite nossos termos para continuar.
         </p>
@@ -22,31 +22,31 @@ export function TermsStep({ data, updateData }: Props) {
       <div className="space-y-6">
         {/* Terms of Use */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-irb-blue">
+          <div className="flex items-center gap-2 text-secondary">
             <FileText className="h-5 w-5" />
             <h4 className="font-semibold">Termos de Uso</h4>
           </div>
-          <ScrollArea className="h-48 rounded-lg border border-irb-blue/30 p-4 bg-muted/20">
+          <ScrollArea className="h-48 rounded-lg border border-secondary/30 p-4 bg-muted/20">
             <div className="text-sm space-y-3 pr-4">
-              <p className="font-semibold text-irb-petrol">1. Natureza do Serviço</p>
+              <p className="font-semibold text-primary">1. Natureza do Serviço</p>
               <p>
                 A NeuroPlay é uma plataforma de apoio terapêutico e educacional baseada em evidências científicas. 
                 Não substitui diagnóstico, tratamento ou acompanhamento profissional especializado.
               </p>
               
-              <p className="font-semibold text-irb-petrol">2. Uso Responsável</p>
+              <p className="font-semibold text-primary">2. Uso Responsável</p>
               <p>
                 Os jogos, testes e conteúdos são baseados em evidências neurocientíficas e devem ser utilizados como ferramentas 
                 complementares ao acompanhamento clínico realizado por profissionais habilitados.
               </p>
               
-              <p className="font-semibold text-irb-petrol">3. Responsabilidade dos Usuários</p>
+              <p className="font-semibold text-primary">3. Responsabilidade dos Usuários</p>
               <p>
                 Pais e responsáveis devem monitorar o uso da plataforma pela criança, respeitando os tempos recomendados de uso 
                 e o perfil sensorial individual.
               </p>
               
-              <p className="font-semibold text-irb-petrol">4. Propriedade Intelectual</p>
+              <p className="font-semibold text-primary">4. Propriedade Intelectual</p>
               <p>
                 Todo o conteúdo da plataforma é propriedade do NeuroPlay e seus parceiros, protegido por direitos autorais.
               </p>
@@ -58,47 +58,47 @@ export function TermsStep({ data, updateData }: Props) {
               id="terms"
               checked={data.termsAccepted}
               onCheckedChange={(checked) => updateData({ termsAccepted: !!checked })}
-              className="mt-1 border-irb-blue data-[state=checked]:bg-irb-blue"
+              className="mt-1 border-secondary data-[state=checked]:bg-secondary"
             />
             <Label htmlFor="terms" className="text-sm cursor-pointer">
-              Li e aceito os <span className="font-semibold text-irb-blue">Termos de Uso</span> da plataforma *
+              Li e aceito os <span className="font-semibold text-secondary">Termos de Uso</span> da plataforma *
             </Label>
           </div>
         </div>
 
         {/* Privacy Policy */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-irb-blue">
+          <div className="flex items-center gap-2 text-secondary">
             <Shield className="h-5 w-5" />
             <h4 className="font-semibold">Política de Privacidade</h4>
           </div>
-          <ScrollArea className="h-48 rounded-lg border border-irb-blue/30 p-4 bg-muted/20">
+          <ScrollArea className="h-48 rounded-lg border border-secondary/30 p-4 bg-muted/20">
             <div className="text-sm space-y-3 pr-4">
-              <p className="font-semibold text-irb-petrol">1. Dados Coletados</p>
+              <p className="font-semibold text-primary">1. Dados Coletados</p>
               <p>
                 Coletamos apenas dados essenciais: informações de perfil, progresso terapêutico, métricas de jogos 
                 e preferências sensoriais. Todos os dados são pseudonimizados.
               </p>
               
-              <p className="font-semibold text-irb-petrol">2. Uso dos Dados</p>
+              <p className="font-semibold text-primary">2. Uso dos Dados</p>
               <p>
                 Seus dados são utilizados para: personalização terapêutica, geração de relatórios clínicos, 
                 recomendações de atividades e melhoria da plataforma.
               </p>
               
-              <p className="font-semibold text-irb-petrol">3. Compartilhamento</p>
+              <p className="font-semibold text-primary">3. Compartilhamento</p>
               <p>
                 Dados clínicos só são compartilhados com terapeutas mediante sua autorização explícita. 
                 Dados anonimizados podem ser usados para pesquisa científica (opcional).
               </p>
               
-              <p className="font-semibold text-irb-petrol">4. Seus Direitos (LGPD)</p>
+              <p className="font-semibold text-primary">4. Seus Direitos (LGPD)</p>
               <p>
                 Você tem direito a acessar, corrigir, exportar ou excluir seus dados a qualquer momento. 
-                Entre em contato com privacidade@irbprimecare.com.br.
+                Entre em contato com privacidade@neuroplay.com.br.
               </p>
               
-              <p className="font-semibold text-irb-petrol">5. Segurança</p>
+              <p className="font-semibold text-primary">5. Segurança</p>
               <p>
                 Utilizamos criptografia, controles de acesso rigorosos e auditoria de segurança para proteger seus dados.
               </p>
@@ -110,10 +110,10 @@ export function TermsStep({ data, updateData }: Props) {
               id="privacy"
               checked={data.privacyAccepted}
               onCheckedChange={(checked) => updateData({ privacyAccepted: !!checked })}
-              className="mt-1 border-irb-blue data-[state=checked]:bg-irb-blue"
+              className="mt-1 border-secondary data-[state=checked]:bg-secondary"
             />
             <Label htmlFor="privacy" className="text-sm cursor-pointer">
-              Li e aceito a <span className="font-semibold text-irb-blue">Política de Privacidade</span> *
+              Li e aceito a <span className="font-semibold text-secondary">Política de Privacidade</span> *
             </Label>
           </div>
         </div>
