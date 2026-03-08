@@ -337,10 +337,10 @@ export default function SilabaMagica() {
           </div>
           
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold font-heading text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground">
               ✨ Sílaba Mágica
             </h1>
-            <p className="text-white/80 text-sm">Segmentação fonológica</p>
+            <p className="text-muted-foreground text-sm">Segmentação fonológica</p>
           </div>
 
           <div className="flex gap-2">
@@ -375,13 +375,13 @@ export default function SilabaMagica() {
             </Card>
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-green-600">{Math.round(stats.accuracy)}%</div>
+                <div className="text-lg font-bold text-success">{Math.round(stats.accuracy)}%</div>
                 <div className="text-xs text-muted-foreground">Precisão</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-purple-600">{stats.correctMatches}</div>
+                <div className="text-lg font-bold text-primary">{stats.correctMatches}</div>
                 <div className="text-xs text-muted-foreground">Acertos</div>
               </CardContent>
             </Card>
@@ -418,7 +418,7 @@ export default function SilabaMagica() {
                 </Button>
               </div>
               <div className="text-center mt-6">
-                <Button onClick={startGame} size="lg" className="gap-2 gradient-dislexia text-white">
+                <Button onClick={startGame} size="lg" className="gap-2 gradient-dislexia text-primary-foreground">
                   <Sparkles className="w-5 h-5" />
                   Começar Desafio
                 </Button>
@@ -451,7 +451,7 @@ export default function SilabaMagica() {
                     </div>
 
                     {/* Selection Area */}
-                    <div className="bg-white rounded-lg p-6 border-2 border-dashed border-dislexia/30 min-h-[100px]">
+                    <div className="bg-card rounded-lg p-6 border-2 border-dashed border-dislexia/30 min-h-[100px]">
                       <div className="text-center text-sm text-muted-foreground mb-3">
                         {gameMode === 'split' ? 'Sílabas selecionadas:' : 'Palavra formada:'}
                       </div>
@@ -463,7 +463,7 @@ export default function SilabaMagica() {
                             <Badge
                               key={index}
                               variant="secondary"
-                              className="text-lg p-2 bg-dislexia text-white cursor-pointer"
+                              className="text-lg p-2 bg-dislexia text-primary-foreground cursor-pointer"
                               onClick={() => handleSyllableClick(syllable)}
                             >
                               {syllable}
@@ -497,7 +497,7 @@ export default function SilabaMagica() {
                       <Button
                         onClick={checkAnswer}
                         disabled={selectedSyllables.length === 0}
-                        className="gap-2 gradient-dislexia text-white"
+                        className="gap-2 gradient-dislexia text-primary-foreground"
                         size="lg"
                       >
                         <Star className="w-5 h-5" />

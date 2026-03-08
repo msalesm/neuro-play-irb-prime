@@ -60,7 +60,6 @@ export default function MemoriaColorida() {
     generateEnhancedFeedback
   } = useEnhancedFeedback();
 
-  // Get child profile ID
   useEffect(() => {
     const loadChildProfile = async () => {
       if (!user) return;
@@ -97,7 +96,6 @@ export default function MemoriaColorida() {
   const [showColorNames, setShowColorNames] = useState(false);
   const animationRef = useRef<number | null>(null);
 
-  // Sound engine setup
   useEffect(() => {
     simonSoundEngine.setEnabled(soundEnabled);
   }, [soundEnabled]);
@@ -108,7 +106,6 @@ export default function MemoriaColorida() {
     };
   }, []);
 
-  // Load high score from localStorage
   useEffect(() => {
     const savedHighScore = localStorage.getItem('simon_high_score');
     if (savedHighScore) {
@@ -116,7 +113,6 @@ export default function MemoriaColorida() {
     }
   }, []);
 
-  // Session recovery
   useEffect(() => {
     if (recoveredSession && gameState === 'idle' && !isActive) {
       setShowRecoveryModal(true);
@@ -133,7 +129,6 @@ export default function MemoriaColorida() {
         setShowingColor(seq[index]);
         setCurrentShowingIndex(index);
         
-        // Play sound
         simonSoundEngine.playColorTone(seq[index], gameSpeed / 2000);
         
         setTimeout(() => {
@@ -178,7 +173,6 @@ export default function MemoriaColorida() {
         playSequence(newSequence);
       } else {
         console.error('❌ Falha ao criar sessão');
-        // Fallback: permitir jogar mesmo sem sessão
         const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
         const newSequence = [firstColor];
         setSequence(newSequence);
@@ -191,7 +185,6 @@ export default function MemoriaColorida() {
     } catch (error) {
       console.error('❌ Erro ao iniciar jogo:', error);
       toast.error("Erro ao iniciar. Jogando sem salvar progresso.");
-      // Fallback: permitir jogar mesmo com erro
       const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
       const newSequence = [firstColor];
       setSequence(newSequence);
@@ -224,13 +217,10 @@ export default function MemoriaColorida() {
     const newPlayerSequence = [...playerSequence, color];
     setPlayerSequence(newPlayerSequence);
 
-    // Play sound feedback
     simonSoundEngine.playColorTone(color, 0.2);
 
-    // Check if correct
     if (color === sequence[playerSequence.length]) {
       if (newPlayerSequence.length === sequence.length) {
-        // Sequence completed successfully!
         const isPerfect = newPlayerSequence.length === sequence.length;
         const newStats = {
           ...stats,
@@ -244,13 +234,11 @@ export default function MemoriaColorida() {
         };
         setStats(newStats);
 
-        // Update high score
         if (newStats.score > newStats.highScore) {
           setStats(prev => ({ ...prev, highScore: newStats.score }));
           localStorage.setItem('simon_high_score', newStats.score.toString());
         }
 
-        // Auto-save progress
         await updateSession({
           score: newStats.score,
           correctMoves: newStats.correctAnswers,
@@ -258,21 +246,17 @@ export default function MemoriaColorida() {
           reactionTimes: []
         });
         
-        // Play success sound
         simonSoundEngine.playSuccessSound();
 
-        // Increase speed progressively
         if (newStats.level > 3 && newStats.level % 3 === 0) {
           const newSpeed = Math.max(400, gameSpeed - 100);
           setGameSpeed(newSpeed);
         }
 
-        // Victory fanfare on level milestones
         if (newStats.level % 5 === 0) {
           simonSoundEngine.playVictoryFanfare();
         }
 
-        // Add next color to sequence
         setTimeout(() => {
           const nextColor = COLORS[Math.floor(Math.random() * COLORS.length)];
           const nextSequence = [...sequence, nextColor];
@@ -284,7 +268,6 @@ export default function MemoriaColorida() {
         }, 1500);
       }
     } else {
-      // Wrong answer - Game Over
       simonSoundEngine.playErrorSound();
 
       const finalStats = {
@@ -294,7 +277,6 @@ export default function MemoriaColorida() {
       };
       setStats(finalStats);
       
-      // Complete session
       await endSession({
         score: finalStats.score,
         correctMoves: finalStats.correctAnswers,
@@ -352,22 +334,22 @@ export default function MemoriaColorida() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-background via-muted/30 to-background py-8">
       <div className="container mx-auto px-4 max-w-6xl">
         {recoveredSession && (
-          <Card className="bg-yellow-900/20 border-yellow-700/50 mb-8">
+          <Card className="bg-warning/10 border-warning/30 mb-8">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-yellow-200 font-medium">Sessão anterior encontrada</p>
-                  <p className="text-yellow-300/70 text-sm">Score: {recoveredSession.score}</p>
+                  <p className="text-warning font-medium">Sessão anterior encontrada</p>
+                  <p className="text-warning/70 text-sm">Score: {recoveredSession.score}</p>
                 </div>
                 <div className="flex gap-2">
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleResumeSession(recoveredSession)}
-                    className="bg-yellow-700/30 border-yellow-600"
+                    className="bg-warning/20 border-warning/50"
                   >
                     Retomar
                   </Button>
@@ -375,7 +357,7 @@ export default function MemoriaColorida() {
                     size="sm"
                     variant="outline"
                     onClick={discardRecoveredSession}
-                    className="bg-gray-700/30 border-gray-600"
+                    className="bg-muted/50 border-border"
                   >
                     Descartar
                   </Button>
@@ -404,10 +386,10 @@ export default function MemoriaColorida() {
           </div>
           
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl font-bold font-heading text-white drop-shadow-lg">
+            <h1 className="text-3xl sm:text-4xl font-bold font-heading text-foreground drop-shadow-lg">
               🎨 Simon Says
             </h1>
-            <p className="text-gray-400 text-sm">Jogo de Memória Profissional</p>
+            <p className="text-muted-foreground text-sm">Jogo de Memória Profissional</p>
           </div>
 
           <div className="flex gap-2">
@@ -415,7 +397,7 @@ export default function MemoriaColorida() {
               variant="outline"
               size="sm"
               onClick={() => setShowColorNames(!showColorNames)}
-              className="gap-2 bg-gray-800 border-gray-700 text-gray-300"
+              className="gap-2 bg-card border-border text-muted-foreground"
             >
               <Info className="w-4 h-4" />
             </Button>
@@ -425,7 +407,7 @@ export default function MemoriaColorida() {
               onClick={() => {
                 setSoundEnabled(!soundEnabled);
               }}
-              className="gap-2 bg-gray-800 border-gray-700 text-gray-300"
+              className="gap-2 bg-card border-border text-muted-foreground"
             >
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
             </Button>
@@ -434,76 +416,76 @@ export default function MemoriaColorida() {
 
         {/* Stats Panel */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-gray-800/50 border-gray-700">
+          <Card className="bg-card/50 border-border">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-blue-400">{stats.level}</div>
-              <div className="text-sm text-gray-400">Nível</div>
+              <div className="text-2xl font-bold text-info">{stats.level}</div>
+              <div className="text-sm text-muted-foreground">Nível</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-gray-800/50 border-gray-700">
+          <Card className="bg-card/50 border-border">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-400">{stats.score}</div>
-              <div className="text-sm text-gray-400">Pontos</div>
+              <div className="text-2xl font-bold text-success">{stats.score}</div>
+              <div className="text-sm text-muted-foreground">Pontos</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-gray-800/50 border-gray-700">
+          <Card className="bg-card/50 border-border">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-yellow-400">{stats.bestStreak}</div>
-              <div className="text-sm text-gray-400">Melhor Sequência</div>
+              <div className="text-2xl font-bold text-warning">{stats.bestStreak}</div>
+              <div className="text-sm text-muted-foreground">Melhor Sequência</div>
             </CardContent>
           </Card>
           
-          <Card className="bg-gray-800/50 border-gray-700">
+          <Card className="bg-card/50 border-border">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-purple-400">{accuracy}%</div>
-              <div className="text-sm text-gray-400">Precisão</div>
+              <div className="text-2xl font-bold text-primary">{accuracy}%</div>
+              <div className="text-sm text-muted-foreground">Precisão</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Game Console */}
-        <Card className="mb-8 bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700">
+        <Card className="mb-8 bg-gradient-to-br from-card to-muted/50 border-border">
           <CardContent className="p-8 sm:p-12">
             {gameState === 'idle' && showTutorial && (
               <div className="text-center space-y-6 max-w-2xl mx-auto">
                 <div className="space-y-4">
-                  <h2 className="text-2xl font-bold text-white">Como Jogar Simon Says</h2>
+                  <h2 className="text-2xl font-bold text-foreground">Como Jogar Simon Says</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                    <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
+                    <div className="bg-muted/50 p-4 rounded-lg border border-border">
                       <div className="flex items-start gap-3">
                         <span className="text-2xl">👀</span>
                         <div>
-                          <h3 className="font-semibold text-white mb-1">Observe</h3>
-                          <p className="text-sm text-gray-400">Assista a sequência de cores que acendem</p>
+                          <h3 className="font-semibold text-foreground mb-1">Observe</h3>
+                          <p className="text-sm text-muted-foreground">Assista a sequência de cores que acendem</p>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
+                    <div className="bg-muted/50 p-4 rounded-lg border border-border">
                       <div className="flex items-start gap-3">
                         <span className="text-2xl">🎯</span>
                         <div>
-                          <h3 className="font-semibold text-white mb-1">Repita</h3>
-                          <p className="text-sm text-gray-400">Clique nas cores na mesma ordem</p>
+                          <h3 className="font-semibold text-foreground mb-1">Repita</h3>
+                          <p className="text-sm text-muted-foreground">Clique nas cores na mesma ordem</p>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
+                    <div className="bg-muted/50 p-4 rounded-lg border border-border">
                       <div className="flex items-start gap-3">
                         <span className="text-2xl">⚡</span>
                         <div>
-                          <h3 className="font-semibold text-white mb-1">Evolua</h3>
-                          <p className="text-sm text-gray-400">A cada nível, uma cor nova é adicionada</p>
+                          <h3 className="font-semibold text-foreground mb-1">Evolua</h3>
+                          <p className="text-sm text-muted-foreground">A cada nível, uma cor nova é adicionada</p>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
+                    <div className="bg-muted/50 p-4 rounded-lg border border-border">
                       <div className="flex items-start gap-3">
                         <span className="text-2xl">🏆</span>
                         <div>
-                          <h3 className="font-semibold text-white mb-1">Vença</h3>
-                          <p className="text-sm text-gray-400">Desbloqueie conquistas e bata recordes!</p>
+                          <h3 className="font-semibold text-foreground mb-1">Vença</h3>
+                          <p className="text-sm text-muted-foreground">Desbloqueie conquistas e bata recordes!</p>
                         </div>
                       </div>
                     </div>
@@ -512,12 +494,11 @@ export default function MemoriaColorida() {
                 
                 <Button 
                   onClick={() => {
-                    // Initialize audio on user interaction (mobile requirement)
                     simonSoundEngine.setEnabled(true);
                     startGame();
                   }} 
                   size="lg" 
-                  className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+                  className="gap-2 bg-gradient-primary hover:opacity-90 text-primary-foreground shadow-lg"
                 >
                   <Play className="w-5 h-5" />
                   Começar Jogo
@@ -532,7 +513,7 @@ export default function MemoriaColorida() {
                   {/* The 4-button grid */}
                   <div className={cn(
                     "grid grid-cols-2 gap-3 p-6 rounded-full",
-                    "bg-gray-900 shadow-2xl border-8 border-gray-700",
+                    "bg-background shadow-2xl border-8 border-border",
                     "w-[320px] h-[320px] sm:w-[400px] sm:h-[400px]"
                   )}>
                     <div className="w-full h-full">
@@ -593,30 +574,30 @@ export default function MemoriaColorida() {
             {gameState === 'gameOver' && (
               <div className="text-center space-y-6 max-w-2xl mx-auto">
                 <div className="space-y-4">
-                  <h2 className="text-3xl font-bold text-white">Game Over!</h2>
-                  <div className="bg-gray-800/50 p-6 rounded-lg border border-gray-700">
+                  <h2 className="text-3xl font-bold text-foreground">Game Over!</h2>
+                  <div className="bg-muted/50 p-6 rounded-lg border border-border">
                     <div className="grid grid-cols-2 gap-4 text-center">
                       <div>
-                        <div className="text-3xl font-bold text-blue-400">{stats.level}</div>
-                        <div className="text-sm text-gray-400">Nível Alcançado</div>
+                        <div className="text-3xl font-bold text-info">{stats.level}</div>
+                        <div className="text-sm text-muted-foreground">Nível Alcançado</div>
                       </div>
                       <div>
-                        <div className="text-3xl font-bold text-green-400">{stats.score}</div>
-                        <div className="text-sm text-gray-400">Pontos</div>
+                        <div className="text-3xl font-bold text-success">{stats.score}</div>
+                        <div className="text-sm text-muted-foreground">Pontos</div>
                       </div>
                       <div>
-                        <div className="text-3xl font-bold text-yellow-400">{stats.bestStreak}</div>
-                        <div className="text-sm text-gray-400">Melhor Sequência</div>
+                        <div className="text-3xl font-bold text-warning">{stats.bestStreak}</div>
+                        <div className="text-sm text-muted-foreground">Melhor Sequência</div>
                       </div>
                       <div>
-                        <div className="text-3xl font-bold text-purple-400">{accuracy}%</div>
-                        <div className="text-sm text-gray-400">Precisão</div>
+                        <div className="text-3xl font-bold text-primary">{accuracy}%</div>
+                        <div className="text-sm text-muted-foreground">Precisão</div>
                       </div>
                     </div>
 
                     {stats.score === stats.highScore && stats.score > 0 && (
-                      <div className="mt-4 p-3 bg-yellow-500/20 border border-yellow-500/50 rounded-lg">
-                        <p className="text-yellow-300 font-semibold">
+                      <div className="mt-4 p-3 bg-warning/20 border border-warning/50 rounded-lg">
+                        <p className="text-warning font-semibold">
                           🏆 Novo Recorde: {stats.highScore} pontos!
                         </p>
                       </div>
@@ -628,7 +609,7 @@ export default function MemoriaColorida() {
                   <Button 
                     onClick={startGame} 
                     size="lg"
-                    className="gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                    className="gap-2 bg-gradient-to-r from-success to-success/80 hover:opacity-90"
                   >
                     <Play className="w-5 h-5" />
                     Jogar Novamente
@@ -637,7 +618,7 @@ export default function MemoriaColorida() {
                     variant="outline" 
                     onClick={resetGame} 
                     size="lg"
-                    className="gap-2 bg-gray-800 border-gray-700 text-gray-300"
+                    className="gap-2 bg-card border-border text-muted-foreground"
                   >
                     <RotateCcw className="w-5 h-5" />
                     Menu Inicial
@@ -662,28 +643,28 @@ export default function MemoriaColorida() {
         </div>
 
         {/* Benefits */}
-        <Card className="mt-8 bg-gray-800/50 border-gray-700">
+        <Card className="mt-8 bg-card/50 border-border">
           <CardContent className="p-6">
-            <h3 className="font-semibold mb-4 flex items-center gap-2 text-white">
-              <Trophy className="w-5 h-5 text-yellow-500" />
+            <h3 className="font-semibold mb-4 flex items-center gap-2 text-foreground">
+              <Trophy className="w-5 h-5 text-warning" />
               Benefícios Terapêuticos & Cognitivos
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="bg-gray-900/50 p-4 rounded-lg">
-                <h4 className="font-medium text-blue-400 mb-2">🧠 Memória de Trabalho</h4>
-                <p className="text-gray-400">
+              <div className="bg-muted/50 p-4 rounded-lg">
+                <h4 className="font-medium text-info mb-2">🧠 Memória de Trabalho</h4>
+                <p className="text-muted-foreground">
                   Fortalece a capacidade de reter e manipular sequências temporariamente, essencial para aprendizado e resolução de problemas.
                 </p>
               </div>
-              <div className="bg-gray-900/50 p-4 rounded-lg">
-                <h4 className="font-medium text-green-400 mb-2">🎯 Atenção Sequencial</h4>
-                <p className="text-gray-400">
+              <div className="bg-muted/50 p-4 rounded-lg">
+                <h4 className="font-medium text-success mb-2">🎯 Atenção Sequencial</h4>
+                <p className="text-muted-foreground">
                   Desenvolve foco em padrões e ordem temporal, crucial para compreensão de processos complexos.
                 </p>
               </div>
-              <div className="bg-gray-900/50 p-4 rounded-lg">
-                <h4 className="font-medium text-purple-400 mb-2">⚡ Concentração</h4>
-                <p className="text-gray-400">
+              <div className="bg-muted/50 p-4 rounded-lg">
+                <h4 className="font-medium text-primary mb-2">⚡ Concentração</h4>
+                <p className="text-muted-foreground">
                   Melhora sustentação da atenção e controle inibitório, fundamentais para produtividade e autocontrole.
                 </p>
               </div>

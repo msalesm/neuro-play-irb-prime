@@ -25,8 +25,8 @@ export default function StackTower() {
 
       {/* Game Info Header */}
       <div className="absolute top-20 left-1/2 -translate-x-1/2 z-10 text-center">
-        <h1 className="text-3xl font-bold text-white mb-2">Torre Perfeita</h1>
-        <p className="text-white/80 text-sm">Planeta Vortex - Foco e Precisão</p>
+        <h1 className="text-3xl font-bold text-primary-foreground mb-2">Torre Perfeita</h1>
+        <p className="text-primary-foreground/80 text-sm">Planeta Vortex - Foco e Precisão</p>
         {isTestMode && (
           <Badge className="mt-2 bg-warning text-warning-foreground">
             🎮 Modo Teste
@@ -35,17 +35,17 @@ export default function StackTower() {
       </div>
 
       {/* Game Stats */}
-      <div className="absolute top-20 right-4 z-10 bg-black/30 backdrop-blur-sm rounded-lg p-4 space-y-2">
-        <div className="flex items-center gap-2 text-white">
+      <div className="absolute top-20 right-4 z-10 bg-background/30 backdrop-blur-sm rounded-lg p-4 space-y-2">
+        <div className="flex items-center gap-2 text-primary-foreground">
           <Target className="h-4 w-4 text-vortex-400" />
           <span className="text-xs">Acerte no centro para blocos perfeitos</span>
         </div>
-        <div className="flex items-center gap-2 text-white">
+        <div className="flex items-center gap-2 text-primary-foreground">
           <Zap className="h-4 w-4 text-warning" />
           <span className="text-xs">3 perfeitos seguidos = recuperação</span>
         </div>
-        <div className="flex items-center gap-2 text-white">
-          <Trophy className="h-4 w-4 text-amber-400" />
+        <div className="flex items-center gap-2 text-primary-foreground">
+          <Trophy className="h-4 w-4 text-warning" />
           <span className="text-xs">Construa a torre mais alta!</span>
         </div>
       </div>
@@ -56,8 +56,8 @@ export default function StackTower() {
       </div>
 
       {/* Instructions (Mobile) */}
-      <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
-        <p className="text-white text-sm font-medium">Toque para soltar o bloco</p>
+      <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-background/50 backdrop-blur-sm px-6 py-3 rounded-full">
+        <p className="text-primary-foreground text-sm font-medium">Toque para soltar o bloco</p>
       </div>
     </div>
   );

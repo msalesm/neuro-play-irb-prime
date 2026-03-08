@@ -341,20 +341,20 @@ export default function AttentionSustainedPlay() {
                   <div className="text-2xl font-bold text-primary">{metrics.accuracy}%</div>
                   <div className="text-xs text-muted-foreground">Precisão Global</div>
                 </div>
-                <div className="p-3 bg-orange-500/10 rounded-lg">
-                  <div className="text-2xl font-bold text-orange-600">{metrics.omissionErrors}</div>
+                <div className="p-3 bg-warning/10 rounded-lg">
+                  <div className="text-2xl font-bold text-warning">{metrics.omissionErrors}</div>
                   <div className="text-xs text-muted-foreground">Erros Omissão</div>
                 </div>
                 <div className="p-3 bg-destructive/10 rounded-lg">
                   <div className="text-2xl font-bold text-destructive">{metrics.commissionErrors}</div>
                   <div className="text-xs text-muted-foreground">Erros Comissão</div>
                 </div>
-                <div className="p-3 bg-blue-500/10 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">{metrics.meanRT}ms</div>
+                <div className="p-3 bg-info/10 rounded-lg">
+                  <div className="text-2xl font-bold text-info">{metrics.meanRT}ms</div>
                   <div className="text-xs text-muted-foreground">Tempo Reação Médio</div>
                 </div>
-                <div className="p-3 bg-purple-500/10 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">{metrics.rtVariability}ms</div>
+                <div className="p-3 bg-secondary/10 rounded-lg">
+                  <div className="text-2xl font-bold text-secondary">{metrics.rtVariability}ms</div>
                   <div className="text-xs text-muted-foreground">Variabilidade RT</div>
                 </div>
                 <div className="p-3 bg-muted rounded-lg">
