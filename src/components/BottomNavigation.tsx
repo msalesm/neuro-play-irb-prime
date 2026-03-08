@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles, Users, Calendar, Stethoscope, Heart, Trophy, TrendingUp, Building2, School } from 'lucide-react';
+import { Home, Gamepad2, FileText, GraduationCap, ClipboardCheck, Sparkles, Users, Calendar, Stethoscope, Heart, Trophy, TrendingUp, Building2, School, Map } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -19,9 +19,9 @@ export function BottomNavigation() {
     if (role === 'patient') {
       return [
         { name: 'Início', path: '/student-hub', icon: Home },
+        { name: 'Mapa', path: '/world-map', icon: Map },
         { name: 'Jogos', path: '/sistema-planeta-azul', icon: Gamepad2 },
-        { name: 'Rotina', path: '/routines', icon: ClipboardCheck },
-        { name: 'Histórias', path: '/stories', icon: Heart },
+        { name: 'Conquistas', path: '/achievements', icon: Trophy },
         { name: 'Perfil', path: '/settings', icon: Users },
       ];
     }
