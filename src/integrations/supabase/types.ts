@@ -316,6 +316,416 @@ export type Database = {
           },
         ]
       }
+      aba_np_interventions: {
+        Row: {
+          baseline_level: number | null
+          created_at: string | null
+          current_level: number | null
+          id: string
+          mastered_at: string | null
+          program_id: string
+          prompting_strategy: string | null
+          reinforcement_type: string | null
+          skill_id: string
+          started_at: string | null
+          status: string | null
+          success_criteria: string | null
+          target_level: number | null
+          teaching_method:
+            | Database["public"]["Enums"]["aba_teaching_method"]
+            | null
+          updated_at: string | null
+        }
+        Insert: {
+          baseline_level?: number | null
+          created_at?: string | null
+          current_level?: number | null
+          id?: string
+          mastered_at?: string | null
+          program_id: string
+          prompting_strategy?: string | null
+          reinforcement_type?: string | null
+          skill_id: string
+          started_at?: string | null
+          status?: string | null
+          success_criteria?: string | null
+          target_level?: number | null
+          teaching_method?:
+            | Database["public"]["Enums"]["aba_teaching_method"]
+            | null
+          updated_at?: string | null
+        }
+        Update: {
+          baseline_level?: number | null
+          created_at?: string | null
+          current_level?: number | null
+          id?: string
+          mastered_at?: string | null
+          program_id?: string
+          prompting_strategy?: string | null
+          reinforcement_type?: string | null
+          skill_id?: string
+          started_at?: string | null
+          status?: string | null
+          success_criteria?: string | null
+          target_level?: number | null
+          teaching_method?:
+            | Database["public"]["Enums"]["aba_teaching_method"]
+            | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_interventions_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_interventions_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_skills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aba_np_programs: {
+        Row: {
+          child_id: string
+          created_at: string | null
+          created_by: string
+          id: string
+          notes: string | null
+          program_name: string
+          reinforcement_strategy: Json | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          child_id: string
+          created_at?: string | null
+          created_by: string
+          id?: string
+          notes?: string | null
+          program_name: string
+          reinforcement_strategy?: Json | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          child_id?: string
+          created_at?: string | null
+          created_by?: string
+          id?: string
+          notes?: string | null
+          program_name?: string
+          reinforcement_strategy?: Json | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_programs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_programs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_programs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_programs_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_programs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_programs_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aba_np_reinforcements: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_default: boolean | null
+          name: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_default?: boolean | null
+          name: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_default?: boolean | null
+          name?: string
+        }
+        Relationships: []
+      }
+      aba_np_reports: {
+        Row: {
+          behavioral_observations: string | null
+          child_id: string
+          created_at: string | null
+          generated_by: string | null
+          id: string
+          program_id: string | null
+          progress_summary: Json | null
+          recommendations: string | null
+          report_period_end: string
+          report_period_start: string
+          skills_trained: Json | null
+        }
+        Insert: {
+          behavioral_observations?: string | null
+          child_id: string
+          created_at?: string | null
+          generated_by?: string | null
+          id?: string
+          program_id?: string | null
+          progress_summary?: Json | null
+          recommendations?: string | null
+          report_period_end: string
+          report_period_start: string
+          skills_trained?: Json | null
+        }
+        Update: {
+          behavioral_observations?: string | null
+          child_id?: string
+          created_at?: string | null
+          generated_by?: string | null
+          id?: string
+          program_id?: string | null
+          progress_summary?: Json | null
+          recommendations?: string | null
+          report_period_end?: string
+          report_period_start?: string
+          skills_trained?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_reports_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_reports_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_reports_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_reports_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_reports_generated_by_fkey"
+            columns: ["generated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_reports_generated_by_fkey"
+            columns: ["generated_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_reports_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aba_np_skills: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          recommended_activities: Json | null
+          related_game_ids: string[] | null
+          skill_category: Database["public"]["Enums"]["aba_skill_category"]
+          skill_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          recommended_activities?: Json | null
+          related_game_ids?: string[] | null
+          skill_category: Database["public"]["Enums"]["aba_skill_category"]
+          skill_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          recommended_activities?: Json | null
+          related_game_ids?: string[] | null
+          skill_category?: Database["public"]["Enums"]["aba_skill_category"]
+          skill_name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      aba_np_trials: {
+        Row: {
+          child_id: string
+          correct: boolean
+          id: string
+          intervention_id: string
+          latency_ms: number | null
+          notes: string | null
+          prompt_level: Database["public"]["Enums"]["aba_prompt_level"]
+          recorded_at: string | null
+          recorded_by: string
+          reinforcement_given: boolean | null
+          reinforcement_type: string | null
+          response: string | null
+          session_number: number | null
+        }
+        Insert: {
+          child_id: string
+          correct: boolean
+          id?: string
+          intervention_id: string
+          latency_ms?: number | null
+          notes?: string | null
+          prompt_level?: Database["public"]["Enums"]["aba_prompt_level"]
+          recorded_at?: string | null
+          recorded_by: string
+          reinforcement_given?: boolean | null
+          reinforcement_type?: string | null
+          response?: string | null
+          session_number?: number | null
+        }
+        Update: {
+          child_id?: string
+          correct?: boolean
+          id?: string
+          intervention_id?: string
+          latency_ms?: number | null
+          notes?: string | null
+          prompt_level?: Database["public"]["Enums"]["aba_prompt_level"]
+          recorded_at?: string | null
+          recorded_by?: string
+          reinforcement_given?: boolean | null
+          reinforcement_type?: string | null
+          response?: string | null
+          session_number?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_intervention_id_fkey"
+            columns: ["intervention_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_interventions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_recorded_by_fkey"
+            columns: ["recorded_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aba_profissionais: {
         Row: {
           ativo: boolean | null
@@ -10651,6 +11061,27 @@ export type Database = {
       }
     }
     Enums: {
+      aba_prompt_level:
+        | "fisico"
+        | "gestual"
+        | "verbal"
+        | "visual"
+        | "independente"
+      aba_skill_category:
+        | "atencao_conjunta"
+        | "imitacao"
+        | "comunicacao_funcional"
+        | "instrucoes_simples"
+        | "regulacao_emocional"
+        | "flexibilidade_cognitiva"
+        | "interacao_social"
+        | "autonomia"
+      aba_teaching_method:
+        | "dtt"
+        | "net"
+        | "task_analysis"
+        | "prompting"
+        | "shaping"
       app_role:
         | "admin"
         | "therapist"
@@ -10803,6 +11234,30 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      aba_prompt_level: [
+        "fisico",
+        "gestual",
+        "verbal",
+        "visual",
+        "independente",
+      ],
+      aba_skill_category: [
+        "atencao_conjunta",
+        "imitacao",
+        "comunicacao_funcional",
+        "instrucoes_simples",
+        "regulacao_emocional",
+        "flexibilidade_cognitiva",
+        "interacao_social",
+        "autonomia",
+      ],
+      aba_teaching_method: [
+        "dtt",
+        "net",
+        "task_analysis",
+        "prompting",
+        "shaping",
+      ],
       app_role: [
         "admin",
         "therapist",
