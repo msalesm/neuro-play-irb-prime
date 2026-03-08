@@ -20,6 +20,9 @@ import { VulnerabilityMap } from '@/components/educacao/VulnerabilityMap';
 import { StudentReportButton } from '@/components/educacao/StudentReportPDF';
 import { AISuggestions } from '@/components/educacao/AISuggestions';
 import { ClassManager } from '@/components/educacao/ClassManager';
+import { CognitiveIndicatorsTable } from '@/components/educacao/CognitiveIndicatorsTable';
+import { EducationalAlerts } from '@/components/educacao/EducationalAlerts';
+import { ClassGamification } from '@/components/educacao/ClassGamification';
 
 interface ClassStudent {
   id: string;
