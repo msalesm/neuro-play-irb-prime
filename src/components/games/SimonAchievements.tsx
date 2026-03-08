@@ -111,6 +111,7 @@ export function SimonAchievements({ stats }: SimonAchievementsProps) {
                   'p-2 rounded-full',
                   achievement.unlocked
                     ? 'bg-warning text-warning-foreground'
+                    : 'bg-muted text-muted-foreground'
                 )}>
                   {achievement.icon}
                 </div>
