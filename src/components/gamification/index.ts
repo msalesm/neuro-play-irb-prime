@@ -20,10 +20,5 @@ export { TourAchievementsPanel } from './TourAchievementsPanel';
 // Gamification Widgets (real implementations)
 export { DailyMissionSection, DuolingoStreak, AchievementsList, BadgeUnlockModal } from './GamificationWidgets';
 
-// Feedback
-export { FeedbackAnimations } from './FeedbackAnimations';
-export { LevelProgressBar } from './LevelProgressBar';
-export { WeeklyMissionsCard } from './WeeklyMissionsCard';
-
 // Legacy stubs removed — all components are now real implementations
 export const LearningTrails = (_props: any) => null;
