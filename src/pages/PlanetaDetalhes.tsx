@@ -45,7 +45,7 @@ export default function PlanetaDetalhes() {
         {[...Array(50)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
+            className="absolute w-1 h-1 bg-primary-foreground rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
@@ -67,7 +67,7 @@ export default function PlanetaDetalhes() {
         <Button 
           variant="ghost" 
           onClick={() => navigate('/sistema-planeta-azul')}
-          className="mb-6 text-white hover:bg-white/10"
+          className="mb-6 text-primary-foreground hover:bg-primary-foreground/10"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Voltar ao Sistema
@@ -79,7 +79,7 @@ export default function PlanetaDetalhes() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <Card className="bg-white/10 backdrop-blur-md border-white/20 overflow-hidden">
+          <Card className="bg-primary-foreground/10 backdrop-blur-md border-primary-foreground/20 overflow-hidden">
             <div 
               className="h-2"
               style={{ backgroundColor: planeta.cor }}
@@ -109,7 +109,7 @@ export default function PlanetaDetalhes() {
                 <div className="flex-1 min-w-[300px]">
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div>
-                      <h1 className="text-4xl font-bold text-white mb-2">
+                      <h1 className="text-4xl font-bold text-primary-foreground mb-2">
                         {planeta.nome}
                       </h1>
                       <Badge 
@@ -130,13 +130,13 @@ export default function PlanetaDetalhes() {
                     )}
                   </div>
 
-                  <p className="text-white/80 text-lg mb-6 leading-relaxed">
+                  <p className="text-primary-foreground/80 text-lg mb-6 leading-relaxed">
                     {planeta.descricao}
                   </p>
 
                   {/* Progress */}
                   <div className="space-y-2 mb-6">
-                    <div className="flex items-center justify-between text-sm text-white">
+                    <div className="flex items-center justify-between text-sm text-primary-foreground">
                       <span>Progresso no Planeta</span>
                       <span className="font-bold">
                         {planeta.progressoAtual}/{planeta.totalMissoes} missões • {Math.round(progressoPercentual)}%
@@ -147,39 +147,39 @@ export default function PlanetaDetalhes() {
 
                   {/* Stats */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-white/5 rounded-lg p-3">
+                    <div className="bg-primary-foreground/5 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-1">
                         <Play className="w-4 h-4 text-warning" />
-                        <span className="text-xs text-white/60">Jogos</span>
+                        <span className="text-xs text-primary-foreground/60">Jogos</span>
                       </div>
-                      <p className="text-xl font-bold text-white">
+                      <p className="text-xl font-bold text-primary-foreground">
                         {planeta.jogos.length}
                       </p>
                     </div>
-                    <div className="bg-white/5 rounded-lg p-3">
+                    <div className="bg-primary-foreground/5 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-1">
-                        <CheckCircle2 className="w-4 h-4 text-green-400" />
-                        <span className="text-xs text-white/60">Completos</span>
+                        <CheckCircle2 className="w-4 h-4 text-success" />
+                        <span className="text-xs text-primary-foreground/60">Completos</span>
                       </div>
-                      <p className="text-xl font-bold text-white">
+                      <p className="text-xl font-bold text-primary-foreground">
                         {jogosCompletados}
                       </p>
                     </div>
-                    <div className="bg-white/5 rounded-lg p-3">
+                    <div className="bg-primary-foreground/5 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-1">
-                        <Target className="w-4 h-4 text-blue-400" />
-                        <span className="text-xs text-white/60">Focos</span>
+                        <Target className="w-4 h-4 text-info" />
+                        <span className="text-xs text-primary-foreground/60">Focos</span>
                       </div>
-                      <p className="text-xl font-bold text-white">
+                      <p className="text-xl font-bold text-primary-foreground">
                         {planeta.focos.length}
                       </p>
                     </div>
-                    <div className="bg-white/5 rounded-lg p-3">
+                    <div className="bg-primary-foreground/5 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-1">
-                        <Clock className="w-4 h-4 text-purple-400" />
-                        <span className="text-xs text-white/60">Duração</span>
+                        <Clock className="w-4 h-4 text-secondary" />
+                        <span className="text-xs text-primary-foreground/60">Duração</span>
                       </div>
-                      <p className="text-xl font-bold text-white">
+                      <p className="text-xl font-bold text-primary-foreground">
                         {planeta.jogos.reduce((acc, j) => acc + j.duracao, 0)} min
                       </p>
                     </div>
@@ -197,13 +197,13 @@ export default function PlanetaDetalhes() {
           transition={{ delay: 0.1 }}
           className="mb-8"
         >
-          <Card className="bg-white/10 backdrop-blur-md border-white/20">
+          <Card className="bg-primary-foreground/10 backdrop-blur-md border-primary-foreground/20">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-primary-foreground flex items-center gap-2">
                 <Target className="w-5 h-5" />
                 Focos Terapêuticos
               </CardTitle>
-              <CardDescription className="text-white/60">
+              <CardDescription className="text-primary-foreground/60">
                 Áreas de desenvolvimento trabalhadas neste planeta
               </CardDescription>
             </CardHeader>

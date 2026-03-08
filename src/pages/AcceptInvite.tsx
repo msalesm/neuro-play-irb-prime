@@ -175,8 +175,8 @@ export default function AcceptInvite() {
       <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-background to-muted">
         <Card className="w-full max-w-md">
           <CardContent className="pt-6 text-center space-y-4">
-            <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
-              <Check className="w-8 h-8 text-green-600" />
+            <div className="w-16 h-16 mx-auto bg-success/10 rounded-full flex items-center justify-center">
+              <Check className="w-8 h-8 text-success" />
             </div>
             <h2 className="text-2xl font-bold">Convite Aceito!</h2>
             <p className="text-muted-foreground">
@@ -274,7 +274,7 @@ export default function AcceptInvite() {
               </Card>
 
               {!user && (
-                <p className="text-sm text-amber-600 bg-amber-50 p-3 rounded-md">
+                <p className="text-sm text-warning bg-warning/10 p-3 rounded-md">
                   Você precisa estar logado para aceitar este convite.
                 </p>
               )}

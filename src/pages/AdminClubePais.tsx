@@ -99,14 +99,14 @@ const AdminClubePais = () => {
             </div>
           </CardContent>
         </Card>
-        <Card className={stats.pendingApprovals > 0 ? 'border-yellow-500/50 bg-yellow-500/5' : ''}>
+        <Card className={stats.pendingApprovals > 0 ? 'border-warning/50 bg-warning/5' : ''}>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Aguardando Aprovação</p>
-                <p className="text-2xl font-bold text-yellow-600">{stats.pendingApprovals}</p>
+                <p className="text-2xl font-bold text-warning">{stats.pendingApprovals}</p>
               </div>
-              <Clock className="h-8 w-8 text-yellow-500" />
+              <Clock className="h-8 w-8 text-warning" />
             </div>
           </CardContent>
         </Card>
@@ -114,11 +114,11 @@ const AdminClubePais = () => {
 
       {/* Pending Approvals Alert */}
       {pendingPartners.length > 0 && (
-        <Card className="border-yellow-500/50 bg-yellow-500/5">
+        <Card className="border-warning/50 bg-warning/5">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Clock className="h-5 w-5 text-yellow-500" />
+                <Clock className="h-5 w-5 text-warning" />
                 <span className="font-medium">
                   {pendingPartners.length} parceiro(s) aguardando aprovação
                 </span>
@@ -266,7 +266,7 @@ const AdminClubePais = () => {
                       </Badge>
                       <div className="text-right">
                         <p className="font-semibold">R$ {booking.final_price.toFixed(2)}</p>
-                        <p className="text-xs text-green-600">
+                        <p className="text-xs text-success">
                           Comissão: R$ {booking.clinic_commission.toFixed(2)}
                         </p>
                       </div>
@@ -301,7 +301,7 @@ const AdminClubePais = () => {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-2 border-b">
                     <span className="text-muted-foreground">Este mês</span>
-                    <span className="font-semibold text-green-600">
+                    <span className="font-semibold text-success">
                       R$ {stats.totalRevenue.toFixed(2)}
                     </span>
                   </div>
@@ -367,13 +367,13 @@ const AdminClubePais = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Agendamentos cancelados</span>
-                    <span className="font-semibold text-red-500">
+                    <span className="font-semibold text-destructive">
                       {allBookings.filter(b => b.status === 'cancelled').length}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Taxa de sucesso</span>
-                    <span className="font-bold text-green-600">
+                    <span className="font-bold text-success">
                       {allBookings.length > 0 
                         ? ((allBookings.filter(b => b.status === 'completed').length / allBookings.length) * 100).toFixed(1)
                         : 0}%
