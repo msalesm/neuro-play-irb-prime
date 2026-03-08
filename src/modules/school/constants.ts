@@ -32,7 +32,7 @@ export const EDUCATIONAL_LABELS = {
   // Risk levels → educational levels
   adequate: 'Desenvolvido',
   monitoring: 'Em Progresso',
-  attention: 'Necessita Apoio',
+  needsSupport: 'Necessita Apoio',
   intervention: 'Apoio Prioritário',
 
   // Trends
