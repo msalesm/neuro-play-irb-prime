@@ -188,6 +188,12 @@ export function AppSidebar() {
       badge: 'Novo',
     },
     {
+      title: 'ABA NeuroPlay',
+      path: '/aba-neuroplay',
+      icon: Activity,
+      description: 'Programas de intervenção ABA',
+    },
+    {
       title: 'Mensagens',
       path: '/messages',
       icon: Mail,
