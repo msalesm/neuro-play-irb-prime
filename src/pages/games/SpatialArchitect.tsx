@@ -246,7 +246,7 @@ export default function SpatialArchitect() {
             key={`${rowIndex}-${colIndex}`}
             className={`w-8 h-8 border-2 border-border rounded cursor-pointer transition-all ${
               cell === 1 
-                ? (isTarget ? 'bg-green-500' : 'bg-primary') 
+                ? (isTarget ? 'bg-success' : 'bg-primary') 
                 : 'bg-background hover:bg-muted'
             }`}
             onClick={!isTarget ? () => handleCellClick(rowIndex, colIndex) : undefined}
@@ -261,10 +261,10 @@ export default function SpatialArchitect() {
       ((sessionData.rotationAccuracy + sessionData.perspectiveCorrect) / sessionData.totalChallenges) * 100 : 0;
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-info/10 to-success/10 p-4">
         <Card className="max-w-2xl mx-auto">
           <div className="p-8 text-center">
-            <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+            <Trophy className="w-16 h-16 text-warning mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-4">Arquitetura Concluída! 🏗️</h2>
             <div className="space-y-3 mb-6">
               <p>Pontuação final: {score}</p>
@@ -291,12 +291,12 @@ export default function SpatialArchitect() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-info/10 to-success/10 p-4">
       <Card className="max-w-4xl mx-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-2">
-              <Box className="w-6 h-6 text-blue-500" />
+              <Box className="w-6 h-6 text-info" />
               <h1 className="text-2xl font-bold">Arquiteto Espacial</h1>
             </div>
             <div className="flex items-center space-x-4">
@@ -323,14 +323,14 @@ export default function SpatialArchitect() {
           <div className="space-y-8 mb-6">
             {currentChallenge?.target && (
               <div className="text-center">
-                <h4 className="font-semibold mb-4 text-green-600">Objetivo:</h4>
+                <h4 className="font-semibold mb-4 text-success">Objetivo:</h4>
                 {renderPattern(currentChallenge.target, true)}
               </div>
             )}
             
             {!currentChallenge?.target && (
               <div className="text-center">
-                <h4 className="font-semibold mb-4 text-blue-600">Padrão Base:</h4>
+                <h4 className="font-semibold mb-4 text-info">Padrão Base:</h4>
                 {renderPattern(currentChallenge.pattern, true)}
               </div>
             )}

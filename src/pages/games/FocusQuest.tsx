@@ -447,18 +447,18 @@ export default function FocusQuest() {
             </Card>
 
             {/* Game Area */}
-            <Card className="shadow-glow bg-white/90 backdrop-blur">
+            <Card className="shadow-glow bg-card/90 backdrop-blur">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <CardTitle className="flex items-center gap-2">
-                    <Zap className="h-6 w-6 text-indigo-600" />
+                    <Zap className="h-6 w-6 text-primary" />
                     {currentBiomeData.name}
                   </CardTitle>
                   <div className="flex gap-4 text-sm">
-                    <Badge className="bg-indigo-100 text-indigo-800">
+                    <Badge className="bg-primary/10 text-primary">
                       Foco: {Math.round(focusTime / 1000)}s
                     </Badge>
-                    <Badge className="bg-purple-100 text-purple-800">
+                    <Badge className="bg-secondary/10 text-secondary">
                       Score: {score.toLocaleString()}
                     </Badge>
                   </div>
@@ -468,7 +468,7 @@ export default function FocusQuest() {
               <CardContent>
                 <div 
                   ref={gameAreaRef}
-                  className={`relative w-full h-96 bg-gradient-to-br ${currentBiomeData.background} rounded-lg border-2 border-indigo-300 overflow-hidden cursor-crosshair transition-all duration-1000`}
+                  className={`relative w-full h-96 bg-gradient-to-br ${currentBiomeData.background} rounded-lg border-2 border-primary/30 overflow-hidden cursor-crosshair transition-all duration-1000`}
                 >
                   {/* Active Powers Display */}
                   {Object.keys(activePowers).length > 0 && (
@@ -488,7 +488,7 @@ export default function FocusQuest() {
                   {/* Focus Streak Indicator */}
                   {focusStreak > 5 && (
                     <div className="absolute top-4 right-4">
-                      <Badge className="bg-orange-100 text-orange-800">
+                      <Badge className="bg-warning/20 text-warning">
                         🔥 Streak x{focusStreak}
                       </Badge>
                     </div>
@@ -498,7 +498,7 @@ export default function FocusQuest() {
                   {targets.map((target) => (
                     <button
                       key={target.id}
-                      className={`absolute rounded-full ${target.color} shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 flex items-center justify-center text-white font-bold border-2 border-white/50`}
+                      className={`absolute rounded-full ${target.color} shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 flex items-center justify-center text-primary-foreground font-bold border-2 border-primary-foreground/50`}
                       style={{
                         left: target.x,
                         top: target.y,
@@ -517,8 +517,8 @@ export default function FocusQuest() {
                   {/* No targets message */}
                   {!isPlaying && targets.length === 0 && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-indigo-700 bg-white/80 rounded-lg p-8">
-                        <Zap className="h-16 w-16 mx-auto mb-4 text-indigo-500" />
+                       <div className="text-center text-foreground bg-card/80 rounded-lg p-8">
+                        <Zap className="h-16 w-16 mx-auto mb-4 text-primary" />
                         <p className="text-xl font-semibold mb-2">Sua aventura de foco aguarda...</p>
                         <p className="text-sm">Clique em "Iniciar Quest" para começar</p>
                       </div>

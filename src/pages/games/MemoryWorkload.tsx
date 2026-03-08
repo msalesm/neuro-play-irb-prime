@@ -396,10 +396,10 @@ export default function MemoryWorkload() {
               key={i}
               className={`w-6 rounded-t transition-all duration-300 ${
                 isCurrent 
-                  ? 'bg-gradient-to-t from-blue-600 to-blue-400 animate-pulse' 
+                  ? 'bg-gradient-to-t from-info to-info/70 animate-pulse' 
                   : isReached 
-                    ? 'bg-gradient-to-t from-green-600 to-green-400' 
-                    : 'bg-gray-200'
+                    ? 'bg-gradient-to-t from-success to-success/70' 
+                    : 'bg-muted'
               }`}
               style={{ 
                 height: `${((barLevel) / maxCapacity) * 100}%`,
@@ -426,7 +426,7 @@ export default function MemoryWorkload() {
           </div>
         </Card>
       )}
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/10 p-4">
         <div className="max-w-4xl mx-auto">
           {gameState !== 'waiting' && (
             <div className="mb-4">
@@ -442,13 +442,13 @@ export default function MemoryWorkload() {
           <Card className="p-6 mb-6">
             <div className="flex justify-between items-center mb-4">
               <div>
-                <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                  <Brain className="w-6 h-6 text-purple-600" />
+                <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                  <Brain className="w-6 h-6 text-primary" />
                   Memória de Trabalho
                 </h1>
-                <p className="text-gray-600">Memorize e reproduza a sequência</p>
+                <p className="text-muted-foreground">Memorize e reproduza a sequência</p>
                 {adaptiveMode && gameState !== 'waiting' && (
-                  <div className="flex items-center gap-1 mt-1 text-xs text-blue-600">
+                  <div className="flex items-center gap-1 mt-1 text-xs text-info">
                     <TrendingUp className="w-3 h-3" />
                     <span>Modo Adaptativo Ativo</span>
                   </div>
@@ -456,12 +456,12 @@ export default function MemoryWorkload() {
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">{score}</div>
-                  <div className="text-sm text-gray-500">Pontos</div>
+                  <div className="text-2xl font-bold text-primary">{score}</div>
+                  <div className="text-sm text-muted-foreground">Pontos</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-indigo-600">{level}</div>
-                  <div className="text-sm text-gray-500">Nível</div>
+                  <div className="text-2xl font-bold text-secondary">{level}</div>
+                  <div className="text-sm text-muted-foreground">Nível</div>
                 </div>
               </div>
             </div>
@@ -482,13 +482,13 @@ export default function MemoryWorkload() {
           <div className="text-center mb-6">
             {gameState === 'waiting' && (
               <div className="space-y-4">
-                <p className="mb-4 text-gray-600">
+                <p className="mb-4 text-muted-foreground">
                   Memorize a sequência de cores e posições, depois reproduza clicando nas células na ordem correta.
                 </p>
                 
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                  <h3 className="font-semibold text-blue-900 mb-2">💡 Como Jogar</h3>
-                  <ul className="text-sm text-blue-800 text-left space-y-1">
+                <div className="bg-info/10 border border-info/20 rounded-lg p-4 mb-4">
+                  <h3 className="font-semibold text-foreground mb-2">💡 Como Jogar</h3>
+                  <ul className="text-sm text-muted-foreground text-left space-y-1">
                     <li>• Primeiro você verá uma sequência de cores piscando</li>
                     <li>• Cada cor aparece em uma célula específica com um número</li>
                     <li>• Depois, clique nas células na mesma ordem</li>
@@ -517,11 +517,11 @@ export default function MemoryWorkload() {
             
             {gameState === 'showing' && (
               <div className="space-y-2">
-                <div className="flex items-center justify-center gap-2 text-blue-600 font-semibold">
+                <div className="flex items-center justify-center gap-2 text-info font-semibold">
                   <AlertCircle className="w-5 h-5 animate-pulse" />
                   <span>Memorize a sequência...</span>
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-muted-foreground">
                   {showingIndex}/{sequence.length} itens mostrados
                 </div>
                 <Progress 
@@ -533,11 +533,11 @@ export default function MemoryWorkload() {
             
             {gameState === 'input' && (
               <div className="space-y-3">
-                <div className="flex items-center justify-center gap-2 text-green-600 font-semibold">
+                <div className="flex items-center justify-center gap-2 text-success font-semibold">
                   <CheckCircle className="w-5 h-5" />
                   <span>Clique nas células na ordem correta</span>
                 </div>
-                <div className="text-sm text-gray-600 font-medium">
+                <div className="text-sm text-muted-foreground font-medium">
                   Progresso: {userSequence.length}/{sequence.length} células
                 </div>
                 <Progress 
@@ -548,7 +548,7 @@ export default function MemoryWorkload() {
             )}
             
             {gameState === 'feedback' && (
-              <div className="flex items-center justify-center gap-2 text-purple-600">
+              <div className="flex items-center justify-center gap-2 text-primary">
                 <RotateCcw className="w-5 h-5 animate-spin" />
                 <span>Preparando próximo nível...</span>
               </div>
@@ -562,7 +562,7 @@ export default function MemoryWorkload() {
           {gameState !== 'waiting' && (
             <>
               <div className="mb-6">
-                <div className="text-center mb-2 text-sm font-semibold text-gray-700">
+                <div className="text-center mb-2 text-sm font-semibold text-foreground/80">
                   Capacidade de Memória (Span)
                 </div>
                 {renderCapacityGraph()}
@@ -570,20 +570,20 @@ export default function MemoryWorkload() {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 text-center">
                 <div>
-                  <div className="text-lg font-bold text-emerald-600">{accuracy}%</div>
-                  <div className="text-sm text-gray-500">Precisão</div>
+                  <div className="text-lg font-bold text-success">{accuracy}%</div>
+                  <div className="text-sm text-muted-foreground">Precisão</div>
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-blue-600">{sessionData.maxLevel}</div>
-                  <div className="text-sm text-gray-500">Span Máximo</div>
+                  <div className="text-lg font-bold text-info">{sessionData.maxLevel}</div>
+                  <div className="text-sm text-muted-foreground">Span Máximo</div>
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-orange-600">{avgReactionTime}s</div>
-                  <div className="text-sm text-gray-500">Tempo Médio</div>
+                  <div className="text-lg font-bold text-warning">{avgReactionTime}s</div>
+                  <div className="text-sm text-muted-foreground">Tempo Médio</div>
                 </div>
                 <div>
-                  <div className="text-lg font-bold text-red-600">{sessionData.errors}</div>
-                  <div className="text-sm text-gray-500">Erros</div>
+                  <div className="text-lg font-bold text-destructive">{sessionData.errors}</div>
+                  <div className="text-sm text-muted-foreground">Erros</div>
                 </div>
               </div>
             </>
