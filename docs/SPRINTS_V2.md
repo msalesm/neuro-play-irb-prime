@@ -49,7 +49,7 @@ Este documento organiza todas as funcionalidades do NeuroPlay 2.0 em sprints de 
 #### Entregáveis:
 - [ ] Perfil de pais/responsáveis
 - [ ] Perfil de terapeutas
-- [ ] Perfil de administradores IRB Prime
+- [ ] Perfil de administradores NeuroPlay
 - [ ] Sistema de roles (`user_roles` table - já implementado)
 - [ ] Acesso multi-criança por responsável
 - [ ] Compartilhamento de acesso (responsável → terapeuta)
@@ -395,7 +395,7 @@ Este documento organiza todas as funcionalidades do NeuroPlay 2.0 em sprints de 
 - Insights para gestão clínica
 
 #### Entregáveis:
-- [ ] Dashboard administrativo IRB Prime
+- [ ] Dashboard administrativo NeuroPlay
 - [ ] Métricas agregadas de uso
 - [ ] Análise de eficácia terapêutica
 - [ ] Relatórios de engajamento
@@ -404,7 +404,7 @@ Este documento organiza todas as funcionalidades do NeuroPlay 2.0 em sprints de 
 - [ ] KPIs clínicos
 
 #### Critérios de Aceitação:
-- IRB Prime visualiza dados agregados
+- NeuroPlay visualiza dados agregados
 - Relatórios são úteis para gestão clínica
 
 ---
@@ -525,7 +525,7 @@ Este documento organiza todas as funcionalidades do NeuroPlay 2.0 em sprints de 
 - [ ] Backup automático de banco
 - [ ] Disaster recovery plan
 - [ ] Documentação de operação
-- [ ] Treinamento de equipe IRB Prime
+- [ ] Treinamento de equipe NeuroPlay
 - [ ] Plano de rollout gradual
 - [ ] Testes de carga
 
