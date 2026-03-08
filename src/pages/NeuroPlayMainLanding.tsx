@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 import heroImage from '@/assets/hero-children-learning.jpg';
 import childFocused from '@/assets/child-focused-learning.jpg';
 import groupTherapy from '@/assets/group-therapy-session.jpg';
+import neuroplayLogo from '@/assets/neuroplay-logo.png';
 
 // ─── 1. HEADER ────────────────────────────────────────────
 const LandingHeader = () => {
@@ -20,12 +21,7 @@ const LandingHeader = () => {
     <header className="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-            <Brain className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-xl font-bold font-heading bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            NeuroPlay
-          </span>
+          <img src={neuroplayLogo} alt="NeuroPlay" className="h-9 w-auto" />
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
           <a href="#como-funciona" className="hover:text-primary transition-colors">Como funciona</a>
@@ -439,10 +435,10 @@ const AudienceSection = () => (
 const ScreenshotsSection = () => {
   const [current, setCurrent] = useState(0);
   const screens = [
-    { title: 'Home da Criança', desc: 'Missões diárias, streaks e progressão visual', image: 'https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=800&q=80' },
-    { title: 'Jogo Cognitivo', desc: 'Atividades adaptativas com feedback imediato', image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80' },
-    { title: 'História Interativa', desc: 'Narrativas que desenvolvem empatia e decisão', image: 'https://images.unsplash.com/photo-1491308056676-205b7c9a7dc1?w=800&q=80' },
-    { title: 'Dashboard de Progresso', desc: 'Relatórios visuais para pais e terapeutas', image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80' },
+    { title: 'Home da Criança', desc: 'Missões diárias, streaks e progressão visual', image: 'https://images.unsplash.com/photo-1588072432836-e10032774350?w=800&q=80' },
+    { title: 'Jogo Cognitivo', desc: 'Atividades adaptativas com feedback imediato', image: 'https://images.unsplash.com/photo-1610500796385-3ffc1ae2f046?w=800&q=80' },
+    { title: 'História Interativa', desc: 'Narrativas que desenvolvem empatia e decisão', image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80' },
+    { title: 'Dashboard de Progresso', desc: 'Relatórios visuais para pais e terapeutas', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80' },
   ];
 
   return (
