@@ -17,14 +17,14 @@ export default function BillingDashboard() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      pending: 'bg-yellow-100 text-yellow-800',
-      paid: 'bg-green-100 text-green-800',
-      overdue: 'bg-red-100 text-red-800',
-      cancelled: 'bg-gray-100 text-gray-800',
-      active: 'bg-green-100 text-green-800',
-      draft: 'bg-blue-100 text-blue-800',
-      pending_signature: 'bg-orange-100 text-orange-800',
-      expired: 'bg-gray-100 text-gray-800'
+      pending: 'bg-warning/10 text-warning',
+      paid: 'bg-success/10 text-success',
+      overdue: 'bg-destructive/10 text-destructive',
+      cancelled: 'bg-muted text-muted-foreground',
+      active: 'bg-success/10 text-success',
+      draft: 'bg-info/10 text-info',
+      pending_signature: 'bg-accent/10 text-accent',
+      expired: 'bg-muted text-muted-foreground'
     };
     const labels: Record<string, string> = {
       pending: 'Pendente',
@@ -72,7 +72,7 @@ export default function BillingDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <Clock className="w-8 h-8 text-yellow-500" />
+                <Clock className="w-8 h-8 text-warning" />
                 <div>
                   <p className="text-xl font-bold">{formatCurrency(stats.totalPending)}</p>
                   <p className="text-xs text-muted-foreground">A Receber</p>
@@ -83,7 +83,7 @@ export default function BillingDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <AlertTriangle className="w-8 h-8 text-red-500" />
+                <AlertTriangle className="w-8 h-8 text-destructive" />
                 <div>
                   <p className="text-xl font-bold">{formatCurrency(stats.totalOverdue)}</p>
                   <p className="text-xs text-muted-foreground">Vencido</p>
@@ -94,7 +94,7 @@ export default function BillingDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <FileText className="w-8 h-8 text-green-500" />
+                <FileText className="w-8 h-8 text-success" />
                 <div>
                   <p className="text-xl font-bold">{stats.activeContracts}</p>
                   <p className="text-xs text-muted-foreground">Contratos Ativos</p>

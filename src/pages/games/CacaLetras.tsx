@@ -260,19 +260,19 @@ export default function CacaLetras() {
             </Card>
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-green-600">{Math.round(stats.accuracy)}%</div>
+                <div className="text-lg font-bold text-success">{Math.round(stats.accuracy)}%</div>
                 <div className="text-xs text-muted-foreground">Precisão</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-blue-600">{stats.timeRemaining}s</div>
+                <div className="text-lg font-bold text-info">{stats.timeRemaining}s</div>
                 <div className="text-xs text-muted-foreground">Tempo</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-purple-600">{stats.correctFinds}</div>
+                <div className="text-lg font-bold text-secondary">{stats.correctFinds}</div>
                 <div className="text-xs text-muted-foreground">Acertos</div>
               </CardContent>
             </Card>
