@@ -229,7 +229,7 @@ export default function ParentTraining() {
               </p>
               <div className="flex gap-3">
                 <Button asChild>
-                  <Link to="/dashboard">
+                  <Link to="/dashboard-pais">
                     Ir para Dashboard
                   </Link>
                 </Button>
