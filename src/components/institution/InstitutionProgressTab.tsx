@@ -99,13 +99,13 @@ export function InstitutionProgressTab({ institutionId }: InstitutionProgressTab
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-blue-500">127</p>
+            <p className="text-3xl font-bold text-primary">127</p>
             <p className="text-sm text-muted-foreground">Histórias Lidas</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-3xl font-bold text-orange-500">458</p>
+            <p className="text-3xl font-bold text-accent-foreground">458</p>
             <p className="text-sm text-muted-foreground">Jogos Completados</p>
           </CardContent>
         </Card>

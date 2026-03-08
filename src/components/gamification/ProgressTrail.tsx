@@ -46,12 +46,11 @@ export default function ProgressTrail({ games, trackColor, trackName }: Progress
         <div className="relative">
           {game.completed ? (
             <div 
-              className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg border-4 border-green-200"
-              style={{ backgroundColor: '#10B981' }}
+              className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg border-4 border-success/30 bg-success"
             >
               <CheckCircle className="w-8 h-8 text-white" />
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
-                <Trophy className="w-4 h-4 text-yellow-800" />
+              <div className="absolute -top-2 -right-2 w-6 h-6 bg-warning rounded-full flex items-center justify-center">
+                <Trophy className="w-4 h-4 text-warning-foreground" />
               </div>
             </div>
           ) : game.unlocked ? (
@@ -100,7 +99,7 @@ export default function ProgressTrail({ games, trackColor, trackName }: Progress
             </Badge>
             
             {game.completed && (
-              <Badge variant="outline" className="text-green-600 border-green-200 bg-green-50">
+              <Badge variant="outline" className="text-success border-success/20 bg-success/5">
                 <Star className="w-3 h-3 mr-1" />
                 100% Completo
               </Badge>
@@ -148,7 +147,7 @@ export default function ProgressTrail({ games, trackColor, trackName }: Progress
             
             {game.completed && (
               <div className="text-center">
-                <span className="text-xs text-green-600 font-medium">
+                <span className="text-xs text-success font-medium">
                   ✨ Concluído
                 </span>
               </div>
@@ -197,7 +196,7 @@ export default function ProgressTrail({ games, trackColor, trackName }: Progress
               {Math.round(progressPercentage)}%
             </div>
             {progressPercentage === 100 && (
-              <Badge className="bg-gold text-yellow-800">
+              <Badge className="bg-warning text-warning-foreground">
                 <Trophy className="w-4 h-4 mr-1" />
                 Mestre!
               </Badge>
@@ -220,16 +219,16 @@ export default function ProgressTrail({ games, trackColor, trackName }: Progress
 
       {/* Completion Achievement */}
       {progressPercentage === 100 && (
-        <div className="bg-gradient-to-r from-yellow-400/20 to-orange-400/20 p-8 rounded-xl border-2 border-yellow-400/30 text-center">
-          <Trophy className="w-16 h-16 text-yellow-600 mx-auto mb-4" />
-          <h3 className="font-bold text-2xl text-yellow-800 mb-2">
+        <div className="bg-gradient-to-r from-warning/20 to-accent/20 p-8 rounded-xl border-2 border-warning/30 text-center">
+          <Trophy className="w-16 h-16 text-warning mx-auto mb-4" />
+          <h3 className="font-bold text-2xl text-foreground mb-2">
             🎉 Trilha Conquistada! 🎉
           </h3>
-          <p className="text-yellow-700 mb-4">
+          <p className="text-muted-foreground mb-4">
             Você completou todos os desafios desta trilha de desenvolvimento.
             Continue explorando outras trilhas para expandir suas habilidades!
           </p>
-          <Button asChild size="lg" className="bg-yellow-600 hover:bg-yellow-700">
+          <Button asChild size="lg" className="bg-warning hover:bg-warning/90 text-warning-foreground">
             <Link to="/game-map" className="flex items-center gap-2">
               <ArrowRight className="w-5 h-5" />
               Explorar Outras Trilhas
