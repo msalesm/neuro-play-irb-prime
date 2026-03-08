@@ -88,6 +88,7 @@ import TeacherClasses from "./pages/TeacherClasses";
 import TeacherClassView from "./pages/TeacherClassView";
 import TeacherStudentView from "./pages/TeacherStudentView";
 import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
+import AbaNeuroPlay from "./pages/AbaNeuroPlay";
 import AdminRiskMaps from "./pages/AdminRiskMaps";
 import OperationsCenter from "./pages/OperationsCenter";
 // ParentChildActivities removed - feature deprecated
@@ -346,6 +347,7 @@ const App = () => (
           <Route path="/admin/relationships" element={<RelationshipsManager />} />
           <Route path="/operations" element={<OperationsCenter />} />
           <Route path="/aba-integration" element={<AbaIntegration />} />
+          <Route path="/aba-neuroplay" element={<AbaNeuroPlay />} />
           
           {/* Acessibilidade e Histórias Sociais */}
           <Route path="/accessibility" element={<AccessibilitySettings />} />
