@@ -9,13 +9,15 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useAbaInterventions, useCreateIntervention, useAbaSkills, useAbaProgressStats } from '@/hooks/useAbaNeuroPlay';
 import { useUserRole } from '@/hooks/useUserRole';
-import { ArrowLeft, Plus, Target, TrendingUp, TrendingDown, Minus, Calendar, FileText, Activity } from 'lucide-react';
+import { ArrowLeft, Plus, Target, TrendingUp, TrendingDown, Minus, Calendar, FileText, Activity, BarChart3, FileDown } from 'lucide-react';
 import { AbaTrialCollector } from './AbaTrialCollector';
 import { AbaProgressChart } from './AbaProgressChart';
 import { AbaGameIntegration } from './AbaGameIntegration';
 import { AbaSessionManager } from './AbaSessionManager';
 import { AbaGoalsPanel } from './AbaGoalsPanel';
 import { AbaClinicalNotes } from './AbaClinicalNotes';
+import { AbaProgramEvolution } from './AbaProgramEvolution';
+import { AbaReportPDF } from './AbaReportPDF';
 
 const METHOD_SHORT: Record<string, string> = {
   dtt: 'DTT', net: 'NET', task_analysis: 'Análise de Tarefas',
@@ -105,6 +107,12 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
           </TabsTrigger>
           <TabsTrigger value="notes" className="flex items-center gap-1.5">
             <FileText className="h-4 w-4" /> Observações
+          </TabsTrigger>
+          <TabsTrigger value="evolution" className="flex items-center gap-1.5">
+            <BarChart3 className="h-4 w-4" /> Evolução
+          </TabsTrigger>
+          <TabsTrigger value="report" className="flex items-center gap-1.5">
+            <FileDown className="h-4 w-4" /> Relatório
           </TabsTrigger>
         </TabsList>
 
@@ -208,6 +216,16 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
         {/* Clinical Notes Tab */}
         <TabsContent value="notes">
           <AbaClinicalNotes childId={childId} programId={programId} />
+        </TabsContent>
+
+        {/* Evolution Tab */}
+        <TabsContent value="evolution">
+          <AbaProgramEvolution programId={programId} childId={childId} />
+        </TabsContent>
+
+        {/* Report Tab */}
+        <TabsContent value="report">
+          <AbaReportPDF programId={programId} childId={childId} />
         </TabsContent>
       </Tabs>
     </div>

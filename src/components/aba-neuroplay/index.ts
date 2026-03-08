@@ -10,3 +10,5 @@ export { AbaReportsPanel } from './AbaReportsPanel';
 export { AbaSessionManager } from './AbaSessionManager';
 export { AbaGoalsPanel } from './AbaGoalsPanel';
 export { AbaClinicalNotes } from './AbaClinicalNotes';
+export { AbaProgramEvolution } from './AbaProgramEvolution';
+export { AbaReportPDF } from './AbaReportPDF';
