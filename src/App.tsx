@@ -104,7 +104,7 @@ import NeuroPlayV2 from "./pages/NeuroPlayV2";
 import NeuroPlayLanding from "./pages/NeuroPlayLanding";
 import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
 import DashboardPais from "./pages/DashboardPais";
-import IRBPrimeLanding from "./pages/IRBPrimeLanding";
+import NeuroPlayMainLanding from "./pages/IRBPrimeLanding";
 import Home from "./pages/Home";
 import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
 import AchievementsPage from "./pages/AchievementsPage";
@@ -183,7 +183,7 @@ const App = () => (
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/landing" element={<IRBPrimeLanding />} />
+                  <Route path="/landing" element={<NeuroPlayMainLanding />} />
                   <Route path="/onboarding" element={<OnboardingWizard />} />
                   <Route path="/neuroplay" element={
                     <Suspense fallback={<Loading />}>

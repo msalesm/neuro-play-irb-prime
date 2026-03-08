@@ -108,7 +108,7 @@ export function useBehavioralReport(childProfileId?: string) {
       };
 
       // Header
-      doc.setFillColor(10, 30, 53); // IRB Petrol color
+      doc.setFillColor(58, 134, 255); // NeuroPlay blue
       doc.rect(0, 0, doc.internal.pageSize.width, 40, 'F');
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(20);
