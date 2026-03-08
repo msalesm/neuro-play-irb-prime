@@ -262,61 +262,68 @@ export function ClinicAgenda() {
 
                     {/* Time Grid */}
                     <ScrollArea className="h-[660px]">
-                      <div className="relative">
-                        {HOURS.map((hour) => (
-                          <div
-                            key={hour}
-                            className="border-b"
-                            style={{ height: `${HOUR_HEIGHT}px`, display: 'grid', gridTemplateColumns: `80px repeat(5, 1fr)` }}
-                          >
-                            <div className="p-1 text-xs text-muted-foreground border-r flex items-start justify-center pt-1">
+                      <div className="relative" style={{ display: 'grid', gridTemplateColumns: `80px repeat(5, 1fr)` }}>
+                        {/* Hour labels column */}
+                        <div>
+                          {HOURS.map((hour) => (
+                            <div
+                              key={hour}
+                              className="border-b border-r p-1 text-xs text-muted-foreground flex items-start justify-center pt-1"
+                              style={{ height: `${HOUR_HEIGHT}px` }}
+                            >
                               {hour.toString().padStart(2, '0')}:00
                             </div>
-                            {weekDays.map((day) => (
-                              <div
-                                key={`${day.toISOString()}-${hour}`}
-                                className="border-r relative hover:bg-muted/30 cursor-pointer"
-                                onClick={() => handleNewAppointment(day)}
-                              />
-                            ))}
-                          </div>
-                        ))}
+                          ))}
+                        </div>
 
-                        {/* Appointments Overlay */}
+                        {/* Day columns with appointments */}
                         {weekDays.map((day, dayIndex) => {
                           const dayAppointments = getAppointmentsForDay(day);
                           const laid = layoutAppointments(dayAppointments, getTypeDuration);
 
-                          return laid.map(({ appt, startMin, endMin, col, totalCols }) => {
-                            const topPx = (startMin / 60) * HOUR_HEIGHT;
-                            const heightPx = ((endMin - startMin) / 60) * HOUR_HEIGHT;
-                            // Calculate left/width within the day column
-                            const colWidthPercent = 100 / totalCols;
-
-                            return (
-                              <div
-                                key={appt.id}
-                                className="absolute px-0.5"
-                                style={{
-                                  // Position within the grid: skip the 80px hour column, then offset by day
-                                  left: `calc(80px + ${dayIndex} * ((100% - 80px) / 5) + ${col * colWidthPercent}% * ((100% - 80px) / 5) / 100)`,
-                                  width: `calc(${colWidthPercent}% * ((100% - 80px) / 5) / 100)`,
-                                  top: `${topPx}px`,
-                                  height: `${heightPx}px`,
-                                  minHeight: '28px',
-                                }}
-                              >
-                                <AppointmentCard
-                                  appointment={appt}
-                                  onCheckIn={checkInPatient}
-                                  onConfirm={confirmAppointment}
-                                  onCancel={cancelAppointment}
-                                  onComplete={completeAppointment}
-                                  onNoShow={markAsNoShow}
+                          return (
+                            <div key={day.toISOString()} className="relative border-r">
+                              {/* Hour cells (clickable) */}
+                              {HOURS.map((hour) => (
+                                <div
+                                  key={hour}
+                                  className="border-b hover:bg-muted/30 cursor-pointer"
+                                  style={{ height: `${HOUR_HEIGHT}px` }}
+                                  onClick={() => handleNewAppointment(day)}
                                 />
-                              </div>
-                            );
-                          });
+                              ))}
+
+                              {/* Appointment overlays */}
+                              {laid.map(({ appt, startMin, endMin, col, totalCols }) => {
+                                const topPx = (startMin / 60) * HOUR_HEIGHT;
+                                const heightPx = Math.max(28, ((endMin - startMin) / 60) * HOUR_HEIGHT);
+                                const widthPercent = 100 / totalCols;
+                                const leftPercent = col * widthPercent;
+
+                                return (
+                                  <div
+                                    key={appt.id}
+                                    className="absolute px-0.5 z-10"
+                                    style={{
+                                      left: `${leftPercent}%`,
+                                      width: `${widthPercent}%`,
+                                      top: `${topPx}px`,
+                                      height: `${heightPx}px`,
+                                    }}
+                                  >
+                                    <AppointmentCard
+                                      appointment={appt}
+                                      onCheckIn={checkInPatient}
+                                      onConfirm={confirmAppointment}
+                                      onCancel={cancelAppointment}
+                                      onComplete={completeAppointment}
+                                      onNoShow={markAsNoShow}
+                                    />
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
                         })}
                       </div>
                     </ScrollArea>
