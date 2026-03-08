@@ -12,7 +12,7 @@ import {
   FileText, ArrowLeft, Download, Sparkles, Target, Activity,
   Clock, Star, BarChart3, ClipboardList
 } from 'lucide-react';
-import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
+import { ChildAvatarDisplay } from '@/components/gamification';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';

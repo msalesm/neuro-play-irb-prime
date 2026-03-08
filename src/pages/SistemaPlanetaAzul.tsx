@@ -10,7 +10,7 @@ import { planetas } from '@/data/planetas';
 import { Sparkles, Map, Grid3x3, Trophy, Rocket, ArrowLeft, Camera } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { Planeta } from '@/types/planeta';
-import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
+import { ChildAvatarDisplay } from '@/components/gamification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { usePlanetProgress } from '@/hooks/usePlanetProgress';
