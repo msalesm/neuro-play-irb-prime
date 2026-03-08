@@ -226,7 +226,7 @@ const getStatusLabel = (status: string) => {
         age: undefined,
         grade: undefined,
         shift: undefined,
-        institution: 'Neuro IRB Prime'
+        institution: 'NeuroPlay'
       },
       classification: getClassificationLabel(totalScore),
       totalScore,

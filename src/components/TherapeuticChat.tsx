@@ -214,7 +214,7 @@ export default function TherapeuticChat({
                   className={`flex gap-4 ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
                 >
                   <Avatar className="h-10 w-10 shrink-0">
-                    <AvatarFallback className={message.role === 'assistant' ? 'bg-gradient-to-br from-irb-petrol to-irb-blue text-white' : 'bg-secondary'}>
+                    <AvatarFallback className={message.role === 'assistant' ? 'bg-gradient-to-br from-primary to-secondary text-white' : 'bg-secondary'}>
                       {message.role === 'assistant' ? <Bot className="h-5 w-5" /> : <User className="h-5 w-5" />}
                     </AvatarFallback>
                   </Avatar>
@@ -222,7 +222,7 @@ export default function TherapeuticChat({
                     <div
                       className={`inline-block rounded-2xl px-5 py-3 max-w-[85%] shadow-sm ${
                         message.role === 'user'
-                          ? 'bg-gradient-to-br from-irb-blue to-irb-petrol text-white'
+                          ? 'bg-gradient-to-br from-secondary to-primary text-white'
                           : 'bg-muted border border-border'
                       }`}
                     >
@@ -237,15 +237,15 @@ export default function TherapeuticChat({
               {isLoading && (
                 <div className="flex gap-4">
                   <Avatar className="h-10 w-10 shrink-0">
-                    <AvatarFallback className="bg-gradient-to-br from-irb-petrol to-irb-blue text-white">
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white">
                       <Bot className="h-5 w-5" />
                     </AvatarFallback>
                   </Avatar>
                   <div className="bg-muted rounded-2xl px-5 py-3 shadow-sm">
                     <div className="flex gap-1.5">
-                      <div className="h-2.5 w-2.5 rounded-full bg-irb-blue animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="h-2.5 w-2.5 rounded-full bg-irb-blue animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="h-2.5 w-2.5 rounded-full bg-irb-blue animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <div className="h-2.5 w-2.5 rounded-full bg-secondary animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="h-2.5 w-2.5 rounded-full bg-secondary animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="h-2.5 w-2.5 rounded-full bg-secondary animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </div>
@@ -266,7 +266,7 @@ export default function TherapeuticChat({
               onClick={sendMessage} 
               disabled={isLoading || !input.trim()} 
               size="default"
-              className="h-10 md:h-12 px-3 md:px-4 bg-gradient-to-r from-irb-petrol to-irb-blue hover:opacity-90 shrink-0"
+              className="h-10 md:h-12 px-3 md:px-4 bg-gradient-to-r from-primary to-secondary hover:opacity-90 shrink-0"
             >
               <Send className="h-4 w-4 md:h-5 md:w-5" />
             </Button>

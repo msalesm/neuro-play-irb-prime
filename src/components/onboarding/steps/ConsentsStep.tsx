@@ -12,7 +12,7 @@ export function ConsentsStep({ data, updateData }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-irb-petrol mb-2">Consentimentos LGPD</h3>
+        <h3 className="text-lg font-semibold text-primary mb-2">Consentimentos LGPD</h3>
         <p className="text-sm text-muted-foreground">
           Você tem controle total sobre como seus dados são usados. Todas as opções abaixo são opcionais.
         </p>
@@ -20,14 +20,14 @@ export function ConsentsStep({ data, updateData }: Props) {
 
       <div className="space-y-6">
         {/* Anonymous Data */}
-        <div className="border border-irb-blue/30 rounded-lg p-4 hover:border-irb-blue/50 transition-colors">
+        <div className="border border-secondary/30 rounded-lg p-4 hover:border-secondary/50 transition-colors">
           <div className="flex items-start gap-4">
-            <div className="shrink-0 h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
-              <Database className="h-5 w-5 text-irb-blue" />
+            <div className="shrink-0 h-10 w-10 rounded-full bg-secondary/20 flex items-center justify-center">
+              <Database className="h-5 w-5 text-secondary" />
             </div>
             <div className="flex-1 space-y-3">
               <div>
-                <h4 className="font-semibold text-irb-petrol">Dados Pseudonimizados para Melhoria</h4>
+                <h4 className="font-semibold text-primary">Dados Pseudonimizados para Melhoria</h4>
                 <p className="text-sm text-muted-foreground mt-1">
                   Permitir uso de dados anônimos (sem identificação pessoal) para melhorar algoritmos 
                   de personalização e eficácia terapêutica da plataforma.
@@ -38,7 +38,7 @@ export function ConsentsStep({ data, updateData }: Props) {
                   id="anonymousData"
                   checked={data.consentAnonymousData}
                   onCheckedChange={(checked) => updateData({ consentAnonymousData: !!checked })}
-                  className="border-irb-blue data-[state=checked]:bg-irb-blue"
+                  className="border-secondary data-[state=checked]:bg-secondary"
                 />
                 <Label htmlFor="anonymousData" className="text-sm font-medium cursor-pointer">
                   Sim, autorizo uso de dados pseudonimizados
@@ -49,14 +49,14 @@ export function ConsentsStep({ data, updateData }: Props) {
         </div>
 
         {/* Research */}
-        <div className="border border-irb-blue/30 rounded-lg p-4 hover:border-irb-blue/50 transition-colors">
+        <div className="border border-secondary/30 rounded-lg p-4 hover:border-secondary/50 transition-colors">
           <div className="flex items-start gap-4">
-            <div className="shrink-0 h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
-              <FlaskConical className="h-5 w-5 text-irb-blue" />
+            <div className="shrink-0 h-10 w-10 rounded-full bg-secondary/20 flex items-center justify-center">
+              <FlaskConical className="h-5 w-5 text-secondary" />
             </div>
             <div className="flex-1 space-y-3">
               <div>
-                <h4 className="font-semibold text-irb-petrol">Pesquisa Científica</h4>
+                <h4 className="font-semibold text-primary">Pesquisa Científica</h4>
                 <p className="text-sm text-muted-foreground mt-1">
                   Permitir uso de dados anonimizados para estudos científicos sobre neurodiversidade, 
                   aprendizagem e desenvolvimento infantil conduzidos por parceiros acadêmicos.
@@ -67,7 +67,7 @@ export function ConsentsStep({ data, updateData }: Props) {
                   id="research"
                   checked={data.consentResearch}
                   onCheckedChange={(checked) => updateData({ consentResearch: !!checked })}
-                  className="border-irb-blue data-[state=checked]:bg-irb-blue"
+                  className="border-secondary data-[state=checked]:bg-secondary"
                 />
                 <Label htmlFor="research" className="text-sm font-medium cursor-pointer">
                   Sim, autorizo uso para pesquisa científica
@@ -78,14 +78,14 @@ export function ConsentsStep({ data, updateData }: Props) {
         </div>
 
         {/* Clinical Sharing */}
-        <div className="border border-irb-blue/30 rounded-lg p-4 hover:border-irb-blue/50 transition-colors">
+        <div className="border border-secondary/30 rounded-lg p-4 hover:border-secondary/50 transition-colors">
           <div className="flex items-start gap-4">
-            <div className="shrink-0 h-10 w-10 rounded-full bg-secondary flex items-center justify-center">
-              <Users className="h-5 w-5 text-irb-blue" />
+            <div className="shrink-0 h-10 w-10 rounded-full bg-secondary/20 flex items-center justify-center">
+              <Users className="h-5 w-5 text-secondary" />
             </div>
             <div className="flex-1 space-y-3">
               <div>
-                <h4 className="font-semibold text-irb-petrol">Compartilhamento Clínico Facilitado</h4>
+                <h4 className="font-semibold text-primary">Compartilhamento Clínico Facilitado</h4>
                 <p className="text-sm text-muted-foreground mt-1">
                   Permitir compartilhamento automático de relatórios e progresso com profissionais de saúde autorizados 
                   (você ainda controlará quais profissionais têm acesso).
@@ -96,7 +96,7 @@ export function ConsentsStep({ data, updateData }: Props) {
                   id="clinicalSharing"
                   checked={data.consentClinicalSharing}
                   onCheckedChange={(checked) => updateData({ consentClinicalSharing: !!checked })}
-                  className="border-irb-blue data-[state=checked]:bg-irb-blue"
+                  className="border-secondary data-[state=checked]:bg-secondary"
                 />
                 <Label htmlFor="clinicalSharing" className="text-sm font-medium cursor-pointer">
                   Sim, autorizo compartilhamento com profissionais autorizados
@@ -107,9 +107,9 @@ export function ConsentsStep({ data, updateData }: Props) {
         </div>
       </div>
 
-      <div className="bg-secondary/20 p-4 rounded-lg border border-irb-blue/20">
+      <div className="bg-secondary/20 p-4 rounded-lg border border-secondary/20">
         <p className="text-sm text-muted-foreground">
-          <strong className="text-irb-petrol">Você pode mudar essas escolhas a qualquer momento</strong> nas configurações 
+          <strong className="text-primary">Você pode mudar essas escolhas a qualquer momento</strong> nas configurações 
           de privacidade. Dados já coletados sob consentimento anterior serão tratados conforme a nova escolha.
         </p>
       </div>

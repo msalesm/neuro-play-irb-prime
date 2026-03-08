@@ -12,7 +12,7 @@ export function UserDataStep({ data, updateData }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-irb-petrol mb-2">Dados Pessoais</h3>
+        <h3 className="text-lg font-semibold text-primary mb-2">Dados Pessoais</h3>
         <p className="text-sm text-muted-foreground">
           Precisamos de algumas informações básicas para criar seu perfil.
         </p>
@@ -21,7 +21,7 @@ export function UserDataStep({ data, updateData }: Props) {
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="fullName" className="flex items-center gap-2">
-            <User className="h-4 w-4 text-irb-blue" />
+            <User className="h-4 w-4 text-secondary" />
             Nome Completo *
           </Label>
           <Input
@@ -29,13 +29,13 @@ export function UserDataStep({ data, updateData }: Props) {
             value={data.fullName}
             onChange={(e) => updateData({ fullName: e.target.value })}
             placeholder="Seu nome completo"
-            className="border-irb-blue/30 focus:border-irb-blue"
+            className="border-secondary/30 focus:border-secondary"
           />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="email" className="flex items-center gap-2">
-            <Mail className="h-4 w-4 text-irb-blue" />
+            <Mail className="h-4 w-4 text-secondary" />
             E-mail *
           </Label>
           <Input
@@ -44,13 +44,13 @@ export function UserDataStep({ data, updateData }: Props) {
             value={data.email}
             onChange={(e) => updateData({ email: e.target.value })}
             placeholder="seu@email.com"
-            className="border-irb-blue/30 focus:border-irb-blue"
+            className="border-secondary/30 focus:border-secondary"
           />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="phone" className="flex items-center gap-2">
-            <Phone className="h-4 w-4 text-irb-blue" />
+            <Phone className="h-4 w-4 text-secondary" />
             Telefone *
           </Label>
           <Input
@@ -59,14 +59,14 @@ export function UserDataStep({ data, updateData }: Props) {
             value={data.phone}
             onChange={(e) => updateData({ phone: e.target.value })}
             placeholder="(00) 00000-0000"
-            className="border-irb-blue/30 focus:border-irb-blue"
+            className="border-secondary/30 focus:border-secondary"
           />
         </div>
       </div>
 
-      <div className="bg-secondary/20 p-4 rounded-lg border border-irb-blue/20">
+      <div className="bg-secondary/20 p-4 rounded-lg border border-secondary/20">
         <p className="text-sm text-muted-foreground">
-          <strong className="text-irb-petrol">Privacidade:</strong> Seus dados são protegidos de acordo com a LGPD 
+          <strong className="text-primary">Privacidade:</strong> Seus dados são protegidos de acordo com a LGPD 
           e serão usados exclusivamente para fins terapêuticos e educacionais.
         </p>
       </div>

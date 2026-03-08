@@ -15,7 +15,7 @@ const ROLES = [
     description: 'Usar os jogos terapêuticos para meu próprio desenvolvimento',
     icon: Heart,
     features: ['Jogos cognitivos', 'Acompanhamento pessoal', 'Relatórios de progresso', 'Chat terapêutico'],
-    color: 'irb-blue',
+    color: 'secondary',
   },
   {
     id: 'parent' as const,
@@ -23,7 +23,7 @@ const ROLES = [
     description: 'Acompanhar o desenvolvimento terapêutico do meu filho',
     icon: Users,
     features: ['Jogos cognitivos', 'Educação parental', 'Relatórios de progresso', 'Atividades cooperativas'],
-    color: 'irb-blue',
+    color: 'secondary',
   },
   {
     id: 'therapist' as const,
@@ -31,7 +31,7 @@ const ROLES = [
     description: 'Gerenciar pacientes e criar planos terapêuticos',
     icon: Stethoscope,
     features: ['Dashboard clínico', 'PEI Inteligente', 'Relatórios clínicos', 'Gestão de pacientes'],
-    color: 'irb-petrol',
+    color: 'primary',
   },
   {
     id: 'teacher' as const,
@@ -39,7 +39,7 @@ const ROLES = [
     description: 'Acompanhar alunos e implementar estratégias educacionais',
     icon: GraduationCap,
     features: ['Painel escolar', 'Turmas e alunos', 'Check-in semanal', 'Sugestões com IA'],
-    color: 'irb-gold',
+    color: 'accent',
   },
   {
     id: 'admin' as const,
@@ -55,9 +55,9 @@ export function RoleSelectionStep({ data, updateData }: Props) {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h3 className="text-2xl font-bold text-irb-petrol mb-2">Qual é o seu perfil?</h3>
+        <h3 className="text-2xl font-bold text-primary mb-2">Qual é o seu perfil?</h3>
         <p className="text-muted-foreground">
-          Selecione como você usará a plataforma Neuro IRB Prime
+          Selecione como você usará a plataforma NeuroPlay
         </p>
       </div>
 
@@ -72,22 +72,22 @@ export function RoleSelectionStep({ data, updateData }: Props) {
               className={cn(
                 'p-6 cursor-pointer transition-all hover:shadow-lg border-2',
                 isSelected
-                  ? 'border-irb-blue bg-secondary/10 shadow-strong'
-                  : 'border-border hover:border-irb-blue/50'
+                  ? 'border-secondary bg-secondary/10 shadow-strong'
+                  : 'border-border hover:border-secondary/50'
               )}
               onClick={() => updateData({ selectedRole: role.id })}
             >
               <div className="flex items-start gap-4">
                 <div className={cn(
                   'p-3 rounded-lg',
-                  isSelected ? 'bg-irb-blue text-white' : 'bg-secondary text-irb-blue'
+                  isSelected ? 'bg-secondary text-white' : 'bg-secondary/10 text-secondary'
                 )}>
                   <Icon className="h-6 w-6" />
                 </div>
                 
                 <div className="flex-1 space-y-3">
                   <div>
-                    <h4 className="font-semibold text-lg text-irb-petrol">{role.title}</h4>
+                    <h4 className="font-semibold text-lg text-primary">{role.title}</h4>
                     <p className="text-sm text-muted-foreground mt-1">{role.description}</p>
                   </div>
                   
@@ -96,7 +96,7 @@ export function RoleSelectionStep({ data, updateData }: Props) {
                       <div key={idx} className="flex items-center gap-2 text-sm">
                         <div className={cn(
                           'h-1.5 w-1.5 rounded-full',
-                          isSelected ? 'bg-irb-blue' : 'bg-muted-foreground'
+                          isSelected ? 'bg-secondary' : 'bg-muted-foreground'
                         )} />
                         <span className={isSelected ? 'text-foreground' : 'text-muted-foreground'}>
                           {feature}
@@ -108,9 +108,9 @@ export function RoleSelectionStep({ data, updateData }: Props) {
               </div>
               
               {isSelected && (
-                <div className="mt-4 pt-4 border-t border-irb-blue/20">
-                  <div className="flex items-center gap-2 text-sm text-irb-blue font-semibold">
-                    <div className="h-5 w-5 rounded-full bg-irb-blue text-white flex items-center justify-center text-xs">
+                <div className="mt-4 pt-4 border-t border-secondary/20">
+                  <div className="flex items-center gap-2 text-sm text-secondary font-semibold">
+                    <div className="h-5 w-5 rounded-full bg-secondary text-white flex items-center justify-center text-xs">
                       ✓
                     </div>
                     Perfil selecionado
@@ -122,9 +122,9 @@ export function RoleSelectionStep({ data, updateData }: Props) {
         })}
       </div>
 
-      <div className="bg-secondary/20 p-4 rounded-lg border border-irb-blue/20">
+      <div className="bg-secondary/20 p-4 rounded-lg border border-secondary/20">
         <p className="text-sm text-muted-foreground">
-          <strong className="text-irb-petrol">Nota:</strong> Você poderá alterar seu perfil posteriormente nas configurações da conta.
+          <strong className="text-primary">Nota:</strong> Você poderá alterar seu perfil posteriormente nas configurações da conta.
         </p>
       </div>
     </div>

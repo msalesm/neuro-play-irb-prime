@@ -84,7 +84,7 @@ const HeroSection = () => (
   </section>
 );
 
-// O que é o Neuro IRB Prime
+// O que é o NeuroPlay
 const AboutSection = () => (
   <section className="py-20 bg-background">
     <div className="container mx-auto px-6">
