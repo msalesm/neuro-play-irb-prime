@@ -345,9 +345,9 @@ export default function TheoryOfMind() {
             </div>
 
             {showFeedback && (
-              <div className="bg-purple-50 p-4 rounded-lg mb-6">
-                <h3 className="font-semibold text-purple-800 mb-2">Explicação:</h3>
-                <p className="text-purple-700">{scenario.explanation}</p>
+              <div className="bg-secondary/10 p-4 rounded-lg mb-6">
+                <h3 className="font-semibold text-secondary mb-2">Explicação:</h3>
+                <p className="text-secondary/80">{scenario.explanation}</p>
               </div>
             )}
 

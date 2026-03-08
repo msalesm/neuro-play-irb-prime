@@ -72,8 +72,8 @@ const InstallApp = () => {
 
           <Card>
             <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
+              <div className="mx-auto w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mb-4">
+                <CheckCircle2 className="h-8 w-8 text-success" />
               </div>
               <CardTitle>App Instalado!</CardTitle>
               <CardDescription>
@@ -105,9 +105,9 @@ const InstallApp = () => {
         </div>
 
         {isInstalled && (
-          <Alert className="mb-6 border-green-500 bg-green-50">
-            <CheckCircle2 className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
+          <Alert className="mb-6 border-success bg-success/10">
+            <CheckCircle2 className="h-4 w-4 text-success" />
+            <AlertDescription className="text-success">
               NeuroPlay foi instalado com sucesso! Procure o ícone na sua tela inicial.
             </AlertDescription>
           </Alert>
@@ -251,19 +251,19 @@ const InstallApp = () => {
             <CardContent>
               <ul className="space-y-3">
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <CheckCircle2 className="h-5 w-5 text-success" />
                   <span>Acesso rápido direto da tela inicial</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <CheckCircle2 className="h-5 w-5 text-success" />
                   <span>Funciona mesmo sem conexão (modo offline)</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <CheckCircle2 className="h-5 w-5 text-success" />
                   <span>Carregamento mais rápido</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <CheckCircle2 className="h-5 w-5 text-success" />
                   <span>Experiência em tela cheia, sem barra do navegador</span>
                 </li>
               </ul>
