@@ -30,6 +30,15 @@ export {
   useAbaReinforcements, 
   useAbaProgressStats, 
   useChildAbaSummary,
+  // New: Sessions, Goals, Clinical Notes
+  useAbaSessions,
+  useCreateSession,
+  useCompleteSession,
+  useAbaGoals,
+  useCreateGoal,
+  useUpdateGoalStatus,
+  useAbaClinicalNotes,
+  useCreateClinicalNote,
 } from '@/hooks/useAbaNeuroPlay';
 
 export { useAbaNativeData } from '@/hooks/useAbaNativeData';

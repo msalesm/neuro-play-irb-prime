@@ -254,3 +254,190 @@ export function useChildAbaSummary(childId?: string) {
     enabled: !!childId,
   });
 }
+
+// ============ SESSIONS ============
+export function useAbaSessions(programId?: string) {
+  return useQuery({
+    queryKey: ['aba-np-sessions', programId],
+    queryFn: async () => {
+      if (!programId) return [];
+      const { data, error } = await supabase
+        .from('aba_np_sessions')
+        .select('*')
+        .eq('program_id', programId)
+        .order('session_date', { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!programId,
+  });
+}
+
+export function useCreateSession() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (session: {
+      program_id: string;
+      child_id: string;
+      session_number?: number;
+      environment?: string;
+      notes?: string;
+    }) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Não autenticado');
+      const { data, error } = await supabase
+        .from('aba_np_sessions')
+        .insert({ ...session, therapist_id: user.id } as any)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (_, vars) => {
+      toast.success('Sessão iniciada');
+      qc.invalidateQueries({ queryKey: ['aba-np-sessions', vars.program_id] });
+    },
+    onError: (e) => toast.error(`Erro: ${e.message}`),
+  });
+}
+
+export function useCompleteSession() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ sessionId, durationMinutes, notes }: {
+      sessionId: string;
+      durationMinutes: number;
+      notes?: string;
+    }) => {
+      const { data, error } = await supabase
+        .from('aba_np_sessions')
+        .update({ status: 'completed', duration_minutes: durationMinutes, notes } as any)
+        .eq('id', sessionId)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      toast.success('Sessão finalizada');
+      qc.invalidateQueries({ queryKey: ['aba-np-sessions'] });
+    },
+    onError: (e) => toast.error(`Erro: ${e.message}`),
+  });
+}
+
+// ============ GOALS ============
+export function useAbaGoals(programId?: string) {
+  return useQuery({
+    queryKey: ['aba-np-goals', programId],
+    queryFn: async () => {
+      if (!programId) return [];
+      const { data, error } = await supabase
+        .from('aba_np_goals')
+        .select('*')
+        .eq('program_id', programId)
+        .order('created_at');
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!programId,
+  });
+}
+
+export function useCreateGoal() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (goal: {
+      program_id: string;
+      intervention_id?: string;
+      goal_description: string;
+      success_criteria?: string;
+      target_date?: string;
+    }) => {
+      const { data, error } = await supabase
+        .from('aba_np_goals')
+        .insert(goal as any)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (_, vars) => {
+      toast.success('Meta adicionada');
+      qc.invalidateQueries({ queryKey: ['aba-np-goals', vars.program_id] });
+    },
+    onError: (e) => toast.error(`Erro: ${e.message}`),
+  });
+}
+
+export function useUpdateGoalStatus() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ goalId, status }: { goalId: string; status: string }) => {
+      const updates: Record<string, any> = { status };
+      if (status === 'achieved') updates.achieved_at = new Date().toISOString();
+      const { data, error } = await supabase
+        .from('aba_np_goals')
+        .update(updates as any)
+        .eq('id', goalId)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      toast.success('Meta atualizada');
+      qc.invalidateQueries({ queryKey: ['aba-np-goals'] });
+    },
+    onError: (e) => toast.error(`Erro: ${e.message}`),
+  });
+}
+
+// ============ CLINICAL NOTES ============
+export function useAbaClinicalNotes(childId?: string, sessionId?: string) {
+  return useQuery({
+    queryKey: ['aba-np-clinical-notes', childId, sessionId],
+    queryFn: async () => {
+      if (!childId) return [];
+      let query = supabase
+        .from('aba_np_clinical_notes')
+        .select('*')
+        .eq('child_id', childId)
+        .order('created_at', { ascending: false });
+      if (sessionId) query = query.eq('session_id', sessionId);
+      const { data, error } = await query;
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!childId,
+  });
+}
+
+export function useCreateClinicalNote() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (note: {
+      session_id?: string;
+      program_id?: string;
+      child_id: string;
+      note_type?: string;
+      content: string;
+      tags?: string[];
+    }) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Não autenticado');
+      const { data, error } = await supabase
+        .from('aba_np_clinical_notes')
+        .insert({ ...note, therapist_id: user.id } as any)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (_, vars) => {
+      toast.success('Observação registrada');
+      qc.invalidateQueries({ queryKey: ['aba-np-clinical-notes', vars.child_id] });
+    },
+    onError: (e) => toast.error(`Erro: ${e.message}`),
+  });
+}
