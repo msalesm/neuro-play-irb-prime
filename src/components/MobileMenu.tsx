@@ -45,7 +45,7 @@ export function MobileMenu() {
       items: [
         { title: 'Meu Dia', path: '/student-hub', icon: Home },
         { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
-        { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
+        { title: 'Histórias Sociais', path: '/stories', icon: Drama },
         { title: 'Minhas Conquistas', path: '/learning-dashboard', icon: Trophy },
         { title: 'Meu Perfil', path: '/profile', icon: User },
         { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
@@ -112,7 +112,7 @@ export function MobileMenu() {
       items: [
         { title: 'Meu Dia', path: '/student-hub', icon: Home },
         { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
-        { title: 'Histórias Sociais', path: '/social-stories', icon: Drama },
+        { title: 'Histórias Sociais', path: '/stories', icon: Drama },
         { title: 'Conquistas', path: '/learning-dashboard', icon: Trophy },
       ],
     });

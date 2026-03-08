@@ -88,7 +88,7 @@ export function AbaGameIntegration({ skillCategory, compact = false }: AbaGameIn
           </Link>
         ))}
         {mapping.stories.map((s, i) => (
-          <Link key={`s-${i}`} to="/social-stories">
+          <Link key={`s-${i}`} to="/stories">
             <Badge variant="outline" className="text-xs gap-1 cursor-pointer hover:bg-secondary/10">
               <BookOpen className="w-3 h-3" />
               {s}
@@ -134,7 +134,7 @@ export function AbaGameIntegration({ skillCategory, compact = false }: AbaGameIn
             </p>
             <div className="space-y-1">
               {mapping.stories.map((s, i) => (
-                <Link key={i} to="/social-stories" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                <Link key={i} to="/stories" className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors">
                   <span className="text-sm">{s}</span>
                   <ArrowRight className="w-3 h-3 text-muted-foreground" />
                 </Link>

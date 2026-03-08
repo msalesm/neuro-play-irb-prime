@@ -67,7 +67,7 @@ export function AppSidebar() {
     },
     {
       title: 'Histórias Sociais',
-      path: '/social-stories',
+      path: '/stories',
       icon: Drama,
     },
     {
