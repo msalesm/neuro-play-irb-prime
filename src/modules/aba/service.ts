@@ -105,6 +105,7 @@ export async function recordAbaTrial(trial: {
   reinforcement_type?: string;
   response?: string;
   session_number?: number;
+  session_id?: string;
   recorded_by: string;
 }) {
   const { data, error } = await supabase

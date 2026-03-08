@@ -39,4 +39,22 @@ export { useAbaIntegration } from '@/hooks/useAbaIntegration';
 export { 
   fetchAbaPrograms, 
   fetchAbaTrials,
+  // Sessions
+  createAbaSession,
+  fetchAbaSessions,
+  completeAbaSession,
+  // Goals
+  fetchAbaGoals,
+  createAbaGoal,
+  updateAbaGoalStatus,
+  // Clinical Notes
+  fetchAbaClinicalNotes,
+  createAbaClinicalNote,
+  // Progress
+  fetchAbaProgress,
+  // Game Mapping
+  fetchAbaGameMapping,
+  createAbaGameMapping,
+  // Stats
+  fetchAbaProgressStats,
 } from './service';
