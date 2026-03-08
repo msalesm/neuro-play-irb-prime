@@ -59,7 +59,7 @@ export function SocialMissions() {
         {dailyMissions.length > 0 && (
           <div>
             <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-              <Flame className="w-4 h-4 text-blue-500" />
+              <Flame className="w-4 h-4 text-primary" />
               Missões Diárias
             </h4>
             <div className="space-y-3">
@@ -148,7 +148,7 @@ function MissionCard({ mission }: MissionCardProps) {
         </div>
         <div className="flex items-center gap-2">
           {mission.completed ? (
-            <Badge variant="default" className="bg-green-500">
+            <Badge variant="default" className="bg-success">
               ✓ Completa
             </Badge>
           ) : (

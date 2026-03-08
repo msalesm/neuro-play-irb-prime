@@ -110,7 +110,7 @@ export const TourAchievementsPanel = () => {
                         {achievement.unlocked ? achievement.name : '???'}
                       </h3>
                       {achievement.unlocked && (
-                        <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                        <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
                       )}
                     </div>
 

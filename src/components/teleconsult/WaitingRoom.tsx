@@ -226,7 +226,7 @@ export function WaitingRoom({
           <div className="grid grid-cols-2 gap-4">
             <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
               {hasVideoPermission === true ? (
-                <CheckCircle className="w-5 h-5 text-green-500" />
+                <CheckCircle className="w-5 h-5 text-success" />
               ) : hasVideoPermission === false ? (
                 <AlertCircle className="w-5 h-5 text-destructive" />
               ) : (
@@ -236,7 +236,7 @@ export function WaitingRoom({
             </div>
             <div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
               {hasAudioPermission === true ? (
-                <CheckCircle className="w-5 h-5 text-green-500" />
+                <CheckCircle className="w-5 h-5 text-success" />
               ) : hasAudioPermission === false ? (
                 <AlertCircle className="w-5 h-5 text-destructive" />
               ) : (
