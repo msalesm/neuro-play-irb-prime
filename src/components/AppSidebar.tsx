@@ -334,28 +334,8 @@ export function AppSidebar() {
     });
   }
 
-  // ADMIN - vê tudo
+  // ADMIN - consolidated single menu
   if (isAdmin) {
-    navigationGroups.push({
-      id: 'admin-patients',
-      label: 'Pacientes',
-      items: patientNavigation,
-    });
-    navigationGroups.push({
-      id: 'admin-parents',
-      label: 'Pais',
-      items: parentsNavigation,
-    });
-    navigationGroups.push({
-      id: 'admin-therapist',
-      label: 'Terapeuta',
-      items: therapistNavigation,
-    });
-    navigationGroups.push({
-      id: 'admin-teacher',
-      label: 'Professor',
-      items: teacherNavigation,
-    });
     navigationGroups.push({
       id: 'admin',
       label: 'Administração',
