@@ -170,8 +170,8 @@ export default function ComplianceDashboard() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-green-500/10 flex items-center justify-center">
-                  <CheckCircle className="h-6 w-6 text-green-600" />
+                <div className="h-12 w-12 rounded-full bg-success/10 flex items-center justify-center">
+                  <CheckCircle className="h-6 w-6 text-success" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{stats?.users_with_consents || 0}</p>
@@ -184,8 +184,8 @@ export default function ComplianceDashboard() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-amber-500/10 flex items-center justify-center">
-                  <AlertTriangle className="h-6 w-6 text-amber-600" />
+                <div className="h-12 w-12 rounded-full bg-warning/10 flex items-center justify-center">
+                  <AlertTriangle className="h-6 w-6 text-warning" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{stats?.pending_consents || 0}</p>
@@ -198,8 +198,8 @@ export default function ComplianceDashboard() {
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-red-500/10 flex items-center justify-center">
-                  <FileText className="h-6 w-6 text-red-600" />
+                <div className="h-12 w-12 rounded-full bg-destructive/10 flex items-center justify-center">
+                  <FileText className="h-6 w-6 text-destructive" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{stats?.revoked_consents || 0}</p>

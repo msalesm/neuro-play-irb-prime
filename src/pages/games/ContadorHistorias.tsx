@@ -320,8 +320,8 @@ export default function ContadorHistorias() {
               <div className="text-sm text-secondary/80">Pontos de História</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-pink-700">📚 {completedStories}</div>
-              <div className="text-sm text-pink-600">Histórias Completas</div>
+              <div className="text-2xl font-bold text-accent">📚 {completedStories}</div>
+              <div className="text-sm text-accent/80">Histórias Completas</div>
             </div>
           </div>
         </div>
@@ -368,13 +368,13 @@ export default function ContadorHistorias() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-lg border-4 border-yellow-200">
+              <div className="bg-gradient-to-br from-warning/10 to-accent/10 p-6 rounded-lg border-4 border-warning/30">
                 <div className="text-center mb-6">
                   <div className="text-6xl mb-4">{chapter.character}</div>
-                  <div className="text-sm text-gray-500 mb-2">Capítulo {currentChapter + 1} de {story.chapters.length}</div>
+                  <div className="text-sm text-muted-foreground mb-2">Capítulo {currentChapter + 1} de {story.chapters.length}</div>
                 </div>
                 
-                <div className="text-lg leading-relaxed text-gray-800 mb-6 text-center">
+                <div className="text-lg leading-relaxed text-foreground mb-6 text-center">
                   {chapter.text}
                 </div>
                 
@@ -417,7 +417,7 @@ export default function ContadorHistorias() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
+                <Trophy className="w-5 h-5 text-warning" />
                 Progresso das Histórias
               </CardTitle>
             </CardHeader>
@@ -473,12 +473,12 @@ export default function ContadorHistorias() {
                 <div className="text-sm text-secondary/80">Histórias Completas</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-pink-600">{Math.floor(score / 10)}</div>
-                <div className="text-sm text-pink-500">Escolhas Corretas</div>
+                <div className="text-2xl font-bold text-accent">{Math.floor(score / 10)}</div>
+                <div className="text-sm text-accent/80">Escolhas Corretas</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-indigo-600">{currentStory + 1}</div>
-                <div className="text-sm text-indigo-500">História Atual</div>
+                <div className="text-2xl font-bold text-info">{currentStory + 1}</div>
+                <div className="text-sm text-info/80">História Atual</div>
               </div>
             </div>
           </CardContent>
@@ -488,7 +488,7 @@ export default function ContadorHistorias() {
         <Card className="mt-6">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" />
+              <Trophy className="w-5 h-5 text-warning" />
               Conquistas
             </CardTitle>
           </CardHeader>
