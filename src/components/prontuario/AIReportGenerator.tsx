@@ -362,7 +362,7 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
           <div className="space-y-4 mt-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-500" />
+                <CheckCircle className="h-5 w-5 text-success" />
                 <span className="font-medium">Relatório Gerado</span>
                 <Badge variant="outline">
                   {format(generatedReport.generatedAt, "dd/MM/yyyy HH:mm")}
@@ -438,7 +438,7 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
               {/* Emotional Analysis */}
               <div className="mb-6">
                 <h3 className="font-semibold flex items-center gap-2 mb-3">
-                  <Heart className="h-4 w-4 text-red-500" />
+                  <Heart className="h-4 w-4 text-destructive" />
                   Análise Emocional
                 </h3>
                 <div className="grid grid-cols-3 gap-3 mb-3">
@@ -476,9 +476,9 @@ export const AIReportGenerator = ({ childId, childName }: AIReportGeneratorProps
                     </h3>
                     <div className="grid grid-cols-3 gap-3">
                       {generatedReport.screeningResults.tea && (
-                        <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                         <div className="p-3 rounded-lg bg-info/10 border border-info/20">
                           <div className="flex items-center gap-2 mb-1">
-                            <Brain className="w-4 h-4 text-blue-500" />
+                            <Brain className="w-4 h-4 text-info" />
                             <span className="text-xs font-medium">TEA</span>
                           </div>
                           <p className="text-xl font-bold">{generatedReport.screeningResults.tea.score.toFixed(0)}%</p>

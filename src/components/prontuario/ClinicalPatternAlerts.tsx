@@ -34,10 +34,10 @@ interface PatternAlert {
 }
 
 const SEVERITY_STYLES = {
-  low: { bg: 'bg-blue-500/10', text: 'text-blue-600', border: 'border-blue-500', label: 'Baixo' },
-  medium: { bg: 'bg-yellow-500/10', text: 'text-yellow-600', border: 'border-yellow-500', label: 'Médio' },
-  high: { bg: 'bg-orange-500/10', text: 'text-orange-600', border: 'border-orange-500', label: 'Alto' },
-  critical: { bg: 'bg-red-500/10', text: 'text-red-600', border: 'border-red-500', label: 'Crítico' }
+  low: { bg: 'bg-info/10', text: 'text-info', border: 'border-info', label: 'Baixo' },
+  medium: { bg: 'bg-warning/10', text: 'text-warning', border: 'border-warning', label: 'Médio' },
+  high: { bg: 'bg-warning/20', text: 'text-warning', border: 'border-warning', label: 'Alto' },
+  critical: { bg: 'bg-destructive/10', text: 'text-destructive', border: 'border-destructive', label: 'Crítico' }
 };
 
 const DOMAIN_ICONS = {
@@ -138,7 +138,7 @@ export function ClinicalPatternAlerts({ childId }: ClinicalPatternAlertsProps) {
       {alerts.length === 0 ? (
         <Card>
           <CardContent className="p-8 text-center">
-            <CheckCircle className="w-12 h-12 mx-auto mb-4 text-green-500" />
+            <CheckCircle className="w-12 h-12 mx-auto mb-4 text-success" />
             <p className="text-muted-foreground">Nenhum alerta detectado</p>
             <p className="text-sm text-muted-foreground mt-1">
               O sistema monitora continuamente os padrões do paciente
@@ -167,7 +167,7 @@ export function ClinicalPatternAlerts({ childId }: ClinicalPatternAlertsProps) {
                         <div className="flex items-center gap-2">
                           <h4 className="font-medium">{alert.title}</h4>
                           {alert.is_acknowledged && (
-                            <CheckCircle className="w-4 h-4 text-green-500" />
+                            <CheckCircle className="w-4 h-4 text-success" />
                           )}
                         </div>
                         <p className="text-sm text-muted-foreground mt-1">

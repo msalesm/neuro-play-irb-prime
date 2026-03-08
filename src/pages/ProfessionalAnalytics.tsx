@@ -359,9 +359,9 @@ export default function ProfessionalAnalytics() {
 
         {/* Abandonment Alerts */}
         {analyticsData.alerts.length > 0 && (
-          <Card className="border-orange-500/30">
+          <Card className="border-warning/30">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-orange-500">
+              <CardTitle className="flex items-center gap-2 text-warning">
                 <AlertTriangle className="w-5 h-5" />
                 Alertas de Abandono
               </CardTitle>

@@ -92,7 +92,7 @@ export function EmotionalTimeline({ emotionalHistory, sessions }: EmotionalTimel
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Heart className="w-5 h-5 text-red-500" />
+            <Heart className="w-5 h-5 text-destructive" />
             Timeline Emocional
           </div>
           <div className="flex items-center gap-2">
