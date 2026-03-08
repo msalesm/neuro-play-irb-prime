@@ -64,7 +64,7 @@ export function ProfessionalScheduleManager({ schedules, onUpdate }: Props) {
             return (
               <div 
                 key={day.value} 
-                className={`p-4 rounded-lg border ${schedule.is_available ? 'bg-green-50 border-green-200' : 'bg-muted/50'}`}
+                className={`p-4 rounded-lg border ${schedule.is_available ? 'bg-success/5 border-success/20' : 'bg-muted/50'}`}
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3 min-w-[120px]">
