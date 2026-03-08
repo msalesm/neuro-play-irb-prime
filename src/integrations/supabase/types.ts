@@ -323,6 +323,222 @@ export type Database = {
           },
         ]
       }
+      aba_np_clinical_notes: {
+        Row: {
+          child_id: string
+          content: string
+          created_at: string
+          id: string
+          note_type: string
+          program_id: string | null
+          session_id: string | null
+          tags: string[] | null
+          therapist_id: string
+        }
+        Insert: {
+          child_id: string
+          content: string
+          created_at?: string
+          id?: string
+          note_type?: string
+          program_id?: string | null
+          session_id?: string | null
+          tags?: string[] | null
+          therapist_id: string
+        }
+        Update: {
+          child_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          note_type?: string
+          program_id?: string | null
+          session_id?: string | null
+          tags?: string[] | null
+          therapist_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_clinical_notes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "aba_profissionais_view"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_clinical_notes_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aba_np_game_mapping: {
+        Row: {
+          created_at: string
+          game_id: string
+          id: string
+          is_recommended: boolean
+          program_id: string | null
+          recommendation_reason: string | null
+          skill_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          game_id: string
+          id?: string
+          is_recommended?: boolean
+          program_id?: string | null
+          recommendation_reason?: string | null
+          skill_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          game_id?: string
+          id?: string
+          is_recommended?: boolean
+          program_id?: string | null
+          recommendation_reason?: string | null
+          skill_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_game_mapping_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "cognitive_games"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_game_mapping_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_game_mapping_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_skills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      aba_np_goals: {
+        Row: {
+          achieved_at: string | null
+          created_at: string
+          goal_description: string
+          id: string
+          intervention_id: string | null
+          program_id: string
+          review_date: string | null
+          status: string
+          success_criteria: string | null
+          target_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          achieved_at?: string | null
+          created_at?: string
+          goal_description: string
+          id?: string
+          intervention_id?: string | null
+          program_id: string
+          review_date?: string | null
+          status?: string
+          success_criteria?: string | null
+          target_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          achieved_at?: string | null
+          created_at?: string
+          goal_description?: string
+          id?: string
+          intervention_id?: string | null
+          program_id?: string
+          review_date?: string | null
+          status?: string
+          success_criteria?: string | null
+          target_date?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_goals_intervention_id_fkey"
+            columns: ["intervention_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_interventions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_goals_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aba_np_interventions: {
         Row: {
           baseline_level: number | null
@@ -491,6 +707,100 @@ export type Database = {
           },
         ]
       }
+      aba_np_progress: {
+        Row: {
+          accuracy_rate: number | null
+          avg_prompt_level: number | null
+          calculated_at: string
+          child_id: string
+          id: string
+          independence_level: number | null
+          notes: string | null
+          period_end: string
+          period_start: string
+          program_id: string
+          prompt_reduction_trend: string | null
+          total_sessions: number
+          total_trials: number
+          trend: string | null
+        }
+        Insert: {
+          accuracy_rate?: number | null
+          avg_prompt_level?: number | null
+          calculated_at?: string
+          child_id: string
+          id?: string
+          independence_level?: number | null
+          notes?: string | null
+          period_end: string
+          period_start: string
+          program_id: string
+          prompt_reduction_trend?: string | null
+          total_sessions?: number
+          total_trials?: number
+          trend?: string | null
+        }
+        Update: {
+          accuracy_rate?: number | null
+          avg_prompt_level?: number | null
+          calculated_at?: string
+          child_id?: string
+          id?: string
+          independence_level?: number | null
+          notes?: string | null
+          period_end?: string
+          period_start?: string
+          program_id?: string
+          prompt_reduction_trend?: string | null
+          total_sessions?: number
+          total_trials?: number
+          trend?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_progress_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_progress_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_progress_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_progress_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_progress_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_progress_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aba_np_reinforcements: {
         Row: {
           category: string | null
@@ -627,6 +937,115 @@ export type Database = {
           },
         ]
       }
+      aba_np_sessions: {
+        Row: {
+          child_id: string
+          created_at: string
+          duration_minutes: number | null
+          environment: string | null
+          id: string
+          notes: string | null
+          program_id: string
+          session_date: string
+          session_number: number
+          status: string
+          therapist_id: string
+          updated_at: string
+        }
+        Insert: {
+          child_id: string
+          created_at?: string
+          duration_minutes?: number | null
+          environment?: string | null
+          id?: string
+          notes?: string | null
+          program_id: string
+          session_date?: string
+          session_number?: number
+          status?: string
+          therapist_id: string
+          updated_at?: string
+        }
+        Update: {
+          child_id?: string
+          created_at?: string
+          duration_minutes?: number | null
+          environment?: string | null
+          id?: string
+          notes?: string | null
+          program_id?: string
+          session_date?: string
+          session_number?: number
+          status?: string
+          therapist_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_sessions_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_sessions_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "aba_profissionais_view"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "aba_np_sessions_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_sessions_therapist_id_fkey"
+            columns: ["therapist_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       aba_np_skills: {
         Row: {
           created_at: string | null
@@ -677,6 +1096,7 @@ export type Database = {
           reinforcement_given: boolean | null
           reinforcement_type: string | null
           response: string | null
+          session_id: string | null
           session_number: number | null
         }
         Insert: {
@@ -692,6 +1112,7 @@ export type Database = {
           reinforcement_given?: boolean | null
           reinforcement_type?: string | null
           response?: string | null
+          session_id?: string | null
           session_number?: number | null
         }
         Update: {
@@ -707,6 +1128,7 @@ export type Database = {
           reinforcement_given?: boolean | null
           reinforcement_type?: string | null
           response?: string | null
+          session_id?: string | null
           session_number?: number | null
         }
         Relationships: [
@@ -771,6 +1193,13 @@ export type Database = {
             columns: ["recorded_by"]
             isOneToOne: false
             referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "aba_np_sessions"
             referencedColumns: ["id"]
           },
         ]
