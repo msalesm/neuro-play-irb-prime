@@ -5,7 +5,7 @@ import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Sparkles, Star, Trophy, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { GameOnboarding } from '@/components/GameOnboarding';
+import { GameOnboarding } from '@/components/games';
 
 interface PuzzlePiece {
   id: number;

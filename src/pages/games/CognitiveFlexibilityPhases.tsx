@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Trophy, Star, Zap } from 'lucide-react';
-import { GamePhaseSelector } from '@/components/GamePhaseSelector';
+import { GamePhaseSelector } from '@/components/games';
 import { useGamePhaseProgress } from '@/hooks/useGamePhaseProgress';
 import { cognitiveFlexibilityPhases } from '@/data/game-phases/cognitive-flexibility-phases';
 import { GamePhase } from '@/types/game-phase';
