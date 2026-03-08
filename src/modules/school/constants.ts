@@ -44,11 +44,11 @@ export const EDUCATIONAL_LABELS = {
 /** Quick activities available for 3-min school sessions */
 export const QUICK_ACTIVITIES = [
   {
-    id: 'focus-quest',
+    id: 'foco-rapido',
     name: 'Foco Rápido',
     description: 'Encontre os alvos antes do tempo acabar',
     domain: 'attention' as const,
-    path: '/games/focus-quest',
+    path: '/games/foco-rapido-phases',
     durationSeconds: 120,
     icon: '🎯',
   },

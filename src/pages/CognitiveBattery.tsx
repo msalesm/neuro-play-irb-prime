@@ -25,7 +25,7 @@ const BATTERY_TASKS = [
     domain: 'Memória Operacional',
     description: 'Span crescente — memorize sequências cada vez maiores',
     icon: Brain,
-    path: '/games/memory-sequence-builder',
+    path: '/games/cosmic-sequence',
     duration: '~3 min',
     color: 'text-secondary',
   },
