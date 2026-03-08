@@ -16,7 +16,7 @@ export async function fetchSocialStories(status?: string) {
     query = query.eq('status', status);
   }
 
-  const { data, error } = await query;
+  const { data, error } = await query.returns<any[]>();
   if (error) throw error;
   return data || [];
 }
@@ -41,12 +41,12 @@ export async function saveStoryDecision(params: {
 }) {
   const { error } = await supabase
     .from('story_decisions')
-    .insert({
+    .insert([{
       user_id: params.userId,
       story_id: params.storyId,
-      scene_id: params.sceneId,
-      choice_id: params.choiceId,
+      decision_point_id: params.sceneId,
+      decision_text: params.choiceId,
       decision_time_ms: params.decisionTimeMs,
-    });
+    }]);
   if (error) throw error;
 }

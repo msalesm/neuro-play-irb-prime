@@ -27,7 +27,8 @@ export async function fetchScreenings(childId: string) {
     .from('screenings')
     .select('*')
     .eq('child_id', childId)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .returns<any[]>();
   if (error) throw error;
   return data || [];
 }
@@ -38,7 +39,8 @@ export async function fetchEmotionalCheckins(childId: string, limit = 30) {
     .select('*')
     .eq('child_id', childId)
     .order('created_at', { ascending: false })
-    .limit(limit);
+    .limit(limit)
+    .returns<any[]>();
   if (error) throw error;
   return data || [];
 }
