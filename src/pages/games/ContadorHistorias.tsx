@@ -327,7 +327,7 @@ export default function ContadorHistorias() {
         </div>
 
         {/* Narrator Character */}
-        <Card className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+        <Card className="mb-6 bg-gradient-to-r from-secondary to-destructive text-primary-foreground">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className={`text-6xl transition-transform duration-1000 ${magicEffect ? 'animate-spin' : ''}`}>

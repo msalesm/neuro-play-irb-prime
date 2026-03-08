@@ -242,7 +242,7 @@ export default function CooperativePuzzle() {
                     >
                       {piece && (
                         <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">
+                          <span className="text-primary-foreground text-xs font-bold">
                             {piece.placedBy === 'host' ? '👨‍👩‍👧' : '👧'}
                           </span>
                         </div>

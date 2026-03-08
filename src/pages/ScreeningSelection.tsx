@@ -80,7 +80,7 @@ export default function ScreeningSelection() {
               <div className={`h-2 bg-gradient-to-r ${screening.color}`} />
               <CardHeader>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className={`p-3 rounded-lg bg-gradient-to-r ${screening.color} text-white`}>
+                  <div className={`p-3 rounded-lg bg-gradient-to-r ${screening.color} text-primary-foreground`}>
                     <screening.icon className="h-6 w-6" />
                   </div>
                   <div>

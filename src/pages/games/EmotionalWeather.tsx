@@ -456,7 +456,7 @@ export default function EmotionalWeather() {
                 >
                   {/* Weather Effects */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white bg-black/20 rounded-lg p-6 backdrop-blur-sm">
+                    <div className="text-center text-primary-foreground bg-foreground/20 rounded-lg p-6 backdrop-blur-sm">
                       <div className="text-6xl mb-4">
                         {currentWeather.weather === 'sunny' && '☀️'}
                         {currentWeather.weather === 'cloudy' && '☁️'}
@@ -472,9 +472,9 @@ export default function EmotionalWeather() {
 
                   {/* Active Tool Display */}
                   {activeTool && (
-                    <div className="absolute top-4 right-4 bg-white/90 rounded-lg p-3 shadow-lg">
+                    <div className="absolute top-4 right-4 bg-card/90 rounded-lg p-3 shadow-lg">
                       <div className="flex items-center gap-2 mb-2">
-                        <div className={`p-2 rounded ${activeTool.color} text-white`}>
+                        <div className={`p-2 rounded ${activeTool.color} text-primary-foreground`}>
                           {activeTool.icon}
                         </div>
                         <div>
@@ -594,7 +594,7 @@ export default function EmotionalWeather() {
                         onClick={() => useTool(tool)}
                         disabled={!isPlaying || isActive}
                       >
-                        <div className={`p-2 rounded ${tool.color} text-white`}>
+                        <div className={`p-2 rounded ${tool.color} text-primary-foreground`}>
                           {tool.icon}
                         </div>
                         <div className="text-center">

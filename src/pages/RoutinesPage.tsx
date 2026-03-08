@@ -22,7 +22,6 @@ export default function RoutinesPage() {
     trackScreenView('routines_page');
   }, [trackScreenView]);
 
-  // Filter routines based on tab
   const filteredRoutines = routines.filter(r => {
     if (activeTab === 'all') return true;
     if (activeTab === 'templates') return r.is_template;
@@ -30,7 +29,6 @@ export default function RoutinesPage() {
     return true;
   });
 
-  // Group template routines
   const morningRoutines = filteredRoutines.filter(r => r.routine_type === 'manha');
   const schoolRoutines = filteredRoutines.filter(r => r.routine_type === 'escola');
   const nightRoutines = filteredRoutines.filter(r => r.routine_type === 'noite');
@@ -58,15 +56,15 @@ export default function RoutinesPage() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-white hover:bg-white/10">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="text-primary-foreground hover:bg-primary-foreground/10">
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-[hsl(40,55%,51%)]" />
+            <h1 className="text-2xl font-bold text-primary-foreground flex items-center gap-2">
+              <Sparkles className="h-6 w-6 text-warning" />
               Minhas Rotinas
             </h1>
-            <p className="text-white/70">Organize seu dia passo a passo</p>
+            <p className="text-primary-foreground/70">Organize seu dia passo a passo</p>
           </div>
         </motion.div>
 
@@ -82,14 +80,14 @@ export default function RoutinesPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 bg-white/10">
-            <TabsTrigger value="all" className="text-white data-[state=active]:bg-white/20">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 bg-primary-foreground/10">
+            <TabsTrigger value="all" className="text-primary-foreground data-[state=active]:bg-primary-foreground/20">
               Todas
             </TabsTrigger>
-            <TabsTrigger value="templates" className="text-white data-[state=active]:bg-white/20">
+            <TabsTrigger value="templates" className="text-primary-foreground data-[state=active]:bg-primary-foreground/20">
               Modelos
             </TabsTrigger>
-            <TabsTrigger value="custom" className="text-white data-[state=active]:bg-white/20">
+            <TabsTrigger value="custom" className="text-primary-foreground data-[state=active]:bg-primary-foreground/20">
               Minhas
             </TabsTrigger>
           </TabsList>
@@ -123,12 +121,11 @@ export default function RoutinesPage() {
             animate="visible"
             className="space-y-6"
           >
-            {/* Morning Routines */}
             {morningRoutines.length > 0 && (
               <motion.div variants={itemVariants}>
                 <div className="flex items-center gap-2 mb-3">
-                  <Sun className="h-5 w-5 text-amber-500" />
-                  <h2 className="text-lg font-semibold text-white">Manhã</h2>
+                  <Sun className="h-5 w-5 text-warning" />
+                  <h2 className="text-lg font-semibold text-primary-foreground">Manhã</h2>
                 </div>
                 <div className="space-y-3">
                   {morningRoutines.map((routine) => (
@@ -138,12 +135,11 @@ export default function RoutinesPage() {
               </motion.div>
             )}
 
-            {/* School Routines */}
             {schoolRoutines.length > 0 && (
               <motion.div variants={itemVariants}>
                 <div className="flex items-center gap-2 mb-3">
-                  <School className="h-5 w-5 text-blue-500" />
-                  <h2 className="text-lg font-semibold text-white">Escola</h2>
+                  <School className="h-5 w-5 text-info" />
+                  <h2 className="text-lg font-semibold text-primary-foreground">Escola</h2>
                 </div>
                 <div className="space-y-3">
                   {schoolRoutines.map((routine) => (
@@ -153,12 +149,11 @@ export default function RoutinesPage() {
               </motion.div>
             )}
 
-            {/* Night Routines */}
             {nightRoutines.length > 0 && (
               <motion.div variants={itemVariants}>
                 <div className="flex items-center gap-2 mb-3">
-                  <Moon className="h-5 w-5 text-indigo-500" />
-                  <h2 className="text-lg font-semibold text-white">Noite</h2>
+                  <Moon className="h-5 w-5 text-secondary" />
+                  <h2 className="text-lg font-semibold text-primary-foreground">Noite</h2>
                 </div>
                 <div className="space-y-3">
                   {nightRoutines.map((routine) => (
@@ -168,12 +163,11 @@ export default function RoutinesPage() {
               </motion.div>
             )}
 
-            {/* Custom Routines */}
             {customRoutines.length > 0 && (
               <motion.div variants={itemVariants}>
                 <div className="flex items-center gap-2 mb-3">
                   <Sparkles className="h-5 w-5 text-primary" />
-                  <h2 className="text-lg font-semibold text-white">Personalizadas</h2>
+                  <h2 className="text-lg font-semibold text-primary-foreground">Personalizadas</h2>
                 </div>
                 <div className="space-y-3">
                   {customRoutines.map((routine) => (
@@ -183,12 +177,11 @@ export default function RoutinesPage() {
               </motion.div>
             )}
 
-            {/* Empty State */}
             {filteredRoutines.length === 0 && !loading && (
-              <Card className="bg-white/5 border-white/20">
+              <Card className="bg-primary-foreground/5 border-primary-foreground/20">
                 <CardContent className="p-8 text-center">
-                  <Sparkles className="h-12 w-12 mx-auto mb-4 text-white/40" />
-                  <p className="text-white/70">Nenhuma rotina encontrada</p>
+                  <Sparkles className="h-12 w-12 mx-auto mb-4 text-primary-foreground/40" />
+                  <p className="text-primary-foreground/70">Nenhuma rotina encontrada</p>
                 </CardContent>
               </Card>
             )}
@@ -203,7 +196,7 @@ export default function RoutinesPage() {
         >
           <Button
             size="lg"
-            className="rounded-full h-14 w-14 shadow-lg bg-[hsl(40,55%,51%)] hover:bg-[hsl(40,55%,41%)]"
+            className="rounded-full h-14 w-14 shadow-lg bg-warning hover:bg-warning/90"
             onClick={() => navigate('/rotinas/criar')}
           >
             <Plus className="h-6 w-6" />
@@ -214,7 +207,6 @@ export default function RoutinesPage() {
   );
 }
 
-// Helper component to show routine with steps count
 function RoutineCardWithSteps({ routine }: { routine: any }) {
   const navigate = useNavigate();
   const { steps } = useRoutineSteps(routine.id);
