@@ -1,23 +1,21 @@
 /**
  * Core module barrel export
  * 
- * Central access point for all platform engines and systems.
+ * Roles & Navigation remain in core.
+ * Domain engines have moved to src/modules/*.
+ * Re-exports kept for backward compatibility.
  */
 
-// Role & Permission System
+// ── Core (stays here) ────────────────────────────────────
 export * from './roles';
-
-// Navigation Configuration
 export * from './navigation';
 
-// Game Engine
+// ── Module re-exports (backward compatibility) ───────────
+// @deprecated Use '@/modules/games' directly
 export * from './game-engine';
-
-// Behavioral Profile Engine
+// @deprecated Use '@/modules/behavioral' directly
 export * from './behavioral-profile-engine';
-
-// Report Engine
+// @deprecated Use '@/modules/reports' directly
 export * from './report-engine';
-
-// ABA Engine
+// @deprecated Use '@/modules/aba' directly
 export * from './aba-engine';
