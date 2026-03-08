@@ -66,6 +66,7 @@ interface EditPatientModalProps {
 export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPatientModalProps) {
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
