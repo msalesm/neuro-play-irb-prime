@@ -4,28 +4,24 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUserRole } from '@/hooks/useUserRole';
-import { useAbaIntegration } from '@/hooks/useAbaIntegration';
+import { useAbaNativeData } from '@/hooks/useAbaNativeData';
 import { 
-  Brain, BookOpen, Users, BarChart3, RefreshCw, 
+  Brain, BookOpen, Users, BarChart3, FileText,
   Activity, AlertTriangle, TrendingUp, Clock, 
-  CheckCircle, XCircle 
+  CheckCircle, Percent
 } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { AbaProgramsList } from './AbaProgramsList';
 import { AbaSkillsLibrary } from './AbaSkillsLibrary';
 import { AbaTrialCollector } from './AbaTrialCollector';
 import { AbaProgramDetail } from './AbaProgramDetail';
-import { AbaAprendizDetail } from '@/components/aba/AbaAprendizDetail';
+import { AbaReportsPanel } from './AbaReportsPanel';
 
 export function AbaNeuroPlayDashboard() {
   const { isTherapist, isAdmin } = useUserRole();
-  const { aprendizes, syncLogs, neuroScores, alerts, loading, syncing, triggerSync } = useAbaIntegration();
+  const { aprendizes, profissionais, atendimentos, desempenho, loading, kpis } = useAbaNativeData();
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
-  const [selectedAprendiz, setSelectedAprendiz] = useState<string | null>(null);
 
-  // Detail views
   if (selectedProgramId && selectedChildId) {
     return (
       <AbaProgramDetail
@@ -36,43 +32,20 @@ export function AbaNeuroPlayDashboard() {
     );
   }
 
-  if (selectedAprendiz) {
-    return (
-      <AbaAprendizDetail
-        codigoAprendiz={selectedAprendiz}
-        onBack={() => setSelectedAprendiz(null)}
-      />
-    );
-  }
-
   const isTherapistOrAdmin = isTherapist || isAdmin;
-
-  const avgScore = neuroScores.length > 0
-    ? Math.round(neuroScores.reduce((s: number, n: any) => s + (n.score || 0), 0) / neuroScores.length)
-    : 0;
-
-  const activeAlerts = alerts.filter((a: any) => a.alert_type);
-  const lastSync = syncLogs[0];
+  const regressoes = kpis.regressoes;
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Brain className="h-6 w-6 text-primary" />
-            ABA NeuroPlay
-          </h2>
-          <p className="text-muted-foreground">
-            Programas ABA integrados com dados do prontuário ABAMais
-          </p>
-        </div>
-        {isTherapistOrAdmin && (
-          <Button onClick={() => triggerSync()} disabled={syncing} variant="outline">
-            <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? 'animate-spin' : ''}`} />
-            {syncing ? 'Sincronizando...' : 'Sincronizar'}
-          </Button>
-        )}
+      <div>
+        <h2 className="text-2xl font-bold flex items-center gap-2">
+          <Brain className="h-6 w-6 text-primary" />
+          ABA NeuroPlay
+        </h2>
+        <p className="text-muted-foreground">
+          Dados clínicos nativos da plataforma com modelo compatível ABA+
+        </p>
       </div>
 
       {/* KPIs */}
@@ -82,7 +55,7 @@ export function AbaNeuroPlayDashboard() {
             <div className="flex items-center gap-3">
               <Users className="h-8 w-8 text-primary" />
               <div>
-                <p className="text-2xl font-bold">{aprendizes.length}</p>
+                <p className="text-2xl font-bold">{kpis.totalAprendizes}</p>
                 <p className="text-sm text-muted-foreground">Aprendizes</p>
               </div>
             </div>
@@ -92,10 +65,10 @@ export function AbaNeuroPlayDashboard() {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <TrendingUp className="h-8 w-8 text-emerald-500" />
+              <TrendingUp className="h-8 w-8 text-primary" />
               <div>
-                <p className="text-2xl font-bold">{avgScore}</p>
-                <p className="text-sm text-muted-foreground">Score Médio</p>
+                <p className="text-2xl font-bold">{kpis.avgIndependencia}%</p>
+                <p className="text-sm text-muted-foreground">Independência</p>
               </div>
             </div>
           </CardContent>
@@ -104,10 +77,10 @@ export function AbaNeuroPlayDashboard() {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <AlertTriangle className="h-8 w-8 text-amber-500" />
+              <Percent className="h-8 w-8 text-primary" />
               <div>
-                <p className="text-2xl font-bold">{activeAlerts.length}</p>
-                <p className="text-sm text-muted-foreground">Alertas</p>
+                <p className="text-2xl font-bold">{100 - kpis.taxaFaltas}%</p>
+                <p className="text-sm text-muted-foreground">Comparecimento</p>
               </div>
             </div>
           </CardContent>
@@ -116,14 +89,10 @@ export function AbaNeuroPlayDashboard() {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <Clock className="h-8 w-8 text-muted-foreground" />
+              <AlertTriangle className="h-8 w-8 text-destructive" />
               <div>
-                <p className="text-sm font-medium">
-                  {lastSync
-                    ? format(new Date(lastSync.started_at), "dd/MM HH:mm", { locale: ptBR })
-                    : 'Nunca'}
-                </p>
-                <p className="text-sm text-muted-foreground">Última Sync</p>
+                <p className="text-2xl font-bold">{regressoes.length}</p>
+                <p className="text-sm text-muted-foreground">Regressões</p>
               </div>
             </div>
           </CardContent>
@@ -145,82 +114,56 @@ export function AbaNeuroPlayDashboard() {
             <BookOpen className="h-4 w-4" />
             Habilidades
           </TabsTrigger>
-          <TabsTrigger value="alerts" className="flex items-center gap-1.5">
-            <AlertTriangle className="h-4 w-4" />
-            Alertas
-            {activeAlerts.length > 0 && (
-              <Badge variant="destructive" className="ml-1 h-5 px-1.5 text-[10px]">
-                {activeAlerts.length}
-              </Badge>
-            )}
+          <TabsTrigger value="desempenho" className="flex items-center gap-1.5">
+            <BarChart3 className="h-4 w-4" />
+            Desempenho
+          </TabsTrigger>
+          <TabsTrigger value="reports" className="flex items-center gap-1.5">
+            <FileText className="h-4 w-4" />
+            Relatórios
           </TabsTrigger>
           {isTherapistOrAdmin && (
             <TabsTrigger value="collect" className="flex items-center gap-1.5">
-              <BarChart3 className="h-4 w-4" />
+              <CheckCircle className="h-4 w-4" />
               Coleta Rápida
             </TabsTrigger>
           )}
-          <TabsTrigger value="sync" className="flex items-center gap-1.5">
-            <RefreshCw className="h-4 w-4" />
-            Sincronização
-          </TabsTrigger>
         </TabsList>
 
         {/* Aprendizes Tab */}
         <TabsContent value="aprendizes">
           <Card>
             <CardHeader>
-              <CardTitle>Aprendizes ABA</CardTitle>
-              <CardDescription>Clique em um aprendiz para ver detalhes e relatórios</CardDescription>
+              <CardTitle>Aprendizes (Dados Nativos)</CardTitle>
+              <CardDescription>Pacientes cadastrados na plataforma NeuroPlay</CardDescription>
             </CardHeader>
             <CardContent>
               {loading ? (
                 <p className="text-center text-muted-foreground py-8">Carregando...</p>
               ) : aprendizes.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
-                  Nenhum aprendiz sincronizado. Clique em "Sincronizar".
+                  Nenhum paciente cadastrado.
                 </p>
               ) : (
                 <div className="space-y-2">
-                  {aprendizes.map((ap: any) => {
-                    const score = neuroScores.find(
-                      (s: any) => s.codigo_aprendiz === ap.codigo_aprendiz
-                    );
-                    return (
-                      <div
-                        key={ap.id}
-                        className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-accent/50 transition-colors"
-                        onClick={() => setSelectedAprendiz(ap.codigo_aprendiz)}
-                      >
-                        <div>
-                          <p className="font-medium">{ap.nome}</p>
-                          <p className="text-sm text-muted-foreground">
-                            Código: {ap.codigo_aprendiz}
-                            {ap.convenio && ` • ${ap.convenio}`}
-                            {ap.nivel_suporte && ` • Nível ${ap.nivel_suporte}`}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {score && (
-                            <Badge
-                              variant={
-                                score.score >= 70
-                                  ? 'default'
-                                  : score.score >= 40
-                                  ? 'secondary'
-                                  : 'destructive'
-                              }
-                            >
-                              Score: {score.score}
-                            </Badge>
-                          )}
-                          {score?.alert_type && (
-                            <AlertTriangle className="h-4 w-4 text-amber-500" />
-                          )}
-                        </div>
+                  {aprendizes.map((ap) => (
+                    <div
+                      key={ap.codigoAprendiz}
+                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent/50 transition-colors"
+                    >
+                      <div>
+                        <p className="font-medium">{ap.aprendiz}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {ap.convenio && `${ap.convenio} • `}
+                          {ap.nivelSuporte && `Nível ${ap.nivelSuporte} • `}
+                          {ap.dataNascimento}
+                        </p>
                       </div>
-                    );
-                  })}
+                      <div className="flex items-center gap-2">
+                        {ap.convenio && <Badge variant="outline">{ap.convenio}</Badge>}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               )}
             </CardContent>
@@ -242,47 +185,63 @@ export function AbaNeuroPlayDashboard() {
           <AbaSkillsLibrary />
         </TabsContent>
 
-        {/* Alerts Tab */}
-        <TabsContent value="alerts">
+        {/* Desempenho Tab */}
+        <TabsContent value="desempenho">
           <Card>
             <CardHeader>
-              <CardTitle>Alertas de Risco</CardTitle>
-              <CardDescription>Aprendizes que precisam de atenção</CardDescription>
+              <CardTitle>Desempenho por Programa ABA</CardTitle>
+              <CardDescription>Métricas calculadas a partir das tentativas registradas</CardDescription>
             </CardHeader>
             <CardContent>
-              {activeAlerts.length === 0 ? (
+              {desempenho.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
-                  Nenhum alerta ativo.
+                  Nenhuma tentativa registrada. Use a aba "Coleta Rápida" para registrar.
                 </p>
               ) : (
                 <div className="space-y-3">
-                  {activeAlerts.map((alert: any) => (
-                    <div
-                      key={alert.id}
-                      className="flex items-start gap-3 p-4 border rounded-lg border-amber-200 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-800"
-                    >
-                      <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                      <div>
-                        <p className="font-medium">
-                          {(alert as any).aba_aprendizes?.nome || alert.codigo_aprendiz}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {alert.alert_message}
-                        </p>
-                        <Badge variant="outline" className="mt-1">
-                          {alert.alert_type === 'faltas_consecutivas'
-                            ? 'Faltas Consecutivas'
-                            : alert.alert_type === 'queda_desempenho'
-                            ? 'Queda de Desempenho'
-                            : alert.alert_type}
+                  {desempenho.map((d, i) => (
+                    <div key={i} className="p-4 border rounded-lg space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">{d.programa}</p>
+                          <p className="text-sm text-muted-foreground">{d.habilidade}</p>
+                        </div>
+                        <Badge
+                          variant={
+                            d.nivelIndependencia === 'Excelente' ? 'default' :
+                            d.nivelIndependencia === 'Ótimo' ? 'default' :
+                            d.nivelIndependencia === 'Bom' ? 'secondary' : 'destructive'
+                          }
+                        >
+                          {d.nivelIndependencia}
                         </Badge>
                       </div>
+                      <div className="grid grid-cols-3 gap-2 text-center text-sm">
+                        <div className="p-2 bg-muted rounded">
+                          <p className="font-bold text-destructive">{d.percentualErro}%</p>
+                          <p className="text-xs text-muted-foreground">Erro</p>
+                        </div>
+                        <div className="p-2 bg-muted rounded">
+                          <p className="font-bold text-amber-600">{d.percentualAjuda}%</p>
+                          <p className="text-xs text-muted-foreground">Ajuda</p>
+                        </div>
+                        <div className="p-2 bg-muted rounded">
+                          <p className="font-bold text-primary">{d.percentualIndependencia}%</p>
+                          <p className="text-xs text-muted-foreground">Independência</p>
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{d.totalTrials} tentativas registradas</p>
                     </div>
                   ))}
                 </div>
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Reports Tab */}
+        <TabsContent value="reports">
+          <AbaReportsPanel kpis={kpis} />
         </TabsContent>
 
         {/* Collect Tab */}
@@ -291,57 +250,6 @@ export function AbaNeuroPlayDashboard() {
             <AbaTrialCollector />
           </TabsContent>
         )}
-
-        {/* Sync Tab */}
-        <TabsContent value="sync">
-          <Card>
-            <CardHeader>
-              <CardTitle>Histórico de Sincronização</CardTitle>
-              <CardDescription>Dados importados do ABA+</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {syncLogs.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8">
-                  Nenhuma sincronização realizada.
-                </p>
-              ) : (
-                <div className="space-y-2">
-                  {syncLogs.map((log: any) => (
-                    <div
-                      key={log.id}
-                      className="flex items-center justify-between p-3 border rounded-lg"
-                    >
-                      <div className="flex items-center gap-3">
-                        {log.status === 'completed' ? (
-                          <CheckCircle className="h-5 w-5 text-emerald-500" />
-                        ) : log.status === 'partial' ? (
-                          <AlertTriangle className="h-5 w-5 text-amber-500" />
-                        ) : log.status === 'started' ? (
-                          <RefreshCw className="h-5 w-5 text-primary animate-spin" />
-                        ) : (
-                          <XCircle className="h-5 w-5 text-destructive" />
-                        )}
-                        <div>
-                          <p className="text-sm font-medium">{log.sync_type}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {format(new Date(log.started_at), "dd/MM/yyyy HH:mm:ss", {
-                              locale: ptBR,
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <Badge variant={log.status === 'completed' ? 'default' : 'secondary'}>
-                          {log.records_synced || 0} registros
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
     </div>
   );
