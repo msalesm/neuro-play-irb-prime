@@ -217,7 +217,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
               {/* Socioemocional */}
               <div className="text-center p-4 rounded-lg bg-muted/30">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <Heart className="w-5 h-5 text-red-500" />
+                  <Heart className="w-5 h-5 text-destructive" />
                   <span className="font-medium">Socioemocional</span>
                   {getScoreTrend(latestAssessment.socioemotional_score, previousAssessment?.socioemotional_score)}
                 </div>
@@ -254,10 +254,10 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
                 >
                   <div className="flex items-center gap-4">
                     <div className={`p-2 rounded-lg ${
-                      session.status === 'completed' ? 'bg-green-500/10' : 'bg-muted'
+                      session.status === 'completed' ? 'bg-success/10' : 'bg-muted'
                     }`}>
                       <Video className={`w-5 h-5 ${
-                        session.status === 'completed' ? 'text-green-600' : 'text-muted-foreground'
+                        session.status === 'completed' ? 'text-success' : 'text-muted-foreground'
                       }`} />
                     </div>
                     <div>
@@ -332,7 +332,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
                   </div>
                   <div className="flex-1 flex gap-2">
                     <div 
-                      className="h-4 rounded bg-red-500/60"
+                      className="h-4 rounded bg-destructive/60"
                       style={{ width: `${assessment.socioemotional_score}%` }}
                       title={`Socioemocional: ${assessment.socioemotional_score}%`}
                     />
@@ -348,7 +348,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
                 <div className="w-3 h-3 rounded bg-[#005a70]/60" /> Comportamental
               </span>
               <span className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded bg-red-500/60" /> Socioemocional
+                <div className="w-3 h-3 rounded bg-destructive/60" /> Socioemocional
               </span>
             </div>
           </CardContent>
