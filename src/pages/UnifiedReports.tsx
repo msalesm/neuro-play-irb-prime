@@ -577,9 +577,9 @@ export default function UnifiedReports() {
                             <div 
                               key={idx} 
                               className={`flex items-start gap-2 text-xs p-2.5 rounded-lg ${
-                                alert.type === 'warning' ? 'bg-yellow-500/10 text-yellow-700 dark:text-yellow-400' :
-                                alert.type === 'success' ? 'bg-green-500/10 text-green-700 dark:text-green-400' :
-                                'bg-blue-500/10 text-blue-700 dark:text-blue-400'
+                                 alert.type === 'warning' ? 'bg-warning/10 text-warning' :
+                                 alert.type === 'success' ? 'bg-success/10 text-success' :
+                                 'bg-info/10 text-info'
                               }`}
                             >
                               {alert.type === 'warning' ? <AlertTriangle className="h-3.5 w-3.5 mt-0.5 flex-shrink-0" /> :
