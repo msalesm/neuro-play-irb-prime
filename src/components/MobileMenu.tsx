@@ -100,6 +100,7 @@ export function MobileMenu() {
         { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
         { title: 'Anamnese', path: '/anamnese', icon: ClipboardList, badge: 'Novo' },
         { title: 'Relatório Clínico', path: '/reports', icon: FileText },
+        { title: 'ABA NeuroPlay', path: '/aba-neuroplay', icon: Activity },
         { title: 'Mensagens', path: '/messages', icon: Mail },
       ],
     });
