@@ -72,10 +72,10 @@ export const TourAchievementsPanel = () => {
               achievement.unlocked
                 ? 'border-2 hover:shadow-lg cursor-default'
                 : 'opacity-60 border-dashed',
-              achievement.unlocked && achievement.rarity === 'legendary' && 'border-amber-500/50',
-              achievement.unlocked && achievement.rarity === 'epic' && 'border-purple-500/50',
-              achievement.unlocked && achievement.rarity === 'rare' && 'border-blue-500/50',
-              achievement.unlocked && achievement.rarity === 'common' && 'border-gray-500/50'
+              achievement.unlocked && achievement.rarity === 'legendary' && 'border-warning/50',
+              achievement.unlocked && achievement.rarity === 'epic' && 'border-primary/50',
+              achievement.unlocked && achievement.rarity === 'rare' && 'border-info/50',
+              achievement.unlocked && achievement.rarity === 'common' && 'border-muted-foreground/50'
             )}>
               {achievement.unlocked && (
                 <div className={cn(

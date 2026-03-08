@@ -67,7 +67,7 @@ export function ModernMetricCard({
       <CardContent className="relative">
         <div className="flex items-center gap-2 mb-2">
           <div className={cn(
-            'text-2xl font-bold text-white',
+            'text-2xl font-bold text-primary-foreground',
             trend && trendColors[trend]
           )}>
             {value}
@@ -75,7 +75,7 @@ export function ModernMetricCard({
         </div>
         
         {description && (
-          <p className="text-xs text-white/60 mb-3">
+          <p className="text-xs text-primary-foreground/60 mb-3">
             {description}
           </p>
         )}
@@ -85,10 +85,10 @@ export function ModernMetricCard({
             <Progress 
               value={progress.value} 
               max={progress.max} 
-              className="h-2 bg-white/20" 
+              className="h-2 bg-primary-foreground/20" 
             />
             {progress.label && (
-              <p className="text-xs text-white/60">
+              <p className="text-xs text-primary-foreground/60">
                 {progress.label}
               </p>
             )}
