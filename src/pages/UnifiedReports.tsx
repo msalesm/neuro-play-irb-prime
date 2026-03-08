@@ -241,9 +241,9 @@ export default function UnifiedReports() {
   const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
     if (!user) return;
 
-    if ((isTherapist || isParent || isTeacher) && !selectedChild) {
+    if ((isAdmin || isTherapist || isParent || isTeacher) && !selectedChild) {
       toast({
-        title: isTherapist ? 'Selecione um paciente' : isTeacher ? 'Selecione um aluno' : 'Selecione um filho',
+        title: isTherapist ? 'Selecione um paciente' : isTeacher ? 'Selecione um aluno' : isAdmin ? 'Selecione uma criança' : 'Selecione um filho',
         description: 'É necessário selecionar para gerar o relatório.',
       });
       return;
