@@ -35,9 +35,10 @@ export function EmotionalCheckInWidget({ childProfileId, onCheckInComplete }: Em
       const mood = moods.find(m => m.key === selectedMood);
       await supabase.from('emotional_checkins').insert({
         user_id: user.id,
-        child_id: childProfileId || null,
+        child_profile_id: childProfileId || null,
         mood_rating: mood?.value || 3,
-        mood_label: selectedMood,
+        scheduled_for: new Date().toISOString(),
+        completed_at: new Date().toISOString(),
         notes: `Check-in via chat: ${mood?.label}`,
       });
 

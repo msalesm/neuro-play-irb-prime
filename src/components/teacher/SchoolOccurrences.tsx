@@ -88,11 +88,11 @@ export function SchoolOccurrences() {
         setStudents(Array.from(uniqueStudents.values()));
       }
 
-      // Fetch occurrences (from school_occurrences or local state)
+      // Fetch occurrences
       const { data: occData } = await supabase
         .from('school_occurrences')
         .select('*, children(name)')
-        .eq('reported_by', user.id)
+        .eq('teacher_id', user.id)
         .order('created_at', { ascending: false })
         .limit(50);
 
@@ -101,11 +101,11 @@ export function SchoolOccurrences() {
           id: o.id,
           child_id: o.child_id,
           child_name: o.children?.name || 'Aluno',
-          category: o.category || 'behavioral',
+          category: o.occurrence_type || 'behavioral',
           description: o.description,
           severity: o.severity || 'medium',
           created_at: o.created_at,
-          resolved: o.resolved || false,
+          resolved: o.follow_up_needed || false,
         }))
       );
     } catch (error) {
@@ -122,10 +122,12 @@ export function SchoolOccurrences() {
     try {
       const { error } = await supabase.from('school_occurrences').insert({
         child_id: selectedChild,
-        reported_by: user.id,
-        category,
+        teacher_id: user.id,
+        occurrence_type: category,
         severity,
         description: description.trim(),
+        title: `${categories.find(c => c.value === category)?.label || category} - ${new Date().toLocaleDateString('pt-BR')}`,
+        occurred_at: new Date().toISOString(),
       });
 
       if (error) throw error;
@@ -151,7 +153,7 @@ export function SchoolOccurrences() {
 
   const toggleResolved = async (id: string, resolved: boolean) => {
     try {
-      await supabase.from('school_occurrences').update({ resolved: !resolved }).eq('id', id);
+      await supabase.from('school_occurrences').update({ follow_up_needed: !resolved }).eq('id', id);
       setOccurrences(prev => prev.map(o => o.id === id ? { ...o, resolved: !resolved } : o));
     } catch (error) {
       console.error(error);
