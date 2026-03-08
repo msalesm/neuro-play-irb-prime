@@ -395,15 +395,15 @@ export default function TouchMapperKeyboard() {
             <Card className="shadow-glow bg-card/80 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Hand className="h-6 w-6 text-orange-600" />
-                  Mapeamento Tátil - Nível {level}
-                </CardTitle>
-                <div className="flex gap-4 text-sm">
-                  <span className="text-orange-600 font-medium">Score: {score}</span>
-                  <span className="text-blue-600 font-medium">Precisão: {accuracy.toFixed(1)}%</span>
-                  <span className="text-green-600 font-medium">
-                    Descobertas: {discoveredPatterns.length}/{currentPatterns.length}
-                  </span>
+                   <Hand className="h-6 w-6 text-warning" />
+                   Mapeamento Tátil - Nível {level}
+                 </CardTitle>
+                 <div className="flex gap-4 text-sm">
+                   <span className="text-warning font-medium">Score: {score}</span>
+                   <span className="text-info font-medium">Precisão: {accuracy.toFixed(1)}%</span>
+                   <span className="text-success font-medium">
+                     Descobertas: {discoveredPatterns.length}/{currentPatterns.length}
+                   </span>
                 </div>
               </CardHeader>
               
@@ -411,7 +411,7 @@ export default function TouchMapperKeyboard() {
                 {/* Current Texture Display */}
                 {currentTexture && (
                   <div className="text-center mb-4">
-                    <Badge className="bg-orange-100 text-orange-800 text-lg px-4 py-2">
+                    <Badge className="bg-warning/10 text-warning text-lg px-4 py-2">
                       <Hand className="h-4 w-4 mr-2" />
                       {currentTexture}
                     </Badge>
@@ -420,7 +420,7 @@ export default function TouchMapperKeyboard() {
 
                 {/* Exploration Area */}
                 <div 
-                  className="relative w-full h-96 bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg border-4 border-orange-300 overflow-hidden select-none"
+                  className="relative w-full h-96 bg-gradient-to-b from-muted to-muted/80 rounded-lg border-4 border-warning/40 overflow-hidden select-none"
                   style={{
                     background: `
                       radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.1) 0%, transparent 50%),
@@ -434,14 +434,14 @@ export default function TouchMapperKeyboard() {
                     {Array.from({ length: 20 }, (_, i) => (
                       <div
                         key={`v-${i}`}
-                        className="absolute top-0 bottom-0 w-px bg-gray-400"
+                        className="absolute top-0 bottom-0 w-px bg-border"
                         style={{ left: `${(i + 1) * gridSize}px` }}
                       />
                     ))}
                     {Array.from({ length: 15 }, (_, i) => (
                       <div
                         key={`h-${i}`}
-                        className="absolute left-0 right-0 h-px bg-gray-400"
+                        className="absolute left-0 right-0 h-px bg-border"
                         style={{ top: `${(i + 1) * gridSize}px` }}
                       />
                     ))}
@@ -610,11 +610,11 @@ export default function TouchMapperKeyboard() {
             </Card>
 
             {/* Therapeutic Benefits */}
-            <Card className="shadow-card bg-gradient-to-b from-green-50 to-emerald-50 border-green-200">
-              <CardHeader>
-                <CardTitle className="text-lg text-green-800">Benefícios Terapêuticos</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 text-sm text-green-700">
+             <Card className="shadow-card bg-gradient-to-b from-success/10 to-accent/10 border-success/20">
+               <CardHeader>
+                 <CardTitle className="text-lg text-success">Benefícios Terapêuticos</CardTitle>
+               </CardHeader>
+               <CardContent className="space-y-2 text-sm text-success/80">
                 <div>• Desenvolve coordenação motora</div>
                 <div>• Melhora processamento sensorial</div>
                 <div>• Fortalece atenção espacial</div>
