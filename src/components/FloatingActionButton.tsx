@@ -56,7 +56,7 @@ export function FloatingActionButton({
           id: 'admin-operations',
           label: 'Centro de Operações',
           icon: <AlertTriangle className="w-4 h-4" />,
-          href: '/centro-operacoes',
+          href: '/operations',
           color: 'bg-orange-500 hover:bg-orange-600'
         },
         {
