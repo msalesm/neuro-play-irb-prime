@@ -157,7 +157,7 @@ export function ClassPedagogicalReport({
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="overview">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="attention">
               Atenção ({needsAttentionStudents.length})

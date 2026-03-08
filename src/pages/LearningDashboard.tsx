@@ -138,7 +138,7 @@ export default function LearningDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="trails" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
             <TabsTrigger value="trails" className="flex items-center gap-2">
               <Target className="w-4 h-4" />
               {t('dashboard.trails')}

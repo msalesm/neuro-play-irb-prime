@@ -261,7 +261,7 @@ export const GameResultsDashboard = ({
 
       {/* Tabs com detalhes */}
       <Tabs defaultValue="analysis" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
           <TabsTrigger value="analysis">
             <Brain className="w-4 h-4 mr-2" />
             Análise

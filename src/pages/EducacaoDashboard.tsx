@@ -286,7 +286,7 @@ export default function EducacaoDashboard() {
           <>
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
                 <TabsTrigger value="painel" className="gap-1.5">
                   <ClipboardCheck className="h-4 w-4" />
                   <span className="hidden sm:inline">Painel</span>

@@ -461,7 +461,7 @@ export default function EmotionalHistoryDashboard() {
 
         {/* Charts */}
         <Tabs defaultValue="timeline" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-3">
             <TabsTrigger value="timeline">Linha do Tempo</TabsTrigger>
             <TabsTrigger value="emotions">Emoções</TabsTrigger>
             <TabsTrigger value="history">Histórico</TabsTrigger>

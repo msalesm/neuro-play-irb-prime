@@ -291,7 +291,7 @@ export default function AdminNetworkDashboard() {
 
         {/* Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="schools">Escolas</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>

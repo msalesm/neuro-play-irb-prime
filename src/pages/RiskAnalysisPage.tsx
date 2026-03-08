@@ -244,7 +244,7 @@ export default function RiskAnalysisPage() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="all">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
                 <TabsTrigger value="all">Todas</TabsTrigger>
                 <TabsTrigger value="crisis">Crises</TabsTrigger>
                 <TabsTrigger value="trends">Tendências</TabsTrigger>
