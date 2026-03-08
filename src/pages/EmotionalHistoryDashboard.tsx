@@ -288,7 +288,7 @@ export default function EmotionalHistoryDashboard() {
           <div className="space-y-2 min-w-0">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shrink-0">
-                <Heart className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                <Heart className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground" />
               </div>
               <div className="min-w-0">
                 <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent truncate">

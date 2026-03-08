@@ -620,7 +620,7 @@ export default function UnifiedReports() {
                     {/* Action Button */}
                     <Button
                       variant={report ? 'outline' : 'default'}
-                      className={`w-full ${!report ? `bg-gradient-to-r ${reportType.gradient} text-white border-0 hover:opacity-90` : ''}`}
+                      className={`w-full ${!report ? `bg-gradient-to-r ${reportType.gradient} text-primary-foreground border-0 hover:opacity-90` : ''}`}
                       onClick={() => generateReport(reportType.type)}
                       disabled={isGenerating}
                     >

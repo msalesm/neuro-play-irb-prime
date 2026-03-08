@@ -108,40 +108,40 @@ export default function DiagnosticTests() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-red-900/30 to-slate-900 text-white py-12 pb-32 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(220,30%,8%)] via-[hsl(0,50%,15%)] to-[hsl(220,30%,8%)] text-primary-foreground py-12 pb-32 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-4 w-72 h-72 bg-red-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-3/4 -right-4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-yellow-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 -left-4 w-72 h-72 bg-destructive/10 rounded-full blur-3xl" />
+        <div className="absolute top-3/4 -right-4 w-96 h-96 bg-warning/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-warning/5 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-orange-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-red-500/25">
-              <ClipboardCheck className="h-8 w-8 text-white" />
+            <div className="w-16 h-16 bg-gradient-to-br from-destructive to-warning rounded-2xl flex items-center justify-center shadow-2xl shadow-destructive/25">
+              <ClipboardCheck className="h-8 w-8 text-primary-foreground" />
             </div>
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-white">
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-primary-foreground">
               Atividades de 
-              <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-destructive to-warning bg-clip-text text-transparent">
                 Observação Comportamental
               </span>
             </h1>
           </div>
-          <p className="text-xl text-white/70 max-w-4xl mx-auto text-balance mb-8">
+          <p className="text-xl text-primary-foreground/70 max-w-4xl mx-auto text-balance mb-8">
             Atividades baseadas em protocolos científicos para observação de padrões comportamentais 
             em áreas cognitivas específicas. Não constituem diagnóstico clínico.
           </p>
           
           {/* Warning Notice */}
           <div className="max-w-3xl mx-auto mb-12">
-            <Card className="backdrop-blur-sm bg-yellow-500/10 border-yellow-500/30">
+            <Card className="backdrop-blur-sm bg-warning/10 border-warning/30">
               <CardContent className="p-6">
                   <div className="flex items-start gap-3">
-                    <AlertTriangle className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                    <div className="text-sm text-yellow-100">
+                    <AlertTriangle className="h-5 w-5 text-warning mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-warning-foreground">
                       <p className="font-semibold mb-2">⚠️ Importante: Não é diagnóstico clínico</p>
                       <p className="text-left mb-2">
                         Estas atividades observam <strong>padrões comportamentais</strong> durante tarefas específicas, 
@@ -163,43 +163,43 @@ export default function DiagnosticTests() {
           {diagnosticTests.map((test) => (
             <Card 
               key={test.id}
-              className="p-4 border-white/20 backdrop-blur-sm bg-white/10 hover:bg-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-red-500/20 hover:-translate-y-1 group relative overflow-hidden"
+              className="p-4 border-primary-foreground/20 backdrop-blur-sm bg-primary-foreground/10 hover:bg-primary-foreground/15 transition-all duration-300 hover:shadow-xl hover:shadow-destructive/20 hover:-translate-y-1 group relative overflow-hidden"
             >
               {/* Gradient background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${test.gradient} opacity-20`} />
               
               <div className="relative z-10">
                 <div className="flex justify-between items-start mb-3">
-                  <Badge className="bg-gradient-to-r from-red-500/80 to-orange-500/80 text-white border-0 shadow-lg font-semibold text-xs">
+                  <Badge className="bg-gradient-to-r from-destructive/80 to-warning/80 text-primary-foreground border-0 shadow-lg font-semibold text-xs">
                     {test.category}
                   </Badge>
-                  <Badge variant="outline" className="text-xs bg-white/20 text-white border-white/30">
+                  <Badge variant="outline" className="text-xs bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30">
                     {test.status}
                   </Badge>
                 </div>
 
-                <h3 className="font-heading text-lg font-bold mb-2 text-white group-hover:text-red-200 transition-colors">
+                <h3 className="font-heading text-lg font-bold mb-2 text-primary-foreground group-hover:text-destructive/80 transition-colors">
                   {test.title}
                 </h3>
 
-                <p className="text-white/70 mb-3 leading-relaxed text-sm line-clamp-2">
+                <p className="text-primary-foreground/70 mb-3 leading-relaxed text-sm line-clamp-2">
                   {test.description}
                 </p>
 
                 {/* Scientific Basis */}
-                <div className="mb-3 p-2 bg-white/10 rounded-lg backdrop-blur-sm">
-                  <p className="text-xs font-semibold text-white/80 mb-0.5">Base Científica:</p>
-                  <p className="text-xs text-white/70">{test.scientificBasis}</p>
+                <div className="mb-3 p-2 bg-primary-foreground/10 rounded-lg backdrop-blur-sm">
+                  <p className="text-xs font-semibold text-primary-foreground/80 mb-0.5">Base Científica:</p>
+                  <p className="text-xs text-primary-foreground/70">{test.scientificBasis}</p>
                 </div>
 
-                <div className="flex flex-wrap gap-3 mb-4 text-xs text-white/70">
+                <div className="flex flex-wrap gap-3 mb-4 text-xs text-primary-foreground/70">
                   <div className="flex items-center gap-1.5">
                     <Target className="h-3 w-3" />
                     <span>{test.ageRange}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Clock className="h-3 w-3" />
-                    <span className="font-semibold text-green-300">{test.duration}</span>
+                    <span className="font-semibold text-success">{test.duration}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Users className="h-3 w-3" />
@@ -208,12 +208,12 @@ export default function DiagnosticTests() {
                 </div>
 
                 <div className="mb-4">
-                  <h4 className="font-semibold text-xs uppercase tracking-wide text-white/80 mb-2">
+                  <h4 className="font-semibold text-xs uppercase tracking-wide text-primary-foreground/80 mb-2">
                     Características
                   </h4>
                   <div className="flex flex-wrap gap-1">
                     {test.features.map((feature, idx) => (
-                      <span key={idx} className="text-xs bg-white/10 px-2 py-0.5 rounded-full text-white/70">
+                      <span key={idx} className="text-xs bg-primary-foreground/10 px-2 py-0.5 rounded-full text-primary-foreground/70">
                         {feature}
                       </span>
                     ))}
@@ -221,7 +221,7 @@ export default function DiagnosticTests() {
                 </div>
 
                 <Button 
-                  className="w-full bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white border-0 shadow-lg hover:shadow-red-500/25 transition-all duration-300 text-sm py-2"
+                  className="w-full bg-gradient-to-r from-destructive to-warning hover:from-destructive/90 hover:to-warning/90 text-primary-foreground border-0 shadow-lg hover:shadow-destructive/25 transition-all duration-300 text-sm py-2"
                   asChild
                 >
                   <Link to={test.id.includes('-phases') ? `/games/${test.id}` : `/games/${test.id}`} className="flex items-center gap-2 justify-center">
@@ -236,11 +236,11 @@ export default function DiagnosticTests() {
 
         {/* Information Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          <Card className="p-6 backdrop-blur-sm bg-white/10 border-white/20">
+          <Card className="p-6 backdrop-blur-sm bg-primary-foreground/10 border-primary-foreground/20">
             <CardHeader>
-              <h3 className="font-heading text-xl font-bold text-white">Como Funcionam as Atividades</h3>
+              <h3 className="font-heading text-xl font-bold text-primary-foreground">Como Funcionam as Atividades</h3>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm text-white/70">
+            <CardContent className="space-y-3 text-sm text-primary-foreground/70">
               <p>• Cada atividade observa funções cognitivas específicas</p>
               <p>• Baseadas em protocolos de pesquisa científica</p>
               <p>• Resultados mostram padrões comportamentais observados</p>
@@ -248,11 +248,11 @@ export default function DiagnosticTests() {
             </CardContent>
           </Card>
 
-          <Card className="p-6 backdrop-blur-sm bg-white/10 border-white/20">
+          <Card className="p-6 backdrop-blur-sm bg-primary-foreground/10 border-primary-foreground/20">
             <CardHeader>
-              <h3 className="font-heading text-xl font-bold text-white">Próximos Passos</h3>
+              <h3 className="font-heading text-xl font-bold text-primary-foreground">Próximos Passos</h3>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm text-white/70">
+            <CardContent className="space-y-3 text-sm text-primary-foreground/70">
               <p>• Realize as atividades em ambiente tranquilo</p>
               <p>• Compartilhe relatórios com profissionais qualificados</p>
               <p>• Acesse o painel de observação para análise detalhada</p>

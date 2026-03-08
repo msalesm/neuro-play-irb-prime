@@ -86,7 +86,7 @@ export default function ScreeningResultPage() {
     <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-background pb-32">
       <div className="container max-w-4xl mx-auto px-4 py-8">
         <div className="mb-8 text-center">
-          <div className={`inline-flex p-4 rounded-full bg-gradient-to-r ${getColor()} text-white mb-4`}>
+          <div className={`inline-flex p-4 rounded-full bg-gradient-to-r ${getColor()} text-primary-foreground mb-4`}>
             <Icon className="h-12 w-12" />
           </div>
           <h1 className="text-4xl font-bold mb-2">Triagem Concluída!</h1>
