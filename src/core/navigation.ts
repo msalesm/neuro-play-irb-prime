@@ -87,7 +87,7 @@ const PARENT_NAV: NavItem[] = [
   { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope, badge: 'Novo' },
   { title: 'Relatório Familiar', path: '/relatorios', icon: FileText },
   { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
-  { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
+  { title: 'Mensagens', path: '/mensagens', icon: Mail, badge: 'Novo' },
   { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem, badge: 'Novo' },
   { title: 'Microlearning', path: '/training', icon: BookOpen },
   { title: 'Coaching Parental', path: '/parent-coaching', icon: Heart, badge: 'Novo' },
@@ -104,13 +104,13 @@ const THERAPIST_NAV: NavItem[] = [
   { title: 'Relatório Clínico', path: '/relatorios', icon: FileText },
   { title: 'ABA+', path: '/aba-integration', icon: Activity, badge: 'Novo' },
   { title: 'ABA NeuroPlay', path: '/aba-neuroplay', icon: Activity, description: 'Programas de intervenção ABA' },
-  { title: 'Mensagens', path: '/messages', icon: Mail },
+  { title: 'Mensagens', path: '/mensagens', icon: Mail },
 ];
 
 const TEACHER_NAV: NavItem[] = [
   { title: 'Neuro Play Educação', path: '/educacao', icon: School, description: 'Turmas, check-in e relatórios' },
   { title: 'Dashboard da Escola', path: '/escola-dashboard', icon: Building2, description: 'Visão macro da escola' },
-  { title: 'Mensagens', path: '/messages', icon: Mail },
+  { title: 'Mensagens', path: '/mensagens', icon: Mail },
 ];
 
 const ADMIN_NAV: NavItem[] = [

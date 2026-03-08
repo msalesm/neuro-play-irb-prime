@@ -60,7 +60,7 @@ export default function InventarioHabilidades() {
 
   return (
     <AppLayout>
-      <div className="container mx-auto p-4 lg:p-6 max-w-7xl">
+      <div className="max-w-7xl">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <ClipboardList className="h-6 w-6 text-primary" />
