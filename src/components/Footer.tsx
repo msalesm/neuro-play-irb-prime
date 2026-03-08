@@ -19,8 +19,9 @@ export const Footer = () => {
               </div>
             </div>
             <p className="text-lg opacity-90 mb-6 leading-relaxed">
-              Revolucionando a terapia através de jogos baseados em evidências científicas. 
-              Transformamos desenvolvimento de habilidades em experiências divertidas para pessoas neurodivergentes.
+              Revolucionando o desenvolvimento cognitivo através de jogos baseados em evidências científicas. 
+              Transformamos aprendizado em experiências divertidas para pessoas neurodivergentes.
+            </p>
             </p>
             <div className="flex items-center gap-2 text-sm opacity-75">
               <Heart className="h-4 w-4 text-primary" />
