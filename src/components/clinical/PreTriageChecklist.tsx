@@ -200,7 +200,7 @@ export function PreTriageChecklist({ childId, sessionId, onComplete }: PreTriage
                       {item.question}
                     </Label>
                     {responses[item.id] && (
-                      <AlertTriangle className="w-4 h-4 text-amber-500" />
+                      <AlertTriangle className="w-4 h-4 text-warning" />
                     )}
                   </div>
                 ))}

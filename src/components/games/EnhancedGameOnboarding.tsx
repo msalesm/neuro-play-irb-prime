@@ -165,9 +165,9 @@ export function EnhancedGameOnboarding({
               <div className="flex items-center gap-3 mb-3">
                 <div className={cn(
                   "w-8 h-8 rounded-lg flex items-center justify-center",
-                  currentStepData.interactionType === 'demonstration' && "bg-blue-500/10 text-blue-500",
-                  currentStepData.interactionType === 'practice' && "bg-green-500/10 text-green-500",
-                  currentStepData.interactionType === 'explanation' && "bg-yellow-500/10 text-yellow-500"
+                  currentStepData.interactionType === 'demonstration' && "bg-info/10 text-info",
+                  currentStepData.interactionType === 'practice' && "bg-success/10 text-success",
+                  currentStepData.interactionType === 'explanation' && "bg-warning/10 text-warning"
                 )}>
                   {getInteractionIcon(currentStepData.interactionType)}
                 </div>
