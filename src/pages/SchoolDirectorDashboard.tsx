@@ -167,9 +167,9 @@ export default function SchoolDirectorDashboard() {
   });
 
   const getIndicatorColor = (value: number) => {
-    if (value >= 70) return 'text-emerald-600';
-    if (value >= 40) return 'text-amber-600';
-    return 'text-red-600';
+    if (value >= 70) return 'text-success';
+    if (value >= 40) return 'text-warning';
+    return 'text-destructive';
   };
 
   const getIndicatorLabel = (value: number) => {
@@ -205,10 +205,10 @@ export default function SchoolDirectorDashboard() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-purple-500/10">
+          <Card className="border-secondary/20 bg-gradient-to-br from-secondary/5 to-secondary/10">
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2 bg-purple-500/20 rounded-lg">
-                <GraduationCap className="h-5 w-5 text-purple-500" />
+              <div className="p-2 bg-secondary/20 rounded-lg">
+                <GraduationCap className="h-5 w-5 text-secondary" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.totalClasses}</p>
@@ -216,10 +216,10 @@ export default function SchoolDirectorDashboard() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 to-emerald-500/10">
+          <Card className="border-success/20 bg-gradient-to-br from-success/5 to-success/10">
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2 bg-emerald-500/20 rounded-lg">
-                <Activity className="h-5 w-5 text-emerald-500" />
+              <div className="p-2 bg-success/20 rounded-lg">
+                <Activity className="h-5 w-5 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.engagementRate}%</p>
@@ -227,10 +227,10 @@ export default function SchoolDirectorDashboard() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border-amber-500/20 bg-gradient-to-br from-amber-500/5 to-amber-500/10">
+          <Card className="border-warning/20 bg-gradient-to-br from-warning/5 to-warning/10">
             <CardContent className="p-4 flex items-center gap-3">
-              <div className="p-2 bg-amber-500/20 rounded-lg">
-                <AlertTriangle className="h-5 w-5 text-amber-500" />
+              <div className="p-2 bg-warning/20 rounded-lg">
+                <AlertTriangle className="h-5 w-5 text-warning" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.highRisk}</p>
@@ -329,21 +329,21 @@ export default function SchoolDirectorDashboard() {
 
         {/* Risk Summary */}
         {(stats.highRisk > 0 || stats.moderateRisk > 0) && (
-          <Card className="border-amber-500/20">
+          <Card className="border-warning/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <AlertTriangle className="h-5 w-5 text-amber-500" />
+                <AlertTriangle className="h-5 w-5 text-warning" />
                 Alunos que Precisam de Atenção
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex gap-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <div className="w-3 h-3 rounded-full bg-destructive" />
                   <span className="text-sm"><strong>{stats.highRisk}</strong> prioridade alta</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-amber-500" />
+                  <div className="w-3 h-3 rounded-full bg-warning" />
                   <span className="text-sm"><strong>{stats.moderateRisk}</strong> atenção moderada</span>
                 </div>
               </div>

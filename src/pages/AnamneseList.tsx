@@ -121,8 +121,8 @@ export default function AnamneseList() {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="p-3 rounded-full bg-green-500/10">
-                <CheckCircle className="w-5 h-5 text-green-600" />
+              <div className="p-3 rounded-full bg-success/10">
+                <CheckCircle className="w-5 h-5 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{completedCount}</p>
@@ -132,8 +132,8 @@ export default function AnamneseList() {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="p-3 rounded-full bg-orange-500/10">
-                <AlertCircle className="w-5 h-5 text-orange-600" />
+              <div className="p-3 rounded-full bg-accent/10">
+                <AlertCircle className="w-5 h-5 text-accent" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{pendingCount}</p>
@@ -189,12 +189,12 @@ export default function AnamneseList() {
                     </div>
                     <div className="flex items-center gap-3">
                       {child.hasAnamnesis ? (
-                        <Badge className="bg-green-500/20 text-green-600 border-green-500/30">
+                        <Badge className="bg-success/20 text-success border-success/30">
                           <CheckCircle className="w-3 h-3 mr-1" />
                           {child.anamnesisStatus === 'completed' ? 'Concluída' : 'Em andamento'}
                         </Badge>
                       ) : (
-                        <Badge className="bg-orange-500/20 text-orange-600 border-orange-500/30">
+                        <Badge className="bg-accent/20 text-accent border-accent/30">
                           <AlertCircle className="w-3 h-3 mr-1" />
                           Pendente
                         </Badge>
