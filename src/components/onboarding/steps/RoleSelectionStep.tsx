@@ -80,7 +80,7 @@ export function RoleSelectionStep({ data, updateData }: Props) {
               <div className="flex items-start gap-4">
                 <div className={cn(
                   'p-3 rounded-lg',
-                  isSelected ? 'bg-secondary text-white' : 'bg-secondary/10 text-secondary'
+                  isSelected ? 'bg-secondary text-secondary-foreground' : 'bg-secondary/10 text-secondary'
                 )}>
                   <Icon className="h-6 w-6" />
                 </div>
@@ -110,7 +110,7 @@ export function RoleSelectionStep({ data, updateData }: Props) {
               {isSelected && (
                 <div className="mt-4 pt-4 border-t border-secondary/20">
                   <div className="flex items-center gap-2 text-sm text-secondary font-semibold">
-                    <div className="h-5 w-5 rounded-full bg-secondary text-white flex items-center justify-center text-xs">
+                    <div className="h-5 w-5 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-xs">
                       ✓
                     </div>
                     Perfil selecionado

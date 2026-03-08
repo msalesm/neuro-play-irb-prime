@@ -16,10 +16,10 @@ interface TourAchievementModalProps {
 }
 
 const rarityColors = {
-  common: 'from-gray-500 to-gray-600',
-  rare: 'from-blue-500 to-blue-600',
-  epic: 'from-purple-500 to-purple-600',
-  legendary: 'from-amber-500 to-amber-600',
+  common: 'from-muted-foreground to-muted-foreground/80',
+  rare: 'from-info to-info/80',
+  epic: 'from-primary to-primary/80',
+  legendary: 'from-warning to-warning/80',
 };
 
 const rarityLabels = {
@@ -41,7 +41,7 @@ export const TourAchievementModal = ({ isOpen, achievement, onClose }: TourAchie
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-background/60 backdrop-blur-sm z-50"
             onClick={onClose}
           />
 
@@ -56,10 +56,10 @@ export const TourAchievementModal = ({ isOpen, achievement, onClose }: TourAchie
             >
               <Card className={cn(
                 'relative overflow-hidden border-2',
-                achievement.rarity === 'legendary' && 'border-amber-500/50',
-                achievement.rarity === 'epic' && 'border-purple-500/50',
-                achievement.rarity === 'rare' && 'border-blue-500/50',
-                achievement.rarity === 'common' && 'border-gray-500/50'
+                achievement.rarity === 'legendary' && 'border-warning/50',
+                achievement.rarity === 'epic' && 'border-primary/50',
+                achievement.rarity === 'rare' && 'border-info/50',
+                achievement.rarity === 'common' && 'border-muted-foreground/50'
               )}>
                 {/* Background gradient */}
                 <div className={cn(
@@ -72,7 +72,7 @@ export const TourAchievementModal = ({ isOpen, achievement, onClose }: TourAchie
                   {[...Array(15)].map((_, i) => (
                     <motion.div
                       key={i}
-                      className="absolute w-1 h-1 bg-white rounded-full"
+                      className="absolute w-1 h-1 bg-primary-foreground rounded-full"
                       initial={{
                         x: Math.random() * 100 + '%',
                         y: '100%',
@@ -136,7 +136,7 @@ export const TourAchievementModal = ({ isOpen, achievement, onClose }: TourAchie
                     className="flex justify-center mb-3"
                   >
                     <Badge className={cn(
-                      'text-white border-0 shadow-lg',
+                      'text-primary-foreground border-0 shadow-lg',
                       `bg-gradient-to-r ${rarityColors[achievement.rarity as keyof typeof rarityColors]}`
                     )}>
                       <Star className="w-3 h-3 mr-1" />

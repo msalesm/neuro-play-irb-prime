@@ -98,7 +98,7 @@ export function SimonButton({
         isActive ? [
           style.active,
           style.glow,
-          'scale-105 brightness-150 border-white/40',
+          'scale-105 brightness-150 border-primary-foreground/40',
         ] : style.base,
         isPressed && 'scale-90 brightness-75',
         !isDisabled && !isActive && 'hover:brightness-110 active:scale-95 cursor-pointer',
@@ -108,7 +108,7 @@ export function SimonButton({
     >
       {/* Inner glow effect */}
       <div className={cn(
-        'absolute inset-0 bg-gradient-to-br from-white/0 to-white/10',
+        'absolute inset-0 bg-gradient-to-br from-primary-foreground/0 to-primary-foreground/10',
         'transition-opacity duration-200',
         isActive && 'opacity-100',
         !isActive && 'opacity-40'
@@ -118,7 +118,7 @@ export function SimonButton({
       {particles.map(particle => (
         <div
           key={particle.id}
-          className="absolute w-2 h-2 bg-white rounded-full animate-ping"
+          className="absolute w-2 h-2 bg-primary-foreground rounded-full animate-ping"
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
@@ -131,7 +131,7 @@ export function SimonButton({
       {showName && (
         <div className={cn(
           'absolute inset-0 flex items-center justify-center',
-          'text-white/80 font-bold text-sm pointer-events-none',
+          'text-primary-foreground/80 font-bold text-sm pointer-events-none',
           'transition-opacity duration-200',
           isActive && 'opacity-0'
         )}>
@@ -142,7 +142,7 @@ export function SimonButton({
       {/* Highlight edge */}
       <div className={cn(
         'absolute inset-0 rounded-inherit',
-        'bg-gradient-to-br from-white/20 to-transparent',
+        'bg-gradient-to-br from-primary-foreground/20 to-transparent',
         'pointer-events-none transition-opacity duration-200',
         isActive ? 'opacity-100' : 'opacity-60'
       )} />

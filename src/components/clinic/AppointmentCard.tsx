@@ -111,7 +111,7 @@ export function AppointmentCard({
                   style={{ backgroundColor: typeColor }}
                   title={appointment.appointment_type.name}
                 >
-                  <Stethoscope className="h-3.5 w-3.5 text-white" />
+                  <Stethoscope className="h-3.5 w-3.5 text-primary-foreground" />
                 </div>
               )}
               <span className="font-medium text-sm">
