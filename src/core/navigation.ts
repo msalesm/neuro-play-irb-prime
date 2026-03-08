@@ -160,7 +160,7 @@ const TEACHER_BOTTOM: BottomNavItem[] = [
   { name: 'Educação', path: '/educacao', icon: School },
   { name: 'Turmas', path: '/teacher/classes', icon: Users },
   { name: 'Avaliações', path: '/screening', icon: ClipboardCheck },
-  { name: 'Relatórios', path: '/reports', icon: FileText },
+  { name: 'Relatórios', path: '/relatorios', icon: FileText },
 ];
 
 const ADMIN_BOTTOM: BottomNavItem[] = [
