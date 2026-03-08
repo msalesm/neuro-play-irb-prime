@@ -144,7 +144,7 @@ export default function VisualSync() {
 
   const generateTarget = (): VisualTarget => {
     const patterns = ['linear', 'circular', 'zigzag', 'random'] as const;
-    const colors = ['bg-red-400', 'bg-blue-400', 'bg-green-400', 'bg-yellow-400', 'bg-purple-400'];
+    const colors = ['bg-destructive/70', 'bg-info/70', 'bg-success/70', 'bg-warning/70', 'bg-primary/70'];
     
     return {
       id: targetIdRef.current++,
@@ -326,10 +326,10 @@ export default function VisualSync() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 text-blue-900">
+            <h1 className="font-heading text-4xl font-bold mb-2 text-foreground">
               VisualSync
             </h1>
-            <p className="text-blue-700">
+            <p className="text-muted-foreground">
               Desenvolva seu processamento visual e integração visuo-motora
             </p>
           </div>
@@ -350,7 +350,7 @@ export default function VisualSync() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <Settings className="h-4 w-4 text-gray-600" />
+                      <Settings className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm font-medium">Contraste:</span>
                     </div>
                     <div className="flex gap-2">
@@ -393,13 +393,13 @@ export default function VisualSync() {
             <Card className="shadow-glow bg-white/80 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Eye className="h-6 w-6 text-blue-600" />
+                  <Eye className="h-6 w-6 text-info" />
                   Sincronização Visual - Nível {level}
                 </CardTitle>
                 <div className="flex gap-4 text-sm">
-                  <span className="text-blue-600 font-medium">Score: {score}</span>
-                  <span className="text-green-600 font-medium">Precisão: {accuracy.toFixed(1)}%</span>
-                  <span className="text-orange-600 font-medium">Rastreados: {targetsHit}</span>
+                  <span className="text-info font-medium">Score: {score}</span>
+                  <span className="text-success font-medium">Precisão: {accuracy.toFixed(1)}%</span>
+                  <span className="text-warning font-medium">Rastreados: {targetsHit}</span>
                 </div>
               </CardHeader>
               
@@ -452,8 +452,8 @@ export default function VisualSync() {
                   {/* Instructions overlay */}
                   {!isPlaying && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-blue-700 bg-white/90 p-6 rounded-lg">
-                        <Eye className="h-16 w-16 mx-auto mb-4 text-blue-500" />
+                      <div className="text-center text-foreground bg-card/90 p-6 rounded-lg">
+                        <Eye className="h-16 w-16 mx-auto mb-4 text-info" />
                         <p className="text-xl font-semibold mb-2">Rastreamento Visual</p>
                         <p className="text-sm">Siga e clique nos alvos em movimento</p>
                       </div>
@@ -492,7 +492,7 @@ export default function VisualSync() {
                   </Button>
                   
                   {targetsHit >= 3 && (
-                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-info hover:bg-info/90">
                       <Eye className="h-5 w-5" />
                       Concluir Sessão
                     </Button>
@@ -572,19 +572,19 @@ export default function VisualSync() {
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-info rounded-full mt-1.5 shrink-0" />
                   <span>Rastreamento visual</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-info rounded-full mt-1.5 shrink-0" />
                   <span>Coordenação olho-mão</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-info rounded-full mt-1.5 shrink-0" />
                   <span>Processamento espacial</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-info rounded-full mt-1.5 shrink-0" />
                   <span>Atenção visual sustentada</span>
                 </div>
               </CardContent>

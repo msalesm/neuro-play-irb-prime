@@ -309,16 +309,16 @@ export default function SensoryFlow() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-glow bg-white/80 backdrop-blur">
+            <Card className="shadow-glow bg-card/80 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Waves className="h-6 w-6 text-purple-600" />
+                  <Waves className="h-6 w-6 text-primary" />
                   Processamento Auditivo - Nível {level}
                 </CardTitle>
                 <div className="flex gap-4 text-sm">
-                  <span className="text-purple-600 font-medium">Score: {score}</span>
-                  <span className="text-blue-600 font-medium">Precisão: {accuracy.toFixed(1)}%</span>
-                  <span className="text-green-600 font-medium">Padrões: {patternsCompleted}</span>
+                  <span className="text-primary font-medium">Score: {score}</span>
+                  <span className="text-info font-medium">Precisão: {accuracy.toFixed(1)}%</span>
+                  <span className="text-success font-medium">Padrões: {patternsCompleted}</span>
                 </div>
               </CardHeader>
               
@@ -327,8 +327,8 @@ export default function SensoryFlow() {
                 <div className="text-center mb-6">
                   {!isPlaying && (
                     <div className="space-y-4">
-                      <Volume2 className="h-16 w-16 mx-auto text-purple-500" />
-                      <p className="text-xl font-semibold text-purple-700">
+                      <Volume2 className="h-16 w-16 mx-auto text-primary" />
+                      <p className="text-xl font-semibold text-foreground">
                         Pronto para treinar seu ouvido?
                       </p>
                       <p className="text-sm text-muted-foreground">
@@ -357,7 +357,7 @@ export default function SensoryFlow() {
                   {noteNames.map((note, index) => (
                     <Button
                       key={index}
-                      className={`h-16 ${noteColors[index]} hover:scale-105 transition-transform text-white font-bold border-2 border-white shadow-md`}
+                      className={`h-16 ${noteColors[index]} hover:scale-105 transition-transform text-primary-foreground font-bold border-2 border-primary-foreground/50 shadow-md`}
                       onClick={() => {
                         playTone([261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88][index], 300);
                         addToUserSequence(index);

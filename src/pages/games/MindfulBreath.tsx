@@ -311,7 +311,7 @@ export default function MindfulBreath() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Breathing Area */}
           <div className="lg:col-span-2">
-            <Card className="shadow-glow bg-white/80 backdrop-blur">
+            <Card className="shadow-glow bg-card/80 backdrop-blur">
               <CardHeader className="text-center">
                 <CardTitle className="text-2xl">
                   {pattern.name}

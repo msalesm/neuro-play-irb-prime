@@ -313,16 +313,16 @@ export default function TouchMapper() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-glow bg-white/80 backdrop-blur">
+            <Card className="shadow-glow bg-card/80 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Hand className="h-6 w-6 text-orange-600" />
+                  <Hand className="h-6 w-6 text-warning" />
                   Mapeamento Tátil - Nível {level}
                 </CardTitle>
                 <div className="flex gap-4 text-sm">
-                  <span className="text-orange-600 font-medium">Score: {score}</span>
-                  <span className="text-blue-600 font-medium">Precisão: {accuracy.toFixed(1)}%</span>
-                  <span className="text-green-600 font-medium">
+                  <span className="text-warning font-medium">Score: {score}</span>
+                  <span className="text-info font-medium">Precisão: {accuracy.toFixed(1)}%</span>
+                  <span className="text-success font-medium">
                     Descobertas: {discoveredPatterns.length}/{currentPatterns.length}
                   </span>
                 </div>
@@ -332,7 +332,7 @@ export default function TouchMapper() {
                 {/* Current Texture Display */}
                 {currentTexture && (
                   <div className="text-center mb-4">
-                    <Badge className="bg-orange-100 text-orange-800 text-lg px-4 py-2">
+                    <Badge className="bg-warning/10 text-warning text-lg px-4 py-2">
                       <Vibrate className="h-4 w-4 mr-2" />
                       {currentTexture}
                     </Badge>
@@ -341,7 +341,7 @@ export default function TouchMapper() {
 
                 {/* Exploration Area */}
                 <div 
-                  className="relative w-full h-96 bg-gradient-to-b from-gray-100 to-gray-200 rounded-lg border-4 border-orange-300 overflow-hidden cursor-crosshair select-none"
+                  className="relative w-full h-96 bg-gradient-to-b from-muted to-muted/70 rounded-lg border-4 border-warning/30 overflow-hidden cursor-crosshair select-none"
                   onClick={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
                     const x = e.clientX - rect.left;
@@ -362,7 +362,7 @@ export default function TouchMapper() {
                       key={pattern.id}
                       className={`absolute rounded-full transition-all duration-300 ${
                         pattern.discovered
-                          ? `${textureTypes[pattern.type].color} opacity-80 border-4 border-orange-400`
+                          ? `${textureTypes[pattern.type].color} opacity-80 border-4 border-warning`
                           : 'bg-transparent'
                       }`}
                       style={{
@@ -374,7 +374,7 @@ export default function TouchMapper() {
                       }}
                     >
                       {pattern.discovered && (
-                        <div className="flex items-center justify-center h-full text-xs font-bold text-gray-700">
+                        <div className="flex items-center justify-center h-full text-xs font-bold text-foreground/70">
                           {textureTypes[pattern.type].name}
                         </div>
                       )}
@@ -384,8 +384,8 @@ export default function TouchMapper() {
                   {/* Instructions overlay */}
                   {!isPlaying && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-orange-700 bg-white/80 p-6 rounded-lg">
-                        <Hand className="h-16 w-16 mx-auto mb-4 text-orange-500" />
+                      <div className="text-center text-foreground bg-card/80 p-6 rounded-lg">
+                        <Hand className="h-16 w-16 mx-auto mb-4 text-warning" />
                         <p className="text-xl font-semibold mb-2">Explore com o toque</p>
                         <p className="text-sm">Clique na área para descobrir texturas ocultas</p>
                       </div>
