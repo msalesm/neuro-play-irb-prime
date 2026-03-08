@@ -48,7 +48,7 @@ const emotionalWeatherTypes: { [key in EmotionType]: EmotionalWeather } = {
     intensity: 80,
     weather: 'sunny',
     description: 'Céu claro com muita energia positiva',
-    color: 'from-yellow-300 to-orange-300',
+    color: 'from-warning/60 to-warning/40',
     tools: ['Compartilhamento Social', 'Gratidão', 'Exercício']
   },
   sad: {
@@ -56,7 +56,7 @@ const emotionalWeatherTypes: { [key in EmotionType]: EmotionalWeather } = {
     intensity: 60,
     weather: 'rainy',
     description: 'Chuva suave com nuvens carregadas',
-    color: 'from-blue-400 to-gray-500',
+    color: 'from-info to-muted-foreground/60',
     tools: ['Guarda-chuva da Respiração', 'Aquecimento Emocional', 'Apoio Social']
   },
   angry: {
@@ -64,7 +64,7 @@ const emotionalWeatherTypes: { [key in EmotionType]: EmotionalWeather } = {
     intensity: 85,
     weather: 'stormy',
     description: 'Tempestade intensa com raios e trovões',
-    color: 'from-red-500 to-orange-600',
+    color: 'from-destructive to-warning/80',
     tools: ['Para-raios da Calma', 'Resfriamento', 'Canalização de Energia']
   },
   anxious: {
@@ -72,7 +72,7 @@ const emotionalWeatherTypes: { [key in EmotionType]: EmotionalWeather } = {
     intensity: 70,
     weather: 'windy',
     description: 'Vento forte com nuvens em movimento',
-    color: 'from-gray-400 to-blue-400',
+    color: 'from-muted-foreground/50 to-info',
     tools: ['Âncora da Respiração', 'Abrigo Seguro', 'Mindfulness']
   },
   calm: {
@@ -80,7 +80,7 @@ const emotionalWeatherTypes: { [key in EmotionType]: EmotionalWeather } = {
     intensity: 40,
     weather: 'cloudy',
     description: 'Nuvens suaves com brisa tranquila',
-    color: 'from-blue-200 to-green-200',
+    color: 'from-info/30 to-success/30',
     tools: ['Manutenção da Paz', 'Observação', 'Meditação']
   },
   excited: {
@@ -88,7 +88,7 @@ const emotionalWeatherTypes: { [key in EmotionType]: EmotionalWeather } = {
     intensity: 90,
     weather: 'sunny',
     description: 'Sol brilhante com rajadas de energia',
-    color: 'from-yellow-400 to-pink-400',
+    color: 'from-warning to-primary/50',
     tools: ['Canalização Criativa', 'Foco Direcionado', 'Celebração']
   }
 };
@@ -403,15 +403,15 @@ export default function EmotionalWeather() {
   const forecast = generateForecast();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-100 to-blue-100 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-info/15 to-info/20 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="font-heading text-4xl font-bold mb-2 bg-gradient-to-r from-info to-primary bg-clip-text text-transparent">
               Emotional Weather
             </h1>
-            <p className="text-sky-700">
+            <p className="text-muted-foreground">
               Navegue suas emoções como um meteorologista expert
             </p>
           </div>
@@ -427,11 +427,11 @@ export default function EmotionalWeather() {
           {/* Main Weather Station */}
           <div className="lg:col-span-3 space-y-6">
             {/* Current Weather Display */}
-            <Card className="shadow-glow bg-white/90 backdrop-blur">
+            <Card className="shadow-glow bg-card/90 backdrop-blur">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
-                    <Cloud className="h-6 w-6 text-sky-600" />
+                    <Cloud className="h-6 w-6 text-info" />
                     Estação Meteorológica Emocional
                   </CardTitle>
                   <div className="flex gap-2">
@@ -442,7 +442,7 @@ export default function EmotionalWeather() {
                     >
                       📊 Previsão
                     </Button>
-                    <Badge className="bg-sky-100 text-sky-800">
+                    <Badge className="bg-info/20 text-info">
                       Intensidade: {emotionIntensity}%
                     </Badge>
                   </div>
@@ -452,7 +452,7 @@ export default function EmotionalWeather() {
                 {/* Weather Visualization */}
                 <div 
                   ref={weatherCanvasRef}
-                  className={`relative w-full h-80 bg-gradient-to-br ${currentWeather.color} rounded-lg border-2 border-sky-300 overflow-hidden transition-all duration-1000`}
+                  className={`relative w-full h-80 bg-gradient-to-br ${currentWeather.color} rounded-lg border-2 border-info/40 overflow-hidden transition-all duration-1000`}
                 >
                   {/* Weather Effects */}
                   <div className="absolute inset-0 flex items-center justify-center">
