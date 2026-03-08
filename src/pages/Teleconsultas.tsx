@@ -19,9 +19,9 @@ export default function Teleconsultas() {
     <ModernPageLayout>
       <div className="container mx-auto px-4 py-6">
         <div className="flex justify-end mb-4">
-          <Button variant="outline" onClick={() => navigate('/teleconsulta-demo')}>
+          <Button variant="outline" onClick={() => navigate('/teleconsultas')}>
             <Video className="w-4 h-4 mr-2" />
-            Testar Teleconsulta
+            Teleconsultas
           </Button>
         </div>
         <TeleconsultList 
