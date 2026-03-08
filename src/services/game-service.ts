@@ -14,7 +14,7 @@ export async function findGameBySlug(gameId: string) {
     .from('cognitive_games')
     .select('id')
     .eq('game_id', gameId)
-    .single();
+    .maybeSingle();
   if (error) throw error;
   return data;
 }
