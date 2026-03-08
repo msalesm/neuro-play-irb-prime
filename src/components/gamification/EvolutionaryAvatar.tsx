@@ -204,7 +204,7 @@ export const EvolutionaryAvatar = ({
       {/* Level Badge */}
       {level > 1 && (
         <motion.div
-          className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#c7923e] to-[#f59e0b] text-white text-xs font-bold px-2 py-0.5 rounded-full border-2 border-white shadow-lg z-20"
+          className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-warning to-[hsl(var(--neuroplay-yellow))] text-warning-foreground text-xs font-bold px-2 py-0.5 rounded-full border-2 border-white shadow-lg z-20"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', delay: 0.2 }}

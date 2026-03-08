@@ -203,7 +203,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
               {/* Comportamental */}
               <div className="text-center p-4 rounded-lg bg-muted/30">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <Users className="w-5 h-5 text-[#005a70]" />
+                  <Users className="w-5 h-5 text-secondary" />
                   <span className="font-medium">Comportamental</span>
                   {getScoreTrend(latestAssessment.behavioral_score, previousAssessment?.behavioral_score)}
                 </div>
@@ -325,7 +325,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
                   </div>
                   <div className="flex-1 flex gap-2">
                     <div 
-                      className="h-4 rounded bg-[#005a70]/60"
+                      className="h-4 rounded bg-secondary/60"
                       style={{ width: `${assessment.behavioral_score}%` }}
                       title={`Comportamental: ${assessment.behavioral_score}%`}
                     />
@@ -345,7 +345,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
                 <div className="w-3 h-3 rounded bg-primary/60" /> Cognitivo
               </span>
               <span className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded bg-[#005a70]/60" /> Comportamental
+                <div className="w-3 h-3 rounded bg-secondary/60" /> Comportamental
               </span>
               <span className="flex items-center gap-1">
                 <div className="w-3 h-3 rounded bg-destructive/60" /> Socioemocional

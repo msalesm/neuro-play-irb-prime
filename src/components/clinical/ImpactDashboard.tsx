@@ -154,7 +154,7 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
             {/* Comportamental */}
             <div className="text-center p-4 rounded-lg bg-muted/30">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Users className="w-5 h-5 text-[#005a70]" />
+                <Users className="w-5 h-5 text-secondary" />
                 {getTrendIcon(data.avg_behavioral_improvement)}
               </div>
               <p className={`text-2xl font-bold ${getImprovementColor(data.avg_behavioral_improvement)}`}>
