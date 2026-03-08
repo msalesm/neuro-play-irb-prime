@@ -94,11 +94,11 @@ export default function TherapistDashboard() {
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} data-tour="clinical-tabs">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="prontuario">Prontuário</TabsTrigger>
-              <TabsTrigger value="pei">PEI</TabsTrigger>
-              <TabsTrigger value="evolution">Evolução</TabsTrigger>
-              <TabsTrigger value="alerts">Alertas</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+              <TabsTrigger value="prontuario" className="text-xs sm:text-sm">Prontuário</TabsTrigger>
+              <TabsTrigger value="pei" className="text-xs sm:text-sm">PEI</TabsTrigger>
+              <TabsTrigger value="evolution" className="text-xs sm:text-sm">Evolução</TabsTrigger>
+              <TabsTrigger value="alerts" className="text-xs sm:text-sm">Alertas</TabsTrigger>
             </TabsList>
 
             {/* Prontuário Tab */}

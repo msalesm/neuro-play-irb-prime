@@ -51,18 +51,18 @@ export function ParentDashboardContent({
   return (
     <>
       {/* Child Selector */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+        <div className="flex gap-2 overflow-x-auto w-full sm:w-auto pb-1">
           {childrenList.map((child) => (
-            <Button key={child.id} variant={selectedChild === child.id ? 'default' : 'outline'} onClick={() => setSelectedChild(child.id)} className="flex items-center gap-2">
+            <Button key={child.id} variant={selectedChild === child.id ? 'default' : 'outline'} onClick={() => setSelectedChild(child.id)} className="flex items-center gap-2 shrink-0" size="sm">
               <ChildAvatarDisplay avatar={child.avatar_url} name={child.name} size="sm" />
-              {child.name}
+              <span className="truncate max-w-[100px]">{child.name}</span>
             </Button>
           ))}
         </div>
-        <Button variant="outline" onClick={onShowAddChild}>
+        <Button variant="outline" onClick={onShowAddChild} size="sm" className="shrink-0">
           <UserPlus className="w-4 h-4 mr-2" />
-          Adicionar Filho
+          Adicionar
         </Button>
       </div>
 
@@ -90,11 +90,11 @@ export function ParentDashboardContent({
               </div>
             </div>
             <div className="flex gap-2 flex-wrap">
-              <Button variant="outline" onClick={() => navigate('/avatar-evolution')}>✨ Customizar Avatar</Button>
-              <Button variant="outline" onClick={() => navigate('/risk-analysis')} className="flex items-center gap-2"><Shield className="w-4 h-4" />Análise de Risco</Button>
-              <Button variant="outline" onClick={() => navigate('/platform-report')}><FileText className="w-4 h-4 mr-2" />Relatório Plataforma</Button>
-              <Button variant="outline" onClick={() => navigate('/platform-manual')}><BookOpen className="w-4 h-4 mr-2" />Manual</Button>
-              <Button onClick={generateReport}><Download className="w-4 h-4 mr-2" />Gerar Relatório Clínico</Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/avatar-evolution')}>✨ Avatar</Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/risk-analysis')} className="flex items-center gap-1"><Shield className="w-3 h-3" />Risco</Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/platform-report')}><FileText className="w-3 h-3 mr-1" />Relatório</Button>
+              <Button variant="outline" size="sm" onClick={() => navigate('/platform-manual')}><BookOpen className="w-3 h-3 mr-1" />Manual</Button>
+              <Button size="sm" onClick={generateReport}><Download className="w-3 h-3 mr-1" />PDF</Button>
             </div>
           </div>
         </Card>
@@ -279,11 +279,11 @@ export function ParentDashboardContent({
 
       {/* Tabs */}
       <Tabs defaultValue="cognitive" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="cognitive">Perfil Cognitivo</TabsTrigger>
-          <TabsTrigger value="achievements">Conquistas</TabsTrigger>
-          <TabsTrigger value="progress">Progresso</TabsTrigger>
-          <TabsTrigger value="history">Histórico</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+          <TabsTrigger value="cognitive" className="text-xs sm:text-sm">Perfil Cognitivo</TabsTrigger>
+          <TabsTrigger value="achievements" className="text-xs sm:text-sm">Conquistas</TabsTrigger>
+          <TabsTrigger value="progress" className="text-xs sm:text-sm">Progresso</TabsTrigger>
+          <TabsTrigger value="history" className="text-xs sm:text-sm">Histórico</TabsTrigger>
         </TabsList>
 
         <TabsContent value="cognitive">
