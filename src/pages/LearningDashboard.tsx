@@ -82,15 +82,15 @@ export default function LearningDashboard() {
     : 1;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-6 pb-32">
+    <div className="min-h-screen bg-gradient-to-br from-secondary/20 via-muted/30 to-accent/10 py-6 pb-32">
       <div className="container mx-auto px-4 space-y-8">
         {/* Header */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
-              <Brain className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center">
+              <Brain className="w-6 h-6 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               {t('dashboard.learningCenter')}
             </h1>
           </div>
@@ -101,26 +101,26 @@ export default function LearningDashboard() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-4 text-center border-l-4 border-l-purple-500">
-            <Trophy className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
+          <Card className="p-4 text-center border-l-4 border-l-secondary">
+            <Trophy className="w-8 h-8 text-warning mx-auto mb-2" />
             <div className="text-2xl font-bold">{totalXP.toLocaleString()}</div>
             <div className="text-sm text-muted-foreground">{t('dashboard.totalXP')}</div>
           </Card>
           
-          <Card className="p-4 text-center border-l-4 border-l-blue-500">
-            <Star className="w-8 h-8 text-blue-500 mx-auto mb-2" />
+          <Card className="p-4 text-center border-l-4 border-l-info">
+            <Star className="w-8 h-8 text-info mx-auto mb-2" />
             <div className="text-2xl font-bold">{Math.floor(averageLevel)}</div>
             <div className="text-sm text-muted-foreground">{t('dashboard.averageLevel')}</div>
           </Card>
           
-          <Card className="p-4 text-center border-l-4 border-l-green-500">
-            <Zap className="w-8 h-8 text-green-500 mx-auto mb-2" />
+          <Card className="p-4 text-center border-l-4 border-l-success">
+            <Zap className="w-8 h-8 text-success mx-auto mb-2" />
             <div className="text-2xl font-bold">{weeklyStats.streakDays}</div>
             <div className="text-sm text-muted-foreground">{t('dashboard.dayStreak')}</div>
           </Card>
           
-          <Card className="p-4 text-center border-l-4 border-l-orange-500">
-            <Award className="w-8 h-8 text-orange-500 mx-auto mb-2" />
+          <Card className="p-4 text-center border-l-4 border-l-accent">
+            <Award className="w-8 h-8 text-accent mx-auto mb-2" />
             <div className="text-2xl font-bold">{weeklyStats.newAchievements}</div>
             <div className="text-sm text-muted-foreground">{t('dashboard.newAchievements')}</div>
           </Card>
