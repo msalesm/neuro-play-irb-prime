@@ -7,6 +7,9 @@
 // Role & Permission System
 export * from './roles';
 
+// Navigation Configuration
+export * from './navigation';
+
 // Game Engine
 export * from './game-engine';
 
