@@ -63,8 +63,8 @@ const eventTypeConfig = {
   },
   screening: {
     icon: CheckCircle,
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-500/10',
+    color: 'text-secondary',
+    bgColor: 'bg-secondary/10',
     label: 'Triagem'
   }
 };

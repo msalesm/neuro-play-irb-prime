@@ -20,21 +20,21 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
   ];
 
   const classificationLabels: Record<string, { label: string; color: string }> = {
-    adequate: { label: 'Adequado', color: 'bg-green-500/20 text-green-700' },
-    monitoring: { label: 'Monitoramento', color: 'bg-yellow-500/20 text-yellow-700' },
-    attention: { label: 'Atenção', color: 'bg-orange-500/20 text-orange-700' },
-    intervention: { label: 'Intervenção', color: 'bg-red-500/20 text-red-700' },
+    adequate: { label: 'Adequado', color: 'bg-success/20 text-success' },
+    monitoring: { label: 'Monitoramento', color: 'bg-warning/20 text-warning' },
+    attention: { label: 'Atenção', color: 'bg-accent/20 text-accent-foreground' },
+    intervention: { label: 'Intervenção', color: 'bg-destructive/20 text-destructive' },
   };
 
   return (
     <div className="space-y-6">
       {/* Disclaimer */}
-      <Card className="border-yellow-500/30 bg-yellow-500/5">
+      <Card className="border-warning/30 bg-warning/5">
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
             <div className="text-sm">
-              <p className="font-semibold text-yellow-700 dark:text-yellow-400 mb-1">
+              <p className="font-semibold text-warning mb-1">
                 Ferramenta de Análise Comportamental Educacional
               </p>
               <p className="text-muted-foreground">
@@ -152,9 +152,9 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
 
       {/* Behavioral Indicators */}
       {report.behavioralIndicators.length > 0 && (
-        <Card className="border-blue-500/20 bg-blue-500/5">
+        <Card className="border-info/20 bg-info/5">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
+            <CardTitle className="flex items-center gap-2 text-info">
               <AlertCircle className="w-5 h-5" />
               Indicadores Comportamentais Observados
             </CardTitle>
@@ -163,7 +163,7 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
             <ul className="space-y-2">
               {report.behavioralIndicators.filter(i => i.observed).map((ind, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <AlertCircle className="w-5 h-5 text-info flex-shrink-0 mt-0.5" />
                   <div>
                     <span>{ind.indicator}</span>
                     {ind.frequency && (
@@ -180,9 +180,9 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
       )}
 
       {/* Strengths */}
-      <Card className="border-green-500/20 bg-green-500/5">
+      <Card className="border-success/20 bg-success/5">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-green-700 dark:text-green-400">
+          <CardTitle className="flex items-center gap-2 text-success">
             <CheckCircle className="w-5 h-5" />
             Pontos Fortes
           </CardTitle>
@@ -191,7 +191,7 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
           <ul className="space-y-2">
             {report.strengths.map((strength, index) => (
               <li key={index} className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                 <span>{strength}</span>
               </li>
             ))}
@@ -200,9 +200,9 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
       </Card>
 
       {/* Areas for Development */}
-      <Card className="border-orange-500/20 bg-orange-500/5">
+      <Card className="border-warning/20 bg-warning/5">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-orange-700 dark:text-orange-400">
+          <CardTitle className="flex items-center gap-2 text-warning">
             <AlertCircle className="w-5 h-5" />
             Áreas em Desenvolvimento
           </CardTitle>
@@ -211,7 +211,7 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
           <ul className="space-y-2">
             {report.areasForDevelopment.map((area, index) => (
               <li key={index} className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
                 <span>{area}</span>
               </li>
             ))}
@@ -220,9 +220,9 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
       </Card>
 
       {/* Recommendations */}
-      <Card className="border-blue-500/20 bg-blue-500/5">
+      <Card className="border-info/20 bg-info/5">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
+          <CardTitle className="flex items-center gap-2 text-info">
             <Lightbulb className="w-5 h-5" />
             Recomendações Educacionais
           </CardTitle>
@@ -231,7 +231,7 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
           <ul className="space-y-2">
             {report.educationalRecommendations.map((rec, index) => (
               <li key={index} className="flex items-start gap-3">
-                <Lightbulb className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                <Lightbulb className="w-5 h-5 text-info flex-shrink-0 mt-0.5" />
                 <span>{rec}</span>
               </li>
             ))}

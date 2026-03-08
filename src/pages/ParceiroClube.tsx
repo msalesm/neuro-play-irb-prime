@@ -172,7 +172,7 @@ const ParceiroClube = () => {
                 <p className="text-sm text-muted-foreground">Agendamentos</p>
                 <p className="text-2xl font-bold">{upcomingBookings.length}</p>
               </div>
-              <Users className="h-8 w-8 text-blue-500" />
+              <Users className="h-8 w-8 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -183,7 +183,7 @@ const ParceiroClube = () => {
                 <p className="text-sm text-muted-foreground">Serviços Ativos</p>
                 <p className="text-2xl font-bold">{myServices.filter(s => s.is_active).length}</p>
               </div>
-              <Briefcase className="h-8 w-8 text-green-500" />
+              <Briefcase className="h-8 w-8 text-success" />
             </div>
           </CardContent>
         </Card>
@@ -336,14 +336,14 @@ const ParceiroClube = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
               <CardContent className="p-6 text-center">
-                <DollarSign className="h-8 w-8 mx-auto text-green-500 mb-2" />
+                <DollarSign className="h-8 w-8 mx-auto text-success mb-2" />
                 <p className="text-sm text-muted-foreground">Total Recebido</p>
                 <p className="text-3xl font-bold">R$ {totalRevenue.toFixed(2)}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-6 text-center">
-                <CheckCircle className="h-8 w-8 mx-auto text-blue-500 mb-2" />
+                <CheckCircle className="h-8 w-8 mx-auto text-primary mb-2" />
                 <p className="text-sm text-muted-foreground">Serviços Realizados</p>
                 <p className="text-3xl font-bold">{completedBookings.length}</p>
               </CardContent>
@@ -380,7 +380,7 @@ const ParceiroClube = () => {
                           {format(new Date(booking.scheduled_date), 'dd/MM/yyyy')}
                         </p>
                       </div>
-                      <span className="font-semibold text-green-600">
+                      <span className="font-semibold text-success">
                         + R$ {booking.partner_amount.toFixed(2)}
                       </span>
                     </div>

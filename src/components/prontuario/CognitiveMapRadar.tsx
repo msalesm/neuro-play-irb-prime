@@ -117,7 +117,7 @@ export function CognitiveMapRadar({ current, previous, showComparison = true }: 
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-bold">{item.current}%</span>
                   {change !== 0 && (
-                    <span className={`text-xs ${change > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    <span className={`text-xs ${change > 0 ? 'text-success' : 'text-destructive'}`}>
                       {change > 0 ? '+' : ''}{change}%
                     </span>
                   )}

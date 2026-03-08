@@ -8,7 +8,7 @@ Este guia explica como transformar o NeuroPlay em aplicativo nativo para iOS e A
 2. **Plugin Haptics** - Feedback háptico nativo (funciona no iPhone!)
 3. **Sistema híbrido** - Detecta automaticamente web vs nativo
 4. **Hot-reload ativo** - Testa mudanças direto no dispositivo
-5. **Ícones e Splash Screens customizados** - Branding IRB Prime consistente
+5. **Ícones e Splash Screens customizados** - Branding NeuroPlay consistente
 
 ## 🚀 Como testar no seu iPhone ou Android
 
@@ -53,7 +53,7 @@ Isso criará automaticamente:
 **Dica:** Para splash screen com logo centralizado em fundo sólido:
 - Use imagem 2732x2732px
 - Logo centralizado com área segura de 1200x1200px
-- Fundo cor `#0a1e35` (petróleo azul IRB Prime)
+- Fundo cor `#3A86FF` (azul NeuroPlay)
 
 ### Passo 3: Adicionar plataformas nativas
 
@@ -131,7 +131,7 @@ O código detecta automaticamente se está rodando como:
 ```typescript
 {
   appId: 'app.lovable.d98addd99b3b410c900bc8de6e51b25e',
-  appName: 'neuro-play-irb-prime',
+  appName: 'NeuroPlay',
   webDir: 'dist',
   server: {
     url: 'https://...',  // Hot-reload ativo

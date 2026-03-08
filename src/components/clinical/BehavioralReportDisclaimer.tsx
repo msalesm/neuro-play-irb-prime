@@ -19,8 +19,8 @@ export const BehavioralReportDisclaimer: React.FC<BehavioralReportDisclaimerProp
   }
 
   return (
-    <Alert className={`bg-yellow-500/10 border-yellow-500/30 text-white ${className}`}>
-      <AlertTriangle className="h-4 w-4 text-yellow-400" />
+    <Alert className={`bg-warning/10 border-warning/30 text-white ${className}`}>
+      <AlertTriangle className="h-4 w-4 text-warning" />
       <AlertTitle className="text-white font-semibold">
         ⚠️ Importante: Ferramenta de Análise Comportamental Educacional
       </AlertTitle>

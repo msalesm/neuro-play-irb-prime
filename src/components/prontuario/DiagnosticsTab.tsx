@@ -244,8 +244,8 @@ export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className="p-2 rounded-lg bg-orange-500/10">
-                          <Zap className="w-5 h-5 text-orange-500" />
+                         <div className="p-2 rounded-lg bg-warning/10">
+                          <Zap className="w-5 h-5 text-warning" />
                         </div>
                         <span className="font-semibold">Comportamental</span>
                       </div>
@@ -267,8 +267,8 @@ export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className="p-2 rounded-lg bg-purple-500/10">
-                          <BookOpen className="w-5 h-5 text-purple-500" />
+                         <div className="p-2 rounded-lg bg-secondary/10">
+                          <BookOpen className="w-5 h-5 text-secondary" />
                         </div>
                         <span className="font-semibold">Socioemocional</span>
                       </div>

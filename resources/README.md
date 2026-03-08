@@ -16,16 +16,16 @@ resources/
 ### Icon.png
 - **Tamanho mínimo:** 1024x1024 pixels
 - **Formato:** PNG com transparência ou fundo sólido
-- **Conteúdo:** Logo IRB Prime / NeuroPlay
+- **Conteúdo:** Logo NeuroPlay
 - **Área segura:** Manter elementos importantes dentro de 80% central (ícones iOS têm bordas arredondadas)
-- **Cores:** Usar cores oficiais IRB Prime (#0a1e35, #005a70, #c7923e)
+- **Cores:** Usar cores oficiais NeuroPlay (#3A86FF, #8338EC, #06D6A0, #FF9F1C, #FFD166)
 
 ### Splash.png
 - **Tamanho mínimo:** 2732x2732 pixels (tamanho do iPad Pro 12.9")
 - **Formato:** PNG
 - **Layout:** Logo centralizado em fundo sólido
 - **Área segura:** Manter logo dentro de 1200x1200px centrais
-- **Fundo:** Cor petróleo azul #0a1e35 (cor primária IRB Prime)
+- **Fundo:** Cor azul #3A86FF (cor primária NeuroPlay)
 - **Logo:** Branco ou dourado (#c7923e) para contraste
 
 ## 🚀 Como Usar
@@ -72,7 +72,7 @@ Após gerar, verifique:
 ### Ícone do App (icon.png)
 
 **Recomendações:**
-- Use logo IRB Prime simplificado (sem texto "Prime Care" se muito pequeno)
+- Use logo NeuroPlay simplificado
 - Evite gradientes complexos (podem não renderizar bem em tamanhos pequenos)
 - Teste em fundo claro e escuro (iOS usa ambos)
 - Mantenha alto contraste para visibilidade
@@ -83,7 +83,7 @@ Após gerar, verifique:
 │                 │
 │   ┌───────┐     │
 │   │       │     │  ← Área segura (80% central)
-│   │  LOGO │     │     Logo IRB Prime centralizado
+│   │  LOGO │     │     Logo NeuroPlay centralizado
 │   │       │     │
 │   └───────┘     │
 │                 │
@@ -159,7 +159,7 @@ Sempre que atualizar `icon.png` ou `splash.png`:
 - [Capacitor Assets CLI](https://github.com/ionic-team/capacitor-assets)
 - [iOS Human Interface Guidelines - App Icons](https://developer.apple.com/design/human-interface-guidelines/app-icons)
 - [Android Material Design - Product Icons](https://material.io/design/iconography/product-icons.html)
-- [Brand Manual IRB Prime](docs/IRB_PRIME_BRAND_MANUAL.pdf)
+- [Brand Manual NeuroPlay](docs/NEUROPLAY_BRAND_MANUAL.pdf)
 
 ## ✅ Checklist de Publicação
 
@@ -172,7 +172,7 @@ Antes de publicar nas lojas:
 - [ ] Testado em Android (emulador + dispositivo real)
 - [ ] Ícone visível e claro em fundos claro e escuro
 - [ ] Splash screen alinhado e sem cortes
-- [ ] Cores correspondem ao brand manual IRB Prime
+- [ ] Cores correspondem ao brand manual NeuroPlay
 
 ---
 

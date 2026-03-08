@@ -132,11 +132,11 @@ export default function AdminDashboard() {
 
   const getProgressColor = (trend: string) => {
     switch (trend) {
-      case 'excellent': return 'text-green-600 bg-green-100';
-      case 'good': return 'text-blue-600 bg-blue-100';
-      case 'average': return 'text-yellow-600 bg-yellow-100';
-      case 'needs_improvement': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'excellent': return 'text-success bg-success/10';
+      case 'good': return 'text-info bg-info/10';
+      case 'average': return 'text-warning bg-warning/10';
+      case 'needs_improvement': return 'text-destructive bg-destructive/10';
+      default: return 'text-muted-foreground bg-muted';
     }
   };
 
@@ -209,12 +209,12 @@ export default function AdminDashboard() {
   const unreadNotifications = notifications.filter(n => !n.read_at).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-6 pb-32">
+    <div className="min-h-screen bg-gradient-to-br from-muted/30 via-background to-muted/20 py-6 pb-32">
       <div className="container mx-auto px-4 space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Painel {isAdmin ? 'Administrativo' : 'do Educador'}
             </h1>
             <p className="text-muted-foreground">
@@ -231,9 +231,9 @@ export default function AdminDashboard() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 border-l-4 border-l-blue-500">
+          <Card className="p-4 border-l-4 border-l-primary">
             <div className="flex items-center gap-3">
-              <Users className="w-8 h-8 text-blue-500" />
+              <Users className="w-8 h-8 text-primary" />
               <div>
                 <div className="text-2xl font-bold">{students.length}</div>
                 <div className="text-sm text-muted-foreground">Estudantes</div>
@@ -241,9 +241,9 @@ export default function AdminDashboard() {
             </div>
           </Card>
           
-          <Card className="p-4 border-l-4 border-l-green-500">
+          <Card className="p-4 border-l-4 border-l-success">
             <div className="flex items-center gap-3">
-              <BookOpen className="w-8 h-8 text-green-500" />
+              <BookOpen className="w-8 h-8 text-success" />
               <div>
                 <div className="text-2xl font-bold">{totalSessions}</div>
                 <div className="text-sm text-muted-foreground">Sessões Totais</div>
@@ -251,9 +251,9 @@ export default function AdminDashboard() {
             </div>
           </Card>
           
-          <Card className="p-4 border-l-4 border-l-purple-500">
+          <Card className="p-4 border-l-4 border-l-secondary">
             <div className="flex items-center gap-3">
-              <TrendingUp className="w-8 h-8 text-purple-500" />
+              <TrendingUp className="w-8 h-8 text-secondary" />
               <div>
                 <div className="text-2xl font-bold">{Math.round(avgAccuracy)}%</div>
                 <div className="text-sm text-muted-foreground">Precisão Média</div>
@@ -261,9 +261,9 @@ export default function AdminDashboard() {
             </div>
           </Card>
           
-          <Card className="p-4 border-l-4 border-l-orange-500">
+          <Card className="p-4 border-l-4 border-l-warning">
             <div className="flex items-center gap-3">
-              <AlertTriangle className="w-8 h-8 text-orange-500" />
+              <AlertTriangle className="w-8 h-8 text-warning" />
               <div>
                 <div className="text-2xl font-bold">{studentsNeedingAttention}</div>
                 <div className="text-sm text-muted-foreground">Precisam Atenção</div>
@@ -386,19 +386,19 @@ export default function AdminDashboard() {
                   <CardContent className="space-y-3">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div className="flex items-center gap-2">
-                        <BookOpen className="w-4 h-4 text-blue-500" />
+                        <BookOpen className="w-4 h-4 text-primary" />
                         <span>{student.total_sessions} sessões</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Target className="w-4 h-4 text-green-500" />
+                        <Target className="w-4 h-4 text-success" />
                         <span>{student.avg_accuracy}% precisão</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Star className="w-4 h-4 text-yellow-500" />
+                        <Star className="w-4 h-4 text-warning" />
                         <span>{student.total_xp} XP</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-purple-500" />
+                        <Clock className="w-4 h-4 text-secondary" />
                         <span>
                           {student.last_session_date 
                             ? new Date(student.last_session_date).toLocaleDateString('pt-BR')
@@ -435,8 +435,8 @@ export default function AdminDashboard() {
                 <Card key={notification.id} className={`${notification.read_at ? 'opacity-60' : ''}`}>
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
-                      <div className="p-2 bg-blue-100 rounded-full">
-                        <Bell className="w-4 h-4 text-blue-600" />
+                      <div className="p-2 bg-primary/10 rounded-full">
+                        <Bell className="w-4 h-4 text-primary" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-medium">{notification.title}</h4>
@@ -540,26 +540,26 @@ export default function AdminDashboard() {
               <div className="space-y-6">
                 {/* Performance Overview */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-center p-4 bg-primary/10 rounded-lg">
+                    <div className="text-2xl font-bold text-primary">
                       {selectedStudent.performance_metrics.total_xp}
                     </div>
                     <div className="text-sm text-muted-foreground">XP Total</div>
                   </div>
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">
+                  <div className="text-center p-4 bg-success/10 rounded-lg">
+                    <div className="text-2xl font-bold text-success">
                       {selectedStudent.performance_metrics.avg_accuracy}%
                     </div>
                     <div className="text-sm text-muted-foreground">Precisão Média</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">
+                  <div className="text-center p-4 bg-secondary/10 rounded-lg">
+                    <div className="text-2xl font-bold text-secondary">
                       {selectedStudent.performance_metrics.total_sessions}
                     </div>
                     <div className="text-sm text-muted-foreground">Sessões</div>
                   </div>
-                  <div className="text-center p-4 bg-orange-50 rounded-lg">
-                    <div className="text-2xl font-bold text-orange-600">
+                  <div className="text-center p-4 bg-warning/10 rounded-lg">
+                    <div className="text-2xl font-bold text-warning">
                       {selectedStudent.performance_metrics.active_days}
                     </div>
                     <div className="text-sm text-muted-foreground">Dias Ativos</div>
