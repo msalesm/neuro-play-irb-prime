@@ -336,7 +336,7 @@ export default function Dashboard() {
                 <div className="space-y-4">
                   {recentActivities.map((activity, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full mt-2" aria-hidden="true" />
+                      <div className="w-2 h-2 bg-gradient-to-r from-secondary to-primary rounded-full mt-2" aria-hidden="true" />
                       <div>
                         <p className="text-sm font-medium text-foreground">
                           {activity.activity_type === 'game_completed' ? 'Jogo concluído' :
