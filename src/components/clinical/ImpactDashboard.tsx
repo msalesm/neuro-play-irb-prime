@@ -85,8 +85,8 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
   };
 
   const getTrendIcon = (value: number) => {
-    if (value > 5) return <TrendingUp className="w-4 h-4 text-green-500" />;
-    if (value < -5) return <TrendingDown className="w-4 h-4 text-red-500" />;
+    if (value > 5) return <TrendingUp className="w-4 h-4 text-success" />;
+    if (value < -5) return <TrendingDown className="w-4 h-4 text-destructive" />;
     return <Minus className="w-4 h-4 text-muted-foreground" />;
   };
 
