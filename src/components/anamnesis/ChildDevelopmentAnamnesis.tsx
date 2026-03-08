@@ -1009,7 +1009,7 @@ export function ChildDevelopmentAnamnesis({
                     </div>
                   )}
 
-                  <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg">
+                  <div className="p-4 bg-success/5 dark:bg-success/10 rounded-lg">
                     <h4 className="font-medium mb-2">Síntese Rápida</h4>
                     <p className="text-sm text-muted-foreground">
                       {anamnesis.generated_summary.quick_synthesis}

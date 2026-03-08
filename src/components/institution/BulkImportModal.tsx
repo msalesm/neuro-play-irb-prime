@@ -264,12 +264,12 @@ pedro@exemplo.com,Pedro Costa,member,Administrativo`;
           {result && (
             <div className="space-y-3">
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 text-green-500">
+                <div className="flex items-center gap-2 text-success">
                   <CheckCircle2 className="w-5 h-5" />
                   <span>{result.success} sucesso</span>
                 </div>
                 {result.failed > 0 && (
-                  <div className="flex items-center gap-2 text-red-500">
+                  <div className="flex items-center gap-2 text-destructive">
                     <XCircle className="w-5 h-5" />
                     <span>{result.failed} falhas</span>
                   </div>

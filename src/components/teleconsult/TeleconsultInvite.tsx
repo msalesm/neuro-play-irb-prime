@@ -140,7 +140,7 @@ Dicas:
                 onClick={copyToClipboard}
               >
                 {copied ? (
-                  <Check className="w-4 h-4 text-green-500" />
+                  <Check className="w-4 h-4 text-success" />
                 ) : (
                   <Copy className="w-4 h-4" />
                 )}
@@ -157,7 +157,7 @@ Dicas:
                 onClick={shareViaWhatsApp}
                 className="flex flex-col gap-1 h-auto py-3"
               >
-                <MessageCircle className="w-5 h-5 text-green-500" />
+                <MessageCircle className="w-5 h-5 text-success" />
                 <span className="text-xs">WhatsApp</span>
               </Button>
               <Button

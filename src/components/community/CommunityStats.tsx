@@ -5,11 +5,11 @@ import { useCommunity } from '@/hooks/useCommunity';
 import { cn } from '@/lib/utils';
 
 const levelThresholds = [
-  { level: 1, minPoints: 0, rank: 'Iniciante', color: 'text-gray-500' },
-  { level: 2, minPoints: 100, rank: 'Explorador', color: 'text-green-500' },
-  { level: 3, minPoints: 300, rank: 'Aventureiro', color: 'text-blue-500' },
-  { level: 4, minPoints: 600, rank: 'Mestre', color: 'text-purple-500' },
-  { level: 5, minPoints: 1000, rank: 'Lenda', color: 'text-amber-500' }
+  { level: 1, minPoints: 0, rank: 'Iniciante', color: 'text-muted-foreground' },
+  { level: 2, minPoints: 100, rank: 'Explorador', color: 'text-success' },
+  { level: 3, minPoints: 300, rank: 'Aventureiro', color: 'text-primary' },
+  { level: 4, minPoints: 600, rank: 'Mestre', color: 'text-accent' },
+  { level: 5, minPoints: 1000, rank: 'Lenda', color: 'text-warning' }
 ];
 
 export function CommunityStats() {
