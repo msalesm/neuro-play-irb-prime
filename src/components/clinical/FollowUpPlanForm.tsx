@@ -108,7 +108,7 @@ export function FollowUpPlanForm({ childId, sessionId, onSave, onCancel }: Follo
           {/* Objetivo Clínico */}
           <div className="space-y-2">
             <Label htmlFor="objective" className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              <AlertTriangle className="w-4 h-4 text-warning" />
               Objetivo Clínico *
             </Label>
             <Textarea

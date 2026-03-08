@@ -82,7 +82,7 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
       return <Badge variant="destructive">Cancelada</Badge>;
     }
     if (status === 'in_progress') {
-      return <Badge className="bg-blue-500/20 text-blue-600 border-blue-500/30 animate-pulse">Em andamento</Badge>;
+      return <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse">Em andamento</Badge>;
     }
     if (isPast(date)) {
       return <Badge variant="destructive">Não realizada</Badge>;

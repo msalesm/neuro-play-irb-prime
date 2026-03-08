@@ -24,8 +24,8 @@ export function SimonDisplay({
   return (
     <div className="mt-8 w-full max-w-[280px] mx-auto">
       <div className={cn(
-        'bg-gray-900 rounded-2xl p-6 shadow-2xl',
-        'border-4 border-gray-700'
+        'bg-background rounded-2xl p-6 shadow-2xl',
+        'border-4 border-border'
       )}>
         {/* LED Indicators */}
         <div className="flex justify-center gap-2 mb-4">
@@ -36,7 +36,7 @@ export function SimonDisplay({
                 'w-2 h-2 rounded-full transition-all duration-200',
                 gameState === 'playing' && idx === currentPosition
                   ? `bg-${color}-500 shadow-[0_0_8px_currentColor]`
-                  : 'bg-gray-700'
+                  : 'bg-muted'
               )}
             />
           ))}
@@ -71,7 +71,7 @@ export function SimonDisplay({
         {gameState === 'playing' && (
           <div className="space-y-2">
             <Progress value={progress} className="h-2" />
-            <div className="text-center text-xs text-gray-400">
+            <div className="text-center text-xs text-muted-foreground">
               {currentPosition}/{sequenceLength}
             </div>
           </div>
