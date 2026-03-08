@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Loading } from "@/components/Loading";
@@ -19,19 +19,19 @@ import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
 
-// Lazy loaded - All feature pages
+// ── Lazy loaded pages ──
+
+// Auth & Onboarding
 const AcceptInvite = lazy(() => import("./pages/AcceptInvite"));
-const DiagnosticoCompleto = lazy(() => import("./pages/DiagnosticoCompleto"));
-const CognitiveDiagnostic = lazy(() => import("./pages/CognitiveDiagnostic"));
-const DiagnosticTests = lazy(() => import("./pages/DiagnosticTests"));
+
+// Dashboards (role-specific)
 const DashboardPais = lazy(() => import("./pages/DashboardPais"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
 const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
 const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
-const Games = lazy(() => import("./pages/Games"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const StudentHub = lazy(() => import("./pages/StudentHub"));
 
-// Games - Navigation & Map
+// Games - Navigation
+const Games = lazy(() => import("./pages/Games"));
 const Neuroplasticity = lazy(() => import("./pages/Neuroplasticity"));
 const CognitiveBattery = lazy(() => import("./pages/CognitiveBattery"));
 
@@ -87,7 +87,6 @@ const PlanetaDetalhes = lazy(() => import("./pages/PlanetaDetalhes"));
 const AvatarEvolutionPage = lazy(() => import("./pages/AvatarEvolutionPage"));
 const AchievementsPage = lazy(() => import("./pages/AchievementsPage"));
 const WorldMap = lazy(() => import("./pages/WorldMap"));
-const StudentHub = lazy(() => import("./pages/StudentHub"));
 
 // Screening
 const ScreeningSelection = lazy(() => import("./pages/ScreeningSelection"));
@@ -95,6 +94,9 @@ const DislexiaScreening = lazy(() => import("./pages/games/DislexiaScreening"));
 const TDAHScreening = lazy(() => import("./pages/games/TDAHScreening"));
 const TEAScreening = lazy(() => import("./pages/games/TEAScreening"));
 const ScreeningResult = lazy(() => import("./pages/ScreeningResult"));
+
+// Diagnostics (consolidated)
+const DiagnosticoCompleto = lazy(() => import("./pages/DiagnosticoCompleto"));
 
 // Therapist
 const TherapistPatients = lazy(() => import("./pages/TherapistPatients"));
@@ -120,13 +122,13 @@ const ParentTraining = lazy(() => import("./pages/TeacherTraining"));
 const TrainingModule = lazy(() => import("./pages/TrainingModule"));
 
 // Admin
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const AdminNetworkDashboard = lazy(() => import("./pages/AdminNetworkDashboard"));
 const AdminUserManagement = lazy(() => import("./pages/AdminUserManagement"));
 const AdminRiskMaps = lazy(() => import("./pages/AdminRiskMaps"));
 const AdminStories = lazy(() => import("./pages/AdminStories"));
 const StoryEditor = lazy(() => import("./pages/StoryEditor"));
 const ContentManager = lazy(() => import("./pages/ContentManager"));
-const ComplianceDashboard = lazy(() => import("./pages/ComplianceDashboard"));
 const AdminClubePais = lazy(() => import("./pages/AdminClubePais"));
 const OperationsCenter = lazy(() => import("./pages/OperationsCenter"));
 const RelationshipsManager = lazy(() => import("./pages/admin/RelationshipsManager"));
@@ -134,18 +136,17 @@ const RelationshipsManager = lazy(() => import("./pages/admin/RelationshipsManag
 // ABA
 const AbaNeuroPlay = lazy(() => import("./pages/AbaNeuroPlay"));
 
-// Stories & Social
+// Stories & Routines
 const SocialStories = lazy(() => import("./pages/SocialStories"));
 const StoryReader = lazy(() => import("./pages/StoryReader"));
 const RoutinesPage = lazy(() => import("./pages/RoutinesPage"));
 const RoutineViewer = lazy(() => import("./pages/RoutineViewer"));
 
-// Reports & Analytics
+// Reports & Analytics (consolidated)
 const UnifiedReports = lazy(() => import("./pages/UnifiedReports"));
 const RiskAnalysisPage = lazy(() => import("./pages/RiskAnalysisPage"));
 const EmotionalHistoryDashboard = lazy(() => import("./pages/EmotionalHistoryDashboard"));
 const ProfessionalAnalytics = lazy(() => import("./pages/ProfessionalAnalytics"));
-const IntelligentReports = lazy(() => import("./pages/IntelligentReports"));
 
 // Education
 const EducacaoDashboard = lazy(() => import("./pages/EducacaoDashboard"));
@@ -156,20 +157,19 @@ const SecretariaDashboard = lazy(() => import("./pages/SecretariaDashboard"));
 const Community = lazy(() => import("./pages/Community"));
 const SecureMessaging = lazy(() => import("./pages/SecureMessaging"));
 
-// AI & Institutional
-const ContextualAIDashboard = lazy(() => import("./pages/ContextualAIDashboard"));
+// Institutional & Billing
 const InstitutionalDashboard = lazy(() => import("./pages/InstitutionalDashboard"));
 const BillingDashboard = lazy(() => import("./pages/BillingDashboard"));
 const ImpactDashboard = lazy(() => import("./pages/ImpactDashboard"));
 
-// Compliance & Settings
+// Privacy & Compliance (consolidated 4→1)
+const PrivacyCompliancePage = lazy(() => import("./pages/PrivacyCompliancePage"));
+
+// Settings & Profile
 const Settings = lazy(() => import("./pages/Settings"));
 const Profile = lazy(() => import("./pages/Profile"));
 const AccessibilitySettings = lazy(() => import("./pages/AccessibilitySettings"));
 const Assinatura = lazy(() => import("./pages/Assinatura"));
-const PrivacyPortal = lazy(() => import("./pages/PrivacyPortal"));
-const ConsentManagement = lazy(() => import("./pages/ConsentManagement"));
-const DataGovernance = lazy(() => import("./pages/DataGovernance"));
 const ApiIntegrations = lazy(() => import("./pages/ApiIntegrations"));
 const InstallApp = lazy(() => import("./pages/InstallApp"));
 const PlatformManual = lazy(() => import("./pages/PlatformManual"));
@@ -212,15 +212,16 @@ const App = () => (
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/aceitar-convite" element={<L><AcceptInvite /></L>} />
                   
+                  {/* Dashboards */}
+                  <Route path="/dashboard" element={<Navigate to="/" replace />} />
+                  <Route path="/dashboard-pais" element={<L><DashboardPais /></L>} />
+                  <Route path="/clinical" element={<L><ClinicalDashboard /></L>} />
+                  <Route path="/student-hub" element={<L><StudentHub /></L>} />
+                  
                   {/* Diagnostics */}
                   <Route path="/diagnostico-completo" element={<L><DiagnosticoCompleto /></L>} />
-                  <Route path="/cognitive-diagnostic" element={<L><CognitiveDiagnostic /></L>} />
-                  <Route path="/diagnostic-tests" element={<L><DiagnosticTests /></L>} />
-                  
-                  {/* Dashboards */}
-                  <Route path="/dashboard-pais" element={<L><DashboardPais /></L>} />
-                  <Route path="/dashboard" element={<L><Dashboard /></L>} />
-                  <Route path="/clinical" element={<L><ClinicalDashboard /></L>} />
+                  <Route path="/cognitive-diagnostic" element={<Navigate to="/diagnostico-completo" replace />} />
+                  <Route path="/diagnostic-tests" element={<Navigate to="/diagnostico-completo" replace />} />
                   
                   {/* Games - Navigation */}
                   <Route path="/games" element={<L><Games /></L>} />
@@ -279,7 +280,6 @@ const App = () => (
                   <Route path="/avatar-evolution" element={<L><AvatarEvolutionPage /></L>} />
                   <Route path="/conquistas" element={<L><AchievementsPage /></L>} />
                   <Route path="/mapa" element={<L><WorldMap /></L>} />
-                  <Route path="/student-hub" element={<L><StudentHub /></L>} />
                   
                   {/* Screening */}
                   <Route path="/screening" element={<L><ScreeningSelection /></L>} />
@@ -301,7 +301,7 @@ const App = () => (
                   <Route path="/anamnese" element={<L><AnamneseList /></L>} />
                   <Route path="/anamnese/:childId" element={<L><AnamneseInfantil /></L>} />
                   <Route path="/therapeutic-chat" element={<L><TherapeuticChatPage /></L>} />
-                  <Route path="/chat" element={<L><TherapeuticChatPage /></L>} />
+                  <Route path="/chat" element={<Navigate to="/therapeutic-chat" replace />} />
                   
                   {/* Teacher Routes */}
                   <Route path="/teacher-dashboard" element={<L><TeacherDashboard /></L>} />
@@ -321,24 +321,23 @@ const App = () => (
                   <Route path="/admin/story-editor" element={<L><StoryEditor /></L>} />
                   <Route path="/admin/story-editor/:storyId" element={<L><StoryEditor /></L>} />
                   <Route path="/admin/content" element={<L><ContentManager /></L>} />
-                  <Route path="/admin/compliance" element={<L><ComplianceDashboard /></L>} />
                   <Route path="/admin/clube-pais" element={<L><AdminClubePais /></L>} />
                   <Route path="/operations" element={<L><OperationsCenter /></L>} />
                   
-                  {/* ABA */}
-                  <Route path="/aba-integration" element={<L><AbaNeuroPlay /></L>} />
+                  {/* ABA (single route) */}
                   <Route path="/aba-neuroplay" element={<L><AbaNeuroPlay /></L>} />
+                  <Route path="/aba-integration" element={<Navigate to="/aba-neuroplay" replace />} />
                   
                   {/* Stories */}
                   <Route path="/stories" element={<L><SocialStories /></L>} />
                   <Route path="/stories/:storyId" element={<L><StoryReader /></L>} />
                   
-                  {/* Reports & Analytics */}
+                  {/* Reports & Analytics (consolidated) */}
                   <Route path="/relatorios" element={<L><UnifiedReports /></L>} />
+                  <Route path="/intelligent-reports" element={<Navigate to="/relatorios" replace />} />
                   <Route path="/risk-analysis" element={<L><RiskAnalysisPage /></L>} />
                   <Route path="/emotional-history" element={<L><EmotionalHistoryDashboard /></L>} />
                   <Route path="/professional-analytics" element={<L><ProfessionalAnalytics /></L>} />
-                  <Route path="/intelligent-reports" element={<L><IntelligentReports /></L>} />
                   
                   {/* Routines */}
                   <Route path="/rotinas" element={<L><RoutinesPage /></L>} />
@@ -355,8 +354,8 @@ const App = () => (
                   <Route path="/comunidade" element={<L><Community /></L>} />
                   <Route path="/mensagens" element={<L><SecureMessaging /></L>} />
                   
-                  {/* AI & Analytics */}
-                  <Route path="/ia-contextual" element={<L><ContextualAIDashboard /></L>} />
+                  {/* AI → redirect to relatorios */}
+                  <Route path="/ia-contextual" element={<Navigate to="/relatorios" replace />} />
                   
                   {/* Institutional & Billing */}
                   <Route path="/institutional" element={<L><InstitutionalDashboard /></L>} />
@@ -364,11 +363,14 @@ const App = () => (
                   <Route path="/faturamento" element={<L><BillingDashboard /></L>} />
                   <Route path="/impacto" element={<L><ImpactDashboard /></L>} />
                   
-                  {/* Compliance & Privacy */}
-                  <Route path="/consentimentos" element={<L><ConsentManagement /></L>} />
-                  <Route path="/governanca-dados" element={<L><DataGovernance /></L>} />
+                  {/* Privacy & Compliance (consolidated) */}
+                  <Route path="/privacidade" element={<L><PrivacyCompliancePage /></L>} />
+                  <Route path="/consentimentos" element={<Navigate to="/privacidade" replace />} />
+                  <Route path="/governanca-dados" element={<Navigate to="/privacidade" replace />} />
+                  <Route path="/admin/compliance" element={<Navigate to="/privacidade" replace />} />
+                  
+                  {/* Integrations */}
                   <Route path="/integracoes-api" element={<L><ApiIntegrations /></L>} />
-                  <Route path="/privacidade" element={<L><PrivacyPortal /></L>} />
                   
                   {/* Clube dos Pais */}
                   <Route path="/clube-pais" element={<L><ClubePais /></L>} />
