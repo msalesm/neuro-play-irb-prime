@@ -65,7 +65,7 @@ export function useSocialScenarios(userId?: string) {
   const [userSessions] = useState<SocialSession[]>([]);
   const [userProgress] = useState<SocialProgress>({ totalSessions: 0, avgScore: 0 });
   const [achievements] = useState<SocialAchievement[]>([]);
-  const [unlockedAchievements] = useState<SocialAchievement[]>([]);
+  const [unlockedAchievements] = useState<string[]>([]);
   const [loading] = useState(false);
 
   const completeSession = useCallback(async (
