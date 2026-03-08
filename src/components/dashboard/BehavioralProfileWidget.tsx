@@ -19,8 +19,8 @@ interface BehavioralProfileWidgetProps {
 }
 
 const trendIcon = (trend: string) => {
-  if (trend === 'up') return <TrendingUp className="h-3 w-3 text-green-500" />;
-  if (trend === 'down') return <TrendingDown className="h-3 w-3 text-red-500" />;
+  if (trend === 'up') return <TrendingUp className="h-3 w-3 text-success" />;
+  if (trend === 'down') return <TrendingDown className="h-3 w-3 text-destructive" />;
   return <Minus className="h-3 w-3 text-muted-foreground" />;
 };
 
@@ -102,7 +102,7 @@ export function BehavioralProfileWidget({ childId, compact = false }: Behavioral
             {/* Cognitive */}
             <div>
               <div className="flex items-center gap-1.5 mb-2">
-                <Brain className="h-3.5 w-3.5 text-blue-500" />
+                <Brain className="h-3.5 w-3.5 text-info" />
                 <span className="text-xs font-medium">Cognitivo</span>
               </div>
               <div className="space-y-2 pl-5">
@@ -116,7 +116,7 @@ export function BehavioralProfileWidget({ childId, compact = false }: Behavioral
             {/* Socioemotional */}
             <div>
               <div className="flex items-center gap-1.5 mb-2">
-                <Heart className="h-3.5 w-3.5 text-red-500" />
+                <Heart className="h-3.5 w-3.5 text-destructive" />
                 <span className="text-xs font-medium">Socioemocional</span>
               </div>
               <div className="space-y-2 pl-5">
@@ -128,7 +128,7 @@ export function BehavioralProfileWidget({ childId, compact = false }: Behavioral
             {/* Executive */}
             <div>
               <div className="flex items-center gap-1.5 mb-2">
-                <Calendar className="h-3.5 w-3.5 text-green-500" />
+                <Calendar className="h-3.5 w-3.5 text-success" />
                 <span className="text-xs font-medium">Função Executiva</span>
               </div>
               <div className="space-y-2 pl-5">

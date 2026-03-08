@@ -97,17 +97,17 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'low': return 'text-green-600 bg-green-500/10';
-      case 'medium': return 'text-yellow-600 bg-yellow-500/10';
-      case 'high': return 'text-red-600 bg-red-500/10';
+      case 'low': return 'text-success bg-success/10';
+      case 'medium': return 'text-warning bg-warning/10';
+      case 'high': return 'text-destructive bg-destructive/10';
       default: return 'text-muted-foreground bg-muted';
     }
   };
 
   const getScoreTrend = (current: number, previous?: number) => {
     if (!previous) return null;
-    if (current > previous) return <TrendingUp className="w-4 h-4 text-green-500" />;
-    if (current < previous) return <TrendingDown className="w-4 h-4 text-red-500" />;
+    if (current > previous) return <TrendingUp className="w-4 h-4 text-success" />;
+    if (current < previous) return <TrendingDown className="w-4 h-4 text-destructive" />;
     return null;
   };
 
@@ -126,23 +126,23 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
     <div className="space-y-6">
       {/* Anamnesis Alert */}
       {!hasAnamnesis && (
-        <Card className="border-orange-200 bg-orange-50 dark:bg-orange-950/20">
+        <Card className="border-warning/30 bg-warning/5 dark:bg-warning/10">
           <CardContent className="py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <ClipboardList className="w-5 h-5 text-orange-600" />
+                <ClipboardList className="w-5 h-5 text-warning" />
                 <div>
-                  <p className="font-medium text-orange-800 dark:text-orange-200">
+                  <p className="font-medium text-warning">
                     Anamnese de Desenvolvimento Pendente
                   </p>
-                  <p className="text-sm text-orange-600 dark:text-orange-400">
+                  <p className="text-sm text-warning/80">
                     Preencha a anamnese antes de iniciar teleconsultas
                   </p>
                 </div>
               </div>
               <Button 
                 onClick={() => navigate(`/anamnese/${childId}`)}
-                className="bg-orange-600 hover:bg-orange-700"
+                className="bg-warning hover:bg-warning/90 text-warning-foreground"
               >
                 <ClipboardList className="w-4 h-4 mr-2" />
                 Preencher Anamnese
@@ -153,13 +153,13 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
       )}
 
       {hasAnamnesis && (
-        <Card className="border-green-200 bg-green-50 dark:bg-green-950/20">
+        <Card className="border-success/30 bg-success/5 dark:bg-success/10">
           <CardContent className="py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <ClipboardList className="w-5 h-5 text-green-600" />
+                <ClipboardList className="w-5 h-5 text-success" />
                 <div>
-                  <p className="font-medium text-green-800 dark:text-green-200">
+                  <p className="font-medium text-success">
                     Anamnese de Desenvolvimento Preenchida
                   </p>
                 </div>
@@ -217,7 +217,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
               {/* Socioemocional */}
               <div className="text-center p-4 rounded-lg bg-muted/30">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <Heart className="w-5 h-5 text-red-500" />
+                  <Heart className="w-5 h-5 text-destructive" />
                   <span className="font-medium">Socioemocional</span>
                   {getScoreTrend(latestAssessment.socioemotional_score, previousAssessment?.socioemotional_score)}
                 </div>
@@ -254,10 +254,10 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
                 >
                   <div className="flex items-center gap-4">
                     <div className={`p-2 rounded-lg ${
-                      session.status === 'completed' ? 'bg-green-500/10' : 'bg-muted'
+                      session.status === 'completed' ? 'bg-success/10' : 'bg-muted'
                     }`}>
                       <Video className={`w-5 h-5 ${
-                        session.status === 'completed' ? 'text-green-600' : 'text-muted-foreground'
+                        session.status === 'completed' ? 'text-success' : 'text-muted-foreground'
                       }`} />
                     </div>
                     <div>
@@ -332,7 +332,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
                   </div>
                   <div className="flex-1 flex gap-2">
                     <div 
-                      className="h-4 rounded bg-red-500/60"
+                      className="h-4 rounded bg-destructive/60"
                       style={{ width: `${assessment.socioemotional_score}%` }}
                       title={`Socioemocional: ${assessment.socioemotional_score}%`}
                     />
@@ -348,7 +348,7 @@ export function TeleconsultTab({ childId, onStartSession }: TeleconsultTabProps)
                 <div className="w-3 h-3 rounded bg-[#005a70]/60" /> Comportamental
               </span>
               <span className="flex items-center gap-1">
-                <div className="w-3 h-3 rounded bg-red-500/60" /> Socioemocional
+                <div className="w-3 h-3 rounded bg-destructive/60" /> Socioemocional
               </span>
             </div>
           </CardContent>

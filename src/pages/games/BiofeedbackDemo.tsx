@@ -214,8 +214,8 @@ function BiofeedbackDemoGame() {
                 )}
 
                 {state.consecutiveErrors >= 3 && (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                    <div className="text-red-800 text-sm">
+                  <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-3">
+                    <div className="text-destructive text-sm">
                       ⚠️ Padrão de múltiplos erros detectado
                     </div>
                   </div>

@@ -51,34 +51,34 @@ const screeningConfig = {
     title: 'Transtorno do Espectro Autista',
     shortTitle: 'TEA',
     icon: Brain,
-    color: 'text-blue-500',
-    bgColor: 'bg-blue-500/10',
-    borderColor: 'border-blue-500/30'
+    color: 'text-info',
+    bgColor: 'bg-info/10',
+    borderColor: 'border-info/30'
   },
   tdah: {
     title: 'Déficit de Atenção e Hiperatividade',
     shortTitle: 'TDAH',
     icon: Zap,
-    color: 'text-orange-500',
-    bgColor: 'bg-orange-500/10',
-    borderColor: 'border-orange-500/30'
+    color: 'text-warning',
+    bgColor: 'bg-warning/10',
+    borderColor: 'border-warning/30'
   },
   dislexia: {
     title: 'Dislexia',
     shortTitle: 'Dislexia',
     icon: BookOpen,
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-500/10',
-    borderColor: 'border-purple-500/30'
+    color: 'text-secondary',
+    bgColor: 'bg-secondary/10',
+    borderColor: 'border-secondary/30'
   }
 };
 
 const getRiskBadge = (risk: string | null) => {
   if (!risk) return null;
   const config = {
-    low: { label: 'Baixo', variant: 'default' as const, className: 'bg-green-500/20 text-green-700 border-green-500/30' },
-    medium: { label: 'Moderado', variant: 'default' as const, className: 'bg-yellow-500/20 text-yellow-700 border-yellow-500/30' },
-    high: { label: 'Alto', variant: 'destructive' as const, className: 'bg-red-500/20 text-red-700 border-red-500/30' }
+    low: { label: 'Baixo', variant: 'default' as const, className: 'bg-success/20 text-success border-success/30' },
+    medium: { label: 'Moderado', variant: 'default' as const, className: 'bg-warning/20 text-warning border-warning/30' },
+    high: { label: 'Alto', variant: 'destructive' as const, className: 'bg-destructive/20 text-destructive border-destructive/30' }
   };
   const riskConfig = config[risk as keyof typeof config] || config.medium;
   return (
@@ -90,16 +90,16 @@ const getRiskBadge = (risk: string | null) => {
 
 const getTrendIcon = (trend: string | null) => {
   if (!trend) return <Minus className="w-4 h-4 text-muted-foreground" />;
-  if (trend === 'improving') return <TrendingUp className="w-4 h-4 text-green-500" />;
-  if (trend === 'declining') return <TrendingDown className="w-4 h-4 text-red-500" />;
+  if (trend === 'improving') return <TrendingUp className="w-4 h-4 text-success" />;
+  if (trend === 'declining') return <TrendingDown className="w-4 h-4 text-destructive" />;
   return <Minus className="w-4 h-4 text-muted-foreground" />;
 };
 
 const getScoreColor = (score: number | null) => {
   if (!score) return 'text-muted-foreground';
-  if (score >= 70) return 'text-green-600';
-  if (score >= 40) return 'text-yellow-600';
-  return 'text-red-600';
+  if (score >= 70) return 'text-success';
+  if (score >= 40) return 'text-warning';
+  return 'text-destructive';
 };
 
 export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {

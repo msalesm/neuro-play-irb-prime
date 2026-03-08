@@ -112,7 +112,7 @@ export function ParentDashboardContent({
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/games/cooperative-puzzle')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center"><Heart className="w-6 h-6 text-red-500" /></div>
+              <div className="w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center"><Heart className="w-6 h-6 text-destructive" /></div>
               <div><h3 className="font-semibold">Quebra-Cabeça Cooperativo</h3><p className="text-sm text-muted-foreground">Jogo cooperativo para pais e filhos</p></div>
             </div>
           </CardContent>
@@ -196,8 +196,8 @@ export function ParentDashboardContent({
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4"><Brain className="w-5 h-5 text-[#0a1e35]" /><h3 className="text-lg font-semibold">Relatório Rápido</h3></div>
               <div className="space-y-3">
-                <div className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Atenção:</strong> Melhora de 15% nas últimas 3 sessões.</p></div>
-                <div className="flex items-start gap-3"><TrendingUp className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Memória de Trabalho:</strong> Progresso constante.</p></div>
+                <div className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-success mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Atenção:</strong> Melhora de 15% nas últimas 3 sessões.</p></div>
+                <div className="flex items-start gap-3"><TrendingUp className="w-5 h-5 text-info mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Memória de Trabalho:</strong> Progresso constante.</p></div>
                 <div className="flex items-start gap-3"><AlertCircle className="w-5 h-5 text-[#c7923e] mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Flexibilidade Cognitiva:</strong> Área que precisa mais prática.</p></div>
               </div>
               <Button variant="outline" className="w-full mt-4" onClick={() => navigate('/clinical-dashboard')}>Ver Relatório Completo</Button>

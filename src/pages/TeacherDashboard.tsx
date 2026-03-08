@@ -117,7 +117,7 @@ export default function TeacherDashboard() {
   const getStatusBadge = (percentile: number) => {
     if (percentile >= 60) {
       return (
-        <Badge className="bg-green-500/10 text-green-700 border-green-500/20">
+        <Badge className="bg-success/10 text-success border-success/20">
           <CheckCircle2 className="h-3 w-3 mr-1" />
           Normal
         </Badge>
@@ -125,19 +125,19 @@ export default function TeacherDashboard() {
     }
     if (percentile >= 40) {
       return (
-        <Badge className="bg-blue-500/10 text-blue-700 border-blue-500/20">Média</Badge>
+        <Badge className="bg-info/10 text-info border-info/20">Média</Badge>
       );
     }
     if (percentile >= 20) {
       return (
-        <Badge className="bg-yellow-500/10 text-yellow-700 border-yellow-500/20">
+        <Badge className="bg-warning/10 text-warning border-warning/20">
           <AlertTriangle className="h-3 w-3 mr-1" />
           Atenção
         </Badge>
       );
     }
     return (
-      <Badge className="bg-red-500/10 text-red-700 border-red-500/20">
+      <Badge className="bg-destructive/10 text-destructive border-destructive/20">
         <AlertTriangle className="h-3 w-3 mr-1" />
         Crítico
       </Badge>
@@ -239,43 +239,43 @@ export default function TeacherDashboard() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <AlertTriangle className="h-4 w-4 text-red-500" />
+                <AlertTriangle className="h-4 w-4 text-destructive" />
                 Necessita Atenção
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-red-500">{stats.critical}</div>
+              <div className="text-3xl font-bold text-destructive">{stats.critical}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <FileText className="h-4 w-4 text-green-500" />
+                <FileText className="h-4 w-4 text-success" />
                 Com PEI
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-green-500">{stats.withPEI}</div>
+              <div className="text-3xl font-bold text-success">{stats.withPEI}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <BarChart3 className="h-4 w-4 text-blue-500" />
+                <BarChart3 className="h-4 w-4 text-info" />
                 Última Semana
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-blue-500">{stats.recent}</div>
+              <div className="text-3xl font-bold text-info">{stats.recent}</div>
             </CardContent>
           </Card>
         </div>
 
         {stats.critical > 0 && (
-          <Alert className="mb-6 border-red-500/20 bg-red-500/5">
-            <AlertTriangle className="h-4 w-4 text-red-500" />
+          <Alert className="mb-6 border-destructive/20 bg-destructive/5">
+            <AlertTriangle className="h-4 w-4 text-destructive" />
             <AlertDescription>
               <strong>{stats.critical}</strong> aluno(s) necessitam de atenção imediata. Revise os
               casos marcados como "Crítico" e considere encaminhamento para equipe multidisciplinar.
@@ -391,7 +391,7 @@ export default function TeacherDashboard() {
                         <TableCell>{getStatusBadge(screening.percentile)}</TableCell>
                         <TableCell>
                           {screening.has_pei ? (
-                            <Badge className="bg-green-500/10 text-green-700">Sim</Badge>
+                            <Badge className="bg-success/10 text-success">Sim</Badge>
                           ) : (
                             <Badge variant="outline">Não</Badge>
                           )}
