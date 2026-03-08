@@ -84,8 +84,8 @@ export function ParentDashboardContent({
                 <h2 className="text-2xl font-bold">{selectedChildData.name}</h2>
                 <p className="text-muted-foreground">{selectedChildData.age} anos{selectedChildData.profile && ` • ${selectedChildData.profile}`}</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-xs bg-[#005a70]/10 text-[#005a70] px-2 py-1 rounded-full">Nível 5</span>
-                  <span className="text-xs bg-[#c7923e]/10 text-[#c7923e] px-2 py-1 rounded-full">🏆 12 Conquistas</span>
+                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Nível 5</span>
+                  <span className="text-xs bg-warning/10 text-warning px-2 py-1 rounded-full">🏆 12 Conquistas</span>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@ export function ParentDashboardContent({
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/sistema-planeta-azul')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#005a70]/10 flex items-center justify-center"><Sparkles className="w-6 h-6 text-[#005a70]" /></div>
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"><Sparkles className="w-6 h-6 text-primary" /></div>
               <div><h3 className="font-semibold">Planeta Azul</h3><p className="text-sm text-muted-foreground">Universo de jogos terapêuticos</p></div>
             </div>
           </CardContent>
@@ -121,7 +121,7 @@ export function ParentDashboardContent({
         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/chat')}>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[#c7923e]/10 flex items-center justify-center"><Heart className="w-6 h-6 text-[#c7923e]" /></div>
+              <div className="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center"><Heart className="w-6 h-6 text-warning" /></div>
               <div><h3 className="font-semibold">Chat Terapêutico</h3><p className="text-sm text-muted-foreground">Acompanhamento emocional</p></div>
             </div>
           </CardContent>
@@ -150,11 +150,11 @@ export function ParentDashboardContent({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="lg:col-span-2 space-y-6">
           {/* Current Planet */}
-          <Card className="border-l-4 border-l-[#005a70]" data-tour="current-planet">
+          <Card className="border-l-4 border-l-primary" data-tour="current-planet">
             <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4"><Sparkles className="w-5 h-5 text-[#005a70]" /><h3 className="text-lg font-semibold">Planeta Atual</h3></div>
+              <div className="flex items-center gap-3 mb-4"><Sparkles className="w-5 h-5 text-primary" /><h3 className="text-lg font-semibold">Planeta Atual</h3></div>
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#005a70]/20 to-[#0a1e35]/20 flex items-center justify-center text-3xl">🌍</div>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-3xl">🌍</div>
                 <div className="flex-1"><h4 className="font-semibold text-lg">TEA</h4><p className="text-sm text-muted-foreground">Foco em Atenção e Cognição Social</p><Progress value={65} className="mt-2" /></div>
                 <Button onClick={() => navigate('/sistema-planeta-azul')}>Explorar</Button>
               </div>
@@ -198,11 +198,11 @@ export function ParentDashboardContent({
           {/* Quick Report */}
           <Card data-tour="quick-report">
             <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4"><Brain className="w-5 h-5 text-[#0a1e35]" /><h3 className="text-lg font-semibold">Relatório Rápido</h3></div>
+              <div className="flex items-center gap-3 mb-4"><Brain className="w-5 h-5 text-foreground" /><h3 className="text-lg font-semibold">Relatório Rápido</h3></div>
               <div className="space-y-3">
                 <div className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-success mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Atenção:</strong> Melhora de 15% nas últimas 3 sessões.</p></div>
                 <div className="flex items-start gap-3"><TrendingUp className="w-5 h-5 text-info mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Memória de Trabalho:</strong> Progresso constante.</p></div>
-                <div className="flex items-start gap-3"><AlertCircle className="w-5 h-5 text-[#c7923e] mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Flexibilidade Cognitiva:</strong> Área que precisa mais prática.</p></div>
+                <div className="flex items-start gap-3"><AlertCircle className="w-5 h-5 text-warning mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Flexibilidade Cognitiva:</strong> Área que precisa mais prática.</p></div>
               </div>
               <Button variant="outline" className="w-full mt-4" onClick={() => navigate('/clinical-dashboard')}>Ver Relatório Completo</Button>
             </CardContent>
@@ -211,12 +211,12 @@ export function ParentDashboardContent({
           {/* Weekly History */}
           <Card data-tour="stats">
             <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4"><Calendar className="w-5 h-5 text-[#005a70]" /><h3 className="text-lg font-semibold">Histórico Semanal</h3></div>
+              <div className="flex items-center gap-3 mb-4"><Calendar className="w-5 h-5 text-primary" /><h3 className="text-lg font-semibold">Histórico Semanal</h3></div>
               <div className="space-y-3">
                 {sessions.length > 0 ? sessions.slice(0, 5).map((session, i) => (
                   <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                     <div className="flex items-center gap-3"><Brain className="w-4 h-4 text-muted-foreground" /><div><p className="font-medium text-sm">{session.game_type}</p><p className="text-xs text-muted-foreground">{new Date(session.created_at).toLocaleDateString('pt-BR')}</p></div></div>
-                    <div className="flex items-center gap-2"><Award className="w-4 h-4 text-[#c7923e]" /><span className="font-semibold text-sm">{session.score}%</span></div>
+                    <div className="flex items-center gap-2"><Award className="w-4 h-4 text-warning" /><span className="font-semibold text-sm">{session.score}%</span></div>
                   </div>
                 )) : <p className="text-sm text-muted-foreground text-center py-4">Nenhuma sessão registrada</p>}
               </div>
@@ -226,20 +226,20 @@ export function ParentDashboardContent({
 
         {/* Sidebar */}
         <div className="space-y-6">
-          <Card className="border-l-4 border-l-[#c7923e]">
+          <Card className="border-l-4 border-l-warning">
             <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4"><Sparkles className="w-5 h-5 text-[#c7923e]" /><h3 className="text-lg font-semibold">Recomendações IA</h3></div>
+              <div className="flex items-center gap-3 mb-4"><Sparkles className="w-5 h-5 text-warning" /><h3 className="text-lg font-semibold">Recomendações IA</h3></div>
               <div className="space-y-3">
-                <div className="p-3 rounded-lg bg-[#c7923e]/10 border border-[#c7923e]/20"><p className="text-sm font-medium mb-1">Foco em Atenção Sustentada</p><p className="text-xs text-muted-foreground">Jogos de atenção terão melhor resultado nas manhãs</p></div>
-                <div className="p-3 rounded-lg bg-[#005a70]/10 border border-[#005a70]/20"><p className="text-sm font-medium mb-1">Sessões Mais Curtas</p><p className="text-xs text-muted-foreground">Melhor desempenho em sessões de 10-15 minutos</p></div>
+                <div className="p-3 rounded-lg bg-warning/10 border border-warning/20"><p className="text-sm font-medium mb-1">Foco em Atenção Sustentada</p><p className="text-xs text-muted-foreground">Jogos de atenção terão melhor resultado nas manhãs</p></div>
+                <div className="p-3 rounded-lg bg-primary/10 border border-primary/20"><p className="text-sm font-medium mb-1">Sessões Mais Curtas</p><p className="text-xs text-muted-foreground">Melhor desempenho em sessões de 10-15 minutos</p></div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4"><Brain className="w-5 h-5 text-[#0a1e35]" /><h3 className="text-lg font-semibold">Microlearning</h3></div>
-              <div className="p-4 rounded-lg bg-gradient-to-br from-[#005a70]/10 to-[#0a1e35]/10 border border-border">
+              <div className="flex items-center gap-3 mb-4"><Brain className="w-5 h-5 text-foreground" /><h3 className="text-lg font-semibold">Microlearning</h3></div>
+              <div className="p-4 rounded-lg bg-gradient-to-br from-primary/10 to-secondary/10 border border-border">
                 <p className="font-medium mb-2 text-sm">Como Apoiar a Atenção em Casa</p>
                 <p className="text-xs text-muted-foreground mb-3">Técnicas práticas para melhorar a atenção</p>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground"><Clock className="w-3 h-3" /><span>5 minutos</span></div>
@@ -248,10 +248,10 @@ export function ParentDashboardContent({
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-[#005a70]">
+          <Card className="border-l-4 border-l-primary">
             <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4"><Heart className="w-5 h-5 text-[#005a70]" /><h3 className="text-lg font-semibold">Atividade Parent-Child</h3></div>
-              <div className="p-4 rounded-lg bg-gradient-to-br from-[#005a70]/10 to-[#c7923e]/10 border border-border">
+              <div className="flex items-center gap-3 mb-4"><Heart className="w-5 h-5 text-primary" /><h3 className="text-lg font-semibold">Atividade Parent-Child</h3></div>
+              <div className="p-4 rounded-lg bg-gradient-to-br from-primary/10 to-warning/10 border border-border">
                 <p className="font-medium mb-2 text-sm">🎮 Jogo Cooperativo: Quebra-Cabeça Mágico</p>
                 <p className="text-xs text-muted-foreground mb-3">Trabalhem juntos para completar desafios</p>
                 <Button size="sm" className="w-full" onClick={() => navigate('/games')}>Jogar Juntos</Button>
@@ -260,16 +260,16 @@ export function ParentDashboardContent({
           </Card>
 
           <div className="grid grid-cols-2 gap-3">
-            <Card><CardContent className="p-4 text-center"><Award className="w-6 h-6 text-[#c7923e] mx-auto mb-2" /><p className="text-2xl font-bold">{totalSessions}</p><p className="text-xs text-muted-foreground">Sessões</p></CardContent></Card>
-            <Card><CardContent className="p-4 text-center"><Target className="w-6 h-6 text-[#005a70] mx-auto mb-2" /><p className="text-2xl font-bold">{avgScore}%</p><p className="text-xs text-muted-foreground">Média</p></CardContent></Card>
+            <Card><CardContent className="p-4 text-center"><Award className="w-6 h-6 text-warning mx-auto mb-2" /><p className="text-2xl font-bold">{totalSessions}</p><p className="text-xs text-muted-foreground">Sessões</p></CardContent></Card>
+            <Card><CardContent className="p-4 text-center"><Target className="w-6 h-6 text-primary mx-auto mb-2" /><p className="text-2xl font-bold">{avgScore}%</p><p className="text-xs text-muted-foreground">Média</p></CardContent></Card>
           </div>
 
           <Card>
             <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-4"><Award className="w-5 h-5 text-[#c7923e]" /><h3 className="text-lg font-semibold">Badges Familiares</h3></div>
+              <div className="flex items-center gap-3 mb-4"><Award className="w-5 h-5 text-warning" /><h3 className="text-lg font-semibold">Badges Familiares</h3></div>
               <div className="grid grid-cols-3 gap-2">
                 {['🏆', '⭐', '🎯', '💎', '🔥', '🌟'].map((badge, i) => (
-                  <div key={i} className="aspect-square rounded-lg bg-gradient-to-br from-[#c7923e]/20 to-[#005a70]/20 flex items-center justify-center text-2xl hover:scale-110 transition-transform cursor-pointer border border-border">{badge}</div>
+                  <div key={i} className="aspect-square rounded-lg bg-gradient-to-br from-warning/20 to-primary/20 flex items-center justify-center text-2xl hover:scale-110 transition-transform cursor-pointer border border-border">{badge}</div>
                 ))}
               </div>
             </CardContent>
