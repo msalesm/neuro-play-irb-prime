@@ -22,8 +22,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { useEducationalSystem } from '@/hooks/useEducationalSystem';
 import { useLanguage } from '@/contexts/LanguageContext';
-import LearningTrails from '@/components/LearningTrails';
-import { LevelProgress } from '@/components/LevelProgress';
+import { LearningTrails, LevelProgress } from '@/components/gamification';
 import { AdminSystemDemo } from '@/components/AdminSystemDemo';
 import { supabase } from '@/integrations/supabase/client';
 

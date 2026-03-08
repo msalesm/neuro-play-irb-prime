@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { useBehavioralAnalysis } from '@/hooks/useBehavioralAnalysis';
 import { useGameSession } from '@/hooks/useGameSession';
 import { useGameProfile } from '@/hooks/useGameProfile';
-import { GameExitButton } from '@/components/GameExitButton';
+import { GameExitButton } from '@/components/games';
 import { Badge } from '@/components/ui/badge';
 
 interface Scenario {

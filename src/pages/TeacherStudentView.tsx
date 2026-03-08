@@ -14,7 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { ArrowLeft, FileText, AlertCircle, MessageSquare, Plus, Loader2, Calendar, TrendingUp } from 'lucide-react';
-import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
+import { ChildAvatarDisplay } from '@/components/gamification';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CosmicSequenceGame } from '@/components/CosmicSequenceGame';
-import { GameExitButton } from '@/components/GameExitButton';
+import { GameExitButton } from '@/components/games';
 import { useGameSession } from '@/hooks/useGameSession';
 import { useGameProfile } from '@/hooks/useGameProfile';
 import { HapticProvider } from '@/contexts/HapticContext';

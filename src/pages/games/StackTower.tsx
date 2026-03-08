@@ -1,5 +1,5 @@
 import { StackTowerGame } from '@/components/StackTowerGame';
-import { GameExitButton } from '@/components/GameExitButton';
+import { GameExitButton } from '@/components/games';
 import { Trophy, Target, Zap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useGameProfile } from '@/hooks/useGameProfile';

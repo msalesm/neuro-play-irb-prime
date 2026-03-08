@@ -6,7 +6,7 @@ import { Timer, RotateCcw, CheckCircle, AlertCircle, TrendingUp, Brain, Play } f
 import { toast } from 'sonner';
 import { useBehavioralAnalysis } from '@/hooks/useBehavioralAnalysis';
 import { useGameSession } from '@/hooks/useGameSession';
-import { GameExitButton } from '@/components/GameExitButton';
+import { GameExitButton } from '@/components/games';
 import { useAudioEngine } from '@/hooks/useAudioEngine';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';

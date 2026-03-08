@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowLeft, Trophy, Star } from 'lucide-react';
-import { GamePhaseSelector } from '@/components/GamePhaseSelector';
+import { GamePhaseSelector } from '@/components/games';
 import { executiveProcessingPhases } from '@/data/game-phases/executive-processing-phases';
 import { useGamePhaseProgress } from '@/hooks/useGamePhaseProgress';
 import type { GamePhase } from '@/types/game-phase';

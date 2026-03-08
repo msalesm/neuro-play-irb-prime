@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus, LayoutGrid, List, ClipboardList, FileText, Pencil } from 'lucide-react';
-import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
+import { ChildAvatarDisplay } from '@/components/gamification';
 import { AddPatientModal } from '@/components/AddPatientModal';
 import { EditPatientModal } from '@/components/EditPatientModal';
 import { TherapistPatientSection } from '@/components/TherapistPatientSection';

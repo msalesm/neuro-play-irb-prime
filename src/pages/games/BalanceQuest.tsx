@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useGameSession } from '@/hooks/useGameSession';
 import { useGameProfile } from '@/hooks/useGameProfile';
-import { GameExitButton } from '@/components/GameExitButton';
+import { GameExitButton } from '@/components/games';
 
 interface BalanceChallenge {
   id: number;
