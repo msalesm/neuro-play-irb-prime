@@ -131,6 +131,29 @@ export default function UnifiedReports() {
     }
   }, [trackScreenView, isAdmin, isTherapist, isParent, isTeacher]);
 
+  const loadAllChildren = async () => {
+    if (!user) return;
+    setLoadingChildren(true);
+    try {
+      const { data, error } = await supabase
+        .from('children')
+        .select('id, name')
+        .eq('is_active', true)
+        .order('name')
+        .limit(200);
+
+      if (error) throw error;
+      setChildren(data || []);
+      if (data && data.length > 0 && !selectedChild) {
+        setSelectedChild(data[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading children:', error);
+    } finally {
+      setLoadingChildren(false);
+    }
+  };
+
   const loadPatientsForTherapist = async () => {
     if (!user) return;
     setLoadingChildren(true);
