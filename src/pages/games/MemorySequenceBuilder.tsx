@@ -11,12 +11,12 @@ import { toast } from 'sonner';
 const GAME_ID = 'memory-sequence-builder';
 
 const COLORS = [
-  { id: 'red', name: 'Vermelho', class: 'bg-red-500', sound: 261.63 },
-  { id: 'blue', name: 'Azul', class: 'bg-blue-500', sound: 293.66 },
-  { id: 'green', name: 'Verde', class: 'bg-green-500', sound: 329.63 },
-  { id: 'yellow', name: 'Amarelo', class: 'bg-yellow-500', sound: 349.23 },
-  { id: 'purple', name: 'Roxo', class: 'bg-purple-500', sound: 392.00 },
-  { id: 'orange', name: 'Laranja', class: 'bg-orange-500', sound: 440.00 },
+  { id: 'red', name: 'Vermelho', class: 'bg-destructive', sound: 261.63 },
+  { id: 'blue', name: 'Azul', class: 'bg-info', sound: 293.66 },
+  { id: 'green', name: 'Verde', class: 'bg-success', sound: 329.63 },
+  { id: 'yellow', name: 'Amarelo', class: 'bg-warning', sound: 349.23 },
+  { id: 'purple', name: 'Roxo', class: 'bg-secondary', sound: 392.00 },
+  { id: 'orange', name: 'Laranja', class: 'bg-accent', sound: 440.00 },
 ];
 
 type GamePhase = 'ready' | 'showing' | 'waiting' | 'checking' | 'complete';
@@ -305,10 +305,10 @@ export default function MemorySequenceBuilder() {
   const progress = (round / config.totalRounds) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-secondary/10 to-accent/10 p-4">
       {/* Header */}
       <div className="max-w-4xl mx-auto mb-6">
-        <div className="flex items-center justify-between bg-white rounded-lg p-4 shadow-sm">
+        <div className="flex items-center justify-between bg-card rounded-lg p-4 shadow-sm">
           <div className="flex items-center gap-6">
             <div>
               <p className="text-sm text-muted-foreground">Pontos</p>
@@ -330,7 +330,7 @@ export default function MemorySequenceBuilder() {
                 key={i}
                 className={cn(
                   "w-3 h-3 rounded-full",
-                  i < lives ? "bg-red-500" : "bg-gray-300"
+                  i < lives ? "bg-destructive" : "bg-muted"
                 )}
               />
             ))}
@@ -347,7 +347,7 @@ export default function MemorySequenceBuilder() {
           {phase === 'showing' && <p className="text-lg font-semibold text-primary">Observe a sequência! 👀</p>}
           {phase === 'waiting' && (
             <div className="space-y-2">
-              <p className="text-lg font-semibold text-green-600">Sua vez! Reproduza a sequência</p>
+              <p className="text-lg font-semibold text-success">Sua vez! Reproduza a sequência</p>
               <p className="text-sm text-muted-foreground">
                 {userSequence.length} / {sequence.length}
               </p>
