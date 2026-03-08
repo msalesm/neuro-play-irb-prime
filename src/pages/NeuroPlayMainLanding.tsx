@@ -435,10 +435,10 @@ const AudienceSection = () => (
 const ScreenshotsSection = () => {
   const [current, setCurrent] = useState(0);
   const screens = [
-    { title: 'Home da Criança', desc: 'Missões diárias, streaks e progressão visual', image: 'https://images.unsplash.com/photo-1588072432836-e10032774350?w=800&q=80' },
-    { title: 'Jogo Cognitivo', desc: 'Atividades adaptativas com feedback imediato', image: 'https://images.unsplash.com/photo-1610500796385-3ffc1ae2f046?w=800&q=80' },
-    { title: 'História Interativa', desc: 'Narrativas que desenvolvem empatia e decisão', image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80' },
-    { title: 'Dashboard de Progresso', desc: 'Relatórios visuais para pais e terapeutas', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80' },
+    { title: 'Home da Criança', desc: 'Missões diárias, streaks e progressão visual', image: 'https://images.unsplash.com/photo-1588072432836-e10032774350?w=1600&q=95&auto=format&fit=crop' },
+    { title: 'Jogo Cognitivo', desc: 'Atividades adaptativas com feedback imediato', image: 'https://images.unsplash.com/photo-1610500796385-3ffc1ae2f046?w=1600&q=95&auto=format&fit=crop' },
+    { title: 'História Interativa', desc: 'Narrativas que desenvolvem empatia e decisão', image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=95&auto=format&fit=crop' },
+    { title: 'Dashboard de Progresso', desc: 'Relatórios visuais para pais e terapeutas', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=95&auto=format&fit=crop' },
   ];
 
   return (
