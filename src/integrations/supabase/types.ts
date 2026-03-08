@@ -10650,6 +10650,50 @@ export type Database = {
       }
     }
     Views: {
+      aba_desempenho_programas_view: {
+        Row: {
+          child_id: string | null
+          habilidade: string | null
+          identificadorPrograma: string | null
+          identificadorSessao: string | null
+          last_recorded_at: string | null
+          nivelIndependencia: string | null
+          percentualAjuda: number | null
+          percentualErro: number | null
+          percentualIndependencia: number | null
+          programa: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_np_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_np_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       parent_child_relationships: {
         Row: {
           birth_date: string | null
