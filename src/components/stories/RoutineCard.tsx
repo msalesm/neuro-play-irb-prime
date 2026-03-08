@@ -13,9 +13,9 @@ interface RoutineCardProps {
 
 const getRoutineIcon = (type: string, icon: string) => {
   switch (type) {
-    case 'manha': return <Sun className="h-8 w-8 text-amber-500" />;
-    case 'noite': return <Moon className="h-8 w-8 text-indigo-500" />;
-    case 'escola': return <School className="h-8 w-8 text-blue-500" />;
+    case 'manha': return <Sun className="h-8 w-8 text-warning" />;
+    case 'noite': return <Moon className="h-8 w-8 text-accent" />;
+    case 'escola': return <School className="h-8 w-8 text-primary" />;
     default: return <Settings className="h-8 w-8 text-primary" />;
   }
 };
@@ -49,7 +49,7 @@ export function RoutineCard({ routine, onClick, completedSteps = 0, totalSteps =
     >
       <Card 
         className={`cursor-pointer overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl group ${
-          isComplete ? 'border-2 border-green-500/30' : 'border-2 border-transparent hover:border-primary/40'
+          isComplete ? 'border-2 border-success/30' : 'border-2 border-transparent hover:border-primary/40'
         }`}
         onClick={onClick}
       >
@@ -59,8 +59,8 @@ export function RoutineCard({ routine, onClick, completedSteps = 0, totalSteps =
             <div className="flex-shrink-0 h-32 w-32 flex items-center justify-center bg-background/50">
               {isComplete ? (
                 <div className="flex flex-col items-center gap-1">
-                  <CheckCircle2 className="h-10 w-10 text-green-500" />
-                  <span className="text-[10px] font-medium text-green-600">Concluída</span>
+                  <CheckCircle2 className="h-10 w-10 text-success" />
+                  <span className="text-[10px] font-medium text-success">Concluída</span>
                 </div>
               ) : (
                 getRoutineIcon(routine.routine_type, routine.icon)
@@ -93,7 +93,7 @@ export function RoutineCard({ routine, onClick, completedSteps = 0, totalSteps =
               <div className="mt-3">
                 {isComplete ? (
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-green-600 font-medium">✓ Todos os {totalSteps} passos completos</span>
+                    <span className="text-xs text-success font-medium">✓ Todos os {totalSteps} passos completos</span>
                     <span className="text-xs text-primary font-medium group-hover:underline">Ver / Recomeçar →</span>
                   </div>
                 ) : (

@@ -267,7 +267,7 @@ export function ParentDashboardContent({
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4"><Award className="w-5 h-5 text-warning" /><h3 className="text-lg font-semibold">Badges Familiares</h3></div>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 sm:grid-cols-3 gap-2">
                 {['🏆', '⭐', '🎯', '💎', '🔥', '🌟'].map((badge, i) => (
                   <div key={i} className="aspect-square rounded-lg bg-gradient-to-br from-warning/20 to-primary/20 flex items-center justify-center text-2xl hover:scale-110 transition-transform cursor-pointer border border-border">{badge}</div>
                 ))}

@@ -15,9 +15,9 @@ interface CognitiveIndicatorsTableProps {
 }
 
 function getLevel(value: number): { label: string; color: string } {
-  if (value <= 1) return { label: 'Alto', color: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20' };
-  if (value <= 2) return { label: 'Médio', color: 'bg-amber-500/10 text-amber-700 border-amber-500/20' };
-  return { label: 'Baixo', color: 'bg-red-500/10 text-red-700 border-red-500/20' };
+  if (value <= 1) return { label: 'Alto', color: 'bg-success/10 text-success border-success/20' };
+  if (value <= 2) return { label: 'Médio', color: 'bg-warning/10 text-warning border-warning/20' };
+  return { label: 'Baixo', color: 'bg-destructive/10 text-destructive border-destructive/20' };
 }
 
 export function CognitiveIndicatorsTable({ students, observations, onStudentClick }: CognitiveIndicatorsTableProps) {

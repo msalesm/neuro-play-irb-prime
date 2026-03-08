@@ -120,7 +120,7 @@ export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalRepor
           )}
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-3 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
             <div className="p-3 bg-muted/50 rounded-lg">
               <p className="text-2xl font-bold text-primary">
                 {report.detailed_analysis?.totalSessions || 0}
