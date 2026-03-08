@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { Loader2, Copy, Check, MessageCircle, Link2, UserPlus, MapPin, Phone, Shield } from 'lucide-react';
+import { ProfilePhotoUpload } from './ProfilePhotoUpload';
 
 const conditions = [
   { id: 'TEA', label: 'TEA (Transtorno do Espectro Autista)' },
@@ -77,6 +78,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
   const [loading, setLoading] = useState(false);
   const [inviteData, setInviteData] = useState<InviteData | null>(null);
   const [copied, setCopied] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -121,6 +123,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
         .from('children')
         .insert({
           name: data.name,
+          avatar_url: photoUrl || null,
           birth_date: data.birth_date,
           gender: data.gender || null,
           neurodevelopmental_conditions: data.conditions || [],
@@ -230,6 +233,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
     form.reset();
     setInviteData(null);
     setCopied(false);
+    setPhotoUrl(null);
     onClose();
   };
 
@@ -335,6 +339,13 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   Dados do Paciente
                 </h3>
+
+                <ProfilePhotoUpload
+                  currentPhotoUrl={photoUrl}
+                  name={form.watch('name') || 'Paciente'}
+                  onPhotoUploaded={setPhotoUrl}
+                  size="lg"
+                />
 
                 <FormField
                   control={form.control}

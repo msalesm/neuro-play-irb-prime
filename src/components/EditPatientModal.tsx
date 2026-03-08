@@ -12,6 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Loader2, MapPin, Phone, Shield, Save } from 'lucide-react';
+import { ProfilePhotoUpload } from './ProfilePhotoUpload';
 
 const conditions = [
   { id: 'TEA', label: 'TEA (Transtorno do Espectro Autista)' },
@@ -65,6 +66,7 @@ interface EditPatientModalProps {
 export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPatientModalProps) {
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -94,6 +96,14 @@ export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPa
         .single();
 
       if (error) throw error;
+
+      // Load photo URL
+      const avatarUrl = data.avatar_url;
+      if (avatarUrl && typeof avatarUrl === 'string' && avatarUrl.startsWith('http')) {
+        setPhotoUrl(avatarUrl);
+      } else {
+        setPhotoUrl(null);
+      }
 
       const conditionsArray = Array.isArray(data.neurodevelopmental_conditions)
         ? (data.neurodevelopmental_conditions as string[])
@@ -138,6 +148,7 @@ export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPa
         .from('children')
         .update({
           name: data.name,
+          avatar_url: photoUrl || null,
           birth_date: data.birth_date,
           gender: data.gender || null,
           cpf: data.cpf || null,
@@ -194,6 +205,13 @@ export function EditPatientModal({ open, patientId, onClose, onSuccess }: EditPa
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   Dados do Paciente
                 </h3>
+
+                <ProfilePhotoUpload
+                  currentPhotoUrl={photoUrl}
+                  name={form.watch('name') || 'Paciente'}
+                  onPhotoUploaded={setPhotoUrl}
+                  size="lg"
+                />
 
                 <FormField control={form.control} name="name" render={({ field }) => (
                   <FormItem>
