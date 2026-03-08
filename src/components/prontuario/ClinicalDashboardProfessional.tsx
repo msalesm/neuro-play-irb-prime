@@ -177,8 +177,8 @@ export function ClinicalDashboardProfessional() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-red-500/10">
-                <AlertTriangle className="w-6 h-6 text-red-500" />
+              <div className="p-2 rounded-lg bg-destructive/10">
+                <AlertTriangle className="w-6 h-6 text-destructive" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Alertas Ativos</p>
@@ -191,8 +191,8 @@ export function ClinicalDashboardProfessional() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-500/10">
-                <Video className="w-6 h-6 text-green-500" />
+              <div className="p-2 rounded-lg bg-success/10">
+                <Video className="w-6 h-6 text-success" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Sessões Semana</p>

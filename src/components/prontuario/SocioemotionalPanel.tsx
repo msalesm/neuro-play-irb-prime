@@ -10,11 +10,11 @@ interface SocioemotionalPanelProps {
 }
 
 const DIMENSIONS = [
-  { key: 'empathyScore', label: 'Empatia Cognitiva', icon: Heart, color: 'text-red-500' },
-  { key: 'impulseControlScore', label: 'Controle Inibitório', icon: Shield, color: 'text-blue-500' },
-  { key: 'socialFlexibilityScore', label: 'Flexibilidade Social', icon: Users, color: 'text-green-500' },
-  { key: 'moralConsistencyScore', label: 'Consistência Moral', icon: Scale, color: 'text-purple-500' },
-  { key: 'frustrationToleranceScore', label: 'Tolerância à Frustração', icon: Brain, color: 'text-orange-500' },
+  { key: 'empathyScore', label: 'Empatia Cognitiva', icon: Heart, color: 'text-destructive' },
+  { key: 'impulseControlScore', label: 'Controle Inibitório', icon: Shield, color: 'text-info' },
+  { key: 'socialFlexibilityScore', label: 'Flexibilidade Social', icon: Users, color: 'text-success' },
+  { key: 'moralConsistencyScore', label: 'Consistência Moral', icon: Scale, color: 'text-secondary' },
+  { key: 'frustrationToleranceScore', label: 'Tolerância à Frustração', icon: Brain, color: 'text-warning' },
 ] as const;
 
 export const SocioemotionalPanel = ({ childId }: SocioemotionalPanelProps) => {
@@ -69,9 +69,9 @@ export const SocioemotionalPanel = ({ childId }: SocioemotionalPanelProps) => {
   }
 
   const getBarColor = (score: number) => {
-    if (score >= 70) return 'bg-green-500';
-    if (score >= 40) return 'bg-yellow-500';
-    return 'bg-red-500';
+    if (score >= 70) return 'bg-success';
+    if (score >= 40) return 'bg-warning';
+    return 'bg-destructive';
   };
 
   return (
@@ -87,8 +87,8 @@ export const SocioemotionalPanel = ({ childId }: SocioemotionalPanelProps) => {
           {/* Overall Score */}
           <div className="text-center mb-6">
             <div className={`text-4xl font-bold ${
-              metrics.overallScore >= 70 ? 'text-green-600' : 
-              metrics.overallScore >= 40 ? 'text-yellow-600' : 'text-red-600'
+              metrics.overallScore >= 70 ? 'text-success' : 
+              metrics.overallScore >= 40 ? 'text-warning' : 'text-destructive'
             }`}>
               {metrics.overallScore}
             </div>
@@ -136,7 +136,7 @@ export const SocioemotionalPanel = ({ childId }: SocioemotionalPanelProps) => {
 
           {/* Conflict avoidance alert */}
           {metrics.conflictAvoidanceScore > 70 && (
-            <div className="mt-3 p-3 rounded-lg bg-yellow-500/5 border border-yellow-500/10">
+            <div className="mt-3 p-3 rounded-lg bg-warning/5 border border-warning/10">
               <p className="text-xs text-muted-foreground">
                 <strong>Padrão detectado:</strong> Tendência elevada de evitação de conflito ({metrics.conflictAvoidanceScore}%). 
                 Pode indicar necessidade de trabalhar assertividade.

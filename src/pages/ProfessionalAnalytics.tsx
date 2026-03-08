@@ -215,11 +215,11 @@ export default function ProfessionalAnalytics() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
+          <Card className="bg-gradient-to-br from-info/10 to-info/5 border-info/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <Gamepad2 className="w-5 h-5 text-blue-500" />
+                <div className="p-2 bg-info/20 rounded-lg">
+                  <Gamepad2 className="w-5 h-5 text-info" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{totalGames}</p>
@@ -229,11 +229,11 @@ export default function ProfessionalAnalytics() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
+          <Card className="bg-gradient-to-br from-success/10 to-success/5 border-success/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-500/20 rounded-lg">
-                  <BookOpen className="w-5 h-5 text-green-500" />
+                <div className="p-2 bg-success/20 rounded-lg">
+                  <BookOpen className="w-5 h-5 text-success" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{totalStories}</p>
@@ -243,11 +243,11 @@ export default function ProfessionalAnalytics() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20">
+          <Card className="bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
-                  <ListChecks className="w-5 h-5 text-purple-500" />
+                <div className="p-2 bg-secondary/20 rounded-lg">
+                  <ListChecks className="w-5 h-5 text-secondary" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{totalRoutines}</p>
@@ -257,11 +257,11 @@ export default function ProfessionalAnalytics() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/20">
+          <Card className="bg-gradient-to-br from-warning/10 to-warning/5 border-warning/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-500/20 rounded-lg">
-                  <Target className="w-5 h-5 text-orange-500" />
+                <div className="p-2 bg-warning/20 rounded-lg">
+                  <Target className="w-5 h-5 text-warning" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{avgEngagement.toFixed(1)}%</p>
@@ -359,9 +359,9 @@ export default function ProfessionalAnalytics() {
 
         {/* Abandonment Alerts */}
         {analyticsData.alerts.length > 0 && (
-          <Card className="border-orange-500/30">
+          <Card className="border-warning/30">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-orange-500">
+              <CardTitle className="flex items-center gap-2 text-warning">
                 <AlertTriangle className="w-5 h-5" />
                 Alertas de Abandono
               </CardTitle>

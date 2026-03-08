@@ -122,7 +122,7 @@ export default function AttentionSustainedPlay() {
     };
 
     setTrials(prev => [...prev, result]);
-    setFeedbackColor(isTarget ? 'bg-green-500' : 'bg-red-500');
+    setFeedbackColor(isTarget ? 'bg-success' : 'bg-destructive');
 
     setTimeout(() => setFeedbackColor(null), 300);
   }, [canRespond, trialCount]);
@@ -345,8 +345,8 @@ export default function AttentionSustainedPlay() {
                   <div className="text-2xl font-bold text-orange-600">{metrics.omissionErrors}</div>
                   <div className="text-xs text-muted-foreground">Erros Omissão</div>
                 </div>
-                <div className="p-3 bg-red-500/10 rounded-lg">
-                  <div className="text-2xl font-bold text-red-600">{metrics.commissionErrors}</div>
+                <div className="p-3 bg-destructive/10 rounded-lg">
+                  <div className="text-2xl font-bold text-destructive">{metrics.commissionErrors}</div>
                   <div className="text-xs text-muted-foreground">Erros Comissão</div>
                 </div>
                 <div className="p-3 bg-blue-500/10 rounded-lg">

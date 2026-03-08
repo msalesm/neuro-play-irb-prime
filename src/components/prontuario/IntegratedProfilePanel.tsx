@@ -46,9 +46,9 @@ export const IntegratedProfilePanel = ({ childId }: IntegratedProfilePanelProps)
     {
       name: 'Bateria Cognitiva',
       icon: Brain,
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-500/10',
-      borderColor: 'border-blue-500/20',
+      color: 'text-info',
+      bgColor: 'bg-info/10',
+      borderColor: 'border-info/20',
       score: profile.cognitive_overall,
       count: profile.layer1_sessions_count,
       details: [
@@ -63,9 +63,9 @@ export const IntegratedProfilePanel = ({ childId }: IntegratedProfilePanelProps)
     {
       name: 'Organização Executiva',
       icon: Calendar,
-      color: 'text-green-500',
-      bgColor: 'bg-green-500/10',
-      borderColor: 'border-green-500/20',
+      color: 'text-success',
+      bgColor: 'bg-success/10',
+      borderColor: 'border-success/20',
       score: profile.executive_organization_index,
       count: profile.layer2_executions_count,
       details: [
@@ -77,9 +77,9 @@ export const IntegratedProfilePanel = ({ childId }: IntegratedProfilePanelProps)
     {
       name: 'Socioemocional',
       icon: Heart,
-      color: 'text-red-500',
-      bgColor: 'bg-red-500/10',
-      borderColor: 'border-red-500/20',
+      color: 'text-destructive',
+      bgColor: 'bg-destructive/10',
+      borderColor: 'border-destructive/20',
       score: profile.socioemotional_overall,
       count: profile.layer3_decisions_count,
       details: [
@@ -97,9 +97,9 @@ export const IntegratedProfilePanel = ({ childId }: IntegratedProfilePanelProps)
 
   const getScoreColor = (score: number | null) => {
     if (score === null) return 'text-muted-foreground';
-    if (score >= 70) return 'text-green-600';
-    if (score >= 40) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 70) return 'text-success';
+    if (score >= 40) return 'text-warning';
+    return 'text-destructive';
   };
 
   return (

@@ -39,20 +39,20 @@ const eventTypeConfig = {
   },
   emotional: {
     icon: Heart,
-    color: 'text-red-500',
-    bgColor: 'bg-red-500/10',
+    color: 'text-destructive',
+    bgColor: 'bg-destructive/10',
     label: 'Emocional'
   },
   routine: {
     icon: Activity,
-    color: 'text-green-500',
-    bgColor: 'bg-green-500/10',
+    color: 'text-success',
+    bgColor: 'bg-success/10',
     label: 'Rotina'
   },
   intervention: {
     icon: AlertTriangle,
-    color: 'text-amber-500',
-    bgColor: 'bg-amber-500/10',
+    color: 'text-warning',
+    bgColor: 'bg-warning/10',
     label: 'Intervenção'
   },
   achievement: {

@@ -132,9 +132,9 @@ export const RoutineHub = ({ childId }: RoutineHubProps) => {
                   className="flex items-start gap-3 p-3 rounded-lg bg-muted/50"
                 >
                   {insight.type === 'positive' ? (
-                    <TrendingUp className="h-5 w-5 text-green-500 mt-0.5" />
+                    <TrendingUp className="h-5 w-5 text-success mt-0.5" />
                   ) : insight.type === 'negative' ? (
-                    <TrendingDown className="h-5 w-5 text-red-500 mt-0.5" />
+                    <TrendingDown className="h-5 w-5 text-destructive mt-0.5" />
                   ) : (
                     <Activity className="h-5 w-5 text-muted-foreground mt-0.5" />
                   )}

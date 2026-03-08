@@ -117,18 +117,18 @@ export default function TherapistPatients() {
 
   const getRiskColor = (level?: 'low' | 'medium' | 'high') => {
     switch (level) {
-      case 'low': return 'bg-green-500/20 text-green-500 border-green-500/30';
-      case 'medium': return 'bg-yellow-500/20 text-yellow-500 border-yellow-500/30';
-      case 'high': return 'bg-red-500/20 text-red-500 border-red-500/30';
+      case 'low': return 'bg-success/20 text-success border-success/30';
+      case 'medium': return 'bg-warning/20 text-warning border-warning/30';
+      case 'high': return 'bg-destructive/20 text-destructive border-destructive/30';
       default: return 'bg-muted';
     }
   };
 
   const getTrendIcon = (trend?: 'up' | 'stable' | 'down') => {
     switch (trend) {
-      case 'up': return <TrendingUp className="w-4 h-4 text-green-500" />;
-      case 'stable': return <div className="w-4 h-4 border-t-2 border-yellow-500" />;
-      case 'down': return <TrendingUp className="w-4 h-4 text-red-500 rotate-180" />;
+      case 'up': return <TrendingUp className="w-4 h-4 text-success" />;
+      case 'stable': return <div className="w-4 h-4 border-t-2 border-warning" />;
+      case 'down': return <TrendingUp className="w-4 h-4 text-destructive rotate-180" />;
       default: return null;
     }
   };
