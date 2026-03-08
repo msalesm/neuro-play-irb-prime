@@ -264,7 +264,9 @@ const App = () => (
                   <Route path="/planeta/:planetaId" element={<PlanetaDetalhes />} />
                   <Route path="/avatar-evolution" element={<AvatarEvolutionPage />} />
                   <Route path="/conquistas" element={<AchievementsPage />} />
+                  <Route path="/achievements" element={<AchievementsPage />} />
                   <Route path="/mapa" element={<WorldMap />} />
+                  <Route path="/world-map" element={<WorldMap />} />
                   <Route path="/student-hub" element={<StudentHub />} />
                   
                   {/* Screening */}
@@ -342,6 +344,7 @@ const App = () => (
                   {/* Community & Messaging */}
                   <Route path="/comunidade" element={<Community />} />
                   <Route path="/mensagens" element={<SecureMessaging />} />
+                  <Route path="/messages" element={<SecureMessaging />} />
                   
                   {/* AI & Analytics */}
                   <Route path="/ia-contextual" element={<ContextualAIDashboard />} />
@@ -349,6 +352,7 @@ const App = () => (
                   {/* Institutional & Billing */}
                   <Route path="/institutional" element={<InstitutionalDashboard />} />
                   <Route path="/assinatura" element={<Assinatura />} />
+                  <Route path="/subscription" element={<Assinatura />} />
                   <Route path="/faturamento" element={<BillingDashboard />} />
                   <Route path="/impacto" element={<ImpactDashboard />} />
                   
