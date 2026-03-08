@@ -65,10 +65,10 @@ export default function SchoolDirectorDashboard() {
       if (!classes.length) return [];
       const { data } = await supabase
         .from('class_students')
-        .select('id, child_id, class_id, children!class_students_child_id_fkey(id, name)')
+        .select('id, child_id, class_id')
         .in('class_id', classes.map(c => c.id))
-        .eq('is_active', true);
-      return data || [];
+        .eq('is_active', true) as any;
+      return (data || []) as Array<{ id: string; child_id: string; class_id: string }>;
     },
     enabled: classes.length > 0,
   });
