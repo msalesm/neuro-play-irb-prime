@@ -117,6 +117,7 @@ import RelationshipsManager from "./pages/admin/RelationshipsManager";
 import UnifiedReports from "./pages/UnifiedReports";
 import ProntuarioUnificado from "./pages/ProntuarioUnificado";
 import StudentHub from "./pages/StudentHub";
+import WorldMap from "./pages/WorldMap";
 import StoryEditor from "./pages/StoryEditor";
 import SimpleAnalytics from "./pages/SimpleAnalytics";
 import PrivacyPortal from "./pages/PrivacyPortal";
@@ -231,6 +232,9 @@ const App = () => (
                   <Route path="/therapeutic-chat" element={<TherapeuticChatPage />} />
                   <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
                   <Route path="/achievements" element={<AchievementsPage />} />
+                  <Route path="/conquistas" element={<AchievementsPage />} />
+                  <Route path="/world-map" element={<WorldMap />} />
+                  <Route path="/mapa" element={<WorldMap />} />
                   <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
                   <Route path="/games/caca-foco" element={<CacaFoco />} />
                   <Route path="/games/logica-rapida" element={<LogicaRapida />} />
