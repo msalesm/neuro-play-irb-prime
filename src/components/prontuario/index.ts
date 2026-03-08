@@ -1,0 +1,21 @@
+// Prontuário (Medical Record) Module - Barrel Export
+export { UnifiedPatientRecord } from './UnifiedPatientRecord';
+export { ClinicalDashboardProfessional } from './ClinicalDashboardProfessional';
+export { IntegratedTimeline } from './IntegratedTimeline';
+export { IntegratedProfilePanel } from './IntegratedProfilePanel';
+export { CognitiveMapRadar } from './CognitiveMapRadar';
+export { EmotionalTimeline } from './EmotionalTimeline';
+export { ExecutiveRoutinePanel } from './ExecutiveRoutinePanel';
+export { SocioemotionalPanel } from './SocioemotionalPanel';
+export { NeuroAnamnesis } from './NeuroAnamnesis';
+export { DiagnosticsTab } from './DiagnosticsTab';
+export { PeiIntegrationTab } from './PeiIntegrationTab';
+export { TeleconsultTab } from './TeleconsultTab';
+export { AbaHistoryTab } from './AbaHistoryTab';
+export { AIReportGenerator } from './AIReportGenerator';
+export { ClinicalPatternAlerts } from './ClinicalPatternAlerts';
+export { DigitalPrescription } from './DigitalPrescription';
+export { ImmediateInterventions } from './ImmediateInterventions';
+export { MultidisciplinaryPanel } from './MultidisciplinaryPanel';
+export { PredictiveInsightsPanel } from './PredictiveInsightsPanel';
+export { RoutineHub } from './RoutineHub';

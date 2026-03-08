@@ -1,0 +1,9 @@
+// Teleconsult Module - Barrel Export
+export { TeleconsultSession } from './TeleconsultSession';
+export { TeleconsultList } from './TeleconsultList';
+export { TeleconsultInvite } from './TeleconsultInvite';
+export { ScheduleTeleconsultModal } from './ScheduleTeleconsultModal';
+export { TherapistSlotsManager } from './TherapistSlotsManager';
+export { VideoCall } from './VideoCall';
+export { WaitingRoom } from './WaitingRoom';
+export { PatientHistoryPanel } from './PatientHistoryPanel';
