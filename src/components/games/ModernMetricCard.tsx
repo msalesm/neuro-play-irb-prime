@@ -50,7 +50,7 @@ export function ModernMetricCard({
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-50`} />
       
       <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-white/80">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-primary-foreground/80">{title}</CardTitle>
         <div className="flex items-center gap-2">
           {badge && (
             <Badge 
@@ -60,7 +60,7 @@ export function ModernMetricCard({
               {badge.label}
             </Badge>
           )}
-          {Icon && <Icon className="h-4 w-4 text-white/60" />}
+          {Icon && <Icon className="h-4 w-4 text-primary-foreground/60" />}
         </div>
       </CardHeader>
       

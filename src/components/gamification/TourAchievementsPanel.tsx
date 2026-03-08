@@ -7,10 +7,10 @@ import { useTourAchievements } from '@/hooks/useTourAchievements';
 import { cn } from '@/lib/utils';
 
 const rarityColors = {
-  common: 'from-gray-500 to-gray-600',
-  rare: 'from-blue-500 to-blue-600',
-  epic: 'from-purple-500 to-purple-600',
-  legendary: 'from-amber-500 to-amber-600',
+  common: 'from-muted-foreground to-muted-foreground/80',
+  rare: 'from-info to-info/80',
+  epic: 'from-primary to-primary/80',
+  legendary: 'from-warning to-warning/80',
 };
 
 const rarityLabels = {

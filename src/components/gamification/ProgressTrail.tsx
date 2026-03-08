@@ -48,14 +48,14 @@ export default function ProgressTrail({ games, trackColor, trackName }: Progress
             <div 
               className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg border-4 border-success/30 bg-success"
             >
-              <CheckCircle className="w-8 h-8 text-white" />
+              <CheckCircle className="w-8 h-8 text-success-foreground" />
               <div className="absolute -top-2 -right-2 w-6 h-6 bg-warning rounded-full flex items-center justify-center">
                 <Trophy className="w-4 h-4 text-warning-foreground" />
               </div>
             </div>
           ) : game.unlocked ? (
             <div 
-              className="w-16 h-16 rounded-full flex items-center justify-center text-white shadow-lg border-4 border-white/30 hover:scale-110 transition-transform"
+              className="w-16 h-16 rounded-full flex items-center justify-center text-primary-foreground shadow-lg border-4 border-primary-foreground/30 hover:scale-110 transition-transform"
               style={{ backgroundColor: trackColor }}
             >
               <span className="font-bold text-lg">{index + 1}</span>
