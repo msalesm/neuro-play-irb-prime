@@ -21,11 +21,11 @@ interface TexturePattern {
 type SensitivityLevel = 'low' | 'medium' | 'high';
 
 const textureTypes = {
-  smooth: { name: 'Liso', color: 'bg-blue-200', description: 'Superfície lisa e uniforme' },
-  rough: { name: 'Áspero', color: 'bg-yellow-300', description: 'Superfície irregular' },
-  bumpy: { name: 'Com Relevos', color: 'bg-green-300', description: 'Pequenas elevações' },
-  soft: { name: 'Macio', color: 'bg-pink-200', description: 'Textura suave' },
-  rigid: { name: 'Rígido', color: 'bg-gray-300', description: 'Superfície firme' }
+  smooth: { name: 'Liso', color: 'bg-info/30', description: 'Superfície lisa e uniforme' },
+  rough: { name: 'Áspero', color: 'bg-warning/40', description: 'Superfície irregular' },
+  bumpy: { name: 'Com Relevos', color: 'bg-success/40', description: 'Pequenas elevações' },
+  soft: { name: 'Macio', color: 'bg-primary/20', description: 'Textura suave' },
+  rigid: { name: 'Rígido', color: 'bg-muted', description: 'Superfície firme' }
 };
 
 const sensitivityLevels = {
@@ -242,15 +242,15 @@ export default function TouchMapper() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-warning/10 to-destructive/10 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 text-orange-900">
+            <h1 className="font-heading text-4xl font-bold mb-2 text-foreground">
               TouchMapper
             </h1>
-            <p className="text-orange-700">
+            <p className="text-muted-foreground">
               Desenvolva seu processamento tátil explorando texturas virtuais
             </p>
           </div>
@@ -279,7 +279,7 @@ export default function TouchMapper() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <Settings className="h-4 w-4 text-gray-600" />
+                      <Settings className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm font-medium">Sensibilidade:</span>
                     </div>
                     <div className="flex gap-2">
@@ -427,7 +427,7 @@ export default function TouchMapper() {
                   </Button>
                   
                   {discoveredPatterns.length >= 3 && (
-                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700">
+                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-warning hover:bg-warning/90 text-warning-foreground">
                       <Hand className="h-5 w-5" />
                       Concluir Sessão
                     </Button>
@@ -504,19 +504,19 @@ export default function TouchMapper() {
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-warning rounded-full mt-1.5 shrink-0" />
                   <span>Discriminação tátil</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-warning rounded-full mt-1.5 shrink-0" />
                   <span>Dessensibilização gradual</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-warning rounded-full mt-1.5 shrink-0" />
                   <span>Propriocepção</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 shrink-0" />
+                  <div className="w-2 h-2 bg-warning rounded-full mt-1.5 shrink-0" />
                   <span>Integração sensorial</span>
                 </div>
               </CardContent>
