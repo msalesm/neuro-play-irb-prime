@@ -81,7 +81,7 @@ export function TestimonialsCarousel() {
             {/* Rating */}
             <div className="flex gap-1">
               {[...Array(current.rating)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-yellow-500 text-yellow-500" />
+                <Star key={i} className="w-5 h-5 fill-warning text-warning" />
               ))}
             </div>
           </CardContent>

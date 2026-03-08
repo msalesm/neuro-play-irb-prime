@@ -123,9 +123,9 @@ export function PatientHistoryPanel({ patientId, patientName }: PatientHistoryPa
       case 'high':
         return <Badge variant="destructive">Alto Risco</Badge>;
       case 'medium':
-        return <Badge className="bg-yellow-500">Médio</Badge>;
+        return <Badge className="bg-warning">Médio</Badge>;
       case 'low':
-        return <Badge className="bg-green-500">Baixo</Badge>;
+        return <Badge className="bg-success">Baixo</Badge>;
       default:
         return <Badge variant="secondary">N/A</Badge>;
     }
@@ -133,9 +133,9 @@ export function PatientHistoryPanel({ patientId, patientName }: PatientHistoryPa
 
   const getTrendIcon = (score: number | null) => {
     if (!score) return <Minus className="w-4 h-4 text-muted-foreground" />;
-    if (score >= 70) return <TrendingUp className="w-4 h-4 text-green-500" />;
-    if (score >= 40) return <Minus className="w-4 h-4 text-yellow-500" />;
-    return <TrendingDown className="w-4 h-4 text-red-500" />;
+    if (score >= 70) return <TrendingUp className="w-4 h-4 text-success" />;
+    if (score >= 40) return <Minus className="w-4 h-4 text-warning" />;
+    return <TrendingDown className="w-4 h-4 text-destructive" />;
   };
 
   if (loading) {
