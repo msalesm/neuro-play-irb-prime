@@ -8,9 +8,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 
 const rankIcons = [
-  { icon: Crown, color: 'text-yellow-500' },
-  { icon: Medal, color: 'text-gray-400' },
-  { icon: Medal, color: 'text-amber-600' }
+  { icon: Crown, color: 'text-warning' },
+  { icon: Medal, color: 'text-muted-foreground' },
+  { icon: Medal, color: 'text-accent' }
 ];
 
 export function CommunityLeaderboard() {

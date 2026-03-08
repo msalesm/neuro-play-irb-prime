@@ -24,19 +24,19 @@ export function PreventiveAlertModal({ open, onClose, alert }: PreventiveAlertMo
 
   const getAlertColor = (level: string) => {
     switch (level) {
-      case 'critical': return 'border-red-500 bg-red-50';
-      case 'high': return 'border-orange-500 bg-orange-50';
-      case 'medium': return 'border-yellow-500 bg-yellow-50';
-      default: return 'border-gray-500 bg-gray-50';
+      case 'critical': return 'border-destructive bg-destructive/5';
+      case 'high': return 'border-warning bg-warning/5';
+      case 'medium': return 'border-accent bg-accent/5';
+      default: return 'border-muted-foreground bg-muted';
     }
   };
 
   const getAlertTextColor = (level: string) => {
     switch (level) {
-      case 'critical': return 'text-red-600';
-      case 'high': return 'text-orange-600';
-      case 'medium': return 'text-yellow-600';
-      default: return 'text-gray-600';
+      case 'critical': return 'text-destructive';
+      case 'high': return 'text-warning';
+      case 'medium': return 'text-accent';
+      default: return 'text-muted-foreground';
     }
   };
 

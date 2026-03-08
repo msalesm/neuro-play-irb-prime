@@ -90,7 +90,7 @@ export default function TeacherStudentView() {
         .from('children')
         .select('*')
         .eq('id', studentId)
-        .single();
+        .maybeSingle();
 
       if (childError) throw childError;
 

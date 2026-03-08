@@ -68,7 +68,7 @@ export const RecentScreeningsCard = () => {
   };
 
   const getScoreIcon = (score: number) => {
-    if (score >= 70) return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+    if (score >= 70) return <CheckCircle2 className="w-4 h-4 text-success" />;
     if (score >= 40) return <TrendingUp className="w-4 h-4 text-accent" />;
     return <AlertCircle className="w-4 h-4 text-destructive" />;
   };

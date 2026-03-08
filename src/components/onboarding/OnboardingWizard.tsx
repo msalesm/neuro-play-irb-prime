@@ -305,7 +305,7 @@ export function OnboardingWizard() {
               >
                 <div className="flex items-center gap-2">
                   {step.id < currentStep ? (
-                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <CheckCircle2 className="h-5 w-5 text-success flex-shrink-0" />
                   ) : (
                     <div className="h-5 w-5 rounded-full border-2 border-current flex items-center justify-center text-xs font-bold flex-shrink-0">
                       {step.id}
