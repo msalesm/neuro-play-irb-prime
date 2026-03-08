@@ -149,9 +149,9 @@ export default function Dashboard() {
   const progressToNext = (currentXP / 100) * 100;
 
   const gameCategories = [
-    { name: "Atenção", progress: 45, icon: Heart, color: "text-red-500" },
-    { name: "Memória", progress: 60, icon: Brain, color: "text-blue-500" },
-    { name: "Linguagem", progress: 35, icon: Users, color: "text-green-500" },
+    { name: "Atenção", progress: 45, icon: Heart, color: "text-destructive" },
+    { name: "Memória", progress: 60, icon: Brain, color: "text-info" },
+    { name: "Linguagem", progress: 35, icon: Users, color: "text-success" },
   ];
 
   return (
@@ -182,7 +182,7 @@ export default function Dashboard() {
 
         {/* Quick Actions - Secondary CTA Section */}
         <Card className="backdrop-blur-sm bg-card/60 border-border shadow-lg relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5" />
           <CardHeader className="relative">
             <div className="flex items-center justify-between">
               <CardTitle className="text-foreground text-xl">Ações Rápidas</CardTitle>
@@ -252,7 +252,7 @@ export default function Dashboard() {
         {/* Stats Grid - Subtle Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" role="region" aria-label="Estatísticas do usuário">
           <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Nível Atual</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
@@ -269,25 +269,25 @@ export default function Dashboard() {
           </Card>
 
           <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-orange-500/5" />
+            <div className="absolute inset-0 bg-gradient-to-br from-warning/5 to-warning/5" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Estrelas</CardTitle>
-              <Star className="h-4 w-4 text-yellow-500" aria-hidden="true" />
+              <Star className="h-4 w-4 text-warning" aria-hidden="true" />
             </CardHeader>
             <CardContent className="relative">
-              <div className="text-2xl font-bold text-yellow-500">{stats?.total_stars || 0}</div>
+              <div className="text-2xl font-bold text-warning">{stats?.total_stars || 0}</div>
               <p className="text-xs text-muted-foreground">Conquistas</p>
             </CardContent>
           </Card>
 
           <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5" />
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent/5" />
             <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Experiência</CardTitle>
               <Trophy className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             </CardHeader>
             <CardContent className="relative">
-              <div className="text-2xl font-bold text-purple-400">{stats?.experience_points || 0}</div>
+              <div className="text-2xl font-bold text-secondary">{stats?.experience_points || 0}</div>
               <p className="text-xs text-muted-foreground">Pontos</p>
             </CardContent>
           </Card>
@@ -295,7 +295,7 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="lg:col-span-2 backdrop-blur-sm bg-card/50 border-border relative overflow-hidden shadow-md" role="region" aria-label="Progresso por categoria">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5" />
+            <div className="absolute inset-0 bg-gradient-to-br from-success/5 to-primary/5" />
             <CardHeader className="relative">
               <CardTitle className="text-foreground text-lg">Progresso por Categoria</CardTitle>
             </CardHeader>
@@ -327,7 +327,7 @@ export default function Dashboard() {
           </Card>
 
           <Card className="backdrop-blur-sm bg-card/40 border-border/50 relative overflow-hidden" role="region" aria-label="Atividade recente">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5" />
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent/5" />
             <CardHeader className="relative">
               <CardTitle className="text-foreground text-base">Atividade Recente</CardTitle>
             </CardHeader>
