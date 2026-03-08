@@ -124,7 +124,7 @@ export default function CosmicSequence() {
           Sequência Cósmica
         </h2>
         {isTestMode && (
-          <Badge className="mb-2 bg-[#c7923e] text-white">
+          <Badge className="mb-2 bg-warning text-warning-foreground">
             🎮 Modo Teste
           </Badge>
         )}
