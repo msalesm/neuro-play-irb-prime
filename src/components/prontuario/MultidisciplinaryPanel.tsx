@@ -259,7 +259,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
         <Card className="bg-muted/50">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Activity className="h-4 w-4 text-amber-500" />
+              <Activity className="h-4 w-4 text-warning" />
               <span className="text-sm font-medium">Comportamento</span>
             </div>
             <div className="text-2xl font-bold">
@@ -280,11 +280,11 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
               <span>Posicione o aluno próximo ao professor</span>
             </li>
             <li className="flex items-start gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 mt-1.5" />
+              <div className="w-2 h-2 rounded-full bg-success mt-1.5" />
               <span>Use instruções claras e diretas</span>
             </li>
             <li className="flex items-start gap-2">
-              <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5" />
+              <div className="w-2 h-2 rounded-full bg-warning mt-1.5" />
               <span>Ofereça pausas regulares durante atividades longas</span>
             </li>
           </ul>
