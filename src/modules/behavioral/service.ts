@@ -24,23 +24,21 @@ export async function fetchBehavioralInsights(userId: string, childProfileId?: s
 
 export async function fetchScreenings(childId: string) {
   const { data, error } = await supabase
-    .from('screenings')
+    .from('screenings' as any)
     .select('*')
     .eq('child_id', childId)
-    .order('created_at', { ascending: false })
-    .returns<any[]>();
+    .order('created_at', { ascending: false });
   if (error) throw error;
-  return data || [];
+  return (data as any[]) || [];
 }
 
 export async function fetchEmotionalCheckins(childId: string, limit = 30) {
   const { data, error } = await supabase
-    .from('emotional_checkins')
+    .from('emotional_checkins' as any)
     .select('*')
     .eq('child_id', childId)
     .order('created_at', { ascending: false })
-    .limit(limit)
-    .returns<any[]>();
+    .limit(limit);
   if (error) throw error;
-  return data || [];
+  return (data as any[]) || [];
 }
