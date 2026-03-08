@@ -148,9 +148,7 @@ export function identifyStudentsNeedingSupport(
   return students.map(student => {
     const scores = Object.entries(student.domainScores);
     if (scores.length === 0) {
-      return {
-        studentId: student.studentId,
-        studentName: student.studentName,
+    const engagementLevel: 'high' | 'moderate' | 'low' = student.sessionsCompleted >= 10 ? 'high' : student.sessionsCompleted >= 3 ? 'moderate' : 'low';
         overallScore: 50,
         weakestDomain: 'N/A',
         strongestDomain: 'N/A',

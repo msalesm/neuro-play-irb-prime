@@ -10,8 +10,8 @@ import {
   classify,
   detectBehaviorPatterns,
   calculateEvolutionTrend,
-  type CognitiveDomainScores,
 } from '@/modules/games/cognitive-engine';
+import type { CognitiveDomainScores } from '@/types/cognitive-analysis';
 import type { GamePerformanceData } from '@/types/cognitive-analysis';
 
 // ─── Types ────────────────────────────────────────────────
@@ -91,20 +91,20 @@ export function runCognitiveAssessment(
   const completeness = coveredDomains.size / BATTERY_DOMAINS.length;
   const isValid = completeness >= 0.5 && performanceData.length >= 3;
 
-  const domains: DomainAssessment[] = BATTERY_DOMAINS.map(key => {
-    const score = scores[key];
+  const domains: DomainAssessment[] = BATTERY_DOMAINS.map((key: string) => {
+    const score = scores[key as keyof CognitiveDomainScores];
     const zScore = (score - 50) / 10;
     const percentile = Math.round(normalCDF(zScore) * 100);
 
     return {
       domain: key,
-      domainLabel: DOMAIN_LABELS[key],
+      domainLabel: DOMAIN_LABELS[key as keyof CognitiveDomainScores],
       score,
       classification: classify(score),
       percentile,
       trend: trend,
       dataPoints: coveredDomains.has(key) ? performanceData.length : 0,
-      interpretation: generateDomainInterpretation(key, score, ageGroup),
+      interpretation: generateDomainInterpretation(key as keyof CognitiveDomainScores, score, ageGroup),
     };
   });
 
