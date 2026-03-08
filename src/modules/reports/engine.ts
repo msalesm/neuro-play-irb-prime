@@ -237,7 +237,7 @@ function generateEvolutionReport(
     {
       title: 'Domínios Cognitivos',
       content: Object.entries(profile.cognitive)
-        .map(([k, v]) => `${translateDomainKey(k)}: ${v.score}/100 (${v.trend === 'up' ? '↑' : v.trend === 'down' ? '↓' : '→'})`)
+        .map(([k, v]) => { const d = v as DomainScore; return `${translateDomainKey(k)}: ${d.score}/100 (${d.trend === 'up' ? '↑' : d.trend === 'down' ? '↓' : '→'})`; })
         .join(' | '),
       data: profile.cognitive,
       visualType: 'chart',
