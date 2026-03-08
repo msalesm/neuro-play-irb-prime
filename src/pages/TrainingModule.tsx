@@ -311,9 +311,9 @@ export default function TrainingModule() {
                   variant="outline"
                   className={`w-full h-auto py-4 text-left justify-start hover:bg-primary/10 hover:border-primary transition-all ${
                     showCorrect
-                      ? 'bg-green-500/10 border-green-500 hover:bg-green-500/20'
+                      ? 'bg-success/10 border-success hover:bg-success/20'
                       : showIncorrect
-                      ? 'bg-red-500/10 border-red-500 hover:bg-red-500/20'
+                      ? 'bg-destructive/10 border-destructive hover:bg-destructive/20'
                       : ''
                   }`}
                   onClick={() => !showExplanation && handleAnswer(index)}
@@ -323,8 +323,8 @@ export default function TrainingModule() {
                     {String.fromCharCode(65 + index)}
                   </span>
                   <span className="flex-1">{option}</span>
-                  {showCorrect && <CheckCircle2 className="h-5 w-5 text-green-500 ml-2" />}
-                  {showIncorrect && <XCircle className="h-5 w-5 text-red-500 ml-2" />}
+                  {showCorrect && <CheckCircle2 className="h-5 w-5 text-success ml-2" />}
+                  {showIncorrect && <XCircle className="h-5 w-5 text-destructive ml-2" />}
                 </Button>
               );
             })}
@@ -332,10 +332,10 @@ export default function TrainingModule() {
         </Card>
 
         {showExplanation && (
-          <Card className={`mb-6 ${isCorrect ? 'border-green-500/50' : 'border-red-500/50'}`}>
+          <Card className={`mb-6 ${isCorrect ? 'border-success/50' : 'border-destructive/50'}`}>
             <CardHeader>
               <div className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-yellow-500" />
+                <Lightbulb className="h-5 w-5 text-warning" />
                 <CardTitle className="text-base">
                   {isCorrect ? 'Resposta Correta!' : 'Vamos Aprender'}
                 </CardTitle>

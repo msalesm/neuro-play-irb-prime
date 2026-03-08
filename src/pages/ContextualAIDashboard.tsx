@@ -385,8 +385,8 @@ function RecentAnalysesHistory() {
         >
           <div className={`p-2 rounded-lg ${
             analysis.severity === 'high' ? 'bg-destructive/10' :
-            analysis.severity === 'medium' ? 'bg-amber-500/10' :
-            'bg-emerald-500/10'
+            analysis.severity === 'medium' ? 'bg-warning/10' :
+            'bg-success/10'
           }`}>
             {analysis.insight_type?.includes('crisis') ? (
               <TrendingUp className="h-4 w-4" />
