@@ -12,7 +12,7 @@ const cognitiveGames = [
     description: 'Toque apenas nos estímulos corretos que piscam rapidamente',
     function: 'Atenção e tempo de resposta',
     icon: Target,
-    color: 'from-blue-500 to-cyan-500',
+    color: 'from-primary to-info',
     path: '/games/foco-rapido',
   },
   {
@@ -22,7 +22,7 @@ const cognitiveGames = [
     description: 'Encaixe figuras antes do tempo acabar',
     function: 'Raciocínio lógico e coordenação visuoespacial',
     icon: Puzzle,
-    color: 'from-purple-500 to-pink-500',
+    color: 'from-secondary to-destructive/70',
     path: '/games/logica-formas',
   },
   {
@@ -32,7 +32,7 @@ const cognitiveGames = [
     description: 'Complete palavras ou sons faltantes',
     function: 'Linguagem e leitura (dislexia)',
     icon: Type,
-    color: 'from-green-500 to-emerald-500',
+    color: 'from-success to-accent',
     path: '/games/palavra-magica',
   },
   {
@@ -42,7 +42,7 @@ const cognitiveGames = [
     description: 'Lembre-se das expressões e cores mostradas',
     function: 'Memória de curto prazo e empatia',
     icon: Lightbulb,
-    color: 'from-orange-500 to-yellow-500',
+    color: 'from-warning to-warning/70',
     path: '/games/memoria-emocoes',
   },
   {
@@ -52,7 +52,7 @@ const cognitiveGames = [
     description: 'Evite clicar em estímulos proibidos',
     function: 'Inibição e foco sustentado (TDAH)',
     icon: Zap,
-    color: 'from-red-500 to-rose-500',
+    color: 'from-destructive to-destructive/70',
     path: '/games/controle-impulso',
   },
   {
@@ -62,7 +62,7 @@ const cognitiveGames = [
     description: 'Siga padrões visuais e auditivos combinados',
     function: 'Atenção dividida e coordenação sensorial',
     icon: Rainbow,
-    color: 'from-indigo-500 to-violet-500',
+    color: 'from-primary/80 to-secondary',
     path: '/games/caminho-atencao',
   },
 ];

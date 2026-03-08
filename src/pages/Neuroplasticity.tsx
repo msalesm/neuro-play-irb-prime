@@ -136,7 +136,7 @@ const neuroplasticityGames = [
     title: 'Aventura dos Números',
     description: 'Explore conceitos matemáticos em aventuras divertidas',
     icon: Calculator,
-    gradient: 'bg-gradient-to-br from-yellow-500 to-amber-600',
+    gradient: 'bg-gradient-to-br from-warning to-warning/80',
     category: 'math',
     categoryName: 'Matemática',
     difficulty: 'Intermediário',
