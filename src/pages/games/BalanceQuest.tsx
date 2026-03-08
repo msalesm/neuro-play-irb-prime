@@ -379,15 +379,15 @@ export default function BalanceQuest() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-accent/10 to-info/10 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 text-teal-900">
+            <h1 className="font-heading text-4xl font-bold mb-2 text-foreground">
               BalanceQuest
             </h1>
-            <p className="text-teal-700">
+            <p className="text-muted-foreground">
               Fortaleça seu sistema vestibular e coordenação motora
             </p>
           </div>

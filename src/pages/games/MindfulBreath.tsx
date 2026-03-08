@@ -226,10 +226,10 @@ export default function MindfulBreath() {
 
   const getPhaseColor = () => {
     switch (currentPhase) {
-      case 'inhale': return 'text-blue-600';
-      case 'hold': return 'text-purple-600';
-      case 'exhale': return 'text-green-600';
-      case 'pause': return 'text-gray-600';
+      case 'inhale': return 'text-info';
+      case 'hold': return 'text-secondary';
+      case 'exhale': return 'text-success';
+      case 'pause': return 'text-muted-foreground';
     }
   };
 

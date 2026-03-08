@@ -147,7 +147,7 @@ export default function BeneficiosTerapeuticos() {
               className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{ backgroundColor: 'hsl(var(--primary))' }}
             >
-              <Heart className="w-6 h-6 text-white" />
+              <Heart className="w-6 h-6 text-primary-foreground" />
             </div>
             <h2 className="text-3xl font-bold">Para Crianças e Alunos Neurodivergentes</h2>
           </div>
@@ -180,7 +180,7 @@ export default function BeneficiosTerapeuticos() {
               className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{ backgroundColor: 'hsl(var(--secondary))' }}
             >
-              <Users className="w-6 h-6 text-white" />
+              <Users className="w-6 h-6 text-secondary-foreground" />
             </div>
             <h2 className="text-3xl font-bold">Para Pais e Famílias</h2>
           </div>
@@ -213,7 +213,7 @@ export default function BeneficiosTerapeuticos() {
               className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{ backgroundColor: 'hsl(var(--accent))' }}
             >
-              <Brain className="w-6 h-6 text-white" />
+              <Brain className="w-6 h-6 text-accent-foreground" />
             </div>
             <h2 className="text-3xl font-bold">Para Terapeutas e Profissionais</h2>
           </div>
@@ -246,7 +246,7 @@ export default function BeneficiosTerapeuticos() {
               className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{ backgroundColor: 'hsl(var(--primary))' }}
             >
-              <GraduationCap className="w-6 h-6 text-white" />
+              <GraduationCap className="w-6 h-6 text-primary-foreground" />
             </div>
             <h2 className="text-3xl font-bold">Para Escolas e Redes Educacionais</h2>
           </div>

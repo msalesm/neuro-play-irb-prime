@@ -203,10 +203,10 @@ export default function TheoryOfMind() {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'basic': return 'text-green-600 bg-green-100';
-      case 'intermediate': return 'text-yellow-600 bg-yellow-100';
-      case 'advanced': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'basic': return 'text-success bg-success/20';
+      case 'intermediate': return 'text-warning bg-warning/20';
+      case 'advanced': return 'text-destructive bg-destructive/20';
+      default: return 'text-muted-foreground bg-muted';
     }
   };
 
@@ -237,29 +237,29 @@ export default function TheoryOfMind() {
 
             <div className="grid grid-cols-3 gap-6 mb-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">{score}</div>
-                <div className="text-sm text-gray-500">Pontos Totais</div>
+                <div className="text-3xl font-bold text-info">{score}</div>
+                <div className="text-sm text-muted-foreground">Pontos Totais</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600">{accuracy}%</div>
-                <div className="text-sm text-gray-500">Precisão</div>
+                <div className="text-3xl font-bold text-success">{accuracy}%</div>
+                <div className="text-sm text-muted-foreground">Precisão</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600">{avgTime}s</div>
-                <div className="text-sm text-gray-500">Tempo Médio</div>
+                <div className="text-3xl font-bold text-secondary">{avgTime}s</div>
+                <div className="text-sm text-muted-foreground">Tempo Médio</div>
               </div>
             </div>
 
-            <div className="text-left bg-blue-50 p-4 rounded-lg mb-6">
-              <h3 className="font-semibold text-blue-800 mb-2">Sobre a Teoria da Mente:</h3>
-              <p className="text-blue-700 text-sm">
+            <div className="text-left bg-info/10 p-4 rounded-lg mb-6">
+              <h3 className="font-semibold text-info mb-2">Sobre a Teoria da Mente:</h3>
+              <p className="text-info/80 text-sm">
                 A Teoria da Mente é a capacidade de compreender que outras pessoas têm pensamentos, 
                 sentimentos e perspectivas diferentes das nossas. Este teste avalia habilidades importantes 
                 como compreensão de falsas crenças, reconhecimento de emoções e tomada de perspectiva.
               </p>
             </div>
 
-            <Button onClick={() => window.history.back()} size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600">
+            <Button onClick={() => window.history.back()} size="lg" className="bg-gradient-to-r from-primary to-secondary">
               Voltar aos Jogos
             </Button>
           </Card>
@@ -269,24 +269,24 @@ export default function TheoryOfMind() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-info/10 to-secondary/15 p-4">
       <div className="max-w-2xl mx-auto">
         <Card className="p-6 mb-6">
           <div className="flex justify-between items-center mb-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">Teoria da Mente</h1>
-              <p className="text-gray-600">Compreenda pensamentos e sentimentos dos outros</p>
+              <h1 className="text-2xl font-bold text-foreground">Teoria da Mente</h1>
+              <p className="text-muted-foreground">Compreenda pensamentos e sentimentos dos outros</p>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{score}</div>
-              <div className="text-sm text-gray-500">Pontos</div>
+              <div className="text-2xl font-bold text-info">{score}</div>
+              <div className="text-sm text-muted-foreground">Pontos</div>
             </div>
           </div>
 
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-medium">Progresso</span>
-              <span className="text-sm text-gray-500">{currentScenario + 1}/{scenarios.length}</span>
+              <span className="text-sm text-muted-foreground">{currentScenario + 1}/{scenarios.length}</span>
             </div>
             <Progress value={progress} className="h-2" />
           </div>
@@ -300,14 +300,14 @@ export default function TheoryOfMind() {
               </span>
             </div>
             
-            <h2 className="text-xl font-semibold text-gray-800 mb-3">{scenario.title}</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-3">{scenario.title}</h2>
             
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <p className="text-gray-700 leading-relaxed">{scenario.situation}</p>
+            <div className="bg-muted p-4 rounded-lg mb-4">
+              <p className="text-foreground/80 leading-relaxed">{scenario.situation}</p>
             </div>
 
-            <div className="bg-blue-50 p-4 rounded-lg mb-4">
-              <p className="text-blue-800 font-medium">{scenario.question}</p>
+            <div className="bg-info/10 p-4 rounded-lg mb-4">
+              <p className="text-info font-medium">{scenario.question}</p>
             </div>
 
             <div className="space-y-3 mb-6">
@@ -321,12 +321,12 @@ export default function TheoryOfMind() {
                     ${selectedAnswer === index 
                       ? showFeedback 
                         ? index === scenario.correctAnswer
-                          ? 'border-green-500 bg-green-50 text-green-800'
-                          : 'border-red-500 bg-red-50 text-red-800'
-                        : 'border-blue-500 bg-blue-50'
+                          ? 'border-success bg-success/10 text-success'
+                          : 'border-destructive bg-destructive/10 text-destructive'
+                        : 'border-info bg-info/10'
                       : showFeedback && index === scenario.correctAnswer
-                        ? 'border-green-500 bg-green-50 text-green-800'
-                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                        ? 'border-success bg-success/10 text-success'
+                        : 'border-border hover:border-muted-foreground hover:bg-muted'
                     }
                     ${!showFeedback ? 'cursor-pointer' : 'cursor-default'}
                   `}
@@ -334,10 +334,10 @@ export default function TheoryOfMind() {
                   <div className="flex items-center justify-between">
                     <span>{option}</span>
                     {showFeedback && index === scenario.correctAnswer && (
-                      <span className="text-green-600 font-medium">✓ Correto</span>
+                      <span className="text-success font-medium">✓ Correto</span>
                     )}
                     {showFeedback && selectedAnswer === index && index !== scenario.correctAnswer && (
-                      <span className="text-red-600 font-medium">✗ Incorreto</span>
+                      <span className="text-destructive font-medium">✗ Incorreto</span>
                     )}
                   </div>
                 </button>

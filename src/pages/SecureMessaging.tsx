@@ -201,10 +201,10 @@ export default function SecureMessaging() {
 
   const getMessageTypeIcon = (type: string) => {
     switch (type) {
-      case 'feedback': return <Star className="w-4 h-4 text-yellow-500" />;
-      case 'recommendation': return <AlertCircle className="w-4 h-4 text-blue-500" />;
-      case 'alert': return <AlertCircle className="w-4 h-4 text-red-500" />;
-      default: return <MessageSquare className="w-4 h-4 text-gray-500" />;
+      case 'feedback': return <Star className="w-4 h-4 text-warning" />;
+      case 'recommendation': return <AlertCircle className="w-4 h-4 text-info" />;
+      case 'alert': return <AlertCircle className="w-4 h-4 text-destructive" />;
+      default: return <MessageSquare className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -220,8 +220,8 @@ export default function SecureMessaging() {
     <ModernPageLayout>
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-white">Mensagens Seguras</h1>
-          <p className="text-white/70">Comunicação entre terapeutas e famílias</p>
+          <h1 className="text-3xl font-bold text-foreground">Mensagens Seguras</h1>
+          <p className="text-muted-foreground">Comunicação entre terapeutas e famílias</p>
         </div>
         <div className="grid lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
         {/* Message List */}
@@ -392,7 +392,7 @@ export default function SecureMessaging() {
                             {new Date(message.created_at).toLocaleDateString('pt-BR')}
                           </span>
                           {message.is_read && filter === 'sent' && (
-                            <CheckCheck className="w-3 h-3 text-blue-500" />
+                            <CheckCheck className="w-3 h-3 text-info" />
                           )}
                         </div>
                       </div>

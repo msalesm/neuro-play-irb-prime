@@ -219,7 +219,7 @@ export default function CooperativePuzzle() {
           {/* Puzzle Grid */}
           <Card className="md:col-span-2">
             <CardContent className="p-6">
-              <div className="grid grid-cols-4 gap-2 aspect-square bg-gray-100 rounded-lg p-4">
+              <div className="grid grid-cols-4 gap-2 aspect-square bg-muted rounded-lg p-4">
                 {Array.from({ length: 12 }).map((_, i) => {
                   const x = i % 4;
                   const y = Math.floor(i / 4);

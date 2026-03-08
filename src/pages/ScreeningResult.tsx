@@ -48,13 +48,13 @@ export default function ScreeningResultPage() {
   const getColor = () => {
     switch (result.type) {
       case 'dislexia':
-        return 'from-blue-500 to-cyan-500';
+        return 'from-info to-accent';
       case 'tdah':
-        return 'from-yellow-500 to-orange-500';
+        return 'from-warning to-warning/70';
       case 'tea':
-        return 'from-purple-500 to-pink-500';
+        return 'from-secondary to-primary/60';
       default:
-        return 'from-gray-500 to-slate-500';
+        return 'from-muted-foreground to-muted-foreground/70';
     }
   };
 
@@ -72,10 +72,10 @@ export default function ScreeningResultPage() {
   };
 
   const getPerformanceLevel = () => {
-    if (result.percentile >= 60) return { label: 'Acima da Média', color: 'text-green-600', icon: CheckCircle2 };
-    if (result.percentile >= 40) return { label: 'Dentro da Média', color: 'text-blue-600', icon: Info };
-    if (result.percentile >= 20) return { label: 'Atenção Recomendada', color: 'text-yellow-600', icon: AlertTriangle };
-    return { label: 'Encaminhamento Necessário', color: 'text-red-600', icon: AlertTriangle };
+    if (result.percentile >= 60) return { label: 'Acima da Média', color: 'text-success', icon: CheckCircle2 };
+    if (result.percentile >= 40) return { label: 'Dentro da Média', color: 'text-info', icon: Info };
+    if (result.percentile >= 20) return { label: 'Atenção Recomendada', color: 'text-warning', icon: AlertTriangle };
+    return { label: 'Encaminhamento Necessário', color: 'text-destructive', icon: AlertTriangle };
   };
 
   const Icon = getIcon();
