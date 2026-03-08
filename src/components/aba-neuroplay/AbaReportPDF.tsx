@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAbaInterventions, useAbaTrials, useAbaSessions, useAbaGoals, useAbaClinicalNotes } from '@/hooks/useAbaNeuroPlay';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { FileDown, Loader2, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import jsPDF from 'jspdf';
@@ -11,9 +13,7 @@ import { ptBR } from 'date-fns/locale';
 
 interface Props {
   programId: string;
-  programName: string;
   childId: string;
-  childName: string;
 }
 
 const PROMPT_LABELS: Record<string, string> = {
@@ -26,12 +26,30 @@ const STATUS_LABELS: Record<string, string> = {
   mastered: 'Dominada', paused: 'Pausada', discontinued: 'Descontinuada',
 };
 
-export function AbaReportPDF({ programId, programName, childId, childName }: Props) {
+export function AbaReportPDF({ programId, childId }: Props) {
   const [generating, setGenerating] = useState(false);
   const { data: interventions } = useAbaInterventions(programId);
   const { data: sessions } = useAbaSessions(programId);
   const { data: goals } = useAbaGoals(programId);
   const { data: notes } = useAbaClinicalNotes(childId);
+
+  // Fetch names
+  const { data: programData } = useQuery({
+    queryKey: ['aba-program-name', programId],
+    queryFn: async () => {
+      const { data } = await supabase.from('aba_np_programs').select('program_name').eq('id', programId).maybeSingle();
+      return data;
+    },
+  });
+  const { data: childData } = useQuery({
+    queryKey: ['child-name', childId],
+    queryFn: async () => {
+      const { data } = await supabase.from('children').select('name').eq('id', childId).maybeSingle();
+      return data;
+    },
+  });
+  const programName = programData?.program_name || 'Programa ABA';
+  const childName = childData?.name || 'Paciente';
 
   // Get trials for each intervention
   const interventionIds = interventions?.map((i: any) => i.id) || [];
