@@ -6,11 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Puzzle, Sparkles, Trophy, Volume2, VolumeX, Star } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { LevelProgress } from "@/components/LevelProgress";
-import { GameAchievements } from "@/components/GameAchievement";
+import { LevelProgress } from '@/components/gamification';
+import { GameAchievements } from '@/components/GameAchievement';
 import { useGameSession } from '@/hooks/useGameSession';
-import { GameExitButton } from '@/components/GameExitButton';
-import { GameResultsDashboard } from '@/components/GameResultsDashboard';
+import { GameExitButton, GameResultsDashboard } from '@/components/games';
 import { toast } from 'sonner';
 
 interface GameStats {

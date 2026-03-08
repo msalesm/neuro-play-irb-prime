@@ -10,8 +10,7 @@ import { useSocialScenarios } from "@/hooks/useSocialScenarios";
 import { SocialScenariosProgress } from "@/components/SocialScenariosProgress";
 import { SocialScenariosAchievements } from "@/components/SocialScenariosAchievements";
 import { useGameSession } from '@/hooks/useGameSession';
-import { GameExitButton } from '@/components/GameExitButton';
-import { GameResultsDashboard } from '@/components/GameResultsDashboard';
+import { GameExitButton, GameResultsDashboard } from '@/components/games';
 import { supabase } from '@/integrations/supabase/client';
 
 const SocialScenarios = () => {

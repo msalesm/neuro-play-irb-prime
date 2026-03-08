@@ -9,8 +9,7 @@ import { Play, Pause, RotateCcw, Heart, Star, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useGameSession } from '@/hooks/useGameSession';
-import { GameExitButton } from '@/components/GameExitButton';
-import { GameResultsDashboard } from '@/components/GameResultsDashboard';
+import { GameExitButton, GameResultsDashboard } from '@/components/games';
 
 type BreathPhase = 'inhale' | 'hold' | 'exhale' | 'pause';
 

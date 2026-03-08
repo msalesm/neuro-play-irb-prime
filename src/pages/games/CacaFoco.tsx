@@ -8,8 +8,7 @@ import { ArrowLeft, Play, Pause, RotateCcw, Target, Trophy, Clock, Eye } from "l
 import { useAuth } from "@/hooks/useAuth";
 import { useAudioEngine } from "@/hooks/useAudioEngine";
 import { useGameSession } from '@/hooks/useGameSession';
-import { GameExitButton } from '@/components/GameExitButton';
-import { GameResultsDashboard } from '@/components/GameResultsDashboard';
+import { GameExitButton, GameResultsDashboard } from '@/components/games';
 import { toast } from 'sonner';
 
 type GameItem = {
