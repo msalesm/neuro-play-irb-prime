@@ -594,7 +594,7 @@ export default function EmotionalWeather() {
                         onClick={() => useTool(tool)}
                         disabled={!isPlaying || isActive}
                       >
-                        <div className={`p-2 rounded ${tool.color} text-white`}>
+                        <div className={`p-2 rounded ${tool.color} text-primary-foreground`}>
                           {tool.icon}
                         </div>
                         <div className="text-center">

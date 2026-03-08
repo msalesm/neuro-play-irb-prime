@@ -778,7 +778,7 @@ export default function RitmoMusical() {
                           <button
                             key={beatType}
                             onClick={() => handleBeatInput(beatType as BeatType)}
-                            className={`${config.color} hover:scale-105 active:scale-95 transition-all duration-150 rounded-xl p-4 text-white font-medium shadow-lg hover:shadow-xl border-2 border-white/20`}
+                            className={`${config.color} hover:scale-105 active:scale-95 transition-all duration-150 rounded-xl p-4 text-primary-foreground font-medium shadow-lg hover:shadow-xl border-2 border-primary-foreground/20`}
                           >
                             <div className="text-2xl mb-1">
                               {beatType === 'kick' ? '🥁' : 

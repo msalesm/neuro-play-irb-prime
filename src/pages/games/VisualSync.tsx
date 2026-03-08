@@ -419,7 +419,7 @@ export default function VisualSync() {
                   {targets.map((target) => (
                     <button
                       key={target.id}
-                      className={`absolute rounded-full ${target.color} transition-all duration-200 hover:scale-110 flex items-center justify-center text-white font-bold border-2 border-white shadow-lg ${
+                      className={`absolute rounded-full ${target.color} transition-all duration-200 hover:scale-110 flex items-center justify-center text-primary-foreground font-bold border-2 border-primary-foreground shadow-lg ${
                         target.tracked ? 'opacity-50' : ''
                       }`}
                       style={{

@@ -222,10 +222,10 @@ export default function CacaLetras() {
           </Button>
           
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold font-heading text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold font-heading text-primary-foreground">
               📚 Caça Letras
             </h1>
-            <p className="text-white/80 text-sm">Processamento fonológico</p>
+            <p className="text-primary-foreground/80 text-sm">Processamento fonológico</p>
           </div>
 
           <div className="flex gap-2">
@@ -303,7 +303,7 @@ export default function CacaLetras() {
                         </p>
                       </div>
                     </div>
-                    <Button onClick={startNewRound} size="lg" className="gap-2 gradient-dislexia text-white">
+                    <Button onClick={startNewRound} size="lg" className="gap-2 gradient-dislexia text-primary-foreground">
                       <Target className="w-5 h-5" />
                       Começar Caça
                     </Button>
@@ -328,11 +328,11 @@ export default function CacaLetras() {
                             onClick={() => handleLetterClick(index, letter)}
                             className={`w-12 h-12 text-2xl font-bold rounded-lg border-2 transition-all duration-200 ${
                               foundPositions.includes(index)
-                                ? 'bg-green-500 text-white border-green-600 shadow-lg'
+                                ? 'bg-success text-success-foreground border-success shadow-lg'
                                 : wrongClicks.includes(index)
-                                ? 'bg-red-500 text-white border-red-600 shake'
+                                ? 'bg-destructive text-destructive-foreground border-destructive shake'
                                 : letter === targetLetter
-                                ? 'bg-yellow-100 border-yellow-400 hover:bg-yellow-200'
+                                ? 'bg-warning/20 border-warning hover:bg-warning/30'
                                 : 'bg-gray-100 border-gray-300 hover:bg-gray-200'
                             }`}
                             disabled={foundPositions.includes(index)}
@@ -371,7 +371,7 @@ export default function CacaLetras() {
                       <Button onClick={() => {
                         setGameState('idle');
                         setStats(prev => ({ ...prev, timeRemaining: 30 }));
-                      }} className="gap-2 gradient-dislexia text-white">
+                      }} className="gap-2 gradient-dislexia text-primary-foreground">
                         <Target className="w-4 h-4" />
                         Jogar Novamente
                       </Button>
