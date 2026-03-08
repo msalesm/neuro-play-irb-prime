@@ -392,6 +392,12 @@ export default function TherapistDashboard() {
             </Card>
           </div>
 
+          {/* Behavioral Profile & Reports Widgets */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <BehavioralProfileWidget childId={patientId!} />
+            <ReportGeneratorWidget childId={patientId!} childName={patient.name} />
+          </div>
+
           {/* Main Content - Tabs simplificadas */}
           <Tabs value={activeTab} onValueChange={setActiveTab} data-tour="clinical-tabs">
             <TabsList className="grid w-full grid-cols-4">
