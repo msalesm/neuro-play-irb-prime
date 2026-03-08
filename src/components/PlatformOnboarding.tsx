@@ -410,7 +410,7 @@ export function PlatformOnboarding({ pageName }: PlatformOnboardingProps) {
       {hasSeenTour && (
         <button
           onClick={resetTour}
-          className="fixed bottom-6 right-6 z-50 bg-[#005a70] hover:bg-[#0a1e35] text-white rounded-full p-3 shadow-lg transition-all hover:scale-110"
+          className="fixed bottom-6 right-6 z-50 bg-primary hover:bg-primary/80 text-primary-foreground rounded-full p-3 shadow-lg transition-all hover:scale-110"
           title="Refazer tour"
         >
           <span className="text-xl">❓</span>

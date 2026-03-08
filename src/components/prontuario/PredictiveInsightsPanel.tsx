@@ -37,7 +37,7 @@ export function PredictiveInsightsPanel({ insights, correlations }: PredictiveIn
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[#c7923e]" />
+            <Sparkles className="w-5 h-5 text-warning" />
             Insights Preditivos (IA)
           </CardTitle>
         </CardHeader>

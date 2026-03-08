@@ -205,8 +205,8 @@ export function ClinicalDashboardProfessional() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-[#c7923e]/10">
-                <TrendingUp className="w-6 h-6 text-[#c7923e]" />
+              <div className="p-2 rounded-lg bg-warning/10">
+                <TrendingUp className="w-6 h-6 text-warning" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Evolução Média</p>

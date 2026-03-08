@@ -110,7 +110,7 @@ export const AvatarCustomization = ({ evolution, onEquipAccessory }: AvatarCusto
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="all">
-            <TabsList className="grid grid-cols-4 lg:grid-cols-7 mb-4">
+            <TabsList className="flex flex-wrap gap-1 mb-4">
               <TabsTrigger value="all">Todos</TabsTrigger>
               <TabsTrigger value="crown">👑</TabsTrigger>
               <TabsTrigger value="hat">🎩</TabsTrigger>
