@@ -1,7 +1,7 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { useBiofeedback } from '@/hooks/useBiofeedback';
 import { BiofeedbackState, GameResponse, BiofeedbackMetrics, BreathingPattern } from '@/types/biofeedback';
-import { BreathingExercise } from './emotional/BreathingExercise';
+import { BreathingExercise } from '../emotional/BreathingExercise';
 
 const EmotionalEnergyBar = ({ energy, showLabel }: { energy: number; showLabel?: boolean }) => (
   <div className="text-xs text-muted-foreground">{showLabel && 'Energia:'} {Math.round(energy)}%</div>

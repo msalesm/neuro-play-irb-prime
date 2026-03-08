@@ -15,14 +15,14 @@ const categoryLabels: Record<string, string> = {
 };
 
 const categoryColors: Record<string, string> = {
-  atencao_conjunta: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-  imitacao: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
-  comunicacao_funcional: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-  instrucoes_simples: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
-  regulacao_emocional: 'bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-300',
-  flexibilidade_cognitiva: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300',
-  interacao_social: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
-  autonomia: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300',
+  atencao_conjunta: 'bg-info/10 text-info',
+  imitacao: 'bg-primary/10 text-primary',
+  comunicacao_funcional: 'bg-success/10 text-success',
+  instrucoes_simples: 'bg-warning/10 text-warning',
+  regulacao_emocional: 'bg-destructive/10 text-destructive',
+  flexibilidade_cognitiva: 'bg-info/20 text-info',
+  interacao_social: 'bg-warning/20 text-warning',
+  autonomia: 'bg-success/20 text-success',
 };
 
 export function AbaSkillsLibrary() {

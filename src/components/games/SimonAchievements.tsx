@@ -84,7 +84,7 @@ export function SimonAchievements({ stats }: SimonAchievementsProps) {
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-500" />
+            <Trophy className="w-5 h-5 text-warning" />
             Conquistas
           </h3>
           <Badge variant="outline">
@@ -99,7 +99,7 @@ export function SimonAchievements({ stats }: SimonAchievementsProps) {
               className={cn(
                 'p-3 rounded-lg border-2 transition-all duration-300',
                 achievement.unlocked
-                  ? 'bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-yellow-500/50 shadow-lg'
+                  ? 'bg-gradient-to-br from-warning/10 to-warning/20 border-warning/50 shadow-lg'
                   : 'bg-muted/50 border-muted grayscale opacity-60'
               )}
             >
@@ -110,7 +110,7 @@ export function SimonAchievements({ stats }: SimonAchievementsProps) {
                 <div className={cn(
                   'p-2 rounded-full',
                   achievement.unlocked
-                    ? 'bg-yellow-500 text-white'
+                    ? 'bg-warning text-warning-foreground'
                     : 'bg-muted text-muted-foreground'
                 )}>
                   {achievement.icon}
@@ -122,7 +122,7 @@ export function SimonAchievements({ stats }: SimonAchievementsProps) {
                   </div>
                 </div>
                 {achievement.unlocked && (
-                  <Badge variant="outline" className="text-xs bg-green-500/20 text-green-700 border-green-500/50">
+                  <Badge variant="outline" className="text-xs bg-success/20 text-success border-success/50">
                     ✓ Desbloqueada
                   </Badge>
                 )}

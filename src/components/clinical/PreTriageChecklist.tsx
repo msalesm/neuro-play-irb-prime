@@ -85,10 +85,10 @@ export function PreTriageChecklist({ childId, sessionId, onComplete }: PreTriage
 
   const getRiskColor = (level: string) => {
     switch (level) {
-      case 'low': return 'bg-green-500/10 text-green-600';
-      case 'medium': return 'bg-yellow-500/10 text-yellow-600';
-      case 'high': return 'bg-orange-500/10 text-orange-600';
-      case 'critical': return 'bg-red-500/10 text-red-600';
+      case 'low': return 'bg-success/10 text-success';
+      case 'medium': return 'bg-warning/10 text-warning';
+      case 'high': return 'bg-warning/20 text-warning';
+      case 'critical': return 'bg-destructive/10 text-destructive';
       default: return 'bg-muted';
     }
   };
@@ -200,7 +200,7 @@ export function PreTriageChecklist({ childId, sessionId, onComplete }: PreTriage
                       {item.question}
                     </Label>
                     {responses[item.id] && (
-                      <AlertTriangle className="w-4 h-4 text-amber-500" />
+                      <AlertTriangle className="w-4 h-4 text-warning" />
                     )}
                   </div>
                 ))}

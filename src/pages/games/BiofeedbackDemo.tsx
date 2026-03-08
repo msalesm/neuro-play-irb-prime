@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Heart, Brain, Target } from 'lucide-react';
-import { withBiofeedback, useBiofeedbackIntegration } from '@/components/withBiofeedback';
+import { withBiofeedback, useBiofeedbackIntegration } from '@/components/games/withBiofeedback';
 
 function BiofeedbackDemoGame() {
   const { recordCorrectAnswer, recordIncorrectAnswer, state, checkAndTriggerBreathing } = useBiofeedbackIntegration();

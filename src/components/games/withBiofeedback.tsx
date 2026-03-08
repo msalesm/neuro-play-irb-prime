@@ -1,5 +1,5 @@
 import { ComponentType, useEffect, useState } from 'react';
-import { BiofeedbackProvider, BiofeedbackDisplay, useBiofeedbackContext } from './BiofeedbackSystem';
+import { BiofeedbackProvider, BiofeedbackDisplay, useBiofeedbackContext } from '@/components/games/BiofeedbackSystem';
 import { GameResponse } from '@/types/biofeedback';
 
 interface BiofeedbackEnhancedProps {
