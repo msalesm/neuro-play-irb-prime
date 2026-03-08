@@ -286,9 +286,9 @@ export function SkillsInventoryReport({ inventoryId, childName, open, onOpenChan
                   </CardContent>
                 </Card>
 
-                <Card className="border-amber-500/20">
+                <Card className="border-warning/20">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm flex items-center gap-2 text-amber-600">
+                    <CardTitle className="text-sm flex items-center gap-2 text-warning">
                       <AlertTriangle className="h-4 w-4" />
                       Áreas de Atenção
                     </CardTitle>
@@ -297,7 +297,7 @@ export function SkillsInventoryReport({ inventoryId, childName, open, onOpenChan
                     <ul className="space-y-1.5">
                       {report.areasAtencao?.map((a, i) => (
                         <li key={i} className="text-sm flex items-start gap-2">
-                          <span className="text-amber-500 mt-0.5">!</span>
+                          <span className="text-warning mt-0.5">!</span>
                           {a}
                         </li>
                       ))}

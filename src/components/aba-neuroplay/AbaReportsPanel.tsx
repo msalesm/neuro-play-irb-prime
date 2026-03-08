@@ -177,7 +177,7 @@ export function AbaReportsPanel({ kpis }: AbaReportsPanelProps) {
 
           <Card>
             <CardContent className="pt-6 text-center">
-              <AlertTriangle className="h-8 w-8 text-amber-500 mx-auto mb-2" />
+              <AlertTriangle className="h-8 w-8 text-warning mx-auto mb-2" />
               <p className="text-3xl font-bold">{kpis.taxaFaltas}%</p>
               <p className="text-sm text-muted-foreground">Taxa de Faltas</p>
               <p className="text-xs text-muted-foreground mt-1">{kpis.totalFaltas} faltas</p>

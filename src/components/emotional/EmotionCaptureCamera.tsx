@@ -33,11 +33,11 @@ const moodEmojis: Record<number, string> = {
 };
 
 const emotionColors: Record<string, string> = {
-  'Feliz': 'bg-green-500',
-  'Triste': 'bg-blue-500',
-  'Irritado': 'bg-red-500',
-  'Surpreso': 'bg-yellow-500',
-  'Neutro': 'bg-gray-500',
+  'Feliz': 'bg-success',
+  'Triste': 'bg-primary',
+  'Irritado': 'bg-destructive',
+  'Surpreso': 'bg-warning',
+  'Neutro': 'bg-muted-foreground',
 };
 
 export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId, childName }: EmotionCaptureCameraProps) {

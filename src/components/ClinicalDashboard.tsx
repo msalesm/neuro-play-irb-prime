@@ -470,13 +470,13 @@ export default function ClinicalDashboard() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {stats.totalSessions === 0 ? (
-                  <div className="flex items-start gap-3 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-                    <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-3 p-4 bg-warning/10 border border-warning/20 rounded-lg">
+                    <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-amber-900">
+                      <p className="text-sm font-medium text-foreground">
                         Nenhuma sessão de jogo encontrada
                       </p>
-                      <p className="text-sm text-amber-700">
+                      <p className="text-sm text-muted-foreground">
                         Complete pelo menos 5 sessões de jogos diferentes para gerar uma análise completa com IA.
                       </p>
                       <Button variant="outline" size="sm" asChild className="mt-2">
