@@ -152,7 +152,7 @@ const weatherTools: WeatherTool[] = [
     effectiveness: {
       happy: 80, sad: 90, angry: 40, anxious: 65, calm: 60, excited: 75
     },
-    color: 'bg-pink-500'
+    color: 'bg-secondary'
   }
 ];
 
@@ -603,7 +603,7 @@ export default function EmotionalWeather() {
                             Efetividade: {effectiveness}%
                           </p>
                           {isActive && (
-                            <Badge className="mt-1 bg-yellow-100 text-yellow-800">
+                            <Badge className="mt-1 bg-warning/20 text-warning">
                               Ativo
                             </Badge>
                           )}
@@ -724,15 +724,15 @@ export default function EmotionalWeather() {
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
                 <div className="flex items-center gap-2">
-                  <Heart className="h-4 w-4 text-red-500" />
+                  <Heart className="h-4 w-4 text-destructive" />
                   <span>Desenvolve autorregulação emocional</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Eye className="h-4 w-4 text-blue-500" />
+                  <Eye className="h-4 w-4 text-info" />
                   <span>Aumenta autoconsciência</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Settings className="h-4 w-4 text-gray-500" />
+                  <Settings className="h-4 w-4 text-muted-foreground" />
                   <span>Ensina estratégias de enfrentamento</span>
                 </div>
               </CardContent>
