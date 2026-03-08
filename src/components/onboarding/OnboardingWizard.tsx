@@ -299,7 +299,7 @@ export function OnboardingWizard() {
                   step.id === currentStep
                     ? 'border-secondary bg-secondary/10'
                     : step.id < currentStep
-                    ? 'border-green-500 bg-green-50'
+                    ? 'border-success bg-success/10'
                     : 'border-border bg-muted/20'
                 }`}
               >

@@ -12,41 +12,37 @@ export function InstitutionStatsCards({ stats }: InstitutionStatsCardsProps) {
       label: 'Total Membros',
       value: stats.totalMembers,
       icon: Users,
-      color: 'blue',
-      gradient: 'from-blue-500/10 to-blue-600/5',
-      border: 'border-blue-500/20',
-      iconBg: 'bg-blue-500/20',
-      iconColor: 'text-blue-500'
+      gradient: 'from-primary/10 to-primary/5',
+      border: 'border-primary/20',
+      iconBg: 'bg-primary/20',
+      iconColor: 'text-primary'
     },
     {
       label: 'Terapeutas',
       value: stats.therapists,
       icon: UserPlus,
-      color: 'purple',
-      gradient: 'from-purple-500/10 to-purple-600/5',
-      border: 'border-purple-500/20',
-      iconBg: 'bg-purple-500/20',
-      iconColor: 'text-purple-500'
+      gradient: 'from-secondary/10 to-secondary/5',
+      border: 'border-secondary/20',
+      iconBg: 'bg-secondary/20',
+      iconColor: 'text-secondary'
     },
     {
       label: 'Professores',
       value: stats.teachers,
       icon: GraduationCap,
-      color: 'green',
-      gradient: 'from-green-500/10 to-green-600/5',
-      border: 'border-green-500/20',
-      iconBg: 'bg-green-500/20',
-      iconColor: 'text-green-500'
+      gradient: 'from-success/10 to-success/5',
+      border: 'border-success/20',
+      iconBg: 'bg-success/20',
+      iconColor: 'text-success'
     },
     {
       label: 'Alunos',
       value: stats.students,
       icon: BookOpen,
-      color: 'orange',
-      gradient: 'from-orange-500/10 to-orange-600/5',
-      border: 'border-orange-500/20',
-      iconBg: 'bg-orange-500/20',
-      iconColor: 'text-orange-500'
+      gradient: 'from-warning/10 to-warning/5',
+      border: 'border-warning/20',
+      iconBg: 'bg-warning/20',
+      iconColor: 'text-warning'
     }
   ];
 

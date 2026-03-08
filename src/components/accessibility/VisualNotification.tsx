@@ -37,10 +37,10 @@ export function VisualNotification({
   };
 
   const colors = {
-    info: 'bg-blue-500/10 border-blue-500 text-blue-700',
-    success: 'bg-green-500/10 border-green-500 text-green-700',
-    warning: 'bg-yellow-500/10 border-yellow-500 text-yellow-700',
-    error: 'bg-red-500/10 border-red-500 text-red-700',
+    info: 'bg-info/10 border-info text-info',
+    success: 'bg-success/10 border-success text-success',
+    warning: 'bg-warning/10 border-warning text-warning',
+    error: 'bg-destructive/10 border-destructive text-destructive',
   };
 
   const Icon = icons[type];

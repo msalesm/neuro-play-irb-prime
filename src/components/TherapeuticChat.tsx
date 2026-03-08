@@ -71,7 +71,7 @@ export default function TherapeuticChat({
               Assistente Terapêutico
             </CardTitle>
             <Badge variant="outline" className="gap-1">
-              <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+              <div className="h-2 w-2 rounded-full bg-success animate-pulse" />
               Online
             </Badge>
           </div>
@@ -149,7 +149,7 @@ export default function TherapeuticChat({
           <MessageCircle className="h-4 w-4 md:h-5 md:w-5" />
           <span className="font-semibold">Assistente Terapêutico IA</span>
           <Badge variant="outline" className="gap-1 ml-2 text-xs">
-            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+            <div className="h-2 w-2 rounded-full bg-success animate-pulse" />
             <span className="hidden sm:inline">Online</span>
           </Badge>
         </div>

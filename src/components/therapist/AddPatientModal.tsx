@@ -311,7 +311,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
                     Copiar Link
                   </Button>
                   <Button 
-                    className="w-full bg-green-600 hover:bg-green-700"
+                    className="w-full bg-success hover:bg-success/90"
                     onClick={shareViaWhatsApp}
                   >
                     <MessageCircle className="mr-2 h-4 w-4" />

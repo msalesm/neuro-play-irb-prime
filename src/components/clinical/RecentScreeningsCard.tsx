@@ -60,9 +60,9 @@ export const RecentScreeningsCard = () => {
 
   const getTypeColor = (type: string) => {
     switch (type.toLowerCase()) {
-      case 'tea': return 'bg-purple-500/10 text-purple-600 border-purple-500/30';
-      case 'tdah': return 'bg-orange-500/10 text-orange-600 border-orange-500/30';
-      case 'dislexia': return 'bg-green-500/10 text-green-600 border-green-500/30';
+      case 'tea': return 'bg-secondary/10 text-secondary border-secondary/30';
+      case 'tdah': return 'bg-warning/10 text-warning border-warning/30';
+      case 'dislexia': return 'bg-success/10 text-success border-success/30';
       default: return 'bg-primary/10 text-primary border-primary/30';
     }
   };

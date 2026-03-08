@@ -141,9 +141,9 @@ export function ParentCommunicationPanel({ classId, students = [] }: ParentCommu
 
   const getPriorityBadge = (priority: string) => {
     const priorities: Record<string, { label: string; className: string }> = {
-      low: { label: 'Baixa', className: 'bg-gray-500/10 text-gray-700' },
-      normal: { label: 'Normal', className: 'bg-blue-500/10 text-blue-700' },
-      high: { label: 'Urgente', className: 'bg-red-500/10 text-red-700' },
+      low: { label: 'Baixa', className: 'bg-muted text-muted-foreground' },
+      normal: { label: 'Normal', className: 'bg-info/10 text-info' },
+      high: { label: 'Urgente', className: 'bg-destructive/10 text-destructive' },
     };
     const p = priorities[priority] || priorities.normal;
     return <Badge className={p.className}>{p.label}</Badge>;

@@ -138,21 +138,21 @@ export default function ContextualAIDashboard() {
       title: 'Análise Preditiva',
       description: 'Detectar padrões e tendências comportamentais',
       icon: TrendingUp,
-      color: 'text-emerald-500',
+      color: 'text-success',
       href: '#insights',
     },
     {
       title: 'Chat Terapêutico',
       description: 'Conversar com o assistente IA',
       icon: Brain,
-      color: 'text-purple-500',
+      color: 'text-secondary',
       href: '/therapeutic-chat',
     },
     {
       title: 'Relatórios Clínicos',
       description: 'Gerar relatórios inteligentes',
       icon: BarChart3,
-      color: 'text-amber-500',
+      color: 'text-warning',
       href: '/reports',
     },
   ];
@@ -226,7 +226,7 @@ export default function ContextualAIDashboard() {
         >
           <Card>
             <CardContent className="p-4 text-center">
-              <Activity className="h-6 w-6 mx-auto mb-2 text-emerald-500" />
+              <Activity className="h-6 w-6 mx-auto mb-2 text-success" />
               <p className="text-2xl font-bold">{stats.appliedRecommendations}</p>
               <p className="text-xs text-muted-foreground">Aplicadas</p>
             </CardContent>
@@ -240,7 +240,7 @@ export default function ContextualAIDashboard() {
         >
           <Card>
             <CardContent className="p-4 text-center">
-              <Lightbulb className="h-6 w-6 mx-auto mb-2 text-amber-500" />
+              <Lightbulb className="h-6 w-6 mx-auto mb-2 text-warning" />
               <p className="text-2xl font-bold">{stats.insightsGenerated}</p>
               <p className="text-xs text-muted-foreground">Insights</p>
             </CardContent>
@@ -254,7 +254,7 @@ export default function ContextualAIDashboard() {
         >
           <Card>
             <CardContent className="p-4 text-center">
-              <Target className="h-6 w-6 mx-auto mb-2 text-purple-500" />
+              <Target className="h-6 w-6 mx-auto mb-2 text-secondary" />
               <p className="text-2xl font-bold">{stats.avgAccuracy.toFixed(0)}%</p>
               <p className="text-xs text-muted-foreground">Acurácia Média</p>
             </CardContent>
