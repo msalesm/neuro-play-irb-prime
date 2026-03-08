@@ -24,7 +24,7 @@ export function ModernPageLayout({
       backgroundClass[background],
       className
     )}>
-      {/* Decorative elements - IRB Prime style */}
+      {/* Decorative elements - NeuroPlay style */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-4 w-72 h-72 bg-secondary/20 rounded-full blur-3xl" />
         <div className="absolute top-3/4 -right-4 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
