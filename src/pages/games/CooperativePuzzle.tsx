@@ -195,15 +195,15 @@ export default function CooperativePuzzle() {
               </div>
               <div className="flex gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">{score}</div>
+                  <div className="text-2xl font-bold text-info">{score}</div>
                   <div className="text-xs text-muted-foreground">Pontos</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">{Math.round(progress)}%</div>
+                  <div className="text-2xl font-bold text-success">{Math.round(progress)}%</div>
                   <div className="text-xs text-muted-foreground">Completo</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">
+                  <div className="text-2xl font-bold text-secondary">
                     {Math.floor(timeElapsed / 60)}:{(timeElapsed % 60).toString().padStart(2, '0')}
                   </div>
                   <div className="text-xs text-muted-foreground">Tempo</div>
@@ -235,8 +235,8 @@ export default function CooperativePuzzle() {
                       }}
                       className={`
                         aspect-square rounded-lg border-2 transition-all cursor-pointer
-                        ${piece ? '' : 'border-dashed border-gray-300 hover:border-blue-400'}
-                        ${selectedPiece !== null && !piece ? 'bg-blue-100' : ''}
+                        ${piece ? '' : 'border-dashed border-muted-foreground/30 hover:border-info'}
+                        ${selectedPiece !== null && !piece ? 'bg-info/10' : ''}
                       `}
                       style={{ backgroundColor: piece?.color }}
                     >
@@ -281,7 +281,7 @@ export default function CooperativePuzzle() {
             <Card>
               <CardContent className="p-4">
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <Heart className="w-4 h-4 text-red-500" />
+                  <Heart className="w-4 h-4 text-destructive" />
                   Métricas de Vínculo
                 </h3>
                 <div className="space-y-3">

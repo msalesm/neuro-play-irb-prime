@@ -215,7 +215,7 @@ const SocialScenarios = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="text-center flex-1">
-            <Badge className="bg-purple-100 text-purple-800 mb-4">
+            <Badge className="bg-secondary/10 text-secondary mb-4">
               Social Skills
             </Badge>
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-4">

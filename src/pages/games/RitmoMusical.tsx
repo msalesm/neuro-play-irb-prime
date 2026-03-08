@@ -38,10 +38,10 @@ interface GameStats {
 }
 
 const BEAT_SOUNDS = {
-  kick: { freq: 60, color: 'bg-red-500', name: '🥁 Bumbo', key: 'Space' },
-  snare: { freq: 200, color: 'bg-blue-500', name: '🪘 Caixa', key: 'S' },
-  hihat: { freq: 8000, color: 'bg-yellow-500', name: '🎵 Chimbal', key: 'H' },
-  crash: { freq: 4000, color: 'bg-purple-500', name: '💥 Prato', key: 'C' },
+  kick: { freq: 60, color: 'bg-destructive', name: '🥁 Bumbo', key: 'Space' },
+  snare: { freq: 200, color: 'bg-info', name: '🪘 Caixa', key: 'S' },
+  hihat: { freq: 8000, color: 'bg-warning', name: '🎵 Chimbal', key: 'H' },
+  crash: { freq: 4000, color: 'bg-secondary', name: '💥 Prato', key: 'C' },
 };
 
 const DIFFICULTY_SETTINGS = {
@@ -635,25 +635,25 @@ export default function RitmoMusical() {
             
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-blue-600">{Math.round(stats.accuracy)}%</div>
+                <div className="text-lg font-bold text-info">{Math.round(stats.accuracy)}%</div>
                 <div className="text-xs text-muted-foreground">Precisão</div>
               </CardContent>
             </Card>
             
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-purple-600">{stats.bpm}</div>
+                <div className="text-lg font-bold text-secondary">{stats.bpm}</div>
                 <div className="text-xs text-muted-foreground">BPM</div>
               </CardContent>
             </Card>
             
             <Card>
               <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-yellow-600">{stats.streak}</div>
+                <div className="text-lg font-bold text-warning">{stats.streak}</div>
                 <div className="text-xs text-muted-foreground">
                   <div className="flex items-center justify-center gap-1">
                     <span>Sequência</span>
-                    {stats.streak >= 3 && <span className="text-orange-500">🔥</span>}
+                    {stats.streak >= 3 && <span className="text-accent">🔥</span>}
                   </div>
                 </div>
               </CardContent>
@@ -831,11 +831,11 @@ export default function RitmoMusical() {
                       </p>
                       <div className="flex justify-center gap-4 text-sm">
                         <div className="flex items-center gap-1">
-                          <Music className="w-4 h-4 text-blue-500" />
+                          <Music className="w-4 h-4 text-info" />
                           Precisão: {Math.round(stats.accuracy)}%
                         </div>
                         <div className="flex items-center gap-1">
-                          <Trophy className="w-4 h-4 text-purple-500" />
+                          <Trophy className="w-4 h-4 text-secondary" />
                           Melhor sequência: {stats.bestStreak}
                         </div>
                       </div>
@@ -865,7 +865,7 @@ export default function RitmoMusical() {
                   <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
                     <CardTitle className="flex items-center justify-between text-lg">
                       <div className="flex items-center gap-2">
-                        <Trophy className="w-5 h-5 text-yellow-500" />
+                        <Trophy className="w-5 h-5 text-warning" />
                         Conquistas
                         <Badge variant="secondary" className="ml-2">
                           {achievements.filter(a => a.unlocked).length}/{achievements.length}
@@ -921,7 +921,7 @@ export default function RitmoMusical() {
         <Card>
           <CardContent className="p-6">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-500" />
+              <Trophy className="w-5 h-5 text-warning" />
               Benefícios Terapêuticos
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
