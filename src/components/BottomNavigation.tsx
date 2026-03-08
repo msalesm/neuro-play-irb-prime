@@ -18,10 +18,11 @@ export function BottomNavigation() {
   const getNavigationItems = () => {
     if (role === 'patient') {
       return [
-        { name: 'Meu Dia', path: '/student-hub', icon: Home },
-        { name: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
-        { name: 'Conquistas', path: '/learning-dashboard', icon: Trophy },
-        { name: 'Emoções', path: '/emotional-history', icon: Heart },
+        { name: 'Início', path: '/student-hub', icon: Home },
+        { name: 'Jogos', path: '/sistema-planeta-azul', icon: Gamepad2 },
+        { name: 'Rotina', path: '/routines', icon: ClipboardCheck },
+        { name: 'Histórias', path: '/stories', icon: Heart },
+        { name: 'Perfil', path: '/settings', icon: Users },
       ];
     }
 
