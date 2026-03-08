@@ -7,9 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Trophy, Star, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { DuolingoStreak } from "@/components/DuolingoStreak";
-import { AIRecommendations } from "@/components/AIRecommendations";
-import { AchievementsList } from "@/components/AchievementsList";
+import { DuolingoStreak, AchievementsList } from '@/components/gamification';
+import { AIRecommendations } from '@/components/ai';
 import { TemporalEvolutionCharts } from "@/components/TemporalEvolutionCharts";
 
 interface UserStats {
