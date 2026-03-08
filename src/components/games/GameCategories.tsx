@@ -7,35 +7,35 @@ const gameCategories = [
     title: "Atenção & Foco",
     description: "Jogos que treinam sustentação atencional de forma progressiva e personalizada",
     features: ["Flow state adaptativo", "Níveis progressivos", "Feedback positivo"],
-    color: "from-blue-400/20 to-blue-600/20"
+    color: "from-primary/20 to-primary/30"
   },
   {
     icon: Users,
     title: "Social Skills",
     description: "Simuladores de interação social segura para desenvolvimento de habilidades sociais",
     features: ["Ambiente controlado", "Cenários reais", "Multiplayer cooperativo"],
-    color: "from-purple-400/20 to-purple-600/20"
+    color: "from-secondary/20 to-secondary/30"
   },
   {
     icon: Heart,
     title: "Regulação Emocional",
     description: "Aventuras que ensinam estratégias de calm-down e autorregulação emocional",
     features: ["Técnicas de respiração", "Mindfulness lúdico", "Estratégias personalizadas"],
-    color: "from-green-400/20 to-green-600/20"
+    color: "from-success/20 to-success/30"
   },
   {
     icon: Brain,
     title: "Funções Executivas",
     description: "Puzzles e desafios que desenvolvem planejamento, organização e memória",
     features: ["Puzzles adaptativos", "Planejamento estratégico", "Memória de trabalho"],
-    color: "from-orange-400/20 to-orange-600/20"
+    color: "from-warning/20 to-warning/30"
   },
   {
     icon: Headphones,
     title: "Integração Sensorial",
     description: "Jogos que trabalham processamento e integração sensorial de forma lúdica",
     features: ["Estímulos customizáveis", "Ambientes sensoriais", "Dessensibilização gradual"],
-    color: "from-teal-400/20 to-teal-600/20"
+    color: "from-accent/20 to-accent/30"
   }
 ];
 
