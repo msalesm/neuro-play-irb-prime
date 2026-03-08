@@ -487,7 +487,7 @@ export default function EmotionalWeather() {
                   )}
 
                   {/* Intensity Meter */}
-                  <div className="absolute bottom-4 left-4 bg-white/90 rounded-lg p-3">
+                  <div className="absolute bottom-4 left-4 bg-card/90 rounded-lg p-3">
                     <p className="text-sm font-semibold mb-2">Intensidade Emocional</p>
                     <div className="flex items-center gap-2">
                       <Thermometer className="h-4 w-4" />

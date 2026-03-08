@@ -374,7 +374,7 @@ export default function SocialCompass() {
                                  context.setting === 'family' ? 'Família' :
                                  context.setting === 'friends' ? 'Amigos' : context.setting}
                               </Badge>
-                              <Badge className="bg-orange-100 text-orange-800">
+                              <Badge className="bg-accent/10 text-accent">
                                 Nível {context.difficulty}
                               </Badge>
                             </div>
@@ -604,11 +604,11 @@ export default function SocialCompass() {
                       <div className="text-xs text-muted-foreground">Pontos Sociais</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-cyan-600">{gameTime}s</div>
+                      <div className="text-2xl font-bold text-accent">{gameTime}s</div>
                       <div className="text-xs text-muted-foreground">Tempo Total</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600">
+                      <div className="text-2xl font-bold text-info">
                         {Object.keys(emotionRadar).filter(id => emotionRadar[id].detected).length}
                       </div>
                       <div className="text-xs text-muted-foreground">Emoções Lidas</div>
