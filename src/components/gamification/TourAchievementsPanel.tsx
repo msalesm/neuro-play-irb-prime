@@ -7,10 +7,10 @@ import { useTourAchievements } from '@/hooks/useTourAchievements';
 import { cn } from '@/lib/utils';
 
 const rarityColors = {
-  common: 'from-gray-500 to-gray-600',
-  rare: 'from-blue-500 to-blue-600',
-  epic: 'from-purple-500 to-purple-600',
-  legendary: 'from-amber-500 to-amber-600',
+  common: 'from-muted-foreground to-muted-foreground/80',
+  rare: 'from-info to-info/80',
+  epic: 'from-primary to-primary/80',
+  legendary: 'from-warning to-warning/80',
 };
 
 const rarityLabels = {
@@ -72,10 +72,10 @@ export const TourAchievementsPanel = () => {
               achievement.unlocked
                 ? 'border-2 hover:shadow-lg cursor-default'
                 : 'opacity-60 border-dashed',
-              achievement.unlocked && achievement.rarity === 'legendary' && 'border-amber-500/50',
-              achievement.unlocked && achievement.rarity === 'epic' && 'border-purple-500/50',
-              achievement.unlocked && achievement.rarity === 'rare' && 'border-blue-500/50',
-              achievement.unlocked && achievement.rarity === 'common' && 'border-gray-500/50'
+              achievement.unlocked && achievement.rarity === 'legendary' && 'border-warning/50',
+              achievement.unlocked && achievement.rarity === 'epic' && 'border-primary/50',
+              achievement.unlocked && achievement.rarity === 'rare' && 'border-info/50',
+              achievement.unlocked && achievement.rarity === 'common' && 'border-muted-foreground/50'
             )}>
               {achievement.unlocked && (
                 <div className={cn(
@@ -124,7 +124,7 @@ export const TourAchievementsPanel = () => {
                     <div className="flex items-center gap-2">
                       {achievement.unlocked && (
                         <Badge className={cn(
-                          'text-white text-xs border-0',
+                          'text-primary-foreground text-xs border-0',
                           `bg-gradient-to-r ${rarityColors[achievement.rarity as keyof typeof rarityColors]}`
                         )}>
                           <Star className="w-3 h-3 mr-1" />

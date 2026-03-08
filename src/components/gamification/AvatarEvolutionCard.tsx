@@ -21,11 +21,11 @@ const stageNames: Record<AvatarStage, string> = {
 };
 
 const stageColors: Record<AvatarStage, string> = {
-  1: 'from-green-400 to-green-600',
-  2: 'from-blue-400 to-blue-600',
-  3: 'from-purple-400 to-purple-600',
-  4: 'from-orange-400 to-orange-600',
-  5: 'from-pink-500 to-purple-600'
+  1: 'from-success to-success/80',
+  2: 'from-info to-info/80',
+  3: 'from-primary to-primary/80',
+  4: 'from-warning to-warning/80',
+  5: 'from-accent to-primary/80'
 };
 
 export function AvatarEvolutionCard({
@@ -39,13 +39,13 @@ export function AvatarEvolutionCard({
 
   return (
     <Card className="overflow-hidden">
-      <CardHeader className={`bg-gradient-to-br ${stageColors[stage]} text-white`}>
+      <CardHeader className={`bg-gradient-to-br ${stageColors[stage]} text-primary-foreground`}>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Sparkles className="w-6 h-6" />
             Avatar: {stageNames[stage]}
           </CardTitle>
-          <Badge variant="secondary" className="bg-white/20 text-white">
+          <Badge variant="secondary" className="bg-primary-foreground/20 text-primary-foreground">
             Estágio {stage}/5
           </Badge>
         </div>
@@ -114,12 +114,12 @@ export function AvatarEvolutionCard({
         )}
 
         {stage === 5 && (
-          <div className="p-4 bg-gradient-to-r from-pink-100 to-purple-100 rounded-lg text-center">
-            <Sparkles className="w-8 h-8 mx-auto mb-2 text-purple-600" />
-            <p className="text-sm font-semibold text-purple-900">
+          <div className="p-4 bg-gradient-to-r from-accent/20 to-primary/20 rounded-lg text-center">
+            <Sparkles className="w-8 h-8 mx-auto mb-2 text-primary" />
+            <p className="text-sm font-semibold text-foreground">
               Avatar Lendário!
             </p>
-            <p className="text-xs text-purple-700 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Você alcançou o nível máximo de evolução
             </p>
           </div>

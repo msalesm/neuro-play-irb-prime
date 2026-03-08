@@ -75,7 +75,7 @@ export function StudentHubRecommended() {
             >
               <Card className="overflow-hidden border-0 shadow-md hover:shadow-lg transition-shadow h-full">
                 <div className={`h-20 bg-gradient-to-br ${game.gradient} flex items-center justify-center`}>
-                  <Icon className="h-8 w-8 text-white" />
+                  <Icon className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <CardContent className="p-3">
                   <p className="text-sm font-semibold text-foreground leading-tight">{game.title}</p>

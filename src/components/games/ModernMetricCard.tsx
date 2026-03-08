@@ -50,7 +50,7 @@ export function ModernMetricCard({
       <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-50`} />
       
       <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-white/80">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-primary-foreground/80">{title}</CardTitle>
         <div className="flex items-center gap-2">
           {badge && (
             <Badge 
@@ -60,14 +60,14 @@ export function ModernMetricCard({
               {badge.label}
             </Badge>
           )}
-          {Icon && <Icon className="h-4 w-4 text-white/60" />}
+          {Icon && <Icon className="h-4 w-4 text-primary-foreground/60" />}
         </div>
       </CardHeader>
       
       <CardContent className="relative">
         <div className="flex items-center gap-2 mb-2">
           <div className={cn(
-            'text-2xl font-bold text-white',
+            'text-2xl font-bold text-primary-foreground',
             trend && trendColors[trend]
           )}>
             {value}
@@ -75,7 +75,7 @@ export function ModernMetricCard({
         </div>
         
         {description && (
-          <p className="text-xs text-white/60 mb-3">
+          <p className="text-xs text-primary-foreground/60 mb-3">
             {description}
           </p>
         )}
@@ -85,10 +85,10 @@ export function ModernMetricCard({
             <Progress 
               value={progress.value} 
               max={progress.max} 
-              className="h-2 bg-white/20" 
+              className="h-2 bg-primary-foreground/20" 
             />
             {progress.label && (
-              <p className="text-xs text-white/60">
+              <p className="text-xs text-primary-foreground/60">
                 {progress.label}
               </p>
             )}
