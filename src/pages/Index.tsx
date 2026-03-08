@@ -7,7 +7,8 @@ import {
   Stethoscope, Gamepad2, CalendarCheck, MessageCircle, Star,
   CheckCircle2, Smartphone, Apple, Monitor, Activity, 
   FileText, Lightbulb, Database, School, Sparkles, Eye,
-  LineChart, ClipboardList, RefreshCw
+  LineChart, ClipboardList, RefreshCw, Radar, AlertTriangle,
+  BellRing, Compass
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -104,8 +105,8 @@ const Index = () => {
               className="text-base md:text-xl text-primary-foreground/85 mb-6 md:mb-8 max-w-lg leading-relaxed"
               variants={fadeIn}
             >
-              Jogos adaptativos com IA, avaliação cognitiva automática, ABA digital, 
-              recomendações personalizadas para pais, terapeutas e escolas — tudo em uma única plataforma.
+              Jogos adaptativos com IA, Copilot de desenvolvimento, avaliação cognitiva automática, ABA digital 
+              e recomendações personalizadas para pais, terapeutas e escolas — tudo em uma única plataforma.
             </motion.p>
             
             <motion.div className="flex flex-col sm:flex-row gap-3 md:gap-4" variants={fadeIn}>
@@ -325,13 +326,13 @@ const Index = () => {
         <div className="container mx-auto px-4 md:px-6">
           <SectionHeader
             badge="Inteligência Avançada"
-            title="5 sistemas estratégicos integrados"
+            title="6 sistemas estratégicos integrados"
             subtitle="Módulos de inteligência artificial que transformam dados comportamentais em intervenções clínicas e pedagógicas."
             stars={5}
           />
 
           <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             variants={stagger}
             initial="hidden"
             whileInView="visible"
@@ -368,6 +369,12 @@ const Index = () => {
                 desc: "Indicadores agregados por turma e escola: atenção, persistência, autorregulação e engajamento.",
                 badge: "Gestão",
               },
+              {
+                icon: Compass,
+                title: "Copilot de Desenvolvimento",
+                desc: "Inteligência contínua que integra jogos, ABA, rotina, histórias e avaliações para orientar cada criança de forma personalizada.",
+                badge: "Copilot IA",
+              },
             ].map((mod) => (
               <motion.div key={mod.title} variants={scaleIn}>
                 <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300">
@@ -384,6 +391,244 @@ const Index = () => {
                 </Card>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          COPILOT DE DESENVOLVIMENTO
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        className="py-16 md:py-24 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 relative overflow-hidden"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="absolute inset-0 opacity-5">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-px h-px bg-primary rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                boxShadow: '0 0 6px 3px hsl(var(--primary))',
+                animationDelay: `${Math.random() * 3}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <SectionHeader
+            badge="⚡ Funcionalidade Principal"
+            title="NeuroPlay Copilot — Inteligência de Desenvolvimento"
+            subtitle="O copiloto analisa continuamente todas as fontes de dados comportamentais e gera orientação personalizada para cada criança, profissional e família."
+            stars={5}
+          />
+
+          {/* Architecture Flow */}
+          <motion.div className="max-w-4xl mx-auto mb-12" variants={fadeIn}>
+            <Card className="border-2 border-primary/20 shadow-glow bg-card/80 backdrop-blur-sm">
+              <CardContent className="p-6 md:p-8">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
+                  <span className="font-semibold text-sm">Fluxo de Inteligência do Copilot</span>
+                </div>
+
+                {/* Data Sources */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-6">
+                  {[
+                    { icon: Gamepad2, label: "Jogos", color: "bg-primary/10 text-primary" },
+                    { icon: BarChart3, label: "ABA", color: "bg-destructive/10 text-destructive" },
+                    { icon: CalendarCheck, label: "Rotina", color: "bg-warning/10 text-warning" },
+                    { icon: BookOpen, label: "Histórias", color: "bg-info/10 text-info" },
+                    { icon: LineChart, label: "Avaliação", color: "bg-success/10 text-success" },
+                  ].map((src) => (
+                    <div key={src.label} className={`flex items-center gap-2 p-3 rounded-xl ${src.color.split(' ')[0]}`}>
+                      <src.icon className={`w-4 h-4 ${src.color.split(' ')[1]}`} />
+                      <span className="text-xs font-semibold">{src.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Arrow */}
+                <div className="flex justify-center mb-6">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-px h-6 bg-gradient-to-b from-primary/50 to-primary" />
+                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                      <Compass className="w-4 h-4 text-primary-foreground" />
+                    </div>
+                    <span className="text-[10px] font-bold text-primary uppercase tracking-wider">Copilot Engine</span>
+                    <div className="w-px h-6 bg-gradient-to-b from-primary to-primary/50" />
+                  </div>
+                </div>
+
+                {/* Outputs */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { icon: Radar, label: "Diagnóstico Contínuo", desc: "Padrões comportamentais" },
+                    { icon: Lightbulb, label: "Recomendações", desc: "Para cada papel" },
+                    { icon: RefreshCw, label: "Ajuste Automático", desc: "Atividades adaptadas" },
+                    { icon: AlertTriangle, label: "Alertas Precoces", desc: "Sinais de risco" },
+                  ].map((out) => (
+                    <div key={out.label} className="text-center p-3 bg-muted/50 rounded-xl">
+                      <out.icon className="w-5 h-5 text-primary mx-auto mb-1.5" />
+                      <p className="text-xs font-semibold mb-0.5">{out.label}</p>
+                      <p className="text-[10px] text-muted-foreground">{out.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Copilot Capabilities */}
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                icon: Radar,
+                title: "Diagnóstico Comportamental Contínuo",
+                desc: "O Copilot detecta padrões em tempo real: queda de atenção, persistência baixa, impulsividade crescente, dificuldade de regulação emocional.",
+                example: "\"Atenção caiu 20% nas últimas 2 semanas. Persistência baixa em tarefas longas.\"",
+                badge: "Detecção",
+              },
+              {
+                icon: Users,
+                title: "Recomendações por Papel",
+                desc: "Sugestões práticas personalizadas para pais, professores e terapeutas, baseadas no perfil completo da criança.",
+                example: "Professor: \"Atividade de foco de 3 min antes da aula.\" Pais: \"Rotina visual com 3 passos simples.\"",
+                badge: "Ação",
+              },
+              {
+                icon: RefreshCw,
+                title: "Ajuste Automático de Atividades",
+                desc: "O Copilot orienta o motor adaptativo: jogos mais curtos para persistência baixa, maior dificuldade quando atenção melhora.",
+                example: "Persistência baixa → jogos mais curtos. Atenção melhorando → aumentar dificuldade.",
+                badge: "Adaptação",
+              },
+              {
+                icon: AlertTriangle,
+                title: "Alertas Precoces",
+                desc: "Detecção de sinais de risco antes que problemas se tornem evidentes. Notificação para professores e pais agirem cedo.",
+                example: "\"Queda consistente na memória operacional — sugestão de avaliação cognitiva.\"",
+                badge: "Prevenção",
+              },
+              {
+                icon: Brain,
+                title: "Correlação Cross-Domain",
+                desc: "Cruzamento de dados de jogos, ABA, rotina e histórias para revelar conexões invisíveis entre comportamentos.",
+                example: "\"Queda de atenção nos jogos correlaciona com aumento de frustração na rotina.\"",
+                badge: "Correlação",
+              },
+              {
+                icon: School,
+                title: "Copilot de Turma",
+                desc: "Visão agregada da turma: tendências, engajamento, indicadores socioemocionais e alunos que precisam de atenção urgente.",
+                example: "\"3 alunos com risco alto. Tendência geral: queda em persistência.\"",
+                badge: "Escola",
+              },
+            ].map((cap) => (
+              <motion.div key={cap.title} variants={scaleIn}>
+                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300 border-l-4 border-l-primary/40">
+                  <CardContent className="p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <cap.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <Badge variant="secondary" className="text-[10px]">{cap.badge}</Badge>
+                    </div>
+                    <h3 className="font-bold text-sm mb-2">{cap.title}</h3>
+                    <p className="text-muted-foreground text-xs leading-relaxed mb-3">{cap.desc}</p>
+                    <div className="bg-muted/50 rounded-lg p-3 border-l-2 border-primary/30">
+                      <p className="text-[11px] text-muted-foreground italic">{cap.example}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Copilot Views */}
+          <motion.div 
+            className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                icon: Stethoscope,
+                title: "Painel do Profissional",
+                items: ["Insights comportamentais", "Alertas clínicos", "Recomendações de intervenção", "Tendências e padrões"],
+              },
+              {
+                icon: Heart,
+                title: "Painel dos Pais",
+                items: ["O que está evoluindo", "O que precisa de apoio", "O que fazer em casa", "Celebrações de progresso"],
+              },
+              {
+                icon: GraduationCap,
+                title: "Painel da Escola",
+                items: ["Tendências da turma", "Engajamento por aluno", "Indicadores socioemocionais", "Alunos em risco"],
+              },
+            ].map((panel) => (
+              <motion.div key={panel.title} variants={scaleIn}>
+                <Card className="h-full shadow-card border-t-4 border-t-primary/40">
+                  <CardContent className="p-5">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <panel.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <h3 className="font-bold text-sm">{panel.title}</h3>
+                    </div>
+                    <ul className="space-y-2">
+                      {panel.items.map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Differentiator */}
+          <motion.div className="mt-12 max-w-3xl mx-auto text-center" variants={fadeIn}>
+            <Card className="border-2 border-primary/20 bg-primary/5">
+              <CardContent className="p-6 md:p-8">
+                <Compass className="w-10 h-10 text-primary mx-auto mb-4" />
+                <h3 className="text-lg md:text-xl font-bold mb-3">
+                  Por que o Copilot é revolucionário?
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  Plataformas existentes fazem <strong>jogos cognitivos</strong> ou <strong>ABA digital</strong> isoladamente. 
+                  O NeuroPlay Copilot integra <strong>5 fontes comportamentais simultâneas</strong> para criar uma compreensão 
+                  profunda e única da criança — transformando dados em ação.
+                </p>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="p-3 bg-muted/50 rounded-lg">
+                    <p className="font-bold text-muted-foreground mb-1">Sem Copilot</p>
+                    <p className="text-xs text-muted-foreground">App educacional / plataforma ABA</p>
+                  </div>
+                  <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
+                    <p className="font-bold text-primary mb-1">Com Copilot</p>
+                    <p className="text-xs text-muted-foreground">Plataforma de inteligência comportamental infantil</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
         </div>
       </motion.section>
@@ -721,12 +966,12 @@ const Index = () => {
             {[
               { value: "25+", label: "Jogos Cognitivos" },
               { value: "6", label: "Dimensões Analisadas" },
-              { value: "5", label: "Módulos Estratégicos" },
-              { value: "4", label: "Perfis de Usuário" },
+              { value: "6", label: "Sistemas Estratégicos" },
+              { value: "5", label: "Fontes Comportamentais" },
               { value: "5", label: "Planetas Temáticos" },
               { value: "16", label: "Insígnias Colecionáveis" },
+              { value: "🧭", label: "Copilot IA" },
               { value: "100%", label: "LGPD Compliant" },
-              { value: "IA", label: "Motor Adaptativo" },
             ].map((stat) => (
               <motion.div key={stat.label} variants={scaleIn}>
                 <p className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.value}</p>
@@ -883,8 +1128,8 @@ const Index = () => {
               Pronto para transformar o desenvolvimento?
             </h2>
             <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-8">
-              Comece agora e tenha acesso a jogos adaptativos, avaliação cognitiva, relatórios com IA 
-              e ferramentas clínicas integradas — tudo em uma plataforma.
+              Comece agora e tenha acesso ao Copilot de desenvolvimento, jogos adaptativos, avaliação cognitiva, 
+              relatórios com IA e ferramentas clínicas integradas — tudo em uma plataforma.
             </p>
           </motion.div>
 
