@@ -149,11 +149,13 @@ export function useClinicAgenda() {
   const fetchAppointments = async () => {
     setLoading(true);
     
-    // Get date range for the view (week view by default)
-    const startOfWeek = new Date(selectedDate);
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(endOfWeek.getDate() + 6);
+    // Get date range for the week (Mon-Fri)
+    const monday = new Date(selectedDate);
+    const dayOfWeek = monday.getDay();
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // adjust to Monday
+    monday.setDate(monday.getDate() + diff);
+    const friday = new Date(monday);
+    friday.setDate(friday.getDate() + 4);
 
     let query = supabase
       .from('clinic_appointments')
@@ -164,8 +166,8 @@ export function useClinicAgenda() {
         professional:profiles!clinic_appointments_professional_id_fkey(id, full_name),
         appointment_type:appointment_types(*)
       `)
-      .gte('scheduled_date', startOfWeek.toISOString().split('T')[0])
-      .lte('scheduled_date', endOfWeek.toISOString().split('T')[0])
+      .gte('scheduled_date', monday.toISOString().split('T')[0])
+      .lte('scheduled_date', friday.toISOString().split('T')[0])
       .order('scheduled_date')
       .order('scheduled_time');
 
