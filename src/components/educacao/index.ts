@@ -5,4 +5,4 @@ export { VulnerabilityMap } from './VulnerabilityMap';
 export { EducationalAlerts } from './EducationalAlerts';
 export { AISuggestions } from './AISuggestions';
 export { ClassGamification } from './ClassGamification';
-export { StudentReportPDF } from './StudentReportPDF';
+export { generateStudentPDF, StudentReportButton } from './StudentReportPDF';
