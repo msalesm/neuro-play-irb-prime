@@ -120,8 +120,6 @@ import RoutineViewer from "./pages/RoutineViewer";
 import ConsentManagement from "./pages/ConsentManagement";
 import DataGovernance from "./pages/DataGovernance";
 import ApiIntegrations from "./pages/ApiIntegrations";
-import AbaIntegration from "./pages/AbaIntegration";
-
 // Phase 4+ pages
 import InstitutionalDashboard from "./pages/InstitutionalDashboard";
 import SecureMessaging from "./pages/SecureMessaging";
@@ -316,7 +314,7 @@ const App = () => (
                   <Route path="/operations" element={<OperationsCenter />} />
                   
                   {/* ABA */}
-                  <Route path="/aba-integration" element={<AbaIntegration />} />
+                  <Route path="/aba-integration" element={<AbaNeuroPlay />} />
                   <Route path="/aba-neuroplay" element={<AbaNeuroPlay />} />
                   
                   {/* Stories */}
