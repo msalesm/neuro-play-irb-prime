@@ -40,7 +40,7 @@ const getRoutineLabel = (type: string) => {
 
 export function RoutineCard({ routine, onClick, completedSteps = 0, totalSteps = 0 }: RoutineCardProps) {
   const progress = totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0;
-  const isComplete = completedSteps === totalSteps && totalSteps > 0;
+  const isComplete = totalSteps > 0 && completedSteps >= totalSteps;
 
   return (
     <motion.div
