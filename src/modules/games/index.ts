@@ -2,23 +2,14 @@
  * 🎮 Games Module
  * 
  * Domain: Cognitive games, game engine, sessions, metrics, adaptive difficulty.
- * 
- * Structure:
- *   modules/games/
- *     ├── engine/        → game-engine.ts, cognitive-engine.ts
- *     ├── components/    → UI components for games
- *     ├── hooks/         → useGameEngine, useGameSession, etc.
- *     ├── services/      → game-service.ts
- *     ├── types/         → game.ts, game-phase.ts
- *     └── index.ts       → this file (public API)
  */
 
-// ── Engine ────────────────────────────────────────────────
+// ── Engine (local) ────────────────────────────────────────
 export { 
   type GameMetrics, 
   type GameSessionConfig, 
   type CognitiveDomain,
-} from '@/core/game-engine';
+} from './engine';
 
 // ── Hooks ─────────────────────────────────────────────────
 export { useGameEngine } from '@/hooks/useGameEngine';
@@ -28,11 +19,11 @@ export { useGameHistory } from '@/hooks/useGameHistory';
 export { useGamePhaseProgress } from '@/hooks/useGamePhaseProgress';
 export { useGameRecommendations } from '@/hooks/useGameRecommendations';
 
-// ── Services ──────────────────────────────────────────────
+// ── Services (local) ─────────────────────────────────────
 export { 
   findGameBySlug, 
   getChildProfile,
-} from '@/services/game-service';
+} from './service';
 
 // ── Types ─────────────────────────────────────────────────
 export type { GamePhase } from '@/types/game-phase';

@@ -2,17 +2,9 @@
  * 🧩 ABA Module
  * 
  * Domain: Applied Behavior Analysis — programs, trials, prompts, reinforcement, analytics.
- * 
- * Structure:
- *   modules/aba/
- *     ├── engine/        → aba-engine.ts
- *     ├── components/    → ABA UI components
- *     ├── hooks/         → useAbaNeuroPlay, useAbaNativeData, etc.
- *     ├── services/      → aba-service.ts
- *     └── index.ts       → this file (public API)
  */
 
-// ── Engine ────────────────────────────────────────────────
+// ── Engine (local) ────────────────────────────────────────
 export { 
   analyzeSession,
   analyzeTrend,
@@ -24,7 +16,7 @@ export {
   ABA_TEACHING_METHODS,
   type PromptLevel,
   type AbaTeachingMethod,
-} from '@/core/aba-engine';
+} from './engine';
 
 // ── Hooks ─────────────────────────────────────────────────
 export { 
@@ -43,8 +35,8 @@ export {
 export { useAbaNativeData } from '@/hooks/useAbaNativeData';
 export { useAbaIntegration } from '@/hooks/useAbaIntegration';
 
-// ── Services ──────────────────────────────────────────────
+// ── Services (local) ─────────────────────────────────────
 export { 
   fetchAbaPrograms, 
   fetchAbaTrials,
-} from '@/services/aba-service';
+} from './service';
