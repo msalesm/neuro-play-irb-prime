@@ -21,7 +21,7 @@ const LandingHeader = () => {
     <header className="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-border/50 shadow-sm">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img src={neuroplayLogo} alt="NeuroPlay" className="h-9 w-auto" />
+          <img src={neuroplayLogo} alt="NeuroPlay" className="h-12 w-auto" />
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
           <a href="#como-funciona" className="hover:text-primary transition-colors">Como funciona</a>
