@@ -63,7 +63,7 @@ export const AvatarSelectionModal = ({ open, onComplete, childId }: AvatarSelect
     <Dialog open={open} onOpenChange={() => {}}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Bem-vindo ao Neuro IRB Prime! 🌟</DialogTitle>
+          <DialogTitle className="text-2xl">Bem-vindo ao NeuroPlay! 🌟</DialogTitle>
           <DialogDescription>
             Antes de começar sua jornada, escolha um avatar que represente você
           </DialogDescription>

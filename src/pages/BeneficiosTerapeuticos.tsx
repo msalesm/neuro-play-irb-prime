@@ -131,7 +131,7 @@ export default function BeneficiosTerapeuticos() {
                 <h3 className="text-xl font-bold mb-2">Importante: NÃO é uma Plataforma Recreativa</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   Esta é uma <strong>plataforma clínica terapêutica</strong> baseada em evidências científicas, 
-                  desenvolvida em parceria com IRB Prime para intervenção estruturada em neurodivergência. 
+                  desenvolvida pela equipe NeuroPlay para intervenção estruturada em neurodivergência. 
                   As atividades são projetadas para <strong>objetivos terapêuticos específicos</strong>, 
                   não entretenimento casual.
                 </p>
@@ -277,7 +277,7 @@ export default function BeneficiosTerapeuticos() {
           <CardContent className="pt-8 pb-8 text-center">
             <h3 className="text-2xl font-bold mb-4">Plataforma Clínica Validada</h3>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Desenvolvida em parceria com <strong>IRB Prime</strong>, com fundamentação em neurociência aplicada, 
+              Desenvolvida pela equipe <strong>NeuroPlay</strong>, com fundamentação em neurociência aplicada, 
               protocolos clínicos baseados em evidências, e conformidade com LGPD e Lei 14.254/21 (triagem escolar precoce).
             </p>
           </CardContent>

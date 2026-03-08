@@ -70,13 +70,13 @@ export const generatePlatformPresentation = () => {
   };
 
   // ===== CAPA =====
-  doc.setFillColor(10, 30, 53);
+  doc.setFillColor(58, 134, 255);
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
   
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(42);
   doc.setFont('helvetica', 'bold');
-  doc.text('Neuro IRB Prime', pageWidth / 2, 80, { align: 'center' });
+  doc.text('NeuroPlay', pageWidth / 2, 80, { align: 'center' });
   
   doc.setFontSize(16);
   doc.setFont('helvetica', 'normal');
@@ -84,7 +84,7 @@ export const generatePlatformPresentation = () => {
   doc.text('em uma única plataforma.', pageWidth / 2, 110, { align: 'center' });
   
   doc.setFontSize(12);
-  doc.setTextColor(199, 146, 62);
+  doc.setTextColor(255, 209, 102);
   doc.text('APRESENTAÇÃO INSTITUCIONAL', pageWidth / 2, 140, { align: 'center' });
   
   doc.setTextColor(255, 255, 255);

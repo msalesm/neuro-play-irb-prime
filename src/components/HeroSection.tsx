@@ -31,7 +31,7 @@ export const HeroSection = () => {
         </div>
 
         <h1 className="font-heading text-5xl md:text-7xl font-bold mb-6 text-balance">
-          Neuro IRB Prime
+          NeuroPlay
         </h1>
         
         <h2 className="text-2xl md:text-3xl font-light mb-8 text-balance opacity-95">

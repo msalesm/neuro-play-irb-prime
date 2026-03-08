@@ -40,7 +40,7 @@ export const generateNeurodiversityPDF = () => {
   doc.setTextColor('#FFFFFF');
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text('NeuroPlay IRB Prime', margin, 25);
+  doc.text('NeuroPlay', margin, 25);
   
   yPosition = 50;
 

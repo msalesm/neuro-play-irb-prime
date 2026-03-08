@@ -85,9 +85,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                   />
                   
                   <nav id="main-navigation" className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                    <span className="font-semibold text-foreground">Neuro IRB Prime</span>
+                    <span className="font-semibold text-foreground">NeuroPlay</span>
                     <span aria-hidden="true">•</span>
-                    <span>Plataforma Clínica Digital</span>
+                    <span>Aprendizado Cognitivo Interativo</span>
                   </nav>
                 </div>
 
