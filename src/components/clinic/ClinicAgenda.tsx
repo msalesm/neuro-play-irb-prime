@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   ChevronLeft, 
@@ -21,16 +20,86 @@ import {
   RefreshCw,
   DoorOpen
 } from 'lucide-react';
-import { format, addDays, startOfWeek, isSameDay, isToday } from 'date-fns';
+import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-import { useClinicAgenda, Appointment, WaitingListItem } from '@/hooks/useClinicAgenda';
+import { useClinicAgenda, Appointment } from '@/hooks/useClinicAgenda';
 import { AppointmentCard } from './AppointmentCard';
 import { AppointmentForm } from './AppointmentForm';
 import { WaitingListPanel } from './WaitingListPanel';
 import { RoomOccupancyDashboard } from './RoomOccupancyDashboard';
+import type { WaitingListItem } from '@/hooks/useClinicAgenda';
 
-const HOURS = Array.from({ length: 13 }, (_, i) => i + 7); // 7:00 to 19:00
+// 08:00 to 18:00 (10 hours)
+const HOURS = Array.from({ length: 11 }, (_, i) => i + 8);
+const HOUR_HEIGHT = 72; // px per hour slot
+
+// Helper: given appointments for a day, compute columns so they don't overlap
+function layoutAppointments(
+  dayAppointments: Appointment[],
+  getTypeDuration: (typeId: string | null) => number
+) {
+  if (dayAppointments.length === 0) return [];
+
+  // Convert to intervals in minutes from 08:00
+  const items = dayAppointments.map((appt) => {
+    const [h, m] = appt.scheduled_time.split(':').map(Number);
+    const startMin = (h - 8) * 60 + m;
+    const duration = getTypeDuration(appt.appointment_type_id);
+    return { appt, startMin, endMin: startMin + duration };
+  });
+
+  // Sort by start time, then by duration descending
+  items.sort((a, b) => a.startMin - b.startMin || (b.endMin - b.startMin) - (a.endMin - a.startMin));
+
+  // Assign columns using a greedy approach
+  const columns: { endMin: number }[][] = [];
+
+  const result: { appt: Appointment; startMin: number; endMin: number; col: number; totalCols: number }[] = [];
+
+  // Group overlapping items
+  const groups: (typeof items)[] = [];
+  let currentGroup: typeof items = [];
+
+  for (const item of items) {
+    if (currentGroup.length === 0 || item.startMin < Math.max(...currentGroup.map(i => i.endMin))) {
+      currentGroup.push(item);
+    } else {
+      groups.push(currentGroup);
+      currentGroup = [item];
+    }
+  }
+  if (currentGroup.length > 0) groups.push(currentGroup);
+
+  for (const group of groups) {
+    const cols: number[] = [];
+    const colEnds: number[] = [];
+
+    for (const item of group) {
+      // Find first column where this item fits
+      let placed = false;
+      for (let c = 0; c < colEnds.length; c++) {
+        if (item.startMin >= colEnds[c]) {
+          colEnds[c] = item.endMin;
+          cols.push(c);
+          placed = true;
+          break;
+        }
+      }
+      if (!placed) {
+        cols.push(colEnds.length);
+        colEnds.push(item.endMin);
+      }
+    }
+
+    const totalCols = colEnds.length;
+    group.forEach((item, idx) => {
+      result.push({ ...item, col: cols[idx], totalCols });
+    });
+  }
+
+  return result;
+}
 
 export function ClinicAgenda() {
   const {
@@ -58,8 +127,9 @@ export function ClinicAgenda() {
   const [formInitialDate, setFormInitialDate] = useState<Date | undefined>();
   const [formInitialRoom, setFormInitialRoom] = useState<string | undefined>();
 
-  const weekStart = startOfWeek(selectedDate, { weekStartsOn: 0 });
-  const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+  // Monday-based week, only weekdays (Mon-Fri)
+  const weekMonday = startOfWeek(selectedDate, { weekStartsOn: 1 });
+  const weekDays = Array.from({ length: 5 }, (_, i) => addDays(weekMonday, i));
 
   const handlePrevWeek = () => setSelectedDate(addDays(selectedDate, -7));
   const handleNextWeek = () => setSelectedDate(addDays(selectedDate, 7));
@@ -76,22 +146,18 @@ export function ClinicAgenda() {
   };
 
   const handleScheduleFromWaitingList = (item: WaitingListItem) => {
-    // Pre-fill form with waiting list data
     setFormInitialDate(new Date());
     setFormOpen(true);
   };
 
-  const getAppointmentPosition = (appointment: Appointment) => {
-    const [hours, minutes] = appointment.scheduled_time.split(':').map(Number);
-    const startMinutes = (hours - 7) * 60 + minutes;
-    const type = appointmentTypes.find(t => t.id === appointment.appointment_type_id);
-    const duration = type?.duration_minutes || 50;
-    
-    return {
-      top: `${(startMinutes / 60) * 60}px`,
-      height: `${(duration / 60) * 60}px`,
-    };
+  const getTypeDuration = (typeId: string | null) => {
+    if (!typeId) return 50;
+    const type = appointmentTypes.find(t => t.id === typeId);
+    return type?.duration_minutes || 50;
   };
+
+  // 6 columns: 1 for hours + 5 for weekdays
+  const dayColWidth = 100 / 6; // ~16.67%
 
   return (
     <div className="space-y-4">
@@ -108,7 +174,7 @@ export function ClinicAgenda() {
             <ChevronRight className="h-4 w-4" />
           </Button>
           <span className="font-medium ml-2">
-            {format(weekStart, "d 'de' MMMM", { locale: ptBR })} - {format(addDays(weekStart, 6), "d 'de' MMMM, yyyy", { locale: ptBR })}
+            {format(weekMonday, "d 'de' MMMM", { locale: ptBR })} - {format(addDays(weekMonday, 4), "d 'de' MMMM, yyyy", { locale: ptBR })}
           </span>
         </div>
 
@@ -128,36 +194,16 @@ export function ClinicAgenda() {
           </Select>
 
           <div className="flex border rounded-md">
-            <Button
-              variant={view === 'week' ? 'secondary' : 'ghost'}
-              size="sm"
-              onClick={() => setView('week')}
-              title="Semana"
-            >
+            <Button variant={view === 'week' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('week')} title="Semana">
               <LayoutGrid className="h-4 w-4" />
             </Button>
-            <Button
-              variant={view === 'day' ? 'secondary' : 'ghost'}
-              size="sm"
-              onClick={() => setView('day')}
-              title="Dia"
-            >
+            <Button variant={view === 'day' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('day')} title="Dia">
               <CalendarIcon className="h-4 w-4" />
             </Button>
-            <Button
-              variant={view === 'list' ? 'secondary' : 'ghost'}
-              size="sm"
-              onClick={() => setView('list')}
-              title="Lista"
-            >
+            <Button variant={view === 'list' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('list')} title="Lista">
               <List className="h-4 w-4" />
             </Button>
-            <Button
-              variant={view === 'rooms' ? 'secondary' : 'ghost'}
-              size="sm"
-              onClick={() => setView('rooms')}
-              title="Salas"
-            >
+            <Button variant={view === 'rooms' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('rooms')} title="Salas">
               <DoorOpen className="h-4 w-4" />
             </Button>
           </div>
@@ -180,88 +226,100 @@ export function ClinicAgenda() {
             <CardContent className="p-0">
               {view === 'week' && (
                 <div className="overflow-x-auto">
-                  <div className="min-w-[640px]">
-                  {/* Week Header */}
-                  <div className="grid grid-cols-8 border-b sticky top-0 bg-background z-10">
-                    <div className="p-2 text-center text-sm text-muted-foreground border-r">
-                      Hora
-                    </div>
-                    {weekDays.map((day) => (
-                      <div
-                        key={day.toISOString()}
-                        className={cn(
-                          "p-2 text-center border-r cursor-pointer hover:bg-muted/50",
-                          isToday(day) && "bg-primary/10"
-                        )}
-                        onClick={() => {
-                          setSelectedDate(day);
-                          setView('day');
-                        }}
-                      >
-                        <div className="text-xs text-muted-foreground">
-                          {format(day, 'EEE', { locale: ptBR })}
-                        </div>
-                        <div className={cn(
-                          "text-lg font-medium",
-                          isToday(day) && "text-primary"
-                        )}>
-                          {format(day, 'd')}
-                        </div>
-                        <Badge variant="outline" className="text-xs">
-                          {getAppointmentsForDay(day).length}
-                        </Badge>
+                  <div className="min-w-[700px]">
+                    {/* Week Header */}
+                    <div className="grid border-b sticky top-0 bg-background z-10" style={{ gridTemplateColumns: `80px repeat(5, 1fr)` }}>
+                      <div className="p-2 text-center text-sm text-muted-foreground border-r">
+                        Hora
                       </div>
-                    ))}
-                  </div>
-
-                  {/* Time Grid */}
-                  <ScrollArea className="h-[600px]">
-                    <div className="relative">
-                      {HOURS.map((hour) => (
-                        <div key={hour} className="grid grid-cols-8 border-b h-[60px]">
-                          <div className="p-1 text-xs text-muted-foreground border-r text-center">
-                            {hour.toString().padStart(2, '0')}:00
+                      {weekDays.map((day) => (
+                        <div
+                          key={day.toISOString()}
+                          className={cn(
+                            "p-2 text-center border-r cursor-pointer hover:bg-muted/50",
+                            isToday(day) && "bg-primary/10"
+                          )}
+                          onClick={() => {
+                            setSelectedDate(day);
+                            setView('day');
+                          }}
+                        >
+                          <div className="text-xs text-muted-foreground uppercase">
+                            {format(day, 'EEE', { locale: ptBR })}
                           </div>
-                          {weekDays.map((day) => (
-                            <div
-                              key={`${day.toISOString()}-${hour}`}
-                              className="border-r relative hover:bg-muted/30 cursor-pointer"
-                              onClick={() => handleNewAppointment(day)}
-                            />
-                          ))}
+                          <div className={cn(
+                            "text-lg font-medium",
+                            isToday(day) && "text-primary"
+                          )}>
+                            {format(day, 'd')}
+                          </div>
+                          <Badge variant="outline" className="text-xs">
+                            {getAppointmentsForDay(day).length}
+                          </Badge>
                         </div>
                       ))}
-
-                      {/* Appointments Overlay */}
-                      {weekDays.map((day, dayIndex) => {
-                        const dayAppointments = getAppointmentsForDay(day);
-                        return dayAppointments.map((appointment) => {
-                          const pos = getAppointmentPosition(appointment);
-                          return (
-                            <div
-                              key={appointment.id}
-                              className="absolute px-1"
-                              style={{
-                                left: `calc(${(dayIndex + 1) * 12.5}%)`,
-                                width: '12.5%',
-                                top: pos.top,
-                                height: pos.height,
-                              }}
-                            >
-                              <AppointmentCard
-                                appointment={appointment}
-                                onCheckIn={checkInPatient}
-                                onConfirm={confirmAppointment}
-                                onCancel={cancelAppointment}
-                                onComplete={completeAppointment}
-                                onNoShow={markAsNoShow}
-                              />
-                            </div>
-                          );
-                        });
-                      })}
                     </div>
-                  </ScrollArea>
+
+                    {/* Time Grid */}
+                    <ScrollArea className="h-[660px]">
+                      <div className="relative">
+                        {HOURS.map((hour) => (
+                          <div
+                            key={hour}
+                            className="border-b"
+                            style={{ height: `${HOUR_HEIGHT}px`, display: 'grid', gridTemplateColumns: `80px repeat(5, 1fr)` }}
+                          >
+                            <div className="p-1 text-xs text-muted-foreground border-r flex items-start justify-center pt-1">
+                              {hour.toString().padStart(2, '0')}:00
+                            </div>
+                            {weekDays.map((day) => (
+                              <div
+                                key={`${day.toISOString()}-${hour}`}
+                                className="border-r relative hover:bg-muted/30 cursor-pointer"
+                                onClick={() => handleNewAppointment(day)}
+                              />
+                            ))}
+                          </div>
+                        ))}
+
+                        {/* Appointments Overlay */}
+                        {weekDays.map((day, dayIndex) => {
+                          const dayAppointments = getAppointmentsForDay(day);
+                          const laid = layoutAppointments(dayAppointments, getTypeDuration);
+
+                          return laid.map(({ appt, startMin, endMin, col, totalCols }) => {
+                            const topPx = (startMin / 60) * HOUR_HEIGHT;
+                            const heightPx = ((endMin - startMin) / 60) * HOUR_HEIGHT;
+                            // Calculate left/width within the day column
+                            const colWidthPercent = 100 / totalCols;
+
+                            return (
+                              <div
+                                key={appt.id}
+                                className="absolute px-0.5"
+                                style={{
+                                  // Position within the grid: skip the 80px hour column, then offset by day
+                                  left: `calc(80px + ${dayIndex} * ((100% - 80px) / 5) + ${col * colWidthPercent}% * ((100% - 80px) / 5) / 100)`,
+                                  width: `calc(${colWidthPercent}% * ((100% - 80px) / 5) / 100)`,
+                                  top: `${topPx}px`,
+                                  height: `${heightPx}px`,
+                                  minHeight: '28px',
+                                }}
+                              >
+                                <AppointmentCard
+                                  appointment={appt}
+                                  onCheckIn={checkInPatient}
+                                  onConfirm={confirmAppointment}
+                                  onCancel={cancelAppointment}
+                                  onComplete={completeAppointment}
+                                  onNoShow={markAsNoShow}
+                                />
+                              </div>
+                            );
+                          });
+                        })}
+                      </div>
+                    </ScrollArea>
                   </div>
                 </div>
               )}
@@ -273,25 +331,54 @@ export function ClinicAgenda() {
                       {format(selectedDate, "EEEE, d 'de' MMMM", { locale: ptBR })}
                     </h3>
                   </div>
-                  <ScrollArea className="h-[600px]">
-                    <div className="p-4 space-y-2">
-                      {getAppointmentsForDay(selectedDate).length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">
-                          Nenhum agendamento para este dia
-                        </p>
-                      ) : (
-                        getAppointmentsForDay(selectedDate).map((appointment) => (
-                          <AppointmentCard
-                            key={appointment.id}
-                            appointment={appointment}
-                            onCheckIn={checkInPatient}
-                            onConfirm={confirmAppointment}
-                            onCancel={cancelAppointment}
-                            onComplete={completeAppointment}
-                            onNoShow={markAsNoShow}
+                  <ScrollArea className="h-[660px]">
+                    <div className="relative">
+                      {HOURS.map((hour) => (
+                        <div key={hour} className="flex border-b" style={{ height: `${HOUR_HEIGHT}px` }}>
+                          <div className="w-20 p-1 text-xs text-muted-foreground border-r flex items-start justify-center pt-1 flex-shrink-0">
+                            {hour.toString().padStart(2, '0')}:00
+                          </div>
+                          <div
+                            className="flex-1 relative hover:bg-muted/30 cursor-pointer"
+                            onClick={() => handleNewAppointment(selectedDate)}
                           />
-                        ))
-                      )}
+                        </div>
+                      ))}
+
+                      {/* Day appointments with column layout */}
+                      {(() => {
+                        const dayAppointments = getAppointmentsForDay(selectedDate);
+                        const laid = layoutAppointments(dayAppointments, getTypeDuration);
+
+                        return laid.map(({ appt, startMin, endMin, col, totalCols }) => {
+                          const topPx = (startMin / 60) * HOUR_HEIGHT;
+                          const heightPx = ((endMin - startMin) / 60) * HOUR_HEIGHT;
+                          const colWidthPercent = 100 / totalCols;
+
+                          return (
+                            <div
+                              key={appt.id}
+                              className="absolute px-0.5"
+                              style={{
+                                left: `calc(80px + ${col} * ${colWidthPercent}% * (100% - 80px) / 100)`,
+                                width: `calc(${colWidthPercent}% * (100% - 80px) / 100)`,
+                                top: `${topPx}px`,
+                                height: `${heightPx}px`,
+                                minHeight: '28px',
+                              }}
+                            >
+                              <AppointmentCard
+                                appointment={appt}
+                                onCheckIn={checkInPatient}
+                                onConfirm={confirmAppointment}
+                                onCancel={cancelAppointment}
+                                onComplete={completeAppointment}
+                                onNoShow={markAsNoShow}
+                              />
+                            </div>
+                          );
+                        });
+                      })()}
                     </div>
                   </ScrollArea>
                 </div>
