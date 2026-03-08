@@ -17,10 +17,13 @@ export { default as ProgressTrail } from './ProgressTrail';
 export { TourAchievementModal } from './TourAchievementModal';
 export { TourAchievementsPanel } from './TourAchievementsPanel';
 
+// Gamification Widgets (real implementations)
+export { DailyMissionSection, DuolingoStreak, AchievementsList, BadgeUnlockModal } from './GamificationWidgets';
 
-// Stub components (were deleted as orphans but still referenced in dashboards)
-export const DailyMissionSection = (_props: any) => null;
-export const DuolingoStreak = (_props: any) => null;
-export const AchievementsList = (_props: any) => null;
-export const BadgeUnlockModal = (_props: any) => null;
+// Feedback
+export { FeedbackAnimations } from './FeedbackAnimations';
+export { LevelProgressBar } from './LevelProgressBar';
+export { WeeklyMissionsCard } from './WeeklyMissionsCard';
+
+// Legacy stubs removed — all components are now real implementations
 export const LearningTrails = (_props: any) => null;
