@@ -54,7 +54,7 @@ export default function ExecutiveProcessingPhases() {
       <div className="mb-6">
         <Button
           variant="ghost"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/games')}
           className="mb-4"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
