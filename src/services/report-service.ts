@@ -84,7 +84,7 @@ export async function fetchLearningSessionsForReport(userId: string, periodStart
 export async function fetchGameSessionsForReport(childProfileId: string, periodStart: string, periodEnd: string) {
   const { data, error } = await supabase
     .from('game_sessions')
-    .select('*, cognitive_games(game_id, title, cognitive_domain)')
+    .select('*, cognitive_games(game_id, name, cognitive_domains)')
     .eq('child_profile_id', childProfileId)
     .eq('completed', true)
     .gte('completed_at', periodStart)
