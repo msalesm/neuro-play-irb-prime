@@ -1,14 +1,13 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   ChevronLeft, 
@@ -18,7 +17,10 @@ import {
   List,
   LayoutGrid,
   RefreshCw,
-  DoorOpen
+  DoorOpen,
+  Search,
+  X,
+  ChevronsUpDown
 } from 'lucide-react';
 import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -126,6 +128,18 @@ export function ClinicAgenda() {
   const [view, setView] = useState<'week' | 'day' | 'list' | 'rooms'>('week');
   const [formInitialDate, setFormInitialDate] = useState<Date | undefined>();
   const [formInitialRoom, setFormInitialRoom] = useState<string | undefined>();
+  const [profSearch, setProfSearch] = useState('');
+  const [profPopoverOpen, setProfPopoverOpen] = useState(false);
+
+  const filteredProfessionals = useMemo(() => {
+    if (!profSearch.trim()) return professionals;
+    const q = profSearch.toLowerCase();
+    return professionals.filter(p => p.full_name?.toLowerCase().includes(q));
+  }, [professionals, profSearch]);
+
+  const selectedProfName = selectedProfessional 
+    ? professionals.find(p => p.id === selectedProfessional)?.full_name || 'Profissional'
+    : 'Todos profissionais';
 
   // Monday-based week, only weekdays (Mon-Fri)
   const weekMonday = startOfWeek(selectedDate, { weekStartsOn: 1 });
@@ -179,19 +193,59 @@ export function ClinicAgenda() {
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <Select value={selectedProfessional || 'all'} onValueChange={(v) => setSelectedProfessional(v === 'all' ? null : v)}>
-            <SelectTrigger className="w-[200px] bg-background border-border">
-              <SelectValue placeholder="Filtrar por profissional" />
-            </SelectTrigger>
-            <SelectContent className="bg-popover">
-              <SelectItem value="all">Todos profissionais</SelectItem>
-              {professionals.map((prof) => (
-                <SelectItem key={prof.id} value={prof.id}>
-                  {prof.full_name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Popover open={profPopoverOpen} onOpenChange={setProfPopoverOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="w-[240px] justify-between bg-background border-border text-left font-normal">
+                <span className="truncate">{selectedProfName}</span>
+                <ChevronsUpDown className="h-4 w-4 opacity-50 flex-shrink-0 ml-2" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[260px] p-2" align="start">
+              <div className="flex items-center gap-2 mb-2">
+                <Search className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                <Input
+                  placeholder="Buscar profissional..."
+                  value={profSearch}
+                  onChange={(e) => setProfSearch(e.target.value)}
+                  className="h-8 text-sm"
+                  autoFocus
+                />
+                {profSearch && (
+                  <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={() => setProfSearch('')}>
+                    <X className="h-3 w-3" />
+                  </Button>
+                )}
+              </div>
+              <ScrollArea className="max-h-[200px]">
+                <div className="space-y-0.5">
+                  <button
+                    className={cn(
+                      "w-full text-left px-2 py-1.5 rounded text-sm hover:bg-muted transition-colors",
+                      !selectedProfessional && "bg-primary/10 text-primary font-medium"
+                    )}
+                    onClick={() => { setSelectedProfessional(null); setProfPopoverOpen(false); setProfSearch(''); }}
+                  >
+                    Todos profissionais
+                  </button>
+                  {filteredProfessionals.map((prof) => (
+                    <button
+                      key={prof.id}
+                      className={cn(
+                        "w-full text-left px-2 py-1.5 rounded text-sm hover:bg-muted transition-colors",
+                        selectedProfessional === prof.id && "bg-primary/10 text-primary font-medium"
+                      )}
+                      onClick={() => { setSelectedProfessional(prof.id); setProfPopoverOpen(false); setProfSearch(''); }}
+                    >
+                      {prof.full_name}
+                    </button>
+                  ))}
+                  {filteredProfessionals.length === 0 && (
+                    <p className="text-xs text-muted-foreground text-center py-2">Nenhum profissional encontrado</p>
+                  )}
+                </div>
+              </ScrollArea>
+            </PopoverContent>
+          </Popover>
 
           <div className="flex border rounded-md">
             <Button variant={view === 'week' ? 'secondary' : 'ghost'} size="sm" onClick={() => setView('week')} title="Semana">
