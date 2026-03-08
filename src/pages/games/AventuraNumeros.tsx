@@ -474,12 +474,12 @@ export default function AventuraNumeros() {
                   <div className="text-sm text-warning/80">Tesouros Descobertos</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-orange-600">{coins}</div>
-                  <div className="text-sm text-orange-500">Moedas Coletadas</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-red-600">{level}</div>
-                  <div className="text-sm text-red-500">Nível Atual</div>
+                   <div className="text-2xl font-bold text-warning">{coins}</div>
+                   <div className="text-sm text-warning/80">Moedas Coletadas</div>
+                 </div>
+                 <div>
+                   <div className="text-2xl font-bold text-destructive">{level}</div>
+                   <div className="text-sm text-destructive/80">Nível Atual</div>
                 </div>
               </div>
             </CardContent>
