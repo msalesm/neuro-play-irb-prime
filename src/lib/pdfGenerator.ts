@@ -226,7 +226,7 @@ export const generateNeurodiversityPDF = () => {
 
   yPosition += 10;
   addSection('Conclusao');
-  const conclusion = 'A NeuroPlay 2.0 em parceria com IRB Prime representa uma plataforma clinica-terapeutica completa para atendimento de criancas neurodivergentes. Integrando triagem unificada (TUNP), jogos terapeuticos baseados em evidencia, analise clinica com IA, chatbot terapeutico, dashboards multi-stakeholder e conformidade legal brasileira (LGPD e Lei 14.254/21), a plataforma oferece uma solucao unica no mercado para familias, terapeutas e instituicoes educacionais.';
+  const conclusion = 'O NeuroPlay representa uma plataforma clinica-terapeutica completa para atendimento de criancas neurodivergentes. Integrando triagem unificada (TUNP), jogos terapeuticos baseados em evidencia, analise clinica com IA, chatbot terapeutico, dashboards multi-stakeholder e conformidade legal brasileira (LGPD e Lei 14.254/21), a plataforma oferece uma solucao unica no mercado para familias, terapeutas e instituicoes educacionais.';
   addText(conclusion, 10, false, '#666666');
 
   // Footer
@@ -237,7 +237,7 @@ export const generateNeurodiversityPDF = () => {
     doc.setTextColor('#999999');
     doc.setFont('helvetica', 'normal');
     doc.text(
-      `NeuroPlay IRB Prime - Plataforma Clinica Terapeutica | Pagina ${i} de ${totalPages}`,
+      `NeuroPlay - Plataforma Clinica Terapeutica | Pagina ${i} de ${totalPages}`,
       pageWidth / 2,
       doc.internal.pageSize.getHeight() - 10,
       { align: 'center' }
