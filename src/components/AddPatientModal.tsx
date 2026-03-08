@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { Loader2, Copy, Check, MessageCircle, Link2, UserPlus, MapPin, Phone, Shield } from 'lucide-react';
+import { ProfilePhotoUpload } from './ProfilePhotoUpload';
 
 const conditions = [
   { id: 'TEA', label: 'TEA (Transtorno do Espectro Autista)' },
