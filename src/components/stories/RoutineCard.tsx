@@ -49,7 +49,7 @@ export function RoutineCard({ routine, onClick, completedSteps = 0, totalSteps =
     >
       <Card 
         className={`cursor-pointer overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl group ${
-          isComplete ? 'border-2 border-green-500/50 ring-2 ring-green-500/20' : 'border-2 border-transparent hover:border-primary/40'
+          isComplete ? 'border-2 border-green-500/30' : 'border-2 border-transparent hover:border-primary/40'
         }`}
         onClick={onClick}
       >
@@ -57,16 +57,14 @@ export function RoutineCard({ routine, onClick, completedSteps = 0, totalSteps =
           <div className={`flex bg-gradient-to-r ${getRoutineGradient(routine.routine_type)}`}>
             {/* Icon */}
             <div className="flex-shrink-0 h-32 w-32 flex items-center justify-center bg-background/50">
-              <motion.div
-                animate={isComplete ? { scale: [1, 1.1, 1] } : {}}
-                transition={{ duration: 0.5, repeat: isComplete ? Infinity : 0, repeatDelay: 2 }}
-              >
-                {isComplete ? (
-                  <CheckCircle2 className="h-12 w-12 text-green-500" />
-                ) : (
-                  getRoutineIcon(routine.routine_type, routine.icon)
-                )}
-              </motion.div>
+              {isComplete ? (
+                <div className="flex flex-col items-center gap-1">
+                  <CheckCircle2 className="h-10 w-10 text-green-500" />
+                  <span className="text-[10px] font-medium text-green-600">Concluída</span>
+                </div>
+              ) : (
+                getRoutineIcon(routine.routine_type, routine.icon)
+              )}
             </div>
             
             {/* Info */}
@@ -93,11 +91,20 @@ export function RoutineCard({ routine, onClick, completedSteps = 0, totalSteps =
               </div>
               
               <div className="mt-3">
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-                  <span>{completedSteps} de {totalSteps} passos</span>
-                  <span>{Math.round(progress)}%</span>
-                </div>
-                <Progress value={progress} className="h-2" />
+                {isComplete ? (
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-green-600 font-medium">✓ Todos os {totalSteps} passos completos</span>
+                    <span className="text-xs text-primary font-medium group-hover:underline">Ver / Recomeçar →</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                      <span>{totalSteps > 0 ? `${completedSteps} de ${totalSteps} passos` : 'Carregando...'}</span>
+                      {totalSteps > 0 && <span>{Math.round(progress)}%</span>}
+                    </div>
+                    <Progress value={progress} className="h-2" />
+                  </>
+                )}
               </div>
             </div>
             
