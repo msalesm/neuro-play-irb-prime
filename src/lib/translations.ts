@@ -9,7 +9,7 @@ export const translations = {
       clinical: 'Clínico',
       today: 'Hoje',
       tests: 'Testes',
-      diagnosticTests: 'Avaliações Diagnósticas',
+      diagnosticTests: 'Avaliações Comportamentais',
       myProgress: 'Meu Progresso',
       screening: 'Triagem',
       online: 'Sistema Online',
@@ -93,12 +93,12 @@ export const translations = {
     
     // Clinical Dashboard
     clinical: {
-      title: 'Painel Clínico Avançado',
-      subtitle: 'Sistema de análise comportamental com IA para identificação precoce de TEA, TDAH e Dislexia',
-      diagnosticTests: 'Avaliações Diagnósticas',
+      title: 'Painel de Análise Comportamental',
+      subtitle: 'Sistema de análise comportamental educacional para identificação precoce de padrões cognitivos',
+      diagnosticTests: 'Avaliações Comportamentais',
       behavioralAnalysis: 'Análise Comportamental',
       automaticReports: 'Relatórios Automáticos',
-      accessPanel: 'Acessar Painel Clínico'
+      accessPanel: 'Acessar Painel de Análise'
     },
     
     // Games Page
@@ -113,13 +113,13 @@ export const translations = {
       socialScenarios: 'Cenários Sociais',
       popular: 'Popular',
       available: 'Disponível',
-      diagnostic: 'Diagnóstico',
+      diagnostic: 'Avaliação',
       accessRestricted: 'Acesso Restrito',
       loginToAccess: 'Para acessar os jogos terapêuticos, você precisa fazer login.',
-      discoverProfile: 'Descubra Seu Perfil Cognitivo',
-      completeTests: 'Complete os testes diagnósticos e receba uma análise clínica detalhada gerada por IA.',
+      discoverProfile: 'Descubra Seu Perfil Comportamental',
+      completeTests: 'Complete as avaliações comportamentais e receba um perfil interpretativo educacional.',
       availableGames: 'Jogos Disponíveis',
-      diagnosticGames: 'Testes Diagnósticos',
+      diagnosticGames: 'Avaliações Comportamentais',
       difficulty: {
         easy: 'Fácil',
         intermediate: 'Intermediário',
@@ -625,7 +625,7 @@ export const translations = {
       clinical: 'Clinical',
       today: 'Today',
       tests: 'Tests',
-      diagnosticTests: 'Diagnostic Assessments',
+      diagnosticTests: 'Behavioral Assessments',
       myProgress: 'My Progress',
       screening: 'Screening',
       online: 'System Online',
@@ -707,12 +707,12 @@ export const translations = {
     },
     
     clinical: {
-      title: 'Advanced Clinical Dashboard',
-      subtitle: 'AI-powered behavioral analysis system for early identification of ASD, ADHD, and Dyslexia',
-      diagnosticTests: 'Diagnostic Assessments',
+      title: 'Behavioral Analysis Dashboard',
+      subtitle: 'Educational behavioral analysis system for early identification of cognitive patterns',
+      diagnosticTests: 'Behavioral Assessments',
       behavioralAnalysis: 'Behavioral Analysis',
       automaticReports: 'Automatic Reports',
-      accessPanel: 'Access Clinical Panel'
+      accessPanel: 'Access Analysis Panel'
     },
     
     games: {
@@ -726,13 +726,13 @@ export const translations = {
       socialScenarios: 'Social Scenarios',
       popular: 'Popular',
       available: 'Available',
-      diagnostic: 'Diagnostic',
+      diagnostic: 'Assessment',
       accessRestricted: 'Access Restricted',
       loginToAccess: 'To access therapeutic games, you need to log in.',
-      discoverProfile: 'Discover Your Cognitive Profile',
-      completeTests: 'Complete diagnostic tests and receive a detailed AI-generated clinical analysis.',
+      discoverProfile: 'Discover Your Behavioral Profile',
+      completeTests: 'Complete behavioral assessments and receive an educational interpretative profile.',
       availableGames: 'Available Games',
-      diagnosticGames: 'Diagnostic Tests',
+      diagnosticGames: 'Behavioral Assessments',
       difficulty: {
         easy: 'Easy',
         intermediate: 'Intermediate',

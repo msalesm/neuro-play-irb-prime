@@ -13,7 +13,7 @@ export const BehavioralReportDisclaimer: React.FC<BehavioralReportDisclaimerProp
   if (variant === 'inline') {
     return (
       <div className={`text-xs text-muted-foreground italic ${className}`}>
-        ⚠️ Padrões observados - não constitui diagnóstico clínico
+        ⚠️ Padrões comportamentais observados — não constitui avaliação clínica
       </div>
     );
   }
@@ -22,16 +22,16 @@ export const BehavioralReportDisclaimer: React.FC<BehavioralReportDisclaimerProp
     <Alert className={`bg-yellow-500/10 border-yellow-500/30 text-white ${className}`}>
       <AlertTriangle className="h-4 w-4 text-yellow-400" />
       <AlertTitle className="text-white font-semibold">
-        ⚠️ Importante: Este não é um diagnóstico clínico
+        ⚠️ Importante: Ferramenta de Análise Comportamental Educacional
       </AlertTitle>
       <AlertDescription className="text-white/90 text-sm">
         <p className="mb-2">
-          Este relatório apresenta <strong>PADRÕES COMPORTAMENTAIS</strong> observados durante as atividades,
-          não constituindo diagnóstico clínico de qualquer condição.
+          Este relatório apresenta <strong>PADRÕES COMPORTAMENTAIS</strong> observados durante atividades
+          educacionais estruturadas, não constituindo avaliação clínica de qualquer condição.
         </p>
         <p>
-          A interpretação dos dados deve ser feita <strong>exclusivamente por profissionais qualificados</strong> 
-          (psicólogos, neurologistas, psicopedagogos) e complementada com avaliação clínica completa.
+          A interpretação dos dados deve ser feita <strong>por profissionais qualificados</strong> 
+          (psicólogos, neurologistas, psicopedagogos) e complementada com avaliação completa quando indicado.
         </p>
       </AlertDescription>
     </Alert>
