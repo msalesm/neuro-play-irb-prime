@@ -293,10 +293,10 @@ export default function MindfulBreath() {
             />
           </div>
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 text-blue-900">
+            <h1 className="font-heading text-4xl font-bold mb-2 text-foreground">
               MindfulBreath Adventures
             </h1>
-            <p className="text-blue-700">
+            <p className="text-muted-foreground">
               Respire conscientemente e cultive sua calma interior
             </p>
           </div>
@@ -359,7 +359,7 @@ export default function MindfulBreath() {
                     Reiniciar
                   </Button>
                   {totalCycles >= 5 && (
-                    <Button onClick={completeBreathingSession} size="lg" className="flex items-center gap-2 bg-green-600 hover:bg-green-700">
+                    <Button onClick={completeBreathingSession} size="lg" className="flex items-center gap-2 bg-success hover:bg-success/90">
                       <Star className="h-5 w-5" />
                       Concluir
                     </Button>
@@ -407,7 +407,7 @@ export default function MindfulBreath() {
             <Card className="shadow-card">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-red-500" />
+                  <Heart className="h-5 w-5 text-destructive" />
                   Sessão Atual
                 </CardTitle>
               </CardHeader>
@@ -434,7 +434,7 @@ export default function MindfulBreath() {
                   </div>
                 </div>
                 {totalCycles >= 5 && (
-                  <div className="text-green-600 text-sm font-medium text-center p-2 bg-green-50 rounded">
+                  <div className="text-success text-sm font-medium text-center p-2 bg-success/10 rounded">
                     ✨ Sessão completa! Clique em "Concluir" para salvar
                   </div>
                 )}

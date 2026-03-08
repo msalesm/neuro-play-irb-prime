@@ -51,11 +51,11 @@ export default function RiskAnalysisPage() {
 
   const getRiskColorClass = (level: string) => {
     switch (level) {
-      case 'critical': return 'border-red-500 bg-red-50';
-      case 'high': return 'border-orange-500 bg-orange-50';
-      case 'medium': return 'border-yellow-500 bg-yellow-50';
-      case 'low': return 'border-green-500 bg-green-50';
-      default: return 'border-gray-500 bg-gray-50';
+      case 'critical': return 'border-destructive bg-destructive/10';
+      case 'high': return 'border-accent bg-accent/10';
+      case 'medium': return 'border-warning bg-warning/10';
+      case 'low': return 'border-success bg-success/10';
+      default: return 'border-muted bg-muted';
     }
   };
 
@@ -95,10 +95,10 @@ export default function RiskAnalysisPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <AlertTriangle className={`w-8 h-8 ${
-                    riskIndicator.level === 'critical' ? 'text-red-600' :
-                    riskIndicator.level === 'high' ? 'text-orange-600' :
-                    riskIndicator.level === 'medium' ? 'text-yellow-600' :
-                    'text-green-600'
+                    riskIndicator.level === 'critical' ? 'text-destructive' :
+                    riskIndicator.level === 'high' ? 'text-accent' :
+                    riskIndicator.level === 'medium' ? 'text-warning' :
+                    'text-success'
                   }`} />
                   <div>
                     <CardTitle className="text-2xl">
@@ -127,7 +127,7 @@ export default function RiskAnalysisPage() {
                 <ul className="space-y-2">
                   {riskIndicator.indicators.map((indicator, i) => (
                     <li key={i} className="text-sm flex items-start gap-2">
-                      <span className="text-red-500 mt-1">•</span>
+                      <span className="text-destructive mt-1">•</span>
                       {indicator}
                     </li>
                   ))}
@@ -156,8 +156,8 @@ export default function RiskAnalysisPage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 mx-auto rounded-full bg-red-100 flex items-center justify-center">
-                  <AlertTriangle className="w-8 h-8 text-red-600" />
+                <div className="w-16 h-16 mx-auto rounded-full bg-destructive/10 flex items-center justify-center">
+                  <AlertTriangle className="w-8 h-8 text-destructive" />
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Detecção de Crise</h3>
@@ -182,8 +182,8 @@ export default function RiskAnalysisPage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 mx-auto rounded-full bg-blue-100 flex items-center justify-center">
-                  <Activity className="w-8 h-8 text-blue-600" />
+                <div className="w-16 h-16 mx-auto rounded-full bg-info/10 flex items-center justify-center">
+                  <Activity className="w-8 h-8 text-info" />
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Tendências Comportamentais</h3>
@@ -209,8 +209,8 @@ export default function RiskAnalysisPage() {
           <Card className="hover:shadow-lg transition-shadow">
             <CardContent className="p-6">
               <div className="text-center space-y-4">
-                <div className="w-16 h-16 mx-auto rounded-full bg-green-100 flex items-center justify-center">
-                  <Target className="w-8 h-8 text-green-600" />
+                <div className="w-16 h-16 mx-auto rounded-full bg-success/10 flex items-center justify-center">
+                  <Target className="w-8 h-8 text-success" />
                 </div>
                 <div>
                   <h3 className="font-semibold mb-1">Intervenções Preventivas</h3>
