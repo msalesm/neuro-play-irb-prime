@@ -302,11 +302,11 @@ export default function EmotionLab() {
 
   const getEmotionIcon = (emotion: string) => {
     switch (emotion) {
-      case 'alegria': return <Smile className="w-8 h-8 text-yellow-500" />;
-      case 'tristeza': return <Frown className="w-8 h-8 text-blue-500" />;
-      case 'raiva': return <Angry className="w-8 h-8 text-red-500" />;
-      case 'medo': return <Meh className="w-8 h-8 text-purple-500" />;
-      default: return <Heart className="w-8 h-8 text-pink-500" />;
+      case 'alegria': return <Smile className="w-8 h-8 text-warning" />;
+      case 'tristeza': return <Frown className="w-8 h-8 text-info" />;
+      case 'raiva': return <Angry className="w-8 h-8 text-destructive" />;
+      case 'medo': return <Meh className="w-8 h-8 text-secondary" />;
+      default: return <Heart className="w-8 h-8 text-accent" />;
     }
   };
 
@@ -314,7 +314,7 @@ export default function EmotionLab() {
     const accuracy = (sessionData.totalCorrect / emotionScenarios.length) * 100;
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-accent/10 to-secondary/10 p-4">
         <GameResultsDashboard
           gameType="emotion_lab"
           gameTitle="Laboratório das Emoções"
@@ -361,10 +361,10 @@ export default function EmotionLab() {
     const accuracy = (sessionData.totalCorrect / emotionScenarios.length) * 100;
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-accent/10 to-secondary/10 p-4">
         <Card className="max-w-2xl mx-auto">
           <div className="p-8 text-center">
-            <Star className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+            <Star className="w-16 h-16 text-warning mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-4">Laboratório Concluído! 🧪</h2>
             <div className="space-y-3 mb-6">
               <p>Pontuação final: {score}</p>
@@ -396,7 +396,7 @@ export default function EmotionLab() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 p-4 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-accent/10 to-secondary/10 p-4 flex items-center justify-center">
         <Card className="max-w-md">
           <CardHeader>
             <h1 className="text-2xl font-bold text-center">Acesso Restrito</h1>
@@ -415,7 +415,7 @@ export default function EmotionLab() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-accent/10 to-secondary/10 p-4">
       {recoveredSession && !gameStarted && (
         <Card className="max-w-md mx-auto mb-4 p-4">
           <h3 className="font-bold mb-2">Sessão não concluída encontrada</h3>
@@ -442,7 +442,7 @@ export default function EmotionLab() {
               />
             </div>
             <div className="flex items-center space-x-2">
-              <Heart className="w-6 h-6 text-pink-500" />
+              <Heart className="w-6 h-6 text-accent" />
               <h1 className="text-2xl font-bold">Laboratório das Emoções</h1>
             </div>
             <div className="flex items-center space-x-4">
