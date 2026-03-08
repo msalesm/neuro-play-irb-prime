@@ -59,7 +59,7 @@ export const NeuroPlayHero = () => {
             size="lg"
             className="w-full sm:w-auto border-primary/30 text-primary hover:bg-primary/10 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg"
           >
-            <Link to="/dashboard" className="flex items-center justify-center gap-2">
+            <Link to="/learning-dashboard" className="flex items-center justify-center gap-2">
               <Heart className="w-5 h-5" />
               Ver Progresso
             </Link>
