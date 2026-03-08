@@ -19,8 +19,6 @@ export { ProgressPath } from '../ProgressPath';
 export { default as ProgressTrail } from '../ProgressTrail';
 export { default as LearningTrails } from '../LearningTrails';
 export { default as IslandMap } from '../IslandMap';
-export { NeuroplasticityButton } from '../NeuroplasticityButton';
-export { NeuroplasticityModal } from '../NeuroplasticityModal';
 export { TourAchievementModal } from '../TourAchievementModal';
 export { TourAchievementsPanel } from '../TourAchievementsPanel';
 
