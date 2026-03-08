@@ -179,28 +179,28 @@ const PrivacyPortal = () => {
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/50">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-success mt-0.5" />
                   <div>
                     <h4 className="font-medium">Acesso aos Dados</h4>
                     <p className="text-sm text-muted-foreground">Você pode solicitar uma cópia de todos os seus dados</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/50">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-success mt-0.5" />
                   <div>
                     <h4 className="font-medium">Portabilidade</h4>
                     <p className="text-sm text-muted-foreground">Exporte seus dados em formato legível</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/50">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-success mt-0.5" />
                   <div>
                     <h4 className="font-medium">Eliminação</h4>
                     <p className="text-sm text-muted-foreground">Solicite a exclusão de seus dados pessoais</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/50">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-success mt-0.5" />
                   <div>
                     <h4 className="font-medium">Consentimento</h4>
                     <p className="text-sm text-muted-foreground">Revogue consentimentos a qualquer momento</p>

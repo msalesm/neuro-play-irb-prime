@@ -71,9 +71,9 @@ export default function TeacherClassView() {
 
   const getTrendIcon = (trend?: 'up' | 'stable' | 'down') => {
     switch (trend) {
-      case 'up': return <TrendingUp className="w-4 h-4 text-green-500" />;
-      case 'stable': return <div className="w-4 h-4 border-t-2 border-yellow-500" />;
-      case 'down': return <TrendingUp className="w-4 h-4 text-red-500 rotate-180" />;
+      case 'up': return <TrendingUp className="w-4 h-4 text-success" />;
+      case 'stable': return <div className="w-4 h-4 border-t-2 border-warning" />;
+      case 'down': return <TrendingUp className="w-4 h-4 text-destructive rotate-180" />;
       default: return null;
     }
   };
