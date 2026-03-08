@@ -46,6 +46,9 @@ import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
 import CognitiveFlexibilityPhases from "./pages/games/CognitiveFlexibilityPhases";
 import CognitiveFlexibilityPlay from "./pages/games/CognitiveFlexibilityPlay";
 import ExecutiveProcessingPhases from "./pages/games/ExecutiveProcessingPhases";
+import VisuomotorCoordination from "./pages/games/VisuomotorCoordination";
+import BehavioralPersistence from "./pages/games/BehavioralPersistence";
+const CognitiveBattery = lazy(() => import("./pages/CognitiveBattery"));
 
 import FocoRapidoPhases from "./pages/games/FocoRapidoPhases";
 import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
@@ -261,7 +264,12 @@ const App = () => (
           <Route path="/games/foco-rapido-play" element={<FocoRapido />} />
           <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
           <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibilityPlay />} />
-          
+          <Route path="/games/visuomotor-coordination" element={<VisuomotorCoordination />} />
+          <Route path="/games/behavioral-persistence" element={<BehavioralPersistence />} />
+          <Route path="/bateria-cognitiva" element={
+            <Suspense fallback={<Loading />}><CognitiveBattery /></Suspense>
+          } />
+
           {/* Jogos standalone */}
           <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
           <Route path="/games/memory-workload" element={<MemoryWorkload />} />
