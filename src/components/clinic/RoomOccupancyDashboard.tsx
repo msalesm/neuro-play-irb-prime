@@ -98,11 +98,11 @@ export function RoomOccupancyDashboard({
       {/* Summary */}
       <div className="flex gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <div className="w-3 h-3 rounded-full bg-destructive" />
           <span className="text-sm text-muted-foreground">Ocupadas: {occupiedCount}</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-green-500" />
+          <div className="w-3 h-3 rounded-full bg-success" />
           <span className="text-sm text-muted-foreground">Disponíveis: {availableCount}</span>
         </div>
       </div>
@@ -116,8 +116,8 @@ export function RoomOccupancyDashboard({
               className={cn(
                 'cursor-pointer transition-all hover:shadow-md',
                 status.isOccupied
-                  ? 'border-red-500/50 bg-red-500/5'
-                  : 'border-green-500/50 bg-green-500/5 hover:bg-green-500/10'
+                  ? 'border-destructive/50 bg-destructive/5'
+                  : 'border-success/50 bg-success/5 hover:bg-success/10'
               )}
               onClick={() => onRoomClick?.(status.room)}
             >
@@ -127,7 +127,7 @@ export function RoomOccupancyDashboard({
                     <DoorOpen
                       className={cn(
                         'h-4 w-4',
-                        status.isOccupied ? 'text-red-500' : 'text-green-500'
+                        status.isOccupied ? 'text-destructive' : 'text-success'
                       )}
                     />
                     <span className="font-medium text-sm truncate" title={status.room}>
@@ -138,7 +138,7 @@ export function RoomOccupancyDashboard({
                     variant={status.isOccupied ? 'destructive' : 'default'}
                     className={cn(
                       'text-xs',
-                      !status.isOccupied && 'bg-green-600 hover:bg-green-700'
+                      !status.isOccupied && 'bg-success hover:bg-success/90'
                     )}
                   >
                     {status.isOccupied ? 'Ocupada' : 'Livre'}

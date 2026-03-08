@@ -25,15 +25,15 @@ interface TeacherClassStatsProps {
 
 export function TeacherClassStats({ stats, className }: TeacherClassStatsProps) {
   const getCognitiveColor = (score: number) => {
-    if (score >= 70) return 'text-green-600';
-    if (score >= 50) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 70) return 'text-success';
+    if (score >= 50) return 'text-warning';
+    return 'text-destructive';
   };
 
   const getCognitiveProgressColor = (score: number) => {
-    if (score >= 70) return 'bg-green-500';
-    if (score >= 50) return 'bg-yellow-500';
-    return 'bg-red-500';
+    if (score >= 70) return 'bg-success';
+    if (score >= 50) return 'bg-warning';
+    return 'bg-destructive';
   };
 
   return (
@@ -53,10 +53,10 @@ export function TeacherClassStats({ stats, className }: TeacherClassStatsProps) 
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-muted-foreground mb-1">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
+              <CheckCircle2 className="h-4 w-4 text-success" />
               <span className="text-xs">Ativos Hoje</span>
             </div>
-            <p className="text-2xl font-bold text-green-600">{stats.activeToday}</p>
+            <p className="text-2xl font-bold text-success">{stats.activeToday}</p>
           </CardContent>
         </Card>
 

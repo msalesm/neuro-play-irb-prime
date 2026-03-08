@@ -36,9 +36,9 @@ export function ModernMetricCard({
   className
 }: ModernMetricCardProps) {
   const trendColors = {
-    up: 'text-green-400',
-    down: 'text-red-400',
-    stable: 'text-blue-400'
+    up: 'text-success',
+    down: 'text-destructive',
+    stable: 'text-info'
   };
 
   return (

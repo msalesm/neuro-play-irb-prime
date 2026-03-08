@@ -368,15 +368,15 @@ export function TherapistAgendaView() {
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Confirmados</span>
-                <span className="font-medium text-green-600">{statusCounts.confirmed}</span>
+                <span className="font-medium text-success">{statusCounts.confirmed}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Aguardando</span>
-                <span className="font-medium text-yellow-600">{statusCounts.pending}</span>
+                <span className="font-medium text-warning">{statusCounts.pending}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Realizados</span>
-                <span className="font-medium text-blue-600">{statusCounts.completed}</span>
+                <span className="font-medium text-info">{statusCounts.completed}</span>
               </div>
             </CardContent>
           </Card>
@@ -403,7 +403,7 @@ export function TherapistAgendaView() {
                         key={idx}
                         className={cn(
                           "flex items-center justify-between text-sm py-1.5 px-2 rounded",
-                          schedule?.is_available ? "bg-green-50 dark:bg-green-950/20" : "opacity-50"
+                          schedule?.is_available ? "bg-success/10" : "opacity-50"
                         )}
                       >
                         <span className="font-medium">{label.slice(0, 3)}</span>
