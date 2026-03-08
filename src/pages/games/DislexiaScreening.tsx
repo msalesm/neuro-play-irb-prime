@@ -171,12 +171,12 @@ export default function DislexiaScreening() {
               <div className="p-3 rounded-lg bg-gradient-to-r from-info to-info/70 text-primary-foreground">
                 <BookOpen className="h-6 w-6" />
               </div>
-              <CardTitle className="text-2xl">Triagem de Dislexia</CardTitle>
+              <CardTitle className="text-2xl">Perfil de Linguagem e Leitura</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h3 className="font-semibold">O que vamos avaliar:</h3>
+              <h3 className="font-semibold">O que vamos observar:</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>• Consciência fonológica (rimas e sons)</li>
                 <li>• Segmentação silábica</li>
@@ -205,7 +205,7 @@ export default function DislexiaScreening() {
                 Voltar
               </Button>
               <Button onClick={handleStart} className="flex-1">
-                Iniciar Triagem
+                Iniciar Atividade
               </Button>
             </div>
           </CardContent>
