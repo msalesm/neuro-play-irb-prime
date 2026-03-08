@@ -17,7 +17,10 @@ import {
   List,
   LayoutGrid,
   RefreshCw,
-  DoorOpen
+  DoorOpen,
+  Search,
+  X,
+  ChevronsUpDown
 } from 'lucide-react';
 import { format, addDays, startOfWeek, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
