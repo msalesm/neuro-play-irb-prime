@@ -16,7 +16,7 @@ export async function fetchProfile(userId: string) {
     .from('profiles')
     .select('*')
     .eq('id', userId)
-    .single();
+    .maybeSingle();
   if (error) throw error;
   return data;
 }
@@ -69,7 +69,7 @@ export async function fetchChildById(childId: string) {
     .from('children')
     .select('*')
     .eq('id', childId)
-    .single();
+    .maybeSingle();
   if (error) throw error;
   return data;
 }

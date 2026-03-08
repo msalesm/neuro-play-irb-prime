@@ -44,7 +44,7 @@ export default function TeleconsultaSessionPage() {
           children:child_id (id, name)
         `)
         .eq('id', sessionId)
-        .single();
+        .maybeSingle();
 
       if (error || !session) {
         toast.error('Sessão não encontrada');
@@ -57,7 +57,7 @@ export default function TeleconsultaSessionPage() {
         .from('profiles')
         .select('full_name')
         .eq('id', session.professional_id)
-        .single();
+        .maybeSingle();
       
       if (profile) {
         setProfessionalName(profile.full_name || 'Profissional');

@@ -33,7 +33,7 @@ export default function WorldMap() {
         .from('user_gamification')
         .select('experience_points, level')
         .eq('user_id', user?.id)
-        .single();
+        .maybeSingle();
       if (data) {
         setUserXP(data.experience_points || 0);
         setUserLevel(data.level || 1);
