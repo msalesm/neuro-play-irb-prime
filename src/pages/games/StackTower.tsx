@@ -41,7 +41,7 @@ export default function StackTower() {
           <span className="text-xs">Acerte no centro para blocos perfeitos</span>
         </div>
         <div className="flex items-center gap-2 text-white">
-          <Zap className="h-4 w-4 text-yellow-400" />
+          <Zap className="h-4 w-4 text-warning" />
           <span className="text-xs">3 perfeitos seguidos = recuperação</span>
         </div>
         <div className="flex items-center gap-2 text-white">

@@ -30,20 +30,20 @@ export const GameProgressBar: React.FC<GameProgressBarProps> = ({
     switch (variant) {
       case 'success':
         return {
-          bg: 'bg-green-500/20',
-          fill: 'bg-gradient-to-r from-green-500 to-emerald-500',
-          text: 'text-green-600'
+          bg: 'bg-success/20',
+          fill: 'bg-success',
+          text: 'text-success'
         };
       case 'warning':
         return {
-          bg: 'bg-yellow-500/20',
-          fill: 'bg-gradient-to-r from-yellow-500 to-orange-500',
-          text: 'text-yellow-600'
+          bg: 'bg-warning/20',
+          fill: 'bg-warning',
+          text: 'text-warning'
         };
       default:
         return {
           bg: 'bg-primary/20',
-          fill: 'bg-gradient-to-r from-blue-500 to-purple-500',
+          fill: 'bg-primary',
           text: 'text-primary'
         };
     }
@@ -56,7 +56,7 @@ export const GameProgressBar: React.FC<GameProgressBarProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {isComplete && <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />}
+          {isComplete && <Star className="w-4 h-4 text-warning fill-warning" />}
           <span className="text-sm font-medium">{label}</span>
         </div>
         <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ export const GameProgressBar: React.FC<GameProgressBarProps> = ({
 
       {/* Completion message */}
       {isComplete && (
-        <p className="text-xs text-center text-green-600 font-semibold animate-fade-in">
+        <p className="text-xs text-center text-success font-semibold animate-fade-in">
           🎉 Completo!
         </p>
       )}
