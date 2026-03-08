@@ -73,7 +73,7 @@ export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalRepor
                 </Badge>
               )}
               {report.reviewed_by_professional && (
-                <Badge variant="secondary" className="bg-green-500/10 text-green-700 border-green-500/20">
+                <Badge variant="secondary" className="bg-success/10 text-success border-success/20">
                   <CheckCircle2 className="w-3 h-3 mr-1" />
                   Revisado
                 </Badge>

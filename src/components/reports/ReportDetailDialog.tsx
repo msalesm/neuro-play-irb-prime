@@ -68,8 +68,8 @@ const trendValueLabels: Record<string, string> = {
 };
 
 const getTrendIcon = (trend?: string) => {
-  if (trend === 'improving' || trend === 'up') return <TrendingUp className="w-4 h-4 text-green-500" />;
-  if (trend === 'declining' || trend === 'down') return <TrendingDown className="w-4 h-4 text-red-500" />;
+  if (trend === 'improving' || trend === 'up') return <TrendingUp className="w-4 h-4 text-success" />;
+  if (trend === 'declining' || trend === 'down') return <TrendingDown className="w-4 h-4 text-destructive" />;
   return <Minus className="w-4 h-4 text-muted-foreground" />;
 };
 
@@ -248,7 +248,7 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
               </Badge>
             )}
             {report.reviewed_by_professional && (
-              <Badge variant="secondary" className="bg-green-500/10 text-green-700">
+              <Badge variant="secondary" className="bg-success/10 text-success">
                 <CheckCircle2 className="w-3 h-3 mr-1" />
                 Revisado
               </Badge>
@@ -356,7 +356,7 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <Lightbulb className="w-4 h-4 text-yellow-500" />
+                    <Lightbulb className="w-4 h-4 text-warning" />
                     Recomendações de Intervenção
                   </CardTitle>
                 </CardHeader>
@@ -431,8 +431,8 @@ export function ReportDetailDialog({ report, open, onOpenChange }: ReportDetailD
                   {(aiAnalysis.strengths?.length > 0 || aiAnalysis.areasOfConcern?.length > 0) && (
                     <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                       {aiAnalysis.strengths?.length > 0 && (
-                        <div className="p-3 bg-green-500/10 rounded-lg">
-                          <p className="text-sm font-medium text-green-700 mb-2">Pontos Fortes</p>
+                        <div className="p-3 bg-success/10 rounded-lg">
+                          <p className="text-sm font-medium text-success mb-2">Pontos Fortes</p>
                           <ul className="text-xs text-muted-foreground space-y-1">
                             {aiAnalysis.strengths.map((s: string, i: number) => (
                               <li key={i}>• {s}</li>

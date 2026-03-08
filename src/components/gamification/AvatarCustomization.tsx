@@ -15,9 +15,9 @@ interface AvatarCustomizationProps {
 }
 
 const rarityColors = {
-  common: 'bg-gray-500',
-  rare: 'bg-blue-500',
-  epic: 'bg-purple-500',
+  common: 'bg-muted-foreground',
+  rare: 'bg-primary',
+  epic: 'bg-accent',
   legendary: 'bg-amber-500'
 };
 

@@ -38,7 +38,7 @@ export function InstitutionalSection() {
               <ul className="space-y-4">
                 {benefits.map((benefit, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                     <span>{benefit}</span>
                   </li>
                 ))}

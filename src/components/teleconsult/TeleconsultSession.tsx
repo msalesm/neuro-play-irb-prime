@@ -216,7 +216,7 @@ export function TeleconsultSession({
         <div className="flex items-center gap-4">
           <div className="bg-muted px-3 py-1 rounded-full">
             <div className="flex items-center gap-2 text-sm font-medium">
-              <Clock className="w-4 h-4 text-red-500 animate-pulse" />
+              <Clock className="w-4 h-4 text-destructive animate-pulse" />
               {formatTime(elapsedTime)}
             </div>
           </div>

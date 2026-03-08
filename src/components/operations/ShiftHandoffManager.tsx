@@ -183,7 +183,7 @@ export function ShiftHandoffManager({
                         {handoff.pending_cases_count} casos transferidos
                       </span>
                       {handoff.acknowledged_at ? (
-                        <Badge variant="outline" className="text-green-600">
+                        <Badge variant="outline" className="text-success">
                           <CheckCircle className="w-3 h-3 mr-1" />
                           Reconhecido
                         </Badge>

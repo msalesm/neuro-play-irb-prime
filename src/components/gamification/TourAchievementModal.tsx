@@ -114,7 +114,7 @@ export const TourAchievementModal = ({ isOpen, achievement, onClose }: TourAchie
                     transition={{ delay: 0.3 }}
                     className="text-2xl font-bold mb-2 flex items-center justify-center gap-2"
                   >
-                    <Sparkles className="w-5 h-5 text-yellow-500" />
+                    <Sparkles className="w-5 h-5 text-warning" />
                     Conquista Desbloqueada!
                   </motion.h2>
 
