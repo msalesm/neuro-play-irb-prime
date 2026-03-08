@@ -1,15 +1,18 @@
 /**
  * Services Layer - Barrel Export
  * 
- * Domain services have moved to src/modules/*.
- * Re-exports kept for backward compatibility.
- * Only user-service remains here (cross-cutting concern).
+ * Layer 4 of the 7-layer architecture.
+ * Interface between frontend and data layer.
+ * 
+ * Rule: Frontend never talks directly to the database.
  */
 
-// ── Cross-cutting (stays here) ──────────────────────────
+// ── Cross-cutting services ──────────────────────────────
 export * as userService from './user-service';
+export * as analyticsService from './analytics-service';
+export * as securityService from './security-service';
 
-// ── Module re-exports (backward compatibility) ──────────
+// ── Domain services ─────────────────────────────────────
 // @deprecated Use '@/modules/games' directly
 export * as gameService from './game-service';
 // @deprecated Use '@/modules/aba' directly
