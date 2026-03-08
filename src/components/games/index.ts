@@ -20,7 +20,7 @@ export { GamePhaseSelector } from '../GamePhaseSelector';
 export { GameCompatibilityCheck } from '../GameCompatibilityCheck';
 export { GameCategories } from '../GameCategories';
 export { GameIllustration } from '../GameIllustration';
-export { GameMap } from '../GameMap';
+export { default as GameMap } from '../GameMap';
 export { ModernGameCard } from '../ModernGameCard';
 export { DailyGameSection } from '../DailyGameSection';
 export { BiofeedbackGameCard } from '../BiofeedbackGameCard';
