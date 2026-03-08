@@ -76,56 +76,44 @@ const PATIENT_NAV: NavItem[] = [
   { title: 'Meu Dia', path: '/student-hub', icon: Home },
   { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
   { title: 'Histórias Sociais', path: '/stories', icon: Drama },
-  { title: 'Minhas Conquistas', path: '/learning-dashboard', icon: Trophy },
-  { title: 'Meu Perfil', path: '/profile', icon: User },
+  { title: 'Conquistas', path: '/conquistas', icon: Trophy },
   { title: 'Histórico Emocional', path: '/emotional-history', icon: Heart },
 ];
 
 const PARENT_NAV: NavItem[] = [
   { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
-  { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck, badge: 'Novo' },
-  { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope, badge: 'Novo' },
-  { title: 'Relatório Familiar', path: '/relatorios', icon: FileText },
-  { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
-  { title: 'Mensagens', path: '/mensagens', icon: Mail, badge: 'Novo' },
-  { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem, badge: 'Novo' },
+  { title: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
+  { title: 'Agenda', path: '/agenda', icon: CalendarCheck },
+  { title: 'Relatórios', path: '/relatorios', icon: FileText },
+  { title: 'Mensagens', path: '/mensagens', icon: Mail },
   { title: 'Microlearning', path: '/training', icon: BookOpen },
-  { title: 'Coaching Parental', path: '/parent-coaching', icon: Heart, badge: 'Novo' },
-  { title: 'Minha Assinatura', path: '/subscription', icon: CreditCard, badge: 'Novo' },
 ];
 
 const THERAPIST_NAV: NavItem[] = [
   { title: 'Pacientes', path: '/therapist/patients', icon: Users, description: 'Prontuário, PEI e acompanhamento' },
   { title: 'Agenda', path: '/agenda', icon: Calendar },
   { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
-  { title: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
-  { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
-  { title: 'Anamnese', path: '/anamnese', icon: ClipboardList, badge: 'Novo' },
-  { title: 'Relatório Clínico', path: '/relatorios', icon: FileText },
-  { title: 'ABA+', path: '/aba-integration', icon: Activity, badge: 'Novo' },
   { title: 'ABA NeuroPlay', path: '/aba-neuroplay', icon: Activity, description: 'Programas de intervenção ABA' },
+  { title: 'Relatórios', path: '/relatorios', icon: FileText },
   { title: 'Mensagens', path: '/mensagens', icon: Mail },
 ];
 
 const TEACHER_NAV: NavItem[] = [
-  { title: 'Neuro Play Educação', path: '/educacao', icon: School, description: 'Turmas, check-in e relatórios' },
-  { title: 'Dashboard da Escola', path: '/escola-dashboard', icon: Building2, description: 'Visão macro da escola' },
+  { title: 'Educação', path: '/educacao', icon: School, description: 'Turmas, check-in e relatórios' },
+  { title: 'Turmas', path: '/teacher/classes', icon: Users },
+  { title: 'Relatórios', path: '/relatorios', icon: FileText },
   { title: 'Mensagens', path: '/mensagens', icon: Mail },
 ];
 
 const ADMIN_NAV: NavItem[] = [
-  { title: 'Dashboard Institucional', path: '/institutional', icon: Building2 },
-  { title: 'Centro de Operações', path: '/operations', icon: TrendingUp },
-  { title: 'Relatórios', path: '/relatorios', icon: FileText },
+  { title: 'Institucional', path: '/institutional', icon: Building2 },
+  { title: 'Operações', path: '/operations', icon: TrendingUp },
+  { title: 'Usuários', path: '/admin/users', icon: Users },
   { title: 'Pacientes', path: '/therapist/patients', icon: Users },
   { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
-  { title: 'ABA+', path: '/aba-integration', icon: Activity, badge: 'Novo' },
   { title: 'ABA NeuroPlay', path: '/aba-neuroplay', icon: Activity },
-  { title: 'Neuro Play Educação', path: '/educacao', icon: School },
-  { title: 'Dashboard da Escola', path: '/escola-dashboard', icon: School },
-  { title: 'Secretaria Municipal', path: '/secretaria-educacao', icon: Building2 },
-  { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
-  { title: 'Clube dos Pais', path: '/admin/clube-pais', icon: Gem },
+  { title: 'Educação', path: '/educacao', icon: School },
+  { title: 'Relatórios', path: '/relatorios', icon: FileText },
 ];
 
 const SETTINGS_NAV: NavItem[] = [
@@ -136,16 +124,15 @@ const SETTINGS_NAV: NavItem[] = [
 
 const PATIENT_BOTTOM: BottomNavItem[] = [
   { name: 'Início', path: '/student-hub', icon: Home },
-  { name: 'Mapa', path: '/world-map', icon: Map },
-  { name: 'Jogos', path: '/sistema-planeta-azul', icon: Gamepad2 },
-  { name: 'Conquistas', path: '/achievements', icon: Trophy },
-  { name: 'Perfil', path: '/settings', icon: Users },
+  { name: 'Mapa', path: '/sistema-planeta-azul', icon: Sparkles },
+  { name: 'Jogos', path: '/games', icon: Gamepad2 },
+  { name: 'Conquistas', path: '/conquistas', icon: Trophy },
 ];
 
 const PARENT_BOTTOM: BottomNavItem[] = [
   { name: 'Dashboard', path: '/dashboard-pais', icon: Home },
-  { name: 'Agenda', path: '/agenda', icon: Calendar },
   { name: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
+  { name: 'Agenda', path: '/agenda', icon: Calendar },
   { name: 'Relatórios', path: '/relatorios', icon: FileText },
 ];
 
@@ -153,28 +140,28 @@ const THERAPIST_BOTTOM: BottomNavItem[] = [
   { name: 'Pacientes', path: '/therapist/patients', icon: Users },
   { name: 'Agenda', path: '/agenda', icon: Calendar },
   { name: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
-  { name: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
+  { name: 'Relatórios', path: '/relatorios', icon: FileText },
 ];
 
 const TEACHER_BOTTOM: BottomNavItem[] = [
   { name: 'Educação', path: '/educacao', icon: School },
   { name: 'Turmas', path: '/teacher/classes', icon: Users },
-  { name: 'Avaliações', path: '/screening', icon: ClipboardCheck },
   { name: 'Relatórios', path: '/relatorios', icon: FileText },
+  { name: 'Mensagens', path: '/mensagens', icon: Mail },
 ];
 
 const ADMIN_BOTTOM: BottomNavItem[] = [
   { name: 'Institucional', path: '/institutional', icon: Building2 },
   { name: 'Operações', path: '/operations', icon: TrendingUp },
   { name: 'Usuários', path: '/admin/users', icon: Users },
-  { name: 'Agenda', path: '/agenda', icon: Calendar },
+  { name: 'Relatórios', path: '/relatorios', icon: FileText },
 ];
 
 const DEFAULT_BOTTOM: BottomNavItem[] = [
-  { name: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
   { name: 'Jogos', path: '/games', icon: Gamepad2 },
-  { name: 'Aprendizado', path: '/learning-dashboard', icon: GraduationCap },
+  { name: 'Planeta', path: '/sistema-planeta-azul', icon: Sparkles },
   { name: 'Relatórios', path: '/relatorios', icon: FileText },
+  { name: 'Perfil', path: '/profile', icon: User },
 ];
 
 // ========== ADMIN MOBILE SECTIONS (expanded view) ==========
