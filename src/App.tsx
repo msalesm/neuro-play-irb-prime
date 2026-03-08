@@ -71,6 +71,7 @@ const FocoRapido = lazy(() => import("./pages/games/FocoRapido"));
 const CognitiveFlexibilityPhases = lazy(() => import("./pages/games/CognitiveFlexibilityPhases"));
 const CognitiveFlexibilityPlay = lazy(() => import("./pages/games/CognitiveFlexibilityPlay"));
 const ExecutiveProcessingPhases = lazy(() => import("./pages/games/ExecutiveProcessingPhases"));
+const ExecutiveProcessingPlay = lazy(() => import("./pages/games/ExecutiveProcessingPlay"));
 const VisuomotorCoordination = lazy(() => import("./pages/games/VisuomotorCoordination"));
 const BehavioralPersistence = lazy(() => import("./pages/games/BehavioralPersistence"));
 const MemorySequenceBuilder = lazy(() => import("./pages/games/MemorySequenceBuilder"));
@@ -266,6 +267,7 @@ const App = () => (
                   
                   {/* Games - Phase System */}
                   <Route path="/games/executive-processing-phases" element={<P><ExecutiveProcessingPhases /></P>} />
+                  <Route path="/games/executive-processing-play" element={<P><ExecutiveProcessingPlay /></P>} />
                   <Route path="/games/attention-sustained-phases" element={<P><AttentionSustainedPhases /></P>} />
                   <Route path="/games/attention-sustained-play" element={<P><AttentionSustainedPlay /></P>} />
                   <Route path="/games/foco-rapido-phases" element={<P><FocoRapidoPhases /></P>} />
