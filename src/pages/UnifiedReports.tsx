@@ -427,8 +427,8 @@ export default function UnifiedReports() {
           </Card>
         )}
 
-        {/* Non-therapist: Period selector in header */}
-        {!isTherapist && (
+        {/* Period selector for roles without child selector */}
+        {!isTherapist && !isParent && !isTeacher && (
           <div className="flex justify-end gap-2 mb-6">
             <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
               <SelectTrigger className="w-[160px]">
@@ -455,7 +455,7 @@ export default function UnifiedReports() {
         )}
 
         {/* Report Cards Grid */}
-        <div className={`grid gap-6 ${isTherapist ? 'md:grid-cols-1 max-w-lg mx-auto' : 'md:grid-cols-3'}`}>
+        <div className={`grid gap-6 ${(isTherapist || isParent || isTeacher) ? 'md:grid-cols-1 max-w-lg mx-auto' : 'md:grid-cols-3'}`}>
           {displayReportTypes.map((reportType) => {
             const report = reports[reportType.type];
             const Icon = reportType.icon;
