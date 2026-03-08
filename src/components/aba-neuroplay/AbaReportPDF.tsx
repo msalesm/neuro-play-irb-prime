@@ -51,9 +51,22 @@ export function AbaReportPDF({ programId, childId }: Props) {
   const programName = programData?.program_name || 'Programa ABA';
   const childName = childData?.name || 'Paciente';
 
-  // Get trials for each intervention
+  // Fetch all trials for this program's interventions in one query
   const interventionIds = interventions?.map((i: any) => i.id) || [];
-  const trialQueries = interventionIds.map(id => useAbaTrials(id));
+  const { data: allTrialsData } = useQuery({
+    queryKey: ['aba-report-trials', programId, interventionIds.join(',')],
+    queryFn: async () => {
+      if (!interventionIds.length) return [];
+      const { data, error } = await supabase
+        .from('aba_np_trials')
+        .select('*')
+        .in('intervention_id', interventionIds)
+        .order('recorded_at', { ascending: true });
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!interventionIds.length,
+  });
 
   const generatePDF = async () => {
     setGenerating(true);
