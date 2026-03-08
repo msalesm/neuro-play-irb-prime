@@ -30,27 +30,29 @@ export default function SchoolDirectorDashboard() {
         .select('institution_id')
         .eq('user_id', user.id)
         .eq('is_active', true)
-        .maybeSingle();
+        .limit(1);
 
-      if (!membership) {
-        // Fallback: get classes where user is teacher (for demo)
+      const instId = membership?.[0]?.institution_id;
+
+      if (!instId) {
+        // Fallback: get all classes for demo
         const { data } = await supabase
           .from('school_classes')
-          .select('id, name, grade_level, school_year, teacher_id');
+          .select('id, name, grade_level, school_year, teacher_id') as any;
         return data || [];
       }
 
       const { data: schools } = await supabase
         .from('schools')
         .select('id')
-        .eq('institution_id', membership.institution_id);
+        .eq('institution_id', instId) as any;
 
       if (!schools?.length) return [];
 
       const { data } = await supabase
         .from('school_classes')
         .select('id, name, grade_level, school_year, teacher_id')
-        .in('school_id', schools.map(s => s.id));
+        .in('school_id', schools.map((s: any) => s.id)) as any;
       return data || [];
     },
     enabled: !!user,
