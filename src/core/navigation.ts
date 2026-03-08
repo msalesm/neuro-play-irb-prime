@@ -85,7 +85,7 @@ const PARENT_NAV: NavItem[] = [
   { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
   { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck, badge: 'Novo' },
   { title: 'Minhas Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope, badge: 'Novo' },
-  { title: 'Relatório Familiar', path: '/reports', icon: FileText },
+  { title: 'Relatório Familiar', path: '/relatorios', icon: FileText },
   { title: 'Progresso dos Filhos', path: '/learning-dashboard', icon: TrendingUp },
   { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
   { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem, badge: 'Novo' },
@@ -101,7 +101,7 @@ const THERAPIST_NAV: NavItem[] = [
   { title: 'Avaliações', path: '/diagnostic-tests', icon: ClipboardCheck },
   { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
   { title: 'Anamnese', path: '/anamnese', icon: ClipboardList, badge: 'Novo' },
-  { title: 'Relatório Clínico', path: '/reports', icon: FileText },
+  { title: 'Relatório Clínico', path: '/relatorios', icon: FileText },
   { title: 'ABA+', path: '/aba-integration', icon: Activity, badge: 'Novo' },
   { title: 'ABA NeuroPlay', path: '/aba-neuroplay', icon: Activity, description: 'Programas de intervenção ABA' },
   { title: 'Mensagens', path: '/messages', icon: Mail },
@@ -116,7 +116,7 @@ const TEACHER_NAV: NavItem[] = [
 const ADMIN_NAV: NavItem[] = [
   { title: 'Dashboard Institucional', path: '/institutional', icon: Building2 },
   { title: 'Centro de Operações', path: '/operations', icon: TrendingUp },
-  { title: 'Relatórios', path: '/reports', icon: FileText },
+  { title: 'Relatórios', path: '/relatorios', icon: FileText },
   { title: 'Pacientes', path: '/therapist/patients', icon: Users },
   { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
   { title: 'ABA+', path: '/aba-integration', icon: Activity, badge: 'Novo' },
@@ -146,7 +146,7 @@ const PARENT_BOTTOM: BottomNavItem[] = [
   { name: 'Dashboard', path: '/dashboard-pais', icon: Home },
   { name: 'Agenda', path: '/agenda', icon: Calendar },
   { name: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
-  { name: 'Relatórios', path: '/reports', icon: FileText },
+  { name: 'Relatórios', path: '/relatorios', icon: FileText },
 ];
 
 const THERAPIST_BOTTOM: BottomNavItem[] = [
@@ -174,7 +174,7 @@ const DEFAULT_BOTTOM: BottomNavItem[] = [
   { name: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
   { name: 'Jogos', path: '/games', icon: Gamepad2 },
   { name: 'Aprendizado', path: '/learning-dashboard', icon: GraduationCap },
-  { name: 'Relatórios', path: '/reports', icon: FileText },
+  { name: 'Relatórios', path: '/relatorios', icon: FileText },
 ];
 
 // ========== ADMIN MOBILE SECTIONS (expanded view) ==========
@@ -196,7 +196,7 @@ const ADMIN_MOBILE_SECTIONS: NavSection[] = [
       { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
       { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck },
       { title: 'Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
-      { title: 'Relatórios', path: '/reports', icon: BarChart3 },
+      { title: 'Relatórios', path: '/relatorios', icon: BarChart3 },
       { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem },
     ],
   },

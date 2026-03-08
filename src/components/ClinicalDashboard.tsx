@@ -400,7 +400,7 @@ export default function ClinicalDashboard() {
                 asChild
                 aria-label="Ver relatórios de progresso"
               >
-                <Link to="/reports">
+                <Link to="/relatorios">
                   <BarChart3 className="w-8 h-8" aria-hidden="true" />
                   <span>Relatórios</span>
                 </Link>

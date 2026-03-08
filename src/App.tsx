@@ -336,6 +336,7 @@ const App = () => (
                   {/* Reports & Analytics (consolidated) */}
                   <Route path="/relatorios" element={<L><UnifiedReports /></L>} />
                   <Route path="/intelligent-reports" element={<Navigate to="/relatorios" replace />} />
+                  <Route path="/reports" element={<Navigate to="/relatorios" replace />} />
                   <Route path="/risk-analysis" element={<L><RiskAnalysisPage /></L>} />
                   <Route path="/emotional-history" element={<L><EmotionalHistoryDashboard /></L>} />
                   <Route path="/professional-analytics" element={<L><ProfessionalAnalytics /></L>} />
