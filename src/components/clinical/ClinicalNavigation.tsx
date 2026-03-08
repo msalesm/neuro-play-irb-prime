@@ -41,7 +41,7 @@ const clinicalNavigation: NavItem[] = [
   },
   {
     title: 'Relatórios',
-    path: '/reports',
+    path: '/relatorios',
     icon: BarChart3,
     description: 'Todos os relatórios clínicos'
   },
