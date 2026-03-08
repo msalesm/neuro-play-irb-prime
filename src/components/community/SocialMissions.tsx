@@ -89,7 +89,7 @@ export function SocialMissions() {
         {specialMissions.length > 0 && (
           <div>
             <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-              <Gift className="w-4 h-4 text-amber-500" />
+              <Gift className="w-4 h-4 text-warning" />
               Missões Especiais
             </h4>
             <div className="space-y-3">

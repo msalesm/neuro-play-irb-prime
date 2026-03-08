@@ -236,7 +236,7 @@ export function EmotionCaptureCamera({ onEmotionCaptured, onClose, childId, chil
               {result.detectedEmotions.map((emotion, i) => (
                 <Badge
                   key={i}
-                  className={`${emotionColors[emotion] || 'bg-gray-500'} text-white`}
+                  className={`${emotionColors[emotion] || 'bg-muted-foreground'} text-white`}
                 >
                   {emotion}
                 </Badge>

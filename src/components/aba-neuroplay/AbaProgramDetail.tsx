@@ -190,7 +190,7 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
 function InterventionRow({ intervention, onClick }: { intervention: any; onClick: () => void }) {
   const stats = useAbaProgressStats(intervention.id);
   const TrendIcon = stats.trend === 'up' ? TrendingUp : stats.trend === 'down' ? TrendingDown : Minus;
-  const trendColor = stats.trend === 'up' ? 'text-emerald-500' : stats.trend === 'down' ? 'text-destructive' : 'text-muted-foreground';
+  const trendColor = stats.trend === 'up' ? 'text-success' : stats.trend === 'down' ? 'text-destructive' : 'text-muted-foreground';
 
   return (
     <div

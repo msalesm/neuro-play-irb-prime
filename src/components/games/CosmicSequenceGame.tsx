@@ -407,8 +407,8 @@ export const CosmicSequenceGame = ({
               className={`
                 w-3 h-3 rounded-full transition-all duration-300
                 ${idx < gameState.playerSequence.length 
-                  ? 'bg-green-400 scale-125' 
-                  : 'bg-gray-600 scale-100'
+                  ? 'bg-success scale-125' 
+                  : 'bg-muted scale-100'
                 }
               `}
             />

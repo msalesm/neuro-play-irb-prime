@@ -162,7 +162,7 @@ export function SmartInsightsPanel({ childId, compact = false }: SmartInsightsPa
               <p className="text-xs text-muted-foreground">Sessões/semana</p>
             </div>
             <div className="bg-background/80 rounded-lg p-3 text-center">
-              <Target className="h-4 w-4 mx-auto mb-1 text-emerald-500" />
+              <Target className="h-4 w-4 mx-auto mb-1 text-success" />
               <p className="text-lg font-bold">{childContext.recentPerformance.averageAccuracy.toFixed(0)}%</p>
               <p className="text-xs text-muted-foreground">Acurácia média</p>
             </div>
