@@ -6,8 +6,8 @@
  * Exports to structured data (PDF generation handled by UI layer).
  */
 
-import type { UnifiedProfile, DomainScore } from './behavioral-profile-engine';
-import type { AppRole } from './roles';
+import type { UnifiedProfile, DomainScore } from '@/modules/behavioral/engine';
+import type { AppRole } from '@/core/roles';
 
 // ─── Types ────────────────────────────────────────────────
 

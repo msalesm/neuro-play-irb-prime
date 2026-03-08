@@ -6,7 +6,7 @@
  * NO clinical diagnoses - educational/behavioral profiles only.
  */
 
-import type { CognitiveDomain, GameMetrics } from './game-engine';
+import type { CognitiveDomain, GameMetrics } from '@/modules/games/engine';
 import type { SocioemotionalMetrics } from '@/hooks/useStoryEngine';
 import type { ExecutiveMetrics } from '@/hooks/useExecutiveRoutine';
 
