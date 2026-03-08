@@ -123,9 +123,9 @@ export function ClassPedagogicalReport({
   };
 
   const getTrendIcon = (trend: 'up' | 'down' | 'stable') => {
-    if (trend === 'up') return <TrendingUp className="h-4 w-4 text-green-500" />;
-    if (trend === 'down') return <TrendingDown className="h-4 w-4 text-red-500" />;
-    return <div className="h-4 w-4 bg-gray-300 rounded-full" />;
+    if (trend === 'up') return <TrendingUp className="h-4 w-4 text-success" />;
+    if (trend === 'down') return <TrendingDown className="h-4 w-4 text-destructive" />;
+    return <div className="h-4 w-4 bg-muted-foreground rounded-full" />;
   };
 
   const needsAttentionStudents = students.filter(s => s.needsAttention);
@@ -173,17 +173,17 @@ export function ClassPedagogicalReport({
                 <p className="text-xs text-muted-foreground">Total Alunos</p>
               </div>
               <div className="p-4 bg-muted rounded-lg text-center">
-                <CheckCircle2 className="h-5 w-5 mx-auto mb-2 text-green-500" />
+                <CheckCircle2 className="h-5 w-5 mx-auto mb-2 text-success" />
                 <p className="text-2xl font-bold">{classStats.activeStudents}</p>
                 <p className="text-xs text-muted-foreground">Ativos</p>
               </div>
               <div className="p-4 bg-muted rounded-lg text-center">
-                <Brain className="h-5 w-5 mx-auto mb-2 text-blue-500" />
+                <Brain className="h-5 w-5 mx-auto mb-2 text-primary" />
                 <p className="text-2xl font-bold">{classStats.totalSessions}</p>
                 <p className="text-xs text-muted-foreground">Sessões</p>
               </div>
               <div className="p-4 bg-muted rounded-lg text-center">
-                <Target className="h-5 w-5 mx-auto mb-2 text-purple-500" />
+                <Target className="h-5 w-5 mx-auto mb-2 text-secondary" />
                 <p className="text-2xl font-bold">{classStats.avgAccuracy.toFixed(0)}%</p>
                 <p className="text-xs text-muted-foreground">Precisão Média</p>
               </div>
@@ -230,7 +230,7 @@ export function ClassPedagogicalReport({
               </div>
             ) : (
               <div className="text-center py-8">
-                <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-3" />
+                <CheckCircle2 className="h-12 w-12 text-success mx-auto mb-3" />
                 <p className="text-muted-foreground">Nenhum aluno necessitando atenção especial</p>
               </div>
             )}
@@ -240,19 +240,19 @@ export function ClassPedagogicalReport({
             {topPerformers.length > 0 ? (
               <div className="space-y-3">
                 {topPerformers.map((student, idx) => (
-                  <div key={student.id} className="p-3 border border-green-200 bg-green-50 dark:bg-green-950/20 rounded-lg">
+                  <div key={student.id} className="p-3 border border-success/20 bg-success/5 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-lg font-bold text-green-600">#{idx + 1}</span>
+                        <span className="text-lg font-bold text-success">#{idx + 1}</span>
                         <span className="font-medium">{student.name}</span>
                         {getTrendIcon(student.trend)}
                       </div>
-                      <Badge className="bg-green-500">{student.avgAccuracy.toFixed(0)}%</Badge>
+                      <Badge className="bg-success">{student.avgAccuracy.toFixed(0)}%</Badge>
                     </div>
                     {student.strengths.length > 0 && (
                       <div className="flex flex-wrap gap-1">
                         {student.strengths.map((strength, idx) => (
-                          <Badge key={idx} variant="outline" className="text-xs text-green-700">
+                          <Badge key={idx} variant="outline" className="text-xs text-success">
                             {strength}
                           </Badge>
                         ))}
