@@ -234,6 +234,32 @@ export function AppSidebar() {
       icon: TrendingUp,
     },
     {
+      title: 'Relatórios',
+      path: '/reports',
+      icon: FileText,
+    },
+    {
+      title: 'Pacientes',
+      path: '/therapist/patients',
+      icon: Users,
+    },
+    {
+      title: 'Teleconsultas',
+      path: '/teleconsultas',
+      icon: Stethoscope,
+    },
+    {
+      title: 'ABA+',
+      path: '/aba-integration',
+      icon: Activity,
+      badge: 'Novo',
+    },
+    {
+      title: 'ABA NeuroPlay',
+      path: '/aba-neuroplay',
+      icon: Activity,
+    },
+    {
       title: 'Neuro Play Educação',
       path: '/educacao',
       icon: School,
@@ -252,12 +278,6 @@ export function AppSidebar() {
       title: 'Gerenciar Usuários',
       path: '/admin/users',
       icon: Users,
-    },
-    {
-      title: 'ABA+',
-      path: '/aba-integration',
-      icon: Activity,
-      badge: 'Novo',
     },
     {
       title: 'Clube dos Pais',
