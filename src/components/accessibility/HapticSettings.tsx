@@ -36,13 +36,13 @@ export function HapticSettings() {
         <CardContent className="space-y-4">
           {isIOS ? (
             <>
-              <div className="flex items-start gap-3 p-4 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900 rounded-lg">
-                <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-4 bg-warning/10 border border-warning/20 rounded-lg">
+                <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-orange-900 dark:text-orange-200">
+                  <p className="text-sm font-medium text-foreground">
                     Limitação do iPhone/iPad
                   </p>
-                  <p className="text-sm text-orange-800 dark:text-orange-300">
+                  <p className="text-sm text-muted-foreground">
                     A Apple não permite vibração em aplicativos web abertos no Safari. 
                     Esta é uma restrição de segurança do iOS.
                   </p>
@@ -132,7 +132,7 @@ export function HapticSettings() {
             <RadioGroupItem value="strong" id="strong" />
             <Label htmlFor="strong" className="flex-1 cursor-pointer">
               <div className="flex items-center gap-2">
-                <Vibrate className="w-4 h-4 text-orange-500" />
+                <Vibrate className="w-4 h-4 text-warning" />
                 <div>
                   <p className="font-medium">Forte</p>
                   <p className="text-sm text-muted-foreground">Vibrações intensas e longas</p>
@@ -162,8 +162,8 @@ export function HapticSettings() {
         </div>
 
         {isNative && (
-          <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 rounded-lg p-4">
-            <p className="text-sm text-green-900 dark:text-green-200">
+          <div className="bg-success/10 border border-success/20 rounded-lg p-4">
+            <p className="text-sm text-foreground">
               ✓ <strong>App Nativo Detectado:</strong> Usando feedback háptico nativo do sistema operacional 
               para melhor desempenho e precisão.
             </p>

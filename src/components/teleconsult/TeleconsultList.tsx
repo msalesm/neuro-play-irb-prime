@@ -76,7 +76,7 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
     const date = new Date(scheduledAt);
     
     if (status === 'completed') {
-      return <Badge className="bg-green-500/20 text-green-600 border-green-500/30">Concluída</Badge>;
+      return <Badge className="bg-success/20 text-success border-success/30">Concluída</Badge>;
     }
     if (status === 'cancelled') {
       return <Badge variant="destructive">Cancelada</Badge>;
@@ -91,7 +91,7 @@ export function TeleconsultList({ onStartSession, onViewRecord }: TeleconsultLis
       return <Badge className="bg-primary/20 text-primary border-primary/30">Hoje</Badge>;
     }
     if (isTomorrow(date)) {
-      return <Badge className="bg-yellow-500/20 text-yellow-600 border-yellow-500/30">Amanhã</Badge>;
+      return <Badge className="bg-warning/20 text-warning border-warning/30">Amanhã</Badge>;
     }
     return <Badge variant="outline">Agendada</Badge>;
   };
