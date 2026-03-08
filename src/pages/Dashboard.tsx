@@ -131,16 +131,10 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Card>
-          <CardHeader>
-            <CardTitle>Carregando...</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-3"></div>
+          <p className="text-sm text-muted-foreground">Carregando...</p>
+        </div>
       </div>
     );
   }
@@ -155,88 +149,76 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-background to-secondary/20 pb-32">
-      <div className="container mx-auto px-4 py-8 space-y-8">
-        {/* Welcome Card - Primary Hero */}
-        <Card className="backdrop-blur-sm bg-card/80 border-border shadow-2xl relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-primary/20 via-background to-secondary/20 pb-28">
+      <div className="container mx-auto px-4 py-4 md:py-8 space-y-4 md:space-y-8">
+        {/* Welcome Card */}
+        <Card className="backdrop-blur-sm bg-card/80 border-border shadow-lg relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 opacity-50" />
-          <CardHeader className="relative">
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+          <CardHeader className="relative pb-3 md:pb-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <CardTitle className="text-xl md:text-3xl font-bold text-foreground mb-1">
                   Bem-vindo de volta! 👋
                 </CardTitle>
-                <p className="text-muted-foreground text-base md:text-lg">
+                <p className="text-muted-foreground text-sm md:text-lg">
                   Continue sua jornada de aprendizado
                 </p>
               </div>
-              <Button variant="secondary" asChild aria-label="Ir para perfil">
+              <Button variant="secondary" asChild size="sm" className="shrink-0">
                 <Link to="/profile">
-                  <Users className="w-4 h-4 mr-2" aria-hidden="true" />
-                  Perfil
+                  <Users className="w-4 h-4 mr-1.5" />
+                  <span className="hidden sm:inline">Perfil</span>
                 </Link>
               </Button>
             </div>
           </CardHeader>
         </Card>
 
-        {/* Quick Actions - Secondary CTA Section */}
-        <Card className="backdrop-blur-sm bg-card/60 border-border shadow-lg relative overflow-hidden">
+        {/* Quick Actions */}
+        <Card className="backdrop-blur-sm bg-card/60 border-border shadow-md relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5" />
-          <CardHeader className="relative">
+          <CardHeader className="relative pb-2 md:pb-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-foreground text-xl">Ações Rápidas</CardTitle>
+              <CardTitle className="text-foreground text-lg">Ações Rápidas</CardTitle>
               {stats && stats.total_sessions && stats.total_sessions > 0 && (
-                <Badge variant="secondary" aria-label={`${stats.total_sessions} sessões completadas`}>
-                  {stats.total_sessions} sessões completadas
+                <Badge variant="secondary" className="text-xs">
+                  {stats.total_sessions} sessões
                 </Badge>
               )}
             </div>
           </CardHeader>
           <CardContent className="relative">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-2 md:gap-4">
               <Button 
                 variant="default" 
-                size="lg" 
-                className="h-24 shadow-md hover:shadow-lg transition-shadow" 
+                className="h-16 md:h-24 shadow-md flex flex-col items-center justify-center gap-1" 
                 asChild
-                aria-label="Jogar agora"
               >
                 <Link to="/games">
-                  <div className="text-center">
-                    <Activity className="w-8 h-8 mx-auto mb-2" aria-hidden="true" />
-                    <div>Jogar Agora</div>
-                  </div>
+                  <Activity className="w-5 h-5 md:w-8 md:h-8" />
+                  <span className="text-xs md:text-sm">Jogar</span>
                 </Link>
               </Button>
               
               <Button 
                 variant="outline" 
-                size="lg" 
-                className="h-24 bg-card/50 border-border text-foreground hover:bg-accent hover:shadow-md transition-shadow" 
+                className="h-16 md:h-24 bg-card/50 border-border text-foreground hover:bg-accent flex flex-col items-center justify-center gap-1" 
                 asChild
-                aria-label="Fazer avaliação diagnóstica"
               >
                 <Link to="/diagnostico-completo">
-                  <div className="text-center">
-                    <AlertTriangle className="w-8 h-8 mx-auto mb-2" aria-hidden="true" />
-                    <div>Avaliação</div>
-                  </div>
+                  <AlertTriangle className="w-5 h-5 md:w-8 md:h-8" />
+                  <span className="text-xs md:text-sm">Avaliação</span>
                 </Link>
               </Button>
               
               <Button 
                 variant="outline" 
-                size="lg" 
-                className="h-24 bg-card/50 border-border text-foreground hover:bg-accent hover:shadow-md transition-shadow" 
+                className="h-16 md:h-24 bg-card/50 border-border text-foreground hover:bg-accent flex flex-col items-center justify-center gap-1" 
                 asChild
-                aria-label="Ver minhas conquistas"
               >
                 <Link to="/learning-dashboard">
-                  <div className="text-center">
-                    <Trophy className="w-8 h-8 mx-auto mb-2" aria-hidden="true" />
-                    <div>Conquistas</div>
-                  </div>
+                  <Trophy className="w-5 h-5 md:w-8 md:h-8" />
+                  <span className="text-xs md:text-sm">Conquistas</span>
                 </Link>
               </Button>
             </div>
@@ -249,76 +231,66 @@ export default function Dashboard() {
           streakGoal={7}
         />
 
-        {/* Stats Grid - Subtle Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" role="region" aria-label="Estatísticas do usuário">
-          <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5" />
-            <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Nível Atual</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+        {/* Stats Grid */}
+        <div className="grid grid-cols-3 gap-2 md:gap-4">
+          <Card className="backdrop-blur-sm bg-card/40 border-border/50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 px-3 md:px-6 pt-3 md:pt-6">
+              <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">Nível</CardTitle>
+              <TrendingUp className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent className="relative">
-              <div className="text-2xl font-bold text-foreground">{stats?.level || 1}</div>
-              <div className="space-y-2">
-                <Progress value={progressToNext} className="h-2 bg-muted" aria-label={`Progresso: ${currentXP % 100} de 100 XP`} />
-                <p className="text-xs text-muted-foreground">
-                  {currentXP % 100}/100 XP para próximo nível
-                </p>
-              </div>
+            <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+              <div className="text-lg md:text-2xl font-bold text-foreground">{stats?.level || 1}</div>
+              <Progress value={progressToNext} className="h-1.5 md:h-2 bg-muted mt-1" />
+              <p className="text-[10px] md:text-xs text-muted-foreground mt-1">
+                {currentXP % 100}/100 XP
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-warning/5 to-warning/5" />
-            <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Estrelas</CardTitle>
-              <Star className="h-4 w-4 text-warning" aria-hidden="true" />
+          <Card className="backdrop-blur-sm bg-card/40 border-border/50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 px-3 md:px-6 pt-3 md:pt-6">
+              <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">Estrelas</CardTitle>
+              <Star className="h-3 w-3 md:h-4 md:w-4 text-warning" />
             </CardHeader>
-            <CardContent className="relative">
-              <div className="text-2xl font-bold text-warning">{stats?.total_stars || 0}</div>
-              <p className="text-xs text-muted-foreground">Conquistas</p>
+            <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+              <div className="text-lg md:text-2xl font-bold text-warning">{stats?.total_stars || 0}</div>
+              <p className="text-[10px] md:text-xs text-muted-foreground">Conquistas</p>
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-card/40 border-border/50 hover:bg-card/60 hover:border-border transition-all">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent/5" />
-            <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Experiência</CardTitle>
-              <Trophy className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+          <Card className="backdrop-blur-sm bg-card/40 border-border/50">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 px-3 md:px-6 pt-3 md:pt-6">
+              <CardTitle className="text-xs md:text-sm font-medium text-muted-foreground">XP</CardTitle>
+              <Trophy className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent className="relative">
-              <div className="text-2xl font-bold text-secondary">{stats?.experience_points || 0}</div>
-              <p className="text-xs text-muted-foreground">Pontos</p>
+            <CardContent className="px-3 md:px-6 pb-3 md:pb-6">
+              <div className="text-lg md:text-2xl font-bold text-secondary">{stats?.experience_points || 0}</div>
+              <p className="text-[10px] md:text-xs text-muted-foreground">Pontos</p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="lg:col-span-2 backdrop-blur-sm bg-card/50 border-border relative overflow-hidden shadow-md" role="region" aria-label="Progresso por categoria">
+        {/* Progress + Activity */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+          <Card className="lg:col-span-2 backdrop-blur-sm bg-card/50 border-border relative overflow-hidden shadow-md">
             <div className="absolute inset-0 bg-gradient-to-br from-success/5 to-primary/5" />
-            <CardHeader className="relative">
-              <CardTitle className="text-foreground text-lg">Progresso por Categoria</CardTitle>
+            <CardHeader className="relative pb-2 md:pb-4">
+              <CardTitle className="text-foreground text-base md:text-lg">Progresso por Categoria</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 relative">
+            <CardContent className="space-y-4 md:space-y-6 relative">
               {gameCategories.map((category) => {
                 const Icon = category.icon;
                 return (
-                  <div key={category.name} className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className={`p-2 rounded-lg bg-muted ${category.color}`} aria-hidden="true">
-                        <Icon className="w-6 h-6" />
+                  <div key={category.name} className="flex items-center gap-3">
+                    <div className={`p-1.5 md:p-2 rounded-lg bg-muted ${category.color} shrink-0`}>
+                      <Icon className="w-4 h-4 md:w-6 md:h-6" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between mb-1">
+                        <span className="text-xs md:text-sm font-medium text-foreground">{category.name}</span>
+                        <span className="text-xs md:text-sm text-muted-foreground">{category.progress}%</span>
                       </div>
-                      <div className="flex-1">
-                        <div className="flex justify-between mb-2">
-                          <span className="text-sm font-medium text-foreground">{category.name}</span>
-                          <span className="text-sm text-muted-foreground">{category.progress}%</span>
-                        </div>
-                        <Progress 
-                          value={category.progress} 
-                          className="h-2 bg-muted" 
-                          aria-label={`Progresso em ${category.name}: ${category.progress}%`}
-                        />
-                      </div>
+                      <Progress value={category.progress} className="h-1.5 md:h-2 bg-muted" />
                     </div>
                   </div>
                 );
@@ -326,27 +298,27 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="backdrop-blur-sm bg-card/40 border-border/50 relative overflow-hidden" role="region" aria-label="Atividade recente">
+          <Card className="backdrop-blur-sm bg-card/40 border-border/50 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-accent/5" />
-            <CardHeader className="relative">
-              <CardTitle className="text-foreground text-base">Atividade Recente</CardTitle>
+            <CardHeader className="relative pb-2 md:pb-4">
+              <CardTitle className="text-foreground text-sm md:text-base">Atividade Recente</CardTitle>
             </CardHeader>
             <CardContent className="relative">
               {recentActivities.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {recentActivities.map((activity, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-gradient-to-r from-secondary to-primary rounded-full mt-2" aria-hidden="true" />
-                      <div>
-                        <p className="text-sm font-medium text-foreground">
+                    <div key={index} className="flex items-start gap-2.5">
+                      <div className="w-2 h-2 bg-gradient-to-r from-secondary to-primary rounded-full mt-1.5 shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs md:text-sm font-medium text-foreground truncate">
                           {activity.activity_type === 'game_completed' ? 'Jogo concluído' :
                            activity.activity_type === 'achievement_earned' ? 'Conquista desbloqueada' :
                            activity.activity_type}
                         </p>
                         {activity.topic_name && (
-                          <p className="text-xs text-muted-foreground">{activity.topic_name}</p>
+                          <p className="text-[10px] md:text-xs text-muted-foreground truncate">{activity.topic_name}</p>
                         )}
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-[10px] md:text-xs text-muted-foreground">
                           {new Date(activity.created_at).toLocaleDateString('pt-BR')}
                         </p>
                       </div>
@@ -354,10 +326,10 @@ export default function Dashboard() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">
+                <p className="text-xs md:text-sm text-muted-foreground text-center py-4">
                   Nenhuma atividade recente.
                   <br />
-                  <Link to="/games" className="text-primary hover:underline" aria-label="Começar a jogar agora">
+                  <Link to="/games" className="text-primary hover:underline">
                     Comece jogando agora!
                   </Link>
                 </p>
@@ -367,9 +339,7 @@ export default function Dashboard() {
         </div>
 
         {firstChildProfileId && (
-          <div className="space-y-6">
-            <AchievementsList userId={user?.id || ''} />
-          </div>
+          <AchievementsList userId={user?.id || ''} />
         )}
       </div>
     </div>
