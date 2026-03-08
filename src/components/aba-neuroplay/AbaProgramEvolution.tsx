@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAbaInterventions, useAbaTrials } from '@/hooks/useAbaNeuroPlay';
+import { useAbaInterventions } from '@/hooks/useAbaNeuroPlay';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import {
   LineChart, Line, AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine,
@@ -14,27 +16,36 @@ interface Props {
   childId: string;
 }
 
-function useAllProgramTrials(programId: string) {
+function useAllProgramTrials(programId: string, childId: string) {
   const { data: interventions } = useAbaInterventions(programId);
-  const interventionIds = interventions?.map((i: any) => i.id) || [];
   
-  // Fetch trials for each intervention
-  const trialQueries = interventionIds.map(id => useAbaTrials(id));
-  
-  const allTrials = useMemo(() => {
-    const trials: any[] = [];
-    trialQueries.forEach((q, idx) => {
-      if (q.data) {
-        q.data.forEach(t => trials.push({ 
-          ...t, 
-          skillName: interventions?.[idx]?.aba_np_skills?.skill_name || 'Habilidade'
-        }));
-      }
-    });
-    return trials.sort((a, b) => new Date(a.recorded_at).getTime() - new Date(b.recorded_at).getTime());
-  }, [trialQueries.map(q => q.data), interventions]);
+  // Fetch all trials for this child in one query, then filter by intervention
+  const { data: allTrialsRaw, isLoading } = useQuery({
+    queryKey: ['aba-np-all-trials', childId, programId],
+    queryFn: async () => {
+      const interventionIds = interventions?.map((i: any) => i.id) || [];
+      if (!interventionIds.length) return [];
+      const { data, error } = await supabase
+        .from('aba_np_trials')
+        .select('*')
+        .in('intervention_id', interventionIds)
+        .order('recorded_at', { ascending: true });
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!interventions?.length,
+  });
 
-  return { allTrials, interventions, isLoading: trialQueries.some(q => q.isLoading) };
+  const allTrials = useMemo(() => {
+    if (!allTrialsRaw || !interventions) return [];
+    const interventionMap = new Map(interventions.map((i: any) => [i.id, i.aba_np_skills?.skill_name || 'Habilidade']));
+    return allTrialsRaw.map(t => ({
+      ...t,
+      skillName: interventionMap.get(t.intervention_id) || 'Habilidade',
+    }));
+  }, [allTrialsRaw, interventions]);
+
+  return { allTrials, interventions, isLoading };
 }
 
 const PROMPT_LEVELS: Record<string, number> = {
