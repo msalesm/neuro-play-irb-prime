@@ -58,7 +58,7 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
       // Fetch game sessions for the period
       const { data: sessions } = await supabase
         .from('game_sessions')
-        .select('completed_at, accuracy_percentage, score, game_id, cognitive_games(cognitive_domain)')
+        .select('completed_at, accuracy_percentage, score, game_id, cognitive_games(cognitive_domains)')
         .eq('child_profile_id', childId)
         .eq('completed', true)
         .gte('completed_at', startDate)
@@ -67,7 +67,7 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
       // Fetch previous period for comparison
       const { data: prevSessions } = await supabase
         .from('game_sessions')
-        .select('accuracy_percentage, cognitive_games(cognitive_domain)')
+        .select('accuracy_percentage, cognitive_games(cognitive_domains)')
         .eq('child_profile_id', childId)
         .eq('completed', true)
         .gte('completed_at', previousStart)
@@ -78,7 +78,7 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
       // Calculate current scores by domain
       const domainScores: Record<string, number[]> = {};
       sessions?.forEach((s: any) => {
-        const domain = s.cognitive_games?.cognitive_domain || 'general';
+        const domain = (s.cognitive_games?.cognitive_domains as string[] || [])[0] || 'general';
         if (!domainScores[domain]) domainScores[domain] = [];
         domainScores[domain].push(s.accuracy_percentage || 0);
       });
@@ -92,7 +92,7 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
       // Previous period scores
       const prevDomainScores: Record<string, number[]> = {};
       prevSessions?.forEach((s: any) => {
-        const domain = s.cognitive_games?.cognitive_domain || 'general';
+        const domain = (s.cognitive_games?.cognitive_domains as string[] || [])[0] || 'general';
         if (!prevDomainScores[domain]) prevDomainScores[domain] = [];
         prevDomainScores[domain].push(s.accuracy_percentage || 0);
       });
@@ -109,7 +109,7 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
         const weekKey = format(new Date(s.completed_at), 'yyyy-ww');
         if (!weeklyData[weekKey]) weeklyData[weekKey] = { scores: [], domains: {} };
         weeklyData[weekKey].scores.push(s.accuracy_percentage || 0);
-        const domain = s.cognitive_games?.cognitive_domain || 'general';
+        const domain = (s.cognitive_games?.cognitive_domains as string[] || [])[0] || 'general';
         if (!weeklyData[weekKey].domains[domain]) weeklyData[weekKey].domains[domain] = [];
         weeklyData[weekKey].domains[domain].push(s.accuracy_percentage || 0);
       });
