@@ -5566,6 +5566,116 @@ export type Database = {
         }
         Relationships: []
       }
+      integrated_profiles: {
+        Row: {
+          child_id: string
+          cognitive_attention: number | null
+          cognitive_coordination: number | null
+          cognitive_flexibility: number | null
+          cognitive_inhibition: number | null
+          cognitive_memory: number | null
+          cognitive_overall: number | null
+          cognitive_persistence: number | null
+          created_at: string
+          executive_autonomy_score: number | null
+          executive_completion_rate: number | null
+          executive_consistency_score: number | null
+          executive_organization_index: number | null
+          generated_at: string
+          id: string
+          interpretation: string | null
+          layer1_sessions_count: number | null
+          layer2_executions_count: number | null
+          layer3_decisions_count: number | null
+          recommendations: Json | null
+          socioemotional_empathy: number | null
+          socioemotional_flexibility: number | null
+          socioemotional_impulse_control: number | null
+          socioemotional_overall: number | null
+        }
+        Insert: {
+          child_id: string
+          cognitive_attention?: number | null
+          cognitive_coordination?: number | null
+          cognitive_flexibility?: number | null
+          cognitive_inhibition?: number | null
+          cognitive_memory?: number | null
+          cognitive_overall?: number | null
+          cognitive_persistence?: number | null
+          created_at?: string
+          executive_autonomy_score?: number | null
+          executive_completion_rate?: number | null
+          executive_consistency_score?: number | null
+          executive_organization_index?: number | null
+          generated_at?: string
+          id?: string
+          interpretation?: string | null
+          layer1_sessions_count?: number | null
+          layer2_executions_count?: number | null
+          layer3_decisions_count?: number | null
+          recommendations?: Json | null
+          socioemotional_empathy?: number | null
+          socioemotional_flexibility?: number | null
+          socioemotional_impulse_control?: number | null
+          socioemotional_overall?: number | null
+        }
+        Update: {
+          child_id?: string
+          cognitive_attention?: number | null
+          cognitive_coordination?: number | null
+          cognitive_flexibility?: number | null
+          cognitive_inhibition?: number | null
+          cognitive_memory?: number | null
+          cognitive_overall?: number | null
+          cognitive_persistence?: number | null
+          created_at?: string
+          executive_autonomy_score?: number | null
+          executive_completion_rate?: number | null
+          executive_consistency_score?: number | null
+          executive_organization_index?: number | null
+          generated_at?: string
+          id?: string
+          interpretation?: string | null
+          layer1_sessions_count?: number | null
+          layer2_executions_count?: number | null
+          layer3_decisions_count?: number | null
+          recommendations?: Json | null
+          socioemotional_empathy?: number | null
+          socioemotional_flexibility?: number | null
+          socioemotional_impulse_control?: number | null
+          socioemotional_overall?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integrated_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integrated_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "integrated_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integrated_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       internal_notifications: {
         Row: {
           created_at: string | null
@@ -7108,6 +7218,156 @@ export type Database = {
           },
         ]
       }
+      routine_executions: {
+        Row: {
+          abandoned_at: string | null
+          actual_duration_minutes: number | null
+          autonomy_score: number | null
+          child_id: string | null
+          completed_at: string | null
+          completed_steps: number
+          created_at: string
+          id: string
+          interruptions: number | null
+          notes: string | null
+          planned_duration_minutes: number | null
+          reminders_needed: number | null
+          routine_id: string
+          started_at: string
+          total_steps: number
+          user_id: string
+        }
+        Insert: {
+          abandoned_at?: string | null
+          actual_duration_minutes?: number | null
+          autonomy_score?: number | null
+          child_id?: string | null
+          completed_at?: string | null
+          completed_steps?: number
+          created_at?: string
+          id?: string
+          interruptions?: number | null
+          notes?: string | null
+          planned_duration_minutes?: number | null
+          reminders_needed?: number | null
+          routine_id: string
+          started_at?: string
+          total_steps?: number
+          user_id: string
+        }
+        Update: {
+          abandoned_at?: string | null
+          actual_duration_minutes?: number | null
+          autonomy_score?: number | null
+          child_id?: string | null
+          completed_at?: string | null
+          completed_steps?: number
+          created_at?: string
+          id?: string
+          interruptions?: number | null
+          notes?: string | null
+          planned_duration_minutes?: number | null
+          reminders_needed?: number | null
+          routine_id?: string
+          started_at?: string
+          total_steps?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "routine_executions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_executions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "routine_executions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_executions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_executions_routine_id_fkey"
+            columns: ["routine_id"]
+            isOneToOne: false
+            referencedRelation: "routines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      routine_step_executions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          duration_seconds: number | null
+          execution_id: string
+          id: string
+          latency_seconds: number | null
+          needed_help: boolean | null
+          needed_reminder: boolean | null
+          skipped: boolean | null
+          started_at: string | null
+          step_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          execution_id: string
+          id?: string
+          latency_seconds?: number | null
+          needed_help?: boolean | null
+          needed_reminder?: boolean | null
+          skipped?: boolean | null
+          started_at?: string | null
+          step_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          execution_id?: string
+          id?: string
+          latency_seconds?: number | null
+          needed_help?: boolean | null
+          needed_reminder?: boolean | null
+          skipped?: boolean | null
+          started_at?: string | null
+          step_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "routine_step_executions_execution_id_fkey"
+            columns: ["execution_id"]
+            isOneToOne: false
+            referencedRelation: "routine_executions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_step_executions_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "routine_steps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       routine_steps: {
         Row: {
           audio_url: string | null
@@ -8032,6 +8292,83 @@ export type Database = {
         }
         Relationships: []
       }
+      socioemotional_profiles: {
+        Row: {
+          assessed_at: string
+          child_id: string
+          conflict_avoidance_score: number | null
+          created_at: string
+          data_sources: Json | null
+          empathy_score: number | null
+          frustration_tolerance_score: number | null
+          id: string
+          impulse_control_score: number | null
+          moral_consistency_score: number | null
+          overall_score: number | null
+          social_flexibility_score: number | null
+          updated_at: string
+        }
+        Insert: {
+          assessed_at?: string
+          child_id: string
+          conflict_avoidance_score?: number | null
+          created_at?: string
+          data_sources?: Json | null
+          empathy_score?: number | null
+          frustration_tolerance_score?: number | null
+          id?: string
+          impulse_control_score?: number | null
+          moral_consistency_score?: number | null
+          overall_score?: number | null
+          social_flexibility_score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          assessed_at?: string
+          child_id?: string
+          conflict_avoidance_score?: number | null
+          created_at?: string
+          data_sources?: Json | null
+          empathy_score?: number | null
+          frustration_tolerance_score?: number | null
+          id?: string
+          impulse_control_score?: number | null
+          moral_consistency_score?: number | null
+          overall_score?: number | null
+          social_flexibility_score?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "socioemotional_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "socioemotional_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "socioemotional_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "socioemotional_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       story_assignments: {
         Row: {
           assigned_by: string
@@ -8079,6 +8416,114 @@ export type Database = {
             columns: ["story_id"]
             isOneToOne: false
             referencedRelation: "social_stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      story_decision_points: {
+        Row: {
+          correct_option_index: number | null
+          created_at: string
+          decision_type: string
+          id: string
+          options: Json
+          question_text: string
+          step_order: number
+          story_id: string
+        }
+        Insert: {
+          correct_option_index?: number | null
+          created_at?: string
+          decision_type?: string
+          id?: string
+          options?: Json
+          question_text: string
+          step_order: number
+          story_id: string
+        }
+        Update: {
+          correct_option_index?: number | null
+          created_at?: string
+          decision_type?: string
+          id?: string
+          options?: Json
+          question_text?: string
+          step_order?: number
+          story_id?: string
+        }
+        Relationships: []
+      }
+      story_decisions: {
+        Row: {
+          change_count: number | null
+          changed_answer: boolean | null
+          child_id: string | null
+          created_at: string
+          decision_point_id: string
+          id: string
+          response_time_ms: number | null
+          selected_option_index: number
+          story_id: string
+          user_id: string
+        }
+        Insert: {
+          change_count?: number | null
+          changed_answer?: boolean | null
+          child_id?: string | null
+          created_at?: string
+          decision_point_id: string
+          id?: string
+          response_time_ms?: number | null
+          selected_option_index: number
+          story_id: string
+          user_id: string
+        }
+        Update: {
+          change_count?: number | null
+          changed_answer?: boolean | null
+          child_id?: string | null
+          created_at?: string
+          decision_point_id?: string
+          id?: string
+          response_time_ms?: number | null
+          selected_option_index?: number
+          story_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_decisions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_decisions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "story_decisions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_decisions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_decisions_decision_point_id_fkey"
+            columns: ["decision_point_id"]
+            isOneToOne: false
+            referencedRelation: "story_decision_points"
             referencedColumns: ["id"]
           },
         ]
