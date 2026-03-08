@@ -223,7 +223,6 @@ const App = () => (
                   <Route path="/clinical" element={<L><ClinicalDashboard /></L>} />
                   
                   {/* Games - Navigation */}
-                  <Route path="/game-map" element={<L><GameMap /></L>} />
                   <Route path="/games" element={<L><Games /></L>} />
                   <Route path="/neuroplasticity" element={<L><Neuroplasticity /></L>} />
                   <Route path="/learning-dashboard" element={<L><LearningDashboard /></L>} />
