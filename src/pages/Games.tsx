@@ -414,20 +414,20 @@ export default function Games() {
                     <div className="p-3 md:p-6">
                       <div className="relative z-10">
                         <div className="flex items-center gap-1.5 mb-2 md:mb-4">
-                          <Badge className="bg-destructive/60 text-white border-0 text-[9px] md:text-xs">
+                          <Badge className="bg-destructive/60 text-destructive-foreground border-0 text-[9px] md:text-xs">
                             {game.category}
                           </Badge>
                         </div>
 
-                        <h3 className="font-heading text-sm md:text-xl font-bold mb-1 md:mb-3 text-white">
+                        <h3 className="font-heading text-sm md:text-xl font-bold mb-1 md:mb-3 text-primary-foreground">
                           {game.title}
                         </h3>
 
-                        <p className="text-white/60 text-[10px] md:text-sm mb-3 md:mb-4 leading-relaxed line-clamp-2">
+                        <p className="text-primary-foreground/60 text-[10px] md:text-sm mb-3 md:mb-4 leading-relaxed line-clamp-2">
                           {game.description}
                         </p>
 
-                        <div className="flex items-center gap-3 mb-3 text-[10px] md:text-xs text-white/40">
+                        <div className="flex items-center gap-3 mb-3 text-[10px] md:text-xs text-primary-foreground/40">
                           <span className="flex items-center gap-1"><Target className="h-3 w-3" />{game.ageRange}</span>
                           <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{game.duration}</span>
                         </div>
