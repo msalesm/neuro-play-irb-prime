@@ -452,7 +452,7 @@ export default function ClinicalDashboard() {
                   <Button
                     onClick={handleGenerateReport}
                     disabled={generating || stats.totalSessions === 0}
-                    className="bg-gradient-to-r from-purple-500 to-blue-500"
+                    className="bg-gradient-primary"
                   >
                     {generating ? (
                       <>

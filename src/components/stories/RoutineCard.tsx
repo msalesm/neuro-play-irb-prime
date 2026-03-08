@@ -22,9 +22,9 @@ const getRoutineIcon = (type: string, icon: string) => {
 
 const getRoutineGradient = (type: string) => {
   switch (type) {
-    case 'manha': return 'from-amber-500/20 via-orange-500/10 to-transparent';
-    case 'noite': return 'from-indigo-500/20 via-purple-500/10 to-transparent';
-    case 'escola': return 'from-blue-500/20 via-cyan-500/10 to-transparent';
+    case 'manha': return 'from-warning/20 via-warning/10 to-transparent';
+    case 'noite': return 'from-primary/20 via-primary/10 to-transparent';
+    case 'escola': return 'from-info/20 via-info/10 to-transparent';
     default: return 'from-primary/20 via-secondary/10 to-transparent';
   }
 };
