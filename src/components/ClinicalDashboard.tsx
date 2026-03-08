@@ -318,10 +318,10 @@ export default function ClinicalDashboard() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" role="region" aria-label="Estatísticas clínicas">
-          <Card className="border-l-4 border-l-blue-500">
+          <Card className="border-l-4 border-l-info">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Sessões Totais</CardTitle>
-              <Activity className="h-4 w-4 text-blue-500" aria-hidden="true" />
+              <Activity className="h-4 w-4 text-info" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{stats.totalSessions}</div>
@@ -329,7 +329,7 @@ export default function ClinicalDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-green-500">
+          <Card className="border-l-4 border-l-success">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Testes Completos</CardTitle>
               <CheckCircle className="h-4 w-4 text-success" aria-hidden="true" />
@@ -340,10 +340,10 @@ export default function ClinicalDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-purple-500">
+          <Card className="border-l-4 border-l-primary">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">Pontuação Média</CardTitle>
-              <TrendingUp className="h-4 w-4 text-purple-500" aria-hidden="true" />
+              <TrendingUp className="h-4 w-4 text-primary" aria-hidden="true" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">{stats.averageScore}</div>
@@ -487,13 +487,13 @@ export default function ClinicalDashboard() {
                     </div>
                   </div>
                 ) : (
-                  <div className="flex items-start gap-3 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                    <Brain className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-3 p-4 bg-info/10 border border-info/20 rounded-lg">
+                    <Brain className="w-5 h-5 text-info flex-shrink-0 mt-0.5" />
                      <div className="space-y-2">
-                      <p className="text-sm font-medium text-blue-900">
+                      <p className="text-sm font-medium text-foreground">
                         Sistema de Análise de IA Ativo
                       </p>
-                      <p className="text-sm text-blue-700">
+                      <p className="text-sm text-muted-foreground">
                         Com {stats.totalSessions} sessões completadas, você pode gerar um relatório clínico 
                         completo com análise comportamental automatizada por IA.
                       </p>
