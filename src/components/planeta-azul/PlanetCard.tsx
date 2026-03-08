@@ -123,7 +123,7 @@ export function PlanetCard({ planeta, onClick }: PlanetCardProps) {
               >
                 {jogo.novo && (
                   <Badge 
-                    className="absolute -top-1 -right-1 h-5 px-1.5 text-[10px] bg-gradient-to-r from-amber-500 to-orange-500 border-0 shadow-lg animate-pulse"
+                    className="absolute -top-1 -right-1 h-5 px-1.5 text-[10px] bg-gradient-to-r from-warning to-accent border-0 shadow-lg animate-pulse"
                   >
                     NOVO
                   </Badge>

@@ -449,13 +449,13 @@ export default function TouchMapperKeyboard() {
 
                   {/* Cursor */}
                   <div
-                    className="absolute w-6 h-6 bg-blue-500 rounded-full border-2 border-white shadow-lg transition-all duration-150 flex items-center justify-center"
-                    style={{
-                      left: cursorPosition.x - 12,
-                      top: cursorPosition.y - 12,
-                    }}
-                  >
-                    <div className="w-2 h-2 bg-white rounded-full" />
+                     className="absolute w-6 h-6 bg-primary rounded-full border-2 border-primary-foreground shadow-lg transition-all duration-150 flex items-center justify-center"
+                     style={{
+                       left: cursorPosition.x - 12,
+                       top: cursorPosition.y - 12,
+                     }}
+                   >
+                     <div className="w-2 h-2 bg-primary-foreground rounded-full" />
                   </div>
 
                   {/* Texture Patterns */}
@@ -464,7 +464,7 @@ export default function TouchMapperKeyboard() {
                       key={pattern.id}
                       className={`absolute rounded-full transition-all duration-300 ${
                         pattern.discovered
-                          ? `${textureTypes[pattern.type].color} opacity-80 border-4 border-orange-400`
+                          ? `${textureTypes[pattern.type].color} opacity-80 border-4 border-warning`
                           : 'bg-transparent'
                       }`}
                       style={{
@@ -476,7 +476,7 @@ export default function TouchMapperKeyboard() {
                       }}
                     >
                       {pattern.discovered && (
-                        <div className="flex items-center justify-center h-full text-xs font-bold text-gray-700">
+                        <div className="flex items-center justify-center h-full text-xs font-bold text-foreground/70">
                           {textureTypes[pattern.type].symbol}
                         </div>
                       )}
@@ -486,8 +486,8 @@ export default function TouchMapperKeyboard() {
                   {/* Instructions overlay */}
                   {!isPlaying && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-orange-700 bg-white/90 p-6 rounded-lg">
-                        <Keyboard className="h-16 w-16 mx-auto mb-4 text-orange-500" />
+                       <div className="text-center text-foreground bg-card/90 p-6 rounded-lg">
+                         <Keyboard className="h-16 w-16 mx-auto mb-4 text-warning" />
                         <p className="text-xl font-semibold mb-2">Explore com o teclado</p>
                         <p className="text-sm mb-2">Use WASD ou setas para mover</p>
                         <p className="text-sm">Pressione ESPAÇO para explorar texturas</p>
@@ -502,7 +502,7 @@ export default function TouchMapperKeyboard() {
                     <p className="text-sm font-medium mb-2">Texturas descobertas:</p>
                     <div className="flex gap-2 flex-wrap">
                       {discoveredPatterns.map((pattern, index) => (
-                        <Badge key={index} className={`${textureTypes[pattern.type].color} text-gray-800`}>
+                        <Badge key={index} className={`${textureTypes[pattern.type].color} text-foreground/80`}>
                           {textureTypes[pattern.type].symbol} {textureTypes[pattern.type].name}
                         </Badge>
                       ))}
@@ -530,7 +530,7 @@ export default function TouchMapperKeyboard() {
                   </Button>
                   
                   {discoveredPatterns.length >= 3 && (
-                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700">
+                    <Button onClick={saveSession} size="lg" className="flex items-center gap-2 bg-warning hover:bg-warning/90">
                       <Hand className="h-5 w-5" />
                       Concluir Sessão
                     </Button>
