@@ -223,177 +223,178 @@ const App = () => (
                   
                   {/* Dashboards */}
                   <Route path="/dashboard" element={<Navigate to="/" replace />} />
-                  <Route path="/dashboard-pais" element={<L><DashboardPais /></L>} />
-                  <Route path="/clinical" element={<L><ClinicalDashboard /></L>} />
-                  <Route path="/student-hub" element={<L><StudentHub /></L>} />
+                  <Route path="/dashboard-pais" element={<P roles={['parent']}><DashboardPais /></P>} />
+                  <Route path="/clinical" element={<P roles={['therapist']}><ClinicalDashboard /></P>} />
+                  <Route path="/student-hub" element={<P roles={['patient']}><StudentHub /></P>} />
                   
                   {/* Diagnostics */}
-                  <Route path="/diagnostico-completo" element={<L><DiagnosticoCompleto /></L>} />
+                  <Route path="/diagnostico-completo" element={<P roles={['therapist']}><DiagnosticoCompleto /></P>} />
                   <Route path="/cognitive-diagnostic" element={<Navigate to="/diagnostico-completo" replace />} />
                   <Route path="/diagnostic-tests" element={<Navigate to="/diagnostico-completo" replace />} />
                   
-                  {/* Games - Navigation */}
-                  <Route path="/games" element={<L><Games /></L>} />
-                  <Route path="/neuroplasticity" element={<L><Neuroplasticity /></L>} />
-                  <Route path="/learning-dashboard" element={<L><LearningDashboard /></L>} />
+                  {/* Games - open to all authenticated */}
+                  <Route path="/games" element={<P><Games /></P>} />
+                  <Route path="/neuroplasticity" element={<P><Neuroplasticity /></P>} />
+                  <Route path="/learning-dashboard" element={<P><LearningDashboard /></P>} />
                   
-                  {/* Games - Individual */}
-                  <Route path="/games/memoria-colorida" element={<L><MemoriaColorida /></L>} />
-                  <Route path="/games/caca-foco" element={<L><CacaFoco /></L>} />
-                  <Route path="/games/logica-rapida" element={<L><LogicaRapida /></L>} />
-                  <Route path="/games/ritmo-musical" element={<L><RitmoMusical /></L>} />
-                  <Route path="/games/caca-letras" element={<L><CacaLetras /></L>} />
-                  <Route path="/games/silaba-magica" element={<L><SilabaMagica /></L>} />
-                  <Route path="/games/quebra-cabeca-magico" element={<L><QuebraCabecaMagico /></L>} />
-                  <Route path="/games/aventura-numeros" element={<L><AventuraNumeros /></L>} />
-                  <Route path="/games/contador-historias" element={<L><ContadorHistorias /></L>} />
-                  <Route path="/games/mindful-breath" element={<L><MindfulBreath /></L>} />
-                  <Route path="/games/focus-quest" element={<L><FocusQuest /></L>} />
-                  <Route path="/games/social-scenarios" element={<L><SocialScenarios /></L>} />
-                  <Route path="/games/social-compass" element={<L><SocialCompass /></L>} />
-                  <Route path="/games/emotional-weather" element={<L><EmotionalWeather /></L>} />
-                  <Route path="/games/balance-quest" element={<L><BalanceQuest /></L>} />
-                  <Route path="/games/sensory-flow" element={<L><SensoryFlow /></L>} />
-                  <Route path="/games/visual-sync" element={<L><VisualSync /></L>} />
-                  <Route path="/games/stack-tower" element={<L><StackTower /></L>} />
-                  <Route path="/games/cosmic-sequence" element={<L><CosmicSequence /></L>} />
-                  <Route path="/games/crystal-match" element={<L><CrystalMatch /></L>} />
-                  <Route path="/games/tower-defense" element={<L><TowerDefense /></L>} />
-                  <Route path="/games/biofeedback-demo" element={<L><BiofeedbackDemo /></L>} />
-                  <Route path="/games/touch-mapper" element={<L><TouchMapper /></L>} />
-                  <Route path="/games/touch-mapper-keyboard" element={<L><TouchMapperKeyboard /></L>} />
-                  <Route path="/games/cooperative-puzzle" element={<L><CooperativePuzzle /></L>} />
+                  {/* Games - Individual (open to all authenticated) */}
+                  <Route path="/games/memoria-colorida" element={<P><MemoriaColorida /></P>} />
+                  <Route path="/games/caca-foco" element={<P><CacaFoco /></P>} />
+                  <Route path="/games/logica-rapida" element={<P><LogicaRapida /></P>} />
+                  <Route path="/games/ritmo-musical" element={<P><RitmoMusical /></P>} />
+                  <Route path="/games/caca-letras" element={<P><CacaLetras /></P>} />
+                  <Route path="/games/silaba-magica" element={<P><SilabaMagica /></P>} />
+                  <Route path="/games/quebra-cabeca-magico" element={<P><QuebraCabecaMagico /></P>} />
+                  <Route path="/games/aventura-numeros" element={<P><AventuraNumeros /></P>} />
+                  <Route path="/games/contador-historias" element={<P><ContadorHistorias /></P>} />
+                  <Route path="/games/mindful-breath" element={<P><MindfulBreath /></P>} />
+                  <Route path="/games/focus-quest" element={<P><FocusQuest /></P>} />
+                  <Route path="/games/social-scenarios" element={<P><SocialScenarios /></P>} />
+                  <Route path="/games/social-compass" element={<P><SocialCompass /></P>} />
+                  <Route path="/games/emotional-weather" element={<P><EmotionalWeather /></P>} />
+                  <Route path="/games/balance-quest" element={<P><BalanceQuest /></P>} />
+                  <Route path="/games/sensory-flow" element={<P><SensoryFlow /></P>} />
+                  <Route path="/games/visual-sync" element={<P><VisualSync /></P>} />
+                  <Route path="/games/stack-tower" element={<P><StackTower /></P>} />
+                  <Route path="/games/cosmic-sequence" element={<P><CosmicSequence /></P>} />
+                  <Route path="/games/crystal-match" element={<P><CrystalMatch /></P>} />
+                  <Route path="/games/tower-defense" element={<P><TowerDefense /></P>} />
+                  <Route path="/games/biofeedback-demo" element={<P><BiofeedbackDemo /></P>} />
+                  <Route path="/games/touch-mapper" element={<P><TouchMapper /></P>} />
+                  <Route path="/games/touch-mapper-keyboard" element={<P><TouchMapperKeyboard /></P>} />
+                  <Route path="/games/cooperative-puzzle" element={<P><CooperativePuzzle /></P>} />
                   
                   {/* Games - Phase System */}
-                  <Route path="/games/executive-processing-phases" element={<L><ExecutiveProcessingPhases /></L>} />
-                  <Route path="/games/attention-sustained-phases" element={<L><AttentionSustainedPhases /></L>} />
-                  <Route path="/games/attention-sustained-play" element={<L><AttentionSustainedPlay /></L>} />
-                  <Route path="/games/foco-rapido-phases" element={<L><FocoRapidoPhases /></L>} />
-                  <Route path="/games/foco-rapido-play" element={<L><FocoRapido /></L>} />
-                  <Route path="/games/cognitive-flexibility-phases" element={<L><CognitiveFlexibilityPhases /></L>} />
-                  <Route path="/games/cognitive-flexibility-play" element={<L><CognitiveFlexibilityPlay /></L>} />
-                  <Route path="/games/visuomotor-coordination" element={<L><VisuomotorCoordination /></L>} />
-                  <Route path="/games/behavioral-persistence" element={<L><BehavioralPersistence /></L>} />
-                  <Route path="/bateria-cognitiva" element={<L><CognitiveBattery /></L>} />
+                  <Route path="/games/executive-processing-phases" element={<P><ExecutiveProcessingPhases /></P>} />
+                  <Route path="/games/attention-sustained-phases" element={<P><AttentionSustainedPhases /></P>} />
+                  <Route path="/games/attention-sustained-play" element={<P><AttentionSustainedPlay /></P>} />
+                  <Route path="/games/foco-rapido-phases" element={<P><FocoRapidoPhases /></P>} />
+                  <Route path="/games/foco-rapido-play" element={<P><FocoRapido /></P>} />
+                  <Route path="/games/cognitive-flexibility-phases" element={<P><CognitiveFlexibilityPhases /></P>} />
+                  <Route path="/games/cognitive-flexibility-play" element={<P><CognitiveFlexibilityPlay /></P>} />
+                  <Route path="/games/visuomotor-coordination" element={<P><VisuomotorCoordination /></P>} />
+                  <Route path="/games/behavioral-persistence" element={<P><BehavioralPersistence /></P>} />
+                  <Route path="/bateria-cognitiva" element={<P><CognitiveBattery /></P>} />
                   
                   {/* Games - Standalone */}
-                  <Route path="/games/phonological-processing" element={<L><PhonologicalProcessing /></L>} />
-                  <Route path="/games/memory-workload" element={<L><MemoryWorkload /></L>} />
-                  <Route path="/games/theory-of-mind" element={<L><TheoryOfMind /></L>} />
-                  <Route path="/games/emotion-lab" element={<L><EmotionLab /></L>} />
-                  <Route path="/games/spatial-architect" element={<L><SpatialArchitect /></L>} />
+                  <Route path="/games/phonological-processing" element={<P><PhonologicalProcessing /></P>} />
+                  <Route path="/games/memory-workload" element={<P><MemoryWorkload /></P>} />
+                  <Route path="/games/theory-of-mind" element={<P><TheoryOfMind /></P>} />
+                  <Route path="/games/emotion-lab" element={<P><EmotionLab /></P>} />
+                  <Route path="/games/spatial-architect" element={<P><SpatialArchitect /></P>} />
+                  <Route path="/games/memory-sequence-builder" element={<P><MemorySequenceBuilder /></P>} />
                   
                   {/* Gamification & Student */}
-                  <Route path="/sistema-planeta-azul" element={<L><SistemaPlanetaAzul /></L>} />
-                  <Route path="/planeta/:planetaId" element={<L><PlanetaDetalhes /></L>} />
-                  <Route path="/avatar-evolution" element={<L><AvatarEvolutionPage /></L>} />
-                  <Route path="/conquistas" element={<L><AchievementsPage /></L>} />
-                  <Route path="/mapa" element={<L><WorldMap /></L>} />
+                  <Route path="/sistema-planeta-azul" element={<P><SistemaPlanetaAzul /></P>} />
+                  <Route path="/planeta/:planetaId" element={<P><PlanetaDetalhes /></P>} />
+                  <Route path="/avatar-evolution" element={<P roles={['patient']}><AvatarEvolutionPage /></P>} />
+                  <Route path="/conquistas" element={<P><AchievementsPage /></P>} />
+                  <Route path="/mapa" element={<P><WorldMap /></P>} />
                   
                   {/* Screening */}
-                  <Route path="/screening" element={<L><ScreeningSelection /></L>} />
-                  <Route path="/screening/dislexia" element={<L><DislexiaScreening /></L>} />
-                  <Route path="/screening/tdah" element={<L><TDAHScreening /></L>} />
-                  <Route path="/screening/tea" element={<L><TEAScreening /></L>} />
-                  <Route path="/screening/result" element={<L><ScreeningResult /></L>} />
+                  <Route path="/screening" element={<P roles={['therapist', 'teacher']}><ScreeningSelection /></P>} />
+                  <Route path="/screening/dislexia" element={<P roles={['therapist', 'teacher']}><DislexiaScreening /></P>} />
+                  <Route path="/screening/tdah" element={<P roles={['therapist', 'teacher']}><TDAHScreening /></P>} />
+                  <Route path="/screening/tea" element={<P roles={['therapist', 'teacher']}><TEAScreening /></P>} />
+                  <Route path="/screening/result" element={<P roles={['therapist', 'teacher']}><ScreeningResult /></P>} />
                   
                   {/* Therapist Routes */}
-                  <Route path="/agenda" element={<L><AgendaClinica /></L>} />
-                  <Route path="/inventario-habilidades" element={<L><InventarioHabilidades /></L>} />
-                  <Route path="/teleconsultas" element={<L><Teleconsultas /></L>} />
-                  <Route path="/teleconsulta/:sessionId" element={<L><TeleconsultaSession /></L>} />
-                  <Route path="/minhas-teleconsultas" element={<L><MinhasTeleconsultas /></L>} />
-                  <Route path="/agendar-teleconsulta" element={<L><AgendarTeleconsulta /></L>} />
-                  <Route path="/therapist/patients" element={<L><TherapistPatients /></L>} />
-                  <Route path="/therapist/patient/:patientId" element={<L><TherapistDashboard /></L>} />
-                  <Route path="/prontuario/:childId" element={<L><ProntuarioUnificado /></L>} />
-                  <Route path="/anamnese" element={<L><AnamneseList /></L>} />
-                  <Route path="/anamnese/:childId" element={<L><AnamneseInfantil /></L>} />
-                  <Route path="/therapeutic-chat" element={<L><TherapeuticChatPage /></L>} />
+                  <Route path="/agenda" element={<P roles={['therapist', 'parent']}><AgendaClinica /></P>} />
+                  <Route path="/inventario-habilidades" element={<P roles={['therapist']}><InventarioHabilidades /></P>} />
+                  <Route path="/teleconsultas" element={<P roles={['therapist']}><Teleconsultas /></P>} />
+                  <Route path="/teleconsulta/:sessionId" element={<P roles={['therapist', 'parent']}><TeleconsultaSession /></P>} />
+                  <Route path="/minhas-teleconsultas" element={<P roles={['parent']}><MinhasTeleconsultas /></P>} />
+                  <Route path="/agendar-teleconsulta" element={<P roles={['parent']}><AgendarTeleconsulta /></P>} />
+                  <Route path="/therapist/patients" element={<P roles={['therapist']}><TherapistPatients /></P>} />
+                  <Route path="/therapist/patient/:patientId" element={<P roles={['therapist']}><TherapistDashboard /></P>} />
+                  <Route path="/prontuario/:childId" element={<P roles={['therapist']}><ProntuarioUnificado /></P>} />
+                  <Route path="/anamnese" element={<P roles={['therapist']}><AnamneseList /></P>} />
+                  <Route path="/anamnese/:childId" element={<P roles={['therapist']}><AnamneseInfantil /></P>} />
+                  <Route path="/therapeutic-chat" element={<P roles={['therapist']}><TherapeuticChatPage /></P>} />
                   <Route path="/chat" element={<Navigate to="/therapeutic-chat" replace />} />
                   
                   {/* Teacher Routes */}
-                  <Route path="/teacher-dashboard" element={<L><TeacherDashboard /></L>} />
-                  <Route path="/teacher/classes" element={<L><TeacherClasses /></L>} />
-                  <Route path="/teacher/class/:classId" element={<L><TeacherClassView /></L>} />
-                  <Route path="/teacher/student/:studentId" element={<L><TeacherStudentView /></L>} />
-                  <Route path="/pei" element={<L><PEIView /></L>} />
-                  <Route path="/pei/:patientId" element={<L><PEIView /></L>} />
+                  <Route path="/teacher-dashboard" element={<P roles={['teacher']}><TeacherDashboard /></P>} />
+                  <Route path="/teacher/classes" element={<P roles={['teacher']}><TeacherClasses /></P>} />
+                  <Route path="/teacher/class/:classId" element={<P roles={['teacher']}><TeacherClassView /></P>} />
+                  <Route path="/teacher/student/:studentId" element={<P roles={['teacher']}><TeacherStudentView /></P>} />
+                  <Route path="/pei" element={<P roles={['therapist', 'teacher']}><PEIView /></P>} />
+                  <Route path="/pei/:patientId" element={<P roles={['therapist', 'teacher']}><PEIView /></P>} />
                   
                   {/* Admin Routes */}
-                  <Route path="/admin" element={<L><AdminDashboard /></L>} />
-                  <Route path="/admin/network" element={<L><AdminNetworkDashboard /></L>} />
-                  <Route path="/admin/users" element={<L><AdminUserManagement /></L>} />
-                  <Route path="/admin/relationships" element={<L><RelationshipsManager /></L>} />
-                  <Route path="/admin/risk-maps" element={<L><AdminRiskMaps /></L>} />
-                  <Route path="/admin/stories" element={<L><AdminStories /></L>} />
-                  <Route path="/admin/story-editor" element={<L><StoryEditor /></L>} />
-                  <Route path="/admin/story-editor/:storyId" element={<L><StoryEditor /></L>} />
-                  <Route path="/admin/content" element={<L><ContentManager /></L>} />
-                  <Route path="/admin/clube-pais" element={<L><AdminClubePais /></L>} />
-                  <Route path="/operations" element={<L><OperationsCenter /></L>} />
+                  <Route path="/admin" element={<P roles={['admin']}><AdminDashboard /></P>} />
+                  <Route path="/admin/network" element={<P roles={['admin']}><AdminNetworkDashboard /></P>} />
+                  <Route path="/admin/users" element={<P roles={['admin']}><AdminUserManagement /></P>} />
+                  <Route path="/admin/relationships" element={<P roles={['admin']}><RelationshipsManager /></P>} />
+                  <Route path="/admin/risk-maps" element={<P roles={['admin']}><AdminRiskMaps /></P>} />
+                  <Route path="/admin/stories" element={<P roles={['admin']}><AdminStories /></P>} />
+                  <Route path="/admin/story-editor" element={<P roles={['admin']}><StoryEditor /></P>} />
+                  <Route path="/admin/story-editor/:storyId" element={<P roles={['admin']}><StoryEditor /></P>} />
+                  <Route path="/admin/content" element={<P roles={['admin']}><ContentManager /></P>} />
+                  <Route path="/admin/clube-pais" element={<P roles={['admin']}><AdminClubePais /></P>} />
+                  <Route path="/operations" element={<P roles={['admin']}><OperationsCenter /></P>} />
                   
-                  {/* ABA (single route) */}
-                  <Route path="/aba-neuroplay" element={<L><AbaNeuroPlay /></L>} />
+                  {/* ABA */}
+                  <Route path="/aba-neuroplay" element={<P roles={['therapist']}><AbaNeuroPlay /></P>} />
                   <Route path="/aba-integration" element={<Navigate to="/aba-neuroplay" replace />} />
                   
-                  {/* Stories */}
-                  <Route path="/stories" element={<L><SocialStories /></L>} />
-                  <Route path="/stories/:storyId" element={<L><StoryReader /></L>} />
+                  {/* Stories (open to all authenticated) */}
+                  <Route path="/stories" element={<P><SocialStories /></P>} />
+                  <Route path="/stories/:storyId" element={<P><StoryReader /></P>} />
                   
-                  {/* Reports & Analytics (consolidated) */}
-                  <Route path="/relatorios" element={<L><UnifiedReports /></L>} />
+                  {/* Reports & Analytics */}
+                  <Route path="/relatorios" element={<P roles={['therapist', 'teacher', 'parent']}><UnifiedReports /></P>} />
                   <Route path="/intelligent-reports" element={<Navigate to="/relatorios" replace />} />
                   <Route path="/reports" element={<Navigate to="/relatorios" replace />} />
-                  <Route path="/risk-analysis" element={<L><RiskAnalysisPage /></L>} />
-                  <Route path="/emotional-history" element={<L><EmotionalHistoryDashboard /></L>} />
-                  <Route path="/professional-analytics" element={<L><ProfessionalAnalytics /></L>} />
+                  <Route path="/risk-analysis" element={<P roles={['therapist', 'teacher']}><RiskAnalysisPage /></P>} />
+                  <Route path="/emotional-history" element={<P><EmotionalHistoryDashboard /></P>} />
+                  <Route path="/professional-analytics" element={<P roles={['therapist']}><ProfessionalAnalytics /></P>} />
                   
-                  {/* Routines */}
-                  <Route path="/rotinas" element={<L><RoutinesPage /></L>} />
-                  <Route path="/rotinas/:routineId" element={<L><RoutineViewer /></L>} />
+                  {/* Routines (open to all authenticated) */}
+                  <Route path="/rotinas" element={<P><RoutinesPage /></P>} />
+                  <Route path="/rotinas/:routineId" element={<P><RoutineViewer /></P>} />
                   
                   {/* Education */}
-                  <Route path="/educacao" element={<L><EducacaoDashboard /></L>} />
-                  <Route path="/escola-dashboard" element={<L><SchoolDirectorDashboard /></L>} />
-                  <Route path="/secretaria-educacao" element={<L><SecretariaDashboard /></L>} />
-                  <Route path="/training" element={<L><ParentTraining /></L>} />
-                  <Route path="/training/:moduleId" element={<L><TrainingModule /></L>} />
-                  <Route path="/parent-coaching" element={<L><ParentCoaching /></L>} />
+                  <Route path="/educacao" element={<P roles={['teacher']}><EducacaoDashboard /></P>} />
+                  <Route path="/escola-dashboard" element={<P roles={['teacher']}><SchoolDirectorDashboard /></P>} />
+                  <Route path="/secretaria-educacao" element={<P roles={['admin']}><SecretariaDashboard /></P>} />
+                  <Route path="/training" element={<P><ParentTraining /></P>} />
+                  <Route path="/training/:moduleId" element={<P><TrainingModule /></P>} />
+                  <Route path="/parent-coaching" element={<P roles={['parent']}><ParentCoaching /></P>} />
                   
                   {/* Community & Messaging */}
-                  <Route path="/comunidade" element={<L><Community /></L>} />
-                  <Route path="/mensagens" element={<L><SecureMessaging /></L>} />
+                  <Route path="/comunidade" element={<P><Community /></P>} />
+                  <Route path="/mensagens" element={<P><SecureMessaging /></P>} />
                   
                   {/* AI → redirect to relatorios */}
                   <Route path="/ia-contextual" element={<Navigate to="/relatorios" replace />} />
                   
                   {/* Institutional & Billing */}
-                  <Route path="/institutional" element={<L><InstitutionalDashboard /></L>} />
-                  <Route path="/assinatura" element={<L><Assinatura /></L>} />
-                  <Route path="/faturamento" element={<L><BillingDashboard /></L>} />
-                  <Route path="/impacto" element={<L><ImpactDashboard /></L>} />
+                  <Route path="/institutional" element={<P roles={['admin']}><InstitutionalDashboard /></P>} />
+                  <Route path="/assinatura" element={<P roles={['parent']}><Assinatura /></P>} />
+                  <Route path="/faturamento" element={<P roles={['admin']}><BillingDashboard /></P>} />
+                  <Route path="/impacto" element={<P roles={['admin']}><ImpactDashboard /></P>} />
                   
-                  {/* Privacy & Compliance (consolidated) */}
-                  <Route path="/privacidade" element={<L><PrivacyCompliancePage /></L>} />
+                  {/* Privacy & Compliance */}
+                  <Route path="/privacidade" element={<P><PrivacyCompliancePage /></P>} />
                   <Route path="/consentimentos" element={<Navigate to="/privacidade" replace />} />
                   <Route path="/governanca-dados" element={<Navigate to="/privacidade" replace />} />
                   <Route path="/admin/compliance" element={<Navigate to="/privacidade" replace />} />
                   
                   {/* Integrations */}
-                  <Route path="/integracoes-api" element={<L><ApiIntegrations /></L>} />
+                  <Route path="/integracoes-api" element={<P roles={['admin']}><ApiIntegrations /></P>} />
                   
                   {/* Clube dos Pais */}
-                  <Route path="/clube-pais" element={<L><ClubePais /></L>} />
-                  <Route path="/parceiro-clube" element={<L><ParceiroClube /></L>} />
+                  <Route path="/clube-pais" element={<P roles={['parent']}><ClubePais /></P>} />
+                  <Route path="/parceiro-clube" element={<P roles={['parent']}><ParceiroClube /></P>} />
                   
-                  {/* Settings & Profile */}
-                  <Route path="/settings" element={<L><Settings /></L>} />
-                  <Route path="/profile" element={<L><Profile /></L>} />
-                  <Route path="/accessibility" element={<L><AccessibilitySettings /></L>} />
-                  <Route path="/instalar" element={<L><InstallApp /></L>} />
-                  <Route path="/platform-manual" element={<L><PlatformManual /></L>} />
-                  <Route path="/beneficios-terapeuticos" element={<L><BeneficiosTerapeuticos /></L>} />
+                  {/* Settings & Profile (open to all authenticated) */}
+                  <Route path="/settings" element={<P><Settings /></P>} />
+                  <Route path="/profile" element={<P><Profile /></P>} />
+                  <Route path="/accessibility" element={<P><AccessibilitySettings /></P>} />
+                  <Route path="/instalar" element={<P><InstallApp /></P>} />
+                  <Route path="/platform-manual" element={<P><PlatformManual /></P>} />
+                  <Route path="/beneficios-terapeuticos" element={<P><BeneficiosTerapeuticos /></P>} />
                   
                   {/* Catch-all */}
                   <Route path="*" element={<NotFound />} />
