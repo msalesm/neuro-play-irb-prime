@@ -215,11 +215,11 @@ export default function ProfessionalAnalytics() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
+          <Card className="bg-gradient-to-br from-info/10 to-info/5 border-info/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <Gamepad2 className="w-5 h-5 text-blue-500" />
+                <div className="p-2 bg-info/20 rounded-lg">
+                  <Gamepad2 className="w-5 h-5 text-info" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{totalGames}</p>
@@ -229,11 +229,11 @@ export default function ProfessionalAnalytics() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
+          <Card className="bg-gradient-to-br from-success/10 to-success/5 border-success/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-500/20 rounded-lg">
-                  <BookOpen className="w-5 h-5 text-green-500" />
+                <div className="p-2 bg-success/20 rounded-lg">
+                  <BookOpen className="w-5 h-5 text-success" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{totalStories}</p>
