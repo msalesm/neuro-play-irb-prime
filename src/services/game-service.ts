@@ -144,29 +144,18 @@ export async function getSessionHistory(profileId: string, gameId: string, limit
 
 export async function saveLearningSession(params: {
   userId: string;
-  gameId: string;
-  gameName: string;
-  score: number;
-  accuracy: number;
-  timeSpent: number;
-  difficulty: number;
-  cognitiveDomainsTargeted: string[];
+  gameType: string;
+  sessionDurationSeconds: number;
   performanceData: Record<string, any>;
 }) {
   const { error } = await supabase
     .from('learning_sessions')
     .insert({
       user_id: params.userId,
-      activity_type: 'game',
-      activity_id: params.gameId,
-      activity_name: params.gameName,
-      score: params.score,
-      accuracy_percentage: params.accuracy,
-      time_spent_seconds: params.timeSpent,
-      difficulty_level: params.difficulty,
-      cognitive_domains_targeted: params.cognitiveDomainsTargeted,
+      game_type: params.gameType,
+      session_duration_seconds: params.sessionDurationSeconds,
       performance_data: params.performanceData,
-      completed_at: new Date().toISOString(),
+      completed: true,
     });
   if (error) console.error('Error saving learning session:', error);
 }

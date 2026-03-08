@@ -5,6 +5,10 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
+
+type AbaTeachingMethod = Database['public']['Enums']['aba_teaching_method'];
+type AbaPromptLevel = Database['public']['Enums']['aba_prompt_level'];
 
 // ============ SKILLS ============
 
@@ -58,10 +62,19 @@ export async function fetchAbaInterventions(programId: string) {
   return data;
 }
 
-export async function createAbaIntervention(intervention: Record<string, any>) {
+export async function createAbaIntervention(intervention: {
+  program_id: string;
+  skill_id: string;
+  baseline_level?: number;
+  target_level?: number;
+  teaching_method?: AbaTeachingMethod;
+  prompting_strategy?: string;
+  reinforcement_type?: string;
+  success_criteria?: string;
+}) {
   const { data, error } = await supabase
     .from('aba_np_interventions')
-    .insert([intervention])
+    .insert(intervention)
     .select()
     .single();
   if (error) throw error;
@@ -85,7 +98,7 @@ export async function recordAbaTrial(trial: {
   child_id: string;
   intervention_id: string;
   correct: boolean;
-  prompt_level: string;
+  prompt_level: AbaPromptLevel;
   latency_ms?: number;
   notes?: string;
   reinforcement_given?: boolean;
@@ -96,7 +109,7 @@ export async function recordAbaTrial(trial: {
 }) {
   const { data, error } = await supabase
     .from('aba_np_trials')
-    .insert([trial as any])
+    .insert(trial)
     .select()
     .single();
   if (error) throw error;

@@ -5,6 +5,9 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
+
+type AppRole = Database['public']['Enums']['app_role'];
 
 // ============ PROFILES ============
 
@@ -40,7 +43,7 @@ export async function fetchUserRoles(userId: string) {
   return (data || []).map(r => r.role);
 }
 
-export async function assignUserRole(userId: string, role: string) {
+export async function assignUserRole(userId: string, role: AppRole) {
   const { error } = await supabase.rpc('assign_role', {
     _user_id: userId,
     _role: role,
@@ -75,11 +78,10 @@ export async function createChild(child: {
   name: string;
   birth_date?: string;
   parent_id: string;
-  neurodevelopmental_conditions?: any;
 }) {
   const { data, error } = await supabase
     .from('children')
-    .insert(child)
+    .insert([child])
     .select()
     .single();
   if (error) throw error;
@@ -102,17 +104,17 @@ export async function requestChildAccess(params: {
   childId: string;
   professionalId: string;
   accessLevel: string;
-  reason?: string;
+  grantedBy: string;
 }) {
   const { data, error } = await supabase
     .from('child_access')
-    .insert({
+    .insert([{
       child_id: params.childId,
       professional_id: params.professionalId,
       access_level: params.accessLevel,
-      reason: params.reason,
+      granted_by: params.grantedBy,
       approval_status: 'pending',
-    })
+    }])
     .select()
     .single();
   if (error) throw error;
