@@ -13,3 +13,9 @@ export { SchoolWeeklyEngagement } from './components/SchoolWeeklyEngagement';
 
 // ── Constants ─────────────────────────────────────────────
 export { EDUCATIONAL_LABELS, QUICK_ACTIVITY_DURATION_MS } from './constants';
+
+// ── Hooks ─────────────────────────────────────────────────
+export { useEducationalSystem } from '@/hooks/useEducationalSystem';
+export { useClassProgress } from '@/hooks/useClassProgress';
+export { useTeacherStudentProgress } from '@/hooks/useTeacherStudentProgress';
+export { useTeacherTraining } from '@/hooks/useTeacherTraining';

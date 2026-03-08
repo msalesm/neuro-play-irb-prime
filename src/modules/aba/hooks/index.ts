@@ -1,8 +1,7 @@
 /**
- * @deprecated Import from '@/modules/aba' instead
- * Backward-compatible re-export
+ * ABA Hooks - Module-local barrel export
  */
-export {
+export { 
   useAbaSkills, useAbaPrograms, useCreateProgram,
   useAbaInterventions, useCreateIntervention,
   useAbaTrials, useRecordTrial,
@@ -10,4 +9,7 @@ export {
   useAbaSessions, useCreateSession, useCompleteSession,
   useAbaGoals, useCreateGoal, useUpdateGoalStatus,
   useAbaClinicalNotes, useCreateClinicalNote,
-} from '@/modules/aba/hooks/useAbaNeuroPlay';
+} from './useAbaNeuroPlay';
+
+export { useAbaNativeData } from './useAbaNativeData';
+export { useAbaIntegration } from './useAbaIntegration';
