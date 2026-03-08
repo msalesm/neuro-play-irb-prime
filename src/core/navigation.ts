@@ -240,6 +240,18 @@ const ADMIN_MOBILE_SECTIONS: NavSection[] = [
  * Get sidebar/mobile-menu sections for a given role
  */
 export function getSidebarSections(role: AppRole | null, isAdmin: boolean): NavSection[] {
+  // Admin sees ALL role areas in the sidebar
+  if (isAdmin) {
+    return [
+      { id: 'admin', label: 'Administração', items: ADMIN_NAV },
+      { id: 'therapist', label: 'Área Clínica', items: THERAPIST_NAV },
+      { id: 'parents', label: 'Área dos Pais', items: PARENT_NAV },
+      { id: 'teacher', label: 'Área do Professor', items: TEACHER_NAV },
+      { id: 'patient', label: 'Área do Paciente', items: PATIENT_NAV },
+      { id: 'settings', label: 'Configurações', items: SETTINGS_NAV },
+    ];
+  }
+
   const sections: NavSection[] = [];
 
   if (role === 'patient') {
@@ -256,10 +268,6 @@ export function getSidebarSections(role: AppRole | null, isAdmin: boolean): NavS
 
   if (role === 'teacher') {
     sections.push({ id: 'teacher', label: 'Área do Professor', items: TEACHER_NAV });
-  }
-
-  if (isAdmin) {
-    sections.push({ id: 'admin', label: 'Administração', items: ADMIN_NAV });
   }
 
   sections.push({ id: 'settings', label: 'Configurações', items: SETTINGS_NAV });
