@@ -315,6 +315,11 @@ export function AppSidebar() {
       items: therapistNavigation,
     });
     navigationGroups.push({
+      id: 'admin-teacher',
+      label: 'Professor',
+      items: teacherNavigation,
+    });
+    navigationGroups.push({
       id: 'admin',
       label: 'Administração',
       items: adminNavigation,
