@@ -21,11 +21,11 @@ interface TexturePattern {
 type SensitivityLevel = 'low' | 'medium' | 'high';
 
 const textureTypes = {
-  smooth: { name: 'Liso', color: 'bg-blue-200', description: 'Superfície lisa e uniforme', symbol: '▓' },
-  rough: { name: 'Áspero', color: 'bg-yellow-300', description: 'Superfície irregular', symbol: '▒' },
-  bumpy: { name: 'Com Relevos', color: 'bg-green-300', description: 'Pequenas elevações', symbol: '░' },
-  soft: { name: 'Macio', color: 'bg-pink-200', description: 'Textura suave', symbol: '▪' },
-  rigid: { name: 'Rígido', color: 'bg-gray-300', description: 'Superfície firme', symbol: '▫' }
+  smooth: { name: 'Liso', color: 'bg-primary/30', description: 'Superfície lisa e uniforme', symbol: '▓' },
+  rough: { name: 'Áspero', color: 'bg-warning/40', description: 'Superfície irregular', symbol: '▒' },
+  bumpy: { name: 'Com Relevos', color: 'bg-success/40', description: 'Pequenas elevações', symbol: '░' },
+  soft: { name: 'Macio', color: 'bg-destructive/20', description: 'Textura suave', symbol: '▪' },
+  rigid: { name: 'Rígido', color: 'bg-muted', description: 'Superfície firme', symbol: '▫' }
 };
 
 const sensitivityLevels = {
@@ -313,17 +313,17 @@ export default function TouchMapperKeyboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-warning/10 to-destructive/10 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 text-orange-900 flex items-center gap-3">
-              <Keyboard className="w-10 h-10" />
-              TouchMapper - Teclado
-            </h1>
-            <p className="text-orange-700">
-              Versão adaptada para notebooks - Use WASD ou setas para navegar
+             <h1 className="font-heading text-4xl font-bold mb-2 text-foreground flex items-center gap-3">
+               <Keyboard className="w-10 h-10" />
+               TouchMapper - Teclado
+             </h1>
+             <p className="text-muted-foreground">
+               Versão adaptada para notebooks - Use WASD ou setas para navegar
             </p>
           </div>
           <div className="flex gap-2">
@@ -346,27 +346,27 @@ export default function TouchMapperKeyboard() {
           {/* Main Game Area */}
           <div className="lg:col-span-3 space-y-4">
             {/* Keyboard Controls Guide */}
-            <Card className="shadow-card bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+            <Card className="shadow-card bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <Keyboard className="h-6 w-6 text-blue-600" />
-                    <div>
-                      <h3 className="font-semibold text-blue-900 mb-1">Controles do Teclado</h3>
-                      <div className="flex gap-4 text-sm text-blue-700">
+                     <Keyboard className="h-6 w-6 text-primary" />
+                     <div>
+                       <h3 className="font-semibold text-primary mb-1">Controles do Teclado</h3>
+                       <div className="flex gap-4 text-sm text-primary/80">
                         <div className="flex items-center gap-1">
-                          <kbd className="px-2 py-1 bg-blue-100 rounded text-xs">WASD</kbd>
-                          <span>ou</span>
-                          <div className="flex gap-1">
-                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">↑</kbd>
-                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">↓</kbd>
-                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">←</kbd>
-                            <kbd className="px-1 py-1 bg-blue-100 rounded text-xs">→</kbd>
+                           <kbd className="px-2 py-1 bg-primary/10 rounded text-xs">WASD</kbd>
+                           <span>ou</span>
+                           <div className="flex gap-1">
+                             <kbd className="px-1 py-1 bg-primary/10 rounded text-xs">↑</kbd>
+                             <kbd className="px-1 py-1 bg-primary/10 rounded text-xs">↓</kbd>
+                             <kbd className="px-1 py-1 bg-primary/10 rounded text-xs">←</kbd>
+                             <kbd className="px-1 py-1 bg-primary/10 rounded text-xs">→</kbd>
                           </div>
                           <span>Mover</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <kbd className="px-2 py-1 bg-blue-100 rounded text-xs">ESPAÇO</kbd>
+                          <kbd className="px-2 py-1 bg-primary/10 rounded text-xs">ESPAÇO</kbd>
                           <span>Explorar</span>
                         </div>
                       </div>
@@ -392,7 +392,7 @@ export default function TouchMapperKeyboard() {
               </CardContent>
             </Card>
 
-            <Card className="shadow-glow bg-white/80 backdrop-blur">
+            <Card className="shadow-glow bg-card/80 backdrop-blur">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Hand className="h-6 w-6 text-orange-600" />
