@@ -429,6 +429,20 @@ export default function EducacaoDashboard() {
                     )}
                   </CardContent>
                 </Card>
+                {/* Cognitive Indicators Table */}
+                <CognitiveIndicatorsTable
+                  students={students}
+                  observations={observations}
+                  onStudentClick={(student) => openCheckin(student)}
+                />
+
+                {/* Class Gamification */}
+                <ClassGamification
+                  totalStudents={classIndicators.total}
+                  observedStudents={classIndicators.observed}
+                  className={selectedClassName?.name}
+                  weekLabel={weekLabel}
+                />
               </TabsContent>
 
               {/* === TAB: Mapa de Vulnerabilidade === */}
