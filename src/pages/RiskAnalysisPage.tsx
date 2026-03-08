@@ -303,10 +303,10 @@ export default function RiskAnalysisPage() {
 
               <TabsContent value="crisis" className="space-y-4 mt-6">
                 {analyses.filter(a => a.analysisType === 'crisis_detection').map(analysis => (
-                  <Card key={analysis.id} className="border-l-4 border-l-red-500">
+                  <Card key={analysis.id} className="border-l-4 border-l-destructive">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-2 mb-3">
-                        <AlertTriangle className="w-5 h-5 text-red-600" />
+                        <AlertTriangle className="w-5 h-5 text-destructive" />
                         <span className="font-semibold">Detecção de Crise</span>
                         <Badge variant="destructive">{getRiskLabel(analysis.severity)}</Badge>
                         <span className="text-xs text-muted-foreground ml-auto">
@@ -323,10 +323,10 @@ export default function RiskAnalysisPage() {
 
               <TabsContent value="trends" className="space-y-4 mt-6">
                 {analyses.filter(a => a.analysisType === 'behavioral_trend').map(analysis => (
-                  <Card key={analysis.id} className="border-l-4 border-l-blue-500">
+                  <Card key={analysis.id} className="border-l-4 border-l-info">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-2 mb-3">
-                        <Activity className="w-5 h-5 text-blue-600" />
+                        <Activity className="w-5 h-5 text-info" />
                         <span className="font-semibold">Análise de Tendências</span>
                         <span className="text-xs text-muted-foreground ml-auto">
                           {new Date(analysis.timestamp).toLocaleString('pt-BR')}
@@ -342,10 +342,10 @@ export default function RiskAnalysisPage() {
 
               <TabsContent value="interventions" className="space-y-4 mt-6">
                 {analyses.filter(a => a.analysisType === 'intervention_recommendation').map(analysis => (
-                  <Card key={analysis.id} className="border-l-4 border-l-green-500">
+                  <Card key={analysis.id} className="border-l-4 border-l-success">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-2 mb-3">
-                        <Target className="w-5 h-5 text-green-600" />
+                        <Target className="w-5 h-5 text-success" />
                         <span className="font-semibold">Recomendações de Intervenção</span>
                         <span className="text-xs text-muted-foreground ml-auto">
                           {new Date(analysis.timestamp).toLocaleString('pt-BR')}

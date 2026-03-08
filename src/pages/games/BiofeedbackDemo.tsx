@@ -206,8 +206,8 @@ function BiofeedbackDemoGame() {
                 )}
 
                 {state.emotionalEnergy > 70 && !state.isBreathingExerciseActive && (
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                    <div className="text-orange-800 text-sm">
+                  <div className="bg-warning/10 border border-warning/20 rounded-lg p-3">
+                    <div className="text-warning text-sm">
                       🧘‍♂️ Sistema detectou agitação emocional
                     </div>
                   </div>

@@ -69,11 +69,11 @@ const AdminClubePais = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Receita Total</p>
-                <p className="text-2xl font-bold text-green-600">
+                <p className="text-2xl font-bold text-success">
                   R$ {stats.totalRevenue.toFixed(2)}
                 </p>
               </div>
-              <DollarSign className="h-8 w-8 text-green-500" />
+              <DollarSign className="h-8 w-8 text-success" />
             </div>
           </CardContent>
         </Card>
@@ -84,7 +84,7 @@ const AdminClubePais = () => {
                 <p className="text-sm text-muted-foreground">Total Agendamentos</p>
                 <p className="text-2xl font-bold">{stats.totalBookings}</p>
               </div>
-              <Calendar className="h-8 w-8 text-blue-500" />
+              <Calendar className="h-8 w-8 text-info" />
             </div>
           </CardContent>
         </Card>

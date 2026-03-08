@@ -248,9 +248,9 @@ export default function EmotionalHistoryDashboard() {
   ];
 
   const getMoodIcon = (rating: number) => {
-    if (rating >= 7) return <Smile className="h-5 w-5 text-green-500" />;
-    if (rating >= 4) return <Meh className="h-5 w-5 text-yellow-500" />;
-    return <Frown className="h-5 w-5 text-red-500" />;
+    if (rating >= 7) return <Smile className="h-5 w-5 text-success" />;
+    if (rating >= 4) return <Meh className="h-5 w-5 text-warning" />;
+    return <Frown className="h-5 w-5 text-destructive" />;
   };
 
   const getMoodLabel = (rating: number) => {
@@ -436,17 +436,17 @@ export default function EmotionalHistoryDashboard() {
             <CardContent>
               <div className="flex items-center gap-2">
                 {moodTrend === 'up' ? (
-                  <Badge className="bg-green-100 text-green-800 gap-1">
+                  <Badge className="bg-success/10 text-success gap-1">
                     <TrendingUp className="h-3 w-3" />
                     Melhorando
                   </Badge>
                 ) : moodTrend === 'down' ? (
-                  <Badge className="bg-red-100 text-red-800 gap-1">
+                  <Badge className="bg-destructive/10 text-destructive gap-1">
                     <AlertCircle className="h-3 w-3" />
                     Atenção
                   </Badge>
                 ) : (
-                  <Badge className="bg-blue-100 text-blue-800 gap-1">
+                  <Badge className="bg-info/10 text-info gap-1">
                     <CheckCircle2 className="h-3 w-3" />
                     Estável
                   </Badge>
