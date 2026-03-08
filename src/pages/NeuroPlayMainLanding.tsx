@@ -9,6 +9,9 @@ import {
 import { useNavigate, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import heroImage from '@/assets/hero-children-learning.jpg';
+import childFocused from '@/assets/child-focused-learning.jpg';
+import groupTherapy from '@/assets/group-therapy-session.jpg';
 
 // ─── 1. HEADER ────────────────────────────────────────────
 const LandingHeader = () => {
@@ -106,6 +109,23 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
+          {/* Hero Image */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-14 max-w-5xl mx-auto"
+          >
+            <div className="rounded-3xl overflow-hidden shadow-strong border border-border/50">
+              <img 
+                src={heroImage} 
+                alt="Crianças aprendendo com jogos educativos interativos" 
+                className="w-full h-auto object-cover"
+                loading="eager"
+              />
+            </div>
+          </motion.div>
+
           {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -146,36 +166,39 @@ const HowItWorksSection = () => (
         {[
           {
             icon: Gamepad2,
-            emoji: '🎯',
             title: 'Jogos Cognitivos',
             description: 'Jogos interativos que estimulam atenção, memória, flexibilidade cognitiva e coordenação motora.',
             gradient: 'from-primary to-primary/70',
             border: 'border-primary/20',
+            image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80',
           },
           {
             icon: Clock,
-            emoji: '📋',
             title: 'Rotina Inteligente',
             description: 'Ferramenta visual para ajudar crianças a desenvolver organização, autonomia e consistência diária.',
             gradient: 'from-secondary to-secondary/70',
             border: 'border-secondary/20',
+            image: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=600&q=80',
           },
           {
             icon: BookOpen,
-            emoji: '📖',
             title: 'Histórias Interativas',
             description: 'Narrativas que estimulam empatia, tomada de decisão e regulação emocional de forma lúdica.',
             gradient: 'from-accent to-accent/70',
             border: 'border-accent/20',
+            image: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&q=80',
           },
         ].map((item, i) => (
-          <Card key={i} className={`border-2 ${item.border} bg-card hover:shadow-glow transition-smooth hover:scale-[1.02]`}>
-            <CardContent className="p-8 text-center">
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mx-auto mb-6`}>
-                <item.icon className="w-8 h-8 text-white" />
+          <Card key={i} className={`border-2 ${item.border} bg-card hover:shadow-glow transition-smooth hover:scale-[1.02] overflow-hidden`}>
+            <div className="aspect-[16/10] overflow-hidden">
+              <img src={item.image} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <CardContent className="p-6 text-center">
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mx-auto mb-4`}>
+                <item.icon className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-bold font-heading mb-3 text-card-foreground">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+              <p className="text-muted-foreground leading-relaxed text-sm">{item.description}</p>
             </CardContent>
           </Card>
         ))}
@@ -371,36 +394,39 @@ const AudienceSection = () => (
         {[
           {
             icon: Users,
-            emoji: '👨‍👩‍👧',
             title: 'Para Famílias',
             description: 'Pais acompanham o desenvolvimento da criança com dashboards visuais, relatórios de progresso e atividades para fazer juntos.',
             color: 'from-primary to-primary/70',
             border: 'border-primary/20',
+            image: childFocused,
           },
           {
             icon: Stethoscope,
-            emoji: '🩺',
             title: 'Para Terapeutas',
             description: 'Ferramenta de acompanhamento com atividades cognitivas, histórico evolutivo e relatórios detalhados para cada paciente.',
             color: 'from-secondary to-secondary/70',
             border: 'border-secondary/20',
+            image: groupTherapy,
           },
           {
             icon: GraduationCap,
-            emoji: '🏫',
             title: 'Para Escolas',
             description: 'Atividades que ajudam alunos a desenvolver habilidades cognitivas, com acompanhamento por turma e integração com famílias.',
             color: 'from-accent to-accent/70',
             border: 'border-accent/20',
+            image: 'https://images.unsplash.com/photo-1588072432836-e10032774350?w=600&q=80',
           },
         ].map((item, i) => (
-          <Card key={i} className={`border-2 ${item.border} bg-card hover:shadow-glow transition-smooth`}>
-            <CardContent className="p-8">
-              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6`}>
-                <item.icon className="w-7 h-7 text-white" />
+          <Card key={i} className={`border-2 ${item.border} bg-card hover:shadow-glow transition-smooth overflow-hidden`}>
+            <div className="aspect-[16/10] overflow-hidden">
+              <img src={item.image} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <CardContent className="p-6">
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-4`}>
+                <item.icon className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-bold font-heading mb-3 text-card-foreground">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+              <p className="text-muted-foreground leading-relaxed text-sm">{item.description}</p>
             </CardContent>
           </Card>
         ))}
@@ -413,10 +439,10 @@ const AudienceSection = () => (
 const ScreenshotsSection = () => {
   const [current, setCurrent] = useState(0);
   const screens = [
-    { title: 'Home da Criança', desc: 'Missões diárias, streaks e progressão visual', emoji: '🏠' },
-    { title: 'Jogo Cognitivo', desc: 'Atividades adaptativas com feedback imediato', emoji: '🎮' },
-    { title: 'História Interativa', desc: 'Narrativas que desenvolvem empatia e decisão', emoji: '📖' },
-    { title: 'Dashboard de Progresso', desc: 'Relatórios visuais para pais e terapeutas', emoji: '📊' },
+    { title: 'Home da Criança', desc: 'Missões diárias, streaks e progressão visual', image: 'https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=800&q=80' },
+    { title: 'Jogo Cognitivo', desc: 'Atividades adaptativas com feedback imediato', image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80' },
+    { title: 'História Interativa', desc: 'Narrativas que desenvolvem empatia e decisão', image: 'https://images.unsplash.com/photo-1491308056676-205b7c9a7dc1?w=800&q=80' },
+    { title: 'Dashboard de Progresso', desc: 'Relatórios visuais para pais e terapeutas', image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80' },
   ];
 
   return (
@@ -429,23 +455,29 @@ const ScreenshotsSection = () => {
           <p className="text-lg text-muted-foreground">Uma experiência pensada para cada detalhe</p>
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          <div className="relative bg-card border border-border rounded-3xl p-8 sm:p-12 min-h-[300px] flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-6xl mb-6">{screens[current].emoji}</div>
+        <div className="max-w-4xl mx-auto">
+          <div className="relative bg-card border border-border rounded-3xl overflow-hidden">
+            <div className="aspect-[16/9] overflow-hidden">
+              <img 
+                src={screens[current].image} 
+                alt={screens[current].title} 
+                className="w-full h-full object-cover transition-opacity duration-300"
+              />
+            </div>
+            <div className="p-6 text-center">
               <h3 className="text-2xl font-bold text-foreground mb-2">{screens[current].title}</h3>
               <p className="text-muted-foreground">{screens[current].desc}</p>
             </div>
 
             <button
               onClick={() => setCurrent(c => c === 0 ? screens.length - 1 : c - 1)}
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
+              className="absolute left-3 top-[35%] -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-colors shadow-md"
             >
               <ChevronLeft className="w-5 h-5 text-foreground" />
             </button>
             <button
               onClick={() => setCurrent(c => c === screens.length - 1 ? 0 : c + 1)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
+              className="absolute right-3 top-[35%] -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-colors shadow-md"
             >
               <ChevronRight className="w-5 h-5 text-foreground" />
             </button>
