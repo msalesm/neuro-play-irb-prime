@@ -124,7 +124,7 @@ export const TourAchievementsPanel = () => {
                     <div className="flex items-center gap-2">
                       {achievement.unlocked && (
                         <Badge className={cn(
-                          'text-white text-xs border-0',
+                          'text-primary-foreground text-xs border-0',
                           `bg-gradient-to-r ${rarityColors[achievement.rarity as keyof typeof rarityColors]}`
                         )}>
                           <Star className="w-3 h-3 mr-1" />
