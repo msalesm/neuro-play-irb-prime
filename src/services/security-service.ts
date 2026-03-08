@@ -6,6 +6,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 
 // ─── Audit Logging ────────────────────────────────────────
 
@@ -28,14 +29,14 @@ export async function logAuditEvent(
 export async function logClinicalAudit(
   actionType: string,
   resourceType: string,
-  opts?: { resourceId?: string; childId?: string; details?: Record<string, unknown> },
+  opts?: { resourceId?: string; childId?: string; details?: Json },
 ) {
   const { error } = await supabase.rpc('log_clinical_audit', {
     p_action_type: actionType,
     p_resource_type: resourceType,
     p_resource_id: opts?.resourceId ?? null,
     p_child_id: opts?.childId ?? null,
-    p_action_details: opts?.details ?? {},
+    p_action_details: opts?.details ?? ({} as Json),
     p_user_agent: navigator.userAgent,
   });
   if (error) console.error('[ClinicalAudit] Failed to log:', error);
@@ -88,7 +89,7 @@ export async function recordConsent(documentId: string, given: boolean) {
       user_id: user.id,
       document_id: documentId,
       consent_given: given,
-      ip_address: '0.0.0.0', // captured server-side ideally
+      consent_method: 'web_form',
     });
   if (error) throw error;
 }

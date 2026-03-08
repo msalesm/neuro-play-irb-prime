@@ -17,11 +17,11 @@
 
 // ─── Layer 7: AI Layer ────────────────────────────────────
 export { type AIProvider, type AICompletionRequest } from '@/modules/ai-provider';
-export { runCopilot, getCopilotViewForRole } from '@/modules/copilot';
+export { runCopilot, getCopilotForParent, getCopilotForTherapist, getCopilotForTeacher } from '@/modules/copilot';
 
 // ─── Layer 6: Analytics Layer ─────────────────────────────
 export { type BehavioralDataPoint, type DatasetSummary } from '@/modules/dataset';
-export { type DataClassification, classifyMetric, clinicalOnly } from '@/modules/data-classification';
+export { type ClassifiedMetric, type DataSource, clinicalOnly, isClinicalSafe } from '@/modules/data-classification';
 
 // ─── Layer 3: Domain Engines ──────────────────────────────
 export { type GameMetrics, type GameSessionConfig } from '@/modules/games/engine';
