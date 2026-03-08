@@ -44,7 +44,7 @@ export function useGameSession(gameId: string, childProfileId?: string) {
         .from('cognitive_games')
         .select('id')
         .eq('game_id', gameId)
-        .single();
+        .maybeSingle();
 
       if (!gameData) return;
 
@@ -55,7 +55,7 @@ export function useGameSession(gameId: string, childProfileId?: string) {
           .select('id')
           .eq('parent_user_id', user.id)
           .limit(1)
-          .single();
+          .maybeSingle();
         profileId = profiles?.id;
       }
 
@@ -121,7 +121,7 @@ export function useGameSession(gameId: string, childProfileId?: string) {
         .from('cognitive_games')
         .select('id')
         .eq('game_id', gameId)
-        .single();
+        .maybeSingle();
 
       if (!gameData) return;
 

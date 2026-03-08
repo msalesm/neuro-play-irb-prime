@@ -417,7 +417,7 @@ export function useChildAccess(childId: string | null) {
           .select('role')
           .eq('user_id', user.id)
           .eq('role', 'admin')
-          .single();
+          .maybeSingle();
 
         if (roleData) {
           setHasAccess(true);
@@ -433,7 +433,7 @@ export function useChildAccess(childId: string | null) {
           .eq('id', childId)
           .eq('parent_id', user.id)
           .eq('is_active', true)
-          .single();
+          .maybeSingle();
 
         if (parentData) {
           setHasAccess(true);
@@ -449,7 +449,7 @@ export function useChildAccess(childId: string | null) {
           .eq('child_id', childId)
           .eq('professional_id', user.id)
           .eq('is_active', true)
-          .single();
+          .maybeSingle();
 
         if (therapistData) {
           setHasAccess(true);

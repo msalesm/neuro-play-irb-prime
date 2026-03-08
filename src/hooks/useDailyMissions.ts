@@ -33,7 +33,7 @@ export const useDailyMissions = (childId: string | null) => {
         .eq('status', 'pending')
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       // Get completed games
       const { data: completedSessions } = await supabase
