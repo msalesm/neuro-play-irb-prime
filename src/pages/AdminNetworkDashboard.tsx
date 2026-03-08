@@ -221,7 +221,7 @@ export default function AdminNetworkDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Building2 className="w-4 h-4 text-blue-500" />
+                <Building2 className="w-4 h-4 text-info" />
                 <span className="text-xs text-muted-foreground">Escolas</span>
               </div>
               <p className="text-2xl font-bold">{metrics.totalSchools}</p>
@@ -231,7 +231,7 @@ export default function AdminNetworkDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <GraduationCap className="w-4 h-4 text-green-500" />
+                <GraduationCap className="w-4 h-4 text-success" />
                 <span className="text-xs text-muted-foreground">Turmas</span>
               </div>
               <p className="text-2xl font-bold">{metrics.totalClasses}</p>
@@ -241,7 +241,7 @@ export default function AdminNetworkDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Users className="w-4 h-4 text-purple-500" />
+                <Users className="w-4 h-4 text-secondary" />
                 <span className="text-xs text-muted-foreground">Crianças</span>
               </div>
               <p className="text-2xl font-bold">{metrics.totalChildren}</p>
@@ -251,7 +251,7 @@ export default function AdminNetworkDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Activity className="w-4 h-4 text-orange-500" />
+                <Activity className="w-4 h-4 text-warning" />
                 <span className="text-xs text-muted-foreground">Sessões</span>
               </div>
               <p className="text-2xl font-bold">{metrics.totalSessions}</p>
@@ -261,7 +261,7 @@ export default function AdminNetworkDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <BarChart3 className="w-4 h-4 text-cyan-500" />
+                <BarChart3 className="w-4 h-4 text-info" />
                 <span className="text-xs text-muted-foreground">Precisão</span>
               </div>
               <p className="text-2xl font-bold">{metrics.avgAccuracy}%</p>
@@ -271,7 +271,7 @@ export default function AdminNetworkDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="w-4 h-4 text-green-500" />
+                <TrendingUp className="w-4 h-4 text-success" />
                 <span className="text-xs text-muted-foreground">Ativos</span>
               </div>
               <p className="text-2xl font-bold">{metrics.activeUsers}</p>
@@ -281,10 +281,10 @@ export default function AdminNetworkDashboard() {
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle className="w-4 h-4 text-red-500" />
+                <AlertTriangle className="w-4 h-4 text-destructive" />
                 <span className="text-xs text-muted-foreground">Alto Risco</span>
               </div>
-              <p className="text-2xl font-bold text-red-500">{metrics.highRiskChildren}</p>
+              <p className="text-2xl font-bold text-destructive">{metrics.highRiskChildren}</p>
             </CardContent>
           </Card>
         </div>
@@ -413,10 +413,10 @@ export default function AdminNetworkDashboard() {
                             <Badge
                               className={
                                 school.riskLevel === 'high'
-                                  ? 'bg-red-500/10 text-red-700'
+                                  ? 'bg-destructive/10 text-destructive'
                                   : school.riskLevel === 'medium'
-                                  ? 'bg-yellow-500/10 text-yellow-700'
-                                  : 'bg-green-500/10 text-green-700'
+                                  ? 'bg-warning/10 text-warning'
+                                  : 'bg-success/10 text-success'
                               }
                             >
                               {school.riskLevel === 'high' && 'Alto Risco'}
