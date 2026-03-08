@@ -106,14 +106,14 @@ export default function ChatInsights({ childProfileId }: ChatInsightsProps) {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'urgent':
-        return 'bg-red-500 text-white border-red-600';
+        return 'bg-destructive text-destructive-foreground border-destructive';
       case 'high':
-        return 'bg-orange-500 text-white border-orange-600';
+        return 'bg-warning text-warning-foreground border-warning';
       case 'medium':
-        return 'bg-yellow-500 text-white border-yellow-600';
+        return 'bg-accent text-accent-foreground border-accent';
       case 'low':
       default:
-        return 'bg-blue-500 text-white border-blue-600';
+        return 'bg-primary text-primary-foreground border-primary';
     }
   };
 
@@ -227,7 +227,7 @@ export default function ChatInsights({ childProfileId }: ChatInsightsProps) {
                           onClick={() => updateInsightStatus(insight.id, 'addressed')}
                           title="Marcar como resolvido"
                         >
-                          <CheckCircle2 className="h-4 w-4 text-green-600" />
+                          <CheckCircle2 className="h-4 w-4 text-success" />
                         </Button>
                         <Button
                           size="sm"

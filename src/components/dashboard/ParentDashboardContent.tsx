@@ -179,10 +179,10 @@ export function ParentDashboardContent({
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between"><span className="text-sm font-medium">Avatar</span><Sparkles className="w-4 h-4 text-purple-500" /></div>
-                  <div className="p-3 rounded-lg bg-gradient-to-br from-purple-100 to-pink-100">
-                    <p className="text-purple-900 font-semibold">Estágio {avatarEvolution.stage}/5</p>
-                    <p className="text-purple-700 text-xs">{avatarEvolution.xp} XP</p>
+                  <div className="flex items-center justify-between"><span className="text-sm font-medium">Avatar</span><Sparkles className="w-4 h-4 text-secondary" /></div>
+                  <div className="p-3 rounded-lg bg-gradient-to-br from-secondary/10 to-accent/10">
+                    <p className="text-secondary font-semibold">Estágio {avatarEvolution.stage}/5</p>
+                    <p className="text-secondary/70 text-xs">{avatarEvolution.xp} XP</p>
                   </div>
                 </div>
               </div>
