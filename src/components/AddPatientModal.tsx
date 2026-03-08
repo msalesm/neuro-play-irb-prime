@@ -233,6 +233,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
     form.reset();
     setInviteData(null);
     setCopied(false);
+    setPhotoUrl(null);
     onClose();
   };
 
@@ -338,6 +339,13 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   Dados do Paciente
                 </h3>
+
+                <ProfilePhotoUpload
+                  currentPhotoUrl={photoUrl}
+                  name={form.watch('name') || 'Paciente'}
+                  onPhotoUploaded={setPhotoUrl}
+                  size="lg"
+                />
 
                 <FormField
                   control={form.control}
