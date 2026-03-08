@@ -225,7 +225,7 @@ export function AbaProgramDetail({ programId, childId, onBack }: Props) {
 
         {/* Report Tab */}
         <TabsContent value="report">
-          <AbaReportPDF programId={programId} programName="Programa ABA" childId={childId} childName="Paciente" />
+          <AbaReportPDF programId={programId} childId={childId} />
         </TabsContent>
       </Tabs>
     </div>
