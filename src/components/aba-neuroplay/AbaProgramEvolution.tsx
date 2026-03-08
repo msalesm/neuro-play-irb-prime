@@ -58,7 +58,7 @@ const PROMPT_LABELS: Record<string, string> = {
 };
 
 export function AbaProgramEvolution({ programId, childId }: Props) {
-  const { allTrials, interventions, isLoading } = useAllProgramTrials(programId);
+  const { allTrials, interventions, isLoading } = useAllProgramTrials(programId, childId);
 
   const { dailyData, promptDistribution, skillComparison } = useMemo(() => {
     if (!allTrials.length) return { dailyData: [], promptDistribution: [], skillComparison: [] };
