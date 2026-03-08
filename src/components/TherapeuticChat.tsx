@@ -10,7 +10,7 @@ import { useTherapeuticChat } from '@/hooks/useTherapeuticChat';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useBehavioralReport } from '@/hooks/useBehavioralReport';
 import ChatInsights from './ChatInsights';
-const EmotionalCheckInScheduler = () => null;
+const EmotionalCheckInScheduler = (_props: any) => null;
 
 interface TherapeuticChatProps {
   childProfileId?: string;
