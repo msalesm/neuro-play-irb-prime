@@ -52,7 +52,7 @@ export default function DashboardPais() {
       )}
 
       <BadgeUnlockModal
-        badgeKey={showBadgeModal ? unlockedBadge?.key : undefined}
+        badgeKey={showBadgeModal ? (unlockedBadge as any)?.key || 'first_game' : undefined}
         onClose={() => setShowBadgeModal(false)}
       />
 
