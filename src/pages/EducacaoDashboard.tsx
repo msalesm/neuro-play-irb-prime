@@ -303,6 +303,13 @@ export default function EducacaoDashboard() {
 
               {/* === TAB: Painel da Turma + Check-in === */}
               <TabsContent value="painel" className="space-y-4 mt-4">
+                {/* Educational Alerts */}
+                <EducationalAlerts
+                  students={students}
+                  observations={observations}
+                  allObservations={allObservations}
+                />
+
                 {/* Indicators */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <Card className="border-border">
