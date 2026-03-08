@@ -118,7 +118,6 @@ import UnifiedReports from "./pages/UnifiedReports";
 import ProntuarioUnificado from "./pages/ProntuarioUnificado";
 import StudentHub from "./pages/StudentHub";
 import WorldMap from "./pages/WorldMap";
-import AchievementsPage from "./pages/AchievementsPage";
 import StoryEditor from "./pages/StoryEditor";
 import SimpleAnalytics from "./pages/SimpleAnalytics";
 import PrivacyPortal from "./pages/PrivacyPortal";
