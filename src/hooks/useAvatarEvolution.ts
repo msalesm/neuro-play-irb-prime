@@ -24,7 +24,7 @@ export const useAvatarEvolution = (childId: string | null) => {
         .from('children')
         .select('*')
         .eq('id', childId)
-        .single();
+        .maybeSingle();
 
       if (childError) throw childError;
 

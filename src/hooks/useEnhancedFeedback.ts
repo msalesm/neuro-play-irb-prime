@@ -47,7 +47,7 @@ export function useEnhancedFeedback() {
         .from('child_profiles')
         .select('*, diagnosed_conditions, cognitive_baseline')
         .eq('id', childProfileId)
-        .single();
+        .maybeSingle();
 
       if (profileError) throw profileError;
 
@@ -58,7 +58,7 @@ export function useEnhancedFeedback() {
         .eq('user_id', profile.parent_user_id)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       // Generate therapeutic insights based on session performance
       const insights: TherapeuticInsight[] = [];

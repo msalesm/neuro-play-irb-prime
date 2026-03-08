@@ -81,7 +81,7 @@ export function useOperationalScaling(institutionId?: string) {
       .from('institution_operational_settings')
       .select('*')
       .eq('institution_id', institutionId)
-      .single();
+      .maybeSingle();
     
     if (data) {
       setSettings(data as InstitutionSettings);
