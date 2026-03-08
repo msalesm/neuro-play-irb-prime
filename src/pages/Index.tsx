@@ -5,7 +5,7 @@ import {
   Brain, Target, TrendingUp, ArrowRight, GraduationCap, 
   Zap, BookOpen, BarChart3, Award, Heart, Shield, Users, 
   Stethoscope, Gamepad2, CalendarCheck, MessageCircle, Star,
-  CheckCircle2
+  CheckCircle2, Smartphone, Apple, Monitor
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -534,6 +534,138 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground">{stat.label}</p>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          INSTALAR NA TELA INICIAL
+      ═══════════════════════════════════════════ */}
+      <motion.section
+        className="py-16 md:py-24 bg-muted/30"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div className="text-center mb-10 md:mb-14" variants={fadeIn}>
+            <div className="mx-auto w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+              <Smartphone className="w-7 h-7 text-primary" />
+            </div>
+            <h2 className="text-2xl md:text-4xl font-bold mb-3">
+              Instale o NeuroPlay no seu celular
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+              Use como um app nativo — sem precisar baixar na loja.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {/* iOS */}
+            <motion.div variants={scaleIn}>
+              <Card className="h-full shadow-card">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                      <Apple className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="font-bold">iPhone / iPad</h3>
+                  </div>
+                  <ol className="space-y-3 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">1</span>
+                      <span>Abra no <strong className="text-foreground">Safari</strong> e toque no ícone de <strong className="text-foreground">Compartilhar</strong> (quadrado com seta)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">2</span>
+                      <span>Role e toque em <strong className="text-foreground">"Adicionar à Tela de Início"</strong></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">3</span>
+                      <span>Toque em <strong className="text-foreground">"Adicionar"</strong> para confirmar</span>
+                    </li>
+                  </ol>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Android */}
+            <motion.div variants={scaleIn}>
+              <Card className="h-full shadow-card">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                      <Smartphone className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="font-bold">Android</h3>
+                  </div>
+                  <ol className="space-y-3 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">1</span>
+                      <span>Abra no <strong className="text-foreground">Chrome</strong> e toque nos <strong className="text-foreground">três pontinhos</strong> (⋮) no canto superior</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">2</span>
+                      <span>Toque em <strong className="text-foreground">"Instalar app"</strong> ou <strong className="text-foreground">"Adicionar à tela inicial"</strong></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">3</span>
+                      <span>Confirme a instalação e pronto!</span>
+                    </li>
+                  </ol>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Desktop */}
+            <motion.div variants={scaleIn}>
+              <Card className="h-full shadow-card">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                      <Monitor className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="font-bold">Computador</h3>
+                  </div>
+                  <ol className="space-y-3 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">1</span>
+                      <span>Abra no <strong className="text-foreground">Chrome</strong> ou <strong className="text-foreground">Edge</strong></span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">2</span>
+                      <span>Clique no ícone de <strong className="text-foreground">instalar</strong> (➕) na barra de endereço</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">3</span>
+                      <span>Confirme e o NeuroPlay abrirá como app</span>
+                    </li>
+                  </ol>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+
+          <motion.div className="text-center mt-8" variants={fadeIn}>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
+              {[
+                { icon: CheckCircle2, text: "Funciona offline" },
+                { icon: Zap, text: "Carregamento instantâneo" },
+                { icon: Shield, text: "Tela cheia, sem barra do navegador" },
+              ].map((b) => (
+                <div key={b.text} className="flex items-center gap-1.5">
+                  <b.icon className="w-3.5 h-3.5 text-success" />
+                  <span>{b.text}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </motion.section>
