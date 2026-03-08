@@ -15,7 +15,7 @@ export default function Home() {
 
     // If not authenticated, show landing page
     if (!user) {
-      navigate('/landing', { replace: true });
+      navigate('/index', { replace: true });
       return;
     }
 
