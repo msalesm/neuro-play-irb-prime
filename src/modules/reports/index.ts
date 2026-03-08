@@ -26,6 +26,6 @@ export { useContextualAI } from '@/hooks/useContextualAI';
 
 // ── Services ──────────────────────────────────────────────
 export { 
-  fetchReportData,
-  generateReportPDF,
+  fetchClinicalReports,
+  insertClinicalReport,
 } from '@/services/report-service';

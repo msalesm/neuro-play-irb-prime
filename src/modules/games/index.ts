@@ -18,7 +18,6 @@ export {
   type GameMetrics, 
   type GameSessionConfig, 
   type CognitiveDomain,
-  type AdaptiveDifficultyConfig,
 } from '@/core/game-engine';
 
 // ── Hooks ─────────────────────────────────────────────────
@@ -49,5 +48,5 @@ export {
   ModernGameCard,
   ModernMetricCard,
   GamePhaseSelector,
-  GameAchievement,
+  GameAchievements,
 } from '@/components/games';

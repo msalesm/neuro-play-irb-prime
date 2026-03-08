@@ -14,9 +14,16 @@
 
 // ── Engine ────────────────────────────────────────────────
 export { 
-  calculatePromptHierarchy,
-  getNextPromptLevel,
-  shouldReinforce,
+  analyzeSession,
+  analyzeTrend,
+  checkMastery,
+  suggestPromptReduction,
+  suggestReinforcementSchedule,
+  PROMPT_LEVELS,
+  PROMPT_HIERARCHY,
+  ABA_TEACHING_METHODS,
+  type PromptLevel,
+  type AbaTeachingMethod,
 } from '@/core/aba-engine';
 
 // ── Hooks ─────────────────────────────────────────────────
