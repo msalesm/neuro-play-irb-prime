@@ -514,21 +514,21 @@ export const PhonologicalProcessing: React.FC = () => {
             
             <Card className="shadow-soft">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-green-600">{stats.correctResponses}</div>
+                <div className="text-2xl font-bold text-success">{stats.correctResponses}</div>
                 <div className="text-sm text-muted-foreground">Acertos</div>
               </CardContent>
             </Card>
             
             <Card className="shadow-soft">
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-red-600">{stats.errors}</div>
+                <div className="text-2xl font-bold text-destructive">{stats.errors}</div>
                 <div className="text-sm text-muted-foreground">Erros</div>
               </CardContent>
             </Card>
             
             <Card className="shadow-soft">
               <CardContent className="p-4 text-center">
-                <div className="text-xl font-bold text-purple-600">{currentTask.difficulty}</div>
+                <div className="text-xl font-bold text-secondary">{currentTask.difficulty}</div>
                 <div className="text-sm text-muted-foreground">Dificuldade</div>
               </CardContent>
             </Card>
@@ -638,7 +638,7 @@ export const PhonologicalProcessing: React.FC = () => {
               </div>
               
               <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-3xl font-bold text-green-600">{stats.score}</div>
+                <div className="text-3xl font-bold text-success">{stats.score}</div>
                 <div className="text-sm text-muted-foreground">Pontuação Final</div>
               </div>
             </div>

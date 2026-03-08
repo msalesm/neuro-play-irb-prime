@@ -436,28 +436,28 @@ export default function LogicaRapida() {
           
           <Card>
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-green-600">{stats.score}</div>
+              <div className="text-xl font-bold text-success">{stats.score}</div>
               <div className="text-xs text-muted-foreground">Pontos</div>
             </CardContent>
           </Card>
           
           <Card>
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-red-600">{stats.timeLeft}s</div>
+              <div className="text-xl font-bold text-destructive">{stats.timeLeft}s</div>
               <div className="text-xs text-muted-foreground">Tempo</div>
             </CardContent>
           </Card>
           
           <Card>
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-purple-600">{accuracy}%</div>
+              <div className="text-xl font-bold text-secondary">{accuracy}%</div>
               <div className="text-xs text-muted-foreground">Precisão</div>
             </CardContent>
           </Card>
           
           <Card>
             <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold text-yellow-600">{stats.streak}</div>
+              <div className="text-xl font-bold text-warning">{stats.streak}</div>
               <div className="text-xs text-muted-foreground">Sequência</div>
             </CardContent>
           </Card>
@@ -534,7 +534,7 @@ export default function LogicaRapida() {
                   {currentPattern.items.map((item, index) => (
                     <div
                       key={index}
-                      className="w-16 h-16 bg-white border-2 border-primary/30 rounded-xl flex items-center justify-center text-2xl font-bold shadow-md"
+                      className="w-16 h-16 bg-card border-2 border-primary/30 rounded-xl flex items-center justify-center text-2xl font-bold shadow-md"
                     >
                       {item}
                     </div>
@@ -555,10 +555,10 @@ export default function LogicaRapida() {
                       className={`
                         w-full h-16 rounded-xl border-2 transition-all duration-200 font-bold text-lg
                         ${showAnswer && option === currentPattern.correctAnswer
-                          ? 'bg-green-100 border-green-500 text-green-700'
+                          ? 'bg-success/10 border-success text-success'
                           : showAnswer && option === selectedAnswer && option !== currentPattern.correctAnswer
-                          ? 'bg-red-100 border-red-500 text-red-700'
-                          : 'bg-white border-primary/30 hover:border-primary hover:scale-105'
+                          ? 'bg-destructive/10 border-destructive text-destructive'
+                          : 'bg-card border-primary/30 hover:border-primary hover:scale-105'
                         }
                         ${showAnswer ? 'cursor-not-allowed' : 'cursor-pointer'}
                       `}
