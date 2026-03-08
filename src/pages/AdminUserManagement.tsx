@@ -31,11 +31,11 @@ const ROLE_LABELS: Record<AppRole, string> = {
 };
 
 const ROLE_COLORS: Record<AppRole, string> = {
-  admin: 'bg-red-100 text-red-800 border-red-200',
-  therapist: 'bg-blue-100 text-blue-800 border-blue-200',
-  parent: 'bg-green-100 text-green-800 border-green-200',
-  user: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  patient: 'bg-purple-100 text-purple-800 border-purple-200',
+  admin: 'bg-destructive/10 text-destructive border-destructive/20',
+  therapist: 'bg-info/10 text-info border-info/20',
+  parent: 'bg-success/10 text-success border-success/20',
+  user: 'bg-warning/10 text-warning border-warning/20',
+  patient: 'bg-secondary/10 text-secondary border-secondary/20',
 };
 
 export default function AdminUserManagement() {

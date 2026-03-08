@@ -39,10 +39,10 @@ interface Biome {
 }
 
 const focusPowers: FocusPower[] = [
-  { id: 1, name: 'Laser Focus', description: 'Aumenta precisão por 30 segundos', color: 'bg-blue-500', icon: '🔷', unlockTime: 30 },
-  { id: 2, name: 'Tempo Expandido', description: 'Desacelera alvos por 20 segundos', color: 'bg-purple-500', icon: '⏰', unlockTime: 60 },
-  { id: 3, name: 'Zona de Calma', description: 'Previne distrações por 45 segundos', color: 'bg-green-500', icon: '🧘', unlockTime: 120 },
-  { id: 4, name: 'Multiplicador', description: 'Dobra pontos por 15 segundos', color: 'bg-orange-500', icon: '✨', unlockTime: 180 }
+  { id: 1, name: 'Laser Focus', description: 'Aumenta precisão por 30 segundos', color: 'bg-info', icon: '🔷', unlockTime: 30 },
+  { id: 2, name: 'Tempo Expandido', description: 'Desacelera alvos por 20 segundos', color: 'bg-secondary', icon: '⏰', unlockTime: 60 },
+  { id: 3, name: 'Zona de Calma', description: 'Previne distrações por 45 segundos', color: 'bg-success', icon: '🧘', unlockTime: 120 },
+  { id: 4, name: 'Multiplicador', description: 'Dobra pontos por 15 segundos', color: 'bg-warning', icon: '✨', unlockTime: 180 }
 ];
 
 const questBiomes: Biome[] = [
@@ -477,7 +477,7 @@ export default function FocusQuest() {
                         const power = focusPowers.find(p => p.id === Number(powerId));
                         const remaining = Math.max(0, endTime - Date.now());
                         return power ? (
-                          <Badge key={powerId} className="bg-yellow-100 text-yellow-800">
+                          <Badge key={powerId} className="bg-warning/20 text-warning">
                             {power.icon} {power.name} ({Math.ceil(remaining / 1000)}s)
                           </Badge>
                         ) : null;
@@ -601,7 +601,7 @@ export default function FocusQuest() {
                   
                   return (
                     <div key={power.id} className={`p-3 rounded-lg border transition-all ${
-                      isActive ? 'bg-yellow-50 border-yellow-300' :
+                      isActive ? 'bg-warning/10 border-warning/30' :
                       isUnlocked ? 'bg-card border-border' : 'bg-muted border-muted opacity-50'
                     }`}>
                       <div className="flex items-center gap-2 mb-1">
@@ -611,7 +611,7 @@ export default function FocusQuest() {
                       </div>
                       <p className="text-xs text-muted-foreground">{power.description}</p>
                       {!isUnlocked && (
-                        <p className="text-xs text-blue-600">
+                        <p className="text-xs text-info">
                           Desbloqueie com {power.unlockTime}s de foco
                         </p>
                       )}

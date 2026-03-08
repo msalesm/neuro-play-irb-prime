@@ -95,13 +95,13 @@ export default function MinhasTeleconsultas() {
     const scheduledTime = new Date(session.scheduled_at);
     
     if (session.status === 'completed') {
-      return <Badge variant="secondary" className="bg-green-500/20 text-green-600">Concluída</Badge>;
+      return <Badge variant="secondary" className="bg-success/20 text-success">Concluída</Badge>;
     }
     if (session.status === 'cancelled') {
       return <Badge variant="destructive">Cancelada</Badge>;
     }
     if (session.status === 'in_progress') {
-      return <Badge className="bg-blue-500 animate-pulse">Em Andamento</Badge>;
+      return <Badge className="bg-info animate-pulse">Em Andamento</Badge>;
     }
     if (isPast(scheduledTime) && session.status !== 'completed') {
       return <Badge variant="destructive">Não Compareceu</Badge>;

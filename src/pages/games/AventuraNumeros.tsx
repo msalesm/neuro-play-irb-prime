@@ -271,7 +271,7 @@ export default function AventuraNumeros() {
         <div className="flex gap-3 items-center">
           <div className="text-3xl animate-pulse">💎</div>
           <div className="text-2xl">→</div>
-          <div className="bg-blue-50 p-2 rounded">
+          <div className="bg-info/10 p-2 rounded">
             <div className="text-lg font-bold">5 + 3 = ?</div>
           </div>
         </div>
@@ -310,8 +310,8 @@ export default function AventuraNumeros() {
           
           <div className="flex items-center gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-yellow-700">💰 {coins}</div>
-              <div className="text-sm text-yellow-600">Moedas</div>
+              <div className="text-2xl font-bold text-warning">💰 {coins}</div>
+              <div className="text-sm text-warning/80">Moedas</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-orange-700">🎯 {level}</div>
@@ -344,7 +344,7 @@ export default function AventuraNumeros() {
         <Card className="mb-6">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Coins className="w-5 h-5 text-yellow-500" />
+              <Coins className="w-5 h-5 text-warning" />
               <Progress value={progress} className="flex-1" />
               <span className="text-sm font-medium">{Math.round(progress)}%</span>
             </div>
@@ -356,7 +356,7 @@ export default function AventuraNumeros() {
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-red-500" />
+                <MapPin className="w-5 h-5 text-destructive" />
                 Mapa do Tesouro
               </CardTitle>
             </CardHeader>
@@ -405,7 +405,7 @@ export default function AventuraNumeros() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Target className="w-5 h-5 text-blue-500" />
+                <Target className="w-5 h-5 text-info" />
                 Desafio Matemático
               </CardTitle>
             </CardHeader>
@@ -417,7 +417,7 @@ export default function AventuraNumeros() {
                     <h3 className="text-lg font-semibold">Resolva para descobrir o tesouro:</h3>
                   </div>
                   
-                  <div className="text-center text-3xl font-bold text-blue-600 py-4 bg-blue-50 rounded-lg">
+                  <div className="text-center text-3xl font-bold text-info py-4 bg-info/10 rounded-lg">
                     {currentTreasure.operation} = ?
                   </div>
                   
@@ -488,7 +488,7 @@ export default function AventuraNumeros() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
+                <Trophy className="w-5 h-5 text-warning" />
                 Conquistas
               </CardTitle>
             </CardHeader>

@@ -243,9 +243,9 @@ const SocialScenarios = () => {
               <div className="space-y-6">
                 {/* Difficulty Sections */}
                 {[
-                  { title: 'Iniciante', scenarios: beginner, color: 'bg-green-100 text-green-800' },
-                  { title: 'Intermediário', scenarios: intermediate, color: 'bg-yellow-100 text-yellow-800' },
-                  { title: 'Avançado', scenarios: advanced, color: 'bg-red-100 text-red-800' }
+                  { title: 'Iniciante', scenarios: beginner, color: 'bg-success/10 text-success' },
+                  { title: 'Intermediário', scenarios: intermediate, color: 'bg-warning/10 text-warning' },
+                  { title: 'Avançado', scenarios: advanced, color: 'bg-destructive/10 text-destructive' }
                 ].map(({ title, scenarios: levelScenarios, color }) => (
                   <Card key={title} className="p-6 bg-card border-0 shadow-card">
                     <div className="flex items-center space-x-3 mb-4">

@@ -75,7 +75,7 @@ export default function FocoRapidoPhases() {
               </div>
               <div>
                 <div className="text-2xl font-bold flex items-center justify-center gap-1">
-                  <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
+                  <Star className="w-5 h-5 fill-warning text-warning" />
                   {totalStars}/{maxStars}
                 </div>
                 <div className="text-sm text-muted-foreground">Estrelas</div>
