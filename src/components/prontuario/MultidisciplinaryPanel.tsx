@@ -138,7 +138,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
               <span>Celebre pequenas conquistas diariamente</span>
             </li>
             <li className="flex items-start gap-2">
-              <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5" />
+              <div className="w-2 h-2 rounded-full bg-warning mt-1.5" />
               <span>Observe padrões de humor e comportamento</span>
             </li>
           </ul>
@@ -176,7 +176,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
         <Card className="bg-muted/50">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <Clock className="h-4 w-4 text-amber-500" />
+              <Clock className="h-4 w-4 text-warning" />
               <span className="text-sm font-medium">Tempo de Reação</span>
             </div>
             <div className="text-2xl font-bold">--</div>
@@ -248,7 +248,7 @@ export const MultidisciplinaryPanel = ({ childId, userRole }: MultidisciplinaryP
         <Card className="bg-muted/50">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <BookOpen className="h-4 w-4 text-green-500" />
+              <BookOpen className="h-4 w-4 text-success" />
               <span className="text-sm font-medium">Participação</span>
             </div>
             <div className="text-2xl font-bold">{metrics?.totalSessions}</div>
