@@ -320,7 +320,7 @@ export default function CacaLetras() {
                     </div>
 
                     {/* Word Display */}
-                    <div className="bg-white rounded-lg p-6 shadow-inner">
+                    <div className="bg-card rounded-lg p-6 shadow-inner">
                       <div className="flex flex-wrap justify-center gap-2">
                         {currentWord.split('').map((letter, index) => (
                           <button
@@ -333,7 +333,7 @@ export default function CacaLetras() {
                                 ? 'bg-destructive text-destructive-foreground border-destructive shake'
                                 : letter === targetLetter
                                 ? 'bg-warning/20 border-warning hover:bg-warning/30'
-                                : 'bg-gray-100 border-gray-300 hover:bg-gray-200'
+                                : 'bg-muted border-border hover:bg-muted/80'
                             }`}
                             disabled={foundPositions.includes(index)}
                           >
@@ -363,7 +363,7 @@ export default function CacaLetras() {
                         Precisão: {Math.round(stats.accuracy)}%
                       </div>
                       <div className="flex items-center gap-1">
-                        <Trophy className="w-4 h-4 text-green-500" />
+                        <Trophy className="w-4 h-4 text-success" />
                         Acertos: {stats.correctFinds}
                       </div>
                     </div>
@@ -387,7 +387,7 @@ export default function CacaLetras() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Trophy className="w-5 h-5 text-yellow-500" />
+                  <Trophy className="w-5 h-5 text-warning" />
                   Conquistas
                 </CardTitle>
               </CardHeader>

@@ -151,7 +151,7 @@ export default function TrainingModule() {
               <ul className="space-y-2">
                 {module.topics.map((topic, idx) => (
                   <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
                     {topic}
                   </li>
                 ))}
@@ -201,9 +201,9 @@ export default function TrainingModule() {
           <CardHeader>
             <div className="flex flex-col items-center text-center gap-4">
               {passed ? (
-                <Award className="h-16 w-16 text-yellow-500" />
+                <Award className="h-16 w-16 text-warning" />
               ) : (
-                <XCircle className="h-16 w-16 text-red-500" />
+                <XCircle className="h-16 w-16 text-destructive" />
               )}
               <div>
                 <CardTitle className="text-2xl mb-2">
@@ -235,15 +235,15 @@ export default function TrainingModule() {
                     key={idx}
                     className={`p-3 rounded-lg border ${
                       isCorrect
-                        ? 'bg-green-500/5 border-green-500/20'
-                        : 'bg-red-500/5 border-red-500/20'
+                        ? 'bg-success/5 border-success/20'
+                        : 'bg-destructive/5 border-destructive/20'
                     }`}
                   >
                     <div className="flex items-start gap-2">
                       {isCorrect ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <CheckCircle2 className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
                       ) : (
-                        <XCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
+                        <XCircle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
                       )}
                       <div className="flex-1">
                         <p className="text-sm font-medium mb-1">Questão {idx + 1}</p>
