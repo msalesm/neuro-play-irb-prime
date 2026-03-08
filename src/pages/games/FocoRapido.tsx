@@ -264,9 +264,9 @@ export default function FocoRapido() {
                 <Hand className="w-16 h-16 mx-auto text-primary" />
                 <h2 className="text-2xl font-bold">Teste Go/No-Go</h2>
                 <p className="text-muted-foreground max-w-md mx-auto">
-                  Pressione <strong>ESPAÇO</strong> ou <strong>toque</strong> quando ver o <strong className="text-green-600">círculo VERDE</strong>.
+                  Pressione <strong>ESPAÇO</strong> ou <strong>toque</strong> quando ver o <strong className="text-success">círculo VERDE</strong>.
                   <br />
-                  <strong className="text-red-600">NÃO pressione</strong> quando ver o <strong className="text-red-600">círculo VERMELHO</strong>.
+                  <strong className="text-destructive">NÃO pressione</strong> quando ver o <strong className="text-destructive">círculo VERMELHO</strong>.
                 </p>
                 <Button size="lg" onClick={(e) => { e.stopPropagation(); startGame(); }}>
                   <Play className="w-5 h-5 mr-2" /> Iniciar
@@ -278,7 +278,7 @@ export default function FocoRapido() {
               <div>
                 {showStimulus && currentStimulus ? (
                   <div className={`w-32 h-32 rounded-full ${
-                    currentStimulus === 'go' ? 'bg-green-500' : 'bg-red-500'
+                    currentStimulus === 'go' ? 'bg-success' : 'bg-destructive'
                   } shadow-lg transition-transform animate-in zoom-in duration-200`} />
                 ) : (
                   <div className="w-4 h-4 bg-muted-foreground/30 rounded-full" />
@@ -295,24 +295,24 @@ export default function FocoRapido() {
                     <div className="text-2xl font-bold text-primary">{metrics.accuracy}%</div>
                     <div className="text-xs text-muted-foreground">Precisão</div>
                   </div>
-                  <div className="p-3 bg-red-500/10 rounded-lg">
-                    <div className="text-2xl font-bold text-red-600">{metrics.impulsivityRate}%</div>
+                  <div className="p-3 bg-destructive/10 rounded-lg">
+                    <div className="text-2xl font-bold text-destructive">{metrics.impulsivityRate}%</div>
                     <div className="text-xs text-muted-foreground">Taxa Impulsividade</div>
                   </div>
-                  <div className="p-3 bg-blue-500/10 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600">{metrics.meanRT}ms</div>
+                  <div className="p-3 bg-info/10 rounded-lg">
+                    <div className="text-2xl font-bold text-info">{metrics.meanRT}ms</div>
                     <div className="text-xs text-muted-foreground">Latência Média</div>
                   </div>
-                  <div className="p-3 bg-purple-500/10 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600">{metrics.postErrorLatency}ms</div>
+                  <div className="p-3 bg-secondary/10 rounded-lg">
+                    <div className="text-2xl font-bold text-secondary">{metrics.postErrorLatency}ms</div>
                     <div className="text-xs text-muted-foreground">Latência Pós-Erro</div>
                   </div>
-                  <div className="p-3 bg-green-500/10 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">{metrics.correctInhibitions}</div>
+                  <div className="p-3 bg-success/10 rounded-lg">
+                    <div className="text-2xl font-bold text-success">{metrics.correctInhibitions}</div>
                     <div className="text-xs text-muted-foreground">Inibições Corretas</div>
                   </div>
-                  <div className="p-3 bg-orange-500/10 rounded-lg">
-                    <div className="text-2xl font-bold text-orange-600">{metrics.falseAlarms}</div>
+                  <div className="p-3 bg-warning/10 rounded-lg">
+                    <div className="text-2xl font-bold text-warning">{metrics.falseAlarms}</div>
                     <div className="text-xs text-muted-foreground">Falsos Alarmes</div>
                   </div>
                 </div>
@@ -332,8 +332,8 @@ export default function FocoRapido() {
         <Card className="mt-4 p-4">
           <h3 className="font-semibold mb-2">Instruções</h3>
           <ul className="text-sm text-muted-foreground space-y-1">
-            <li>• <strong className="text-green-600">Círculo Verde</strong> → Pressione ESPAÇO ou toque (Go)</li>
-            <li>• <strong className="text-red-600">Círculo Vermelho</strong> → NÃO pressione (No-Go)</li>
+            <li>• <strong className="text-success">Círculo Verde</strong> → Pressione ESPAÇO ou toque (Go)</li>
+            <li>• <strong className="text-destructive">Círculo Vermelho</strong> → NÃO pressione (No-Go)</li>
             <li>• Responda o mais rápido possível sem cometer erros</li>
             <li>• 60 estímulos no total</li>
           </ul>
