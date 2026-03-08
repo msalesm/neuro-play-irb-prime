@@ -22,7 +22,6 @@ export const Footer = () => {
               Revolucionando o desenvolvimento cognitivo através de jogos baseados em evidências científicas. 
               Transformamos aprendizado em experiências divertidas para pessoas neurodivergentes.
             </p>
-            </p>
             <div className="flex items-center gap-2 text-sm opacity-75">
               <Heart className="h-4 w-4 text-primary" />
               <span>Feito com amor para a comunidade neurodiversa</span>
