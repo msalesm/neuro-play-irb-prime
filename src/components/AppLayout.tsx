@@ -18,6 +18,7 @@ import {
 } from '@/components/accessibility';
 import { FloatingAIAssistant } from '@/components/ai/FloatingAIAssistant';
 import { ClinicalDisclaimerModal } from '@/components/clinical/ClinicalDisclaimerModal';
+import { OfflineIndicator, PWAInstallPrompt, ServiceWorkerStatus } from '@/components/pwa/PWAComponents';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -60,6 +61,9 @@ export function AppLayout({ children }: AppLayoutProps) {
             <MobileTour />
             <AccessibilityQuickPanel />
             <FloatingAIAssistant />
+            <OfflineIndicator />
+            <PWAInstallPrompt />
+            <ServiceWorkerStatus />
           </div>
         </KeyboardNavigationProvider>
       </VisualNotificationProvider>
@@ -118,6 +122,9 @@ export function AppLayout({ children }: AppLayoutProps) {
             <AccessibilityQuickPanel />
             <ClinicalDisclaimerModal />
             <FloatingAIAssistant />
+            <OfflineIndicator />
+            <PWAInstallPrompt />
+            <ServiceWorkerStatus />
           </div>
         </SidebarProvider>
       </KeyboardNavigationProvider>
