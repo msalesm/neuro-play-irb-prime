@@ -92,7 +92,7 @@ const reportTypes = [
 export default function UnifiedReports() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isAdmin, isTherapist, isParent } = useUserRole();
+  const { isAdmin, isTherapist, isParent, isTeacher } = useUserRole();
   const { trackScreenView } = useTelemetry();
   const [selectedPeriod, setSelectedPeriod] = useState<string>('30');
   const [generating, setGenerating] = useState<string | null>(null);
@@ -111,8 +111,10 @@ export default function UnifiedReports() {
       loadPatientsForTherapist();
     } else if (isParent) {
       loadChildrenForParent();
+    } else if (isTeacher) {
+      loadStudentsForTeacher();
     }
-  }, [trackScreenView, isTherapist, isParent]);
+  }, [trackScreenView, isTherapist, isParent, isTeacher]);
 
   const loadPatientsForTherapist = async () => {
     if (!user) return;
@@ -162,13 +164,50 @@ export default function UnifiedReports() {
     }
   };
 
+  const loadStudentsForTeacher = async () => {
+    if (!user) return;
+    setLoadingChildren(true);
+    try {
+      const { data: classes } = await supabase
+        .from('school_classes')
+        .select('id')
+        .eq('teacher_id', user.id);
+      
+      if (!classes || classes.length === 0) {
+        setChildren([]);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('class_students')
+        .select('child_id, children!class_students_child_id_fkey(id, name)')
+        .in('class_id', classes.map(c => c.id))
+        .eq('is_active', true);
+
+      if (error) throw error;
+      const list = (data || [])
+        .filter((d: any) => d.children)
+        .map((d: any) => ({ id: d.children.id, name: d.children.name }));
+      // Deduplicate
+      const unique = Array.from(new Map(list.map((s: any) => [s.id, s])).values());
+      setChildren(unique);
+      if (unique.length > 0 && !selectedChild) {
+        setSelectedChild(unique[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading students:', error);
+    } finally {
+      setLoadingChildren(false);
+    }
+  };
+
   const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
     if (!user) return;
 
-    // Therapist or parent must select a child
-    if ((isTherapist || isParent) && !selectedChild) {
+    // Therapist, parent, or teacher must select a child
+    if ((isTherapist || isParent || isTeacher) && !selectedChild) {
       toast({
-        title: isTherapist ? 'Selecione um paciente' : 'Selecione um filho',
+        title: isTherapist ? 'Selecione um paciente' : isTeacher ? 'Selecione um aluno' : 'Selecione um filho',
         description: 'É necessário selecionar para gerar o relatório.',
       });
       return;
@@ -180,12 +219,12 @@ export default function UnifiedReports() {
       const endDate = new Date();
       const startDate = subDays(endDate, parseInt(selectedPeriod));
 
-      const targetId = (isTherapist || isParent) ? selectedChild : user.id;
+      const targetId = (isTherapist || isParent || isTeacher) ? selectedChild : user.id;
 
       const { data, error } = await supabase.functions.invoke('generate-clinical-report', {
         body: {
           userId: targetId,
-          childId: (isTherapist || isParent) ? selectedChild : undefined,
+          childId: (isTherapist || isParent || isTeacher) ? selectedChild : undefined,
           reportType: type,
           startDate: startDate.toISOString().split('T')[0],
           endDate: endDate.toISOString().split('T')[0],
@@ -301,24 +340,30 @@ export default function UnifiedReports() {
     }
   };
 
-  // For therapists show clinical, for parents show familiar, for others show all
+  // Each role sees only their own report type
   const displayReportTypes = isTherapist 
     ? reportTypes.filter(r => r.type === 'clinical')
     : isParent 
       ? reportTypes.filter(r => r.type === 'familiar')
-      : reportTypes;
+      : isTeacher
+        ? reportTypes.filter(r => r.type === 'pedagogical')
+        : isAdmin
+          ? reportTypes
+          : reportTypes.filter(r => r.type === 'familiar');
 
   const selectedChildName = children.find(c => c.id === selectedChild)?.name;
 
   const getPageTitle = () => {
     if (isTherapist) return 'Relatório Clínico';
     if (isParent) return 'Relatório Familiar';
+    if (isTeacher) return 'Relatório Pedagógico';
     return 'Relatórios';
   };
 
   const getPageDescription = () => {
     if (isTherapist) return 'Gerar relatório clínico do paciente';
     if (isParent) return 'Gerar relatório de progresso do seu filho';
+    if (isTeacher) return 'Gerar relatório pedagógico do aluno';
     return 'Visão unificada de todos os relatórios';
   };
 
@@ -340,18 +385,18 @@ export default function UnifiedReports() {
         </div>
 
         {/* Therapist/Parent: Child Selector */}
-        {(isTherapist || isParent) && (
+        {(isTherapist || isParent || isTeacher) && (
           <Card className="mb-6">
             <CardContent className="pt-6">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
                   <label className="text-sm font-medium mb-2 block">
-                    {isTherapist ? 'Selecionar Paciente' : 'Selecionar Filho'}
+                    {isTherapist ? 'Selecionar Paciente' : isTeacher ? 'Selecionar Aluno' : 'Selecionar Filho'}
                   </label>
                   <Select value={selectedChild} onValueChange={setSelectedChild}>
                     <SelectTrigger className="w-full">
                       <UserCircle className="h-4 w-4 mr-2" />
-                      <SelectValue placeholder={loadingChildren ? "Carregando..." : isTherapist ? "Selecione um paciente" : "Selecione um filho"} />
+                      <SelectValue placeholder={loadingChildren ? "Carregando..." : isTherapist ? "Selecione um paciente" : isTeacher ? "Selecione um aluno" : "Selecione um filho"} />
                     </SelectTrigger>
                     <SelectContent>
                       {children.map((child) => (
