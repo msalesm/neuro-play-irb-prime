@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 import heroImage from '@/assets/hero-children-learning.jpg';
 import childFocused from '@/assets/child-focused-learning.jpg';
 import groupTherapy from '@/assets/group-therapy-session.jpg';
+import neuroplayLogo from '@/assets/neuroplay-logo.png';
 
 // ─── 1. HEADER ────────────────────────────────────────────
 const LandingHeader = () => {
