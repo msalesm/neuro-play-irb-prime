@@ -74,7 +74,7 @@ export function SocialMissions() {
         {weeklyMissions.length > 0 && (
           <div>
             <h4 className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-              <Target className="w-4 h-4 text-purple-500" />
+              <Target className="w-4 h-4 text-primary" />
               Missões Semanais
             </h4>
             <div className="space-y-3">

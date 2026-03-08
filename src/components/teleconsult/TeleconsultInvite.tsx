@@ -165,7 +165,7 @@ Dicas:
                 onClick={shareViaEmail}
                 className="flex flex-col gap-1 h-auto py-3"
               >
-                <Mail className="w-5 h-5 text-blue-500" />
+                <Mail className="w-5 h-5 text-info" />
                 <span className="text-xs">E-mail</span>
               </Button>
               <Button
@@ -173,7 +173,7 @@ Dicas:
                 onClick={shareNative}
                 className="flex flex-col gap-1 h-auto py-3"
               >
-                <Share2 className="w-5 h-5 text-purple-500" />
+                <Share2 className="w-5 h-5 text-primary" />
                 <span className="text-xs">Outros</span>
               </Button>
             </div>

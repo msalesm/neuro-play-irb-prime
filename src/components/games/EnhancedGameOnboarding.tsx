@@ -104,7 +104,7 @@ export function EnhancedGameOnboarding({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 backdrop-blur-sm animate-fade-in">
       <Card className="w-full max-w-2xl mx-4 bg-card/95 backdrop-blur-sm border border-border/50 shadow-2xl">
         <CardContent className="p-0">
           {/* Header */}
