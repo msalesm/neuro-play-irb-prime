@@ -120,14 +120,16 @@ export default function UnifiedReports() {
 
   useEffect(() => {
     trackScreenView('unified_reports');
-    if (isTherapist) {
+    if (isAdmin) {
+      loadAllChildren();
+    } else if (isTherapist) {
       loadPatientsForTherapist();
     } else if (isParent) {
       loadChildrenForParent();
     } else if (isTeacher) {
       loadStudentsForTeacher();
     }
-  }, [trackScreenView, isTherapist, isParent, isTeacher]);
+  }, [trackScreenView, isAdmin, isTherapist, isParent, isTeacher]);
 
   const loadPatientsForTherapist = async () => {
     if (!user) return;
