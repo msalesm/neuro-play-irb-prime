@@ -5,7 +5,9 @@ import {
   Brain, Target, TrendingUp, ArrowRight, GraduationCap, 
   Zap, BookOpen, BarChart3, Award, Heart, Shield, Users, 
   Stethoscope, Gamepad2, CalendarCheck, MessageCircle, Star,
-  CheckCircle2, Smartphone, Apple, Monitor
+  CheckCircle2, Smartphone, Apple, Monitor, Activity, 
+  FileText, Lightbulb, Database, School, Sparkles, Eye,
+  LineChart, ClipboardList, RefreshCw
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -30,6 +32,29 @@ const scaleIn = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.35 } }
 };
 
+const StarRating = ({ count = 5 }: { count?: number }) => (
+  <div className="flex items-center gap-0.5">
+    {Array.from({ length: count }).map((_, i) => (
+      <Star key={i} className="w-4 h-4 text-warning fill-warning" />
+    ))}
+  </div>
+);
+
+const SectionHeader = ({ badge, title, subtitle, stars = 5 }: { badge: string; title: string; subtitle: string; stars?: number }) => (
+  <motion.div className="text-center mb-10 md:mb-16" variants={fadeIn}>
+    <div className="flex justify-center mb-3">
+      <StarRating count={stars} />
+    </div>
+    <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">{badge}</Badge>
+    <h2 className="text-2xl md:text-4xl font-bold mb-3">
+      <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        {title}
+      </span>
+    </h2>
+    <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">{subtitle}</p>
+  </motion.div>
+);
+
 const Index = () => {
   const { user } = useAuth();
 
@@ -40,7 +65,6 @@ const Index = () => {
           HERO
       ═══════════════════════════════════════════ */}
       <section className="relative min-h-[85vh] md:min-h-[90vh] flex items-center overflow-hidden">
-        {/* Background Photo */}
         <div className="absolute inset-0">
           <img 
             src={heroImg} 
@@ -59,19 +83,20 @@ const Index = () => {
             animate="visible"
             variants={stagger}
           >
-            <motion.div variants={fadeIn}>
-              <Badge className="mb-4 md:mb-6 bg-primary/90 text-primary-foreground border-0 text-xs md:text-sm px-3 py-1">
+            <motion.div variants={fadeIn} className="flex items-center gap-3 mb-4 md:mb-6">
+              <Badge className="bg-primary/90 text-primary-foreground border-0 text-xs md:text-sm px-3 py-1">
                 Plataforma de Neurodesenvolvimento
               </Badge>
+              <StarRating />
             </motion.div>
             
             <motion.h1 
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 md:mb-6 leading-tight"
               variants={fadeIn}
             >
-              Desenvolvimento cognitivo
+              Inteligência cognitiva infantil
               <span className="block text-primary mt-1 md:mt-2">
-                baseado em evidências
+                baseada em dados comportamentais
               </span>
             </motion.h1>
             
@@ -79,8 +104,8 @@ const Index = () => {
               className="text-base md:text-xl text-primary-foreground/85 mb-6 md:mb-8 max-w-lg leading-relaxed"
               variants={fadeIn}
             >
-              Jogos adaptativos, ABA digital, rotina executiva e histórias interativas — 
-              tudo integrado para famílias, terapeutas e escolas.
+              Jogos adaptativos com IA, avaliação cognitiva automática, ABA digital, 
+              recomendações personalizadas para pais, terapeutas e escolas — tudo em uma única plataforma.
             </motion.p>
             
             <motion.div className="flex flex-col sm:flex-row gap-3 md:gap-4" variants={fadeIn}>
@@ -104,7 +129,6 @@ const Index = () => {
               )}
             </motion.div>
 
-            {/* Trust indicators */}
             <motion.div 
               className="flex flex-wrap items-center gap-4 md:gap-6 mt-8 md:mt-12"
               variants={fadeIn}
@@ -112,6 +136,7 @@ const Index = () => {
               {[
                 { icon: Shield, text: "LGPD Compliant" },
                 { icon: Brain, text: "Baseado em Evidências" },
+                { icon: Sparkles, text: "IA Adaptativa" },
                 { icon: Heart, text: "TEA · TDAH · Dislexia" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-2 text-primary-foreground/70 text-xs md:text-sm">
@@ -135,19 +160,15 @@ const Index = () => {
         variants={fadeIn}
       >
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div className="text-center mb-10 md:mb-16" variants={fadeIn}>
-            <h2 className="text-2xl md:text-4xl font-bold mb-3">
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Uma plataforma, todos os contextos
-              </span>
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
-              NeuroPlay conecta famílias, profissionais de saúde e educadores em torno do desenvolvimento da criança.
-            </p>
-          </motion.div>
+          <SectionHeader
+            badge="Ecossistema Completo"
+            title="Uma plataforma, todos os contextos"
+            subtitle="NeuroPlay conecta famílias, profissionais de saúde, educadores e instituições em torno do desenvolvimento da criança."
+            stars={5}
+          />
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
             variants={stagger}
             initial="hidden"
             whileInView="visible"
@@ -157,37 +178,43 @@ const Index = () => {
               {
                 icon: Heart,
                 title: "Famílias",
-                desc: "Acompanhe o progresso do seu filho com jogos que desenvolvem atenção, memória e regulação emocional — tudo de forma lúdica.",
-                features: ["Rotina inteligente", "Relatório semanal", "Histórias interativas"],
-                color: "primary",
+                desc: "Acompanhe o progresso com jogos cognitivos, rotina inteligente e recomendações personalizadas por IA.",
+                features: ["Rotina executiva", "Relatório semanal automático", "Histórias interativas", "Recomendações para pais", "Missões diárias gamificadas"],
               },
               {
                 icon: Stethoscope,
                 title: "Terapeutas",
-                desc: "Prontuário eletrônico, programas ABA digitais e radar cognitivo. Dados clínicos reais para decisões baseadas em evidências.",
-                features: ["ABA digital", "Prontuário eletrônico", "Relatórios clínicos"],
-                color: "secondary",
+                desc: "Prontuário eletrônico, ABA digital, radar cognitivo e intervenção adaptativa baseada em dados clínicos.",
+                features: ["ABA digital com prompting", "Prontuário eletrônico", "Avaliação cognitiva automática", "Relatórios clínicos em PDF", "Perfil comportamental integrado"],
               },
               {
                 icon: GraduationCap,
                 title: "Escolas",
-                desc: "Dashboard por turma, indicadores cognitivos agregados e PEI digital. Visibilidade para coordenação e professores.",
-                features: ["Dashboard por turma", "PEI integrado", "Indicadores por aluno"],
-                color: "accent",
+                desc: "Dashboard por turma, PEI digital, mapa de vulnerabilidade e alertas automáticos para coordenação.",
+                features: ["Dashboard por turma", "PEI integrado", "Mapa de vulnerabilidade", "Alertas pedagógicos", "Relatórios para secretaria"],
+              },
+              {
+                icon: School,
+                title: "Instituições",
+                desc: "Visão agregada de toda a rede escolar com indicadores cognitivos, predição de risco e gestão de licenças.",
+                features: ["Dashboard institucional", "Indicadores por região", "Predição de risco", "Gestão de licenças", "Auditoria e compliance"],
               },
             ].map((audience) => (
               <motion.div key={audience.title} variants={scaleIn}>
                 <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300 border-t-4 border-t-primary/40">
-                  <CardContent className="p-6 md:p-8">
-                    <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-5">
-                      <audience.icon className="w-6 h-6 text-primary" />
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+                        <audience.icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <StarRating count={5} />
                     </div>
-                    <h3 className="text-xl font-bold mb-3">{audience.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-5 leading-relaxed">{audience.desc}</p>
-                    <ul className="space-y-2">
+                    <h3 className="text-xl font-bold mb-2">{audience.title}</h3>
+                    <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{audience.desc}</p>
+                    <ul className="space-y-1.5">
                       {audience.features.map((f) => (
                         <li key={f} className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
                           <span>{f}</span>
                         </li>
                       ))}
@@ -212,7 +239,6 @@ const Index = () => {
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-            {/* Photo */}
             <motion.div className="relative rounded-2xl overflow-hidden shadow-glow order-2 lg:order-1" variants={fadeIn}>
               <img 
                 src={childFocusedImg} 
@@ -226,25 +252,28 @@ const Index = () => {
                     <Brain className="w-5 h-5 text-primary-foreground" />
                   </div>
                   <div>
-                     <p className="text-primary-foreground font-semibold text-sm">Radar Cognitivo</p>
-                     <p className="text-primary-foreground/70 text-xs">6 dimensões analisadas em tempo real</p>
+                     <p className="text-primary-foreground font-semibold text-sm">Motor Adaptativo com IA</p>
+                     <p className="text-primary-foreground/70 text-xs">Dificuldade ajustada em tempo real</p>
                   </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Content */}
             <motion.div className="order-1 lg:order-2" variants={stagger}>
               <motion.div variants={fadeIn}>
-                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-                  Jogos Cognitivos
-                </Badge>
+                <div className="flex items-center gap-3 mb-4">
+                  <Badge className="bg-primary/10 text-primary border-primary/20">
+                    Jogos Cognitivos Adaptativos
+                  </Badge>
+                  <StarRating />
+                </div>
                 <h2 className="text-2xl md:text-4xl font-bold mb-4">
                   Cada jogo gera dados clínicos reais
                 </h2>
                 <p className="text-muted-foreground mb-6 md:mb-8 leading-relaxed">
-                  Nossos jogos adaptam a dificuldade automaticamente e registram métricas como tempo de reação, 
-                  acurácia, persistência e padrões de erro — alimentando o perfil comportamental da criança.
+                  Mais de 25 jogos terapêuticos com dificuldade adaptativa por IA, 
+                  registro de tempo de reação, acurácia, persistência e padrões de erro — 
+                  alimentando o perfil comportamental e a avaliação cognitiva automática.
                 </p>
               </motion.div>
 
@@ -254,6 +283,8 @@ const Index = () => {
                   { icon: Brain, label: "Memória", value: "Operacional e sequencial" },
                   { icon: Zap, label: "Flexibilidade", value: "Cognitiva e adaptativa" },
                   { icon: Award, label: "Persistência", value: "Tolerância à frustração" },
+                  { icon: Eye, label: "Controle Inibitório", value: "Impulsividade e foco" },
+                  { icon: RefreshCw, label: "Adaptação", value: "Dificuldade por IA" },
                 ].map((metric) => (
                   <motion.div key={metric.label} variants={scaleIn}>
                     <Card className="shadow-card h-full">
@@ -282,7 +313,7 @@ const Index = () => {
       </motion.section>
 
       {/* ═══════════════════════════════════════════
-          MÓDULOS — ABA, Rotina, Histórias
+          5 SISTEMAS ESTRATÉGICOS
       ═══════════════════════════════════════════ */}
       <motion.section 
         className="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-secondary/5"
@@ -292,16 +323,88 @@ const Index = () => {
         variants={fadeIn}
       >
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div className="text-center mb-10 md:mb-16" variants={fadeIn}>
-            <h2 className="text-2xl md:text-4xl font-bold mb-3">
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Muito além de jogos
-              </span>
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
-              Módulos integrados que cobrem todas as dimensões do neurodesenvolvimento infantil.
-            </p>
+          <SectionHeader
+            badge="Inteligência Avançada"
+            title="5 sistemas estratégicos integrados"
+            subtitle="Módulos de inteligência artificial que transformam dados comportamentais em intervenções clínicas e pedagógicas."
+            stars={5}
+          />
+
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                icon: Activity,
+                title: "Intervenção Adaptativa",
+                desc: "Motor de IA que ajusta dificuldade, frequência e tipo de atividade conforme o desempenho em tempo real.",
+                badge: "IA",
+              },
+              {
+                icon: LineChart,
+                title: "Avaliação Cognitiva",
+                desc: "Scores automáticos de atenção, memória, controle inibitório, flexibilidade e persistência (0–100).",
+                badge: "Assessment",
+              },
+              {
+                icon: Lightbulb,
+                title: "Recomendações",
+                desc: "Sugestões práticas personalizadas para pais, professores e terapeutas baseadas no perfil da criança.",
+                badge: "Actionable",
+              },
+              {
+                icon: Database,
+                title: "Dataset Comportamental",
+                desc: "Registro estruturado de métricas de jogos, ABA, rotinas e histórias para análise correlacional.",
+                badge: "Big Data",
+              },
+              {
+                icon: School,
+                title: "Dashboard Institucional",
+                desc: "Indicadores agregados por turma e escola: atenção, persistência, autorregulação e engajamento.",
+                badge: "Gestão",
+              },
+            ].map((mod) => (
+              <motion.div key={mod.title} variants={scaleIn}>
+                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300">
+                  <CardContent className="p-5">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <mod.icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <Badge variant="secondary" className="text-[10px]">{mod.badge}</Badge>
+                    </div>
+                    <h3 className="font-bold text-sm mb-1.5">{mod.title}</h3>
+                    <p className="text-muted-foreground text-xs leading-relaxed">{mod.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          MÓDULOS TERAPÊUTICOS
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        className="py-16 md:py-24"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionHeader
+            badge="Módulos Integrados"
+            title="Muito além de jogos"
+            subtitle="Módulos terapêuticos que cobrem todas as dimensões do neurodesenvolvimento infantil."
+            stars={5}
+          />
 
           <motion.div 
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
@@ -314,26 +417,30 @@ const Index = () => {
               {
                 icon: BarChart3,
                 title: "ABA Digital",
-                desc: "Programas de ensino, registro de tentativas, níveis de prompt e reforço — com análise automática de progresso.",
+                desc: "Programas de ensino, registro de tentativas, DTT/NET/VB, níveis de prompt, reforço e análise automática de progresso com gráficos de tendência.",
                 badge: "Clínico",
+                stars: 5,
               },
               {
                 icon: CalendarCheck,
                 title: "Rotina Executiva",
-                desc: "Organização de tarefas diárias com métricas de função executiva: iniciação, conclusão e consistência.",
+                desc: "Organização de tarefas diárias com métricas de função executiva: iniciação, conclusão, consistência e transição entre atividades.",
                 badge: "Funcional",
+                stars: 5,
               },
               {
                 icon: BookOpen,
                 title: "Histórias Interativas",
-                desc: "Narrativas com decisões que desenvolvem empatia, regulação emocional e habilidades sociais.",
+                desc: "Narrativas com decisões que desenvolvem empatia, regulação emocional, habilidades sociais e geração de histórias por IA.",
                 badge: "Socioemocional",
+                stars: 5,
               },
               {
                 icon: MessageCircle,
-                title: "Chat Terapêutico",
-                desc: "Assistente IA para check-ins emocionais, orientações para pais e suporte ao terapeuta.",
-                badge: "Suporte",
+                title: "Chat Terapêutico IA",
+                desc: "Assistente com IA para check-ins emocionais, orientações contextualizadas, análise emocional e suporte clínico integrado.",
+                badge: "IA",
+                stars: 5,
               },
             ].map((mod) => (
               <motion.div key={mod.title} variants={scaleIn}>
@@ -343,9 +450,14 @@ const Index = () => {
                       <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
                         <mod.icon className="w-5 h-5 text-primary" />
                       </div>
-                      <Badge variant="secondary" className="text-[10px]">{mod.badge}</Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="text-[10px]">{mod.badge}</Badge>
+                      </div>
                     </div>
-                    <h3 className="font-bold mb-2">{mod.title}</h3>
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-bold">{mod.title}</h3>
+                      <StarRating count={mod.stars} />
+                    </div>
                     <p className="text-muted-foreground text-sm leading-relaxed">{mod.desc}</p>
                   </CardContent>
                 </Card>
@@ -359,7 +471,7 @@ const Index = () => {
           CLÍNICO / PRONTUÁRIO — com foto
       ═══════════════════════════════════════════ */}
       <motion.section 
-        className="py-16 md:py-24"
+        className="py-16 md:py-24 bg-muted/30"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
@@ -367,33 +479,38 @@ const Index = () => {
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-            {/* Content */}
             <motion.div variants={stagger}>
               <motion.div variants={fadeIn}>
-                <Badge className="mb-4 bg-destructive/10 text-destructive border-destructive/20">
-                  Para Profissionais
-                </Badge>
+                <div className="flex items-center gap-3 mb-4">
+                  <Badge className="bg-destructive/10 text-destructive border-destructive/20">
+                    Para Profissionais
+                  </Badge>
+                  <StarRating />
+                </div>
                 <h2 className="text-2xl md:text-4xl font-bold mb-4">
-                  Prontuário eletrônico integrado
+                  Prontuário eletrônico + IA clínica
                 </h2>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  Todas as informações clínicas em um só lugar: anamnese, avaliações, teleconsultas, 
-                  relatórios e planos de intervenção — com auditoria completa.
+                  Todas as informações clínicas em um só lugar: anamnese, avaliações cognitivas automáticas, 
+                  relatórios com IA, planos de intervenção adaptativos e auditoria completa.
                 </p>
               </motion.div>
 
-              <motion.div className="space-y-3" variants={stagger}>
+              <motion.div className="space-y-2.5" variants={stagger}>
                 {[
                   "Anamnese neurológica estruturada",
                   "Radar cognitivo com 6 dimensões",
-                  "Relatórios automáticos em PDF",
+                  "Avaliação cognitiva automática (scores 0–100)",
+                  "Relatórios automáticos em PDF com IA",
                   "Programas ABA com rastreamento de tentativas",
-                  "Perfil comportamental integrado",
+                  "Perfil comportamental com dataset integrado",
+                  "Recomendações clínicas personalizadas",
+                  "Motor de intervenção adaptativa",
                   "Conformidade LGPD e Lei 14.254/21",
                 ].map((item) => (
                   <motion.div key={item} className="flex items-center gap-3" variants={fadeIn}>
-                    <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="w-4 h-4 text-success" />
+                    <div className="w-5 h-5 bg-success/10 rounded-full flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-success" />
                     </div>
                     <span className="text-sm">{item}</span>
                   </motion.div>
@@ -411,7 +528,6 @@ const Index = () => {
               )}
             </motion.div>
 
-            {/* Photo */}
             <motion.div className="relative rounded-2xl overflow-hidden shadow-glow" variants={fadeIn}>
               <img 
                 src={groupTherapyImg} 
@@ -423,8 +539,8 @@ const Index = () => {
                 <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 text-warning fill-warning" />
                   <div>
-                    <p className="font-bold text-xs">Multi-Tenant</p>
-                    <p className="text-[10px] text-muted-foreground">Clínicas · Escolas · Famílias</p>
+                    <p className="font-bold text-xs">Multi-Stakeholder</p>
+                    <p className="text-[10px] text-muted-foreground">Clínicas · Escolas · Famílias · Redes</p>
                   </div>
                 </div>
               </div>
@@ -434,7 +550,79 @@ const Index = () => {
       </motion.section>
 
       {/* ═══════════════════════════════════════════
-          SISTEMA PLANETA AZUL — CTA
+          RELATÓRIOS E ANALYTICS
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        className="py-16 md:py-24"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionHeader
+            badge="Core da Plataforma"
+            title="Relatórios, analytics e progresso"
+            subtitle="A principal funcionalidade do NeuroPlay: visibilidade total do desenvolvimento cognitivo e comportamental da criança."
+            stars={5}
+          />
+
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                icon: FileText,
+                title: "Relatórios Automáticos",
+                desc: "Relatórios clínicos, pedagógicos, familiares e institucionais gerados automaticamente com dados reais e IA.",
+                items: ["Relatório cognitivo", "Relatório comportamental", "Relatório institucional", "Exportação PDF"],
+              },
+              {
+                icon: TrendingUp,
+                title: "Analytics Avançado",
+                desc: "Análise correlacional, detecção de anomalias, tendências e predição de risco com dataset comportamental estruturado.",
+                items: ["Correlação entre métricas", "Detecção de anomalias", "Tendências temporais", "Predição de risco"],
+              },
+              {
+                icon: ClipboardList,
+                title: "Progresso da Criança",
+                desc: "Visibilidade 360° do desenvolvimento: scores cognitivos, evolução ABA, rotina executiva e engajamento.",
+                items: ["Scores cognitivos (0–100)", "Evolução por domínio", "Histórico de sessões", "Comparativo temporal"],
+              },
+            ].map((item) => (
+              <motion.div key={item.title} variants={scaleIn}>
+                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300 border-t-4 border-t-primary/40">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+                        <item.icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <StarRating />
+                    </div>
+                    <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                    <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{item.desc}</p>
+                    <ul className="space-y-1.5">
+                      {item.items.map((i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
+                          <span>{i}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          SISTEMA PLANETA AZUL
       ═══════════════════════════════════════════ */}
       <motion.section 
         className="py-16 md:py-24 bg-gradient-to-br from-primary via-secondary to-primary relative overflow-hidden"
@@ -459,13 +647,20 @@ const Index = () => {
 
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
           <motion.div variants={fadeIn}>
+            <div className="flex justify-center mb-3">
+              <div className="flex items-center gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 text-warning fill-warning" />
+                ))}
+              </div>
+            </div>
             <span className="text-4xl md:text-5xl mb-4 block">🪐</span>
             <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground mb-4">
               Sistema Planeta Azul
             </h2>
             <p className="text-primary-foreground/85 text-base md:text-lg max-w-2xl mx-auto mb-8">
-              5 planetas temáticos com jogos adaptativos, missões diárias, avatares evolutivos 
-              e um universo gamificado que transforma terapia em aventura.
+              5 planetas temáticos com jogos adaptativos, missões diárias, avatares evolutivos, 
+              10 níveis de XP e insígnias colecionáveis — terapia transformada em aventura.
             </p>
           </motion.div>
 
@@ -520,18 +715,22 @@ const Index = () => {
       >
         <div className="container mx-auto px-4 md:px-6">
           <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center"
+            className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6 text-center"
             variants={stagger}
           >
             {[
-              { value: "15+", label: "Jogos Cognitivos" },
+              { value: "25+", label: "Jogos Cognitivos" },
               { value: "6", label: "Dimensões Analisadas" },
+              { value: "5", label: "Módulos Estratégicos" },
+              { value: "4", label: "Perfis de Usuário" },
+              { value: "5", label: "Planetas Temáticos" },
+              { value: "16", label: "Insígnias Colecionáveis" },
               { value: "100%", label: "LGPD Compliant" },
-              { value: "3", label: "Perfis de Usuário" },
+              { value: "IA", label: "Motor Adaptativo" },
             ].map((stat) => (
               <motion.div key={stat.label} variants={scaleIn}>
-                <p className="text-3xl md:text-4xl font-bold text-primary mb-1">{stat.value}</p>
-                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                <p className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.value}</p>
+                <p className="text-xs text-muted-foreground">{stat.label}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -542,24 +741,19 @@ const Index = () => {
           INSTALAR NA TELA INICIAL
       ═══════════════════════════════════════════ */}
       <motion.section
-        className="py-16 md:py-24 bg-muted/30"
+        className="py-16 md:py-24"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
         variants={fadeIn}
       >
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div className="text-center mb-10 md:mb-14" variants={fadeIn}>
-            <div className="mx-auto w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
-              <Smartphone className="w-7 h-7 text-primary" />
-            </div>
-            <h2 className="text-2xl md:text-4xl font-bold mb-3">
-              Instale o NeuroPlay no seu celular
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
-              Use como um app nativo — sem precisar baixar na loja.
-            </p>
-          </motion.div>
+          <SectionHeader
+            badge="App Instalável"
+            title="Instale o NeuroPlay no seu celular"
+            subtitle="Use como um app nativo — sem precisar baixar na loja."
+            stars={5}
+          />
 
           <motion.div
             className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
@@ -674,7 +868,7 @@ const Index = () => {
           CTA FINAL
       ═══════════════════════════════════════════ */}
       <motion.section 
-        className="py-16 md:py-24"
+        className="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-secondary/5"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
@@ -682,11 +876,15 @@ const Index = () => {
       >
         <div className="container mx-auto px-4 md:px-6 text-center">
           <motion.div variants={fadeIn}>
+            <div className="flex justify-center mb-4">
+              <StarRating />
+            </div>
             <h2 className="text-2xl md:text-4xl font-bold mb-4">
               Pronto para transformar o desenvolvimento?
             </h2>
             <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-8">
-              Comece agora e tenha acesso a jogos, relatórios e ferramentas clínicas integradas.
+              Comece agora e tenha acesso a jogos adaptativos, avaliação cognitiva, relatórios com IA 
+              e ferramentas clínicas integradas — tudo em uma plataforma.
             </p>
           </motion.div>
 
@@ -713,9 +911,8 @@ const Index = () => {
             )}
           </motion.div>
 
-          {/* Footer note */}
           <p className="text-xs text-muted-foreground mt-8">
-            NeuroPlay · Plataforma de Neurodesenvolvimento Infantil · LGPD Compliant
+            NeuroPlay · Plataforma de Inteligência Cognitiva Infantil · Baseada em Dados Comportamentais · LGPD Compliant
           </p>
         </div>
       </motion.section>
