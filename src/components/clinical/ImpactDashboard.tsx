@@ -91,11 +91,11 @@ export function ImpactDashboard({ childId, institutionId, isAggregated = false }
   };
 
   const getImprovementColor = (value: number) => {
-    if (value > 10) return 'text-green-600';
-    if (value > 0) return 'text-green-500';
+    if (value > 10) return 'text-success';
+    if (value > 0) return 'text-success';
     if (value === 0) return 'text-muted-foreground';
-    if (value > -10) return 'text-orange-500';
-    return 'text-red-500';
+    if (value > -10) return 'text-warning';
+    return 'text-destructive';
   };
 
   if (loading) {
