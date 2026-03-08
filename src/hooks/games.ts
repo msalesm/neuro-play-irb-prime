@@ -8,8 +8,6 @@
 // ========== GAMES ==========
 export { useGameEngine } from './useGameEngine';
 export { useGameSession } from './useGameSession';
-export { useGameLoop } from './useGameLoop';
-export { useGameControls } from './useGameControls';
 export { useGameProfile } from './useGameProfile';
 export { useGameHistory } from './useGameHistory';
 export { useGamePhaseProgress } from './useGamePhaseProgress';
