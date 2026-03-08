@@ -224,15 +224,15 @@ export default function TheoryOfMind() {
     const avgTime = (sessionData.responseTime.reduce((a, b) => a + b, 0) / sessionData.responseTime.length / 1000).toFixed(1);
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 p-4">
+        <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/10 p-4">
         <div className="max-w-2xl mx-auto">
           <Card className="p-8 text-center">
             <div className="mb-6">
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Brain className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                <Brain className="w-10 h-10 text-primary-foreground" />
               </div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">Teste Completo!</h1>
-              <p className="text-gray-600">Excelente trabalho explorando a Teoria da Mente</p>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Teste Completo!</h1>
+              <p className="text-muted-foreground">Excelente trabalho explorando a Teoria da Mente</p>
             </div>
 
             <div className="grid grid-cols-3 gap-6 mb-8">

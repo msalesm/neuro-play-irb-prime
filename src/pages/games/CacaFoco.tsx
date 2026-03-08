@@ -569,7 +569,7 @@ export default function CacaFoco() {
               {/* Combo Indicator */}
               {stats.streak >= 3 && (
                 <div className="mt-4 text-center">
-                  <div className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full animate-pulse-success font-bold">
+                  <div className="inline-block bg-gradient-to-r from-warning to-destructive text-primary-foreground px-6 py-2 rounded-full animate-pulse-success font-bold">
                     🔥 COMBO x{stats.streak}! 🔥
                   </div>
                 </div>

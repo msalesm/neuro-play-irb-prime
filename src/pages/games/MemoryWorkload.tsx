@@ -342,7 +342,7 @@ export default function MemoryWorkload() {
           onClick={() => handleCellClick(i)}
         >
           {showNumber && (
-            <div className="text-2xl font-bold text-white drop-shadow-md">
+            <div className="text-2xl font-bold text-primary-foreground drop-shadow-md">
               {numberToShow}
             </div>
           )}

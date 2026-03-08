@@ -114,7 +114,7 @@ export default function CrystalMatch() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-900 to-slate-900 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-[hsl(240,50%,10%)] via-[hsl(270,50%,15%)] to-[hsl(240,50%,10%)] py-8 px-4">
       <GameCompatibilityCheck showWarnings={true} />
       <div className="container mx-auto max-w-2xl">
         {/* Header */}
@@ -123,7 +123,7 @@ export default function CrystalMatch() {
             variant="ghost"
             size="sm"
             onClick={() => navigate(-1)}
-            className="text-white hover:bg-white/10"
+            className="text-primary-foreground hover:bg-primary-foreground/10"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar
@@ -134,7 +134,7 @@ export default function CrystalMatch() {
               variant="outline"
               size="sm"
               onClick={handleRestart}
-              className="text-white border-white/20 hover:bg-white/10"
+              className="text-primary-foreground border-primary-foreground/20 hover:bg-primary-foreground/10"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               Reiniciar
@@ -144,31 +144,31 @@ export default function CrystalMatch() {
 
         {/* Game Title */}
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-white mb-2">
+          <h1 className="text-4xl font-bold text-primary-foreground mb-2">
             💎 Crystal Match
           </h1>
-          <p className="text-white/70">
+          <p className="text-primary-foreground/70">
             Combine 3 ou mais cristais para pontuar!
           </p>
         </div>
 
         {/* Error State */}
         {error ? (
-          <div className="bg-red-500/10 border-2 border-red-500/50 rounded-lg p-8 text-center">
+          <div className="bg-destructive/10 border-2 border-destructive/50 rounded-lg p-8 text-center">
             <div className="text-6xl mb-4">⚠️</div>
-            <h2 className="text-2xl font-bold text-white mb-2">Erro ao Carregar</h2>
-            <p className="text-white/80 mb-6">{error}</p>
+            <h2 className="text-2xl font-bold text-primary-foreground mb-2">Erro ao Carregar</h2>
+            <p className="text-primary-foreground/80 mb-6">{error}</p>
             <div className="flex gap-4 justify-center">
               <Button
                 onClick={() => navigate('/dashboard-pais')}
-                className="bg-white/10 hover:bg-white/20"
+                className="bg-primary-foreground/10 hover:bg-primary-foreground/20"
               >
                 Voltar ao Dashboard
               </Button>
               <Button
                 onClick={() => window.location.reload()}
                 variant="outline"
-                className="text-white border-white/20"
+                className="text-primary-foreground border-primary-foreground/20"
               >
                 Tentar Novamente
               </Button>
@@ -177,7 +177,7 @@ export default function CrystalMatch() {
         ) : (
           <>
             {/* Game Instructions */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 mb-6 text-white/90 text-sm">
+            <div className="bg-primary-foreground/10 backdrop-blur-sm rounded-lg p-4 mb-6 text-primary-foreground/90 text-sm">
               <p className="mb-2">📋 <strong>Como jogar:</strong></p>
               <ul className="list-disc list-inside space-y-1 ml-2">
                 <li>Clique em um cristal e depois em um adjacente para trocar</li>
@@ -190,20 +190,20 @@ export default function CrystalMatch() {
             {/* Game Container */}
             <div className="flex justify-center items-center">
               {loading ? (
-                <div className="text-white text-center py-12">
-                  <div className="animate-spin w-12 h-12 border-4 border-white/20 border-t-white rounded-full mx-auto mb-4"></div>
+                <div className="text-primary-foreground text-center py-12">
+                  <div className="animate-spin w-12 h-12 border-4 border-primary-foreground/20 border-t-primary-foreground rounded-full mx-auto mb-4"></div>
                   <p>Carregando jogo...</p>
                 </div>
               ) : (
                 <div
                   ref={containerRef}
-                  className="rounded-lg overflow-hidden shadow-2xl border-4 border-purple-500/30"
+                  className="rounded-lg overflow-hidden shadow-2xl border-4 border-secondary/30"
                 />
               )}
             </div>
 
             {/* Game Info */}
-            <div className="mt-6 bg-white/5 backdrop-blur-sm rounded-lg p-4 text-white/80 text-sm">
+            <div className="mt-6 bg-primary-foreground/5 backdrop-blur-sm rounded-lg p-4 text-primary-foreground/80 text-sm">
               <p className="text-center">
                 🧠 <strong>Habilidades trabalhadas:</strong> Atenção Visual, Planejamento, Raciocínio Lógico
               </p>
