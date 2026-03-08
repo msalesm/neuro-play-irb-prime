@@ -1416,6 +1416,71 @@ export type Database = {
           },
         ]
       }
+      analytics_snapshot: {
+        Row: {
+          aba_trials_count: number | null
+          active_children: number | null
+          avg_aba_accuracy: number | null
+          avg_attention: number | null
+          avg_flexibility: number | null
+          avg_memory: number | null
+          avg_persistence: number | null
+          calculated_at: string
+          engagement_rate: number | null
+          id: string
+          institution_id: string
+          risk_distribution: Json | null
+          routine_completion_rate: number | null
+          sessions_count: number | null
+          snapshot_date: string
+          total_children: number | null
+        }
+        Insert: {
+          aba_trials_count?: number | null
+          active_children?: number | null
+          avg_aba_accuracy?: number | null
+          avg_attention?: number | null
+          avg_flexibility?: number | null
+          avg_memory?: number | null
+          avg_persistence?: number | null
+          calculated_at?: string
+          engagement_rate?: number | null
+          id?: string
+          institution_id: string
+          risk_distribution?: Json | null
+          routine_completion_rate?: number | null
+          sessions_count?: number | null
+          snapshot_date?: string
+          total_children?: number | null
+        }
+        Update: {
+          aba_trials_count?: number | null
+          active_children?: number | null
+          avg_aba_accuracy?: number | null
+          avg_attention?: number | null
+          avg_flexibility?: number | null
+          avg_memory?: number | null
+          avg_persistence?: number | null
+          calculated_at?: string
+          engagement_rate?: number | null
+          id?: string
+          institution_id?: string
+          risk_distribution?: Json | null
+          routine_completion_rate?: number | null
+          sessions_count?: number | null
+          snapshot_date?: string
+          total_children?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analytics_snapshot_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       api_keys: {
         Row: {
           created_at: string | null
@@ -1750,6 +1815,109 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      behavior_profile: {
+        Row: {
+          attention_level: number | null
+          calculated_at: string
+          child_id: string
+          communication: number | null
+          data_sources: Json | null
+          emotional_regulation: number | null
+          flexibility: number | null
+          id: string
+          impulse_control: number | null
+          institution_id: string | null
+          last_aba_data_at: string | null
+          last_game_data_at: string | null
+          last_routine_data_at: string | null
+          last_story_data_at: string | null
+          persistence_level: number | null
+          social_interaction: number | null
+          updated_at: string
+        }
+        Insert: {
+          attention_level?: number | null
+          calculated_at?: string
+          child_id: string
+          communication?: number | null
+          data_sources?: Json | null
+          emotional_regulation?: number | null
+          flexibility?: number | null
+          id?: string
+          impulse_control?: number | null
+          institution_id?: string | null
+          last_aba_data_at?: string | null
+          last_game_data_at?: string | null
+          last_routine_data_at?: string | null
+          last_story_data_at?: string | null
+          persistence_level?: number | null
+          social_interaction?: number | null
+          updated_at?: string
+        }
+        Update: {
+          attention_level?: number | null
+          calculated_at?: string
+          child_id?: string
+          communication?: number | null
+          data_sources?: Json | null
+          emotional_regulation?: number | null
+          flexibility?: number | null
+          id?: string
+          impulse_control?: number | null
+          institution_id?: string | null
+          last_aba_data_at?: string | null
+          last_game_data_at?: string | null
+          last_routine_data_at?: string | null
+          last_story_data_at?: string | null
+          persistence_level?: number | null
+          social_interaction?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "behavior_profile_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "behavior_profile_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "behavior_profile_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "behavior_profile_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "behavior_profile_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "behavior_profile_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       behavioral_insights: {
         Row: {
@@ -3911,6 +4079,94 @@ export type Database = {
           },
         ]
       }
+      cognitive_metrics: {
+        Row: {
+          attention_score: number | null
+          calculated_at: string
+          child_id: string
+          coordination_score: number | null
+          data_sources: Json | null
+          flexibility_score: number | null
+          id: string
+          institution_id: string | null
+          memory_score: number | null
+          persistence_score: number | null
+          processing_speed_score: number | null
+          updated_at: string
+        }
+        Insert: {
+          attention_score?: number | null
+          calculated_at?: string
+          child_id: string
+          coordination_score?: number | null
+          data_sources?: Json | null
+          flexibility_score?: number | null
+          id?: string
+          institution_id?: string | null
+          memory_score?: number | null
+          persistence_score?: number | null
+          processing_speed_score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          attention_score?: number | null
+          calculated_at?: string
+          child_id?: string
+          coordination_score?: number | null
+          data_sources?: Json | null
+          flexibility_score?: number | null
+          id?: string
+          institution_id?: string | null
+          memory_score?: number | null
+          persistence_score?: number | null
+          processing_speed_score?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cognitive_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "cognitive_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cognitive_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "cognitive_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cognitive_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: true
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cognitive_metrics_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community_categories: {
         Row: {
           description: string | null
@@ -5882,6 +6138,107 @@ export type Database = {
             columns: ["game_id"]
             isOneToOne: false
             referencedRelation: "cognitive_games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      game_trials: {
+        Row: {
+          actual_response: string | null
+          child_id: string
+          correct: boolean
+          error_type: string | null
+          expected_response: string | null
+          id: string
+          institution_id: string | null
+          metadata: Json | null
+          prompt_level: string | null
+          reaction_time_ms: number | null
+          recorded_at: string
+          session_id: string
+          stimulus: string | null
+          trial_number: number | null
+        }
+        Insert: {
+          actual_response?: string | null
+          child_id: string
+          correct: boolean
+          error_type?: string | null
+          expected_response?: string | null
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          prompt_level?: string | null
+          reaction_time_ms?: number | null
+          recorded_at?: string
+          session_id: string
+          stimulus?: string | null
+          trial_number?: number | null
+        }
+        Update: {
+          actual_response?: string | null
+          child_id?: string
+          correct?: boolean
+          error_type?: string | null
+          expected_response?: string | null
+          id?: string
+          institution_id?: string | null
+          metadata?: Json | null
+          prompt_level?: string | null
+          reaction_time_ms?: number | null
+          recorded_at?: string
+          session_id?: string
+          stimulus?: string | null
+          trial_number?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "game_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "game_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_trials_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_trials_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_trials_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "game_sessions"
             referencedColumns: ["id"]
           },
         ]
@@ -8183,6 +8540,94 @@ export type Database = {
           },
         ]
       }
+      routine_metrics: {
+        Row: {
+          avg_interruptions: number | null
+          calculated_at: string
+          child_id: string
+          completed_tasks: number | null
+          consistency_score: number | null
+          executive_function_index: number | null
+          id: string
+          institution_id: string | null
+          metric_date: string
+          task_completion_rate: number | null
+          task_initiation_avg_seconds: number | null
+          total_tasks: number | null
+        }
+        Insert: {
+          avg_interruptions?: number | null
+          calculated_at?: string
+          child_id: string
+          completed_tasks?: number | null
+          consistency_score?: number | null
+          executive_function_index?: number | null
+          id?: string
+          institution_id?: string | null
+          metric_date?: string
+          task_completion_rate?: number | null
+          task_initiation_avg_seconds?: number | null
+          total_tasks?: number | null
+        }
+        Update: {
+          avg_interruptions?: number | null
+          calculated_at?: string
+          child_id?: string
+          completed_tasks?: number | null
+          consistency_score?: number | null
+          executive_function_index?: number | null
+          id?: string
+          institution_id?: string | null
+          metric_date?: string
+          task_completion_rate?: number | null
+          task_initiation_avg_seconds?: number | null
+          total_tasks?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "routine_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "routine_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "routine_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_metrics_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_metrics_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       routine_step_executions: {
         Row: {
           completed_at: string | null
@@ -8283,6 +8728,124 @@ export type Database = {
             columns: ["routine_id"]
             isOneToOne: false
             referencedRelation: "routines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      routine_tasks: {
+        Row: {
+          assistance_needed: boolean | null
+          child_id: string
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          institution_id: string | null
+          interruptions: number | null
+          notes: string | null
+          scheduled_date: string
+          scheduled_time: string | null
+          started_at: string | null
+          task_category: string | null
+          task_name: string
+        }
+        Insert: {
+          assistance_needed?: boolean | null
+          child_id: string
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          institution_id?: string | null
+          interruptions?: number | null
+          notes?: string | null
+          scheduled_date?: string
+          scheduled_time?: string | null
+          started_at?: string | null
+          task_category?: string | null
+          task_name: string
+        }
+        Update: {
+          assistance_needed?: boolean | null
+          child_id?: string
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          institution_id?: string | null
+          interruptions?: number | null
+          notes?: string | null
+          scheduled_date?: string
+          scheduled_time?: string | null
+          started_at?: string | null
+          task_category?: string | null
+          task_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "routine_tasks_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "routine_tasks_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_tasks_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "routine_tasks_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_tasks_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "aba_profissionais_view"
+            referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "routine_tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_tasks_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
         ]
@@ -9388,7 +9951,11 @@ export type Database = {
           child_id: string | null
           created_at: string
           decision_point_id: string
+          decision_text: string | null
+          decision_time_ms: number | null
+          emotional_tag: string | null
           id: string
+          options_presented: Json | null
           response_time_ms: number | null
           selected_option_index: number
           story_id: string
@@ -9400,7 +9967,11 @@ export type Database = {
           child_id?: string | null
           created_at?: string
           decision_point_id: string
+          decision_text?: string | null
+          decision_time_ms?: number | null
+          emotional_tag?: string | null
           id?: string
+          options_presented?: Json | null
           response_time_ms?: number | null
           selected_option_index: number
           story_id: string
@@ -9412,7 +9983,11 @@ export type Database = {
           child_id?: string | null
           created_at?: string
           decision_point_id?: string
+          decision_text?: string | null
+          decision_time_ms?: number | null
+          emotional_tag?: string | null
           id?: string
+          options_presented?: Json | null
           response_time_ms?: number | null
           selected_option_index?: number
           story_id?: string
@@ -9504,6 +10079,98 @@ export type Database = {
             columns: ["story_id"]
             isOneToOne: false
             referencedRelation: "social_stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      story_sessions: {
+        Row: {
+          child_id: string
+          completed: boolean | null
+          created_at: string
+          emotional_responses: Json | null
+          ended_at: string | null
+          engagement_score: number | null
+          id: string
+          institution_id: string | null
+          started_at: string
+          story_id: string | null
+          story_title: string | null
+        }
+        Insert: {
+          child_id: string
+          completed?: boolean | null
+          created_at?: string
+          emotional_responses?: Json | null
+          ended_at?: string | null
+          engagement_score?: number | null
+          id?: string
+          institution_id?: string | null
+          started_at?: string
+          story_id?: string | null
+          story_title?: string | null
+        }
+        Update: {
+          child_id?: string
+          completed?: boolean | null
+          created_at?: string
+          emotional_responses?: Json | null
+          ended_at?: string | null
+          engagement_score?: number | null
+          id?: string
+          institution_id?: string | null
+          started_at?: string
+          story_id?: string | null
+          story_title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "story_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "story_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_sessions_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_sessions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_sessions_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "ai_generated_stories"
             referencedColumns: ["id"]
           },
         ]
