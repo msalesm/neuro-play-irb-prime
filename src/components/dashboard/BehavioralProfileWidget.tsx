@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Brain, Heart, Calendar, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { useBehavioralProfile } from '@/hooks/useBehavioralProfile';
-import type { DomainScore } from '@/core/behavioral-profile-engine';
+import type { DomainScore } from '@/modules/behavioral/engine';
 
 interface BehavioralProfileWidgetProps {
   childId: string;

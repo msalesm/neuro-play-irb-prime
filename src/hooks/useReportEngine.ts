@@ -8,7 +8,7 @@
 import { useState, useCallback } from 'react';
 import { useUserRole } from './useUserRole';
 import { useBehavioralProfile } from './useBehavioralProfile';
-import { generateReport, getAvailableReportTypes, type ReportConfig, type GeneratedReport, type ReportType } from '@/core/report-engine';
+import { generateReport, getAvailableReportTypes, type ReportConfig, type GeneratedReport, type ReportType } from '@/modules/reports/engine';
 import { useAuth } from './useAuth';
 import { toast } from 'sonner';
 

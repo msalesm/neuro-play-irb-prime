@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useRecordTrial, useAbaReinforcements, useAbaProgressStats } from '@/hooks/useAbaNeuroPlay';
 import { Check, X, Clipboard, Zap } from 'lucide-react';
 import { toast } from 'sonner';
-import { suggestPromptReduction, suggestReinforcementSchedule, type PromptLevel } from '@/core/aba-engine';
+import { suggestPromptReduction, suggestReinforcementSchedule, type PromptLevel } from '@/modules/aba/engine';
 
 const promptLabels: Record<string, string> = {
   fisico: '🤲 Físico',

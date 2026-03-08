@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FileText, Download, Loader2, Sparkles } from 'lucide-react';
 import { useReportEngine } from '@/hooks/useReportEngine';
-import type { ReportType } from '@/core/report-engine';
+import type { ReportType } from '@/modules/reports/engine';
 import { format, subMonths, subDays } from 'date-fns';
 
 interface ReportGeneratorWidgetProps {

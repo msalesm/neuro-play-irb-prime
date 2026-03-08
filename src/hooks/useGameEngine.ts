@@ -11,7 +11,7 @@ import {
   type GameEvent, 
   type GameSessionConfig, 
   type SessionSummary 
-} from '@/core/game-engine';
+} from '@/modules/games/engine';
 
 export function useGameEngine(config: GameSessionConfig) {
   const collectorRef = useRef(new GameMetricsCollector());
