@@ -157,21 +157,21 @@ export function QueueManagement({ institutionId }: { institutionId?: string }) {
 
   const getRiskBadge = (risk: string) => {
     const colors = {
-      low: 'bg-green-100 text-green-800',
-      medium: 'bg-yellow-100 text-yellow-800',
-      high: 'bg-orange-100 text-orange-800',
-      critical: 'bg-red-100 text-red-800'
+      low: 'bg-success/10 text-success',
+      medium: 'bg-warning/10 text-warning',
+      high: 'bg-warning/20 text-warning',
+      critical: 'bg-destructive/10 text-destructive'
     };
     return colors[risk as keyof typeof colors] || colors.low;
   };
 
   const getStatusBadge = (status: string) => {
     const labels = {
-      waiting: { label: 'Aguardando', color: 'bg-blue-100 text-blue-800' },
-      in_progress: { label: 'Em Atendimento', color: 'bg-purple-100 text-purple-800' },
-      completed: { label: 'Concluído', color: 'bg-green-100 text-green-800' },
-      cancelled: { label: 'Cancelado', color: 'bg-gray-100 text-gray-800' },
-      no_show: { label: 'Não Compareceu', color: 'bg-red-100 text-red-800' }
+      waiting: { label: 'Aguardando', color: 'bg-info/10 text-info' },
+      in_progress: { label: 'Em Atendimento', color: 'bg-secondary/10 text-secondary' },
+      completed: { label: 'Concluído', color: 'bg-success/10 text-success' },
+      cancelled: { label: 'Cancelado', color: 'bg-muted text-muted-foreground' },
+      no_show: { label: 'Não Compareceu', color: 'bg-destructive/10 text-destructive' }
     };
     return labels[status as keyof typeof labels] || labels.waiting;
   };
@@ -215,40 +215,40 @@ export function QueueManagement({ institutionId }: { institutionId?: string }) {
         <Card className="cursor-pointer hover:shadow-md" onClick={() => setFilter('waiting')}>
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-blue-500" />
-              <div>
-                <p className="text-2xl font-bold">{stats.waiting}</p>
-                <p className="text-xs text-muted-foreground">Aguardando</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="cursor-pointer hover:shadow-md" onClick={() => setFilter('in_progress')}>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Play className="w-5 h-5 text-purple-500" />
-              <div>
-                <p className="text-2xl font-bold">{stats.inProgress}</p>
-                <p className="text-xs text-muted-foreground">Em Atendimento</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="cursor-pointer hover:shadow-md" onClick={() => setFilter('critical')}>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-orange-500" />
-              <div>
-                <p className="text-2xl font-bold">{stats.critical}</p>
-                <p className="text-xs text-muted-foreground">Alto Risco</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="cursor-pointer hover:shadow-md" onClick={() => setFilter('sla_risk')}>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <Timer className="w-5 h-5 text-red-500" />
+               <Clock className="w-5 h-5 text-info" />
+               <div>
+                 <p className="text-2xl font-bold">{stats.waiting}</p>
+                 <p className="text-xs text-muted-foreground">Aguardando</p>
+               </div>
+             </div>
+           </CardContent>
+         </Card>
+         <Card className="cursor-pointer hover:shadow-md" onClick={() => setFilter('in_progress')}>
+           <CardContent className="p-4">
+             <div className="flex items-center gap-2">
+               <Play className="w-5 h-5 text-secondary" />
+               <div>
+                 <p className="text-2xl font-bold">{stats.inProgress}</p>
+                 <p className="text-xs text-muted-foreground">Em Atendimento</p>
+               </div>
+             </div>
+           </CardContent>
+         </Card>
+         <Card className="cursor-pointer hover:shadow-md" onClick={() => setFilter('critical')}>
+           <CardContent className="p-4">
+             <div className="flex items-center gap-2">
+               <AlertTriangle className="w-5 h-5 text-warning" />
+               <div>
+                 <p className="text-2xl font-bold">{stats.critical}</p>
+                 <p className="text-xs text-muted-foreground">Alto Risco</p>
+               </div>
+             </div>
+           </CardContent>
+         </Card>
+         <Card className="cursor-pointer hover:shadow-md" onClick={() => setFilter('sla_risk')}>
+           <CardContent className="p-4">
+             <div className="flex items-center gap-2">
+               <Timer className="w-5 h-5 text-destructive" />
               <div>
                 <p className="text-2xl font-bold">{stats.slaBreached}</p>
                 <p className="text-xs text-muted-foreground">SLA Violado</p>

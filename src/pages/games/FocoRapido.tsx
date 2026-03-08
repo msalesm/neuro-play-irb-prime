@@ -238,13 +238,13 @@ export default function FocoRapido() {
                 <div className="text-xs text-muted-foreground">Estímulo</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-success">
                   {trials.filter(t => t.response === 'hit' || t.response === 'correct-inhibition').length}
                 </div>
                 <div className="text-xs text-muted-foreground">Acertos</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-red-600">
+                <div className="text-2xl font-bold text-destructive">
                   {trials.filter(t => t.response === 'false-alarm').length}
                 </div>
                 <div className="text-xs text-muted-foreground">Falsos Alarmes</div>
