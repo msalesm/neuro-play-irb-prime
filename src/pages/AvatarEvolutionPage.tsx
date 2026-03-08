@@ -28,7 +28,7 @@ export default function AvatarEvolutionPage() {
         .select('id')
         .eq('parent_id', user?.id)
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       if (children) {

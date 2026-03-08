@@ -86,7 +86,7 @@ export function useInstitution() {
         .from('institutions')
         .select('*')
         .eq('id', membership.institution_id)
-        .single();
+        .maybeSingle();
 
       if (instError) throw instError;
       setInstitution({
