@@ -141,9 +141,9 @@ export default function Dashboard() {
   const progressToNext = (currentXP / 100) * 100;
 
   const gameCategories = [
-    { name: "Atenção", progress: 45, icon: Heart, color: "text-destructive" },
-    { name: "Memória", progress: 60, icon: Brain, color: "text-info" },
-    { name: "Linguagem", progress: 35, icon: Users, color: "text-success" },
+    { name: "Atenção", progress: Math.min(100, Math.round((stats?.avg_accuracy || 0) * 0.8)), icon: Heart, color: "text-destructive" },
+    { name: "Memória", progress: Math.min(100, Math.round((stats?.avg_accuracy || 0) * 1.1)), icon: Brain, color: "text-info" },
+    { name: "Linguagem", progress: Math.min(100, Math.round((stats?.avg_accuracy || 0) * 0.65)), icon: Users, color: "text-success" },
   ];
 
   return (
