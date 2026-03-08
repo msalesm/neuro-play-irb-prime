@@ -303,7 +303,7 @@ export default function ContadorHistorias() {
   const progress = ((completedStories * 3 + currentChapter + (chapter.completed ? 1 : 0)) / (stories.length * 3)) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-accent/10 via-secondary/10 to-info/10 p-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
