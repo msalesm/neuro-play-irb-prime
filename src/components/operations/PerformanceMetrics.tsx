@@ -55,21 +55,21 @@ export function PerformanceMetrics({ metrics }: Props) {
         : '0%',
       trend: null,
       icon: CheckCircle,
-      color: 'text-green-500'
+      color: 'text-success'
     },
     {
       title: 'Tempo Médio Espera',
       value: `${Math.round(latestMetrics.avg_wait_time_minutes)} min`,
       trend: previousMetrics ? calculateTrend(latestMetrics.avg_wait_time_minutes, previousMetrics.avg_wait_time_minutes) : 0,
       icon: Clock,
-      color: 'text-blue-500'
+      color: 'text-accent'
     },
     {
       title: 'Conformidade SLA',
       value: `${Math.round(latestMetrics.sla_compliance_rate)}%`,
       trend: previousMetrics ? calculateTrend(latestMetrics.sla_compliance_rate, previousMetrics.sla_compliance_rate) : 0,
       icon: AlertTriangle,
-      color: latestMetrics.sla_compliance_rate >= 90 ? 'text-green-500' : 'text-orange-500'
+      color: latestMetrics.sla_compliance_rate >= 90 ? 'text-success' : 'text-warning'
     }
   ] : [];
 
@@ -86,7 +86,7 @@ export function PerformanceMetrics({ metrics }: Props) {
                   <p className="text-2xl font-bold">{stat.value}</p>
                   <p className="text-xs text-muted-foreground">{stat.title}</p>
                   {stat.trend !== null && stat.trend !== 0 && (
-                    <p className={`text-xs ${Number(stat.trend) > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    <p className={`text-xs ${Number(stat.trend) > 0 ? 'text-success' : 'text-destructive'}`}>
                       {Number(stat.trend) > 0 ? '+' : ''}{stat.trend}% vs ontem
                     </p>
                   )}

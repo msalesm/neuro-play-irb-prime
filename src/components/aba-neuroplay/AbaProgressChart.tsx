@@ -29,7 +29,7 @@ export function AbaProgressChart({ interventionId }: Props) {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
-              <TrendingUp className="h-8 w-8 text-emerald-500" />
+              <TrendingUp className="h-8 w-8 text-success" />
               <div>
                 <p className="text-2xl font-bold">{stats.independence}%</p>
                 <p className="text-sm text-muted-foreground">Independência</p>
