@@ -111,7 +111,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-white/80 text-sm text-center">
-                    TEA - Teoria da Mente, flexibilidade cognitiva e regulação sensorial
+                    Flexibilidade cognitiva, coordenação e regulação sensorial
                   </p>
                 </CardContent>
               </Card>
@@ -131,7 +131,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-white/80 text-sm text-center">
-                    TDAH - Atenção sustentada, controle inibitório e memória de trabalho
+                    Atenção sustentada, controle inibitório e memória operacional
                   </p>
                 </CardContent>
               </Card>
@@ -151,7 +151,7 @@ const Index = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-white/80 text-sm text-center">
-                    Dislexia - Consciência fonológica, leitura e processamento linguístico
+                    Consciência fonológica, linguagem e processamento linguístico
                   </p>
                 </CardContent>
               </Card>
@@ -450,15 +450,15 @@ const Index = () => {
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-center">
                         <div className="w-2 h-2 bg-red-500 rounded-full mr-3" />
-                        Teste de Atenção Sustentada (TDAH)
+                        Atenção Sustentada e Controle Inibitório
                       </li>
                       <li className="flex items-center">
                         <div className="w-2 h-2 bg-indigo-500 rounded-full mr-3" />
-                        Flexibilidade Cognitiva (TEA)
+                        Flexibilidade Cognitiva e Memória Operacional
                       </li>
                       <li className="flex items-center">
                         <div className="w-2 h-2 bg-teal-500 rounded-full mr-3" />
-                        Processamento Fonológico (Dislexia)
+                        Coordenação Visuomotora e Persistência
                       </li>
                     </ul>
                   </CardContent>

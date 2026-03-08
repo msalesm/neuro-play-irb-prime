@@ -1,64 +1,53 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import type { GamePerformanceData, DiagnosticReport } from '@/types/cognitive-analysis';
+import type { GamePerformanceData, BehavioralProfile } from '@/types/cognitive-analysis';
+import { generateBehavioralProfile } from '@/services/cognitive-engine';
 
 export function useCognitiveAnalysis() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [report, setReport] = useState<DiagnosticReport | null>(null);
+  const [report, setReport] = useState<BehavioralProfile | null>(null);
 
   const generateReport = async (
     performanceData: GamePerformanceData[],
     userAge?: number,
-    userProfile?: string
+    ageGroup?: string
   ) => {
     setIsAnalyzing(true);
     
     try {
-      console.log('Requesting cognitive analysis...', { 
+      console.log('Generating behavioral profile...', { 
         gamesCount: performanceData.length,
         userAge,
-        userProfile 
+        ageGroup 
       });
 
-      const { data, error } = await supabase.functions.invoke('cognitive-analysis', {
-        body: { 
-          performanceData,
-          userAge,
-          userProfile
-        }
-      });
-
-      if (error) {
-        console.error('Function invocation error:', error);
-        throw error;
+      // Determine age group from age if not provided
+      let resolvedAgeGroup = ageGroup || '7-9';
+      if (!ageGroup && userAge) {
+        if (userAge <= 6) resolvedAgeGroup = '4-6';
+        else if (userAge <= 9) resolvedAgeGroup = '7-9';
+        else if (userAge <= 12) resolvedAgeGroup = '10-12';
+        else if (userAge <= 15) resolvedAgeGroup = '13-15';
+        else resolvedAgeGroup = '16+';
       }
 
-      if (!data.success) {
-        throw new Error(data.error || 'Erro ao gerar relatório');
-      }
+      // Use deterministic engine - NO AI dependency for score calculation
+      const profile = generateBehavioralProfile(
+        'current-user',
+        performanceData,
+        resolvedAgeGroup
+      );
 
-      console.log('Cognitive report generated successfully');
-      setReport(data.report);
+      console.log('Behavioral profile generated successfully');
+      setReport(profile);
       
-      toast.success('Relatório diagnóstico gerado com sucesso!');
-      return data.report;
+      toast.success('Perfil comportamental gerado com sucesso!');
+      return profile;
 
     } catch (error) {
-      console.error('Error generating cognitive report:', error);
-      
-      if (error instanceof Error) {
-        if (error.message.includes('429')) {
-          toast.error('Muitas requisições. Aguarde alguns instantes.');
-        } else if (error.message.includes('402')) {
-          toast.error('Créditos insuficientes. Contate o suporte.');
-        } else {
-          toast.error('Erro ao gerar relatório: ' + error.message);
-        }
-      } else {
-        toast.error('Erro ao gerar relatório diagnóstico');
-      }
-      
+      console.error('Error generating behavioral profile:', error);
+      toast.error('Erro ao gerar perfil comportamental');
       throw error;
     } finally {
       setIsAnalyzing(false);

@@ -1197,6 +1197,45 @@ export type Database = {
         }
         Relationships: []
       }
+      baseline_metrics: {
+        Row: {
+          age_group: string
+          created_at: string
+          domain: string
+          id: string
+          mean: number
+          metric_name: string
+          sample_size: number
+          source: string | null
+          standard_deviation: number
+          updated_at: string
+        }
+        Insert: {
+          age_group: string
+          created_at?: string
+          domain: string
+          id?: string
+          mean: number
+          metric_name: string
+          sample_size?: number
+          source?: string | null
+          standard_deviation: number
+          updated_at?: string
+        }
+        Update: {
+          age_group?: string
+          created_at?: string
+          domain?: string
+          id?: string
+          mean?: number
+          metric_name?: string
+          sample_size?: number
+          source?: string | null
+          standard_deviation?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       behavioral_insights: {
         Row: {
           child_profile_id: string | null
@@ -3096,6 +3135,95 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "game_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cognitive_history: {
+        Row: {
+          age_group: string
+          assessment_date: string
+          behavioral_indicators: Json | null
+          child_id: string | null
+          created_at: string
+          domain_attention: number
+          domain_coordination: number
+          domain_flexibility: number
+          domain_inhibition: number
+          domain_memory: number
+          domain_persistence: number
+          evolution_trend: string | null
+          id: string
+          metadata: Json | null
+          overall_score: number
+          session_ids: string[] | null
+          user_id: string
+        }
+        Insert: {
+          age_group: string
+          assessment_date?: string
+          behavioral_indicators?: Json | null
+          child_id?: string | null
+          created_at?: string
+          domain_attention?: number
+          domain_coordination?: number
+          domain_flexibility?: number
+          domain_inhibition?: number
+          domain_memory?: number
+          domain_persistence?: number
+          evolution_trend?: string | null
+          id?: string
+          metadata?: Json | null
+          overall_score: number
+          session_ids?: string[] | null
+          user_id: string
+        }
+        Update: {
+          age_group?: string
+          assessment_date?: string
+          behavioral_indicators?: Json | null
+          child_id?: string | null
+          created_at?: string
+          domain_attention?: number
+          domain_coordination?: number
+          domain_flexibility?: number
+          domain_inhibition?: number
+          domain_memory?: number
+          domain_persistence?: number
+          evolution_trend?: string | null
+          id?: string
+          metadata?: Json | null
+          overall_score?: number
+          session_ids?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cognitive_history_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cognitive_history_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "cognitive_history_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cognitive_history_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]

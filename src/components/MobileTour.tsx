@@ -47,7 +47,7 @@ const tourSteps: Step[] = [
       <div>
         <h3 className="font-semibold mb-2">Planeta Azul 🌍</h3>
         <p className="text-sm text-muted-foreground">
-          Explore os 5 planetas terapêuticos: TEA, TDAH, Dislexia, Regulação Emocional e Funções Executivas.
+          Explore os 5 planetas de estimulação: Atenção, Memória, Flexibilidade, Coordenação e Funções Executivas.
         </p>
       </div>
     ),

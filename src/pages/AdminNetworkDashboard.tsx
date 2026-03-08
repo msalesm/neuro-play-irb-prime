@@ -146,11 +146,11 @@ export default function AdminNetworkDashboard() {
 
       // Mock planet usage data
       setPlanetUsage([
-        { name: 'TEA', sessions: 450, color: COLORS[0] },
-        { name: 'TDAH', sessions: 380, color: COLORS[1] },
-        { name: 'Dislexia', sessions: 320, color: COLORS[2] },
-        { name: 'Regulação Emocional', sessions: 290, color: COLORS[3] },
-        { name: 'Funções Executivas', sessions: 260, color: COLORS[4] },
+        { name: 'Atenção', sessions: 450, color: COLORS[0] },
+        { name: 'Controle Inibitório', sessions: 380, color: COLORS[1] },
+        { name: 'Memória Operacional', sessions: 320, color: COLORS[2] },
+        { name: 'Flexibilidade', sessions: 290, color: COLORS[3] },
+        { name: 'Coordenação', sessions: 260, color: COLORS[4] },
       ]);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
@@ -196,13 +196,13 @@ export default function AdminNetworkDashboard() {
     { name: 'Norte', children: 280, risco: 10 },
   ];
 
-  const diagnosticEvolution = [
-    { month: 'Jan', TEA: 65, TDAH: 78, Dislexia: 72 },
-    { month: 'Fev', TEA: 68, TDAH: 80, Dislexia: 75 },
-    { month: 'Mar', TEA: 71, TDAH: 82, Dislexia: 77 },
-    { month: 'Abr', TEA: 74, TDAH: 85, Dislexia: 80 },
-    { month: 'Mai', TEA: 77, TDAH: 87, Dislexia: 82 },
-    { month: 'Jun', TEA: 80, TDAH: 90, Dislexia: 85 },
+  const domainEvolution = [
+    { month: 'Jan', Atenção: 65, Inibição: 78, Memória: 72 },
+    { month: 'Fev', Atenção: 68, Inibição: 80, Memória: 75 },
+    { month: 'Mar', Atenção: 71, Inibição: 82, Memória: 77 },
+    { month: 'Abr', Atenção: 74, Inibição: 85, Memória: 80 },
+    { month: 'Mai', Atenção: 77, Inibição: 87, Memória: 82 },
+    { month: 'Jun', Atenção: 80, Inibição: 90, Memória: 85 },
   ];
 
   return (
@@ -356,20 +356,20 @@ export default function AdminNetworkDashboard() {
             {/* Diagnostic Evolution */}
             <Card>
               <CardHeader>
-                <CardTitle>Evolução por Diagnóstico</CardTitle>
-                <CardDescription>Performance média mensal por condição</CardDescription>
+                <CardTitle>Evolução por Domínio Cognitivo</CardTitle>
+                <CardDescription>Performance média mensal por domínio</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={diagnosticEvolution}>
+                  <LineChart data={domainEvolution}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="TEA" stroke="#8884d8" strokeWidth={2} />
-                    <Line type="monotone" dataKey="TDAH" stroke="#82ca9d" strokeWidth={2} />
-                    <Line type="monotone" dataKey="Dislexia" stroke="#ffc658" strokeWidth={2} />
+                    <Line type="monotone" dataKey="Atenção" stroke="#8884d8" strokeWidth={2} />
+                    <Line type="monotone" dataKey="Inibição" stroke="#82ca9d" strokeWidth={2} />
+                    <Line type="monotone" dataKey="Memória" stroke="#ffc658" strokeWidth={2} />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
