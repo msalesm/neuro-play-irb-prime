@@ -439,7 +439,7 @@ export default function SocialCompass() {
                     <h3 className="font-semibold">Personagens Envolvidos:</h3>
                     {currentContext.npcs.map((npc) => (
                       <div key={npc.id} className="flex items-center gap-4 p-4 bg-muted rounded-lg">
-                        <div className="w-12 h-12 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold">
+                        <div className="w-12 h-12 bg-gradient-to-r from-accent to-info rounded-full flex items-center justify-center text-primary-foreground font-bold">
                           {npc.name.charAt(0)}
                         </div>
                         <div>
@@ -455,7 +455,7 @@ export default function SocialCompass() {
                       <ArrowRight className="mr-2 h-4 w-4 rotate-180" />
                       Voltar
                     </Button>
-                    <Button onClick={beginScenario} className="bg-teal-600 hover:bg-teal-700">
+                    <Button onClick={beginScenario} className="bg-accent hover:bg-accent/90">
                       Começar Cenário
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -470,10 +470,10 @@ export default function SocialCompass() {
                   {/* Game HUD */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <Badge className="bg-teal-100 text-teal-800">
+                      <Badge className="bg-accent/10 text-accent">
                         Tempo: {gameTime}s
                       </Badge>
-                      <Badge className="bg-cyan-100 text-cyan-800">
+                      <Badge className="bg-info/10 text-info">
                         Score: {socialScore}
                       </Badge>
                     </div>
@@ -498,7 +498,7 @@ export default function SocialCompass() {
                   </div>
 
                   {/* Scene */}
-                  <div className="bg-gradient-to-br from-teal-100 to-cyan-100 p-6 rounded-lg">
+                  <div className="bg-gradient-to-br from-accent/10 to-info/10 p-6 rounded-lg">
                     <h3 className="font-semibold mb-4">🎭 {currentContext.name}</h3>
                     
                     {/* NPCs */}
@@ -508,15 +508,15 @@ export default function SocialCompass() {
                         const isScanning = scanningNPC === npc.id;
                         
                         return (
-                          <div key={npc.id} className="bg-white p-4 rounded-lg shadow-sm">
+                          <div key={npc.id} className="bg-card p-4 rounded-lg shadow-sm">
                             <div className="flex items-start gap-4">
                               <button
                                 onClick={() => scanEmotion(npc.id)}
                                 disabled={!radarActive || isScanning}
-                                className={`w-16 h-16 rounded-full flex items-center justify-center text-white font-bold transition-all ${
-                                  isScanning ? 'animate-pulse bg-orange-400' :
-                                  radarActive ? 'bg-teal-500 hover:bg-teal-600 cursor-pointer' :
-                                  'bg-gray-400 cursor-not-allowed'
+                                className={`w-16 h-16 rounded-full flex items-center justify-center text-primary-foreground font-bold transition-all ${
+                                  isScanning ? 'animate-pulse bg-warning' :
+                                  radarActive ? 'bg-accent hover:bg-accent/90 cursor-pointer' :
+                                  'bg-muted cursor-not-allowed'
                                 }`}
                               >
                                 {isScanning ? (

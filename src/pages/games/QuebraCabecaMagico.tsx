@@ -128,9 +128,9 @@ export default function QuebraCabecaMagico() {
       description: "Clique e arraste cada peça colorida para sua posição correta no tabuleiro.",
       visual: (
         <div className="flex gap-2 items-center">
-          <div className="w-12 h-12 bg-red-400 rounded-lg flex items-center justify-center text-white font-bold">1</div>
+          <div className="w-12 h-12 bg-destructive rounded-lg flex items-center justify-center text-primary-foreground font-bold">1</div>
           <div className="text-2xl">→</div>
-          <div className="w-12 h-12 border-2 border-dashed border-purple-300 rounded-lg flex items-center justify-center text-gray-400">?</div>
+          <div className="w-12 h-12 border-2 border-dashed border-secondary/50 rounded-lg flex items-center justify-center text-muted-foreground">?</div>
         </div>
       ),
       tips: ["Cada peça tem um número que indica sua posição", "Arraste das 'Peças Mágicas' para a 'Área do Puzzle'"]
@@ -197,7 +197,7 @@ export default function QuebraCabecaMagico() {
         </div>
 
         {/* Wizard Character */}
-        <Card className="mb-6 bg-gradient-to-r from-purple-500 to-blue-500 text-white">
+        <Card className="mb-6 bg-gradient-to-r from-secondary to-primary text-primary-foreground">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className={`text-6xl transition-transform duration-1000 ${magicEffect ? 'animate-bounce' : ''}`}>
@@ -263,14 +263,14 @@ export default function QuebraCabecaMagico() {
                     >
                       {placedPiece ? (
                         <div className="relative animate-pulse">
-                          <div className={`w-full h-full rounded-lg ${placedPiece.color} flex flex-col items-center justify-center text-white font-bold`}>
+                          <div className={`w-full h-full rounded-lg ${placedPiece.color} flex flex-col items-center justify-center text-primary-foreground font-bold`}>
                             <div className="text-lg">{placedPiece.pattern}</div>
                             <div className="text-sm">{placedPiece.number}</div>
                           </div>
                           <Star className="w-4 h-4 text-yellow-500 absolute -top-1 -right-1" />
                         </div>
                       ) : (
-                        <div className="text-gray-400 text-lg">?</div>
+                        <div className="text-muted-foreground text-lg">?</div>
                       )}
                     </div>
                   );
@@ -283,7 +283,7 @@ export default function QuebraCabecaMagico() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-blue-500" />
+                <Sparkles className="w-5 h-5 text-info" />
                 Peças Mágicas
               </CardTitle>
             </CardHeader>
@@ -294,7 +294,7 @@ export default function QuebraCabecaMagico() {
                     key={piece.id}
                     draggable
                     onDragStart={() => handleDragStart(piece.id)}
-                    className={`aspect-square border-2 border-purple-300 rounded-lg flex flex-col items-center justify-center cursor-move hover:border-purple-500 hover:scale-105 transition-all duration-200 ${piece.color} text-white font-bold relative`}
+                    className={`aspect-square border-2 border-secondary/50 rounded-lg flex flex-col items-center justify-center cursor-move hover:border-secondary hover:scale-105 transition-all duration-200 ${piece.color} text-primary-foreground font-bold relative`}
                   >
                     <div className="text-2xl">{piece.pattern}</div>
                     <div className="text-sm bg-black/20 px-2 py-1 rounded-full">{piece.number}</div>

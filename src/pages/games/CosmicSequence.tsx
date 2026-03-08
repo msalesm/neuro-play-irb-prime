@@ -118,9 +118,9 @@ export default function CosmicSequence() {
       </div>
 
       {/* Game Info Header */}
-      <div className="absolute top-4 right-4 z-10 bg-black/50 backdrop-blur-sm border border-purple-500/30 rounded-xl p-4 max-w-xs">
-        <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-          <Brain className="w-5 h-5 text-purple-400" />
+      <div className="absolute top-4 right-4 z-10 bg-background/50 backdrop-blur-sm border border-secondary/30 rounded-xl p-4 max-w-xs">
+        <h2 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
+          <Brain className="w-5 h-5 text-secondary" />
           Sequência Cósmica
         </h2>
         {isTestMode && (
@@ -128,20 +128,20 @@ export default function CosmicSequence() {
             🎮 Modo Teste
           </Badge>
         )}
-        <p className="text-sm text-gray-300 mb-3">
+        <p className="text-sm text-muted-foreground mb-3">
           Jogo de memória e sequenciamento para fortalecer atenção visual e padrões.
         </p>
-        <div className="space-y-2 text-xs text-gray-400">
+        <div className="space-y-2 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
-            <Target className="w-4 h-4 text-green-400" />
+            <Target className="w-4 h-4 text-success" />
             <span>Observe a sequência de cores</span>
           </div>
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-yellow-400" />
+            <Sparkles className="w-4 h-4 text-warning" />
             <span>Repita na ordem correta</span>
           </div>
           <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-cyan-400" />
+            <Zap className="w-4 h-4 text-info" />
             <span>Dificuldade aumenta a cada rodada</span>
           </div>
         </div>
@@ -159,8 +159,8 @@ export default function CosmicSequence() {
 
       {/* Mobile Instructions */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 md:hidden">
-        <div className="bg-black/70 backdrop-blur-sm border border-purple-500/30 rounded-full px-6 py-2">
-          <p className="text-sm text-white text-center">
+        <div className="bg-background/70 backdrop-blur-sm border border-secondary/30 rounded-full px-6 py-2">
+          <p className="text-sm text-foreground text-center">
             Toque nos botões para repetir a sequência
           </p>
         </div>

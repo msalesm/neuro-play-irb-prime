@@ -172,7 +172,7 @@ export default function TDAHScreening() {
         <Card className="max-w-2xl w-full">
           <CardHeader>
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-warning to-warning/70 text-warning-foreground">
                 <Zap className="h-6 w-6" />
               </div>
               <CardTitle className="text-2xl">Triagem de TDAH</CardTitle>
@@ -237,7 +237,7 @@ export default function TDAHScreening() {
         <Card className="mb-6 min-h-[400px] flex items-center justify-center">
           <CardContent className="w-full flex flex-col items-center justify-center py-20">
             {showStimulus && trial ? (
-              <div className={`w-32 h-32 rounded-lg ${trial.color} flex items-center justify-center text-8xl text-white animate-in fade-in zoom-in duration-200`}>
+              <div className={`w-32 h-32 rounded-lg ${trial.color} flex items-center justify-center text-8xl text-primary-foreground animate-in fade-in zoom-in duration-200`}>
                 {trial.stimulus}
               </div>
             ) : (

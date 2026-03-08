@@ -279,7 +279,7 @@ export default function MemorySequenceBuilder() {
 
             <div className="flex items-center justify-center gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold">
                   {currentDifficulty}
                 </div>
                 <span>Nível Atual</span>
