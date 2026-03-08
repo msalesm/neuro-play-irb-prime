@@ -477,7 +477,7 @@ export default function UnifiedReports() {
                       <div className="flex-1">
                         <CardTitle className="text-base">
                           {reportType.title}
-                          {(isTherapist || isParent) && selectedChildName && (
+                          {(isTherapist || isParent || isTeacher) && selectedChildName && (
                             <span className="font-normal text-muted-foreground"> - {selectedChildName}</span>
                           )}
                         </CardTitle>
