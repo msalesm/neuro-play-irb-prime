@@ -181,9 +181,16 @@ const BeneficiosTerapeuticos = lazy(() => import("./pages/BeneficiosTerapeuticos
 const ClubePais = lazy(() => import("./pages/ClubePais"));
 const ParceiroClube = lazy(() => import("./pages/ParceiroClube"));
 
-// Helper for Suspense wrapping
+// Helpers
 const L = ({ children }: { children: React.ReactNode }) => (
   <Suspense fallback={<Loading />}>{children}</Suspense>
+);
+
+/** Protected + Lazy: wraps a page with role guard and suspense */
+const P = ({ children, roles }: { children: React.ReactNode; roles?: string[] }) => (
+  <Suspense fallback={<Loading />}>
+    <ProtectedRoute allowedRoles={roles as any}>{children}</ProtectedRoute>
+  </Suspense>
 );
 
 const queryClient = new QueryClient();
