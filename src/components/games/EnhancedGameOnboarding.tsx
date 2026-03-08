@@ -85,10 +85,10 @@ export function EnhancedGameOnboarding({
 
   const getDifficultyColor = (diff: string) => {
     switch (diff) {
-      case 'easy': return 'text-green-500 bg-green-500/10';
-      case 'medium': return 'text-yellow-500 bg-yellow-500/10';
-      case 'hard': return 'text-red-500 bg-red-500/10';
-      default: return 'text-gray-500 bg-gray-500/10';
+      case 'easy': return 'text-success bg-success/10';
+      case 'medium': return 'text-warning bg-warning/10';
+      case 'hard': return 'text-destructive bg-destructive/10';
+      default: return 'text-muted-foreground bg-muted';
     }
   };
 
