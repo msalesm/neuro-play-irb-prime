@@ -186,7 +186,7 @@ export function AbaReportsPanel({ kpis }: AbaReportsPanelProps) {
 
           <Card>
             <CardContent className="pt-6 text-center">
-              <TrendingUp className="h-8 w-8 text-emerald-500 mx-auto mb-2" />
+              <TrendingUp className="h-8 w-8 text-success mx-auto mb-2" />
               <p className="text-3xl font-bold">{100 - kpis.taxaFaltas}%</p>
               <p className="text-sm text-muted-foreground">Comparecimento</p>
             </CardContent>

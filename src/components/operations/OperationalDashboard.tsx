@@ -129,9 +129,9 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-100 text-red-800 border-red-300';
-      case 'warning': return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-      default: return 'bg-blue-100 text-blue-800 border-blue-300';
+      case 'critical': return 'bg-destructive/10 text-destructive border-destructive/30';
+      case 'warning': return 'bg-warning/10 text-warning border-warning/30';
+      default: return 'bg-primary/10 text-primary border-primary/30';
     }
   };
 
@@ -148,10 +148,10 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'available': return 'bg-green-500';
-      case 'busy': return 'bg-yellow-500';
-      case 'away': return 'bg-orange-500';
-      default: return 'bg-gray-500';
+      case 'available': return 'bg-success';
+      case 'busy': return 'bg-warning';
+      case 'away': return 'bg-destructive';
+      default: return 'bg-muted-foreground';
     }
   };
 
@@ -178,8 +178,8 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-blue-100">
-                <Users className="w-5 h-5 text-blue-600" />
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Users className="w-5 h-5 text-primary" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.totalToday}</p>
@@ -191,8 +191,8 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-100">
-                <CheckCircle className="w-5 h-5 text-green-600" />
+              <div className="p-2 rounded-lg bg-success/10">
+                <CheckCircle className="w-5 h-5 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stats.completedToday}</p>
@@ -311,8 +311,8 @@ export function OperationalDashboard({ institutionId }: { institutionId?: string
                         <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
                           <div 
                             className={`h-full transition-all ${
-                              loadPercent > 90 ? 'bg-red-500' : 
-                              loadPercent > 70 ? 'bg-yellow-500' : 'bg-green-500'
+                              loadPercent > 90 ? 'bg-destructive' : 
+                              loadPercent > 70 ? 'bg-warning' : 'bg-success'
                             }`}
                             style={{ width: `${Math.min(loadPercent, 100)}%` }}
                           />

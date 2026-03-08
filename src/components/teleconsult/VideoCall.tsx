@@ -80,11 +80,11 @@ export function VideoCall({ sessionId, patientName, isInitiator, onEnd }: VideoC
   const getConnectionBadge = () => {
     switch (connectionState) {
       case 'connected':
-        return <Badge className="bg-green-500">Conectado</Badge>;
+        return <Badge className="bg-success">Conectado</Badge>;
       case 'connecting':
-        return <Badge className="bg-yellow-500">Conectando...</Badge>;
+        return <Badge className="bg-warning">Conectando...</Badge>;
       case 'disconnected':
-        return <Badge className="bg-red-500">Desconectado</Badge>;
+        return <Badge className="bg-muted-foreground">Desconectado</Badge>;
       case 'failed':
         return <Badge variant="destructive">Falha</Badge>;
       default:
