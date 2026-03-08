@@ -54,7 +54,7 @@ export const translations = {
     
     // Hero Section
     hero: {
-      title: 'Neuro IRB Prime',
+      title: 'NeuroPlay',
       subtitle: 'Jogos Terapêuticos para Neurodiversidade',
       description: 'Desenvolva suas habilidades cognitivas através de jogos terapêuticos personalizados baseados em evidências científicas.',
       cta: 'Explorar Jogos',
