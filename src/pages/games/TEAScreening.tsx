@@ -196,17 +196,17 @@ export default function TEAScreening() {
               <div className="p-3 rounded-lg bg-gradient-to-r from-secondary to-destructive text-primary-foreground">
                 <Heart className="h-6 w-6" />
               </div>
-              <CardTitle className="text-2xl">Triagem de TEA</CardTitle>
+              <CardTitle className="text-2xl">Perfil Socioemocional</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h3 className="font-semibold">O que vamos avaliar:</h3>
+              <h3 className="font-semibold">O que vamos observar:</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>• Reconhecimento de emoções</li>
                 <li>• Compreensão de situações sociais</li>
-                <li>• Teoria da mente (perspectiva dos outros)</li>
-                <li>• Identificação de padrões</li>
+                <li>• Perspectiva dos outros</li>
+                <li>• Identificação de padrões sociais</li>
               </ul>
             </div>
 
@@ -230,7 +230,7 @@ export default function TEAScreening() {
                 Voltar
               </Button>
               <Button onClick={handleStart} className="flex-1">
-                Iniciar Triagem
+                Iniciar Atividade
               </Button>
             </div>
           </CardContent>

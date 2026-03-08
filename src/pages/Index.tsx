@@ -86,7 +86,7 @@ const Index = () => {
           >
             <motion.div variants={fadeIn} className="flex items-center gap-3 mb-4 md:mb-6">
               <Badge className="bg-primary/90 text-primary-foreground border-0 text-xs md:text-sm px-3 py-1">
-                Plataforma de Neurodesenvolvimento
+                Cognitive Development Platform
               </Badge>
               <StarRating />
             </motion.div>
@@ -138,7 +138,7 @@ const Index = () => {
                 { icon: Shield, text: "LGPD Compliant" },
                 { icon: Brain, text: "Baseado em Evidências" },
                 { icon: Sparkles, text: "IA Adaptativa" },
-                { icon: Heart, text: "TEA · TDAH · Dislexia" },
+                { icon: Heart, text: "Perfis Comportamentais" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-2 text-primary-foreground/70 text-xs md:text-sm">
                   <item.icon className="w-4 h-4 text-primary" />
@@ -269,7 +269,7 @@ const Index = () => {
                   <StarRating />
                 </div>
                 <h2 className="text-2xl md:text-4xl font-bold mb-4">
-                  Cada jogo gera dados clínicos reais
+                  Cada jogo gera dados comportamentais reais
                 </h2>
                 <p className="text-muted-foreground mb-6 md:mb-8 leading-relaxed">
                   Mais de 25 jogos terapêuticos com dificuldade adaptativa por IA, 
@@ -468,7 +468,7 @@ const Index = () => {
                 {/* Outputs */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {[
-                    { icon: Radar, label: "Diagnóstico Contínuo", desc: "Padrões comportamentais" },
+                    { icon: Radar, label: "Monitoramento Contínuo", desc: "Padrões comportamentais" },
                     { icon: Lightbulb, label: "Recomendações", desc: "Para cada papel" },
                     { icon: RefreshCw, label: "Ajuste Automático", desc: "Atividades adaptadas" },
                     { icon: AlertTriangle, label: "Alertas Precoces", desc: "Sinais de risco" },
@@ -495,7 +495,7 @@ const Index = () => {
             {[
               {
                 icon: Radar,
-                title: "Diagnóstico Comportamental Contínuo",
+                title: "Monitoramento Comportamental Contínuo",
                 desc: "O Copilot detecta padrões em tempo real: queda de atenção, persistência baixa, impulsividade crescente, dificuldade de regulação emocional.",
                 example: "\"Atenção caiu 20% nas últimas 2 semanas. Persistência baixa em tarefas longas.\"",
                 badge: "Detecção",

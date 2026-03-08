@@ -175,16 +175,16 @@ export default function TDAHScreening() {
               <div className="p-3 rounded-lg bg-gradient-to-r from-warning to-warning/70 text-warning-foreground">
                 <Zap className="h-6 w-6" />
               </div>
-              <CardTitle className="text-2xl">Triagem de TDAH</CardTitle>
+              <CardTitle className="text-2xl">Perfil de Atenção e Foco</CardTitle>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <h3 className="font-semibold">O que vamos avaliar:</h3>
+              <h3 className="font-semibold">O que vamos observar:</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>• Atenção sustentada</li>
                 <li>• Controle inibitório</li>
-                <li>• Impulsividade</li>
+                <li>• Padrões de resposta</li>
                 <li>• Tempo de reação</li>
               </ul>
             </div>
@@ -209,7 +209,7 @@ export default function TDAHScreening() {
                 Voltar
               </Button>
               <Button onClick={startGame} className="flex-1">
-                Iniciar Triagem
+                Iniciar Atividade
               </Button>
             </div>
           </CardContent>

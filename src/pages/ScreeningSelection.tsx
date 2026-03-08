@@ -9,8 +9,8 @@ export default function ScreeningSelection() {
   const screenings = [
     {
       id: 'dislexia',
-      title: 'Triagem de Dislexia',
-      description: 'Avaliação de habilidades de leitura, consciência fonológica e decodificação',
+      title: 'Perfil de Linguagem e Leitura',
+      description: 'Atividade de observação de habilidades de leitura, consciência fonológica e decodificação',
       icon: BookOpen,
       color: 'from-primary to-info',
       path: '/screening/dislexia',
@@ -18,8 +18,8 @@ export default function ScreeningSelection() {
     },
     {
       id: 'tdah',
-      title: 'Triagem de TDAH',
-      description: 'Avaliação de atenção, foco, controle inibitório e hiperatividade',
+      title: 'Perfil de Atenção e Foco',
+      description: 'Atividade de observação de atenção sustentada, controle inibitório e autorregulação',
       icon: Zap,
       color: 'from-warning to-accent',
       path: '/screening/tdah',
@@ -27,8 +27,8 @@ export default function ScreeningSelection() {
     },
     {
       id: 'tea',
-      title: 'Triagem de TEA',
-      description: 'Avaliação de interação social, comunicação e padrões comportamentais',
+      title: 'Perfil Socioemocional',
+      description: 'Atividade de observação de interação social, comunicação e padrões comportamentais',
       icon: Heart,
       color: 'from-secondary to-destructive/70',
       path: '/screening/tea',
@@ -55,10 +55,10 @@ export default function ScreeningSelection() {
 
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            Triagem Gamificada Neuro Play EDU
+            Observação Comportamental Gamificada
           </h1>
           <p className="text-muted-foreground text-lg">
-            Conforme Lei 14.254/21 - Identificação precoce de sinais de Dislexia, TDAH e TEA
+            Atividades de observação pedagógica para identificação de padrões de desenvolvimento — conforme Lei 14.254/21
           </p>
         </div>
 
@@ -66,8 +66,8 @@ export default function ScreeningSelection() {
           <Info className="h-4 w-4" />
           <AlertTitle>Importante</AlertTitle>
           <AlertDescription>
-            Esta triagem é uma ferramenta de apoio pedagógico e NÃO substitui avaliação profissional.
-            Os resultados servem para orientar encaminhamentos e planejamento educacional individualizado.
+            Estas atividades são ferramentas de <strong>observação pedagógica</strong> e NÃO constituem diagnóstico clínico.
+            Os resultados geram <strong>padrões de desenvolvimento</strong> para orientar encaminhamentos e planejamento educacional individualizado (PEI).
           </AlertDescription>
         </Alert>
 
@@ -115,14 +115,14 @@ export default function ScreeningSelection() {
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <p>
-              Lei federal que garante acompanhamento integral para educandos com dislexia, TDAH e TEA, incluindo:
+              Lei federal que garante acompanhamento integral para educandos com padrões atípicos de desenvolvimento, incluindo:
             </p>
             <ul className="list-disc list-inside space-y-1 ml-4">
-              <li>Identificação precoce através de triagens</li>
+              <li>Identificação precoce de padrões de desenvolvimento através de observação pedagógica</li>
               <li>Apoio educacional especializado</li>
               <li>Planos Educacionais Individualizados (PEI)</li>
               <li>Capacitação de professores e equipe escolar</li>
-              <li>Integração com saúde e assistência social</li>
+              <li>Encaminhamento para avaliação profissional quando indicado</li>
             </ul>
           </CardContent>
         </Card>
