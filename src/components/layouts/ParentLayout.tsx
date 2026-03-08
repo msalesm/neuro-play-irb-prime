@@ -20,8 +20,8 @@ interface ParentLayoutProps {
 const PARENT_BOTTOM_NAV = [
   { name: 'Início', path: '/dashboard-pais', icon: Home },
   { name: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
-  { name: 'Rotinas', path: '/rotinas', icon: Calendar },
-  { name: 'Aprender', path: '/educacao', icon: BookOpen },
+  { name: 'Agenda', path: '/agenda', icon: Calendar },
+  { name: 'Relatórios', path: '/relatorios', icon: BookOpen },
   { name: 'Perfil', path: '/profile', icon: User },
 ];
 

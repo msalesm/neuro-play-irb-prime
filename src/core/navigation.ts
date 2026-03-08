@@ -164,51 +164,8 @@ const DEFAULT_BOTTOM: BottomNavItem[] = [
   { name: 'Perfil', path: '/profile', icon: User },
 ];
 
-// ========== ADMIN MOBILE SECTIONS (expanded view) ==========
+// ========== ADMIN MOBILE SECTIONS (compact view) ==========
 const ADMIN_MOBILE_SECTIONS: NavSection[] = [
-  {
-    id: 'admin-patient',
-    label: 'Pacientes',
-    items: [
-      { title: 'Meu Dia', path: '/student-hub', icon: Home },
-      { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
-      { title: 'Histórias Sociais', path: '/stories', icon: Drama },
-      { title: 'Conquistas', path: '/learning-dashboard', icon: Trophy },
-    ],
-  },
-  {
-    id: 'admin-parents',
-    label: 'Pais',
-    items: [
-      { title: 'Dashboard', path: '/dashboard-pais', icon: Home },
-      { title: 'Agendar Consultas', path: '/agenda', icon: CalendarCheck },
-      { title: 'Teleconsultas', path: '/minhas-teleconsultas', icon: Stethoscope },
-      { title: 'Relatórios', path: '/relatorios', icon: BarChart3 },
-      { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem },
-    ],
-  },
-  {
-    id: 'admin-therapist',
-    label: 'Terapeuta',
-    items: [
-      { title: 'Agenda do Dia', path: '/agenda', icon: Calendar },
-      { title: 'Pacientes', path: '/therapist/patients', icon: Users },
-      { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
-      { title: 'Prontuário Eletrônico', path: '/clinical', icon: FileText },
-      { title: 'Avaliações Clínicas', path: '/diagnostic-tests', icon: ClipboardCheck },
-      { title: 'Inventário de Habilidades', path: '/inventario-habilidades', icon: ClipboardCheck },
-    ],
-  },
-  {
-    id: 'admin-teacher',
-    label: 'Professor',
-    items: [
-      { title: 'Neuro Play Educação', path: '/educacao', icon: School },
-      { title: 'Dashboard da Escola', path: '/escola-dashboard', icon: School },
-      { title: 'Turmas', path: '/teacher/classes', icon: Users },
-      { title: 'Triagem Escolar', path: '/screening', icon: ClipboardCheck },
-    ],
-  },
   {
     id: 'admin-admin',
     label: 'Administração',
@@ -216,7 +173,31 @@ const ADMIN_MOBILE_SECTIONS: NavSection[] = [
       { title: 'Dashboard Institucional', path: '/institutional', icon: Building2 },
       { title: 'Centro de Operações', path: '/operations', icon: TrendingUp },
       { title: 'Gerenciar Usuários', path: '/admin/users', icon: Users },
-      { title: 'Clube dos Pais', path: '/admin/clube-pais', icon: Gem },
+    ],
+  },
+  {
+    id: 'admin-clinical',
+    label: 'Clínico',
+    items: [
+      { title: 'Pacientes', path: '/therapist/patients', icon: Users },
+      { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
+      { title: 'ABA NeuroPlay', path: '/aba-neuroplay', icon: Activity },
+    ],
+  },
+  {
+    id: 'admin-education',
+    label: 'Educação',
+    items: [
+      { title: 'Educação', path: '/educacao', icon: School },
+      { title: 'Escola', path: '/escola-dashboard', icon: Building2 },
+    ],
+  },
+  {
+    id: 'admin-reports',
+    label: 'Relatórios',
+    items: [
+      { title: 'Relatórios', path: '/relatorios', icon: FileText },
+      { title: 'Agenda', path: '/agenda', icon: Calendar },
     ],
   },
 ];
