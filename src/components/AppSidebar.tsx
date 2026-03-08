@@ -203,6 +203,12 @@ export function AppSidebar() {
       description: 'Turmas, check-in e relatórios',
     },
     {
+      title: 'Dashboard da Escola',
+      path: '/escola-dashboard',
+      icon: Building2,
+      description: 'Visão macro da escola',
+    },
+    {
       title: 'Mensagens',
       path: '/messages',
       icon: Mail,
@@ -224,6 +230,11 @@ export function AppSidebar() {
     {
       title: 'Neuro Play Educação',
       path: '/educacao',
+      icon: School,
+    },
+    {
+      title: 'Dashboard da Escola',
+      path: '/escola-dashboard',
       icon: School,
     },
     {

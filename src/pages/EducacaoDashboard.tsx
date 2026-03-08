@@ -20,6 +20,9 @@ import { VulnerabilityMap } from '@/components/educacao/VulnerabilityMap';
 import { StudentReportButton } from '@/components/educacao/StudentReportPDF';
 import { AISuggestions } from '@/components/educacao/AISuggestions';
 import { ClassManager } from '@/components/educacao/ClassManager';
+import { CognitiveIndicatorsTable } from '@/components/educacao/CognitiveIndicatorsTable';
+import { EducationalAlerts } from '@/components/educacao/EducationalAlerts';
+import { ClassGamification } from '@/components/educacao/ClassGamification';
 
 interface ClassStudent {
   id: string;
@@ -300,6 +303,13 @@ export default function EducacaoDashboard() {
 
               {/* === TAB: Painel da Turma + Check-in === */}
               <TabsContent value="painel" className="space-y-4 mt-4">
+                {/* Educational Alerts */}
+                <EducationalAlerts
+                  students={students}
+                  observations={observations}
+                  allObservations={allObservations}
+                />
+
                 {/* Indicators */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <Card className="border-border">
@@ -419,6 +429,20 @@ export default function EducacaoDashboard() {
                     )}
                   </CardContent>
                 </Card>
+                {/* Cognitive Indicators Table */}
+                <CognitiveIndicatorsTable
+                  students={students}
+                  observations={observations}
+                  onStudentClick={(student) => openCheckin(student)}
+                />
+
+                {/* Class Gamification */}
+                <ClassGamification
+                  totalStudents={classIndicators.total}
+                  observedStudents={classIndicators.observed}
+                  className={selectedClassName?.name}
+                  weekLabel={weekLabel}
+                />
               </TabsContent>
 
               {/* === TAB: Mapa de Vulnerabilidade === */}
