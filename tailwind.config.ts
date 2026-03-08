@@ -57,16 +57,18 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // IRB Prime Care Brand
-        irb: {
-          petrol: "hsl(var(--irb-petrol))",
-          blue: "hsl(var(--irb-blue))",
-          gold: "hsl(var(--irb-gold))",
+        // NeuroPlay Brand
+        neuroplay: {
+          blue: "hsl(var(--neuroplay-blue))",
+          purple: "hsl(var(--neuroplay-purple))",
+          green: "hsl(var(--neuroplay-green))",
+          orange: "hsl(var(--neuroplay-orange))",
+          yellow: "hsl(var(--neuroplay-yellow))",
         },
       },
       fontFamily: {
-        'heading': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        'body': ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'heading': ['Nunito', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'body': ['Nunito', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         'dyslexic': ['OpenDyslexic', 'Inter', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
