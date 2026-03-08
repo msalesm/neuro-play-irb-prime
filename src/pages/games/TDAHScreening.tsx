@@ -39,7 +39,7 @@ export default function TDAHScreening() {
 
   function generateTrials(): Trial[] {
     const trials: Trial[] = [];
-    const colors = ['bg-green-500', 'bg-blue-500', 'bg-red-500', 'bg-yellow-500'];
+    const colors = ['bg-success', 'bg-info', 'bg-destructive', 'bg-warning'];
     
     // 70% go trials, 30% no-go trials - reduced to 15 trials for ~5 min max
     for (let i = 0; i < 15; i++) {

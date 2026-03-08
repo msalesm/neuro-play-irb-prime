@@ -116,7 +116,7 @@ export default function FocoRapido() {
     };
 
     setTrials(prev => [...prev, result]);
-    setFeedbackColor(isGo ? 'bg-green-500/20' : 'bg-red-500/20');
+    setFeedbackColor(isGo ? 'bg-success/20' : 'bg-destructive/20');
     
     if (!isGo) {
       lastErrorRef.current = true; // false alarm = error
