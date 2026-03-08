@@ -301,15 +301,15 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
             
             <div className="flex gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <CheckCircle2 className="h-4 w-4 text-success" />
                 <span>Sim: {stats.yesCount}</span>
               </div>
               <div className="flex items-center gap-2">
-                <XCircle className="h-4 w-4 text-red-500" />
+                <XCircle className="h-4 w-4 text-destructive" />
                 <span>Não: {stats.noCount}</span>
               </div>
               <div className="flex items-center gap-2">
-                <MinusCircle className="h-4 w-4 text-yellow-500" />
+                <MinusCircle className="h-4 w-4 text-warning" />
                 <span>Parcial: {stats.partialCount}</span>
               </div>
             </div>

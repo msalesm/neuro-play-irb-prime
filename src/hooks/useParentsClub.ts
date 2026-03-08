@@ -149,7 +149,7 @@ export function useClubPartner(userId?: string) {
 
   const fetchPartnerProfile = async () => {
     if (!userId) return;
-    const { data } = await supabase.from('club_partners').select('*').eq('user_id', userId).single();
+    const { data } = await supabase.from('club_partners').select('*').eq('user_id', userId).maybeSingle();
     if (data) {
       setPartner(data as any);
       fetchMyServices(data.id);
