@@ -141,6 +141,7 @@ export function MobileMenu() {
       title: 'Professor',
       items: [
         { title: 'Neuro Play Educação', path: '/educacao', icon: School },
+        { title: 'Dashboard da Escola', path: '/escola-dashboard', icon: School },
         { title: 'Turmas', path: '/teacher/classes', icon: Users },
         { title: 'Triagem Escolar', path: '/screening', icon: ClipboardCheck },
       ],
