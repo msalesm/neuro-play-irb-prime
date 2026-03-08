@@ -148,7 +148,9 @@ export function identifyStudentsNeedingSupport(
   return students.map(student => {
     const scores = Object.entries(student.domainScores);
     if (scores.length === 0) {
-    const engagementLevel: 'high' | 'moderate' | 'low' = student.sessionsCompleted >= 10 ? 'high' : student.sessionsCompleted >= 3 ? 'moderate' : 'low';
+      return {
+        studentId: student.studentId,
+        studentName: student.studentName,
         overallScore: 50,
         weakestDomain: 'N/A',
         strongestDomain: 'N/A',
@@ -159,6 +161,7 @@ export function identifyStudentsNeedingSupport(
 
     const sortedScores = [...scores].sort((a, b) => a[1] - b[1]);
     const overallScore = Math.round(scores.reduce((s, [, v]) => s + v, 0) / scores.length);
+    const engagementLevel: 'high' | 'moderate' | 'low' = student.sessionsCompleted >= 10 ? 'high' : student.sessionsCompleted >= 3 ? 'moderate' : 'low';
 
     return {
       studentId: student.studentId,
@@ -166,7 +169,7 @@ export function identifyStudentsNeedingSupport(
       overallScore,
       weakestDomain: sortedScores[0][0],
       strongestDomain: sortedScores[sortedScores.length - 1][0],
-      engagementLevel: student.sessionsCompleted >= 10 ? 'high' : student.sessionsCompleted >= 3 ? 'moderate' : 'low',
+      engagementLevel,
       needsSupport: overallScore < threshold,
     };
   }).sort((a, b) => a.overallScore - b.overallScore);
