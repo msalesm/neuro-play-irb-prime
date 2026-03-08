@@ -160,7 +160,7 @@ export function CommunityFeed() {
                   <Heart 
                     className={cn(
                       "w-4 h-4",
-                      post.user_liked && "fill-red-500 text-red-500"
+                      post.user_liked && "fill-destructive text-destructive"
                     )} 
                   />
                   <span>{post.likes_count}</span>

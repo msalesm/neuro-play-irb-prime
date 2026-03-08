@@ -42,7 +42,7 @@ export function ProgressPath({
 
   const getStepIcon = (step: PathStep) => {
     if (step.status === 'completed') {
-      return <CheckCircle className="w-5 h-5 text-green-500" />;
+      return <CheckCircle className="w-5 h-5 text-success" />;
     }
     if (step.status === 'locked') {
       return <Lock className="w-5 h-5 text-muted-foreground" />;
@@ -50,13 +50,13 @@ export function ProgressPath({
     
     switch (step.type) {
       case 'game':
-        return <Brain className="w-5 h-5 text-blue-500" />;
+        return <Brain className="w-5 h-5 text-primary" />;
       case 'test':
-        return <Target className="w-5 h-5 text-purple-500" />;
+        return <Target className="w-5 h-5 text-accent" />;
       case 'milestone':
-        return <Star className="w-5 h-5 text-yellow-500" />;
+        return <Star className="w-5 h-5 text-warning" />;
       case 'achievement':
-        return <Trophy className="w-5 h-5 text-orange-500" />;
+        return <Trophy className="w-5 h-5 text-destructive" />;
       default:
         return <Circle className="w-5 h-5 text-muted-foreground" />;
     }
@@ -65,7 +65,7 @@ export function ProgressPath({
   const getStatusColor = (status: PathStep['status']) => {
     switch (status) {
       case 'completed':
-        return 'border-green-500/50 bg-green-500/10';
+        return 'border-success/50 bg-success/10';
       case 'current':
         return 'border-primary bg-primary/10 ring-2 ring-primary/20';
       case 'available':
@@ -80,11 +80,11 @@ export function ProgressPath({
   const getDifficultyColor = (difficulty?: string) => {
     switch (difficulty) {
       case 'easy':
-        return 'text-green-500 bg-green-500/10';
+        return 'text-success bg-success/10';
       case 'medium':
-        return 'text-yellow-500 bg-yellow-500/10';
+        return 'text-warning bg-warning/10';
       case 'hard':
-        return 'text-red-500 bg-red-500/10';
+        return 'text-destructive bg-destructive/10';
       default:
         return 'text-muted-foreground bg-muted';
     }

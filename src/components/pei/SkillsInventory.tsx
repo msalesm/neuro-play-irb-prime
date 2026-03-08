@@ -462,21 +462,21 @@ export function SkillsInventory({ childId, peiPlanId, childName, onComplete }: S
                           <div className="flex items-center gap-2">
                             <RadioGroupItem value="yes" id={`${item.id}-yes`} />
                             <Label htmlFor={`${item.id}-yes`} className="flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-                              <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+                              <CheckCircle2 className="h-4 w-4 text-success shrink-0" />
                               Sim
                             </Label>
                           </div>
                           <div className="flex items-center gap-2">
                             <RadioGroupItem value="no" id={`${item.id}-no`} />
                             <Label htmlFor={`${item.id}-no`} className="flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-                              <XCircle className="h-4 w-4 text-red-500 shrink-0" />
+                              <XCircle className="h-4 w-4 text-destructive shrink-0" />
                               Não
                             </Label>
                           </div>
                           <div className="flex items-center gap-2">
                             <RadioGroupItem value="partial" id={`${item.id}-partial`} />
                             <Label htmlFor={`${item.id}-partial`} className="flex items-center gap-1.5 cursor-pointer whitespace-nowrap">
-                              <MinusCircle className="h-4 w-4 text-yellow-500 shrink-0" />
+                              <MinusCircle className="h-4 w-4 text-warning shrink-0" />
                               Parcialmente
                             </Label>
                           </div>

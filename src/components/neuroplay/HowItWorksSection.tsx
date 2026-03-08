@@ -76,7 +76,7 @@ export function HowItWorksSection() {
         <div className="mt-16 max-w-2xl mx-auto">
           <div className="bg-card/50 backdrop-blur-sm border rounded-2xl p-8">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+              <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
               <span className="text-sm font-medium">Análise em tempo real</span>
             </div>
             <div className="grid grid-cols-3 gap-4">
