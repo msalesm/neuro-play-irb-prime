@@ -232,10 +232,10 @@ export default function CognitiveFlexibilityPlay() {
           rounded-xl flex items-center justify-center
           ${COLORS[card.color]} 
           ${onClick ? 'cursor-pointer hover:scale-105 active:scale-95 transition-transform' : ''}
-          shadow-lg border-4 border-white/30
+          shadow-lg border-4 border-primary-foreground/30
         `}
       >
-        <span className={`${sizeClass} text-white drop-shadow-lg`}>
+        <span className={`${sizeClass} text-primary-foreground drop-shadow-lg`}>
           {SHAPES[card.shape]}
         </span>
       </div>

@@ -321,7 +321,7 @@ export default function AventuraNumeros() {
         </div>
 
         {/* Explorer Character */}
-        <Card className="mb-6 bg-gradient-to-r from-orange-500 to-red-500 text-white">
+        <Card className="mb-6 bg-gradient-to-r from-warning to-destructive text-primary-foreground">
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className={`text-6xl transition-transform duration-1000 ${celebrationEffect ? 'animate-bounce' : ''}`}>
