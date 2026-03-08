@@ -27,6 +27,8 @@ import { IntegratedTimeline } from './IntegratedTimeline';
 import { AIReportGenerator } from './AIReportGenerator';
 import { TeleconsultTab } from './TeleconsultTab';
 import { DiagnosticsTab } from './DiagnosticsTab';
+import { AbaHistoryTab } from './AbaHistoryTab';
+import { PeiIntegrationTab } from './PeiIntegrationTab';
 import { ChildAvatarDisplay } from '@/components/ChildAvatarDisplay';
 
 interface UnifiedPatientRecordProps {
@@ -223,6 +225,14 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
             <Layers className="w-3 h-3" />
             <span className="hidden md:inline">360°</span>
           </TabsTrigger>
+          <TabsTrigger value="aba" className="flex items-center gap-1 text-xs px-2">
+            <Brain className="w-3 h-3" />
+            <span className="hidden md:inline">ABA</span>
+          </TabsTrigger>
+          <TabsTrigger value="pei" className="flex items-center gap-1 text-xs px-2">
+            <Target className="w-3 h-3" />
+            <span className="hidden md:inline">PEI</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -400,6 +410,16 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
         {/* Integrated 360° Tab */}
         <TabsContent value="integrated" className="mt-6">
           <IntegratedProfilePanel childId={childId} />
+        </TabsContent>
+
+        {/* ABA Tab */}
+        <TabsContent value="aba" className="mt-6">
+          <AbaHistoryTab childId={childId} />
+        </TabsContent>
+
+        {/* PEI Integration Tab */}
+        <TabsContent value="pei" className="mt-6">
+          <PeiIntegrationTab childId={childId} />
         </TabsContent>
       </Tabs>
     </div>

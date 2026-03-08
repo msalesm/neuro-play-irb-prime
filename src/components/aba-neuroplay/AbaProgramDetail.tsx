@@ -11,6 +11,7 @@ import { useUserRole } from '@/hooks/useUserRole';
 import { ArrowLeft, Plus, Target, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { AbaTrialCollector } from './AbaTrialCollector';
 import { AbaProgressChart } from './AbaProgressChart';
+import { AbaGameIntegration } from './AbaGameIntegration';
 
 const METHOD_LABELS: Record<string, string> = {
   dtt: 'Discrete Trial Training (DTT)',
@@ -193,30 +194,37 @@ function InterventionRow({ intervention, onClick }: { intervention: any; onClick
 
   return (
     <div
-      className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-accent/50 transition-colors"
+      className="flex flex-col gap-2 p-4 border rounded-lg cursor-pointer hover:bg-accent/50 transition-colors"
       onClick={onClick}
     >
-      <div>
-        <p className="font-medium">{intervention.aba_np_skills?.skill_name || 'Habilidade'}</p>
-        <p className="text-xs text-muted-foreground">
-          {METHOD_SHORT[intervention.teaching_method] || intervention.teaching_method} •
-          Meta: {intervention.target_level}%
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="font-medium">{intervention.aba_np_skills?.skill_name || 'Habilidade'}</p>
+          <p className="text-xs text-muted-foreground">
+            {METHOD_SHORT[intervention.teaching_method] || intervention.teaching_method} •
+            Meta: {intervention.target_level}%
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          {stats.totalTrials > 0 && (
+            <>
+              <div className="text-right text-sm">
+                <p className="font-medium">{stats.accuracy}%</p>
+                <p className="text-xs text-muted-foreground">acerto</p>
+              </div>
+              <TrendIcon className={`h-4 w-4 ${trendColor}`} />
+            </>
+          )}
+          <Badge variant={intervention.status === 'mastered' ? 'default' : 'secondary'}>
+            {STATUS_LABELS[intervention.status]}
+          </Badge>
+        </div>
       </div>
-      <div className="flex items-center gap-3">
-        {stats.totalTrials > 0 && (
-          <>
-            <div className="text-right text-sm">
-              <p className="font-medium">{stats.accuracy}%</p>
-              <p className="text-xs text-muted-foreground">acerto</p>
-            </div>
-            <TrendIcon className={`h-4 w-4 ${trendColor}`} />
-          </>
-        )}
-        <Badge variant={intervention.status === 'mastered' ? 'default' : 'secondary'}>
-          {STATUS_LABELS[intervention.status]}
-        </Badge>
-      </div>
+      {intervention.aba_np_skills?.skill_category && (
+        <div onClick={e => e.stopPropagation()}>
+          <AbaGameIntegration skillCategory={intervention.aba_np_skills.skill_category} compact />
+        </div>
+      )}
     </div>
   );
 }
