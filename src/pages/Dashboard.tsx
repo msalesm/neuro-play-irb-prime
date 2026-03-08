@@ -368,17 +368,7 @@ export default function Dashboard() {
 
         {firstChildProfileId && (
           <div className="space-y-6">
-            <AIRecommendations 
-              childProfileId={firstChildProfileId}
-              onGameSelect={() => navigate('/games')}
-            />
-            
             <AchievementsList userId={user?.id || ''} />
-            
-            <TemporalEvolutionCharts 
-              childProfileId={firstChildProfileId}
-              timeRange="month"
-            />
           </div>
         )}
       </div>
