@@ -78,6 +78,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
   const [loading, setLoading] = useState(false);
   const [inviteData, setInviteData] = useState<InviteData | null>(null);
   const [copied, setCopied] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -121,7 +122,7 @@ export function AddPatientModal({ open, onClose, onSuccess }: AddPatientModalPro
       const { data: childData, error: childError } = await supabase
         .from('children')
         .insert({
-          name: data.name,
+          avatar_url: photoUrl || null,
           birth_date: data.birth_date,
           gender: data.gender || null,
           neurodevelopmental_conditions: data.conditions || [],
