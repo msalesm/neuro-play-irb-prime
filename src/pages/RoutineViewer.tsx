@@ -76,22 +76,22 @@ export default function RoutineViewer() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <Button variant="ghost" size="icon" onClick={() => navigate('/rotinas')} className="text-white hover:bg-white/10">
+          <Button variant="ghost" size="icon" onClick={() => navigate('/rotinas')} className="text-primary-foreground hover:bg-primary-foreground/10">
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-white">{routine.title}</h1>
-            <p className="text-white/70 text-sm">{routine.description}</p>
+            <h1 className="text-xl font-bold text-primary-foreground">{routine.title}</h1>
+            <p className="text-primary-foreground/70 text-sm">{routine.description}</p>
           </div>
-          <Button variant="outline" size="icon" onClick={handleReset} className="text-white border-white/30">
+          <Button variant="outline" size="icon" onClick={handleReset} className="text-primary-foreground border-primary-foreground/30">
             <RotateCcw className="h-4 w-4" />
           </Button>
         </motion.div>
 
         {/* Progress */}
-        <Card className="mb-6 bg-white/10 border-white/20">
+        <Card className="mb-6 bg-primary-foreground/10 border-primary-foreground/20">
           <CardContent className="p-4">
-            <div className="flex items-center justify-between text-sm text-white/80 mb-2">
+            <div className="flex items-center justify-between text-sm text-primary-foreground/80 mb-2">
               <span>{completedSteps} de {steps.length} passos</span>
               <span>{Math.round(progress)}%</span>
             </div>
@@ -108,17 +108,17 @@ export default function RoutineViewer() {
               exit={{ opacity: 0, scale: 0.8 }}
               className="mb-6"
             >
-              <Card className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-500/50">
+              <Card className="bg-gradient-to-r from-success/20 to-accent/20 border-success/50">
                 <CardContent className="p-6 text-center">
                   <motion.div
                     animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 0.5 }}
                   >
-                    <CheckCircle className="h-16 w-16 mx-auto mb-4 text-green-500" />
+                    <CheckCircle className="h-16 w-16 mx-auto mb-4 text-success" />
                   </motion.div>
-                  <h2 className="text-xl font-bold text-white mb-2">Parabéns! 🎉</h2>
-                  <p className="text-white/80">Você completou toda a rotina!</p>
-                  <div className="flex items-center justify-center gap-2 mt-4 text-[hsl(40,55%,51%)]">
+                  <h2 className="text-xl font-bold text-primary-foreground mb-2">Parabéns! 🎉</h2>
+                  <p className="text-primary-foreground/80">Você completou toda a rotina!</p>
+                  <div className="flex items-center justify-center gap-2 mt-4 text-warning">
                     <Sparkles className="h-5 w-5" />
                     <span className="font-bold">+15 pontos</span>
                   </div>
@@ -133,7 +133,7 @@ export default function RoutineViewer() {
           {loading ? (
             Array(5).fill(0).map((_, i) => (
               <Card key={i} className="animate-pulse">
-                <CardContent className="p-4 h-24 bg-white/5" />
+                <CardContent className="p-4 h-24 bg-primary-foreground/5" />
               </Card>
             ))
           ) : (
@@ -144,12 +144,12 @@ export default function RoutineViewer() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className={`transition-all ${step.is_completed ? 'bg-green-500/10 border-green-500/30' : 'bg-white/5 border-white/20'}`}>
+                <Card className={`transition-all ${step.is_completed ? 'bg-success/10 border-success/30' : 'bg-primary-foreground/5 border-primary-foreground/20'}`}>
                   <CardContent className="p-4">
                     <div className="flex items-start gap-4">
                       {/* Step number */}
                       <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg ${
-                        step.is_completed ? 'bg-green-500 text-white' : 'bg-white/20 text-white'
+                        step.is_completed ? 'bg-success text-success-foreground' : 'bg-primary-foreground/20 text-primary-foreground'
                       }`}>
                         {index + 1}
                       </div>
@@ -157,14 +157,14 @@ export default function RoutineViewer() {
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <h3 
-                          className={`font-semibold text-white ${step.is_completed ? 'line-through opacity-70' : ''}`}
+                          className={`font-semibold text-primary-foreground ${step.is_completed ? 'line-through opacity-70' : ''}`}
                           style={{ fontSize: `${1.1 * profile.fontScale}rem` }}
                         >
                           {step.title}
                         </h3>
                         {step.description && (
                           <p 
-                            className="text-white/70 mt-1"
+                            className="text-primary-foreground/70 mt-1"
                             style={{ fontSize: `${profile.fontScale}rem` }}
                           >
                             {step.description}
@@ -177,7 +177,7 @@ export default function RoutineViewer() {
                         <TTSButton 
                           text={`${step.title}. ${step.description || ''}`}
                           variant="ghost"
-                          className="text-white hover:bg-white/10"
+                          className="text-primary-foreground hover:bg-primary-foreground/10"
                         />
                         <StepCheckbox
                           checked={step.is_completed}

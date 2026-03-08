@@ -54,7 +54,7 @@ export default function WorldMap() {
   return (
     <div className="min-h-screen bg-background pb-28">
       {/* Header */}
-      <div className="bg-gradient-to-br from-primary via-secondary to-accent p-6 pb-10 text-white">
+      <div className="bg-gradient-to-br from-primary via-secondary to-accent p-6 pb-10 text-primary-foreground">
         <div className="max-w-lg mx-auto">
           <div className="flex items-center gap-2 mb-4">
             <Map className="h-5 w-5" />
@@ -62,21 +62,21 @@ export default function WorldMap() {
           </div>
 
           {/* Level indicator */}
-          <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4">
+          <div className="bg-primary-foreground/15 backdrop-blur-sm rounded-2xl p-4">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">{levelInfo.icon}</span>
               <div className="flex-1">
                 <p className="font-bold text-lg">{levelInfo.title}</p>
-                <p className="text-white/70 text-xs">Nível {levelInfo.level}</p>
+                <p className="text-primary-foreground/70 text-xs">Nível {levelInfo.level}</p>
               </div>
               <div className="text-right">
                 <p className="text-sm font-bold">{userXP} XP</p>
                 {nextLevel && (
-                  <p className="text-xs text-white/60">{nextLevel.xpRequired - userXP} para próximo</p>
+                  <p className="text-xs text-primary-foreground/60">{nextLevel.xpRequired - userXP} para próximo</p>
                 )}
               </div>
             </div>
-            <Progress value={progress} className="h-2 bg-white/20" />
+            <Progress value={progress} className="h-2 bg-primary-foreground/20" />
           </div>
         </div>
       </div>

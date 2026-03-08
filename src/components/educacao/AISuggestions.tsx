@@ -62,8 +62,8 @@ export function AISuggestions({ observations, students, className }: AISuggestio
 
   const priorityColors: Record<string, string> = {
     high: 'bg-destructive text-destructive-foreground',
-    moderate: 'bg-chart-4 text-white',
-    low: 'bg-chart-3 text-white',
+    moderate: 'bg-chart-4 text-primary-foreground',
+    low: 'bg-chart-3 text-primary-foreground',
   };
 
   return (

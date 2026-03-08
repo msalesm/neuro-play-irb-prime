@@ -60,7 +60,7 @@ export default function ParentTraining() {
 
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-lg bg-gradient-to-r from-primary to-primary/60 text-white">
+            <div className="p-3 rounded-lg bg-gradient-to-r from-primary to-primary/60 text-primary-foreground">
               <GraduationCap className="h-6 w-6" />
             </div>
             <div>

@@ -193,7 +193,7 @@ export default function TEAScreening() {
         <Card className="max-w-2xl w-full">
           <CardHeader>
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+              <div className="p-3 rounded-lg bg-gradient-to-r from-secondary to-destructive text-primary-foreground">
                 <Heart className="h-6 w-6" />
               </div>
               <CardTitle className="text-2xl">Triagem de TEA</CardTitle>
@@ -269,7 +269,7 @@ export default function TEAScreening() {
                 </div>
               )}
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                <div className="p-2 rounded-lg bg-gradient-to-r from-secondary to-destructive text-primary-foreground">
                   <Heart className="h-5 w-5" />
                 </div>
                 <CardTitle className="text-xl">{question.question}</CardTitle>
