@@ -137,12 +137,12 @@ const socialContexts: SocialContext[] = [
 ];
 
 const emotionIcons = {
-  happy: { icon: <Smile className="h-6 w-6 text-green-500" />, color: 'text-green-500' },
-  sad: { icon: <Frown className="h-6 w-6 text-blue-500" />, color: 'text-blue-500' },
-  angry: { icon: <Frown className="h-6 w-6 text-red-500" />, color: 'text-red-500' },
-  neutral: { icon: <Meh className="h-6 w-6 text-gray-500" />, color: 'text-gray-500' },
-  excited: { icon: <Smile className="h-6 w-6 text-yellow-500" />, color: 'text-yellow-500' },
-  worried: { icon: <Frown className="h-6 w-6 text-orange-500" />, color: 'text-orange-500' }
+  happy: { icon: <Smile className="h-6 w-6 text-success" />, color: 'text-success' },
+  sad: { icon: <Frown className="h-6 w-6 text-info" />, color: 'text-info' },
+  angry: { icon: <Frown className="h-6 w-6 text-destructive" />, color: 'text-destructive' },
+  neutral: { icon: <Meh className="h-6 w-6 text-muted-foreground" />, color: 'text-muted-foreground' },
+  excited: { icon: <Smile className="h-6 w-6 text-warning" />, color: 'text-warning' },
+  worried: { icon: <Frown className="h-6 w-6 text-accent" />, color: 'text-accent' }
 };
 
 export default function SocialCompass() {

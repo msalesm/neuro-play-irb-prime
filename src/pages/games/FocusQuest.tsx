@@ -394,15 +394,15 @@ export default function FocusQuest() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-info/10 to-secondary/10 py-12">
       <div className="container mx-auto px-6 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="font-heading text-4xl font-bold mb-2 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="font-heading text-4xl font-bold mb-2 bg-gradient-to-r from-info to-secondary bg-clip-text text-transparent">
               Focus Quest
             </h1>
-            <p className="text-indigo-700">
+            <p className="text-muted-foreground">
               Desbloqueie poderes através da concentração sustentada
             </p>
           </div>
@@ -421,7 +421,7 @@ export default function FocusQuest() {
             <Card className="shadow-card">
               <CardContent className="p-4">
                 <div className="flex items-center gap-4 mb-4">
-                  <Focus className="h-5 w-5 text-indigo-600" />
+                  <Focus className="h-5 w-5 text-info" />
                   <span className="font-semibold">Biomas Desbloqueados:</span>
                 </div>
                 <div className="flex gap-2 flex-wrap">
@@ -544,7 +544,7 @@ export default function FocusQuest() {
                     Reiniciar
                   </Button>
                   {focusTime >= 30000 && (
-                    <Button onClick={completeSession} size="lg" className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700">
+                    <Button onClick={completeSession} size="lg" className="flex items-center gap-2 bg-info hover:bg-info/90">
                       <Trophy className="h-5 w-5" />
                       Completar Quest
                     </Button>
@@ -560,7 +560,7 @@ export default function FocusQuest() {
             <Card className="shadow-card">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Focus className="h-5 w-5 text-indigo-600" />
+                  <Focus className="h-5 w-5 text-info" />
                   Sessão Atual
                 </CardTitle>
               </CardHeader>
