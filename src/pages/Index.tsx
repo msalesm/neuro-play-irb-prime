@@ -1,8 +1,4 @@
-import { NeuroPlayHero } from "@/components/NeuroPlayHero";
-import { MVPGameModules } from "@/components/MVPGameModules";
-import { NeuroPlayFeatures } from "@/components/NeuroPlayFeatures";
 import { AccessibilityControls } from "@/components/AccessibilityControls";
-import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -49,8 +45,6 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <AccessibilityControls />
-      <NeuroPlayHero />
-      <MVPGameModules />
       
       {/* Sistema Planeta Azul - Feature Highlight */}
       <motion.section 
@@ -536,8 +530,8 @@ const Index = () => {
         </motion.section>
       )}
       
-      <NeuroPlayFeatures />
-      <Footer />
+
+
     </div>
   );
 };

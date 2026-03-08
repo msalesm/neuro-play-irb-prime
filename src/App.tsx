@@ -11,145 +11,180 @@ import { AppLayout } from "@/components/AppLayout";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AccessibilityProvider } from "@/contexts/AccessibilityContext";
+
+// Eagerly loaded (critical path)
+import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import GameMap from "./components/GameMap";
-import Neuroplasticity from '@/pages/Neuroplasticity';
-import MindfulBreath from "./pages/games/MindfulBreath";
-import MemoriaColorida from "./pages/games/MemoriaColorida";
-import CacaFoco from "./pages/games/CacaFoco";
-import LogicaRapida from "./pages/games/LogicaRapida";
-import RitmoMusical from "./pages/games/RitmoMusical";
-import CacaLetras from './pages/games/CacaLetras';
-import SilabaMagica from './pages/games/SilabaMagica';
-import QuebraCabecaMagico from './pages/games/QuebraCabecaMagico';
-import AventuraNumeros from './pages/games/AventuraNumeros';
-import ContadorHistorias from './pages/games/ContadorHistorias';
-import FocusQuest from "./pages/games/FocusQuest";
-import SocialScenarios from "./pages/games/SocialScenarios";
-import SocialCompass from "./pages/games/SocialCompass";
-import EmotionalWeather from "./pages/games/EmotionalWeather";
-import BalanceQuest from "./pages/games/BalanceQuest";
-import SensoryFlow from "./pages/games/SensoryFlow";
-import VisualSync from "./pages/games/VisualSync";
-import StackTower from "./pages/games/StackTower";
-import CosmicSequence from "./pages/games/CosmicSequence";
-import CrystalMatch from "./pages/games/CrystalMatch";
-import TowerDefense from "./pages/games/TowerDefense";
-const BiofeedbackDemo = lazy(() => import("@/pages/games/BiofeedbackDemo"));
-import TouchMapper from "./pages/games/TouchMapper";
-import TouchMapperKeyboard from "./pages/games/TouchMapperKeyboard";
-import AttentionSustainedPhases from "./pages/games/AttentionSustainedPhases";
-import AttentionSustainedPlay from "./pages/games/AttentionSustainedPlay";
-import MemorySequenceBuilder from "./pages/games/MemorySequenceBuilder";
-import CognitiveFlexibilityPhases from "./pages/games/CognitiveFlexibilityPhases";
-import CognitiveFlexibilityPlay from "./pages/games/CognitiveFlexibilityPlay";
-import ExecutiveProcessingPhases from "./pages/games/ExecutiveProcessingPhases";
-import VisuomotorCoordination from "./pages/games/VisuomotorCoordination";
-import BehavioralPersistence from "./pages/games/BehavioralPersistence";
+import NotFound from "./pages/NotFound";
+import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
+
+// Lazy loaded - All feature pages
+const AcceptInvite = lazy(() => import("./pages/AcceptInvite"));
+const DiagnosticoCompleto = lazy(() => import("./pages/DiagnosticoCompleto"));
+const CognitiveDiagnostic = lazy(() => import("./pages/CognitiveDiagnostic"));
+const DiagnosticTests = lazy(() => import("./pages/DiagnosticTests"));
+const DashboardPais = lazy(() => import("./pages/DashboardPais"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
+const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
+const Games = lazy(() => import("./pages/Games"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+
+// Games - Navigation & Map
+const GameMap = lazy(() => import("./components/GameMap").then(m => ({ default: m.default })));
+const Neuroplasticity = lazy(() => import("./pages/Neuroplasticity"));
 const CognitiveBattery = lazy(() => import("./pages/CognitiveBattery"));
 
-import FocoRapidoPhases from "./pages/games/FocoRapidoPhases";
-import PhonologicalProcessing from "./pages/games/PhonologicalProcessingGame";
-import MemoryWorkload from "./pages/games/MemoryWorkload";
-import TheoryOfMind from "./pages/games/TheoryOfMind";
-import EmotionLab from "./pages/games/EmotionLab";
-import SpatialArchitect from "./pages/games/SpatialArchitect";
-import FocoRapido from "./pages/games/FocoRapido";
-import SistemaPlanetaAzul from "./pages/SistemaPlanetaAzul";
-import PlanetaDetalhes from "./pages/PlanetaDetalhes";
-import AvatarEvolutionPage from "./pages/AvatarEvolutionPage";
-import Settings from "./pages/Settings";
-import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
+// Games - Individual
+const MindfulBreath = lazy(() => import("./pages/games/MindfulBreath"));
+const MemoriaColorida = lazy(() => import("./pages/games/MemoriaColorida"));
+const CacaFoco = lazy(() => import("./pages/games/CacaFoco"));
+const LogicaRapida = lazy(() => import("./pages/games/LogicaRapida"));
+const RitmoMusical = lazy(() => import("./pages/games/RitmoMusical"));
+const CacaLetras = lazy(() => import("./pages/games/CacaLetras"));
+const SilabaMagica = lazy(() => import("./pages/games/SilabaMagica"));
+const QuebraCabecaMagico = lazy(() => import("./pages/games/QuebraCabecaMagico"));
+const AventuraNumeros = lazy(() => import("./pages/games/AventuraNumeros"));
+const ContadorHistorias = lazy(() => import("./pages/games/ContadorHistorias"));
+const FocusQuest = lazy(() => import("./pages/games/FocusQuest"));
+const SocialScenarios = lazy(() => import("./pages/games/SocialScenarios"));
+const SocialCompass = lazy(() => import("./pages/games/SocialCompass"));
+const EmotionalWeather = lazy(() => import("./pages/games/EmotionalWeather"));
+const BalanceQuest = lazy(() => import("./pages/games/BalanceQuest"));
+const SensoryFlow = lazy(() => import("./pages/games/SensoryFlow"));
+const VisualSync = lazy(() => import("./pages/games/VisualSync"));
+const StackTower = lazy(() => import("./pages/games/StackTower"));
+const CosmicSequence = lazy(() => import("./pages/games/CosmicSequence"));
+const CrystalMatch = lazy(() => import("./pages/games/CrystalMatch"));
+const TowerDefense = lazy(() => import("./pages/games/TowerDefense"));
+const BiofeedbackDemo = lazy(() => import("./pages/games/BiofeedbackDemo"));
+const TouchMapper = lazy(() => import("./pages/games/TouchMapper"));
+const TouchMapperKeyboard = lazy(() => import("./pages/games/TouchMapperKeyboard"));
+const CooperativePuzzle = lazy(() => import("./pages/games/CooperativePuzzle"));
 
-// Screening pages
-import ScreeningSelection from "./pages/ScreeningSelection";
-import DislexiaScreening from "./pages/games/DislexiaScreening";
-import TDAHScreening from "./pages/games/TDAHScreening";
-import TEAScreening from "./pages/games/TEAScreening";
-import ScreeningResult from "./pages/ScreeningResult";
-import PEIView from "./pages/PEIView";
-import TeacherDashboard from "./pages/TeacherDashboard";
-import ParentTraining from "./pages/TeacherTraining";
-import TrainingModule from "./pages/TrainingModule";
-import TherapeuticChatPage from "./pages/TherapeuticChatPage";
-import TherapistPatients from "./pages/TherapistPatients";
-import TherapistDashboard from "./pages/TherapistDashboard";
-import Teleconsultas from "./pages/Teleconsultas";
-import TeleconsultaSession from "./pages/TeleconsultaSession";
-import MinhasTeleconsultas from "./pages/MinhasTeleconsultas";
-import AgendarTeleconsulta from "./pages/AgendarTeleconsulta";
-import TeacherClasses from "./pages/TeacherClasses";
-import TeacherClassView from "./pages/TeacherClassView";
-import TeacherStudentView from "./pages/TeacherStudentView";
-import AdminNetworkDashboard from "./pages/AdminNetworkDashboard";
-import AbaNeuroPlay from "./pages/AbaNeuroPlay";
-import AdminRiskMaps from "./pages/AdminRiskMaps";
-import OperationsCenter from "./pages/OperationsCenter";
-import CooperativePuzzle from "./pages/games/CooperativePuzzle";
-import RiskAnalysisPage from "./pages/RiskAnalysisPage";
-import EmotionalHistoryDashboard from "./pages/EmotionalHistoryDashboard";
+// Games - Phase System
+const AttentionSustainedPhases = lazy(() => import("./pages/games/AttentionSustainedPhases"));
+const AttentionSustainedPlay = lazy(() => import("./pages/games/AttentionSustainedPlay"));
+const FocoRapidoPhases = lazy(() => import("./pages/games/FocoRapidoPhases"));
+const FocoRapido = lazy(() => import("./pages/games/FocoRapido"));
+const CognitiveFlexibilityPhases = lazy(() => import("./pages/games/CognitiveFlexibilityPhases"));
+const CognitiveFlexibilityPlay = lazy(() => import("./pages/games/CognitiveFlexibilityPlay"));
+const ExecutiveProcessingPhases = lazy(() => import("./pages/games/ExecutiveProcessingPhases"));
+const VisuomotorCoordination = lazy(() => import("./pages/games/VisuomotorCoordination"));
+const BehavioralPersistence = lazy(() => import("./pages/games/BehavioralPersistence"));
+const MemorySequenceBuilder = lazy(() => import("./pages/games/MemorySequenceBuilder"));
 
-import PlatformManual from "./pages/PlatformManual";
-import AdminUserManagement from "./pages/AdminUserManagement";
-import BeneficiosTerapeuticos from "./pages/BeneficiosTerapeuticos";
+// Games - Standalone
+const PhonologicalProcessing = lazy(() => import("./pages/games/PhonologicalProcessingGame"));
+const MemoryWorkload = lazy(() => import("./pages/games/MemoryWorkload"));
+const TheoryOfMind = lazy(() => import("./pages/games/TheoryOfMind"));
+const EmotionLab = lazy(() => import("./pages/games/EmotionLab"));
+const SpatialArchitect = lazy(() => import("./pages/games/SpatialArchitect"));
 
-// Core pages
-import DiagnosticoCompleto from "./pages/DiagnosticoCompleto";
-import DashboardPais from "./pages/DashboardPais";
-import Home from "./pages/Home";
-import { OnboardingWizard } from "./components/onboarding/OnboardingWizard";
-import AchievementsPage from "./pages/AchievementsPage";
-import AccessibilitySettings from "./pages/AccessibilitySettings";
-import SocialStories from "./pages/SocialStories";
-import StoryReader from "./pages/StoryReader";
-import AdminStories from "./pages/AdminStories";
-import AcceptInvite from "./pages/AcceptInvite";
-import RelationshipsManager from "./pages/admin/RelationshipsManager";
-import UnifiedReports from "./pages/UnifiedReports";
-import ProntuarioUnificado from "./pages/ProntuarioUnificado";
-import StudentHub from "./pages/StudentHub";
-import WorldMap from "./pages/WorldMap";
-import StoryEditor from "./pages/StoryEditor";
-import PrivacyPortal from "./pages/PrivacyPortal";
-import InstallApp from "./pages/InstallApp";
-import Assinatura from "./pages/Assinatura";
-import RoutinesPage from "./pages/RoutinesPage";
-import RoutineViewer from "./pages/RoutineViewer";
-import ConsentManagement from "./pages/ConsentManagement";
-import DataGovernance from "./pages/DataGovernance";
-import ApiIntegrations from "./pages/ApiIntegrations";
-// Phase 4+ pages
-import InstitutionalDashboard from "./pages/InstitutionalDashboard";
-import SecureMessaging from "./pages/SecureMessaging";
-import ContentManager from "./pages/ContentManager";
-import ProfessionalAnalytics from "./pages/ProfessionalAnalytics";
-import Community from "./pages/Community";
-import ContextualAIDashboard from "./pages/ContextualAIDashboard";
-import ComplianceDashboard from "./pages/ComplianceDashboard";
-import BillingDashboard from "./pages/BillingDashboard";
-import ImpactDashboard from "./pages/ImpactDashboard";
-import AgendaClinica from "./pages/AgendaClinica";
-import InventarioHabilidades from "./pages/InventarioHabilidades";
-import AnamneseInfantil from "./pages/AnamneseInfantil";
-import AnamneseList from "./pages/AnamneseList";
-import ClubePais from "./pages/ClubePais";
-import ParceiroClube from "./pages/ParceiroClube";
-import AdminClubePais from "./pages/AdminClubePais";
-import EducacaoDashboard from "./pages/EducacaoDashboard";
-import SecretariaDashboard from "./pages/SecretariaDashboard";
-import SchoolDirectorDashboard from "./pages/SchoolDirectorDashboard";
-import SubscriptionPage from "./pages/SubscriptionPage";
+// Gamification & Student
+const SistemaPlanetaAzul = lazy(() => import("./pages/SistemaPlanetaAzul"));
+const PlanetaDetalhes = lazy(() => import("./pages/PlanetaDetalhes"));
+const AvatarEvolutionPage = lazy(() => import("./pages/AvatarEvolutionPage"));
+const AchievementsPage = lazy(() => import("./pages/AchievementsPage"));
+const WorldMap = lazy(() => import("./pages/WorldMap"));
+const StudentHub = lazy(() => import("./pages/StudentHub"));
 
-// Lazy loaded
-const CognitiveDiagnostic = lazy(() => import("./pages/CognitiveDiagnostic"));
-const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const Games = lazy(() => import("./pages/Games"));
-const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
-const AdminDashboard = lazy(() => import("@/pages/AdminDashboard"));
-const DiagnosticTests = lazy(() => import("./pages/DiagnosticTests"));
+// Screening
+const ScreeningSelection = lazy(() => import("./pages/ScreeningSelection"));
+const DislexiaScreening = lazy(() => import("./pages/games/DislexiaScreening"));
+const TDAHScreening = lazy(() => import("./pages/games/TDAHScreening"));
+const TEAScreening = lazy(() => import("./pages/games/TEAScreening"));
+const ScreeningResult = lazy(() => import("./pages/ScreeningResult"));
+
+// Therapist
+const TherapistPatients = lazy(() => import("./pages/TherapistPatients"));
+const TherapistDashboard = lazy(() => import("./pages/TherapistDashboard"));
+const Teleconsultas = lazy(() => import("./pages/Teleconsultas"));
+const TeleconsultaSession = lazy(() => import("./pages/TeleconsultaSession"));
+const MinhasTeleconsultas = lazy(() => import("./pages/MinhasTeleconsultas"));
+const AgendarTeleconsulta = lazy(() => import("./pages/AgendarTeleconsulta"));
+const AgendaClinica = lazy(() => import("./pages/AgendaClinica"));
+const InventarioHabilidades = lazy(() => import("./pages/InventarioHabilidades"));
+const ProntuarioUnificado = lazy(() => import("./pages/ProntuarioUnificado"));
+const AnamneseInfantil = lazy(() => import("./pages/AnamneseInfantil"));
+const AnamneseList = lazy(() => import("./pages/AnamneseList"));
+const TherapeuticChatPage = lazy(() => import("./pages/TherapeuticChatPage"));
+const PEIView = lazy(() => import("./pages/PEIView"));
+
+// Teacher
+const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
+const TeacherClasses = lazy(() => import("./pages/TeacherClasses"));
+const TeacherClassView = lazy(() => import("./pages/TeacherClassView"));
+const TeacherStudentView = lazy(() => import("./pages/TeacherStudentView"));
+const ParentTraining = lazy(() => import("./pages/TeacherTraining"));
+const TrainingModule = lazy(() => import("./pages/TrainingModule"));
+
+// Admin
+const AdminNetworkDashboard = lazy(() => import("./pages/AdminNetworkDashboard"));
+const AdminUserManagement = lazy(() => import("./pages/AdminUserManagement"));
+const AdminRiskMaps = lazy(() => import("./pages/AdminRiskMaps"));
+const AdminStories = lazy(() => import("./pages/AdminStories"));
+const StoryEditor = lazy(() => import("./pages/StoryEditor"));
+const ContentManager = lazy(() => import("./pages/ContentManager"));
+const ComplianceDashboard = lazy(() => import("./pages/ComplianceDashboard"));
+const AdminClubePais = lazy(() => import("./pages/AdminClubePais"));
+const OperationsCenter = lazy(() => import("./pages/OperationsCenter"));
+const RelationshipsManager = lazy(() => import("./pages/admin/RelationshipsManager"));
+
+// ABA
+const AbaNeuroPlay = lazy(() => import("./pages/AbaNeuroPlay"));
+
+// Stories & Social
+const SocialStories = lazy(() => import("./pages/SocialStories"));
+const StoryReader = lazy(() => import("./pages/StoryReader"));
+const RoutinesPage = lazy(() => import("./pages/RoutinesPage"));
+const RoutineViewer = lazy(() => import("./pages/RoutineViewer"));
+
+// Reports & Analytics
+const UnifiedReports = lazy(() => import("./pages/UnifiedReports"));
+const RiskAnalysisPage = lazy(() => import("./pages/RiskAnalysisPage"));
+const EmotionalHistoryDashboard = lazy(() => import("./pages/EmotionalHistoryDashboard"));
+const ProfessionalAnalytics = lazy(() => import("./pages/ProfessionalAnalytics"));
+const IntelligentReports = lazy(() => import("./pages/IntelligentReports"));
+
+// Education
+const EducacaoDashboard = lazy(() => import("./pages/EducacaoDashboard"));
+const SchoolDirectorDashboard = lazy(() => import("./pages/SchoolDirectorDashboard"));
+const SecretariaDashboard = lazy(() => import("./pages/SecretariaDashboard"));
+
+// Community & Messaging
+const Community = lazy(() => import("./pages/Community"));
+const SecureMessaging = lazy(() => import("./pages/SecureMessaging"));
+
+// AI & Institutional
+const ContextualAIDashboard = lazy(() => import("./pages/ContextualAIDashboard"));
+const InstitutionalDashboard = lazy(() => import("./pages/InstitutionalDashboard"));
+const BillingDashboard = lazy(() => import("./pages/BillingDashboard"));
+const ImpactDashboard = lazy(() => import("./pages/ImpactDashboard"));
+
+// Compliance & Settings
+const Settings = lazy(() => import("./pages/Settings"));
+const Profile = lazy(() => import("./pages/Profile"));
+const AccessibilitySettings = lazy(() => import("./pages/AccessibilitySettings"));
+const Assinatura = lazy(() => import("./pages/Assinatura"));
+const PrivacyPortal = lazy(() => import("./pages/PrivacyPortal"));
+const ConsentManagement = lazy(() => import("./pages/ConsentManagement"));
+const DataGovernance = lazy(() => import("./pages/DataGovernance"));
+const ApiIntegrations = lazy(() => import("./pages/ApiIntegrations"));
+const InstallApp = lazy(() => import("./pages/InstallApp"));
+const PlatformManual = lazy(() => import("./pages/PlatformManual"));
+const BeneficiosTerapeuticos = lazy(() => import("./pages/BeneficiosTerapeuticos"));
+
+// Clube dos Pais
+const ClubePais = lazy(() => import("./pages/ClubePais"));
+const ParceiroClube = lazy(() => import("./pages/ParceiroClube"));
+const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
+
+// Helper for Suspense wrapping
+const L = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<Loading />}>{children}</Suspense>
+);
 
 const queryClient = new QueryClient();
 
@@ -177,200 +212,178 @@ const App = () => (
                   <Route path="/index" element={<Index />} />
                   <Route path="/onboarding" element={<OnboardingWizard />} />
                   <Route path="/auth" element={<Auth />} />
-                  <Route path="/aceitar-convite" element={<AcceptInvite />} />
+                  <Route path="/aceitar-convite" element={<L><AcceptInvite /></L>} />
                   
                   {/* Diagnostics */}
-                  <Route path="/diagnostico-completo" element={<DiagnosticoCompleto />} />
-                  <Route path="/cognitive-diagnostic" element={
-                    <Suspense fallback={<Loading />}><CognitiveDiagnostic /></Suspense>
-                  } />
-                  <Route path="/diagnostic-tests" element={
-                    <Suspense fallback={<Loading />}><DiagnosticTests /></Suspense>
-                  } />
+                  <Route path="/diagnostico-completo" element={<L><DiagnosticoCompleto /></L>} />
+                  <Route path="/cognitive-diagnostic" element={<L><CognitiveDiagnostic /></L>} />
+                  <Route path="/diagnostic-tests" element={<L><DiagnosticTests /></L>} />
                   
                   {/* Dashboards */}
-                  <Route path="/dashboard-pais" element={<DashboardPais />} />
-                  <Route path="/dashboard" element={
-                    <Suspense fallback={<Loading />}><Dashboard /></Suspense>
-                  } />
-                  <Route path="/clinical" element={
-                    <Suspense fallback={<Loading />}><ClinicalDashboard /></Suspense>
-                  } />
+                  <Route path="/dashboard-pais" element={<L><DashboardPais /></L>} />
+                  <Route path="/dashboard" element={<L><Dashboard /></L>} />
+                  <Route path="/clinical" element={<L><ClinicalDashboard /></L>} />
                   
                   {/* Games - Navigation */}
-                  <Route path="/game-map" element={<GameMap />} />
-                  <Route path="/games" element={
-                    <Suspense fallback={<Loading />}><Games /></Suspense>
-                  } />
-                  <Route path="/neuroplasticity" element={<Neuroplasticity />} />
-                  <Route path="/learning-dashboard" element={
-                    <Suspense fallback={<Loading />}><LearningDashboard /></Suspense>
-                  } />
+                  <Route path="/game-map" element={<L><GameMap /></L>} />
+                  <Route path="/games" element={<L><Games /></L>} />
+                  <Route path="/neuroplasticity" element={<L><Neuroplasticity /></L>} />
+                  <Route path="/learning-dashboard" element={<L><LearningDashboard /></L>} />
                   
                   {/* Games - Individual */}
-                  <Route path="/games/memoria-colorida" element={<MemoriaColorida />} />
-                  <Route path="/games/caca-foco" element={<CacaFoco />} />
-                  <Route path="/games/logica-rapida" element={<LogicaRapida />} />
-                  <Route path="/games/ritmo-musical" element={<RitmoMusical />} />
-                  <Route path="/games/caca-letras" element={<CacaLetras />} />
-                  <Route path="/games/silaba-magica" element={<SilabaMagica />} />
-                  <Route path="/games/quebra-cabeca-magico" element={<QuebraCabecaMagico />} />
-                  <Route path="/games/aventura-numeros" element={<AventuraNumeros />} />
-                  <Route path="/games/contador-historias" element={<ContadorHistorias />} />
-                  <Route path="/games/mindful-breath" element={<MindfulBreath />} />
-                  <Route path="/games/focus-quest" element={<FocusQuest />} />
-                  <Route path="/games/social-scenarios" element={<SocialScenarios />} />
-                  <Route path="/games/social-compass" element={<SocialCompass />} />
-                  <Route path="/games/emotional-weather" element={<EmotionalWeather />} />
-                  <Route path="/games/balance-quest" element={<BalanceQuest />} />
-                  <Route path="/games/sensory-flow" element={<SensoryFlow />} />
-                  <Route path="/games/visual-sync" element={<VisualSync />} />
-                  <Route path="/games/stack-tower" element={<StackTower />} />
-                  <Route path="/games/cosmic-sequence" element={<CosmicSequence />} />
-                  <Route path="/games/crystal-match" element={<CrystalMatch />} />
-                  <Route path="/games/tower-defense" element={<TowerDefense />} />
-                  <Route path="/games/biofeedback-demo" element={
-                    <Suspense fallback={<Loading />}><BiofeedbackDemo /></Suspense>
-                  } />
-                  <Route path="/games/touch-mapper" element={<TouchMapper />} />
-                  <Route path="/games/touch-mapper-keyboard" element={<TouchMapperKeyboard />} />
-                  <Route path="/games/cooperative-puzzle" element={<CooperativePuzzle />} />
+                  <Route path="/games/memoria-colorida" element={<L><MemoriaColorida /></L>} />
+                  <Route path="/games/caca-foco" element={<L><CacaFoco /></L>} />
+                  <Route path="/games/logica-rapida" element={<L><LogicaRapida /></L>} />
+                  <Route path="/games/ritmo-musical" element={<L><RitmoMusical /></L>} />
+                  <Route path="/games/caca-letras" element={<L><CacaLetras /></L>} />
+                  <Route path="/games/silaba-magica" element={<L><SilabaMagica /></L>} />
+                  <Route path="/games/quebra-cabeca-magico" element={<L><QuebraCabecaMagico /></L>} />
+                  <Route path="/games/aventura-numeros" element={<L><AventuraNumeros /></L>} />
+                  <Route path="/games/contador-historias" element={<L><ContadorHistorias /></L>} />
+                  <Route path="/games/mindful-breath" element={<L><MindfulBreath /></L>} />
+                  <Route path="/games/focus-quest" element={<L><FocusQuest /></L>} />
+                  <Route path="/games/social-scenarios" element={<L><SocialScenarios /></L>} />
+                  <Route path="/games/social-compass" element={<L><SocialCompass /></L>} />
+                  <Route path="/games/emotional-weather" element={<L><EmotionalWeather /></L>} />
+                  <Route path="/games/balance-quest" element={<L><BalanceQuest /></L>} />
+                  <Route path="/games/sensory-flow" element={<L><SensoryFlow /></L>} />
+                  <Route path="/games/visual-sync" element={<L><VisualSync /></L>} />
+                  <Route path="/games/stack-tower" element={<L><StackTower /></L>} />
+                  <Route path="/games/cosmic-sequence" element={<L><CosmicSequence /></L>} />
+                  <Route path="/games/crystal-match" element={<L><CrystalMatch /></L>} />
+                  <Route path="/games/tower-defense" element={<L><TowerDefense /></L>} />
+                  <Route path="/games/biofeedback-demo" element={<L><BiofeedbackDemo /></L>} />
+                  <Route path="/games/touch-mapper" element={<L><TouchMapper /></L>} />
+                  <Route path="/games/touch-mapper-keyboard" element={<L><TouchMapperKeyboard /></L>} />
+                  <Route path="/games/cooperative-puzzle" element={<L><CooperativePuzzle /></L>} />
                   
                   {/* Games - Phase System */}
-                  <Route path="/games/executive-processing-phases" element={<ExecutiveProcessingPhases />} />
-                  <Route path="/games/attention-sustained-phases" element={<AttentionSustainedPhases />} />
-                  <Route path="/games/attention-sustained-play" element={<AttentionSustainedPlay />} />
-                  <Route path="/games/foco-rapido-phases" element={<FocoRapidoPhases />} />
-                  <Route path="/games/foco-rapido-play" element={<FocoRapido />} />
-                  <Route path="/games/cognitive-flexibility-phases" element={<CognitiveFlexibilityPhases />} />
-                  <Route path="/games/cognitive-flexibility-play" element={<CognitiveFlexibilityPlay />} />
-                  <Route path="/games/visuomotor-coordination" element={<VisuomotorCoordination />} />
-                  <Route path="/games/behavioral-persistence" element={<BehavioralPersistence />} />
-                  <Route path="/bateria-cognitiva" element={
-                    <Suspense fallback={<Loading />}><CognitiveBattery /></Suspense>
-                  } />
+                  <Route path="/games/executive-processing-phases" element={<L><ExecutiveProcessingPhases /></L>} />
+                  <Route path="/games/attention-sustained-phases" element={<L><AttentionSustainedPhases /></L>} />
+                  <Route path="/games/attention-sustained-play" element={<L><AttentionSustainedPlay /></L>} />
+                  <Route path="/games/foco-rapido-phases" element={<L><FocoRapidoPhases /></L>} />
+                  <Route path="/games/foco-rapido-play" element={<L><FocoRapido /></L>} />
+                  <Route path="/games/cognitive-flexibility-phases" element={<L><CognitiveFlexibilityPhases /></L>} />
+                  <Route path="/games/cognitive-flexibility-play" element={<L><CognitiveFlexibilityPlay /></L>} />
+                  <Route path="/games/visuomotor-coordination" element={<L><VisuomotorCoordination /></L>} />
+                  <Route path="/games/behavioral-persistence" element={<L><BehavioralPersistence /></L>} />
+                  <Route path="/bateria-cognitiva" element={<L><CognitiveBattery /></L>} />
                   
                   {/* Games - Standalone */}
-                  <Route path="/games/phonological-processing" element={<PhonologicalProcessing />} />
-                  <Route path="/games/memory-workload" element={<MemoryWorkload />} />
-                  <Route path="/games/theory-of-mind" element={<TheoryOfMind />} />
-                  <Route path="/games/emotion-lab" element={<EmotionLab />} />
-                  <Route path="/games/spatial-architect" element={<SpatialArchitect />} />
+                  <Route path="/games/phonological-processing" element={<L><PhonologicalProcessing /></L>} />
+                  <Route path="/games/memory-workload" element={<L><MemoryWorkload /></L>} />
+                  <Route path="/games/theory-of-mind" element={<L><TheoryOfMind /></L>} />
+                  <Route path="/games/emotion-lab" element={<L><EmotionLab /></L>} />
+                  <Route path="/games/spatial-architect" element={<L><SpatialArchitect /></L>} />
                   
                   {/* Gamification & Student */}
-                  <Route path="/sistema-planeta-azul" element={<SistemaPlanetaAzul />} />
-                  <Route path="/planeta/:planetaId" element={<PlanetaDetalhes />} />
-                  <Route path="/avatar-evolution" element={<AvatarEvolutionPage />} />
-                  <Route path="/conquistas" element={<AchievementsPage />} />
-                  <Route path="/achievements" element={<AchievementsPage />} />
-                  <Route path="/mapa" element={<WorldMap />} />
-                  <Route path="/world-map" element={<WorldMap />} />
-                  <Route path="/student-hub" element={<StudentHub />} />
+                  <Route path="/sistema-planeta-azul" element={<L><SistemaPlanetaAzul /></L>} />
+                  <Route path="/planeta/:planetaId" element={<L><PlanetaDetalhes /></L>} />
+                  <Route path="/avatar-evolution" element={<L><AvatarEvolutionPage /></L>} />
+                  <Route path="/conquistas" element={<L><AchievementsPage /></L>} />
+                  <Route path="/mapa" element={<L><WorldMap /></L>} />
+                  <Route path="/student-hub" element={<L><StudentHub /></L>} />
                   
                   {/* Screening */}
-                  <Route path="/screening" element={<ScreeningSelection />} />
-                  <Route path="/screening/dislexia" element={<DislexiaScreening />} />
-                  <Route path="/screening/tdah" element={<TDAHScreening />} />
-                  <Route path="/screening/tea" element={<TEAScreening />} />
-                  <Route path="/screening/result" element={<ScreeningResult />} />
+                  <Route path="/screening" element={<L><ScreeningSelection /></L>} />
+                  <Route path="/screening/dislexia" element={<L><DislexiaScreening /></L>} />
+                  <Route path="/screening/tdah" element={<L><TDAHScreening /></L>} />
+                  <Route path="/screening/tea" element={<L><TEAScreening /></L>} />
+                  <Route path="/screening/result" element={<L><ScreeningResult /></L>} />
                   
                   {/* Therapist Routes */}
-                  <Route path="/agenda" element={<AgendaClinica />} />
-                  <Route path="/inventario-habilidades" element={<InventarioHabilidades />} />
-                  <Route path="/teleconsultas" element={<Teleconsultas />} />
-                  <Route path="/teleconsulta/:sessionId" element={<TeleconsultaSession />} />
-                  <Route path="/minhas-teleconsultas" element={<MinhasTeleconsultas />} />
-                  <Route path="/agendar-teleconsulta" element={<AgendarTeleconsulta />} />
-                  <Route path="/therapist/patients" element={<TherapistPatients />} />
-                  <Route path="/therapist/patient/:patientId" element={<TherapistDashboard />} />
-                  <Route path="/prontuario/:childId" element={<ProntuarioUnificado />} />
-                  <Route path="/anamnese" element={<AnamneseList />} />
-                  <Route path="/anamnese/:childId" element={<AnamneseInfantil />} />
-                  <Route path="/therapeutic-chat" element={<TherapeuticChatPage />} />
-                  <Route path="/chat" element={<TherapeuticChatPage />} />
+                  <Route path="/agenda" element={<L><AgendaClinica /></L>} />
+                  <Route path="/inventario-habilidades" element={<L><InventarioHabilidades /></L>} />
+                  <Route path="/teleconsultas" element={<L><Teleconsultas /></L>} />
+                  <Route path="/teleconsulta/:sessionId" element={<L><TeleconsultaSession /></L>} />
+                  <Route path="/minhas-teleconsultas" element={<L><MinhasTeleconsultas /></L>} />
+                  <Route path="/agendar-teleconsulta" element={<L><AgendarTeleconsulta /></L>} />
+                  <Route path="/therapist/patients" element={<L><TherapistPatients /></L>} />
+                  <Route path="/therapist/patient/:patientId" element={<L><TherapistDashboard /></L>} />
+                  <Route path="/prontuario/:childId" element={<L><ProntuarioUnificado /></L>} />
+                  <Route path="/anamnese" element={<L><AnamneseList /></L>} />
+                  <Route path="/anamnese/:childId" element={<L><AnamneseInfantil /></L>} />
+                  <Route path="/therapeutic-chat" element={<L><TherapeuticChatPage /></L>} />
+                  <Route path="/chat" element={<L><TherapeuticChatPage /></L>} />
                   
                   {/* Teacher Routes */}
-                  <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
-                  <Route path="/teacher/classes" element={<TeacherClasses />} />
-                  <Route path="/teacher/class/:classId" element={<TeacherClassView />} />
-                  <Route path="/teacher/student/:studentId" element={<TeacherStudentView />} />
-                  <Route path="/pei" element={<PEIView />} />
-                  <Route path="/pei/:patientId" element={<PEIView />} />
+                  <Route path="/teacher-dashboard" element={<L><TeacherDashboard /></L>} />
+                  <Route path="/teacher/classes" element={<L><TeacherClasses /></L>} />
+                  <Route path="/teacher/class/:classId" element={<L><TeacherClassView /></L>} />
+                  <Route path="/teacher/student/:studentId" element={<L><TeacherStudentView /></L>} />
+                  <Route path="/pei" element={<L><PEIView /></L>} />
+                  <Route path="/pei/:patientId" element={<L><PEIView /></L>} />
                   
                   {/* Admin Routes */}
-                  <Route path="/admin" element={
-                    <Suspense fallback={<Loading />}><AdminDashboard /></Suspense>
-                  } />
-                  <Route path="/admin/network" element={<AdminNetworkDashboard />} />
-                  <Route path="/admin/users" element={<AdminUserManagement />} />
-                  <Route path="/admin/relationships" element={<RelationshipsManager />} />
-                  <Route path="/admin/risk-maps" element={<AdminRiskMaps />} />
-                  <Route path="/admin/stories" element={<AdminStories />} />
-                  <Route path="/admin/story-editor" element={<StoryEditor />} />
-                  <Route path="/admin/story-editor/:storyId" element={<StoryEditor />} />
-                  <Route path="/admin/content" element={<ContentManager />} />
-                  <Route path="/admin/compliance" element={<ComplianceDashboard />} />
-                  <Route path="/admin/clube-pais" element={<AdminClubePais />} />
-                  <Route path="/operations" element={<OperationsCenter />} />
+                  <Route path="/admin" element={<L><AdminDashboard /></L>} />
+                  <Route path="/admin/network" element={<L><AdminNetworkDashboard /></L>} />
+                  <Route path="/admin/users" element={<L><AdminUserManagement /></L>} />
+                  <Route path="/admin/relationships" element={<L><RelationshipsManager /></L>} />
+                  <Route path="/admin/risk-maps" element={<L><AdminRiskMaps /></L>} />
+                  <Route path="/admin/stories" element={<L><AdminStories /></L>} />
+                  <Route path="/admin/story-editor" element={<L><StoryEditor /></L>} />
+                  <Route path="/admin/story-editor/:storyId" element={<L><StoryEditor /></L>} />
+                  <Route path="/admin/content" element={<L><ContentManager /></L>} />
+                  <Route path="/admin/compliance" element={<L><ComplianceDashboard /></L>} />
+                  <Route path="/admin/clube-pais" element={<L><AdminClubePais /></L>} />
+                  <Route path="/operations" element={<L><OperationsCenter /></L>} />
                   
                   {/* ABA */}
-                  <Route path="/aba-integration" element={<AbaNeuroPlay />} />
-                  <Route path="/aba-neuroplay" element={<AbaNeuroPlay />} />
+                  <Route path="/aba-integration" element={<L><AbaNeuroPlay /></L>} />
+                  <Route path="/aba-neuroplay" element={<L><AbaNeuroPlay /></L>} />
                   
                   {/* Stories */}
-                  <Route path="/stories" element={<SocialStories />} />
-                  <Route path="/stories/:storyId" element={<StoryReader />} />
+                  <Route path="/stories" element={<L><SocialStories /></L>} />
+                  <Route path="/stories/:storyId" element={<L><StoryReader /></L>} />
                   
-                  {/* Reports */}
-                  <Route path="/relatorios" element={<UnifiedReports />} />
-                  <Route path="/reports" element={<UnifiedReports />} />
-                  <Route path="/risk-analysis" element={<RiskAnalysisPage />} />
-                  <Route path="/emotional-history" element={<EmotionalHistoryDashboard />} />
-                  <Route path="/professional-analytics" element={<ProfessionalAnalytics />} />
+                  {/* Reports & Analytics */}
+                  <Route path="/relatorios" element={<L><UnifiedReports /></L>} />
+                  <Route path="/risk-analysis" element={<L><RiskAnalysisPage /></L>} />
+                  <Route path="/emotional-history" element={<L><EmotionalHistoryDashboard /></L>} />
+                  <Route path="/professional-analytics" element={<L><ProfessionalAnalytics /></L>} />
+                  <Route path="/intelligent-reports" element={<L><IntelligentReports /></L>} />
                   
                   {/* Routines */}
-                  <Route path="/rotinas" element={<RoutinesPage />} />
-                  <Route path="/rotinas/:routineId" element={<RoutineViewer />} />
+                  <Route path="/rotinas" element={<L><RoutinesPage /></L>} />
+                  <Route path="/rotinas/:routineId" element={<L><RoutineViewer /></L>} />
                   
                   {/* Education */}
-                  <Route path="/educacao" element={<EducacaoDashboard />} />
-                  <Route path="/escola-dashboard" element={<SchoolDirectorDashboard />} />
-                  <Route path="/secretaria-educacao" element={<SecretariaDashboard />} />
-                  <Route path="/training" element={<ParentTraining />} />
-                  <Route path="/training/:moduleId" element={<TrainingModule />} />
+                  <Route path="/educacao" element={<L><EducacaoDashboard /></L>} />
+                  <Route path="/escola-dashboard" element={<L><SchoolDirectorDashboard /></L>} />
+                  <Route path="/secretaria-educacao" element={<L><SecretariaDashboard /></L>} />
+                  <Route path="/training" element={<L><ParentTraining /></L>} />
+                  <Route path="/training/:moduleId" element={<L><TrainingModule /></L>} />
                   
                   {/* Community & Messaging */}
-                  <Route path="/comunidade" element={<Community />} />
-                  <Route path="/mensagens" element={<SecureMessaging />} />
-                  <Route path="/messages" element={<SecureMessaging />} />
+                  <Route path="/comunidade" element={<L><Community /></L>} />
+                  <Route path="/mensagens" element={<L><SecureMessaging /></L>} />
                   
                   {/* AI & Analytics */}
-                  <Route path="/ia-contextual" element={<ContextualAIDashboard />} />
+                  <Route path="/ia-contextual" element={<L><ContextualAIDashboard /></L>} />
                   
                   {/* Institutional & Billing */}
-                  <Route path="/institutional" element={<InstitutionalDashboard />} />
-                  <Route path="/assinatura" element={<Assinatura />} />
-                  <Route path="/subscription" element={<Assinatura />} />
-                  <Route path="/faturamento" element={<BillingDashboard />} />
-                  <Route path="/impacto" element={<ImpactDashboard />} />
+                  <Route path="/institutional" element={<L><InstitutionalDashboard /></L>} />
+                  <Route path="/assinatura" element={<L><Assinatura /></L>} />
+                  <Route path="/faturamento" element={<L><BillingDashboard /></L>} />
+                  <Route path="/impacto" element={<L><ImpactDashboard /></L>} />
                   
                   {/* Compliance & Privacy */}
-                  <Route path="/consentimentos" element={<ConsentManagement />} />
-                  <Route path="/governanca-dados" element={<DataGovernance />} />
-                  <Route path="/integracoes-api" element={<ApiIntegrations />} />
-                  <Route path="/privacidade" element={<PrivacyPortal />} />
+                  <Route path="/consentimentos" element={<L><ConsentManagement /></L>} />
+                  <Route path="/governanca-dados" element={<L><DataGovernance /></L>} />
+                  <Route path="/integracoes-api" element={<L><ApiIntegrations /></L>} />
+                  <Route path="/privacidade" element={<L><PrivacyPortal /></L>} />
                   
                   {/* Clube dos Pais */}
-                  <Route path="/clube-pais" element={<ClubePais />} />
-                  <Route path="/parceiro-clube" element={<ParceiroClube />} />
+                  <Route path="/clube-pais" element={<L><ClubePais /></L>} />
+                  <Route path="/parceiro-clube" element={<L><ParceiroClube /></L>} />
                   
                   {/* Settings & Profile */}
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/accessibility" element={<AccessibilitySettings />} />
-                  <Route path="/instalar" element={<InstallApp />} />
-                  <Route path="/platform-manual" element={<PlatformManual />} />
-                  <Route path="/beneficios-terapeuticos" element={<BeneficiosTerapeuticos />} />
+                  <Route path="/settings" element={<L><Settings /></L>} />
+                  <Route path="/profile" element={<L><Profile /></L>} />
+                  <Route path="/accessibility" element={<L><AccessibilitySettings /></L>} />
+                  <Route path="/instalar" element={<L><InstallApp /></L>} />
+                  <Route path="/platform-manual" element={<L><PlatformManual /></L>} />
+                  <Route path="/beneficios-terapeuticos" element={<L><BeneficiosTerapeuticos /></L>} />
                   
                   {/* Catch-all */}
                   <Route path="*" element={<NotFound />} />

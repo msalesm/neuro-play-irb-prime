@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSocialScenarios } from "@/hooks/useSocialScenarios";
-import { SocialScenariosProgress } from "@/components/SocialScenariosProgress";
-import { SocialScenariosAchievements } from "@/components/SocialScenariosAchievements";
+const SocialScenariosProgress = (_props: any) => null;
+const SocialScenariosAchievements = (_props: any) => null;
 
 interface NPCEmotion {
   primary: 'happy' | 'sad' | 'angry' | 'neutral' | 'excited' | 'worried';

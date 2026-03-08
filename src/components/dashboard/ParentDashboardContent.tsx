@@ -5,7 +5,7 @@ import { Progress } from '@/components/ui/progress';
 import { CheckCircle2, TrendingUp, AlertCircle, Brain, Calendar, Award, Sparkles, Heart, Clock, Target, Trophy, Shield, FileText, BookOpen, Download, UserPlus } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChildAvatarDisplay, DailyMissionSection, TourAchievementsPanel } from '@/components/gamification';
-import { AIGameRecommendations } from '@/components/ai';
+import { SmartInsightsPanel } from '@/components/ai';
 import { RecentScreeningsCard } from '@/components/RecentScreeningsCard';
 import { RiskIndicatorCard } from '@/components/RiskIndicatorCard';
 import { FamilyProgressSection } from '@/components/FamilyProgressSection';
@@ -189,7 +189,7 @@ export function ParentDashboardContent({
             </div>
           </Card>
 
-          {selectedChild && <div data-tour="ai-recommendations"><AIGameRecommendations childProfileId={selectedChild} /></div>}
+          {selectedChild && <div data-tour="ai-recommendations"><SmartInsightsPanel childId={selectedChild} /></div>}
 
           {/* Quick Report */}
           <Card data-tour="quick-report">

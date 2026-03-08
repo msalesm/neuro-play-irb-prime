@@ -8,8 +8,7 @@ import { Trophy, Star, TrendingUp, Brain, Heart, Users, Activity, AlertTriangle 
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { DuolingoStreak, AchievementsList } from '@/components/gamification';
-import { AIRecommendations } from '@/components/ai';
-import { TemporalEvolutionCharts } from "@/components/TemporalEvolutionCharts";
+import { SmartInsightsPanel } from '@/components/ai';
 
 interface UserStats {
   total_stars: number;
@@ -369,17 +368,7 @@ export default function Dashboard() {
 
         {firstChildProfileId && (
           <div className="space-y-6">
-            <AIRecommendations 
-              childProfileId={firstChildProfileId}
-              onGameSelect={() => navigate('/games')}
-            />
-            
             <AchievementsList userId={user?.id || ''} />
-            
-            <TemporalEvolutionCharts 
-              childProfileId={firstChildProfileId}
-              timeRange="month"
-            />
           </div>
         )}
       </div>
