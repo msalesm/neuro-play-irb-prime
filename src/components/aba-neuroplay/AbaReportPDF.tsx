@@ -258,11 +258,8 @@ export function AbaReportPDF({ programId, childId }: Props) {
     }
   };
 
-  // Quick stats for preview card
-  let allTrials: any[] = [];
-  trialQueries.forEach(q => { if (q.data) allTrials = allTrials.concat(q.data); });
-  const totalTrials = allTrials.length;
-  const accuracy = totalTrials > 0 ? Math.round((allTrials.filter(t => t.correct).length / totalTrials) * 100) : 0;
+  const totalTrials = allTrialsData?.length || 0;
+  const accuracy = totalTrials > 0 ? Math.round((allTrialsData!.filter(t => t.correct).length / totalTrials) * 100) : 0;
 
   return (
     <Card>
