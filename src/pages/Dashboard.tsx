@@ -225,11 +225,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <DuolingoStreak
-          currentStreak={stats?.current_streak || 0}
-          longestStreak={stats?.longest_streak || 0}
-          streakGoal={7}
-        />
+        <DuolingoStreak />
 
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-2 md:gap-4">
@@ -339,7 +335,7 @@ export default function Dashboard() {
         </div>
 
         {firstChildProfileId && (
-          <AchievementsList userId={user?.id || ''} />
+          <AchievementsList />
         )}
       </div>
     </div>
