@@ -212,13 +212,13 @@ export default function PlanetaDetalhes() {
                 {planeta.focos.map((foco, idx) => (
                   <div 
                     key={idx}
-                    className="flex items-center gap-3 bg-white/5 rounded-lg p-3"
+                    className="flex items-center gap-3 bg-primary-foreground/5 rounded-lg p-3"
                   >
                     <div 
                       className="w-2 h-2 rounded-full flex-shrink-0"
                       style={{ backgroundColor: planeta.cor }}
                     />
-                    <span className="text-white text-sm">{foco}</span>
+                    <span className="text-primary-foreground text-sm">{foco}</span>
                   </div>
                 ))}
               </div>
@@ -233,13 +233,13 @@ export default function PlanetaDetalhes() {
           transition={{ delay: 0.2 }}
           className="mb-8"
         >
-          <Card className="bg-white/10 backdrop-blur-md border-white/20">
+          <Card className="bg-primary-foreground/10 backdrop-blur-md border-primary-foreground/20">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-primary-foreground flex items-center gap-2">
                 <Play className="w-5 h-5" />
                 Jogos Disponíveis
               </CardTitle>
-              <CardDescription className="text-white/60">
+              <CardDescription className="text-primary-foreground/60">
                 Complete todos os jogos para desbloquear a recompensa do planeta
               </CardDescription>
             </CardHeader>
@@ -252,7 +252,7 @@ export default function PlanetaDetalhes() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 + idx * 0.1 }}
                   >
-                    <Card className="bg-white/5 border-white/10 hover:bg-white/10 transition-all duration-300 relative">
+                    <Card className="bg-primary-foreground/5 border-primary-foreground/10 hover:bg-primary-foreground/10 transition-all duration-300 relative">
                       {jogo.novo && (
                         <Badge 
                           className="absolute -top-2 -right-2 h-6 px-2 text-xs bg-gradient-to-r from-amber-500 to-orange-500 border-0 shadow-lg animate-pulse z-10"
@@ -270,17 +270,17 @@ export default function PlanetaDetalhes() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2 mb-2">
-                              <h3 className="text-white font-semibold">
+                              <h3 className="text-primary-foreground font-semibold">
                                 {jogo.nome}
                               </h3>
                               {jogo.completado && (
-                                <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                                <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
                               )}
                             </div>
-                            <p className="text-white/60 text-sm mb-3 line-clamp-2">
+                            <p className="text-primary-foreground/60 text-sm mb-3 line-clamp-2">
                               {jogo.descricao}
                             </p>
-                            <div className="flex items-center gap-4 text-xs text-white/60 mb-3">
+                            <div className="flex items-center gap-4 text-xs text-primary-foreground/60 mb-3">
                               <span className="flex items-center gap-1">
                                 <Clock className="w-3 h-3" />
                                 {jogo.duracao} min
@@ -319,7 +319,7 @@ export default function PlanetaDetalhes() {
           transition={{ delay: 0.4 }}
         >
           <Card 
-            className="bg-white/10 backdrop-blur-md border-2 overflow-hidden"
+            className="bg-primary-foreground/10 backdrop-blur-md border-2 overflow-hidden"
             style={{ borderColor: `${planeta.cor}80` }}
           >
             <div 
@@ -327,7 +327,7 @@ export default function PlanetaDetalhes() {
               style={{ backgroundColor: planeta.cor }}
             />
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-primary-foreground flex items-center gap-2">
                 <Trophy className="w-5 h-5 text-warning" />
                 Recompensa Final
               </CardTitle>
@@ -338,7 +338,7 @@ export default function PlanetaDetalhes() {
                   {planeta.progressoAtual === planeta.totalMissoes ? '✨' : '🔒'}
                 </div>
                 <div className="flex-1">
-                  <p className="text-white/80 text-lg mb-2">
+                  <p className="text-primary-foreground/80 text-lg mb-2">
                     {planeta.recompensa}
                   </p>
                   {planeta.progressoAtual === planeta.totalMissoes ? (
@@ -346,7 +346,7 @@ export default function PlanetaDetalhes() {
                       Recompensa Desbloqueada!
                     </Badge>
                   ) : (
-                    <p className="text-white/60 text-sm">
+                    <p className="text-primary-foreground/60 text-sm">
                       Complete {planeta.totalMissoes - planeta.progressoAtual} missões restantes para desbloquear
                     </p>
                   )}
