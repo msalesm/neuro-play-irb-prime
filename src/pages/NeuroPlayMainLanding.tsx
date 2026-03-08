@@ -1,821 +1,610 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Brain, Gamepad2, Heart, CheckCircle, Target, Award, Sparkles, FileText, Users, BarChart3, BookOpen, Zap, Shield, Download, Video, ClipboardList, Calendar, Activity } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-// Logo removed - using text brand
-import heroImage from '@/assets/hero-children-learning.jpg';
-import childFocused from '@/assets/child-focused-learning.jpg';
-import groupTherapy from '@/assets/group-therapy-session.jpg';
-import { generatePlatformPresentation } from '@/lib/platformPresentationGenerator';
+import { 
+  Brain, Gamepad2, Heart, Sparkles, Target, BookOpen, Clock, 
+  TrendingUp, BarChart3, Users, GraduationCap, Stethoscope,
+  Star, Trophy, Map, Zap, ArrowRight, CheckCircle, 
+  ChevronLeft, ChevronRight, Shield, Mail
+} from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
-export default function NeuroPlayMainLanding() {
+// ─── 1. HEADER ────────────────────────────────────────────
+const LandingHeader = () => {
   const navigate = useNavigate();
-
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header - Gradiente NeuroPlay */}
-      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-[#3A86FF] via-[#8338EC] to-[#3A86FF] shadow-lg">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Brain className="w-8 h-8 text-white" />
-            <span className="text-xl font-bold text-white">NeuroPlay</span>
+    <header className="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-border/50 shadow-sm">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+            <Brain className="w-5 h-5 text-white" />
           </div>
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#sobre" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Sobre</a>
-            <a href="#beneficios" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Benefícios</a>
-            <a href="#funcionalidades" className="text-white/90 hover:text-white transition-colors text-sm font-medium">Funcionalidades</a>
-            <Button 
-              onClick={() => navigate('/sistema-planeta-azul')}
-              variant="ghost"
-              className="text-white hover:bg-white/10"
-            >
-              🪐 Sistema Planeta Azul
-            </Button>
-            <Button 
-              onClick={() => navigate('/auth')} 
-              className="bg-white text-[#3A86FF] hover:bg-white/90 font-semibold px-6"
-            >
-              Acessar Plataforma
-            </Button>
-          </nav>
+          <span className="text-xl font-bold font-heading bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            NeuroPlay
+          </span>
         </div>
-      </header>
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
+          <a href="#como-funciona" className="hover:text-primary transition-colors">Como funciona</a>
+          <a href="#gamificacao" className="hover:text-primary transition-colors">Gamificação</a>
+          <a href="#para-quem" className="hover:text-primary transition-colors">Para quem</a>
+          <a href="#beneficios" className="hover:text-primary transition-colors">Benefícios</a>
+        </nav>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/auth')} className="hidden sm:flex">
+            Entrar
+          </Button>
+          <Button size="sm" onClick={() => navigate('/auth')} className="bg-gradient-to-r from-primary to-secondary text-white">
+            Começar agora
+          </Button>
+        </div>
+      </div>
+    </header>
+  );
+};
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-5xl mx-auto mb-16 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A86FF]/10 text-[#3A86FF] text-sm font-medium mb-6">
+// ─── 2. HERO SECTION ──────────────────────────────────────
+const HeroSection = () => {
+  const navigate = useNavigate();
+  return (
+    <section className="relative pt-28 pb-20 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" />
+      <div className="absolute top-20 -left-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 -right-20 w-80 h-80 bg-accent/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-3xl" />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
               <Sparkles className="w-4 h-4" />
-              NeuroPlay - Aprendizado Cognitivo Interativo
+              Cada cérebro é único — e merece ser celebrado
             </div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold text-[#3A86FF] mb-6 leading-tight">
-              NeuroPlay
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading leading-tight mb-6">
+              <span className="text-foreground">Desenvolvimento cognitivo</span>
               <br />
-              <span className="text-[#8338EC]">porque cada mente é única</span>
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                infantil através de jogos
+              </span>
             </h1>
-            
-            <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto mb-8">
-              Plataforma de jogos terapêuticos inteligentes para desenvolvimento cognitivo de crianças com TEA, TDAH e Dislexia. 
-              Mais do que tecnologia, oferecemos cuidado, compromisso e resultado.
+
+            <p className="text-lg sm:text-xl text-muted-foreground mb-4 max-w-3xl mx-auto leading-relaxed">
+              NeuroPlay ajuda crianças a desenvolver atenção, memória, organização e 
+              habilidades socioemocionais por meio de experiências interativas.
+            </p>
+            <p className="text-base text-muted-foreground/70 mb-10 max-w-2xl mx-auto">
+              Jogos cognitivos, rotina inteligente, histórias interativas e análise comportamental 
+              — tudo em uma experiência lúdica e envolvente.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                onClick={() => navigate('/auth')} 
-                className="text-lg px-8 h-14 bg-gradient-to-r from-[#0a1e35] to-[#005a70] hover:opacity-90"
+                onClick={() => navigate('/auth')}
+                className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary text-white shadow-glow hover:opacity-90 transition-smooth"
               >
-                Começar Agora
-              </Button>
-              <Button 
-                size="lg" 
-                onClick={() => navigate('/sistema-planeta-azul')} 
-                className="text-lg px-8 h-14 bg-gradient-to-r from-[#c7923e] to-[#d4a54f] hover:opacity-90 text-white"
-              >
-                🪐 Sistema Planeta Azul
+                <Sparkles className="w-5 h-5 mr-2" />
+                Começar agora
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
-                onClick={() => navigate('/games')} 
-                className="text-lg px-8 h-14 border-[#005a70] text-[#005a70] hover:bg-[#005a70]/10"
+                onClick={() => {
+                  document.getElementById('como-funciona')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-lg px-8 py-6"
               >
-                <Gamepad2 className="w-5 h-5 mr-2" />
-                Explorar Jogos
+                Conhecer a plataforma
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-2xl animate-scale-in">
-            <img 
-              src={heroImage} 
-              alt="Crianças aprendendo com jogos educativos" 
-              className="w-full h-auto"
-            />
+          {/* Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
+          >
+            {[
+              { value: '15+', label: 'Jogos cognitivos', color: 'text-primary' },
+              { value: '5', label: 'Mundos exploráveis', color: 'text-secondary' },
+              { value: '100%', label: 'Baseado em ciência', color: 'text-accent' },
+              { value: 'IA', label: 'Adaptação inteligente', color: 'text-neuroplay-orange' },
+            ].map((stat, i) => (
+              <div key={i} className="text-center p-4 rounded-2xl bg-card border border-border/50">
+                <div className={`text-2xl sm:text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</div>
+                <div className="text-xs sm:text-sm text-muted-foreground">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ─── 3. COMO FUNCIONA ─────────────────────────────────────
+const HowItWorksSection = () => (
+  <section id="como-funciona" className="py-20 bg-muted/30">
+    <div className="container mx-auto px-4">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-foreground">Como funciona</h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Três pilares que transformam desenvolvimento em aventura
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {[
+          {
+            icon: Gamepad2,
+            emoji: '🎯',
+            title: 'Jogos Cognitivos',
+            description: 'Jogos interativos que estimulam atenção, memória, flexibilidade cognitiva e coordenação motora.',
+            gradient: 'from-primary to-primary/70',
+            border: 'border-primary/20',
+          },
+          {
+            icon: Clock,
+            emoji: '📋',
+            title: 'Rotina Inteligente',
+            description: 'Ferramenta visual para ajudar crianças a desenvolver organização, autonomia e consistência diária.',
+            gradient: 'from-secondary to-secondary/70',
+            border: 'border-secondary/20',
+          },
+          {
+            icon: BookOpen,
+            emoji: '📖',
+            title: 'Histórias Interativas',
+            description: 'Narrativas que estimulam empatia, tomada de decisão e regulação emocional de forma lúdica.',
+            gradient: 'from-accent to-accent/70',
+            border: 'border-accent/20',
+          },
+        ].map((item, i) => (
+          <Card key={i} className={`border-2 ${item.border} bg-card hover:shadow-glow transition-smooth hover:scale-[1.02]`}>
+            <CardContent className="p-8 text-center">
+              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mx-auto mb-6`}>
+                <item.icon className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-bold font-heading mb-3 text-card-foreground">{item.title}</h3>
+              <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+// ─── 4. PERFIL COMPORTAMENTAL ─────────────────────────────
+const BehavioralProfileSection = () => (
+  <section className="py-20 bg-card">
+    <div className="container mx-auto px-4">
+      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-4">
+            <BarChart3 className="w-4 h-4" />
+            Perfil cognitivo
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-foreground">
+            Entenda o perfil único de cada criança
+          </h2>
+          <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+            A plataforma identifica padrões de desenvolvimento e evolução ao longo do tempo, 
+            baseado em tarefas cognitivas, rotina diária e decisões socioemocionais.
+          </p>
+          <ul className="space-y-3">
+            {['Análise contínua de desempenho', 'Radar cognitivo visual', 'Evolução ao longo do tempo', 'Sem linguagem diagnóstica'].map((item, i) => (
+              <li key={i} className="flex items-center gap-3 text-muted-foreground">
+                <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Radar mock */}
+        <div className="bg-muted/50 rounded-3xl p-8 border border-border">
+          <div className="text-center mb-6">
+            <h3 className="font-bold text-foreground mb-1">Radar Cognitivo</h3>
+            <p className="text-sm text-muted-foreground">Perfil de desenvolvimento</p>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { label: 'Atenção', value: 85, color: 'bg-primary' },
+              { label: 'Memória', value: 92, color: 'bg-secondary' },
+              { label: 'Linguagem', value: 78, color: 'bg-accent' },
+              { label: 'Lógica', value: 88, color: 'bg-neuroplay-orange' },
+              { label: 'Social', value: 70, color: 'bg-neuroplay-yellow' },
+              { label: 'Motor', value: 95, color: 'bg-primary' },
+            ].map((skill, i) => (
+              <div key={i} className="text-center p-3 bg-card rounded-xl border border-border/50">
+                <div className={`text-xl font-bold mb-1`} style={{ color: `hsl(var(--${skill.color === 'bg-primary' ? 'primary' : skill.color === 'bg-secondary' ? 'secondary' : skill.color === 'bg-accent' ? 'accent' : 'neuroplay-orange'}))` }}>
+                  {skill.value}%
+                </div>
+                <div className="text-xs text-muted-foreground">{skill.label}</div>
+              </div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
+);
 
-      {/* Sistema Planeta Azul - Destaque Especial */}
-      <section className="py-20 bg-gradient-to-b from-[#0a1e35] via-[#005a70] to-[#0a1e35] relative overflow-hidden">
-        {/* Animated stars background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-              }}
-            />
+// ─── 5. ADAPTAÇÃO INTELIGENTE ─────────────────────────────
+const AdaptiveSection = () => (
+  <section className="py-20 bg-gradient-to-b from-primary/5 to-card">
+    <div className="container mx-auto px-4">
+      <div className="max-w-4xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 text-accent text-sm font-medium mb-4">
+          <Zap className="w-4 h-4" />
+          IA adaptativa
+        </div>
+        <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-foreground">
+          Dificuldade que se adapta automaticamente
+        </h2>
+        <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+          A IA do NeuroPlay ajusta a dificuldade dos jogos em tempo real com base no 
+          desempenho, tempo de resposta e taxa de acerto de cada criança.
+        </p>
+
+        <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          {[
+            { icon: Target, title: 'Desempenho', desc: 'Analisa acertos e erros em cada atividade' },
+            { icon: Clock, title: 'Tempo', desc: 'Mede velocidade de resposta e pausas' },
+            { icon: TrendingUp, title: 'Evolução', desc: 'Mantém desafio ideal para crescimento' },
+          ].map((item, i) => (
+            <Card key={i} className="border-border/50 bg-card">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-4">
+                  <item.icon className="w-6 h-6 text-accent" />
+                </div>
+                <h3 className="font-bold text-foreground mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 overflow-hidden shadow-2xl hover-scale">
-              <div className="h-2 bg-gradient-to-r from-[#c7923e] via-white to-[#c7923e]" />
-              <CardContent className="p-8 md:p-12">
-                <div className="grid md:grid-cols-2 gap-8 items-center">
-                  {/* Left side - Info */}
-                  <div className="space-y-6">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c7923e]/20 text-[#c7923e] text-sm font-medium">
-                      <Sparkles className="w-4 h-4" />
-                      Novidade NeuroPlay 2.0
-                    </div>
-                    
-                    <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-                      Sistema Planeta Azul
-                    </h2>
-                    
-                    <p className="text-white/80 text-lg leading-relaxed">
-                      Explore universos terapêuticos interativos! Cada planeta representa um diagnóstico específico 
-                      com jogos personalizados, missões e recompensas. Uma jornada gamificada de desenvolvimento cognitivo.
-                    </p>
-
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-3 text-white/90">
-                        <div className="w-8 h-8 rounded-full bg-[#c7923e]/20 flex items-center justify-center flex-shrink-0">
-                          <CheckCircle className="w-5 h-5 text-[#c7923e]" />
-                        </div>
-                        <span>5 Planetas temáticos (TEA, TDAH, Dislexia, Regulação, FE)</span>
-                      </div>
-                      <div className="flex items-center gap-3 text-white/90">
-                        <div className="w-8 h-8 rounded-full bg-[#c7923e]/20 flex items-center justify-center flex-shrink-0">
-                          <CheckCircle className="w-5 h-5 text-[#c7923e]" />
-                        </div>
-                        <span>25+ jogos cognitivos adaptativos</span>
-                      </div>
-                      <div className="flex items-center gap-3 text-white/90">
-                        <div className="w-8 h-8 rounded-full bg-[#c7923e]/20 flex items-center justify-center flex-shrink-0">
-                          <CheckCircle className="w-5 h-5 text-[#c7923e]" />
-                        </div>
-                        <span>Sistema de missões e recompensas</span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                      <Button 
-                        size="lg"
-                        onClick={() => navigate('/sistema-planeta-azul')}
-                        className="bg-[#c7923e] hover:bg-[#c7923e]/90 text-white font-semibold px-8"
-                      >
-                        🪐 Explorar Sistema Planeta Azul
-                      </Button>
-                      <Button 
-                        size="lg"
-                        variant="outline"
-                        onClick={() => navigate('/dashboard-pais')}
-                        className="border-white/30 text-white hover:bg-white/10"
-                      >
-                        Ver Dashboard
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Right side - Visual */}
-                  <div className="relative">
-                    <div className="relative w-full aspect-square max-w-sm mx-auto">
-                      {/* Central sun/star */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#c7923e] to-yellow-500 animate-pulse shadow-2xl" />
-                      </div>
-                      
-                      {/* Orbiting planets */}
-                      {[
-                        { emoji: '🌟', color: '#7C3AED', delay: '0s', radius: '35%' },
-                        { emoji: '🌀', color: '#EF4444', delay: '0.5s', radius: '45%' },
-                        { emoji: '💡', color: '#F59E0B', delay: '1s', radius: '55%' },
-                        { emoji: '🌊', color: '#10B981', delay: '1.5s', radius: '40%' },
-                        { emoji: '⚙️', color: '#3B82F6', delay: '2s', radius: '50%' },
-                      ].map((planet, idx) => (
-                        <div
-                          key={idx}
-                          className="absolute inset-0 animate-[spin_10s_linear_infinite]"
-                          style={{ animationDelay: planet.delay }}
-                        >
-                          <div
-                            className="absolute left-1/2 top-0 w-16 h-16 -ml-8 rounded-full flex items-center justify-center text-2xl shadow-xl border-2 border-white/20"
-                            style={{
-                              backgroundColor: `${planet.color}80`,
-                              transform: `translateY(${planet.radius})`,
-                            }}
-                          >
-                            {planet.emoji}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Progress mock */}
+        <div className="mt-12 max-w-md mx-auto bg-card border border-border rounded-2xl p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-2.5 h-2.5 bg-accent rounded-full animate-pulse" />
+            <span className="text-sm font-medium text-foreground">Ajuste em tempo real</span>
           </div>
-        </div>
-      </section>
-
-      {/* Prontuário Eletrônico e Teleconsulta - DESTAQUE CLÍNICO */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-4xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#005a70]/10 text-[#005a70] text-sm font-medium mb-6">
-              <Activity className="w-4 h-4" />
-              Infraestrutura Clínica Completa
-            </div>
-            <h2 className="text-4xl font-bold text-[#0a1e35] mb-6">
-              Prontuário Eletrônico e Teleconsulta Integrada
-            </h2>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              O NeuroPlay vai além dos jogos terapêuticos. Oferecemos infraestrutura clínica completa 
-              com prontuário eletrônico longitudinal e teleconsulta profissional integrada.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Prontuário Eletrônico */}
-            <Card className="border-2 border-[#005a70]/30 shadow-xl bg-white overflow-hidden">
-              <div className="h-2 bg-gradient-to-r from-[#0a1e35] to-[#005a70]" />
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-6">
-                  <ClipboardList className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-[#0a1e35] mb-4">Prontuário Eletrônico</h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  Registro clínico completo e longitudinal do paciente com timeline integrada, 
-                  avaliações estruturadas em 3 blocos (cognitivo, comportamental, socioemocional), 
-                  histórico evolutivo e geração automática de relatórios.
-                </p>
-                <ul className="space-y-3">
-                  {[
-                    'Mapa cognitivo via visualização radar',
-                    'Timeline de todas as ações clínicas',
-                    'Avaliações em 3 blocos: cognitivo, comportamental e socioemocional',
-                    'Relatórios automáticos com IA',
-                    'Logs imutáveis para auditoria LGPD'
-                  ].map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-gray-700">
-                      <CheckCircle className="w-5 h-5 text-[#005a70] flex-shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button 
-                  className="w-full mt-6 bg-gradient-to-r from-[#0a1e35] to-[#005a70]"
-                  onClick={() => navigate('/auth')}
-                >
-                  Acessar Prontuário
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Teleconsulta Integrada */}
-            <Card className="border-2 border-[#c7923e]/30 shadow-xl bg-white overflow-hidden">
-              <div className="h-2 bg-gradient-to-r from-[#c7923e] to-[#d4a54f]" />
-              <CardContent className="p-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#c7923e] to-[#d4a54f] rounded-2xl flex items-center justify-center mb-6">
-                  <Video className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-[#0a1e35] mb-4">Teleconsulta com Neuro</h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  Vídeo WebRTC nativo com interface split-screen: consulta em vídeo de um lado, 
-                  prontuário completo do paciente do outro. Anotações em tempo real, fechamento 
-                  clínico obrigatório e plano de follow-up integrado.
-                </p>
-                <ul className="space-y-3">
-                  {[
-                    'Split-screen: vídeo + prontuário simultâneos',
-                    'Acesso ao histórico completo durante sessão',
-                    'Anotações em tempo real por bloco clínico',
-                    'Fechamento obrigatório com sumário',
-                    'Plano de follow-up integrado ao prontuário'
-                  ].map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-gray-700">
-                      <CheckCircle className="w-5 h-5 text-[#c7923e] flex-shrink-0 mt-0.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button 
-                  className="w-full mt-6 bg-gradient-to-r from-[#c7923e] to-[#d4a54f]"
-                  onClick={() => navigate('/auth')}
-                >
-                  Agendar Teleconsulta
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Workflow Clínico */}
-          <div className="mt-16 max-w-4xl mx-auto">
-            <Card className="border-none shadow-lg bg-gradient-to-br from-[#0a1e35] to-[#005a70] text-white">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold mb-6 text-center">Fluxo Clínico Integrado</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {[
-                    { icon: ClipboardList, label: 'Triagem', desc: 'Avaliação inicial' },
-                    { icon: FileText, label: 'Prontuário', desc: 'Registro completo' },
-                    { icon: Video, label: 'Teleconsulta', desc: 'Sessão integrada' },
-                    { icon: Calendar, label: 'Follow-up', desc: 'Plano de ação' }
-                  ].map((step, idx) => (
-                    <div key={idx} className="text-center">
-                      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-3">
-                        <step.icon className="w-6 h-6 text-white" />
-                      </div>
-                      <p className="font-semibold text-sm">{step.label}</p>
-                      <p className="text-xs text-white/70">{step.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Sobre Section */}
-      <section id="sobre" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="space-y-6">
-              <h2 className="text-4xl font-bold text-[#0a1e35] leading-tight">
-                Mais do que oferecer jogos,
-                <span className="text-[#005a70]"> cuidamos de pessoas</span>
-              </h2>
-              
-              <p className="text-lg text-gray-600 leading-relaxed">
-                A plataforma NeuroPlay nasceu com um propósito claro: 
-                transformar o desenvolvimento cognitivo de crianças através de tecnologia adaptativa e baseada em ciência.
-              </p>
-
-              <p className="text-lg text-gray-600 leading-relaxed">
-                Valorizamos as relações humanas e nos dedicamos a atender com excelência às diversas necessidades em saúde, 
-                oferecendo soluções inteligentes e humanizadas para crianças com TEA, TDAH e Dislexia.
-              </p>
-
-              <div className="flex gap-4 pt-4">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-6 h-6 text-[#005a70]" />
-                  <span className="text-gray-700 font-medium">Baseado em Ciência</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-6 h-6 text-[#005a70]" />
-                  <span className="text-gray-700 font-medium">Adaptação por IA</span>
+          <div className="space-y-3">
+            {[
+              { label: 'Sessão 1', width: '40%' },
+              { label: 'Sessão 5', width: '60%' },
+              { label: 'Sessão 10', width: '75%' },
+              { label: 'Sessão 20', width: '90%' },
+            ].map((s, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <span className="text-xs text-muted-foreground w-16">{s.label}</span>
+                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all" style={{ width: s.width }} />
                 </div>
               </div>
-            </div>
-
-            <div className="rounded-2xl overflow-hidden shadow-xl">
-              <img 
-                src={childFocused} 
-                alt="Criança concentrada em atividade educativa" 
-                className="w-full h-auto"
-              />
-            </div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
+);
 
-      {/* Plataforma Completa - O que desenvolvemos */}
-      <section id="funcionalidades" className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-4xl mx-auto mb-16">
-            <h2 className="text-4xl font-bold text-[#0a1e35] mb-6">
-              Plataforma Completa para o Desenvolvimento Cognitivo
-            </h2>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              O NeuroPlay é uma plataforma clínica-terapêutica completa, 
-              oferecendo tecnologia de ponta para crianças neurodiversas, seus pais e profissionais de saúde.
-            </p>
-          </div>
-
-          {/* Módulos Principais */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <Gamepad2 className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">25+ Jogos Terapêuticos</h3>
-                <p className="text-gray-600 mb-4">
-                  Jogos cognitivos baseados em neurociência: memória, atenção sustentada, controle inibitório, 
-                  flexibilidade cognitiva, consciência fonológica, timing e coordenação motora.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Torre Perfeita, Sequência Cósmica, Crystal Match</li>
-                  <li>• Tower Defense, Space Shooter, Caça Foco</li>
-                  <li>• Dificuldade adaptativa por IA</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <Heart className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Chatbot Terapêutico</h3>
-                <p className="text-gray-600 mb-4">
-                  Assistente de IA especializado em neurodiversidade com coaching parental, 
-                  check-ins emocionais e detecção de padrões comportamentais.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Análise de sentimentos em tempo real</li>
-                  <li>• Insights comportamentais automáticos</li>
-                  <li>• Exportação de relatórios PDF</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <Award className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Gamificação Avançada</h3>
-                <p className="text-gray-600 mb-4">
-                  Sistema completo de motivação com avatares evolutivos, badges de 5 níveis, 
-                  streaks diários e recompensas personalizadas.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Avatar que evolui com progresso</li>
-                  <li>• Missões diárias e semanais</li>
-                  <li>• Sistema Planeta Azul com 5 planetas</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <FileText className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Testes Diagnósticos</h3>
-                <p className="text-gray-600 mb-4">
-                  Triagem unificada TUNP para TEA, TDAH e Dislexia. 
-                  Acesso universal sem necessidade de cadastro prévio.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• SNAP-IV e ASRS para TDAH</li>
-                  <li>• Triagem para TEA</li>
-                  <li>• Pré-indicadores de Dislexia</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <BarChart3 className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Análise Preditiva</h3>
-                <p className="text-gray-600 mb-4">
-                  IA analisa padrões comportamentais para detecção precoce de crises, 
-                  alertas preventivos e recomendações de intervenção.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Detecção de regressão cognitiva</li>
-                  <li>• Alertas preventivos automáticos</li>
-                  <li>• Relatórios clínicos com IA</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <Users className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Jogos Cooperativos</h3>
-                <p className="text-gray-600 mb-4">
-                  Atividades multiplayer para pais e filhos com sincronização em tempo real 
-                  e métricas de vínculo familiar.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Quebra-cabeça cooperativo</li>
-                  <li>• Métricas de colaboração</li>
-                  <li>• Fortalecimento do vínculo</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <BookOpen className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Histórias Sociais</h3>
-                <p className="text-gray-600 mb-4">
-                  Narrativas ilustradas passo a passo para ensinar rotinas diárias: 
-                  escovar dentes, lavar mãos, tomar banho, ir ao médico.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Imagens e áudio integrados</li>
-                  <li>• Adaptação por acessibilidade</li>
-                  <li>• Telemetria de progresso</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <Target className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Acessibilidade Clínica</h3>
-                <p className="text-gray-600 mb-4">
-                  5 presets de acessibilidade: TEA Baixa Sensorialidade, TDAH Foco, 
-                  Baixa Visão, Deficiência Motora e padrão.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Ajuste de fonte e contraste</li>
-                  <li>• Redução de movimento</li>
-                  <li>• Feedback háptico configurável</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale bg-white">
-              <CardContent className="p-8">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-2xl flex items-center justify-center mb-4">
-                  <Shield className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0a1e35] mb-3">Multi-Stakeholder</h3>
-                <p className="text-gray-600 mb-4">
-                  Dashboards especializados para pais, terapeutas, professores e administradores 
-                  com controle de acesso baseado em roles.
-                </p>
-                <ul className="text-sm text-gray-500 space-y-2">
-                  <li>• Dashboard da Família</li>
-                  <li>• Painel Clínico para Terapeutas</li>
-                  <li>• Gestão de Turmas para Escolas</li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Nossa Abordagem à Neurodiversidade */}
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-[#0a1e35] mb-4">
-                Nossa Abordagem à <span className="text-[#005a70]">Neurodiversidade</span>
-              </h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Celebramos a neurodiversidade e acreditamos que cada criança tem seu próprio ritmo e potencial único. 
-                Nossa plataforma foi desenvolvida para atender especificamente três condições do neurodesenvolvimento:
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
-              <Card className="border-2 border-[#005a70]/20 shadow-lg bg-white">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Brain className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#0a1e35] mb-3">TEA</h3>
-                  <p className="text-sm font-semibold text-[#005a70] mb-3">Transtorno do Espectro Autista</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Jogos para desenvolvimento de habilidades sociais, processamento emocional, teoria da mente 
-                    e comunicação. Ambiente controlado com ajustes sensoriais individualizados.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 border-[#005a70]/20 shadow-lg bg-white">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Zap className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#0a1e35] mb-3">TDAH</h3>
-                  <p className="text-sm font-semibold text-[#005a70] mb-3">Déficit de Atenção e Hiperatividade</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Treinamento de atenção sustentada, controle inibitório, memória de trabalho e função executiva. 
-                    Sistema de recompensas imediatas e feedback constante.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 border-[#005a70]/20 shadow-lg bg-white">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <BookOpen className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#0a1e35] mb-3">Dislexia</h3>
-                  <p className="text-sm font-semibold text-[#005a70] mb-3">Dificuldade de Leitura e Escrita</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Exercícios de consciência fonológica, processamento fonológico, reconhecimento de padrões 
-                    e decodificação. Apresentação multissensorial adaptada.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Diferenciais da Nossa Abordagem */}
-            <Card className="border-none shadow-xl bg-gradient-to-br from-[#0a1e35] to-[#005a70] text-white">
-              <CardContent className="p-10">
-                <h3 className="text-2xl font-bold mb-6 text-center">Diferenciais da Nossa Abordagem</h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="flex gap-4">
-                    <Shield className="w-6 h-6 flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-2">Conformidade Legal (LGPD e Lei 14.254/21)</h4>
-                      <p className="text-white/80 text-sm">
-                        Plataforma desenvolvida em conformidade com a Lei Brasileira de Proteção de Dados e 
-                        Lei Federal 14.254/21 que instituiu a Política Nacional de Prevenção de Dificuldades de Aprendizagem.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <Brain className="w-6 h-6 flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-2">Base Neurocientífica</h4>
-                      <p className="text-white/80 text-sm">
-                        Todos os jogos são fundamentados em evidências da neurociência cognitiva e validados 
-                        por profissionais de saúde especializados em neurodesenvolvimento.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <Target className="w-6 h-6 flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-2">Adaptação Individual</h4>
-                      <p className="text-white/80 text-sm">
-                        IA analisa o desempenho em tempo real e ajusta automaticamente a dificuldade, 
-                        estímulos sensoriais e tipo de feedback para cada criança.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <Heart className="w-6 h-6 flex-shrink-0 mt-1" />
-                    <div>
-                      <h4 className="font-semibold mb-2">Abordagem Humanizada</h4>
-                      <p className="text-white/80 text-sm">
-                        Celebramos a neurodiversidade como uma variação natural. Nosso foco é desenvolver 
-                        habilidades e fortalecer potenciais únicos de cada criança.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Download Button */}
-                <div className="mt-8 flex justify-center">
-                  <Button
-                    onClick={generatePlatformPresentation}
-                    size="lg"
-                    className="bg-[#c7923e] text-white hover:bg-[#c7923e]/90 font-semibold"
-                  >
-                    <Download className="mr-2 h-5 w-5" />
-                    Baixar Apresentação Institucional
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+// ─── 6. GAMIFICAÇÃO ───────────────────────────────────────
+const GamificationSection = () => (
+  <section id="gamificacao" className="py-20 bg-muted/30">
+    <div className="container mx-auto px-4">
+      <div className="text-center mb-16">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neuroplay-orange/10 text-neuroplay-orange text-sm font-medium mb-4">
+          <Trophy className="w-4 h-4" />
+          Gamificação
         </div>
-      </section>
+        <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-foreground">
+          Uma aventura cognitiva completa
+        </h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Níveis, conquistas, mundos exploráveis e recompensas que mantêm as crianças engajadas
+        </p>
+      </div>
 
-      {/* Nossa Missão */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-4xl mx-auto mb-16">
-            <h2 className="text-4xl font-bold text-[#0a1e35] mb-6">Nossa Missão</h2>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              A cada dia levarmos a mais crianças e famílias o nosso atendimento especializado. 
-              O NeuroPlay investe no que há de mais moderno em tecnologia educacional, 
-              porém com o foco de valorizar cada criança e profissional que trabalha conosco.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            <Card className="border-none shadow-lg hover-scale">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Gamepad2 className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-[#0a1e35] mb-2">15+</div>
-                <div className="text-sm text-gray-600">Jogos Terapêuticos</div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Brain className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-[#0a1e35] mb-2">100%</div>
-                <div className="text-sm text-gray-600">Baseado em Ciência</div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Target className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-[#0a1e35] mb-2">IA</div>
-                <div className="text-sm text-gray-600">Adaptação Inteligente</div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg hover-scale">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#0a1e35] to-[#005a70] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Heart className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-[#0a1e35] mb-2">3</div>
-                <div className="text-sm text-gray-600">Condições Atendidas</div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Benefícios com Foto */}
-      <section id="beneficios" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="rounded-2xl overflow-hidden shadow-xl order-2 lg:order-1">
-              <img 
-                src={groupTherapy} 
-                alt="Sessão de terapia em grupo com crianças" 
-                className="w-full h-auto"
-              />
-            </div>
-
-            <div className="space-y-6 order-1 lg:order-2">
-              <h2 className="text-4xl font-bold text-[#0a1e35]">
-                Tecnologia que
-                <span className="text-[#005a70]"> transforma vidas</span>
-              </h2>
-
-              <div className="space-y-4">
-                {[
-                  { title: 'Personalização Inteligente', desc: 'Jogos que se adaptam automaticamente ao nível e necessidades de cada criança usando IA.' },
-                  { title: 'Acompanhamento em Tempo Real', desc: 'Relatórios detalhados para pais e terapeutas acompanharem o progresso.' },
-                  { title: 'Validação Científica', desc: 'Desenvolvido com base em neurociência e validado por profissionais da saúde.' },
-                  { title: 'Ambiente Seguro', desc: 'Plataforma desenvolvida com foco em acessibilidade e segurança infantil.' }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-4">
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 rounded-full bg-[#005a70]/10 flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-[#005a70]" />
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-[#0a1e35] mb-1">{item.title}</h3>
-                      <p className="text-gray-600">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Final */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <Card className="max-w-4xl mx-auto border-none shadow-2xl bg-gradient-to-br from-[#0a1e35] to-[#005a70] text-white overflow-hidden">
-            <CardContent className="p-12 text-center">
-              <Award className="w-16 h-16 mx-auto mb-6 text-white/90" />
-              <h2 className="text-4xl font-bold mb-4">
-                Comece a transformar o desenvolvimento do seu filho hoje
-              </h2>
-              <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Junte-se às famílias que já confiam no NeuroPlay para o desenvolvimento cognitivo de suas crianças.
-              </p>
-              <Button 
-                size="lg" 
-                onClick={() => navigate('/auth')}
-                className="bg-white text-[#3A86FF] hover:bg-white/90 text-lg px-10 h-14 font-semibold"
-              >
-                Criar Conta Gratuita
-              </Button>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
+        {[
+          { icon: Star, title: 'Níveis & XP', desc: 'Progressão clara com títulos e experiência', color: 'text-neuroplay-yellow' },
+          { icon: Trophy, title: 'Conquistas', desc: 'Insígnias e badges desbloqueáveis', color: 'text-neuroplay-orange' },
+          { icon: Map, title: 'Mundos', desc: 'Explore ambientes temáticos cognitivos', color: 'text-primary' },
+          { icon: Heart, title: 'Recompensas', desc: 'Colecionáveis e personalização', color: 'text-secondary' },
+        ].map((item, i) => (
+          <Card key={i} className="border-border/50 bg-card hover:shadow-card transition-smooth">
+            <CardContent className="p-6 text-center">
+              <item.icon className={`w-10 h-10 ${item.color} mx-auto mb-4`} />
+              <h3 className="font-bold text-foreground mb-2">{item.title}</h3>
+              <p className="text-sm text-muted-foreground">{item.desc}</p>
             </CardContent>
           </Card>
-        </div>
-      </section>
+        ))}
+      </div>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-[#3A86FF] via-[#8338EC] to-[#3A86FF] text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-3">
-              <Brain className="w-8 h-8 text-white" />
-              <span className="text-sm text-white/80">© 2024 NeuroPlay. Todos os direitos reservados.</span>
+      {/* Worlds preview */}
+      <div className="max-w-3xl mx-auto">
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+          {[
+            { emoji: '🌳', name: 'Floresta da Atenção', bg: 'bg-accent/10 border-accent/20' },
+            { emoji: '🌌', name: 'Planeta da Memória', bg: 'bg-secondary/10 border-secondary/20' },
+            { emoji: '🏙️', name: 'Cidade da Lógica', bg: 'bg-primary/10 border-primary/20' },
+            { emoji: '🔥', name: 'Vale da Persistência', bg: 'bg-neuroplay-orange/10 border-neuroplay-orange/20' },
+            { emoji: '🌊', name: 'Oceano Social', bg: 'bg-neuroplay-blue/10 border-neuroplay-blue/20' },
+          ].map((world, i) => (
+            <div key={i} className={`${world.bg} border rounded-2xl p-4 text-center`}>
+              <div className="text-3xl mb-2">{world.emoji}</div>
+              <div className="text-xs font-medium text-foreground">{world.name}</div>
             </div>
-            <div className="flex gap-6 text-sm text-white/80">
-              <a href="#" className="hover:text-white transition-colors">Política de Privacidade</a>
-              <a href="#" className="hover:text-white transition-colors">Termos de Uso</a>
-              <a href="#" className="hover:text-white transition-colors">Contato</a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+// ─── 7. PARA QUEM ────────────────────────────────────────
+const AudienceSection = () => (
+  <section id="para-quem" className="py-20 bg-card">
+    <div className="container mx-auto px-4">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-foreground">
+          Para quem é o NeuroPlay?
+        </h2>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {[
+          {
+            icon: Users,
+            emoji: '👨‍👩‍👧',
+            title: 'Para Famílias',
+            description: 'Pais acompanham o desenvolvimento da criança com dashboards visuais, relatórios de progresso e atividades para fazer juntos.',
+            color: 'from-primary to-primary/70',
+            border: 'border-primary/20',
+          },
+          {
+            icon: Stethoscope,
+            emoji: '🩺',
+            title: 'Para Terapeutas',
+            description: 'Ferramenta de acompanhamento com atividades cognitivas, histórico evolutivo e relatórios detalhados para cada paciente.',
+            color: 'from-secondary to-secondary/70',
+            border: 'border-secondary/20',
+          },
+          {
+            icon: GraduationCap,
+            emoji: '🏫',
+            title: 'Para Escolas',
+            description: 'Atividades que ajudam alunos a desenvolver habilidades cognitivas, com acompanhamento por turma e integração com famílias.',
+            color: 'from-accent to-accent/70',
+            border: 'border-accent/20',
+          },
+        ].map((item, i) => (
+          <Card key={i} className={`border-2 ${item.border} bg-card hover:shadow-glow transition-smooth`}>
+            <CardContent className="p-8">
+              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6`}>
+                <item.icon className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold font-heading mb-3 text-card-foreground">{item.title}</h3>
+              <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+// ─── 8. SCREENSHOTS CAROUSEL ─────────────────────────────
+const ScreenshotsSection = () => {
+  const [current, setCurrent] = useState(0);
+  const screens = [
+    { title: 'Home da Criança', desc: 'Missões diárias, streaks e progressão visual', emoji: '🏠' },
+    { title: 'Jogo Cognitivo', desc: 'Atividades adaptativas com feedback imediato', emoji: '🎮' },
+    { title: 'História Interativa', desc: 'Narrativas que desenvolvem empatia e decisão', emoji: '📖' },
+    { title: 'Dashboard de Progresso', desc: 'Relatórios visuais para pais e terapeutas', emoji: '📊' },
+  ];
+
+  return (
+    <section className="py-20 bg-muted/30">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-foreground">
+            Conheça a plataforma
+          </h2>
+          <p className="text-lg text-muted-foreground">Uma experiência pensada para cada detalhe</p>
+        </div>
+
+        <div className="max-w-3xl mx-auto">
+          <div className="relative bg-card border border-border rounded-3xl p-8 sm:p-12 min-h-[300px] flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-6xl mb-6">{screens[current].emoji}</div>
+              <h3 className="text-2xl font-bold text-foreground mb-2">{screens[current].title}</h3>
+              <p className="text-muted-foreground">{screens[current].desc}</p>
             </div>
+
+            <button
+              onClick={() => setCurrent(c => c === 0 ? screens.length - 1 : c - 1)}
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
+            >
+              <ChevronLeft className="w-5 h-5 text-foreground" />
+            </button>
+            <button
+              onClick={() => setCurrent(c => c === screens.length - 1 ? 0 : c + 1)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80 transition-colors"
+            >
+              <ChevronRight className="w-5 h-5 text-foreground" />
+            </button>
+          </div>
+
+          {/* Dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            {screens.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                className={`w-2.5 h-2.5 rounded-full transition-colors ${i === current ? 'bg-primary' : 'bg-muted-foreground/30'}`}
+              />
+            ))}
           </div>
         </div>
-      </footer>
+      </div>
+    </section>
+  );
+};
+
+// ─── 9. BENEFÍCIOS ────────────────────────────────────────
+const BenefitsSection = () => (
+  <section id="beneficios" className="py-20 bg-card">
+    <div className="container mx-auto px-4">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-foreground">
+          Benefícios principais
+        </h2>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        {[
+          { icon: Brain, text: 'Desenvolvimento cognitivo baseado em ciência' },
+          { icon: Gamepad2, text: 'Engajamento através de jogos adaptativos' },
+          { icon: Clock, text: 'Rotina estruturada com suporte visual' },
+          { icon: BookOpen, text: 'Histórias educativas e socioemocionais' },
+          { icon: TrendingUp, text: 'Acompanhamento de progresso contínuo' },
+          { icon: Heart, text: 'Reforço positivo e inclusão' },
+        ].map((item, i) => (
+          <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-muted/50 border border-border/50">
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <item.icon className="w-5 h-5 text-primary" />
+            </div>
+            <span className="text-sm font-medium text-foreground">{item.text}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+// ─── 10. CTA FINAL ────────────────────────────────────────
+const CTASection = () => {
+  const navigate = useNavigate();
+  return (
+    <section className="py-24 bg-gradient-to-br from-primary via-secondary to-primary relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6 text-white">
+            Comece hoje a jornada de desenvolvimento com o NeuroPlay
+          </h2>
+          <p className="text-xl text-white/80 mb-10">
+            Uma experiência que transforma aprendizado em aventura.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              onClick={() => navigate('/auth')}
+              className="text-lg px-8 py-6 bg-white text-primary hover:bg-white/90 font-semibold"
+            >
+              Criar conta
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={() => navigate('/auth')}
+              className="text-lg px-8 py-6 border-white/30 text-white hover:bg-white/10"
+            >
+              <Mail className="w-5 h-5 mr-2" />
+              Agendar demonstração
+            </Button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ─── 11. FOOTER ───────────────────────────────────────────
+const LandingFooter = () => (
+  <footer className="py-12 bg-foreground text-white/70">
+    <div className="container mx-auto px-4">
+      <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+              <Brain className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-white font-bold font-heading">NeuroPlay</span>
+          </div>
+          <p className="text-sm leading-relaxed">
+            Plataforma de desenvolvimento cognitivo infantil através de jogos, rotina e histórias interativas.
+          </p>
+        </div>
+        <div>
+          <h4 className="text-white font-semibold mb-3 text-sm">Plataforma</h4>
+          <ul className="space-y-2 text-sm">
+            <li><Link to="/games" className="hover:text-white transition-colors">Jogos Cognitivos</Link></li>
+            <li><Link to="/rotina" className="hover:text-white transition-colors">Rotina Inteligente</Link></li>
+            <li><Link to="/historias" className="hover:text-white transition-colors">Histórias Interativas</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-white font-semibold mb-3 text-sm">Para quem</h4>
+          <ul className="space-y-2 text-sm">
+            <li><a href="#para-quem" className="hover:text-white transition-colors">Famílias</a></li>
+            <li><a href="#para-quem" className="hover:text-white transition-colors">Terapeutas</a></li>
+            <li><a href="#para-quem" className="hover:text-white transition-colors">Escolas</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-white font-semibold mb-3 text-sm">Legal</h4>
+          <ul className="space-y-2 text-sm">
+            <li><a href="#" className="hover:text-white transition-colors">Política de Privacidade</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Termos de Uso</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Contato</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p className="text-xs">© {new Date().getFullYear()} NeuroPlay. Todos os direitos reservados.</p>
+        <div className="flex items-center gap-2 text-xs">
+          <Shield className="w-4 h-4" />
+          <span>LGPD Compliant</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+);
+
+// ─── MAIN LANDING ─────────────────────────────────────────
+export default function NeuroPlayMainLanding() {
+  return (
+    <div className="min-h-screen bg-background">
+      <LandingHeader />
+      <HeroSection />
+      <HowItWorksSection />
+      <BehavioralProfileSection />
+      <AdaptiveSection />
+      <GamificationSection />
+      <AudienceSection />
+      <ScreenshotsSection />
+      <BenefitsSection />
+      <CTASection />
+      <LandingFooter />
     </div>
   );
 }
