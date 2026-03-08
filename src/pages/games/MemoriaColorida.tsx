@@ -9,6 +9,7 @@ import { useGameSession } from '@/hooks/useGameSession';
 import { useGameHistory } from '@/hooks/useGameHistory';
 import { useEnhancedFeedback } from '@/hooks/useEnhancedFeedback';
 import { GameExitButton, GameResultsDashboard, SimonButton, SimonDisplay, SimonAchievements } from '@/components/games';
+import { useEducationalSystem } from "@/hooks/useEducationalSystem";
 import { simonSoundEngine, SimonColor } from "@/lib/simonSounds";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
