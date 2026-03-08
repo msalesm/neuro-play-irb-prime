@@ -77,6 +77,7 @@ export function MobileMenu() {
       title: 'Área do Professor',
       items: [
         { title: 'Neuro Play Educação', path: '/educacao', icon: School },
+        { title: 'Dashboard da Escola', path: '/escola-dashboard', icon: School },
         { title: 'Minhas Turmas', path: '/teacher/classes', icon: Users },
         { title: 'Triagem Escolar', path: '/screening', icon: ClipboardCheck },
         { title: 'Relatórios', path: '/reports', icon: FileText },
