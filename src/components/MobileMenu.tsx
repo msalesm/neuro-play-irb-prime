@@ -4,7 +4,7 @@ import {
   Home, Brain, Stethoscope, Settings, User, 
   Users, TrendingUp, Menu, Sparkles, Gamepad2,
   FileText, ClipboardCheck, Heart, BookOpen,
-  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, Calendar, Mail, Folder, Gem, CreditCard, CalendarCheck, Building2, ClipboardList, School
+  Trophy, BarChart3, Shield, UserCircle, Briefcase, Drama, Calendar, Mail, Folder, Gem, CreditCard, CalendarCheck, Building2, ClipboardList, School, Activity
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
