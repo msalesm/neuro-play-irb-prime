@@ -288,7 +288,7 @@ export function QueueManagement({ institutionId }: { institutionId?: string }) {
               filteredItems.map((item) => (
                 <div 
                   key={item.id} 
-                  className={`p-4 rounded-lg border ${item.sla_breached ? 'border-red-300 bg-red-50' : 'border-border'}`}
+                  className={`p-4 rounded-lg border ${item.sla_breached ? 'border-destructive/30 bg-destructive/5' : 'border-border'}`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
