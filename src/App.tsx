@@ -120,6 +120,7 @@ const TeacherClassView = lazy(() => import("./pages/TeacherClassView"));
 const TeacherStudentView = lazy(() => import("./pages/TeacherStudentView"));
 const ParentTraining = lazy(() => import("./pages/TeacherTraining"));
 const TrainingModule = lazy(() => import("./pages/TrainingModule"));
+const ParentCoaching = lazy(() => import("./pages/ParentCoaching"));
 
 // Admin
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
@@ -349,6 +350,7 @@ const App = () => (
                   <Route path="/secretaria-educacao" element={<L><SecretariaDashboard /></L>} />
                   <Route path="/training" element={<L><ParentTraining /></L>} />
                   <Route path="/training/:moduleId" element={<L><TrainingModule /></L>} />
+                  <Route path="/parent-coaching" element={<L><ParentCoaching /></L>} />
                   
                   {/* Community & Messaging */}
                   <Route path="/comunidade" element={<L><Community /></L>} />

@@ -90,6 +90,7 @@ const PARENT_NAV: NavItem[] = [
   { title: 'Mensagens', path: '/messages', icon: Mail, badge: 'Novo' },
   { title: 'Clube dos Pais', path: '/clube-pais', icon: Gem, badge: 'Novo' },
   { title: 'Microlearning', path: '/training', icon: BookOpen },
+  { title: 'Coaching Parental', path: '/parent-coaching', icon: Heart, badge: 'Novo' },
   { title: 'Minha Assinatura', path: '/subscription', icon: CreditCard, badge: 'Novo' },
 ];
 

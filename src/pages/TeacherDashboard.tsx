@@ -39,6 +39,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { TeacherStudentSection } from '@/components/teacher/TeacherStudentSection';
+import { SchoolOccurrences } from '@/components/teacher/SchoolOccurrences';
 
 interface StudentScreening {
   id: string;
@@ -288,7 +289,11 @@ export default function TeacherDashboard() {
           <TabsList>
             <TabsTrigger value="progress" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
-              Progresso dos Alunos
+              Progresso
+            </TabsTrigger>
+            <TabsTrigger value="occurrences" className="flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4" />
+              Ocorrências
             </TabsTrigger>
             <TabsTrigger value="screenings" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
@@ -300,6 +305,10 @@ export default function TeacherDashboard() {
             <TeacherStudentSection 
               onViewDetails={(studentId) => navigate(`/teacher/student/${studentId}`)}
             />
+          </TabsContent>
+
+          <TabsContent value="occurrences" className="mt-4">
+            <SchoolOccurrences />
           </TabsContent>
 
           <TabsContent value="screenings" className="mt-4">
