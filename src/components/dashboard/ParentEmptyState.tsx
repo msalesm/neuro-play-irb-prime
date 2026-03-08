@@ -25,13 +25,13 @@ export function ParentEmptyState({ sessions, onAddChild }: ParentEmptyStateProps
               <div className="text-2xl font-bold">{sessions.length}</div>
               <div className="text-sm text-muted-foreground">Jogos Completados</div>
             </Card>
-            <Card className="p-4 bg-green-500/10">
+            <Card className="p-4 bg-success/10">
               <div className="text-2xl font-bold">
                 {Math.round(sessions.reduce((sum, s) => sum + (s.performance_data?.accuracy || 0), 0) / sessions.length)}%
               </div>
               <div className="text-sm text-muted-foreground">Precisão Média</div>
             </Card>
-            <Card className="p-4 bg-blue-500/10">
+            <Card className="p-4 bg-info/10">
               <div className="text-2xl font-bold">
                 {sessions.reduce((sum, s) => sum + (s.score || 0), 0)}
               </div>
