@@ -192,6 +192,9 @@ export function ParentDashboardContent({
 
           {selectedChild && <div data-tour="ai-recommendations"><SmartInsightsPanel childId={selectedChild} /></div>}
 
+          {/* Appointment Reminders */}
+          <AppointmentReminders />
+
           {/* Quick Report */}
           <Card data-tour="quick-report">
             <CardContent className="p-6">
