@@ -16,3 +16,4 @@ export * as Stories from './stories';
 export * as Routines from './routines';
 export * as Behavioral from './behavioral';
 export * as Reports from './reports';
+export * as School from './school';
