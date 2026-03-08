@@ -23,9 +23,11 @@ export interface SocialProgress {
 }
 
 export interface SocialAchievement {
-  id: string;
-  key: string;
   name: string;
+  title: string;
+  description: string;
+  icon: string;
+  stars_reward: number;
   unlocked: boolean;
 }
 
