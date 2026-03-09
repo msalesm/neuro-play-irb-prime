@@ -2,6 +2,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { callAI, AIMessage } from "../_shared/ai-provider.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -105,11 +106,6 @@ serve(async (req) => {
       userProfile
     });
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
-
     // Build comprehensive context for AI analysis
     const performanceSummary = performanceData.map(game => {
       const m = game.metrics;
@@ -154,100 +150,105 @@ Gere uma análise cognitiva abrangente incluindo:
 6. Score geral (0-100) representando o desempenho global
 7. Lista de 3-5 jogos sugeridos para próximas sessões`;
 
-    // Use tool calling for structured output
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-        tools: [{
-          type: 'function',
-          function: {
-            name: 'generate_cognitive_report',
-            description: 'Generate a comprehensive cognitive analysis report',
-            parameters: {
-              type: 'object',
-              properties: {
-                overallScore: {
-                  type: 'number',
-                  description: 'Overall cognitive performance score from 0-100'
-                },
-                cognitiveProfile: {
-                  type: 'object',
-                  properties: {
-                    attention: { type: 'number', description: 'Attention score 0-100' },
-                    memory: { type: 'number', description: 'Memory score 0-100' },
-                    language: { type: 'number', description: 'Language score 0-100' },
-                    logic: { type: 'number', description: 'Logic score 0-100' },
-                    emotion: { type: 'number', description: 'Emotion regulation score 0-100' },
-                    coordination: { type: 'number', description: 'Coordination score 0-100' }
-                  },
-                  required: ['attention', 'memory', 'language', 'logic', 'emotion', 'coordination']
-                },
-                strengths: {
-                  type: 'array',
-                  items: { type: 'string' },
-                  description: '3-5 identified strengths'
-                },
-                areasForImprovement: {
-                  type: 'array',
-                  items: { type: 'string' },
-                  description: '3-5 areas needing development'
-                },
-                detailedAnalysis: {
-                  type: 'string',
-                  description: 'Detailed 2-3 paragraph analysis of cognitive patterns'
-                },
-                recommendations: {
-                  type: 'array',
-                  items: { type: 'string' },
-                  description: '5-7 practical, specific recommendations'
-                },
-                suggestedGames: {
-                  type: 'array',
-                  items: { type: 'string' },
-                  description: '3-5 suggested game IDs for next sessions'
-                }
+    const messages: AIMessage[] = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ];
+
+    // Use multi-provider AI with fallback
+    const aiResult = await callAI({
+      messages,
+      model: 'google/gemini-2.5-pro',
+      temperature: 0.3,
+      tools: [{
+        type: 'function',
+        function: {
+          name: 'generate_cognitive_report',
+          description: 'Generate a comprehensive cognitive analysis report',
+          parameters: {
+            type: 'object',
+            properties: {
+              overallScore: {
+                type: 'number',
+                description: 'Overall cognitive performance score from 0-100'
               },
-              required: ['overallScore', 'cognitiveProfile', 'strengths', 'areasForImprovement', 'detailedAnalysis', 'recommendations', 'suggestedGames'],
-              additionalProperties: false
-            }
+              cognitiveProfile: {
+                type: 'object',
+                properties: {
+                  attention: { type: 'number', description: 'Attention score 0-100' },
+                  memory: { type: 'number', description: 'Memory score 0-100' },
+                  language: { type: 'number', description: 'Language score 0-100' },
+                  logic: { type: 'number', description: 'Logic score 0-100' },
+                  emotion: { type: 'number', description: 'Emotion regulation score 0-100' },
+                  coordination: { type: 'number', description: 'Coordination score 0-100' }
+                },
+                required: ['attention', 'memory', 'language', 'logic', 'emotion', 'coordination']
+              },
+              strengths: {
+                type: 'array',
+                items: { type: 'string' },
+                description: '3-5 identified strengths'
+              },
+              areasForImprovement: {
+                type: 'array',
+                items: { type: 'string' },
+                description: '3-5 areas needing development'
+              },
+              detailedAnalysis: {
+                type: 'string',
+                description: 'Detailed 2-3 paragraph analysis of cognitive patterns'
+              },
+              recommendations: {
+                type: 'array',
+                items: { type: 'string' },
+                description: '5-7 practical, specific recommendations'
+              },
+              suggestedGames: {
+                type: 'array',
+                items: { type: 'string' },
+                description: '3-5 suggested game IDs for next sessions'
+              }
+            },
+            required: ['overallScore', 'cognitiveProfile', 'strengths', 'areasForImprovement', 'detailedAnalysis', 'recommendations', 'suggestedGames'],
+            additionalProperties: false
           }
-        }],
-        tool_choice: { type: 'function', function: { name: 'generate_cognitive_report' } }
-      })
+        }
+      }],
+      tool_choice: { type: 'function', function: { name: 'generate_cognitive_report' } }
     });
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('Lovable AI error:', aiResponse.status, errorText);
-      
-      if (aiResponse.status === 429) {
-        throw new Error('Rate limit exceeded. Please try again later.');
-      }
-      if (aiResponse.status === 402) {
-        throw new Error('Credits exhausted. Please add credits to continue.');
-      }
-      throw new Error(`AI gateway error: ${aiResponse.status}`);
-    }
+    console.log(`[AI] Response from provider: ${aiResult.provider}`);
 
-    const aiData = await aiResponse.json();
-    console.log('AI response received');
+    // Handle fallback response
+    if (aiResult.fallback) {
+      return new Response(JSON.stringify({ 
+        success: false,
+        error: aiResult.content,
+        fallback: true
+      }), {
+        status: 503,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     // Extract structured data from tool call
-    const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
-    if (!toolCall || toolCall.function.name !== 'generate_cognitive_report') {
-      throw new Error('Invalid AI response format');
+    const toolCall = aiResult.toolCalls?.[0];
+    if (!toolCall || toolCall.function?.name !== 'generate_cognitive_report') {
+      // Try parsing content directly as fallback
+      let reportData;
+      try {
+        const jsonMatch = aiResult.content.match(/\{[\s\S]*\}/);
+        reportData = jsonMatch ? JSON.parse(jsonMatch[0]) : null;
+      } catch {
+        reportData = null;
+      }
+      
+      if (!reportData) {
+        throw new Error('Invalid AI response format');
+      }
     }
 
-    const reportData = JSON.parse(toolCall.function.arguments);
+    const reportData = toolCall ? JSON.parse(toolCall.function.arguments) : JSON.parse(aiResult.content.match(/\{[\s\S]*\}/)?.[0] || '{}');
     
     // Build final report
     const report = {

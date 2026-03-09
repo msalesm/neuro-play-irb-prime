@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { callAI, callAIStream, AIMessage } from "../_shared/ai-provider.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -46,11 +47,6 @@ serve(async (req) => {
     }
 
     const { messages, childProfile, userRole, conversationId } = await req.json();
-    
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
-    }
 
     // Calculate age from date_of_birth if available
     let age = childProfile?.age;
@@ -90,28 +86,22 @@ serve(async (req) => {
     
     if (lastUserMessage && userRole === "parent") {
       try {
-        const sentimentResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${LOVABLE_API_KEY}`,
-            "Content-Type": "application/json",
+        const sentimentMessages: AIMessage[] = [
+          { 
+            role: "system", 
+            content: "Você é um analisador de sentimentos especializado em detectar emoções de pais de crianças neurodivergentes. Analise o texto e retorne APENAS um JSON válido no formato: {\"score\": número de -1 a 1, \"emotion\": \"frustration\"|\"distress\"|\"anxiety\"|\"hope\"|\"neutral\", \"intensity\": \"low\"|\"medium\"|\"high\"}. Score: -1 = muito negativo, 0 = neutro, 1 = muito positivo." 
           },
-          body: JSON.stringify({
-            model: "google/gemini-2.5-flash",
-            messages: [
-              { 
-                role: "system", 
-                content: "Você é um analisador de sentimentos especializado em detectar emoções de pais de crianças neurodivergentes. Analise o texto e retorne APENAS um JSON válido no formato: {\"score\": número de -1 a 1, \"emotion\": \"frustration\"|\"distress\"|\"anxiety\"|\"hope\"|\"neutral\", \"intensity\": \"low\"|\"medium\"|\"high\"}. Score: -1 = muito negativo, 0 = neutro, 1 = muito positivo." 
-              },
-              { role: "user", content: `Analise o sentimento desta mensagem de um pai/mãe: "${lastUserMessage}"` }
-            ],
-            temperature: 0.3,
-          }),
+          { role: "user", content: `Analise o sentimento desta mensagem de um pai/mãe: "${lastUserMessage}"` }
+        ];
+
+        const sentimentResult = await callAI({
+          messages: sentimentMessages,
+          model: "google/gemini-2.5-flash",
+          temperature: 0.3,
         });
 
-        if (sentimentResponse.ok) {
-          const sentimentData = await sentimentResponse.json();
-          const sentimentText = sentimentData.choices[0]?.message?.content || "{}";
+        if (!sentimentResult.fallback) {
+          const sentimentText = sentimentResult.content || "{}";
           
           // Extract JSON from the response (handle markdown code blocks)
           const jsonMatch = sentimentText.match(/\{[\s\S]*\}/);
@@ -119,7 +109,7 @@ serve(async (req) => {
             sentimentAnalysis = JSON.parse(jsonMatch[0]);
           }
           
-          console.log("Sentiment analysis:", sentimentAnalysis);
+          console.log("Sentiment analysis:", sentimentAnalysis, "via", sentimentResult.provider);
         }
       } catch (error) {
         console.error("Error analyzing sentiment:", error);
@@ -280,61 +270,43 @@ Use linguagem acessível e estruture respostas em tópicos curtos e acionáveis.
       }
     }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          ...messages,
-        ],
-        stream: true,
-        temperature: sentimentAnalysis.intensity === "high" ? 0.6 : 0.5, // Slightly higher temperature for high-intensity emotions
-      }),
+    // Use multi-provider AI with streaming fallback
+    const chatMessages: AIMessage[] = [
+      { role: "system", content: systemPrompt },
+      ...messages,
+    ];
+
+    const streamResult = await callAIStream({
+      messages: chatMessages,
+      model: "google/gemini-2.5-flash",
+      temperature: sentimentAnalysis.intensity === "high" ? 0.6 : 0.5,
     });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(
-          JSON.stringify({ error: "Rate limit exceeded. Please try again later." }), 
-          {
-            status: 429,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
-      }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: "Payment required. Please add credits to your workspace." }), 
-          {
-            status: 402,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
-      }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      return new Response(
-        JSON.stringify({ error: "AI service error" }), 
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+    console.log(`[AI] Chat streaming result:`, streamResult.stream ? `streaming via ${streamResult.provider}` : 'non-streaming fallback');
+
+    if (streamResult.stream) {
+      return new Response(streamResult.response.body, {
+        headers: { 
+          ...corsHeaders, 
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          "Connection": "keep-alive",
+        },
+      });
+    } else {
+      // Non-streaming fallback - format as SSE for client compatibility
+      const fallbackContent = streamResult.fallback.content;
+      const sseData = `data: ${JSON.stringify({ choices: [{ delta: { content: fallbackContent } }] })}\n\ndata: [DONE]\n\n`;
+      
+      return new Response(sseData, {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          "Connection": "keep-alive",
+        },
+      });
     }
-
-    return new Response(response.body, {
-      headers: { 
-        ...corsHeaders, 
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        "Connection": "keep-alive",
-      },
-    });
   } catch (error) {
     console.error("Therapeutic chat error:", error);
     return new Response(
