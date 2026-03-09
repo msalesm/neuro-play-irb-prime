@@ -1910,6 +1910,65 @@ export type Database = {
           },
         ]
       }
+      analytics_snapshots: {
+        Row: {
+          aba_trials_count: number | null
+          active_children: number
+          avg_aba_accuracy: number | null
+          avg_attention: number | null
+          avg_flexibility: number | null
+          avg_memory: number | null
+          avg_persistence: number | null
+          calculated_at: string
+          created_at: string
+          engagement_rate: number | null
+          id: string
+          institution_id: string
+          needs_attention_count: number
+          updated_at: string
+        }
+        Insert: {
+          aba_trials_count?: number | null
+          active_children?: number
+          avg_aba_accuracy?: number | null
+          avg_attention?: number | null
+          avg_flexibility?: number | null
+          avg_memory?: number | null
+          avg_persistence?: number | null
+          calculated_at?: string
+          created_at?: string
+          engagement_rate?: number | null
+          id?: string
+          institution_id: string
+          needs_attention_count?: number
+          updated_at?: string
+        }
+        Update: {
+          aba_trials_count?: number | null
+          active_children?: number
+          avg_aba_accuracy?: number | null
+          avg_attention?: number | null
+          avg_flexibility?: number | null
+          avg_memory?: number | null
+          avg_persistence?: number | null
+          calculated_at?: string
+          created_at?: string
+          engagement_rate?: number | null
+          id?: string
+          institution_id?: string
+          needs_attention_count?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analytics_snapshots_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       api_keys: {
         Row: {
           created_at: string | null
@@ -2846,6 +2905,69 @@ export type Database = {
           },
         ]
       }
+      child_analytics_snapshots: {
+        Row: {
+          aba_accuracy: number | null
+          aba_trial_count: number | null
+          attention_score: number | null
+          avg_accuracy: number | null
+          avg_reaction_time_ms: number | null
+          calculated_at: string | null
+          child_id: string
+          created_at: string | null
+          engagement_score: number | null
+          executive_score: number | null
+          id: string
+          language_score: number | null
+          memory_score: number | null
+          persistence_score: number | null
+          session_count: number | null
+          snapshot_date: string
+          total_play_minutes: number | null
+          trend_direction: string | null
+        }
+        Insert: {
+          aba_accuracy?: number | null
+          aba_trial_count?: number | null
+          attention_score?: number | null
+          avg_accuracy?: number | null
+          avg_reaction_time_ms?: number | null
+          calculated_at?: string | null
+          child_id: string
+          created_at?: string | null
+          engagement_score?: number | null
+          executive_score?: number | null
+          id?: string
+          language_score?: number | null
+          memory_score?: number | null
+          persistence_score?: number | null
+          session_count?: number | null
+          snapshot_date?: string
+          total_play_minutes?: number | null
+          trend_direction?: string | null
+        }
+        Update: {
+          aba_accuracy?: number | null
+          aba_trial_count?: number | null
+          attention_score?: number | null
+          avg_accuracy?: number | null
+          avg_reaction_time_ms?: number | null
+          calculated_at?: string | null
+          child_id?: string
+          created_at?: string | null
+          engagement_score?: number | null
+          executive_score?: number | null
+          id?: string
+          language_score?: number | null
+          memory_score?: number | null
+          persistence_score?: number | null
+          session_count?: number | null
+          snapshot_date?: string
+          total_play_minutes?: number | null
+          trend_direction?: string | null
+        }
+        Relationships: []
+      }
       child_avatar_items: {
         Row: {
           child_id: string
@@ -3180,6 +3302,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      class_analytics_snapshots: {
+        Row: {
+          active_students: number | null
+          avg_accuracy: number | null
+          avg_attention_score: number | null
+          avg_engagement_score: number | null
+          avg_persistence_score: number | null
+          avg_play_minutes: number | null
+          calculated_at: string | null
+          class_id: string
+          created_at: string | null
+          id: string
+          institution_id: string | null
+          snapshot_date: string
+          students_needing_attention: number | null
+          total_sessions: number | null
+          total_students: number | null
+        }
+        Insert: {
+          active_students?: number | null
+          avg_accuracy?: number | null
+          avg_attention_score?: number | null
+          avg_engagement_score?: number | null
+          avg_persistence_score?: number | null
+          avg_play_minutes?: number | null
+          calculated_at?: string | null
+          class_id: string
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          snapshot_date?: string
+          students_needing_attention?: number | null
+          total_sessions?: number | null
+          total_students?: number | null
+        }
+        Update: {
+          active_students?: number | null
+          avg_accuracy?: number | null
+          avg_attention_score?: number | null
+          avg_engagement_score?: number | null
+          avg_persistence_score?: number | null
+          avg_play_minutes?: number | null
+          calculated_at?: string | null
+          class_id?: string
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          snapshot_date?: string
+          students_needing_attention?: number | null
+          total_sessions?: number | null
+          total_students?: number | null
+        }
+        Relationships: []
       }
       class_students: {
         Row: {
@@ -6465,6 +6641,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      game_metrics_cache: {
+        Row: {
+          avg_accuracy: number | null
+          avg_reaction_time_ms: number | null
+          best_score: number | null
+          cache_expires_at: string | null
+          child_id: string
+          current_difficulty: number | null
+          game_id: string
+          id: string
+          last_played_at: string | null
+          mastery_level: number | null
+          sessions_count: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avg_accuracy?: number | null
+          avg_reaction_time_ms?: number | null
+          best_score?: number | null
+          cache_expires_at?: string | null
+          child_id: string
+          current_difficulty?: number | null
+          game_id: string
+          id?: string
+          last_played_at?: string | null
+          mastery_level?: number | null
+          sessions_count?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avg_accuracy?: number | null
+          avg_reaction_time_ms?: number | null
+          best_score?: number | null
+          cache_expires_at?: string | null
+          child_id?: string
+          current_difficulty?: number | null
+          game_id?: string
+          id?: string
+          last_played_at?: string | null
+          mastery_level?: number | null
+          sessions_count?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       game_sessions: {
         Row: {
