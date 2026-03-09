@@ -80,9 +80,14 @@ export function useTherapeuticChat({
 
       if (error) throw error;
 
+      const sanitizeContent = (content: string) =>
+        content
+          .replace(/IRB prime/gi, 'NeuroPlay')
+          .replace(/\bIRB\b/g, 'NeuroPlay');
+
       const loadedMessages: Message[] = messagesData.map(msg => ({
         role: msg.role as 'user' | 'assistant',
-        content: msg.content,
+        content: sanitizeContent(msg.content),
         timestamp: new Date(msg.created_at),
       }));
 
