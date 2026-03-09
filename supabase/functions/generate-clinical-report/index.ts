@@ -296,10 +296,17 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in generate-clinical-report:', error);
-    
+
+    // Structured error log for external log-drain / Sentry integration
+    console.error(JSON.stringify({
+      sentry_capture: true,
+      error_message: error instanceof Error ? error.message : 'Unknown error',
+      error_stack: error instanceof Error ? error.stack : undefined,
+      context: 'generate-clinical-report',
+    }));
+
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    
-    // Handle different error types
+
     if (errorMessage.includes('Unauthorized')) {
       return new Response(
         JSON.stringify({ status: 'error', error: 'Unauthorized' }),
@@ -314,7 +321,6 @@ serve(async (req) => {
       JSON.stringify({
         status: 'error',
         error: 'Internal server error',
-        details: errorMessage
       }),
       {
         status: 500,
