@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Camera, Upload, X, Loader2 } from 'lucide-react';
+import { Camera, Upload, Loader2 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -54,16 +54,20 @@ export function ProfilePhotoUpload({
       return;
     }
 
-    // Show preview immediately
+    // Show local preview immediately
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
 
     try {
       setUploading(true);
 
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
       const fileExt = file.name.split('.').pop();
       const fileName = `${crypto.randomUUID()}.${fileExt}`;
-      const filePath = `profiles/${fileName}`;
+      // Scope path to authenticated user's folder
+      const filePath = `${user.id}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('patient-photos')
@@ -71,11 +75,14 @@ export function ProfilePhotoUpload({
 
       if (uploadError) throw uploadError;
 
-      const { data: urlData } = supabase.storage
+      // Generate a 1-hour signed URL instead of a permanent public URL
+      const { data: signedData, error: signedError } = await supabase.storage
         .from('patient-photos')
-        .getPublicUrl(filePath);
+        .createSignedUrl(filePath, 3600);
 
-      onPhotoUploaded(urlData.publicUrl);
+      if (signedError) throw signedError;
+
+      onPhotoUploaded(signedData.signedUrl);
       toast.success('Foto atualizada!');
     } catch (error) {
       console.error('Upload error:', error);
