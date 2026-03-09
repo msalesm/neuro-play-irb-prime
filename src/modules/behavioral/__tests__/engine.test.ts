@@ -144,11 +144,14 @@ describe('data completeness', () => {
       gameMetrics: [{ gameId: 'g1', date: '2024-01-01', metrics: { accuracy: 0.7 } }],
       storyMetrics: {
         empathyScore: 70, impulseControlScore: 70, socialFlexibilityScore: 70,
-        frustrationToleranceScore: 70, overallScore: 70, totalDecisions: 5,
+        conflictAvoidanceScore: 70, moralConsistencyScore: 70,
+        frustrationToleranceScore: 70, overallScore: 70,
+        avgDecisionLatencyMs: 1200, indecisionRate: 0.05, totalDecisions: 5,
       },
       routineMetrics: {
         organizationIndex: 70, autonomyScore: 70, avgLatencySeconds: 30,
-        completionRate: 80, totalExecutions: 10,
+        avgDurationSeconds: 120, consistencyScore: 75, abandonmentRate: 5,
+        reminderDependency: 20, completionRate: 80, totalExecutions: 10,
       },
       abaData: { independencePercentage: 75, activePrograms: 3, masteredSkills: 2, trend: 'up' },
     });
