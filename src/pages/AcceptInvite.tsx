@@ -59,12 +59,10 @@ export default function AcceptInvite() {
       setLoading(true);
       setInvitation(null);
 
+      // Use the secure RPC function instead of direct table query to avoid
+      // exposing health data via the public policy
       const { data: inviteData, error } = await supabase
-        .from('invitations')
-        .select('*')
-        .eq('invite_code', data.code.toLowerCase())
-        .eq('status', 'pending')
-        .gt('expires_at', new Date().toISOString())
+        .rpc('get_invitation_by_code' as any, { p_invite_code: data.code.toLowerCase() })
         .maybeSingle();
 
       if (error) throw error;
@@ -74,12 +72,12 @@ export default function AcceptInvite() {
         return;
       }
 
-      const conditions = Array.isArray(inviteData.child_conditions) 
-        ? inviteData.child_conditions.filter((c): c is string => typeof c === 'string')
+      const conditions = Array.isArray((inviteData as any).child_conditions)
+        ? (inviteData as any).child_conditions.filter((c: unknown): c is string => typeof c === 'string')
         : [];
 
       setInvitation({
-        ...inviteData,
+        ...(inviteData as any),
         child_conditions: conditions,
       });
     } catch (error: any) {
@@ -139,14 +137,12 @@ export default function AcceptInvite() {
 
       // If it's a parent invite, link to the same children as inviter
       if (invitation.invite_type === 'parent') {
-        // Get inviter's children
         const { data: inviterChildren } = await supabase
           .from('child_profiles')
           .select('*')
           .eq('parent_user_id', invitation.inviter_id);
 
         if (inviterChildren && inviterChildren.length > 0) {
-          // Create copies for the new parent
           for (const child of inviterChildren) {
             await supabase
               .from('child_profiles')
@@ -214,8 +210,8 @@ export default function AcceptInvite() {
                     <FormItem>
                       <FormLabel>Código do Convite</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="ex: abc12345" 
+                        <Input
+                          placeholder="ex: abc12345"
                           {...field}
                           className="text-center text-lg font-mono tracking-wider"
                           maxLength={8}
@@ -229,9 +225,9 @@ export default function AcceptInvite() {
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Buscar Convite
                 </Button>
-                <Button 
-                  type="button" 
-                  variant="ghost" 
+                <Button
+                  type="button"
+                  variant="ghost"
                   className="w-full"
                   onClick={() => navigate(-1)}
                 >
@@ -250,7 +246,7 @@ export default function AcceptInvite() {
                       {invitation.invite_type === 'child' ? 'Convite de Filho' : 'Convite de Responsável'}
                     </span>
                   </div>
-                  
+
                   {invitation.child_name && (
                     <div>
                       <p className="text-sm text-muted-foreground">Criança</p>
@@ -261,8 +257,8 @@ export default function AcceptInvite() {
                   {invitation.child_conditions.length > 0 && (
                     <div className="flex flex-wrap gap-1">
                       {invitation.child_conditions.map((c) => (
-                        <span 
-                          key={c} 
+                        <span
+                          key={c}
                           className="text-xs bg-secondary px-2 py-1 rounded"
                         >
                           {c}
@@ -300,17 +296,17 @@ export default function AcceptInvite() {
               )}
 
               <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="flex-1"
                   onClick={() => setInvitation(null)}
                 >
                   Cancelar
                 </Button>
-                <Button 
+                <Button
                   className="flex-1"
                   onClick={user ? acceptInvitation : () => navigate('/auth')}
-                  disabled={loading || roleLoading || (user && (isTherapist || isAdmin))}
+                  disabled={loading || roleLoading || !!(user && (isTherapist || isAdmin))}
                 >
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   {user ? 'Aceitar Convite' : 'Fazer Login'}

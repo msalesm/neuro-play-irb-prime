@@ -63,10 +63,24 @@ export type Database = {
             referencedColumns: ["codigo_aprendiz"]
           },
           {
+            foreignKeyName: "aba_agendamentos_codigo_aprendiz_fkey"
+            columns: ["codigo_aprendiz"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["codigo_aprendiz"]
+          },
+          {
             foreignKeyName: "aba_agendamentos_codigo_profissional_fkey"
             columns: ["codigo_profissional"]
             isOneToOne: false
             referencedRelation: "aba_profissionais"
+            referencedColumns: ["codigo_profissional"]
+          },
+          {
+            foreignKeyName: "aba_agendamentos_codigo_profissional_fkey"
+            columns: ["codigo_profissional"]
+            isOneToOne: false
+            referencedRelation: "aba_profissionais_view"
             referencedColumns: ["codigo_profissional"]
           },
         ]
@@ -122,13 +136,6 @@ export type Database = {
             foreignKeyName: "aba_aprendizes_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "aba_aprendizes_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -144,13 +151,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_aprendizes_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -201,6 +201,13 @@ export type Database = {
             columns: ["codigo_aprendiz"]
             isOneToOne: false
             referencedRelation: "aba_aprendizes"
+            referencedColumns: ["codigo_aprendiz"]
+          },
+          {
+            foreignKeyName: "aba_atendimentos_codigo_aprendiz_fkey"
+            columns: ["codigo_aprendiz"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
             referencedColumns: ["codigo_aprendiz"]
           },
         ]
@@ -283,6 +290,13 @@ export type Database = {
             referencedRelation: "aba_aprendizes"
             referencedColumns: ["codigo_aprendiz"]
           },
+          {
+            foreignKeyName: "aba_desempenho_codigo_aprendiz_fkey"
+            columns: ["codigo_aprendiz"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
+            referencedColumns: ["codigo_aprendiz"]
+          },
         ]
       }
       aba_neuro_scores: {
@@ -319,6 +333,13 @@ export type Database = {
             columns: ["codigo_aprendiz"]
             isOneToOne: false
             referencedRelation: "aba_aprendizes"
+            referencedColumns: ["codigo_aprendiz"]
+          },
+          {
+            foreignKeyName: "aba_neuro_scores_codigo_aprendiz_fkey"
+            columns: ["codigo_aprendiz"]
+            isOneToOne: false
+            referencedRelation: "aba_aprendizes_view"
             referencedColumns: ["codigo_aprendiz"]
           },
         ]
@@ -362,13 +383,6 @@ export type Database = {
             foreignKeyName: "aba_np_clinical_notes_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "aba_np_clinical_notes_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -387,13 +401,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "aba_np_clinical_notes_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "aba_np_clinical_notes_program_id_fkey"
             columns: ["program_id"]
             isOneToOne: false
@@ -406,13 +413,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "aba_np_sessions"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_np_clinical_notes_therapist_id_fkey"
-            columns: ["therapist_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "aba_np_clinical_notes_therapist_id_fkey"
@@ -653,13 +653,6 @@ export type Database = {
             foreignKeyName: "aba_np_programs_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "aba_np_programs_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -676,20 +669,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_np_programs_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_np_programs_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "aba_np_programs_created_by_fkey"
@@ -761,13 +740,6 @@ export type Database = {
             foreignKeyName: "aba_np_progress_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "aba_np_progress_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -783,13 +755,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_np_progress_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -876,13 +841,6 @@ export type Database = {
             foreignKeyName: "aba_np_reports_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "aba_np_reports_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -899,20 +857,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_np_reports_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_np_reports_generated_by_fkey"
-            columns: ["generated_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "aba_np_reports_generated_by_fkey"
@@ -985,13 +929,6 @@ export type Database = {
             foreignKeyName: "aba_np_sessions_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "aba_np_sessions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -1010,25 +947,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "aba_np_sessions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "aba_np_sessions_program_id_fkey"
             columns: ["program_id"]
             isOneToOne: false
             referencedRelation: "aba_np_programs"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_np_sessions_therapist_id_fkey"
-            columns: ["therapist_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "aba_np_sessions_therapist_id_fkey"
@@ -1136,13 +1059,6 @@ export type Database = {
             foreignKeyName: "aba_np_trials_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "aba_np_trials_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -1161,25 +1077,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "aba_np_trials_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "aba_np_trials_intervention_id_fkey"
             columns: ["intervention_id"]
             isOneToOne: false
             referencedRelation: "aba_np_interventions"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "aba_np_trials_recorded_by_fkey"
-            columns: ["recorded_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "aba_np_trials_recorded_by_fkey"
@@ -1245,13 +1147,6 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "aba_profissionais_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
           {
             foreignKeyName: "aba_profissionais_profile_id_fkey"
             columns: ["profile_id"]
@@ -1346,13 +1241,6 @@ export type Database = {
             foreignKeyName: "abandonment_alerts_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "abandonment_alerts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -1369,20 +1257,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "abandonment_alerts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "abandonment_alerts_resolved_by_fkey"
-            columns: ["resolved_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "abandonment_alerts_resolved_by_fkey"
@@ -1612,13 +1486,6 @@ export type Database = {
             foreignKeyName: "ai_content_recommendations_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "ai_content_recommendations_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -1634,13 +1501,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ai_content_recommendations_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -1684,13 +1544,6 @@ export type Database = {
             foreignKeyName: "ai_emotional_analysis_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "ai_emotional_analysis_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -1706,13 +1559,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ai_emotional_analysis_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -1756,13 +1602,6 @@ export type Database = {
             foreignKeyName: "ai_generated_stories_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "ai_generated_stories_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -1778,13 +1617,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "ai_generated_stories_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -2141,13 +1973,6 @@ export type Database = {
             foreignKeyName: "audit_logs_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "audit_logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -2193,13 +2018,6 @@ export type Database = {
             foreignKeyName: "avatar_emotional_states_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "avatar_emotional_states_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -2215,13 +2033,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "avatar_emotional_states_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -2367,13 +2178,6 @@ export type Database = {
             foreignKeyName: "behavior_profile_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: true
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "behavior_profile_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: true
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -2389,13 +2193,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: true
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "behavior_profile_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: true
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -2496,13 +2293,6 @@ export type Database = {
             foreignKeyName: "biofeedback_alerts_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "biofeedback_alerts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -2518,13 +2308,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "biofeedback_alerts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -2568,13 +2351,6 @@ export type Database = {
             foreignKeyName: "biofeedback_readings_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "biofeedback_readings_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -2590,13 +2366,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "biofeedback_readings_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -2641,13 +2410,6 @@ export type Database = {
             foreignKeyName: "case_assignments_assigned_by_fkey"
             columns: ["assigned_by"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "case_assignments_assigned_by_fkey"
-            columns: ["assigned_by"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -2657,13 +2419,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_profiles"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "case_assignments_from_professional_id_fkey"
-            columns: ["from_professional_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "case_assignments_from_professional_id_fkey"
@@ -2685,13 +2440,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "queue_items"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "case_assignments_to_professional_id_fkey"
-            columns: ["to_professional_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "case_assignments_to_professional_id_fkey"
@@ -2830,13 +2578,6 @@ export type Database = {
             foreignKeyName: "child_access_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "child_access_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -2855,20 +2596,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "child_access_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "child_access_granted_by_fkey"
-            columns: ["granted_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
             foreignKeyName: "child_access_granted_by_fkey"
             columns: ["granted_by"]
             isOneToOne: false
@@ -2881,13 +2608,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_profiles"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "child_access_professional_id_fkey"
-            columns: ["professional_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "child_access_professional_id_fkey"
@@ -2995,13 +2715,6 @@ export type Database = {
             foreignKeyName: "child_avatar_items_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "child_avatar_items_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -3017,13 +2730,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "child_avatar_items_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -3110,13 +2816,6 @@ export type Database = {
             foreignKeyName: "child_development_anamnesis_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "child_development_anamnesis_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -3132,13 +2831,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "child_development_anamnesis_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -3284,13 +2976,6 @@ export type Database = {
             foreignKeyName: "children_parent_id_fkey"
             columns: ["parent_id"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "children_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -3390,13 +3075,6 @@ export type Database = {
             foreignKeyName: "class_students_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "class_students_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -3415,25 +3093,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "class_students_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "class_students_class_id_fkey"
             columns: ["class_id"]
             isOneToOne: false
             referencedRelation: "school_classes"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "class_students_class_id_fkey"
-            columns: ["class_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_relationships"
-            referencedColumns: ["class_id"]
           },
         ]
       }
@@ -3490,13 +3154,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "school_classes"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "classroom_weekly_reports_class_id_fkey"
-            columns: ["class_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_relationships"
-            referencedColumns: ["class_id"]
           },
         ]
       }
@@ -3582,13 +3239,6 @@ export type Database = {
             foreignKeyName: "clinic_appointments_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "clinic_appointments_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -3607,20 +3257,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "clinic_appointments_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "clinic_appointments_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
             foreignKeyName: "clinic_appointments_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
@@ -3638,13 +3274,6 @@ export type Database = {
             foreignKeyName: "clinic_appointments_parent_id_fkey"
             columns: ["parent_id"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "clinic_appointments_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -3654,13 +3283,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_profiles"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "clinic_appointments_professional_id_fkey"
-            columns: ["professional_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "clinic_appointments_professional_id_fkey"
@@ -3740,13 +3362,6 @@ export type Database = {
             foreignKeyName: "clinical_audit_logs_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "clinical_audit_logs_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -3762,13 +3377,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "clinical_audit_logs_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -3851,13 +3459,6 @@ export type Database = {
             foreignKeyName: "clinical_outcomes_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "clinical_outcomes_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -3873,13 +3474,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "clinical_outcomes_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -3941,13 +3535,6 @@ export type Database = {
             foreignKeyName: "clinical_pattern_alerts_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "clinical_pattern_alerts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -3963,13 +3550,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "clinical_pattern_alerts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -4154,13 +3734,6 @@ export type Database = {
             foreignKeyName: "club_bookings_parent_id_fkey"
             columns: ["parent_id"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "club_bookings_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -4278,13 +3851,6 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "club_partners_approved_by_fkey"
-            columns: ["approved_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
           {
             foreignKeyName: "club_partners_approved_by_fkey"
             columns: ["approved_by"]
@@ -4504,13 +4070,6 @@ export type Database = {
             foreignKeyName: "club_subscriptions_parent_id_fkey"
             columns: ["parent_id"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "club_subscriptions_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -4651,13 +4210,6 @@ export type Database = {
             foreignKeyName: "cognitive_history_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "cognitive_history_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -4673,13 +4225,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "cognitive_history_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -4732,13 +4277,6 @@ export type Database = {
             foreignKeyName: "cognitive_metrics_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: true
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "cognitive_metrics_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: true
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -4754,13 +4292,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: true
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "cognitive_metrics_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: true
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -4980,13 +4511,6 @@ export type Database = {
             foreignKeyName: "community_posts_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "community_posts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -5002,13 +4526,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "community_posts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -5115,13 +4632,6 @@ export type Database = {
             foreignKeyName: "condensed_assessments_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "condensed_assessments_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -5137,13 +4647,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "condensed_assessments_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -5205,13 +4708,6 @@ export type Database = {
           type?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "content_library_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
           {
             foreignKeyName: "content_library_created_by_fkey"
             columns: ["created_by"]
@@ -5335,13 +4831,6 @@ export type Database = {
           version_number?: number
         }
         Relationships: [
-          {
-            foreignKeyName: "content_versions_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
           {
             foreignKeyName: "content_versions_created_by_fkey"
             columns: ["created_by"]
@@ -5651,13 +5140,6 @@ export type Database = {
             foreignKeyName: "data_consents_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "data_consents_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -5674,20 +5156,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "data_consents_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "data_consents_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "data_consents_user_id_fkey"
@@ -5753,13 +5221,6 @@ export type Database = {
             foreignKeyName: "data_deletion_requests_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "data_deletion_requests_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -5775,13 +5236,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "data_deletion_requests_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -5828,13 +5282,6 @@ export type Database = {
             foreignKeyName: "data_export_requests_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "data_export_requests_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -5850,13 +5297,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "data_export_requests_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -6001,13 +5441,6 @@ export type Database = {
             foreignKeyName: "development_trails_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "development_trails_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -6089,13 +5522,6 @@ export type Database = {
             foreignKeyName: "digital_prescriptions_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "digital_prescriptions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -6111,13 +5537,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "digital_prescriptions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -6248,13 +5667,6 @@ export type Database = {
             foreignKeyName: "educational_accommodations_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "educational_accommodations_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -6271,20 +5683,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "educational_accommodations_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "educational_accommodations_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "educational_accommodations_created_by_fkey"
@@ -6534,13 +5932,6 @@ export type Database = {
             foreignKeyName: "follow_up_plans_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "follow_up_plans_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -6556,13 +5947,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "follow_up_plans_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -6846,13 +6230,6 @@ export type Database = {
             foreignKeyName: "game_trials_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "game_trials_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -6868,13 +6245,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "game_trials_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -6997,13 +6367,6 @@ export type Database = {
             foreignKeyName: "group_assignments_assigned_by_fkey"
             columns: ["assigned_by"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "group_assignments_assigned_by_fkey"
-            columns: ["assigned_by"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -7020,13 +6383,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "school_classes"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "group_assignments_class_id_fkey"
-            columns: ["class_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_relationships"
-            referencedColumns: ["class_id"]
           },
           {
             foreignKeyName: "group_assignments_institution_id_fkey"
@@ -7085,13 +6441,6 @@ export type Database = {
             foreignKeyName: "health_export_logs_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "health_export_logs_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -7107,13 +6456,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "health_export_logs_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -7234,13 +6576,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "institutions"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "institution_members_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "institution_members_user_id_fkey"
@@ -7452,13 +6787,6 @@ export type Database = {
             foreignKeyName: "integrated_profiles_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "integrated_profiles_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -7474,13 +6802,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "integrated_profiles_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -7520,13 +6841,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "internal_notifications_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
           {
             foreignKeyName: "internal_notifications_user_id_fkey"
             columns: ["user_id"]
@@ -8182,13 +7496,6 @@ export type Database = {
             foreignKeyName: "neuro_anamnesis_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "neuro_anamnesis_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -8204,13 +7511,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "neuro_anamnesis_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -8265,13 +7565,6 @@ export type Database = {
           title?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "operational_alerts_acknowledged_by_fkey"
-            columns: ["acknowledged_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
           {
             foreignKeyName: "operational_alerts_acknowledged_by_fkey"
             columns: ["acknowledged_by"]
@@ -8363,13 +7656,6 @@ export type Database = {
             foreignKeyName: "outcome_measurements_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "outcome_measurements_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -8385,13 +7671,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "outcome_measurements_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -8493,13 +7772,6 @@ export type Database = {
             foreignKeyName: "patient_protocols_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "patient_protocols_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -8515,13 +7787,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "patient_protocols_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -8687,13 +7952,6 @@ export type Database = {
             foreignKeyName: "pre_triage_forms_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "pre_triage_forms_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -8709,13 +7967,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "pre_triage_forms_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -8800,13 +8051,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "institutions"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "professional_workload_professional_id_fkey"
-            columns: ["professional_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "professional_workload_professional_id_fkey"
@@ -8911,13 +8155,6 @@ export type Database = {
             foreignKeyName: "queue_items_assigned_to_fkey"
             columns: ["assigned_to"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "queue_items_assigned_to_fkey"
-            columns: ["assigned_to"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -8927,13 +8164,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_profiles"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "queue_items_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
           },
           {
             foreignKeyName: "queue_items_child_id_fkey"
@@ -8954,13 +8184,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "queue_items_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -9150,13 +8373,6 @@ export type Database = {
             foreignKeyName: "routine_executions_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "routine_executions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -9172,13 +8388,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "routine_executions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -9238,13 +8447,6 @@ export type Database = {
             foreignKeyName: "routine_metrics_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "routine_metrics_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -9260,13 +8462,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "routine_metrics_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -9439,13 +8634,6 @@ export type Database = {
             foreignKeyName: "routine_tasks_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "routine_tasks_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -9462,20 +8650,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "routine_tasks_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "routine_tasks_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "routine_tasks_created_by_fkey"
@@ -9622,13 +8796,6 @@ export type Database = {
             foreignKeyName: "school_communications_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "school_communications_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -9644,13 +8811,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "school_communications_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -9703,13 +8863,6 @@ export type Database = {
             foreignKeyName: "school_occurrences_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "school_occurrences_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -9725,13 +8878,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "school_occurrences_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -9877,13 +9023,6 @@ export type Database = {
             foreignKeyName: "secure_messages_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "secure_messages_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -9899,13 +9038,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "secure_messages_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -9926,13 +9058,6 @@ export type Database = {
             foreignKeyName: "secure_messages_recipient_id_fkey"
             columns: ["recipient_id"]
             isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
-            foreignKeyName: "secure_messages_recipient_id_fkey"
-            columns: ["recipient_id"]
-            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -9942,13 +9067,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_profiles"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "secure_messages_sender_id_fkey"
-            columns: ["sender_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "secure_messages_sender_id_fkey"
@@ -10174,13 +9292,6 @@ export type Database = {
             foreignKeyName: "skills_inventory_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "skills_inventory_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -10196,13 +9307,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "skills_inventory_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -10306,13 +9410,6 @@ export type Database = {
             foreignKeyName: "smart_alerts_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "smart_alerts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -10328,13 +9425,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "smart_alerts_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -10477,13 +9567,6 @@ export type Database = {
             foreignKeyName: "socioemotional_profiles_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "socioemotional_profiles_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -10499,13 +9582,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "socioemotional_profiles_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -10648,13 +9724,6 @@ export type Database = {
             foreignKeyName: "story_decisions_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "story_decisions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -10670,13 +9739,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "story_decisions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -10778,13 +9840,6 @@ export type Database = {
             foreignKeyName: "story_sessions_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "story_sessions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -10800,13 +9855,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "story_sessions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -10926,13 +9974,6 @@ export type Database = {
             foreignKeyName: "student_observations_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "student_observations_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -10951,32 +9992,11 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "student_observations_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "student_observations_class_id_fkey"
             columns: ["class_id"]
             isOneToOne: false
             referencedRelation: "school_classes"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "student_observations_class_id_fkey"
-            columns: ["class_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_relationships"
-            referencedColumns: ["class_id"]
-          },
-          {
-            foreignKeyName: "student_observations_teacher_id_fkey"
-            columns: ["teacher_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "student_observations_teacher_id_fkey"
@@ -11027,13 +10047,6 @@ export type Database = {
             referencedRelation: "school_classes"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "student_subgroups_class_id_fkey"
-            columns: ["class_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_relationships"
-            referencedColumns: ["class_id"]
-          },
         ]
       }
       subgroup_students: {
@@ -11060,13 +10073,6 @@ export type Database = {
             foreignKeyName: "subgroup_students_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "subgroup_students_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -11082,13 +10088,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "subgroup_students_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -11220,13 +10219,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "subscription_plans"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "subscriptions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "subscriptions_user_id_fkey"
@@ -11482,13 +10474,6 @@ export type Database = {
             foreignKeyName: "teleorientation_sessions_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "teleorientation_sessions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -11504,13 +10489,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "teleorientation_sessions_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -11557,13 +10535,6 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "therapist_available_slots_professional_id_fkey"
-            columns: ["professional_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
           {
             foreignKeyName: "therapist_available_slots_professional_id_fkey"
             columns: ["professional_id"]
@@ -11640,13 +10611,6 @@ export type Database = {
             foreignKeyName: "trail_progress_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "trail_progress_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -11662,13 +10626,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "trail_progress_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -11868,13 +10825,6 @@ export type Database = {
             foreignKeyName: "user_analytics_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "user_analytics_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -11891,20 +10841,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_analytics_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_analytics_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "user_analytics_user_id_fkey"
@@ -11994,13 +10930,6 @@ export type Database = {
             foreignKeyName: "user_consents_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "user_consents_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -12016,13 +10945,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_consents_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
           {
@@ -12235,13 +11157,6 @@ export type Database = {
             foreignKeyName: "waiting_list_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "waiting_list_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -12260,20 +11175,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "waiting_list_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "waiting_list_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
-          {
             foreignKeyName: "waiting_list_parent_id_fkey"
             columns: ["parent_id"]
             isOneToOne: false
@@ -12286,13 +11187,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "public_profiles"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "waiting_list_professional_id_fkey"
-            columns: ["professional_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "waiting_list_professional_id_fkey"
@@ -12355,13 +11249,6 @@ export type Database = {
             foreignKeyName: "wearable_connections_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "wearable_connections_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -12377,13 +11264,6 @@ export type Database = {
             columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "wearable_connections_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -12548,13 +11428,6 @@ export type Database = {
             foreignKeyName: "weekly_feedback_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "weekly_feedback_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -12571,20 +11444,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "weekly_feedback_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "weekly_feedback_therapist_id_fkey"
-            columns: ["therapist_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "weekly_feedback_therapist_id_fkey"
@@ -12621,42 +11480,70 @@ export type Database = {
       }
       aba_aprendizes_view: {
         Row: {
-          aprendiz: string | null
           ativo: boolean | null
-          cep: string | null
           child_id: string | null
-          codigoAprendiz: string | null
+          codigo_aprendiz: string | null
           convenio: string | null
           cpf: string | null
-          dataNascimento: string | null
-          nivelSuporte: string | null
+          data_nascimento: string | null
+          id: string | null
+          nivel_suporte: string | null
+          nome: string | null
           sexo: string | null
+          synced_at: string | null
+          updated_at: string | null
         }
         Insert: {
-          aprendiz?: string | null
-          ativo?: never
-          cep?: string | null
+          ativo?: boolean | null
           child_id?: string | null
-          codigoAprendiz?: never
+          codigo_aprendiz?: string | null
           convenio?: string | null
           cpf?: string | null
-          dataNascimento?: never
-          nivelSuporte?: never
+          data_nascimento?: string | null
+          id?: string | null
+          nivel_suporte?: string | null
+          nome?: string | null
           sexo?: string | null
+          synced_at?: string | null
+          updated_at?: string | null
         }
         Update: {
-          aprendiz?: string | null
-          ativo?: never
-          cep?: string | null
+          ativo?: boolean | null
           child_id?: string | null
-          codigoAprendiz?: never
+          codigo_aprendiz?: string | null
           convenio?: string | null
           cpf?: string | null
-          dataNascimento?: never
-          nivelSuporte?: never
+          data_nascimento?: string | null
+          id?: string | null
+          nivel_suporte?: string | null
+          nome?: string | null
           sexo?: string | null
+          synced_at?: string | null
+          updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "aba_aprendizes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_aprendizes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "aba_aprendizes_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       aba_atendimentos_periodo_view: {
         Row: {
@@ -12693,13 +11580,6 @@ export type Database = {
             foreignKeyName: "aba_np_trials_child_id_fkey"
             columns: ["child_id"]
             isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "aba_np_trials_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
@@ -12717,27 +11597,61 @@ export type Database = {
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "aba_np_trials_child_id_fkey"
-            columns: ["child_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
         ]
       }
       aba_profissionais_view: {
         Row: {
           ativo: boolean | null
           cargo: string | null
-          codigoProfissional: string | null
+          codigo_profissional: string | null
           cpf: string | null
           especialidade: string | null
+          id: string | null
+          nome: string | null
           profile_id: string | null
-          profissional: string | null
-          sexo: string | null
+          synced_at: string | null
+          updated_at: string | null
         }
-        Relationships: []
+        Insert: {
+          ativo?: boolean | null
+          cargo?: string | null
+          codigo_profissional?: string | null
+          cpf?: string | null
+          especialidade?: string | null
+          id?: string | null
+          nome?: string | null
+          profile_id?: string | null
+          synced_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          ativo?: boolean | null
+          cargo?: string | null
+          codigo_profissional?: string | null
+          cpf?: string | null
+          especialidade?: string | null
+          id?: string | null
+          nome?: string | null
+          profile_id?: string | null
+          synced_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "aba_profissionais_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "aba_profissionais_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       aba_sessoes_diarias_view: {
         Row: {
@@ -12758,19 +11672,12 @@ export type Database = {
           child_name: string | null
           id: string | null
           is_active: boolean | null
+          neurodevelopmental_conditions: Json | null
           parent_email: string | null
           parent_id: string | null
           parent_name: string | null
-          relationship_type: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "children_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
-          },
           {
             foreignKeyName: "children_parent_id_fkey"
             columns: ["parent_id"]
@@ -12810,12 +11717,9 @@ export type Database = {
       }
       teacher_student_relationships: {
         Row: {
-          class_id: string | null
+          child_id: string | null
           class_name: string | null
-          grade_level: string | null
           id: string | null
-          is_active: boolean | null
-          student_id: string | null
           student_name: string | null
           teacher_id: string | null
           teacher_name: string | null
@@ -12823,37 +11727,23 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "class_students_child_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "class_students_child_id_fkey"
-            columns: ["student_id"]
+            columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "class_students_child_id_fkey"
-            columns: ["student_id"]
+            columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["child_id"]
           },
           {
             foreignKeyName: "class_students_child_id_fkey"
-            columns: ["student_id"]
+            columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "class_students_child_id_fkey"
-            columns: ["student_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
             referencedColumns: ["id"]
           },
         ]
@@ -12861,15 +11751,38 @@ export type Database = {
       teacher_student_view: {
         Row: {
           birth_date: string | null
+          child_id: string | null
           class_id: string | null
           class_name: string | null
-          gender: string | null
-          grade_level: string | null
           has_special_needs: boolean | null
           id: string | null
+          is_active: boolean | null
           name: string | null
+          neurodevelopmental_conditions: Json | null
+          teacher_id: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "class_students_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "class_students_class_id_fkey"
             columns: ["class_id"]
@@ -12877,24 +11790,17 @@ export type Database = {
             referencedRelation: "school_classes"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "class_students_class_id_fkey"
-            columns: ["class_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_relationships"
-            referencedColumns: ["class_id"]
-          },
         ]
       }
       therapist_patient_relationships: {
         Row: {
           access_level: string | null
+          approval_status: string | null
+          child_id: string | null
           expires_at: string | null
-          granted_at: string | null
           id: string | null
           is_active: boolean | null
           patient_birth_date: string | null
-          patient_id: string | null
           patient_name: string | null
           therapist_id: string | null
           therapist_name: string | null
@@ -12902,45 +11808,24 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "child_access_child_id_fkey"
-            columns: ["patient_id"]
-            isOneToOne: false
-            referencedRelation: "aba_aprendizes_view"
-            referencedColumns: ["child_id"]
-          },
-          {
-            foreignKeyName: "child_access_child_id_fkey"
-            columns: ["patient_id"]
+            columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "children"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "child_access_child_id_fkey"
-            columns: ["patient_id"]
+            columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["child_id"]
           },
           {
             foreignKeyName: "child_access_child_id_fkey"
-            columns: ["patient_id"]
+            columns: ["child_id"]
             isOneToOne: false
             referencedRelation: "parent_child_relationships"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "child_access_child_id_fkey"
-            columns: ["patient_id"]
-            isOneToOne: false
-            referencedRelation: "teacher_student_view"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "child_access_professional_id_fkey"
-            columns: ["therapist_id"]
-            isOneToOne: false
-            referencedRelation: "aba_profissionais_view"
-            referencedColumns: ["profile_id"]
           },
           {
             foreignKeyName: "child_access_professional_id_fkey"
