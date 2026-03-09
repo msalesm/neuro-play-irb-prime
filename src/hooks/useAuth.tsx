@@ -44,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email,
       password,
     });
+    if (error) logError(error, { context: 'signIn', email });
     return { error };
   };
 
@@ -60,6 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
     });
+    if (error) logError(error, { context: 'signUp', email });
     return { error };
   };
 
