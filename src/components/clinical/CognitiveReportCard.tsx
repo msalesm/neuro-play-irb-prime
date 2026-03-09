@@ -1,8 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Brain, TrendingUp, CheckCircle, AlertCircle, Lightbulb, Download, Sparkles, AlertTriangle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Brain, TrendingUp, CheckCircle, AlertCircle, Lightbulb, Download, Sparkles, AlertTriangle, Info } from 'lucide-react';
 import type { BehavioralProfile } from '@/types/cognitive-analysis';
+import { VALIDATION_STATUS } from '@/modules/games/cognitive-engine';
 
 interface CognitiveReportCardProps {
   report: BehavioralProfile;
@@ -28,6 +30,16 @@ export function CognitiveReportCard({ report, onDownload }: CognitiveReportCardP
 
   return (
     <div className="space-y-6">
+      {/* Provisional Baseline Disclaimer */}
+      {!VALIDATION_STATUS.isScientificallyValidated && (
+        <Alert variant="default" className="border-muted-foreground/20 bg-muted/30">
+          <Info className="h-4 w-4" />
+          <AlertDescription className="text-sm text-muted-foreground">
+            {VALIDATION_STATUS.disclaimer}
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Disclaimer */}
       <Card className="border-warning/30 bg-warning/5">
         <CardContent className="p-4">

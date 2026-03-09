@@ -92,17 +92,30 @@ export function buildReport(input: ReportBuilderInput): ReportData {
     behavioral: behavioralPatterns
   };
 
+  // Provisional baseline disclaimer
+  const BASELINE_DISCLAIMER = 'AVISO: Os indicadores cognitivos apresentados neste relatório são baseados em referências provisórias ainda não validadas cientificamente. Estes resultados não substituem avaliação clínica profissional e não devem ser utilizados como base única para diagnóstico.';
+
   // Add AI analysis if available
   if (aiAnalysis) {
+    // Prepend disclaimer to executive summary
+    const disclaimerPrefix = `⚠️ ${BASELINE_DISCLAIMER}\n\n`;
+    const executiveSummary = aiAnalysis.executiveSummary || 'Análise não disponível';
+
     reportData.aiAnalysis = {
-      executiveSummary: aiAnalysis.executiveSummary || 'Análise não disponível',
+      executiveSummary: disclaimerPrefix + executiveSummary,
       domainAnalysis: aiAnalysis.domainAnalysis || {},
       strengths: Array.isArray(aiAnalysis.strengths) ? aiAnalysis.strengths : [],
       areasOfConcern: Array.isArray(aiAnalysis.areasOfConcern) ? aiAnalysis.areasOfConcern : [],
       recommendations: Array.isArray(aiAnalysis.recommendations) ? aiAnalysis.recommendations : [],
-      diagnosticIndicators: Array.isArray(aiAnalysis.diagnosticIndicators) ? aiAnalysis.diagnosticIndicators : []
+      diagnosticIndicators: Array.isArray(aiAnalysis.diagnosticIndicators) ? aiAnalysis.diagnosticIndicators : [],
     };
   }
+
+  // Always attach validation metadata
+  reportData._validationStatus = {
+    isScientificallyValidated: false,
+    disclaimer: BASELINE_DISCLAIMER,
+  };
 
   return reportData;
 }

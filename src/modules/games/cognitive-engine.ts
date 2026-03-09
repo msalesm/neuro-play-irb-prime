@@ -18,6 +18,20 @@ import type {
 } from '@/types/cognitive-analysis';
 
 // ============================================================
+// VALIDATION STATUS — Single config flag for scientific validation
+// When validation studies are complete, set isScientificallyValidated = true
+// to remove all provisional disclaimers from the platform.
+// ============================================================
+
+export const VALIDATION_STATUS = {
+  isScientificallyValidated: false,
+  note: 'Baseline data is provisional. Not validated for clinical diagnosis.',
+  disclaimer: 'Estes indicadores são baseados em referências provisórias e não substituem avaliação clínica profissional.',
+} as const;
+
+export type ValidationStatus = typeof VALIDATION_STATUS;
+
+// ============================================================
 // BASELINE REFERENCE DATA (provisional - pending scientific validation)
 // ============================================================
 
@@ -264,6 +278,13 @@ export function classify(score: number): RiskClassification {
 }
 
 /**
+ * Attach validation metadata to a classification result.
+ */
+function withValidation<T>(result: T): T & { _validationStatus: ValidationStatus } {
+  return { ...result, _validationStatus: VALIDATION_STATUS };
+}
+
+/**
  * Calculate percentile from Z-score (approximation).
  */
 function zToPercentile(z: number): number {
@@ -286,14 +307,14 @@ function zToPercentile(z: number): number {
 /**
  * Create full domain classification from score.
  */
-function classifyDomain(score: number): DomainClassification {
+function classifyDomain(score: number): DomainClassification & { _validationStatus: ValidationStatus } {
   const zScore = (score - 50) / 10;
-  return {
+  return withValidation({
     score,
     zScore: Math.round(zScore * 100) / 100,
     percentile: zToPercentile(zScore),
     classification: classify(score),
-  };
+  });
 }
 
 /**
@@ -489,6 +510,7 @@ export function generateBehavioralProfile(
     educationalRecommendations: recommendations,
     interpretativeAnalysis: generateInterpretativeText(scores, indicators, ageGroup),
     suggestedActivities: suggestActivities(scores),
+    _validationStatus: VALIDATION_STATUS,
   };
 }
 
