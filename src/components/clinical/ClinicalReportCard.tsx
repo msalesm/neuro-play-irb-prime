@@ -2,8 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { FileText, Download, Eye, AlertCircle, CheckCircle2, Brain } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { FileText, Download, Eye, AlertCircle, CheckCircle2, Brain, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { VALIDATION_STATUS } from '@/modules/games/cognitive-engine';
 
 interface ClinicalReportCardProps {
   report: {
@@ -83,6 +85,16 @@ export const ClinicalReportCard = ({ report, onView, onDownload }: ClinicalRepor
         </CardHeader>
 
         <CardContent className="space-y-4">
+          {/* Provisional Baseline Disclaimer */}
+          {!VALIDATION_STATUS.isScientificallyValidated && (
+            <Alert variant="default" className="border-muted-foreground/20 bg-muted/30">
+              <Info className="h-4 w-4" />
+              <AlertDescription className="text-xs text-muted-foreground">
+                {VALIDATION_STATUS.disclaimer}
+              </AlertDescription>
+            </Alert>
+          )}
+
           {/* Summary */}
           {report.summary_insights && (
             <p className="text-sm text-muted-foreground line-clamp-2">

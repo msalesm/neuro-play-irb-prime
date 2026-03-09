@@ -53,6 +53,12 @@ export interface BehavioralIndicator {
   context?: string;
 }
 
+export interface ValidationStatus {
+  isScientificallyValidated: boolean;
+  note: string;
+  disclaimer: string;
+}
+
 export interface BehavioralProfile {
   userId: string;
   generatedAt: string;
@@ -72,6 +78,8 @@ export interface BehavioralProfile {
   educationalRecommendations: string[];
   interpretativeAnalysis: string;
   suggestedActivities: string[];
+  /** Attached by the engine to every profile — allows UI to show provisional disclaimer */
+  _validationStatus?: ValidationStatus;
 }
 
 // Legacy compatibility alias
