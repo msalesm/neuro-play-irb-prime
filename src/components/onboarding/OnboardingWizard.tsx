@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { markOnboardingComplete } from '@/hooks/useOnboardingStatus';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -169,6 +170,17 @@ export function OnboardingWizard() {
           consent_version: '1.0',
         });
       }
+
+      // Insert clinical_disclaimer consent to mark onboarding as complete
+      await supabase.from('data_consents').insert({
+        user_id: user.id,
+        consent_type: 'clinical_disclaimer',
+        consent_given: true,
+        consent_version: '1.0',
+      });
+
+      // Update in-memory cache so ProtectedRoute allows through immediately
+      markOnboardingComplete(user.id);
 
       // Create child profile (only for parents)
       if (data.selectedRole === 'parent') {
