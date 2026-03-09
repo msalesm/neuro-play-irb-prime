@@ -1,14 +1,14 @@
 /**
- * AI Provider Abstraction Layer
+ * AI Provider Abstraction Layer (Frontend reference)
  * 
- * Abstracts the AI gateway behind a provider interface,
- * enabling future multi-provider support with fallback.
+ * The actual multi-provider fallback logic lives in:
+ * supabase/functions/_shared/ai-provider.ts
  * 
- * Current implementation: Lovable AI Gateway (primary)
- * Future: OpenAI direct, Anthropic, Google, local model fallback
+ * This file provides type definitions and constants
+ * for frontend code that needs to reference AI providers.
  */
 
-export type AIProvider = 'lovable' | 'openai' | 'anthropic' | 'google' | 'local';
+export type AIProvider = 'lovable' | 'openai' | 'anthropic';
 
 export interface AIProviderConfig {
   provider: AIProvider;
@@ -22,19 +22,12 @@ export interface AIMessage {
   content: string;
 }
 
-export interface AICompletionRequest {
-  messages: AIMessage[];
-  config?: Partial<AIProviderConfig>;
-  tools?: any[];
-  tool_choice?: any;
-  stream?: boolean;
-}
-
 export interface AICompletionResponse {
   content: string;
   provider: AIProvider;
   model: string;
   toolCalls?: any[];
+  fallback?: boolean;
 }
 
 // Default configuration
@@ -46,83 +39,15 @@ const DEFAULT_CONFIG: AIProviderConfig = {
 };
 
 /**
- * Provider registry with endpoint configurations.
- * Currently only Lovable gateway is active.
- * Others are stubs for future implementation.
+ * Provider fallback chain (reference).
+ * Actual implementation is server-side in _shared/ai-provider.ts
+ * 
+ * Chain: Lovable → OpenAI → Anthropic → Static fallback
  */
-const PROVIDER_ENDPOINTS: Record<AIProvider, string> = {
-  lovable: 'https://ai.gateway.lovable.dev/v1/chat/completions',
-  openai: 'https://api.openai.com/v1/chat/completions',
-  anthropic: 'https://api.anthropic.com/v1/messages',
-  google: 'https://generativelanguage.googleapis.com/v1beta/models',
-  local: 'http://localhost:11434/v1/chat/completions',
-};
+export const FALLBACK_CHAIN: AIProvider[] = ['lovable', 'openai', 'anthropic'];
 
-/**
- * Resolve the AI provider configuration.
- * Merges user config with defaults.
- */
 export function resolveConfig(
   userConfig?: Partial<AIProviderConfig>
 ): AIProviderConfig {
   return { ...DEFAULT_CONFIG, ...userConfig };
-}
-
-/**
- * Get the endpoint URL for a provider.
- */
-export function getProviderEndpoint(provider: AIProvider): string {
-  return PROVIDER_ENDPOINTS[provider];
-}
-
-/**
- * Build the request body for the Lovable AI gateway.
- * This is the primary implementation.
- */
-export function buildLovableRequest(
-  request: AICompletionRequest,
-  config: AIProviderConfig
-): Record<string, any> {
-  const body: Record<string, any> = {
-    model: config.model,
-    messages: request.messages,
-    max_tokens: config.maxTokens,
-    temperature: config.temperature,
-  };
-
-  if (request.tools) body.tools = request.tools;
-  if (request.tool_choice) body.tool_choice = request.tool_choice;
-  if (request.stream) body.stream = true;
-
-  return body;
-}
-
-/**
- * Provider fallback chain.
- * If primary provider fails, try the next in chain.
- */
-export const FALLBACK_CHAIN: AIProvider[] = [
-  'lovable',
-  // Future: 'openai', 'anthropic', 'google', 'local'
-];
-
-/**
- * Determine if an error is retryable with a different provider.
- */
-export function isRetryableError(status: number): boolean {
-  return status === 429 || status === 500 || status === 502 || status === 503;
-}
-
-/**
- * Get the next fallback provider in the chain.
- * Returns null if no more fallbacks available.
- */
-export function getNextFallback(
-  currentProvider: AIProvider
-): AIProvider | null {
-  const currentIndex = FALLBACK_CHAIN.indexOf(currentProvider);
-  if (currentIndex < 0 || currentIndex >= FALLBACK_CHAIN.length - 1) {
-    return null;
-  }
-  return FALLBACK_CHAIN[currentIndex + 1];
 }
