@@ -62,7 +62,7 @@ export default function AcceptInvite() {
       // Use the secure RPC function instead of direct table query to avoid
       // exposing health data via the public policy
       const { data: inviteData, error } = await supabase
-        .rpc('get_invitation_by_code', { p_invite_code: data.code.toLowerCase() })
+        .rpc('get_invitation_by_code' as any, { p_invite_code: data.code.toLowerCase() })
         .maybeSingle();
 
       if (error) throw error;
