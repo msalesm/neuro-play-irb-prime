@@ -278,12 +278,21 @@ Gere uma análise cognitiva abrangente incluindo:
 
   } catch (error: any) {
     console.error('Error in cognitive-analysis:', error);
+
+    // Report to Sentry via structured log (edge functions run on Deno, no Sentry SDK)
+    console.error(JSON.stringify({
+      sentry_capture: true,
+      error_message: error.message,
+      error_stack: error.stack,
+      context: 'cognitive-analysis',
+    }));
+
     return new Response(JSON.stringify({ 
       success: false,
       error: error.message 
     }), {
-      status: error.message.includes('Rate limit') ? 429 : 
-             error.message.includes('Credits') ? 402 : 500,
+      status: error.message?.includes('Rate limit') ? 429 : 
+             error.message?.includes('Credits') ? 402 : 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { logError } from '@/lib/monitoring';
 
 interface AuthContextType {
   user: User | null;
@@ -43,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       email,
       password,
     });
+    if (error) logError(error, { context: 'signIn', email });
     return { error };
   };
 
@@ -59,6 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
     });
+    if (error) logError(error, { context: 'signUp', email });
     return { error };
   };
 

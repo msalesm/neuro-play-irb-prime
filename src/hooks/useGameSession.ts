@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useToast } from '@/hooks/use-toast';
+import { logError } from '@/lib/monitoring';
 
 interface SessionData {
   score?: number;
@@ -242,6 +243,7 @@ export function useGameSession(gameId: string, childProfileId?: string) {
       return { success: true, sessionId: learningSession?.id, learningSessionId: learningSession?.id, userMode: true };
     } catch (error: any) {
       console.error('Error starting session:', error);
+      logError(error, { context: 'startSession', gameId });
       toast({
         title: "Erro ao iniciar sessão",
         description: error.message,
@@ -346,6 +348,7 @@ export function useGameSession(gameId: string, childProfileId?: string) {
       return { success: true };
     } catch (error: any) {
       console.error('Error ending session:', error);
+      logError(error, { context: 'endSession', gameId, sessionId });
       toast({
         title: "Erro ao finalizar sessão",
         description: error.message,
