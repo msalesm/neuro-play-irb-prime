@@ -16,7 +16,7 @@
  */
 
 // ─── Layer 7: AI Layer ────────────────────────────────────
-export { type AIProvider, type AICompletionRequest } from '@/modules/ai-provider';
+export { type AIProvider, type AICompletionResponse } from '@/modules/ai-provider';
 export { runCopilot, getCopilotForParent, getCopilotForTherapist, getCopilotForTeacher } from '@/modules/copilot';
 
 // ─── Layer 6: Analytics Layer ─────────────────────────────

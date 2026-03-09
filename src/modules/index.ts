@@ -36,5 +36,5 @@ export * as Family from './family';
 export * as Institution from './institution';
 
 // ── Cross-cutting ───────────────────────────────────────
-export { type AIProvider, type AICompletionRequest } from './ai-provider';
+export { type AIProvider, type AICompletionResponse } from './ai-provider';
 export { type ClassifiedMetric, type DataSource, clinicalOnly, isClinicalSafe } from './data-classification';
