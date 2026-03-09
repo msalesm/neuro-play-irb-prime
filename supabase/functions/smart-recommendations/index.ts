@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { callAI, AIMessage } from "../_shared/ai-provider.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -143,11 +144,6 @@ serve(async (req) => {
       .order('recorded_at', { ascending: false })
       .limit(10);
 
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
-    if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY not configured');
-    }
-
     const systemPrompt = `Você é um sistema de recomendação terapêutica inteligente para crianças neurodivergentes.
 Baseado no perfil da criança, estado emocional e desempenho recente, recomende:
 1. Jogos cognitivos apropriados
@@ -196,30 +192,39 @@ Responda em JSON:
       additionalContext: context || {}
     };
 
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `Gere recomendações personalizadas:\n${JSON.stringify(contextData, null, 2)}` }
-        ],
-        temperature: 0.4,
-      }),
+    const messages: AIMessage[] = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: `Gere recomendações personalizadas:\n${JSON.stringify(contextData, null, 2)}` }
+    ];
+
+    // Use multi-provider AI with fallback
+    const aiResult = await callAI({
+      messages,
+      model: 'google/gemini-2.5-flash',
+      temperature: 0.4,
     });
 
-    if (!aiResponse.ok) {
-      const errorText = await aiResponse.text();
-      console.error('AI API error:', errorText);
-      throw new Error('Failed to get recommendations');
+    console.log(`[AI] Response from provider: ${aiResult.provider}`);
+
+    // Handle fallback response
+    if (aiResult.fallback) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: aiResult.content,
+        fallback: true,
+        recommendations: {
+          recommendedGames: [],
+          recommendedStories: [],
+          modeRecommendation: 'normal',
+          overallInsight: aiResult.content
+        }
+      }), {
+        status: 200,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
-    const aiData = await aiResponse.json();
-    const recommendationsText = aiData.choices?.[0]?.message?.content || '';
+    const recommendationsText = aiResult.content;
     
     let recommendations;
     try {
