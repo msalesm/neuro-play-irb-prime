@@ -168,7 +168,7 @@ describe('_validationStatus metadata', () => {
     for (const key of domainKeys) {
       const domain = profile.domains[key] as any;
       expect(domain._validationStatus).toEqual(VALIDATION_STATUS);
-      expect(domain._validationStatus.isScientificallyValidated).toBe(false);
+      expect(domain._validationStatus.isScientificallyValidated).toStrictEqual(false);
     }
   });
 
