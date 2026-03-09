@@ -184,7 +184,7 @@ describe('_validationStatus metadata', () => {
     }];
     const profile = generateBehavioralProfile('child-1', data, '7-9');
     expect(profile._validationStatus!.isScientificallyValidated).toBe(false);
-    expect(profile.domains.attention._validationStatus.isScientificallyValidated).toBe(false);
+    expect((profile.domains.attention as any)._validationStatus.isScientificallyValidated).toBe(false);
   });
 });
 
