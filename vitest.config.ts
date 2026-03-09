@@ -9,6 +9,31 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    coverage: {
+      provider: "v8",
+      include: [
+        "src/modules/games/cognitive-engine.ts",
+        "src/modules/aba/engine.ts",
+        "src/modules/behavioral/engine.ts",
+      ],
+      thresholds: {
+        "src/modules/games/cognitive-engine.ts": {
+          lines: 70,
+          functions: 70,
+          branches: 60,
+        },
+        "src/modules/aba/engine.ts": {
+          lines: 70,
+          functions: 70,
+          branches: 60,
+        },
+        "src/modules/behavioral/engine.ts": {
+          lines: 65,
+          functions: 65,
+          branches: 55,
+        },
+      },
+    },
   },
   resolve: {
     alias: { "@": path.resolve(__dirname, "./src") },
