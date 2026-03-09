@@ -127,7 +127,7 @@ export default function StudentHub() {
           iconName: timeOfDay === 'morning' ? 'Sun' : timeOfDay === 'night' ? 'Moon' : 'Backpack',
           completed: false,
           points: 50,
-          route: '/routines',
+          route: '/rotinas',
         },
       ];
 
