@@ -48,6 +48,9 @@ export function ParentDashboardContent({
 }: ParentDashboardContentProps) {
   const navigate = useNavigate();
 
+  // Guard: real data exists when there are actual completed sessions
+  const isRealData = sessions.length > 0;
+
   return (
     <>
       {/* Child Selector */}
@@ -84,8 +87,12 @@ export function ParentDashboardContent({
                 <h2 className="text-2xl font-bold">{selectedChildData.name}</h2>
                 <p className="text-muted-foreground">{selectedChildData.age} anos{selectedChildData.profile && ` • ${selectedChildData.profile}`}</p>
                 <div className="flex items-center gap-2 mt-1">
-                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">Nível 5</span>
-                  <span className="text-xs bg-warning/10 text-warning px-2 py-1 rounded-full">🏆 12 Conquistas</span>
+                  <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                    Nível {avatarEvolution?.stage ?? 1}
+                  </span>
+                  <span className="text-xs bg-warning/10 text-warning px-2 py-1 rounded-full">
+                    🏆 {badgeProgress?.current ?? 0} Conquistas
+                  </span>
                 </div>
               </div>
             </div>
@@ -155,7 +162,12 @@ export function ParentDashboardContent({
               <div className="flex items-center gap-3 mb-4"><Sparkles className="w-5 h-5 text-primary" /><h3 className="text-lg font-semibold">Planeta Atual</h3></div>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-3xl">🌍</div>
-                <div className="flex-1"><h4 className="font-semibold text-lg">TEA</h4><p className="text-sm text-muted-foreground">Foco em Atenção e Cognição Social</p><Progress value={65} className="mt-2" /></div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-lg">TEA</h4>
+                  <p className="text-sm text-muted-foreground">Foco em Atenção e Cognição Social</p>
+                  <Progress value={isRealData ? avgScore : 0} className="mt-2" />
+                  {!isRealData && <p className="text-xs text-muted-foreground mt-1">Complete sessões para ver o progresso</p>}
+                </div>
                 <Button onClick={() => navigate('/sistema-planeta-azul')}>Explorar</Button>
               </div>
             </CardContent>
@@ -199,11 +211,33 @@ export function ParentDashboardContent({
           <Card data-tour="quick-report">
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4"><Brain className="w-5 h-5 text-foreground" /><h3 className="text-lg font-semibold">Relatório Rápido</h3></div>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-success mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Atenção:</strong> Melhora de 15% nas últimas 3 sessões.</p></div>
-                <div className="flex items-start gap-3"><TrendingUp className="w-5 h-5 text-info mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Memória de Trabalho:</strong> Progresso constante.</p></div>
-                <div className="flex items-start gap-3"><AlertCircle className="w-5 h-5 text-warning mt-0.5 flex-shrink-0" /><p className="text-sm text-muted-foreground"><strong className="text-foreground">Flexibilidade Cognitiva:</strong> Área que precisa mais prática.</p></div>
-              </div>
+              {isRealData ? (
+                <div className="space-y-3">
+                  {Object.entries(cognitiveScores || {}).slice(0, 3).map(([key, value]) => {
+                    const labels: Record<string, string> = {
+                      attention: 'Atenção', memory: 'Memória', language: 'Linguagem',
+                      logic: 'Raciocínio Lógico', emotion: 'Regulação Emocional', coordination: 'Coordenação',
+                    };
+                    const icon = value >= 70 ? <CheckCircle2 className="w-5 h-5 text-success mt-0.5 flex-shrink-0" /> :
+                      value >= 50 ? <TrendingUp className="w-5 h-5 text-info mt-0.5 flex-shrink-0" /> :
+                        <AlertCircle className="w-5 h-5 text-warning mt-0.5 flex-shrink-0" />;
+                    const msg = value >= 70 ? `${value}/100 — Dentro do esperado.` :
+                      value >= 50 ? `${value}/100 — Progresso constante.` : `${value}/100 — Área que precisa mais prática.`;
+                    return (
+                      <div key={key} className="flex items-start gap-3">
+                        {icon}
+                        <p className="text-sm text-muted-foreground">
+                          <strong className="text-foreground">{labels[key] ?? key}:</strong> {msg}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Nenhuma sessão registrada ainda.<br />Complete jogos para ver seu relatório rápido.
+                </p>
+              )}
               <Button variant="outline" className="w-full mt-4" onClick={() => navigate('/clinical-dashboard')}>Ver Relatório Completo</Button>
             </CardContent>
           </Card>
@@ -229,10 +263,39 @@ export function ParentDashboardContent({
           <Card className="border-l-4 border-l-warning">
             <CardContent className="p-6">
               <div className="flex items-center gap-3 mb-4"><Sparkles className="w-5 h-5 text-warning" /><h3 className="text-lg font-semibold">Recomendações IA</h3></div>
-              <div className="space-y-3">
-                <div className="p-3 rounded-lg bg-warning/10 border border-warning/20"><p className="text-sm font-medium mb-1">Foco em Atenção Sustentada</p><p className="text-xs text-muted-foreground">Jogos de atenção terão melhor resultado nas manhãs</p></div>
-                <div className="p-3 rounded-lg bg-primary/10 border border-primary/20"><p className="text-sm font-medium mb-1">Sessões Mais Curtas</p><p className="text-xs text-muted-foreground">Melhor desempenho em sessões de 10-15 minutos</p></div>
-              </div>
+              {isRealData && cognitiveScores ? (
+                <div className="space-y-3">
+                  {(() => {
+                    const sorted = Object.entries(cognitiveScores).sort(([, a], [, b]) => a - b);
+                    const [lowestKey, lowestVal] = sorted[0] ?? [];
+                    const [highestKey] = sorted[sorted.length - 1] ?? [];
+                    const labels: Record<string, string> = {
+                      attention: 'Atenção Sustentada', memory: 'Memória', language: 'Linguagem',
+                      logic: 'Raciocínio Lógico', emotion: 'Regulação Emocional', coordination: 'Coordenação',
+                    };
+                    return (
+                      <>
+                        {lowestKey && (
+                          <div className="p-3 rounded-lg bg-warning/10 border border-warning/20">
+                            <p className="text-sm font-medium mb-1">Foco em {labels[lowestKey] ?? lowestKey}</p>
+                            <p className="text-xs text-muted-foreground">Score {lowestVal}/100 — priorize jogos desta área</p>
+                          </div>
+                        )}
+                        {highestKey && (
+                          <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
+                            <p className="text-sm font-medium mb-1">Ponto Forte: {labels[highestKey] ?? highestKey}</p>
+                            <p className="text-xs text-muted-foreground">Continue praticando para manter o progresso</p>
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Nenhuma sessão registrada ainda.<br />Complete jogos para receber recomendações.
+                </p>
+              )}
             </CardContent>
           </Card>
 
@@ -313,28 +376,36 @@ export function ParentDashboardContent({
         <TabsContent value="progress">
           <Card className="p-6">
             <h3 className="text-2xl font-bold mb-6">Evolução do Progresso</h3>
-            <div className="space-y-4">
-              {sessions.slice(0, 5).map((session) => (
-                <div key={session.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-4"><CheckCircle2 className="w-6 h-6 text-primary" /><div><p className="font-medium">{session.game_type}</p><p className="text-sm text-muted-foreground">{new Date(session.created_at).toLocaleDateString('pt-BR')}</p></div></div>
-                  <div className="text-right"><p className="font-bold text-lg">{session.score || 0}</p><p className="text-sm text-muted-foreground">pontos</p></div>
-                </div>
-              ))}
-            </div>
+            {isRealData ? (
+              <div className="space-y-4">
+                {sessions.slice(0, 5).map((session) => (
+                  <div key={session.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-4"><CheckCircle2 className="w-6 h-6 text-primary" /><div><p className="font-medium">{session.game_type}</p><p className="text-sm text-muted-foreground">{new Date(session.created_at).toLocaleDateString('pt-BR')}</p></div></div>
+                    <div className="text-right"><p className="font-bold text-lg">{session.score || 0}</p><p className="text-sm text-muted-foreground">pontos</p></div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-muted-foreground text-center py-8">Nenhuma sessão registrada ainda. Complete jogos para ver sua evolução.</p>
+            )}
           </Card>
         </TabsContent>
 
         <TabsContent value="history">
           <Card className="p-6">
             <h3 className="text-2xl font-bold mb-6">Histórico de Sessões</h3>
-            <div className="space-y-3">
-              {sessions.map((session) => (
-                <div key={session.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div><p className="font-medium">{session.game_type}</p><p className="text-sm text-muted-foreground">{new Date(session.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p></div>
-                  <div className="text-right"><p className="font-semibold">{session.score || 0} pts</p><p className="text-sm text-muted-foreground">{Math.round(session.duration / 60)} min</p></div>
-                </div>
-              ))}
-            </div>
+            {isRealData ? (
+              <div className="space-y-3">
+                {sessions.map((session) => (
+                  <div key={session.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div><p className="font-medium">{session.game_type}</p><p className="text-sm text-muted-foreground">{new Date(session.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p></div>
+                    <div className="text-right"><p className="font-semibold">{session.score || 0} pts</p><p className="text-sm text-muted-foreground">{Math.round(session.duration / 60)} min</p></div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-muted-foreground text-center py-8">Nenhuma sessão registrada ainda. Complete um jogo para ver o histórico aqui.</p>
+            )}
           </Card>
         </TabsContent>
       </Tabs>
