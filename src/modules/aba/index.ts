@@ -43,16 +43,9 @@ export {
 } from './service';
 
 // ── Components ────────────────────────────────────────────
-export { AbaNeuroPlayDashboard } from './components/AbaNeuroPlayDashboard';
-export { AbaProgramsList } from './components/AbaProgramsList';
-export { AbaProgramDetail } from './components/AbaProgramDetail';
-export { AbaSkillsLibrary } from './components/AbaSkillsLibrary';
-export { AbaTrialCollector } from './components/AbaTrialCollector';
-export { AbaProgressChart } from './components/AbaProgressChart';
-export { AbaGameIntegration } from './components/AbaGameIntegration';
-export { AbaReportsPanel } from './components/AbaReportsPanel';
-export { AbaSessionManager } from './components/AbaSessionManager';
-export { AbaGoalsPanel } from './components/AbaGoalsPanel';
-export { AbaClinicalNotes } from './components/AbaClinicalNotes';
-export { AbaProgramEvolution } from './components/AbaProgramEvolution';
-export { AbaReportPDF } from './components/AbaReportPDF';
+export {
+  AbaNeuroPlayDashboard, AbaProgramsList, AbaProgramDetail,
+  AbaSkillsLibrary, AbaTrialCollector, AbaProgressChart,
+  AbaGameIntegration, AbaReportsPanel, AbaSessionManager,
+  AbaGoalsPanel, AbaClinicalNotes, AbaProgramEvolution, AbaReportPDF,
+} from '@/components/aba-neuroplay';
