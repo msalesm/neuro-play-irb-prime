@@ -106,8 +106,12 @@ describe('socioemotional domain scoring', () => {
         empathyScore: 85,
         impulseControlScore: 70,
         socialFlexibilityScore: 60,
+        conflictAvoidanceScore: 65,
+        moralConsistencyScore: 70,
         frustrationToleranceScore: 40,
         overallScore: 65,
+        avgDecisionLatencyMs: 1500,
+        indecisionRate: 0.1,
         totalDecisions: 10,
       },
     };
