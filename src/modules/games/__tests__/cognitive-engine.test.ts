@@ -46,8 +46,9 @@ describe('normalizeByAge', () => {
   });
 
   it('clamps extremely good values to 100 (ceiling)', () => {
-    // 0ms is impossibly fast → T would exceed 100, must clamp
-    const score = normalizeByAge(0, 'reaction_time', '7-9', true);
+    // -5000ms is physically impossible (designed to push Z >> 5 → T >> 100).
+    // This verifies the clamp at 100 works even for absurd overflow inputs.
+    const score = normalizeByAge(-5000, 'reaction_time', '7-9', true);
     expect(score).toBe(100);
   });
 
