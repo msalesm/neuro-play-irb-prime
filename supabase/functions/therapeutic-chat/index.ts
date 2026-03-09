@@ -270,61 +270,43 @@ Use linguagem acessível e estruture respostas em tópicos curtos e acionáveis.
       }
     }
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          ...messages,
-        ],
-        stream: true,
-        temperature: sentimentAnalysis.intensity === "high" ? 0.6 : 0.5, // Slightly higher temperature for high-intensity emotions
-      }),
+    // Use multi-provider AI with streaming fallback
+    const chatMessages: AIMessage[] = [
+      { role: "system", content: systemPrompt },
+      ...messages,
+    ];
+
+    const streamResult = await callAIStream({
+      messages: chatMessages,
+      model: "google/gemini-2.5-flash",
+      temperature: sentimentAnalysis.intensity === "high" ? 0.6 : 0.5,
     });
 
-    if (!response.ok) {
-      if (response.status === 429) {
-        return new Response(
-          JSON.stringify({ error: "Rate limit exceeded. Please try again later." }), 
-          {
-            status: 429,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
-      }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: "Payment required. Please add credits to your workspace." }), 
-          {
-            status: 402,
-            headers: { ...corsHeaders, "Content-Type": "application/json" },
-          }
-        );
-      }
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      return new Response(
-        JSON.stringify({ error: "AI service error" }), 
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+    console.log(`[AI] Chat streaming result:`, streamResult.stream ? `streaming via ${streamResult.provider}` : 'non-streaming fallback');
+
+    if (streamResult.stream) {
+      return new Response(streamResult.response.body, {
+        headers: { 
+          ...corsHeaders, 
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          "Connection": "keep-alive",
+        },
+      });
+    } else {
+      // Non-streaming fallback - format as SSE for client compatibility
+      const fallbackContent = streamResult.fallback.content;
+      const sseData = `data: ${JSON.stringify({ choices: [{ delta: { content: fallbackContent } }] })}\n\ndata: [DONE]\n\n`;
+      
+      return new Response(sseData, {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          "Connection": "keep-alive",
+        },
+      });
     }
-
-    return new Response(response.body, {
-      headers: { 
-        ...corsHeaders, 
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        "Connection": "keep-alive",
-      },
-    });
   } catch (error) {
     console.error("Therapeutic chat error:", error);
     return new Response(

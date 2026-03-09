@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.3";
 import { ReportRequest, ReportResponse } from "./types.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { callAI, AIMessage } from "../_shared/ai-provider.ts";
 import { fetchAllAvailableData, fetchNeurodiversityProfile } from "./queries.ts";
 import { calculateMetrics, analyzeTemporalEvolution, analyzeBehavioralPatterns } from "./metrics.ts";
 import { generateAIPrompt } from "./ai-prompts.ts";
@@ -174,65 +175,47 @@ serve(async (req) => {
     // Step 3: Generate AI insights
     let aiAnalysis = null;
     try {
-      const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
-      if (!lovableApiKey) {
-        console.warn('LOVABLE_API_KEY not configured, skipping AI analysis');
-      } else {
-        const aiPrompt = generateAIPrompt({
-          startDate,
-          endDate,
-          neurodiversityProfile,
-          generalMetrics,
-          cognitiveScores: generalMetrics.cognitiveScores,
-          temporalEvolution,
-          behavioralPatterns
-        });
+      const aiPrompt = generateAIPrompt({
+        startDate,
+        endDate,
+        neurodiversityProfile,
+        generalMetrics,
+        cognitiveScores: generalMetrics.cognitiveScores,
+        temporalEvolution,
+        behavioralPatterns
+      });
 
-        const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${lovableApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'google/gemini-2.5-flash',
-            messages: [
-              { role: 'system', content: aiPrompt.system },
-              { role: 'user', content: aiPrompt.user }
-            ],
-            temperature: 0.3,
-            max_tokens: 2000
-          })
-        });
+      const aiMessages: AIMessage[] = [
+        { role: 'system', content: aiPrompt.system },
+        { role: 'user', content: aiPrompt.user }
+      ];
 
-        if (aiResponse.ok) {
-          const aiData = await aiResponse.json();
-          let aiContent = aiData.choices?.[0]?.message?.content;
-          
-          if (aiContent) {
-            // Clean markdown code blocks from AI response
-            aiContent = aiContent
-              .replace(/```json\s*/gi, '')
-              .replace(/```\s*/g, '')
-              .trim();
-            
-            try {
-              // Try to parse as JSON
-              aiAnalysis = JSON.parse(aiContent);
-            } catch {
-              // If not JSON, create structured response
-              aiAnalysis = {
-                executiveSummary: aiContent,
-                domainAnalysis: {},
-                strengths: [],
-                areasOfConcern: [],
-                recommendations: [],
-                diagnosticIndicators: []
-              };
-            }
-          }
-        } else {
-          console.error('AI API error:', await aiResponse.text());
+      const aiResult = await callAI({
+        messages: aiMessages,
+        model: 'google/gemini-2.5-flash',
+        temperature: 0.3,
+        maxTokens: 2000,
+      });
+
+      console.log(`[AI] Clinical report AI response from provider: ${aiResult.provider}`);
+
+      if (!aiResult.fallback && aiResult.content) {
+        let aiContent = aiResult.content
+          .replace(/```json\s*/gi, '')
+          .replace(/```\s*/g, '')
+          .trim();
+        
+        try {
+          aiAnalysis = JSON.parse(aiContent);
+        } catch {
+          aiAnalysis = {
+            executiveSummary: aiContent,
+            domainAnalysis: {},
+            strengths: [],
+            areasOfConcern: [],
+            recommendations: [],
+            diagnosticIndicators: []
+          };
         }
       }
     } catch (aiError) {
