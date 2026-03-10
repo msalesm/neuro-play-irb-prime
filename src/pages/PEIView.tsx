@@ -424,6 +424,30 @@ const getStatusLabel = (status: string) => {
           )}
         </div>
 
+        {/* No plan yet: offer to create one */}
+        {!currentPlan && (selectedStudentId || patientId) && (
+          <Card className="mb-6">
+            <CardContent className="py-8 text-center">
+              <AlertCircle className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+              <p className="text-lg font-medium mb-1">
+                {selectedStudentName ? `${selectedStudentName} ainda não possui PEI` : 'Nenhum PEI encontrado para este aluno'}
+              </p>
+              <p className="text-sm text-muted-foreground mb-4">Crie um plano educacional individualizado para acompanhar o desenvolvimento.</p>
+              <Button onClick={async () => {
+                const targetId = selectedStudentId || patientId;
+                if (!targetId) return;
+                const result = await createPlan('manual', targetId);
+                if (result.success) {
+                  loadPEI();
+                }
+              }}>
+                <Plus className="h-4 w-4 mr-2" />
+                Criar PEI
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Card>
