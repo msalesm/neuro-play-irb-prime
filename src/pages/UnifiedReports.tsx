@@ -64,6 +64,13 @@ interface PatientOption {
   name: string;
 }
 
+interface ClassOption {
+  id: string;
+  name: string;
+  grade_level?: string;
+  student_count: number;
+}
+
 const reportTypes = [
   {
     type: 'familiar' as const,
@@ -111,8 +118,11 @@ export default function UnifiedReports() {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('30');
   const [generating, setGenerating] = useState<string | null>(null);
   const [selectedChild, setSelectedChild] = useState<string>('');
+  const [selectedClass, setSelectedClass] = useState<string>('');
+  const [classes, setClasses] = useState<ClassOption[]>([]);
   const [children, setChildren] = useState<PatientOption[]>([]);
   const [loadingChildren, setLoadingChildren] = useState(false);
+  const [reportMode, setReportMode] = useState<'student' | 'class'>('class');
   const [reports, setReports] = useState<Record<string, ReportData | null>>({
     clinical: null,
     pedagogical: null,
@@ -121,16 +131,82 @@ export default function UnifiedReports() {
 
   useEffect(() => {
     trackScreenView('unified_reports');
+    if (isAdmin || isTeacher) {
+      loadClassesForUser();
+    }
     if (isAdmin) {
       loadAllChildren();
     } else if (isTherapist) {
       loadPatientsForTherapist();
     } else if (isParent) {
       loadChildrenForParent();
-    } else if (isTeacher) {
-      loadStudentsForTeacher();
     }
   }, [trackScreenView, isAdmin, isTherapist, isParent, isTeacher]);
+
+  const loadClassesForUser = async () => {
+    if (!user) return;
+    try {
+      let query = supabase.from('school_classes').select('id, name, grade_level');
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user.id);
+      }
+      const { data: classesData, error } = await query.order('name');
+      if (error) throw error;
+
+      const classesWithCounts = await Promise.all(
+        (classesData || []).map(async (cls) => {
+          const { count } = await supabase
+            .from('class_students')
+            .select('*', { count: 'exact', head: true })
+            .eq('class_id', cls.id)
+            .eq('is_active', true);
+          return {
+            id: cls.id,
+            name: cls.name,
+            grade_level: cls.grade_level || undefined,
+            student_count: count || 0,
+          };
+        })
+      );
+      setClasses(classesWithCounts);
+      if (classesWithCounts.length > 0 && !selectedClass) {
+        setSelectedClass(classesWithCounts[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading classes:', error);
+    }
+  };
+
+  // When class changes, load its students
+  useEffect(() => {
+    if ((isTeacher || isAdmin) && selectedClass && reportMode === 'class') {
+      loadStudentsForClass(selectedClass);
+    }
+  }, [selectedClass, reportMode]);
+
+  const loadStudentsForClass = async (classId: string) => {
+    setLoadingChildren(true);
+    try {
+      const { data, error } = await supabase
+        .from('class_students')
+        .select('child_id, children!class_students_child_id_fkey(id, name)')
+        .eq('class_id', classId)
+        .eq('is_active', true);
+
+      if (error) throw error;
+      const list = (data || [])
+        .filter((d: any) => d.children)
+        .map((d: any) => ({ id: d.children.id, name: d.children.name }));
+      setChildren(list);
+      if (list.length > 0) {
+        setSelectedChild(list[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading class students:', error);
+    } finally {
+      setLoadingChildren(false);
+    }
+  };
 
   const loadAllChildren = async () => {
     if (!user) return;
@@ -203,41 +279,7 @@ export default function UnifiedReports() {
     }
   };
 
-  const loadStudentsForTeacher = async () => {
-    if (!user) return;
-    setLoadingChildren(true);
-    try {
-      const { data: classes } = await supabase
-        .from('school_classes')
-        .select('id')
-        .eq('teacher_id', user.id);
-      
-      if (!classes || classes.length === 0) {
-        setChildren([]);
-        return;
-      }
 
-      const { data, error } = await supabase
-        .from('class_students')
-        .select('child_id, children!class_students_child_id_fkey(id, name)')
-        .in('class_id', classes.map(c => c.id))
-        .eq('is_active', true);
-
-      if (error) throw error;
-      const list = (data || [])
-        .filter((d: any) => d.children)
-        .map((d: any) => ({ id: d.children.id, name: d.children.name }));
-      const unique = Array.from(new Map(list.map((s: any) => [s.id, s])).values());
-      setChildren(unique);
-      if (unique.length > 0 && !selectedChild) {
-        setSelectedChild(unique[0].id);
-      }
-    } catch (error) {
-      console.error('Error loading students:', error);
-    } finally {
-      setLoadingChildren(false);
-    }
-  };
 
   const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
     if (!user) return;
@@ -389,6 +431,7 @@ export default function UnifiedReports() {
           : reportTypes.filter(r => r.type === 'familiar');
 
   const selectedChildName = children.find(c => c.id === selectedChild)?.name;
+  const selectedClassName = classes.find(c => c.id === selectedClass)?.name;
 
   const getPageTitle = () => {
     if (isTherapist) return 'Relatório Clínico';
@@ -400,7 +443,7 @@ export default function UnifiedReports() {
   const getPageDescription = () => {
     if (isTherapist) return 'Gere relatórios detalhados com análise de IA para acompanhamento terapêutico';
     if (isParent) return 'Acompanhe o progresso do seu filho com relatórios simples e claros';
-    if (isTeacher) return 'Relatórios pedagógicos para acompanhamento escolar do aluno';
+    if (isTeacher) return 'Selecione a turma e o aluno para gerar relatórios pedagógicos';
     return 'Visão unificada de todos os relatórios da plataforma';
   };
 
@@ -442,12 +485,57 @@ export default function UnifiedReports() {
         >
           <Card className="mb-8 border-primary/20 shadow-sm">
             <CardContent className="pt-6">
-              <div className="flex flex-col sm:flex-row gap-4 items-end">
-                {/* Child Selector */}
-                {(isAdmin || isTherapist || isParent || isTeacher) && (
+              <div className="flex flex-col gap-4">
+                {/* Teacher/Admin: Class & Student selectors */}
+                {(isTeacher || isAdmin) && (
+                  <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    {/* Class Selector */}
+                    <div className="flex-1 w-full">
+                      <label className="text-sm font-medium mb-2 block text-foreground">Turma</label>
+                      <Select value={selectedClass} onValueChange={(v) => {
+                        setSelectedClass(v);
+                        setSelectedChild('');
+                        setReports({ clinical: null, pedagogical: null, familiar: null });
+                      }}>
+                        <SelectTrigger className="w-full">
+                          <GraduationCap className="h-4 w-4 mr-2 text-muted-foreground" />
+                          <SelectValue placeholder="Selecione a turma..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {classes.map((cls) => (
+                            <SelectItem key={cls.id} value={cls.id}>
+                              {cls.name} {cls.grade_level ? `(${cls.grade_level})` : ''} — {cls.student_count} alunos
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Student Selector */}
+                    <div className="flex-1 w-full">
+                      <label className="text-sm font-medium mb-2 block text-foreground">Aluno</label>
+                      <Select value={selectedChild} onValueChange={setSelectedChild}>
+                        <SelectTrigger className="w-full">
+                          <UserCircle className="h-4 w-4 mr-2 text-muted-foreground" />
+                          <SelectValue placeholder={loadingChildren ? "Carregando..." : selectedClass ? "Selecione o aluno..." : "Selecione uma turma primeiro"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {children.map((child) => (
+                            <SelectItem key={child.id} value={child.id}>
+                              {child.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                )}
+
+                {/* Therapist/Parent: Child selector */}
+                {(isTherapist || isParent) && (
                   <div className="flex-1 w-full">
                     <label className="text-sm font-medium mb-2 block text-foreground">
-                      {isTherapist ? 'Paciente' : isTeacher ? 'Aluno' : isAdmin ? 'Criança/Paciente' : 'Filho(a)'}
+                      {isTherapist ? 'Paciente' : 'Filho(a)'}
                     </label>
                     <Select value={selectedChild} onValueChange={setSelectedChild}>
                       <SelectTrigger className="w-full">
@@ -465,38 +553,40 @@ export default function UnifiedReports() {
                   </div>
                 )}
 
-                {/* Period */}
-                <div className={`${(isAdmin || isTherapist || isParent || isTeacher) ? '' : 'flex-1'} w-full sm:w-auto`}>
-                  <label className="text-sm font-medium mb-2 block text-foreground">Período</label>
-                  <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-                    <SelectTrigger className="w-full sm:w-[160px]">
-                      <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="7">7 dias</SelectItem>
-                      <SelectItem value="30">30 dias</SelectItem>
-                      <SelectItem value="90">3 meses</SelectItem>
-                      <SelectItem value="180">6 meses</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                  {/* Period */}
+                  <div className="w-full sm:w-auto">
+                    <label className="text-sm font-medium mb-2 block text-foreground">Período</label>
+                    <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                      <SelectTrigger className="w-full sm:w-[160px]">
+                        <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="7">7 dias</SelectItem>
+                        <SelectItem value="30">30 dias</SelectItem>
+                        <SelectItem value="90">3 meses</SelectItem>
+                        <SelectItem value="180">6 meses</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                {/* Generate All (admin only) */}
-                {isAdmin && (
-                  <Button 
-                    onClick={generateAllReports} 
-                    disabled={generating !== null}
-                    className="shrink-0"
-                  >
-                    {generating ? (
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    ) : (
-                      <Sparkles className="h-4 w-4 mr-2" />
-                    )}
-                    Gerar Todos
-                  </Button>
-                )}
+                  {/* Generate All (admin only) */}
+                  {isAdmin && (
+                    <Button 
+                      onClick={generateAllReports} 
+                      disabled={generating !== null}
+                      className="shrink-0"
+                    >
+                      {generating ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      ) : (
+                        <Sparkles className="h-4 w-4 mr-2" />
+                      )}
+                      Gerar Todos
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -529,8 +619,10 @@ export default function UnifiedReports() {
                         <CardTitle className="text-base truncate">
                           {reportType.title}
                         </CardTitle>
-                        {selectedChildName && (
-                          <p className="text-xs text-muted-foreground truncate mt-0.5">{selectedChildName}</p>
+                        {(selectedClassName || selectedChildName) && (
+                          <p className="text-xs text-muted-foreground truncate mt-0.5">
+                            {selectedClassName ? `${selectedClassName}` : ''}{selectedClassName && selectedChildName ? ' — ' : ''}{selectedChildName || ''}
+                          </p>
                         )}
                         <CardDescription className="text-xs mt-1 line-clamp-2">
                           {reportType.description}
