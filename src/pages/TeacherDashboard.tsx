@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Users, Activity, GraduationCap, Sparkles, BookOpen,
-  AlertTriangle, TrendingUp, Target, Scan, Brain,
+  AlertTriangle, TrendingUp, Target, Scan, Brain, Stethoscope,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -22,6 +22,10 @@ import { SchoolWeeklyEngagement } from '@/modules/school/components/SchoolWeekly
 import { ClassCognitiveProfile } from '@/components/educacao/ClassCognitiveProfile';
 import { ClassEvolutionChart } from '@/components/educacao/ClassEvolutionChart';
 import { ClassroomScan } from '@/components/educacao/ClassroomScan';
+import { InterventionRecommendations } from '@/components/educacao/InterventionRecommendations';
+import { generateClassInterventions } from '@/modules/intervention-protocols';
+import { calculateClassNCI } from '@/modules/cognitive-index';
+import { useQuery as useQueryTanstack } from '@tanstack/react-query';
 
 export default function TeacherDashboard() {
   const navigate = useNavigate();
@@ -213,6 +217,43 @@ export default function TeacherDashboard() {
     staleTime: 2 * 60 * 1000,
   });
 
+  // Fetch scan results for interventions
+  const { data: classScanResults } = useQueryTanstack({
+    queryKey: ['class-scan-interventions', selectedClassId],
+    queryFn: async () => {
+      if (!selectedClassId) return null;
+      const { data: session } = await supabase
+        .from('classroom_scan_sessions')
+        .select('id')
+        .eq('class_id', selectedClassId)
+        .eq('status', 'completed')
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (!session) return null;
+      const { data: results } = await supabase
+        .from('scan_student_results')
+        .select('attention_score, memory_score, language_score, executive_function_score')
+        .eq('session_id', session.id)
+        .eq('status', 'completed');
+      return results || [];
+    },
+    enabled: !!selectedClassId,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const classInterventions = useMemo(() => {
+    if (!classScanResults?.length) return [];
+    const nci = calculateClassNCI(classScanResults);
+    if (!nci) return [];
+    return generateClassInterventions({
+      attention: nci.domains.attention,
+      memory: nci.domains.memory,
+      language: nci.domains.language,
+      executiveFunction: nci.domains.executiveFunction,
+    });
+  }, [classScanResults]);
+
   if (!user) return null;
 
   const StatSkeleton = () => (
@@ -354,7 +395,7 @@ export default function TeacherDashboard() {
 
       {/* Main content tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="alunos" className="gap-1.5">
             <Users className="h-4 w-4" />
             <span className="hidden sm:inline">Alunos</span>
@@ -366,6 +407,10 @@ export default function TeacherDashboard() {
           <TabsTrigger value="evolucao" className="gap-1.5">
             <TrendingUp className="h-4 w-4" />
             <span className="hidden sm:inline">Evolução</span>
+          </TabsTrigger>
+          <TabsTrigger value="intervencoes" className="gap-1.5">
+            <Stethoscope className="h-4 w-4" />
+            <span className="hidden sm:inline">Intervenções</span>
           </TabsTrigger>
           <TabsTrigger value="atividades" className="gap-1.5">
             <Sparkles className="h-4 w-4" />
@@ -412,6 +457,10 @@ export default function TeacherDashboard() {
               </CardContent>
             </Card>
           )}
+        </TabsContent>
+
+        <TabsContent value="intervencoes" className="mt-4">
+          <InterventionRecommendations recommendations={classInterventions} context="class" />
         </TabsContent>
 
         <TabsContent value="atividades" className="mt-4">
