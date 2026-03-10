@@ -279,41 +279,7 @@ export default function UnifiedReports() {
     }
   };
 
-  const loadStudentsForTeacher = async () => {
-    if (!user) return;
-    setLoadingChildren(true);
-    try {
-      const { data: classes } = await supabase
-        .from('school_classes')
-        .select('id')
-        .eq('teacher_id', user.id);
-      
-      if (!classes || classes.length === 0) {
-        setChildren([]);
-        return;
-      }
 
-      const { data, error } = await supabase
-        .from('class_students')
-        .select('child_id, children!class_students_child_id_fkey(id, name)')
-        .in('class_id', classes.map(c => c.id))
-        .eq('is_active', true);
-
-      if (error) throw error;
-      const list = (data || [])
-        .filter((d: any) => d.children)
-        .map((d: any) => ({ id: d.children.id, name: d.children.name }));
-      const unique = Array.from(new Map(list.map((s: any) => [s.id, s])).values());
-      setChildren(unique);
-      if (unique.length > 0 && !selectedChild) {
-        setSelectedChild(unique[0].id);
-      }
-    } catch (error) {
-      console.error('Error loading students:', error);
-    } finally {
-      setLoadingChildren(false);
-    }
-  };
 
   const generateReport = async (type: 'clinical' | 'pedagogical' | 'familiar') => {
     if (!user) return;
