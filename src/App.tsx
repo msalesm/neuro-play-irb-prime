@@ -147,6 +147,7 @@ const ProfessionalAnalytics = lazy(() => import("./pages/ProfessionalAnalytics")
 const EducacaoDashboard = lazy(() => import("./pages/EducacaoDashboard"));
 const SchoolDirectorDashboard = lazy(() => import("./pages/SchoolDirectorDashboard"));
 const SecretariaDashboard = lazy(() => import("./pages/SecretariaDashboard"));
+const JoinScan = lazy(() => import("./pages/JoinScan"));
 
 // Community & Messaging
 const Community = lazy(() => import("./pages/Community"));
