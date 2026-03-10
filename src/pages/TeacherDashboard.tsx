@@ -217,6 +217,43 @@ export default function TeacherDashboard() {
     staleTime: 2 * 60 * 1000,
   });
 
+  // Fetch scan results for interventions
+  const { data: classScanResults } = useQueryTanstack({
+    queryKey: ['class-scan-interventions', selectedClassId],
+    queryFn: async () => {
+      if (!selectedClassId) return null;
+      const { data: session } = await supabase
+        .from('classroom_scan_sessions')
+        .select('id')
+        .eq('class_id', selectedClassId)
+        .eq('status', 'completed')
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (!session) return null;
+      const { data: results } = await supabase
+        .from('scan_student_results')
+        .select('attention_score, memory_score, language_score, executive_function_score')
+        .eq('session_id', session.id)
+        .eq('status', 'completed');
+      return results || [];
+    },
+    enabled: !!selectedClassId,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const classInterventions = useMemo(() => {
+    if (!classScanResults?.length) return [];
+    const nci = calculateClassNCI(classScanResults);
+    if (!nci) return [];
+    return generateClassInterventions({
+      attention: nci.domains.attention,
+      memory: nci.domains.memory,
+      language: nci.domains.language,
+      executiveFunction: nci.domains.executiveFunction,
+    });
+  }, [classScanResults]);
+
   if (!user) return null;
 
   const StatSkeleton = () => (
