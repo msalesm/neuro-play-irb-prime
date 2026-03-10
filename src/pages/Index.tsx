@@ -1,15 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { 
   Brain, Target, TrendingUp, ArrowRight, GraduationCap, 
   Zap, BookOpen, BarChart3, Award, Heart, Shield, Users, 
   Stethoscope, Gamepad2, CalendarCheck, MessageCircle, Star,
   CheckCircle2, Smartphone, Apple, Monitor, Activity, 
   FileText, Lightbulb, Database, School, Sparkles, Eye,
-  LineChart, ClipboardList, RefreshCw, Radar, AlertTriangle,
-  BellRing, Compass, Layers, Lock, Cpu, Server, PieChart,
-  Fingerprint, Globe
+  LineChart, ClipboardList, RefreshCw, AlertTriangle,
+  Clock, Scan, Lock, Globe
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
@@ -42,11 +42,8 @@ const StarRating = ({ count = 5 }: { count?: number }) => (
   </div>
 );
 
-const SectionHeader = ({ badge, title, subtitle, stars = 5 }: { badge: string; title: string; subtitle: string; stars?: number }) => (
+const SectionHeader = ({ badge, title, subtitle }: { badge: string; title: string; subtitle: string }) => (
   <motion.div className="text-center mb-10 md:mb-16" variants={fadeIn}>
-    <div className="flex justify-center mb-3">
-      <StarRating count={stars} />
-    </div>
     <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">{badge}</Badge>
     <h2 className="text-2xl md:text-4xl font-bold mb-3">
       <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
@@ -64,7 +61,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
 
       {/* ═══════════════════════════════════════════
-          HERO
+          1. HERO — Posicionamento Healthtech
       ═══════════════════════════════════════════ */}
       <section className="relative min-h-[85vh] md:min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
@@ -87,7 +84,7 @@ const Index = () => {
           >
             <motion.div variants={fadeIn} className="flex items-center gap-3 mb-4 md:mb-6">
               <Badge className="bg-primary/90 text-primary-foreground border-0 text-xs md:text-sm px-3 py-1">
-                Cognitive Development Platform
+                Neurodevelopment Platform
               </Badge>
               <StarRating />
             </motion.div>
@@ -96,9 +93,9 @@ const Index = () => {
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-4 md:mb-6 leading-tight"
               variants={fadeIn}
             >
-              Inteligência cognitiva infantil
+              Triagem e desenvolvimento
               <span className="block text-primary mt-1 md:mt-2">
-                baseada em dados comportamentais
+                cognitivo infantil
               </span>
             </motion.h1>
             
@@ -106,9 +103,25 @@ const Index = () => {
               className="text-base md:text-xl text-primary-foreground/85 mb-6 md:mb-8 max-w-lg leading-relaxed"
               variants={fadeIn}
             >
-              Jogos adaptativos com IA, Copilot de desenvolvimento, avaliação cognitiva automática, ABA digital 
-              e recomendações personalizadas para pais, terapeutas e escolas — tudo em uma única plataforma.
+              Avalie, acompanhe e desenvolva habilidades cognitivas de crianças 
+              através de jogos inteligentes e análise baseada em dados.
             </motion.p>
+
+            <motion.div 
+              className="flex flex-wrap gap-3 mb-6 md:mb-8"
+              variants={fadeIn}
+            >
+              {[
+                "Triagem cognitiva em minutos",
+                "Acompanhamento longitudinal",
+                "Relatórios para escolas e famílias",
+              ].map((b) => (
+                <div key={b} className="flex items-center gap-2 text-primary-foreground/80 text-xs md:text-sm bg-primary-foreground/10 rounded-full px-3 py-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                  <span>{b}</span>
+                </div>
+              ))}
+            </motion.div>
             
             <motion.div className="flex flex-col sm:flex-row gap-3 md:gap-4" variants={fadeIn}>
               {user ? (
@@ -121,11 +134,11 @@ const Index = () => {
                 <>
                   <Button asChild size="lg" className="text-base shadow-glow">
                     <Link to="/auth" className="flex items-center gap-2">
-                      Começar Agora <ArrowRight className="w-4 h-4" />
+                      Iniciar Avaliação <ArrowRight className="w-4 h-4" />
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="text-base bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20">
-                    <Link to="/auth">Já tenho conta</Link>
+                    <Link to="#como-funciona">Conhecer a Plataforma</Link>
                   </Button>
                 </>
               )}
@@ -138,8 +151,8 @@ const Index = () => {
               {[
                 { icon: Shield, text: "LGPD Compliant" },
                 { icon: Brain, text: "Baseado em Evidências" },
-                { icon: Sparkles, text: "IA Adaptativa" },
-                { icon: Heart, text: "Perfis Comportamentais" },
+                { icon: Database, text: "Dataset Cognitivo" },
+                { icon: Lock, text: "Dados Seguros" },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-2 text-primary-foreground/70 text-xs md:text-sm">
                   <item.icon className="w-4 h-4 text-primary" />
@@ -152,7 +165,7 @@ const Index = () => {
       </section>
 
       {/* ═══════════════════════════════════════════
-          PARA QUEM
+          2. O PROBLEMA
       ═══════════════════════════════════════════ */}
       <motion.section 
         className="py-16 md:py-24 bg-muted/30"
@@ -163,14 +176,362 @@ const Index = () => {
       >
         <div className="container mx-auto px-4 md:px-6">
           <SectionHeader
-            badge="Ecossistema Completo"
-            title="Uma plataforma, todos os contextos"
-            subtitle="NeuroPlay conecta famílias, profissionais de saúde, educadores e instituições em torno do desenvolvimento da criança."
-            stars={5}
+            badge="O Desafio"
+            title="Dificuldades cognitivas não identificadas a tempo"
+            subtitle="Muitas crianças passam anos sem que seus desafios de aprendizagem sejam detectados."
           />
 
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              { icon: BookOpen, label: "Atraso na alfabetização", desc: "Dificuldades fonológicas não percebidas nos primeiros anos" },
+              { icon: Target, label: "Dificuldades de atenção", desc: "Sinais de desatenção confundidos com desinteresse" },
+              { icon: AlertTriangle, label: "Baixa confiança escolar", desc: "Frustração acumulada sem intervenção adequada" },
+              { icon: Clock, label: "Diagnóstico tardio", desc: "Anos de sofrimento antes de receber apoio" },
+            ].map((item) => (
+              <motion.div key={item.label} variants={scaleIn}>
+                <Card className="h-full border-destructive/10 bg-destructive/5">
+                  <CardContent className="p-4 md:p-5 text-center">
+                    <div className="w-10 h-10 bg-destructive/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                      <item.icon className="w-5 h-5 text-destructive" />
+                    </div>
+                    <h3 className="font-bold text-sm mb-1">{item.label}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.p 
+            className="text-center text-muted-foreground mt-8 max-w-lg mx-auto text-sm"
+            variants={fadeIn}
+          >
+            Escolas e famílias frequentemente não possuem ferramentas acessíveis para detectar sinais precoces de dificuldades cognitivas.
+          </motion.p>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          3. A SOLUÇÃO — Como funciona
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        id="como-funciona"
+        className="py-16 md:py-24"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionHeader
+            badge="Como Funciona"
+            title="Do jogo ao relatório em minutos"
+            subtitle="Processo simples que transforma atividades lúdicas em dados de desenvolvimento cognitivo."
+          />
+
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-4xl mx-auto mb-12"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              { step: "1", icon: Gamepad2, title: "Triagem Gamificada", desc: "Atividades cognitivas de 5–7 minutos que parecem jogos" },
+              { step: "2", icon: Brain, title: "Análise Automática", desc: "IA processa tempo de reação, precisão e padrões comportamentais" },
+              { step: "3", icon: Stethoscope, title: "Intervenção Guiada", desc: "Protocolos de exercícios recomendados automaticamente" },
+              { step: "4", icon: TrendingUp, title: "Evolução Contínua", desc: "Acompanhamento longitudinal do desenvolvimento" },
+            ].map((item) => (
+              <motion.div key={item.step} variants={scaleIn}>
+                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300">
+                  <CardContent className="p-5 text-center">
+                    <div className="relative mb-4">
+                      <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto">
+                        <item.icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xs font-bold">
+                        {item.step}
+                      </div>
+                    </div>
+                    <h3 className="font-bold text-sm mb-1.5">{item.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          4. NCI — NeuroPlay Cognitive Index
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        className="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-secondary/5"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+            <motion.div variants={stagger}>
+              <motion.div variants={fadeIn}>
+                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">Índice Proprietário</Badge>
+                <h2 className="text-2xl md:text-4xl font-bold mb-4">
+                  NeuroPlay Cognitive Index
+                </h2>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  Um índice cognitivo que acompanha o desenvolvimento da criança ao longo do tempo,
+                  combinando 5 domínios em um score único de 0 a 100.
+                </p>
+              </motion.div>
+
+              <motion.div className="space-y-3 mb-6" variants={stagger}>
+                {[
+                  { label: "Atenção", value: 74, emoji: "🎯" },
+                  { label: "Memória de Trabalho", value: 81, emoji: "🧠" },
+                  { label: "Linguagem", value: 69, emoji: "📖" },
+                  { label: "Função Executiva", value: 77, emoji: "🧩" },
+                  { label: "Cognição Social", value: 72, emoji: "🤝" },
+                ].map((d) => (
+                  <motion.div key={d.label} variants={fadeIn} className="space-y-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="flex items-center gap-2">
+                        <span>{d.emoji}</span>
+                        <span>{d.label}</span>
+                      </span>
+                      <span className="font-bold text-primary">{d.value}</span>
+                    </div>
+                    <Progress value={d.value} className="h-2" />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+
+            <motion.div variants={fadeIn}>
+              <Card className="border-2 border-primary/20 shadow-glow bg-card/80">
+                <CardContent className="p-6 md:p-8 text-center">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium mb-2">
+                    NeuroPlay Cognitive Index
+                  </p>
+                  <div className="text-6xl md:text-7xl font-bold text-primary mb-2">78</div>
+                  <Badge className="bg-primary/10 text-primary border-primary/20 mb-4">
+                    Desenvolvimento Adequado
+                  </Badge>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Score composto que permite monitorar evolução cognitiva ao longo de semanas, meses e anos.
+                  </p>
+
+                  {/* Scale */}
+                  <div className="mt-6 space-y-1">
+                    <div className="flex h-3 rounded-full overflow-hidden">
+                      <div className="flex-1 bg-destructive/60" />
+                      <div className="flex-1 bg-destructive/30" />
+                      <div className="flex-1 bg-chart-4/50" />
+                      <div className="flex-1 bg-primary/40" />
+                      <div className="flex-1 bg-chart-3/50" />
+                    </div>
+                    <div className="flex justify-between text-[9px] text-muted-foreground px-1">
+                      <span>Urgente</span>
+                      <span>Intervenção</span>
+                      <span>Atenção</span>
+                      <span>Adequado</span>
+                      <span>Avançado</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          5. TRIAGEM RÁPIDA PARA ESCOLAS
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        className="py-16 md:py-24"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
+            <motion.div className="relative rounded-2xl overflow-hidden shadow-glow order-2 lg:order-1" variants={fadeIn}>
+              <img 
+                src={childFocusedImg} 
+                alt="Criança focada em atividade cognitiva" 
+                className="w-full h-64 md:h-96 object-cover"
+                loading="lazy"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 md:p-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                    <Scan className="w-5 h-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <p className="text-primary-foreground font-semibold text-sm">Classroom Cognitive Scan</p>
+                    <p className="text-primary-foreground/70 text-xs">30 alunos avaliados em minutos</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div className="order-1 lg:order-2" variants={stagger}>
+              <motion.div variants={fadeIn}>
+                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">Triagem em Massa</Badge>
+                <h2 className="text-2xl md:text-4xl font-bold mb-4">
+                  Avaliação cognitiva de turmas inteiras
+                </h2>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  O professor inicia uma sessão, alunos entram com um código, jogam por 5–7 minutos e o sistema
+                  gera automaticamente o perfil cognitivo da turma.
+                </p>
+              </motion.div>
+
+              <motion.div className="space-y-3 mb-6" variants={stagger}>
+                {[
+                  { icon: Users, text: "Professor inicia sessão da turma" },
+                  { icon: Scan, text: "Alunos entram com código via tablet ou computador" },
+                  { icon: Gamepad2, text: "Atividade cognitiva gamificada de poucos minutos" },
+                  { icon: BarChart3, text: "Resultados automáticos no dashboard da turma" },
+                ].map((step) => (
+                  <motion.div key={step.text} className="flex items-center gap-3" variants={fadeIn}>
+                    <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                      <step.icon className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="text-sm">{step.text}</span>
+                  </motion.div>
+                ))}
+              </motion.div>
+
+              {/* Mock dashboard result */}
+              <motion.div variants={fadeIn}>
+                <Card className="shadow-card">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <p className="font-bold text-sm">Turma 3A — Resultado</p>
+                      <Badge variant="outline" className="text-[10px]">28 alunos</Badge>
+                    </div>
+                    <div className="grid grid-cols-4 gap-2 mb-3">
+                      {[
+                        { label: "Atenção", value: 71, color: "text-primary" },
+                        { label: "Memória", value: 65, color: "text-chart-2" },
+                        { label: "Linguagem", value: 58, color: "text-chart-4" },
+                        { label: "F. Executiva", value: 69, color: "text-primary" },
+                      ].map((d) => (
+                        <div key={d.label} className="text-center bg-muted/50 rounded-lg p-2">
+                          <p className={`text-lg font-bold ${d.color}`}>{d.value}</p>
+                          <p className="text-[9px] text-muted-foreground">{d.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <Badge variant="outline" className="text-destructive border-destructive/30 text-[10px]">
+                        📖 3 risco leitura
+                      </Badge>
+                      <Badge variant="outline" className="text-chart-4 border-chart-4/30 text-[10px]">
+                        🎯 2 risco atenção
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          6. ACOMPANHAMENTO LONGITUDINAL
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        className="py-16 md:py-24 bg-muted/30"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionHeader
+            badge="Evolução Contínua"
+            title="Acompanhamento do desenvolvimento ao longo do tempo"
+            subtitle="Em vez de avaliações pontuais, o NeuroPlay monitora a evolução cognitiva semana a semana."
+          />
+
+          <motion.div 
+            className="max-w-3xl mx-auto"
+            variants={fadeIn}
+          >
+            <Card className="shadow-card">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <p className="font-bold text-sm">Lucas — Evolução Cognitiva</p>
+                  <Badge variant="outline" className="text-chart-3 text-[10px]">↑ Melhorando</Badge>
+                </div>
+                
+                {/* Mock evolution chart */}
+                <div className="space-y-4">
+                  {[
+                    { domain: "🎯 Atenção", w1: 52, w8: 63, w16: 71, color: "bg-primary" },
+                    { domain: "🧠 Memória", w1: 48, w8: 58, w16: 66, color: "bg-chart-2" },
+                    { domain: "📖 Linguagem", w1: 41, w8: 52, w16: 61, color: "bg-chart-3" },
+                    { domain: "🧩 F. Executiva", w1: 55, w8: 62, w16: 68, color: "bg-chart-4" },
+                  ].map((d) => (
+                    <div key={d.domain}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-medium">{d.domain}</span>
+                        <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                          <span>Sem 1: {d.w1}</span>
+                          <span>Sem 8: {d.w8}</span>
+                          <span className="font-bold text-chart-3">Sem 16: {d.w16}</span>
+                        </div>
+                      </div>
+                      <div className="flex gap-1 h-2">
+                        <div className={`${d.color}/30 rounded-full`} style={{ width: `${d.w1}%` }} />
+                        <div className={`${d.color}/60 rounded-full`} style={{ width: `${d.w8 - d.w1}%` }} />
+                        <div className={`${d.color} rounded-full`} style={{ width: `${d.w16 - d.w8}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-xs text-muted-foreground text-center mt-4">
+                  Dados ilustrativos. Scores reais gerados a partir das atividades cognitivas.
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          7. INTERVENÇÕES BASEADAS EM DADOS
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        className="py-16 md:py-24"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionHeader
+            badge="Intervenção Guiada"
+            title="Recomendações automáticas de atividades"
+            subtitle="Quando o sistema identifica possíveis dificuldades, sugere protocolos de exercícios com frequência, duração e acompanhamento."
+          />
+
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
             variants={stagger}
             initial="hidden"
             whileInView="visible"
@@ -178,38 +539,127 @@ const Index = () => {
           >
             {[
               {
-                icon: Heart,
-                title: "Famílias",
-                desc: "Acompanhe o progresso com jogos cognitivos, rotina inteligente e recomendações personalizadas por IA.",
-                features: ["Rotina executiva", "Relatório semanal automático", "Histórias interativas", "Recomendações para pais", "Missões diárias gamificadas"],
+                icon: BookOpen,
+                title: "Consciência Fonológica",
+                trigger: "Linguagem abaixo de 60",
+                protocol: "10 min · 3x por semana · 4 semanas",
+                improvement: "+22% esperado",
+                evidence: "Evidência forte",
+              },
+              {
+                icon: Target,
+                title: "Atenção Sustentada",
+                trigger: "Atenção abaixo de 60",
+                protocol: "8 min · 4x por semana · 3 semanas",
+                improvement: "+18% esperado",
+                evidence: "Evidência forte",
+              },
+              {
+                icon: Brain,
+                title: "Memória Operacional",
+                trigger: "Memória abaixo de 60",
+                protocol: "10 min · 3x por semana · 4 semanas",
+                improvement: "+15% esperado",
+                evidence: "Evidência moderada",
+              },
+            ].map((item) => (
+              <motion.div key={item.title} variants={scaleIn}>
+                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300">
+                  <CardContent className="p-5">
+                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mb-3">
+                      <item.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="font-bold text-sm mb-1">{item.title}</h3>
+                    <p className="text-xs text-muted-foreground mb-3">{item.trigger}</p>
+                    
+                    <div className="space-y-2 bg-muted/50 rounded-lg p-3">
+                      <div className="flex items-center gap-2 text-xs">
+                        <Clock className="w-3 h-3 text-muted-foreground" />
+                        <span>{item.protocol}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-chart-3">
+                        <TrendingUp className="w-3 h-3" />
+                        <span className="font-medium">{item.improvement}</span>
+                      </div>
+                      <div className="text-[10px] text-muted-foreground">
+                        📊 {item.evidence}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          8. PARA QUEM
+      ═══════════════════════════════════════════ */}
+      <motion.section 
+        className="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-secondary/5"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionHeader
+            badge="Ecossistema Completo"
+            title="Uma plataforma, todos os contextos"
+            subtitle="NeuroPlay conecta escolas, profissionais de saúde e famílias em torno do desenvolvimento cognitivo infantil."
+          />
+
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                icon: School,
+                title: "Escolas",
+                desc: "Triagem cognitiva em turmas, dashboard pedagógico, alertas automáticos e relatórios institucionais.",
+                features: [
+                  "Triagem de turma em minutos",
+                  "Dashboard por turma com NCI",
+                  "Alertas de risco de leitura e atenção",
+                  "Acompanhamento longitudinal",
+                  "Relatório para diretores e secretaria",
+                ],
               },
               {
                 icon: Stethoscope,
-                title: "Terapeutas",
-                desc: "Prontuário eletrônico, ABA digital, radar cognitivo e intervenção adaptativa baseada em dados clínicos.",
-                features: ["ABA digital com prompting", "Prontuário eletrônico", "Avaliação cognitiva automática", "Relatórios clínicos em PDF", "Perfil comportamental integrado"],
+                title: "Profissionais",
+                desc: "Psicólogos, terapeutas e fonoaudiólogos podem acompanhar o desenvolvimento cognitivo com dados objetivos.",
+                features: [
+                  "Prontuário eletrônico integrado",
+                  "Avaliação cognitiva automática",
+                  "Protocolos ABA digitais",
+                  "Relatórios clínicos em PDF",
+                  "Acompanhamento de intervenções",
+                ],
               },
               {
-                icon: GraduationCap,
-                title: "Escolas",
-                desc: "Dashboard por turma, PEI digital, mapa de vulnerabilidade e alertas automáticos para coordenação.",
-                features: ["Dashboard por turma", "PEI integrado", "Mapa de vulnerabilidade", "Alertas pedagógicos", "Relatórios para secretaria"],
-              },
-              {
-                icon: School,
-                title: "Instituições",
-                desc: "Visão agregada de toda a rede escolar com indicadores cognitivos, predição de risco e gestão de licenças.",
-                features: ["Dashboard institucional", "Indicadores por região", "Predição de risco", "Gestão de licenças", "Auditoria e compliance"],
+                icon: Heart,
+                title: "Famílias",
+                desc: "Pais podem entender melhor o desenvolvimento cognitivo dos filhos e acompanhar o progresso ao longo do tempo.",
+                features: [
+                  "Relatório simplificado de progresso",
+                  "Jogos cognitivos adaptativos",
+                  "Rotina executiva diária",
+                  "Histórias interativas",
+                  "Recomendações personalizadas",
+                ],
               },
             ].map((audience) => (
               <motion.div key={audience.title} variants={scaleIn}>
                 <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300 border-t-4 border-t-primary/40">
                   <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
-                        <audience.icon className="w-6 h-6 text-primary" />
-                      </div>
-                      <StarRating count={5} />
+                    <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                      <audience.icon className="w-6 h-6 text-primary" />
                     </div>
                     <h3 className="text-xl font-bold mb-2">{audience.title}</h3>
                     <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{audience.desc}</p>
@@ -230,581 +680,10 @@ const Index = () => {
       </motion.section>
 
       {/* ═══════════════════════════════════════════
-          JOGOS COGNITIVOS — com foto
+          9. DADOS E CIÊNCIA
       ═══════════════════════════════════════════ */}
       <motion.section 
         className="py-16 md:py-24"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={fadeIn}
-      >
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-            <motion.div className="relative rounded-2xl overflow-hidden shadow-glow order-2 lg:order-1" variants={fadeIn}>
-              <img 
-                src={childFocusedImg} 
-                alt="Criança focada em atividade de aprendizado" 
-                className="w-full h-64 md:h-96 object-cover"
-                loading="lazy"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 md:p-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                    <Brain className="w-5 h-5 text-primary-foreground" />
-                  </div>
-                  <div>
-                     <p className="text-primary-foreground font-semibold text-sm">Motor Adaptativo com IA</p>
-                     <p className="text-primary-foreground/70 text-xs">Dificuldade ajustada em tempo real</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div className="order-1 lg:order-2" variants={stagger}>
-              <motion.div variants={fadeIn}>
-                <div className="flex items-center gap-3 mb-4">
-                  <Badge className="bg-primary/10 text-primary border-primary/20">
-                    Jogos Cognitivos Adaptativos
-                  </Badge>
-                  <StarRating />
-                </div>
-                <h2 className="text-2xl md:text-4xl font-bold mb-4">
-                  Cada jogo gera dados comportamentais reais
-                </h2>
-                <p className="text-muted-foreground mb-6 md:mb-8 leading-relaxed">
-                  Mais de 25 jogos terapêuticos com dificuldade adaptativa por IA, 
-                  registro de tempo de reação, acurácia, persistência e padrões de erro — 
-                  alimentando o perfil comportamental e a avaliação cognitiva automática.
-                </p>
-              </motion.div>
-
-              <motion.div className="grid grid-cols-2 gap-3 md:gap-4" variants={stagger}>
-                {[
-                  { icon: Target, label: "Atenção", value: "Sustentada e seletiva" },
-                  { icon: Brain, label: "Memória", value: "Operacional e sequencial" },
-                  { icon: Zap, label: "Flexibilidade", value: "Cognitiva e adaptativa" },
-                  { icon: Award, label: "Persistência", value: "Tolerância à frustração" },
-                  { icon: Eye, label: "Controle Inibitório", value: "Impulsividade e foco" },
-                  { icon: RefreshCw, label: "Adaptação", value: "Dificuldade por IA" },
-                ].map((metric) => (
-                  <motion.div key={metric.label} variants={scaleIn}>
-                    <Card className="shadow-card h-full">
-                      <CardContent className="p-3 md:p-4">
-                        <metric.icon className="w-5 h-5 text-primary mb-2" />
-                        <p className="font-semibold text-sm">{metric.label}</p>
-                        <p className="text-xs text-muted-foreground">{metric.value}</p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              {!user && (
-                <motion.div className="mt-6" variants={fadeIn}>
-                  <Button asChild size="lg">
-                    <Link to="/auth" className="flex items-center gap-2">
-                      <Gamepad2 className="w-5 h-5" /> Experimentar Jogos <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </Button>
-                </motion.div>
-              )}
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* ═══════════════════════════════════════════
-          ARQUITETURA EM 7 CAMADAS
-      ═══════════════════════════════════════════ */}
-      <motion.section 
-        className="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-secondary/5"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={fadeIn}
-      >
-        <div className="container mx-auto px-4 md:px-6">
-          <SectionHeader
-            badge="Arquitetura de Produto"
-            title="7 camadas de inteligência integradas"
-            subtitle="Cada camada alimenta a seguinte, criando um sistema impossível de replicar."
-            stars={5}
-          />
-
-          {/* Architecture Stack */}
-          <motion.div className="max-w-3xl mx-auto mb-12" variants={fadeIn}>
-            <Card className="border-2 border-primary/20 shadow-glow bg-card/80 backdrop-blur-sm">
-              <CardContent className="p-6 md:p-8">
-                <div className="space-y-2">
-                  {[
-                    { icon: Compass, label: "AI Layer", desc: "Copilot + Insight Engine + Predição", color: "bg-primary text-primary-foreground" },
-                    { icon: PieChart, label: "Analytics Layer", desc: "Behavioral Dataset + Metrics + Snapshots", color: "bg-primary/90 text-primary-foreground" },
-                    { icon: Database, label: "Data Layer", desc: "Postgres + RLS + Audit Logs + Encryption", color: "bg-primary/80 text-primary-foreground" },
-                    { icon: Server, label: "Service Layer", desc: "Edge Functions + API + AI Gateway", color: "bg-primary/70 text-primary-foreground" },
-                    { icon: Cpu, label: "Domain Engines", desc: "Games · ABA · Behavioral · Assessment · Routines · Stories", color: "bg-primary/60 text-primary-foreground" },
-                    { icon: Layers, label: "Application Layer", desc: "Hooks + State + Role-Based Views", color: "bg-primary/50 text-primary-foreground" },
-                    { icon: Monitor, label: "Client Layer", desc: "React PWA + Mobile + Acessibilidade", color: "bg-primary/40 text-primary-foreground" },
-                  ].map((layer, i) => (
-                    <motion.div 
-                      key={layer.label}
-                      className={`flex items-center gap-4 p-3 md:p-4 rounded-xl ${layer.color}`}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.08 }}
-                      viewport={{ once: true }}
-                    >
-                      <layer.icon className="w-5 h-5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-sm">{layer.label}</p>
-                        <p className="text-xs opacity-80 truncate">{layer.desc}</p>
-                      </div>
-                      {i < 6 && <ArrowRight className="w-4 h-4 opacity-50 rotate-90 shrink-0 hidden md:block" />}
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Domain Engines Detail */}
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {[
-              {
-                icon: Gamepad2,
-                title: "Game Engine",
-                desc: "Sessões, trials, métricas cognitivas reais: reaction_time, response_variability, omission_errors, post_error_latency.",
-                badge: "Core",
-              },
-              {
-                icon: BarChart3,
-                title: "ABA Engine",
-                desc: "Programas, sessões, tentativas com cálculo automático de independence score, prompt fading e accuracy trend.",
-                badge: "Clínico",
-              },
-              {
-                icon: Activity,
-                title: "Behavioral Engine",
-                desc: "Integra jogos, ABA, rotinas e histórias para produzir attention_index, persistence_index e emotional_regulation.",
-                badge: "Cross-Domain",
-              },
-              {
-                icon: LineChart,
-                title: "Assessment Engine",
-                desc: "Scores automáticos de atenção, memória operacional, controle inibitório, flexibilidade e persistência (0–100).",
-                badge: "Assessment",
-              },
-              {
-                icon: Lightbulb,
-                title: "Recommendation Engine",
-                desc: "Sugestões baseadas em regras e IA personalizadas para cada papel: pais, professores e terapeutas.",
-                badge: "Actionable",
-              },
-              {
-                icon: Compass,
-                title: "Copilot Engine",
-                desc: "Inteligência contínua que cruza 5 fontes comportamentais para alertas precoces, diagnóstico e orientação.",
-                badge: "IA",
-              },
-            ].map((mod) => (
-              <motion.div key={mod.title} variants={scaleIn}>
-                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300">
-                  <CardContent className="p-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                        <mod.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <Badge variant="secondary" className="text-[10px]">{mod.badge}</Badge>
-                    </div>
-                    <h3 className="font-bold text-sm mb-1.5">{mod.title}</h3>
-                    <p className="text-muted-foreground text-xs leading-relaxed">{mod.desc}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ═══════════════════════════════════════════
-          COPILOT DE DESENVOLVIMENTO
-      ═══════════════════════════════════════════ */}
-      <motion.section 
-        className="py-16 md:py-24 bg-gradient-to-br from-secondary/5 via-primary/5 to-accent/5 relative overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={fadeIn}
-      >
-        <div className="absolute inset-0 opacity-5">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-px h-px bg-primary rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                boxShadow: '0 0 6px 3px hsl(var(--primary))',
-                animationDelay: `${Math.random() * 3}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <SectionHeader
-            badge="⚡ Funcionalidade Principal"
-            title="NeuroPlay Copilot — Inteligência de Desenvolvimento"
-            subtitle="O copiloto analisa continuamente todas as fontes de dados comportamentais e gera orientação personalizada para cada criança, profissional e família."
-            stars={5}
-          />
-
-          {/* Architecture Flow */}
-          <motion.div className="max-w-4xl mx-auto mb-12" variants={fadeIn}>
-            <Card className="border-2 border-primary/20 shadow-glow bg-card/80 backdrop-blur-sm">
-              <CardContent className="p-6 md:p-8">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-3 h-3 bg-success rounded-full animate-pulse" />
-                  <span className="font-semibold text-sm">Fluxo de Inteligência do Copilot</span>
-                </div>
-
-                {/* Data Sources */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-6">
-                  {[
-                    { icon: Gamepad2, label: "Jogos", color: "bg-primary/10 text-primary" },
-                    { icon: BarChart3, label: "ABA", color: "bg-destructive/10 text-destructive" },
-                    { icon: CalendarCheck, label: "Rotina", color: "bg-warning/10 text-warning" },
-                    { icon: BookOpen, label: "Histórias", color: "bg-info/10 text-info" },
-                    { icon: LineChart, label: "Avaliação", color: "bg-success/10 text-success" },
-                  ].map((src) => (
-                    <div key={src.label} className={`flex items-center gap-2 p-3 rounded-xl ${src.color.split(' ')[0]}`}>
-                      <src.icon className={`w-4 h-4 ${src.color.split(' ')[1]}`} />
-                      <span className="text-xs font-semibold">{src.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Arrow */}
-                <div className="flex justify-center mb-6">
-                  <div className="flex flex-col items-center gap-1">
-                    <div className="w-px h-6 bg-gradient-to-b from-primary/50 to-primary" />
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                      <Compass className="w-4 h-4 text-primary-foreground" />
-                    </div>
-                    <span className="text-[10px] font-bold text-primary uppercase tracking-wider">Copilot Engine</span>
-                    <div className="w-px h-6 bg-gradient-to-b from-primary to-primary/50" />
-                  </div>
-                </div>
-
-                {/* Outputs */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {[
-                    { icon: Radar, label: "Monitoramento Contínuo", desc: "Padrões comportamentais" },
-                    { icon: Lightbulb, label: "Recomendações", desc: "Para cada papel" },
-                    { icon: RefreshCw, label: "Ajuste Automático", desc: "Atividades adaptadas" },
-                    { icon: AlertTriangle, label: "Alertas Precoces", desc: "Sinais de risco" },
-                  ].map((out) => (
-                    <div key={out.label} className="text-center p-3 bg-muted/50 rounded-xl">
-                      <out.icon className="w-5 h-5 text-primary mx-auto mb-1.5" />
-                      <p className="text-xs font-semibold mb-0.5">{out.label}</p>
-                      <p className="text-[10px] text-muted-foreground">{out.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Copilot Capabilities */}
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {[
-              {
-                icon: Radar,
-                title: "Monitoramento Comportamental Contínuo",
-                desc: "O Copilot detecta padrões em tempo real: queda de atenção, persistência baixa, impulsividade crescente, dificuldade de regulação emocional.",
-                example: "\"Atenção caiu 20% nas últimas 2 semanas. Persistência baixa em tarefas longas.\"",
-                badge: "Detecção",
-              },
-              {
-                icon: Users,
-                title: "Recomendações por Papel",
-                desc: "Sugestões práticas personalizadas para pais, professores e terapeutas, baseadas no perfil completo da criança.",
-                example: "Professor: \"Atividade de foco de 3 min antes da aula.\" Pais: \"Rotina visual com 3 passos simples.\"",
-                badge: "Ação",
-              },
-              {
-                icon: RefreshCw,
-                title: "Ajuste Automático de Atividades",
-                desc: "O Copilot orienta o motor adaptativo: jogos mais curtos para persistência baixa, maior dificuldade quando atenção melhora.",
-                example: "Persistência baixa → jogos mais curtos. Atenção melhorando → aumentar dificuldade.",
-                badge: "Adaptação",
-              },
-              {
-                icon: AlertTriangle,
-                title: "Alertas Precoces",
-                desc: "Detecção de sinais de risco antes que problemas se tornem evidentes. Notificação para professores e pais agirem cedo.",
-                example: "\"Queda consistente na memória operacional — sugestão de avaliação cognitiva.\"",
-                badge: "Prevenção",
-              },
-              {
-                icon: Brain,
-                title: "Correlação Cross-Domain",
-                desc: "Cruzamento de dados de jogos, ABA, rotina e histórias para revelar conexões invisíveis entre comportamentos.",
-                example: "\"Queda de atenção nos jogos correlaciona com aumento de frustração na rotina.\"",
-                badge: "Correlação",
-              },
-              {
-                icon: School,
-                title: "Copilot de Turma",
-                desc: "Visão agregada da turma: tendências, engajamento, indicadores socioemocionais e alunos que precisam de atenção urgente.",
-                example: "\"3 alunos com risco alto. Tendência geral: queda em persistência.\"",
-                badge: "Escola",
-              },
-            ].map((cap) => (
-              <motion.div key={cap.title} variants={scaleIn}>
-                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300 border-l-4 border-l-primary/40">
-                  <CardContent className="p-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                        <cap.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <Badge variant="secondary" className="text-[10px]">{cap.badge}</Badge>
-                    </div>
-                    <h3 className="font-bold text-sm mb-2">{cap.title}</h3>
-                    <p className="text-muted-foreground text-xs leading-relaxed mb-3">{cap.desc}</p>
-                    <div className="bg-muted/50 rounded-lg p-3 border-l-2 border-primary/30">
-                      <p className="text-[11px] text-muted-foreground italic">{cap.example}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Copilot Views */}
-          <motion.div 
-            className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {[
-              {
-                icon: Stethoscope,
-                title: "Painel do Profissional",
-                items: ["Insights comportamentais", "Alertas clínicos", "Recomendações de intervenção", "Tendências e padrões"],
-              },
-              {
-                icon: Heart,
-                title: "Painel dos Pais",
-                items: ["O que está evoluindo", "O que precisa de apoio", "O que fazer em casa", "Celebrações de progresso"],
-              },
-              {
-                icon: GraduationCap,
-                title: "Painel da Escola",
-                items: ["Tendências da turma", "Engajamento por aluno", "Indicadores socioemocionais", "Alunos em risco"],
-              },
-            ].map((panel) => (
-              <motion.div key={panel.title} variants={scaleIn}>
-                <Card className="h-full shadow-card border-t-4 border-t-primary/40">
-                  <CardContent className="p-5">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                        <panel.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <h3 className="font-bold text-sm">{panel.title}</h3>
-                    </div>
-                    <ul className="space-y-2">
-                      {panel.items.map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Competitive Moat */}
-          <motion.div 
-            className="mt-12 max-w-5xl mx-auto"
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.div className="text-center mb-8" variants={fadeIn}>
-              <Badge className="bg-warning/10 text-warning border-warning/20 mb-3">Vantagem Competitiva</Badge>
-              <h3 className="text-xl md:text-2xl font-bold">3 barreiras impossíveis de copiar</h3>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Database,
-                  title: "Dataset Comportamental",
-                  desc: "Dados longitudinais de jogos, ABA, rotina, histórias e avaliações — reaction time, error patterns, decision speed, task persistence, emotional choices.",
-                  impact: "Permite modelos preditivos e pesquisa científica",
-                },
-                {
-                  icon: Cpu,
-                  title: "Motor Cognitivo",
-                  desc: "Métricas reais de comportamento — response_variability, omission_errors, post_error_latency — que a maioria dos apps nem coleta.",
-                  impact: "Pode virar Cognitive Assessment Engine independente",
-                },
-                {
-                  icon: Compass,
-                  title: "Copilot de Desenvolvimento",
-                  desc: "Insights personalizados que cruzam 5 fontes comportamentais simultâneas para cada criança, profissional e família.",
-                  impact: "Transforma app em plataforma de inteligência",
-                },
-              ].map((moat) => (
-                <motion.div key={moat.title} variants={scaleIn}>
-                  <Card className="h-full shadow-card border-t-4 border-t-warning/40">
-                    <CardContent className="p-6">
-                      <div className="w-12 h-12 bg-warning/10 rounded-2xl flex items-center justify-center mb-4">
-                        <moat.icon className="w-6 h-6 text-warning" />
-                      </div>
-                      <h4 className="font-bold mb-2">{moat.title}</h4>
-                      <p className="text-muted-foreground text-sm leading-relaxed mb-3">{moat.desc}</p>
-                      <div className="bg-warning/5 rounded-lg p-3 border-l-2 border-warning/30">
-                        <p className="text-xs text-muted-foreground italic">{moat.impact}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Positioning */}
-            <motion.div className="mt-8" variants={fadeIn}>
-              <Card className="border-2 border-primary/20 bg-primary/5">
-                <CardContent className="p-6 md:p-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                    <div>
-                      <p className="font-bold text-muted-foreground text-sm mb-2">Sem essa arquitetura:</p>
-                      <ul className="space-y-1.5 text-sm text-muted-foreground">
-                        <li className="flex items-center gap-2"><span className="text-destructive">✕</span> App educacional</li>
-                        <li className="flex items-center gap-2"><span className="text-destructive">✕</span> Plataforma ABA isolada</li>
-                        <li className="flex items-center gap-2"><span className="text-destructive">✕</span> Jogo cognitivo genérico</li>
-                      </ul>
-                    </div>
-                    <div className="bg-primary/10 rounded-xl p-5 border border-primary/20">
-                      <p className="font-bold text-primary text-sm mb-2">Com NeuroPlay:</p>
-                      <ul className="space-y-1.5 text-sm">
-                        <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> Plataforma de inteligência de desenvolvimento infantil</li>
-                        <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> Baseada em dados comportamentais reais</li>
-                        <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-success" /> Com 7 camadas e 6 engines integrados</li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ═══════════════════════════════════════════
-          MÓDULOS TERAPÊUTICOS
-      ═══════════════════════════════════════════ */}
-      <motion.section 
-        className="py-16 md:py-24"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={fadeIn}
-      >
-        <div className="container mx-auto px-4 md:px-6">
-          <SectionHeader
-            badge="Módulos Integrados"
-            title="Muito além de jogos"
-            subtitle="Módulos terapêuticos que cobrem todas as dimensões do neurodesenvolvimento infantil."
-            stars={5}
-          />
-
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {[
-              {
-                icon: BarChart3,
-                title: "ABA Digital",
-                desc: "Programas de ensino, registro de tentativas, DTT/NET/VB, níveis de prompt, reforço e análise automática de progresso com gráficos de tendência.",
-                badge: "Clínico",
-                stars: 5,
-              },
-              {
-                icon: CalendarCheck,
-                title: "Rotina Executiva",
-                desc: "Organização de tarefas diárias com métricas de função executiva: iniciação, conclusão, consistência e transição entre atividades.",
-                badge: "Funcional",
-                stars: 5,
-              },
-              {
-                icon: BookOpen,
-                title: "Histórias Interativas",
-                desc: "Narrativas com decisões que desenvolvem empatia, regulação emocional, habilidades sociais e geração de histórias por IA.",
-                badge: "Socioemocional",
-                stars: 5,
-              },
-              {
-                icon: MessageCircle,
-                title: "Chat Terapêutico IA",
-                desc: "Assistente com IA para check-ins emocionais, orientações contextualizadas, análise emocional e suporte clínico integrado.",
-                badge: "IA",
-                stars: 5,
-              },
-            ].map((mod) => (
-              <motion.div key={mod.title} variants={scaleIn}>
-                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300">
-                  <CardContent className="p-5 md:p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                        <mod.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary" className="text-[10px]">{mod.badge}</Badge>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="font-bold">{mod.title}</h3>
-                      <StarRating count={mod.stars} />
-                    </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{mod.desc}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ═══════════════════════════════════════════
-          CLÍNICO / PRONTUÁRIO — com foto
-      ═══════════════════════════════════════════ */}
-      <motion.section 
-        className="py-16 md:py-24 bg-muted/30"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
@@ -814,66 +693,51 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
             <motion.div variants={stagger}>
               <motion.div variants={fadeIn}>
-                <div className="flex items-center gap-3 mb-4">
-                  <Badge className="bg-destructive/10 text-destructive border-destructive/20">
-                    Para Profissionais
-                  </Badge>
-                  <StarRating />
-                </div>
+                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">Dataset Cognitivo</Badge>
                 <h2 className="text-2xl md:text-4xl font-bold mb-4">
-                  Prontuário eletrônico + IA clínica
+                  Cada atividade gera dados comportamentais reais
                 </h2>
                 <p className="text-muted-foreground mb-6 leading-relaxed">
-                  Todas as informações clínicas em um só lugar: anamnese, avaliações cognitivas automáticas, 
-                  relatórios com IA, planos de intervenção adaptativos e auditoria completa.
+                  Durante cada sessão, o sistema registra eventos cognitivos detalhados que alimentam 
+                  a análise de desenvolvimento e os protocolos de intervenção.
                 </p>
               </motion.div>
 
-              <motion.div className="space-y-2.5" variants={stagger}>
+              <motion.div className="grid grid-cols-2 gap-3" variants={stagger}>
                 {[
-                  "Anamnese neurológica estruturada",
-                  "Radar cognitivo com 6 dimensões",
-                  "Avaliação cognitiva automática (scores 0–100)",
-                  "Relatórios automáticos em PDF com IA",
-                  "Programas ABA com rastreamento de tentativas",
-                  "Perfil comportamental com dataset integrado",
-                  "Recomendações clínicas personalizadas",
-                  "Motor de intervenção adaptativa",
-                  "Conformidade LGPD e Lei 14.254/21",
-                ].map((item) => (
-                  <motion.div key={item} className="flex items-center gap-3" variants={fadeIn}>
-                    <div className="w-5 h-5 bg-success/10 rounded-full flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-success" />
-                    </div>
-                    <span className="text-sm">{item}</span>
+                  { icon: Zap, label: "Tempo de reação", desc: "Latência cognitiva em milissegundos" },
+                  { icon: Target, label: "Precisão", desc: "Taxa de acerto e erro por tipo" },
+                  { icon: Activity, label: "Padrões de tentativa", desc: "Sequência e estratégia de resolução" },
+                  { icon: Award, label: "Persistência", desc: "Tolerância à frustração e abandono" },
+                  { icon: RefreshCw, label: "Variabilidade", desc: "Consistência ao longo da sessão" },
+                  { icon: Eye, label: "Controle inibitório", desc: "Impulsividade e auto-regulação" },
+                ].map((metric) => (
+                  <motion.div key={metric.label} variants={scaleIn}>
+                    <Card className="shadow-card h-full">
+                      <CardContent className="p-3">
+                        <metric.icon className="w-4 h-4 text-primary mb-1.5" />
+                        <p className="font-semibold text-xs">{metric.label}</p>
+                        <p className="text-[10px] text-muted-foreground">{metric.desc}</p>
+                      </CardContent>
+                    </Card>
                   </motion.div>
                 ))}
               </motion.div>
-
-              {user && (
-                <motion.div className="mt-6" variants={fadeIn}>
-                  <Button asChild>
-                    <Link to="/clinical" className="flex items-center gap-2">
-                      <Stethoscope className="w-4 h-4" /> Acessar Painel Clínico <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </Button>
-                </motion.div>
-              )}
             </motion.div>
 
             <motion.div className="relative rounded-2xl overflow-hidden shadow-glow" variants={fadeIn}>
               <img 
                 src={groupTherapyImg} 
-                alt="Sessão de terapia em grupo" 
+                alt="Profissionais acompanhando desenvolvimento" 
                 className="w-full h-64 md:h-96 object-cover"
                 loading="lazy"
               />
               <div className="absolute top-4 right-4 bg-card/90 backdrop-blur-sm rounded-xl p-3 shadow-card">
                 <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 text-warning fill-warning" />
+                  <Database className="w-5 h-5 text-primary" />
                   <div>
-                    <p className="font-bold text-xs">Multi-Stakeholder</p>
-                    <p className="text-[10px] text-muted-foreground">Clínicas · Escolas · Famílias · Redes</p>
+                    <p className="font-bold text-xs">Event Store Cognitivo</p>
+                    <p className="text-[10px] text-muted-foreground">200–400 eventos por sessão</p>
                   </div>
                 </div>
               </div>
@@ -883,9 +747,84 @@ const Index = () => {
       </motion.section>
 
       {/* ═══════════════════════════════════════════
-          RELATÓRIOS E ANALYTICS
+          10. RESULTADOS PARA ESCOLAS
       ═══════════════════════════════════════════ */}
       <motion.section 
+        className="py-16 md:py-24 bg-muted/30"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-60px" }}
+        variants={fadeIn}
+      >
+        <div className="container mx-auto px-4 md:px-6">
+          <SectionHeader
+            badge="Impacto Escolar"
+            title="O que o NeuroPlay oferece para escolas"
+            subtitle="Dados pedagógicos reais para decisões baseadas em evidência."
+          />
+
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-10"
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {[
+              {
+                icon: AlertTriangle,
+                title: "Identificação Precoce",
+                desc: "Detecte dificuldades de leitura, atenção e função executiva antes que afetem o desempenho escolar.",
+              },
+              {
+                icon: TrendingUp,
+                title: "Evolução Cognitiva",
+                desc: "Acompanhe o desenvolvimento dos alunos ao longo de semanas e meses com dados objetivos.",
+              },
+              {
+                icon: Lightbulb,
+                title: "Estratégias Pedagógicas",
+                desc: "Receba recomendações de atividades baseadas nos dados cognitivos da turma.",
+              },
+            ].map((item) => (
+              <motion.div key={item.title} variants={scaleIn}>
+                <Card className="h-full shadow-card">
+                  <CardContent className="p-5 text-center">
+                    <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                      <item.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <h3 className="font-bold mb-1.5">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
+            variants={stagger}
+          >
+            {[
+              { value: "5–7 min", label: "Duração da triagem" },
+              { value: "30+", label: "Alunos por sessão" },
+              { value: "5", label: "Domínios avaliados" },
+              { value: "100%", label: "Automático" },
+            ].map((stat) => (
+              <motion.div key={stat.label} className="text-center" variants={scaleIn}>
+                <p className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.value}</p>
+                <p className="text-xs text-muted-foreground">{stat.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* ═══════════════════════════════════════════
+          INSTALAR NA TELA INICIAL
+      ═══════════════════════════════════════════ */}
+      <motion.section
         className="py-16 md:py-24"
         initial="hidden"
         whileInView="visible"
@@ -894,14 +833,13 @@ const Index = () => {
       >
         <div className="container mx-auto px-4 md:px-6">
           <SectionHeader
-            badge="Core da Plataforma"
-            title="Relatórios, analytics e progresso"
-            subtitle="A principal funcionalidade do NeuroPlay: visibilidade total do desenvolvimento cognitivo e comportamental da criança."
-            stars={5}
+            badge="App Instalável"
+            title="Instale o NeuroPlay no seu dispositivo"
+            subtitle="Use como um app nativo — sem precisar baixar na loja."
           />
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
             variants={stagger}
             initial="hidden"
             whileInView="visible"
@@ -909,43 +847,52 @@ const Index = () => {
           >
             {[
               {
-                icon: FileText,
-                title: "Relatórios Automáticos",
-                desc: "Relatórios clínicos, pedagógicos, familiares e institucionais gerados automaticamente com dados reais e IA.",
-                items: ["Relatório cognitivo", "Relatório comportamental", "Relatório institucional", "Exportação PDF"],
+                icon: Apple,
+                title: "iPhone / iPad",
+                steps: [
+                  "Abra no Safari e toque em Compartilhar",
+                  "Toque em \"Adicionar à Tela de Início\"",
+                  "Confirme a instalação",
+                ],
               },
               {
-                icon: TrendingUp,
-                title: "Analytics Avançado",
-                desc: "Análise correlacional, detecção de anomalias, tendências e predição de risco com dataset comportamental estruturado.",
-                items: ["Correlação entre métricas", "Detecção de anomalias", "Tendências temporais", "Predição de risco"],
+                icon: Smartphone,
+                title: "Android",
+                steps: [
+                  "Abra no Chrome e toque nos três pontinhos (⋮)",
+                  "Toque em \"Instalar app\"",
+                  "Confirme a instalação",
+                ],
               },
               {
-                icon: ClipboardList,
-                title: "Progresso da Criança",
-                desc: "Visibilidade 360° do desenvolvimento: scores cognitivos, evolução ABA, rotina executiva e engajamento.",
-                items: ["Scores cognitivos (0–100)", "Evolução por domínio", "Histórico de sessões", "Comparativo temporal"],
+                icon: Monitor,
+                title: "Computador",
+                steps: [
+                  "Abra no Chrome ou Edge",
+                  "Clique no ícone de instalar (➕)",
+                  "O NeuroPlay abrirá como app",
+                ],
               },
-            ].map((item) => (
-              <motion.div key={item.title} variants={scaleIn}>
-                <Card className="h-full shadow-card hover:shadow-glow transition-all duration-300 border-t-4 border-t-primary/40">
+            ].map((device) => (
+              <motion.div key={device.title} variants={scaleIn}>
+                <Card className="h-full shadow-card">
                   <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
-                        <item.icon className="w-6 h-6 text-primary" />
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <device.icon className="w-5 h-5 text-primary" />
                       </div>
-                      <StarRating />
+                      <h3 className="font-bold">{device.title}</h3>
                     </div>
-                    <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{item.desc}</p>
-                    <ul className="space-y-1.5">
-                      {item.items.map((i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-success shrink-0" />
-                          <span>{i}</span>
+                    <ol className="space-y-3 text-sm text-muted-foreground">
+                      {device.steps.map((step, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
+                            {i + 1}
+                          </span>
+                          <span>{step}</span>
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -955,7 +902,7 @@ const Index = () => {
       </motion.section>
 
       {/* ═══════════════════════════════════════════
-          SISTEMA PLANETA AZUL
+          11. CTA FINAL
       ═══════════════════════════════════════════ */}
       <motion.section 
         className="py-16 md:py-24 bg-gradient-to-br from-primary via-secondary to-primary relative overflow-hidden"
@@ -980,272 +927,40 @@ const Index = () => {
 
         <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
           <motion.div variants={fadeIn}>
-            <div className="flex justify-center mb-3">
-              <div className="flex items-center gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-warning fill-warning" />
-                ))}
-              </div>
-            </div>
-            <span className="text-4xl md:text-5xl mb-4 block">🪐</span>
             <h2 className="text-2xl md:text-4xl font-bold text-primary-foreground mb-4">
-              Sistema Planeta Azul
+              Entenda melhor como as crianças aprendem
             </h2>
-            <p className="text-primary-foreground/85 text-base md:text-lg max-w-2xl mx-auto mb-8">
-              5 planetas temáticos com jogos adaptativos, missões diárias, avatares evolutivos, 
-              10 níveis de XP e insígnias colecionáveis — terapia transformada em aventura.
-            </p>
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-6 max-w-2xl mx-auto mb-8"
-            variants={stagger}
-          >
-            {[
-              { emoji: "🌟", name: "Aurora" },
-              { emoji: "🌀", name: "Vortex" },
-              { emoji: "💡", name: "Lumen" },
-              { emoji: "🌊", name: "Oceanus" },
-              { emoji: "🔥", name: "Ignis" },
-            ].map((planet) => (
-              <motion.div 
-                key={planet.name}
-                className="bg-primary-foreground/10 backdrop-blur-sm rounded-xl p-3 md:p-4 border border-primary-foreground/20"
-                variants={scaleIn}
-                whileHover={{ scale: 1.05 }}
-              >
-                <span className="text-2xl md:text-3xl block mb-1">{planet.emoji}</span>
-                <p className="text-primary-foreground text-xs md:text-sm font-medium">{planet.name}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {user ? (
-             <Button asChild size="lg" className="bg-background text-primary hover:bg-background/90 shadow-glow">
-              <Link to="/sistema-planeta-azul" className="flex items-center gap-2">
-                🪐 Explorar Planetas <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-          ) : (
-            <Button asChild size="lg" className="bg-background text-primary hover:bg-background/90 shadow-glow">
-              <Link to="/auth" className="flex items-center gap-2">
-                Criar Conta Gratuita <ArrowRight className="w-4 h-4" />
-              </Link>
-            </Button>
-          )}
-        </div>
-      </motion.section>
-
-      {/* ═══════════════════════════════════════════
-          NÚMEROS / SOCIAL PROOF
-      ═══════════════════════════════════════════ */}
-      <motion.section 
-        className="py-16 md:py-20 bg-muted/30"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={fadeIn}
-      >
-        <div className="container mx-auto px-4 md:px-6">
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6 text-center"
-            variants={stagger}
-          >
-            {[
-              { value: "7", label: "Camadas de Arquitetura" },
-              { value: "6", label: "Domain Engines" },
-              { value: "25+", label: "Jogos Cognitivos" },
-              { value: "5", label: "Fontes Comportamentais" },
-              { value: "5", label: "Planetas Temáticos" },
-              { value: "3", label: "Barreiras Competitivas" },
-              { value: "🧭", label: "Copilot IA" },
-              { value: "100%", label: "LGPD Compliant" },
-            ].map((stat) => (
-              <motion.div key={stat.label} variants={scaleIn}>
-                <p className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.value}</p>
-                <p className="text-xs text-muted-foreground">{stat.label}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ═══════════════════════════════════════════
-          INSTALAR NA TELA INICIAL
-      ═══════════════════════════════════════════ */}
-      <motion.section
-        className="py-16 md:py-24"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={fadeIn}
-      >
-        <div className="container mx-auto px-4 md:px-6">
-          <SectionHeader
-            badge="App Instalável"
-            title="Instale o NeuroPlay no seu celular"
-            subtitle="Use como um app nativo — sem precisar baixar na loja."
-            stars={5}
-          />
-
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {/* iOS */}
-            <motion.div variants={scaleIn}>
-              <Card className="h-full shadow-card">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <Apple className="w-5 h-5 text-primary" />
-                    </div>
-                    <h3 className="font-bold">iPhone / iPad</h3>
-                  </div>
-                  <ol className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">1</span>
-                      <span>Abra no <strong className="text-foreground">Safari</strong> e toque no ícone de <strong className="text-foreground">Compartilhar</strong> (quadrado com seta)</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">2</span>
-                      <span>Role e toque em <strong className="text-foreground">"Adicionar à Tela de Início"</strong></span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">3</span>
-                      <span>Toque em <strong className="text-foreground">"Adicionar"</strong> para confirmar</span>
-                    </li>
-                  </ol>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Android */}
-            <motion.div variants={scaleIn}>
-              <Card className="h-full shadow-card">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <Smartphone className="w-5 h-5 text-primary" />
-                    </div>
-                    <h3 className="font-bold">Android</h3>
-                  </div>
-                  <ol className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">1</span>
-                      <span>Abra no <strong className="text-foreground">Chrome</strong> e toque nos <strong className="text-foreground">três pontinhos</strong> (⋮) no canto superior</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">2</span>
-                      <span>Toque em <strong className="text-foreground">"Instalar app"</strong> ou <strong className="text-foreground">"Adicionar à tela inicial"</strong></span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">3</span>
-                      <span>Confirme a instalação e pronto!</span>
-                    </li>
-                  </ol>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Desktop */}
-            <motion.div variants={scaleIn}>
-              <Card className="h-full shadow-card">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <Monitor className="w-5 h-5 text-primary" />
-                    </div>
-                    <h3 className="font-bold">Computador</h3>
-                  </div>
-                  <ol className="space-y-3 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">1</span>
-                      <span>Abra no <strong className="text-foreground">Chrome</strong> ou <strong className="text-foreground">Edge</strong></span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">2</span>
-                      <span>Clique no ícone de <strong className="text-foreground">instalar</strong> (➕) na barra de endereço</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">3</span>
-                      <span>Confirme e o NeuroPlay abrirá como app</span>
-                    </li>
-                  </ol>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-
-          <motion.div className="text-center mt-8" variants={fadeIn}>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
-              {[
-                { icon: CheckCircle2, text: "Funciona offline" },
-                { icon: Zap, text: "Carregamento instantâneo" },
-                { icon: Shield, text: "Tela cheia, sem barra do navegador" },
-              ].map((b) => (
-                <div key={b.text} className="flex items-center gap-1.5">
-                  <b.icon className="w-3.5 h-3.5 text-success" />
-                  <span>{b.text}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
-
-      {/* ═══════════════════════════════════════════
-          CTA FINAL
-      ═══════════════════════════════════════════ */}
-      <motion.section 
-        className="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-secondary/5"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-60px" }}
-        variants={fadeIn}
-      >
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <motion.div variants={fadeIn}>
-            <div className="flex justify-center mb-4">
-              <StarRating />
-            </div>
-            <h2 className="text-2xl md:text-4xl font-bold mb-4">
-              Pronto para transformar o desenvolvimento?
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-8">
-              Comece agora e tenha acesso ao Copilot de desenvolvimento, jogos adaptativos, avaliação cognitiva, 
-              relatórios com IA e ferramentas clínicas integradas — tudo em uma plataforma.
+            <p className="text-primary-foreground/85 text-base md:text-lg max-w-xl mx-auto mb-8">
+              Comece a acompanhar o desenvolvimento cognitivo com triagem gamificada, 
+              análise baseada em dados e intervenções guiadas.
             </p>
           </motion.div>
 
           <motion.div className="flex flex-col sm:flex-row gap-3 justify-center" variants={fadeIn}>
             {user ? (
-              <Button asChild size="lg" className="text-base shadow-glow">
+              <Button asChild size="lg" className="bg-background text-primary hover:bg-background/90 shadow-glow text-base">
                 <Link to="/" className="flex items-center gap-2">
                   Ir para o Dashboard <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
             ) : (
               <>
-                <Button asChild size="lg" className="text-base shadow-glow">
+                <Button asChild size="lg" className="bg-background text-primary hover:bg-background/90 shadow-glow text-base">
                   <Link to="/auth" className="flex items-center gap-2">
-                    Criar Conta Gratuita <ArrowRight className="w-4 h-4" />
+                    Criar Conta <ArrowRight className="w-4 h-4" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="text-base">
+                <Button asChild size="lg" variant="outline" className="text-base border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
                   <Link to="/auth" className="flex items-center gap-2">
-                    <Users className="w-4 h-4" /> Sou Profissional
+                    <School className="w-4 h-4" /> Agendar Demonstração
                   </Link>
                 </Button>
               </>
             )}
           </motion.div>
 
-          <p className="text-xs text-muted-foreground mt-8">
-            NeuroPlay · Plataforma de Inteligência de Desenvolvimento Infantil · 7 Camadas · 6 Engines · Behavioral Dataset · LGPD Compliant
+          <p className="text-xs text-primary-foreground/60 mt-8">
+            NeuroPlay · Plataforma de Triagem e Desenvolvimento Cognitivo Infantil · Baseada em Dados · LGPD Compliant
           </p>
         </div>
       </motion.section>
