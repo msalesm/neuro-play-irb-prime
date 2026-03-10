@@ -80,6 +80,20 @@ export function usePEI() {
   const getAllPEIsForUser = async (userId: string) => {
     try {
       setLoading(true);
+      // Try child_id first
+      const { data: childData } = await supabase
+        .from('pei_plans')
+        .select('*')
+        .eq('child_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (childData && childData.length > 0) {
+        setCurrentPlan(childData[0]);
+        setAllPlans(childData);
+        setLoading(false);
+        return childData;
+      }
+
       const { data, error } = await supabase
         .from('pei_plans')
         .select('*')
