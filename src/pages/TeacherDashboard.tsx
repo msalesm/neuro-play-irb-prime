@@ -460,7 +460,7 @@ export default function TeacherDashboard() {
         </TabsContent>
 
         <TabsContent value="intervencoes" className="mt-4">
-          <ClassInterventionsTabInline classId={selectedClassId} />
+          <InterventionRecommendations recommendations={classInterventions} context="class" />
         </TabsContent>
 
         <TabsContent value="atividades" className="mt-4">
