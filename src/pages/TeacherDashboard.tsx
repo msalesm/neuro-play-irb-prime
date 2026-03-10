@@ -22,6 +22,10 @@ import { SchoolWeeklyEngagement } from '@/modules/school/components/SchoolWeekly
 import { ClassCognitiveProfile } from '@/components/educacao/ClassCognitiveProfile';
 import { ClassEvolutionChart } from '@/components/educacao/ClassEvolutionChart';
 import { ClassroomScan } from '@/components/educacao/ClassroomScan';
+import { InterventionRecommendations } from '@/components/educacao/InterventionRecommendations';
+import { generateClassInterventions } from '@/modules/intervention-protocols';
+import { calculateClassNCI } from '@/modules/cognitive-index';
+import { useQuery as useQueryTanstack } from '@tanstack/react-query';
 
 export default function TeacherDashboard() {
   const navigate = useNavigate();
