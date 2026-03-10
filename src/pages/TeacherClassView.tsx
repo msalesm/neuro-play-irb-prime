@@ -9,12 +9,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { ArrowLeft, Search, Users, TrendingUp, Plus, BarChart3, MessageSquare, FileText } from 'lucide-react';
+import { ArrowLeft, Search, Users, TrendingUp, Plus, BarChart3, MessageSquare, FileText, Trash2 } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/gamification';
 import { TeacherClassStats, ParentCommunicationPanel } from '@/components/teacher';
 import { ClassPedagogicalReport } from '@/components/teacher/ClassPedagogicalReport';
 import { AddStudentToClassModal } from '@/components/teacher/AddStudentToClassModal';
+import { ClassProgressCharts } from '@/components/teacher/ClassProgressCharts';
 import { useClassProgress } from '@/hooks/useClassProgress';
+import { toast } from 'sonner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface ClassInfo {
   name: string;
