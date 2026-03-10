@@ -160,6 +160,23 @@ export function ClassCognitiveProfile({ classId, className, studentCount }: Clas
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* NCI Score */}
+        {profile.nci && (
+          <div className="flex items-center gap-4 rounded-xl bg-muted/30 p-3 mb-2">
+            <div>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">NeuroPlay Cognitive Index</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className={`text-3xl font-bold ${getNCIColor(profile.nci.score)}`}>
+                  {profile.nci.score}
+                </span>
+                <Badge variant="outline" className={`text-[10px] ${getNCIColor(profile.nci.score)}`}>
+                  {getNCILabel(profile.nci.score)}
+                </Badge>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Coverage */}
         <div className="flex items-center gap-3 text-sm">
           <Users className="h-4 w-4 text-muted-foreground" />
