@@ -307,8 +307,8 @@ const getStatusLabel = (status: string) => {
     );
   }
 
-  // Teacher without selected student: show student picker
-  if (isTeacher && !patientId && !screeningId && !selectedStudentId) {
+  // Teacher or Admin without selected student: show student picker
+  if ((isTeacher || isAdmin) && !patientId && !screeningId && !selectedStudentId) {
     return (
       <ModernPageLayout>
         <div className="container mx-auto px-4 py-8">

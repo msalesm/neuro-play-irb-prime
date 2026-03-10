@@ -76,11 +76,16 @@ export default function TeacherClasses() {
     try {
       setLoading(true);
 
-      // Load classes
-      const { data: classesData, error: classesError } = await supabase
+      // Load classes - admin sees all, teacher sees own
+      let query = supabase
         .from('school_classes')
-        .select('*')
-        .eq('teacher_id', user?.id)
+        .select('*');
+      
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user?.id);
+      }
+      
+      const { data: classesData, error: classesError } = await query
         .order('created_at', { ascending: false });
 
       if (classesError) throw classesError;

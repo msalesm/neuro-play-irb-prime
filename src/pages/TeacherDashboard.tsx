@@ -21,18 +21,24 @@ import { SchoolWeeklyEngagement } from '@/modules/school/components/SchoolWeekly
 export default function TeacherDashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [activeTab, setActiveTab] = useState<string>('alunos');
 
   // Fetch teacher's classes and student counts
   const { data: classData } = useQuery({
-    queryKey: ['teacher-class-overview', user?.id],
+    queryKey: ['teacher-class-overview', user?.id, isAdmin],
     queryFn: async () => {
       if (!user) return { classes: 0, students: 0, needsSupport: 0, active7d: 0 };
       
-      const { data: classes } = await supabase
+      let query = supabase
         .from('school_classes')
-        .select('id')
-        .eq('teacher_id', user.id);
+        .select('id');
+      
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user.id);
+      }
+      
+      const { data: classes } = await query;
       
       const classIds = (classes || []).map(c => c.id);
       if (classIds.length === 0) return { classes: 0, students: 0, needsSupport: 0, active7d: 0 };
