@@ -455,6 +455,15 @@ export default function EducacaoDashboard() {
                 />
               </TabsContent>
 
+              {/* === TAB: Classroom Cognitive Scan === */}
+              <TabsContent value="scan" className="mt-4">
+                <ClassroomScan
+                  classId={selectedClassId}
+                  className={selectedClassName?.name}
+                  students={students}
+                />
+              </TabsContent>
+
               {/* === TAB: Mapa de Vulnerabilidade === */}
               <TabsContent value="mapa" className="mt-4">
                 <VulnerabilityMap
