@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { useUserRole } from './useUserRole';
 
 export interface StudentProgress {
   id: string;
@@ -43,6 +44,7 @@ export interface ClassWithStudents {
 
 export function useTeacherStudentProgress() {
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [classes, setClasses] = useState<ClassWithStudents[]>([]);
   const [allStudents, setAllStudents] = useState<StudentProgress[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +53,7 @@ export function useTeacherStudentProgress() {
     if (user) {
       loadStudents();
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   const loadStudents = async () => {
     if (!user) return;
@@ -59,8 +61,8 @@ export function useTeacherStudentProgress() {
     try {
       setLoading(true);
 
-      // Get teacher's classes with students
-      const { data: classesData, error: classesError } = await supabase
+      // Get classes with students - admin sees all, teacher sees own
+      let query = supabase
         .from('school_classes')
         .select(`
           id,
@@ -79,8 +81,13 @@ export function useTeacherStudentProgress() {
               neurodevelopmental_conditions
             )
           )
-        `)
-        .eq('teacher_id', user.id);
+        `);
+      
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user.id);
+      }
+      
+      const { data: classesData, error: classesError } = await query;
 
       if (classesError) {
         console.error('Error loading classes:', classesError);

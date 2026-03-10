@@ -67,26 +67,31 @@ export default function PEIView() {
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(patientId || null);
   const [selectedStudentName, setSelectedStudentName] = useState<string>('');
 
-  // Teacher without a selected student: load their class students
+  // Teacher or Admin without a selected student: load students
   useEffect(() => {
     if (!user) {
       navigate('/auth');
       return;
     }
-    if (isTeacher && !patientId && !screeningId) {
+    if ((isTeacher || isAdmin) && !patientId && !screeningId) {
       loadTeacherStudents();
     }
-  }, [user, isTeacher, patientId, screeningId]);
+  }, [user, isTeacher, isAdmin, patientId, screeningId]);
 
   const loadTeacherStudents = async () => {
     if (!user) return;
     setLoadingStudents(true);
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('class_students')
         .select('child_id, children!inner(name), school_classes!inner(name)')
-        .eq('teacher_id', user.id)
         .eq('is_active', true);
+      
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user.id);
+      }
+      
+      const { data, error } = await query;
 
       if (error) throw error;
 
@@ -302,8 +307,8 @@ const getStatusLabel = (status: string) => {
     );
   }
 
-  // Teacher without selected student: show student picker
-  if (isTeacher && !patientId && !screeningId && !selectedStudentId) {
+  // Teacher or Admin without selected student: show student picker
+  if ((isTeacher || isAdmin) && !patientId && !screeningId && !selectedStudentId) {
     return (
       <ModernPageLayout>
         <div className="container mx-auto px-4 py-8">
@@ -359,7 +364,7 @@ const getStatusLabel = (status: string) => {
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" onClick={() => {
-                if (isTeacher && selectedStudentId && !patientId) {
+                if ((isTeacher || isAdmin) && selectedStudentId && !patientId) {
                   setSelectedStudentId(null);
                   setSelectedStudentName('');
                   setGoals([]);

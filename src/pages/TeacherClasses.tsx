@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { toast } from 'sonner';
 import { Search, Plus, Users, GraduationCap, Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -36,6 +37,7 @@ interface SchoolClass {
 export default function TeacherClasses() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [classes, setClasses] = useState<SchoolClass[]>([]);
   const [filteredClasses, setFilteredClasses] = useState<SchoolClass[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,11 +76,16 @@ export default function TeacherClasses() {
     try {
       setLoading(true);
 
-      // Load classes
-      const { data: classesData, error: classesError } = await supabase
+      // Load classes - admin sees all, teacher sees own
+      let query = supabase
         .from('school_classes')
-        .select('*')
-        .eq('teacher_id', user?.id)
+        .select('*');
+      
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user?.id);
+      }
+      
+      const { data: classesData, error: classesError } = await query
         .order('created_at', { ascending: false });
 
       if (classesError) throw classesError;

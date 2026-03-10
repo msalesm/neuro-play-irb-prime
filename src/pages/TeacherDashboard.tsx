@@ -10,6 +10,7 @@ import {
   ArrowLeft, AlertTriangle, TrendingUp, Target,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { TeacherStudentSection } from '@/components/teacher/TeacherStudentSection';
@@ -20,18 +21,24 @@ import { SchoolWeeklyEngagement } from '@/modules/school/components/SchoolWeekly
 export default function TeacherDashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [activeTab, setActiveTab] = useState<string>('alunos');
 
   // Fetch teacher's classes and student counts
   const { data: classData } = useQuery({
-    queryKey: ['teacher-class-overview', user?.id],
+    queryKey: ['teacher-class-overview', user?.id, isAdmin],
     queryFn: async () => {
       if (!user) return { classes: 0, students: 0, needsSupport: 0, active7d: 0 };
       
-      const { data: classes } = await supabase
+      let query = supabase
         .from('school_classes')
-        .select('id')
-        .eq('teacher_id', user.id);
+        .select('id');
+      
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user.id);
+      }
+      
+      const { data: classes } = await query;
       
       const classIds = (classes || []).map(c => c.id);
       if (classIds.length === 0) return { classes: 0, students: 0, needsSupport: 0, active7d: 0 };
