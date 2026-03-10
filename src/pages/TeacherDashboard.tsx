@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Users, Activity, GraduationCap, Sparkles, BookOpen,
-  AlertTriangle, TrendingUp, Target, Scan, Brain,
+  AlertTriangle, TrendingUp, Target, Scan, Brain, Stethoscope,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
