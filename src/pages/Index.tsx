@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
+import { generateInstitutionalPDF } from "@/components/landing/InstitutionalPDF";
 
 import heroImg from "@/assets/hero-children-learning.jpg";
 import childFocusedImg from "@/assets/child-focused-learning.jpg";
@@ -123,7 +124,7 @@ const Index = () => {
               ))}
             </motion.div>
             
-            <motion.div className="flex flex-col sm:flex-row gap-3 md:gap-4" variants={fadeIn}>
+            <motion.div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4" variants={fadeIn}>
               {user ? (
                 <Button asChild size="lg" className="text-base shadow-glow">
                   <Link to="/" className="flex items-center gap-2">
@@ -142,6 +143,15 @@ const Index = () => {
                   </Button>
                 </>
               )}
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-base bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20 gap-2"
+                onClick={() => generateInstitutionalPDF()}
+              >
+                <FileText className="w-4 h-4" />
+                Baixar PDF Institucional
+              </Button>
             </motion.div>
 
             <motion.div 
