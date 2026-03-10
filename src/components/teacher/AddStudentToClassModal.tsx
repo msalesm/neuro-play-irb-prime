@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { Search, UserPlus, Loader2, User, Calendar } from 'lucide-react';
+import { Search, UserPlus, Loader2, User, Calendar, Upload, FileText, AlertCircle } from 'lucide-react';
 
 interface Child {
   id: string;
@@ -45,6 +45,11 @@ export function AddStudentToClassModal({
     birth_date: '',
   });
   const [creating, setCreating] = useState(false);
+
+  // CSV import
+  const [csvData, setCsvData] = useState<Array<{ name: string; birth_date: string }>>([]);
+  const [csvError, setCsvError] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
 
   const searchChildren = async () => {
     if (searchQuery.length < 2) return;
@@ -160,6 +165,97 @@ export function AddStudentToClassModal({
     }
   };
 
+  const handleCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setCsvError(null);
+    setCsvData([]);
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const text = event.target?.result as string;
+        const lines = text.trim().split('\n');
+        if (lines.length < 2) {
+          setCsvError('O arquivo deve conter pelo menos um cabeçalho e uma linha de dados.');
+          return;
+        }
+
+        const header = lines[0].toLowerCase().replace(/\s/g, '');
+        if (!header.includes('nome') && !header.includes('name')) {
+          setCsvError('Cabeçalho deve conter "nome" e "data_nascimento". Ex: nome,data_nascimento');
+          return;
+        }
+
+        const parsed: Array<{ name: string; birth_date: string }> = [];
+        for (let i = 1; i < lines.length; i++) {
+          const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+          if (cols.length < 2 || !cols[0]) continue;
+          
+          // Try to parse date
+          let dateStr = cols[1];
+          // Handle dd/mm/yyyy format
+          if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) {
+            const [d, m, y] = dateStr.split('/');
+            dateStr = `${y}-${m}-${d}`;
+          }
+          
+          if (!dateStr || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+            setCsvError(`Linha ${i + 1}: data inválida "${cols[1]}". Use AAAA-MM-DD ou DD/MM/AAAA.`);
+            return;
+          }
+
+          parsed.push({ name: cols[0], birth_date: dateStr });
+        }
+
+        if (parsed.length === 0) {
+          setCsvError('Nenhum aluno válido encontrado no arquivo.');
+          return;
+        }
+
+        setCsvData(parsed);
+      } catch {
+        setCsvError('Erro ao processar o arquivo CSV.');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const importCsv = async () => {
+    if (!user || csvData.length === 0) return;
+
+    try {
+      setImporting(true);
+      let added = 0;
+
+      for (const student of csvData) {
+        const { data: childData, error: childError } = await supabase
+          .from('children')
+          .insert({ name: student.name, birth_date: student.birth_date, parent_id: null })
+          .select('id')
+          .single();
+        if (childError) continue;
+
+        const { error: linkError } = await supabase.from('class_students').insert({
+          class_id: classId,
+          child_id: childData.id,
+          teacher_id: user.id,
+        });
+        if (!linkError) added++;
+      }
+
+      toast.success(`${added} aluno(s) importado(s) com sucesso!`);
+      onStudentAdded();
+      setCsvData([]);
+      onOpenChange(false);
+    } catch (error) {
+      console.error('Error importing CSV:', error);
+      toast.error('Erro ao importar alunos');
+    } finally {
+      setImporting(false);
+    }
+  };
+
   const calculateAge = (birthDate: string) => {
     const birth = new Date(birthDate);
     const today = new Date();
@@ -174,9 +270,10 @@ export function AddStudentToClassModal({
         </DialogHeader>
 
         <Tabs defaultValue="search">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="search">Buscar Existente</TabsTrigger>
-            <TabsTrigger value="new">Novo Cadastro</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="search">Buscar</TabsTrigger>
+            <TabsTrigger value="new">Novo</TabsTrigger>
+            <TabsTrigger value="csv">Importar CSV</TabsTrigger>
           </TabsList>
 
           <TabsContent value="search" className="mt-4 space-y-4">
@@ -276,6 +373,64 @@ export function AddStudentToClassModal({
                 Cadastrar e Adicionar
               </Button>
             </div>
+          </TabsContent>
+
+          <TabsContent value="csv" className="mt-4 space-y-4">
+            <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+              <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground mb-3">
+                Faça upload de um arquivo CSV com os alunos
+              </p>
+              <Input
+                type="file"
+                accept=".csv,.txt"
+                onChange={handleCsvUpload}
+                className="max-w-xs mx-auto"
+              />
+            </div>
+
+            <div className="bg-muted/50 rounded-lg p-3 text-xs text-muted-foreground">
+              <p className="font-medium mb-1 flex items-center gap-1">
+                <FileText className="h-3 w-3" /> Formato esperado:
+              </p>
+              <code className="block bg-background rounded p-2 mt-1">
+                nome,data_nascimento{'\n'}
+                Lucas Silva,2017-05-10{'\n'}
+                Maria Costa,02/11/2016
+              </code>
+            </div>
+
+            {csvError && (
+              <div className="flex items-start gap-2 text-destructive text-sm bg-destructive/10 rounded-lg p-3">
+                <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+                <p>{csvError}</p>
+              </div>
+            )}
+
+            {csvData.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-sm font-medium">
+                  {csvData.length} aluno(s) encontrado(s):
+                </p>
+                <div className="max-h-[200px] overflow-y-auto space-y-1">
+                  {csvData.map((s, i) => (
+                    <div key={i} className="flex items-center justify-between bg-muted/50 rounded p-2 text-sm">
+                      <span>{s.name}</span>
+                      <span className="text-muted-foreground">{s.birth_date}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-end gap-3 pt-2">
+                  <Button variant="outline" onClick={() => { setCsvData([]); setCsvError(null); }}>
+                    Limpar
+                  </Button>
+                  <Button onClick={importCsv} disabled={importing}>
+                    {importing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Importar {csvData.length} aluno(s)
+                  </Button>
+                </div>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </DialogContent>

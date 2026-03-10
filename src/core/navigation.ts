@@ -102,8 +102,9 @@ const THERAPIST_NAV: NavItem[] = [
 ];
 
 const TEACHER_NAV: NavItem[] = [
-  { title: 'Educação', path: '/educacao', icon: School, description: 'Turmas, check-in e relatórios' },
-  { title: 'Turmas', path: '/teacher/classes', icon: Users },
+  { title: 'Dashboard', path: '/teacher-dashboard', icon: GraduationCap, description: 'Visão geral do professor' },
+  { title: 'Educação', path: '/educacao', icon: School, description: 'Check-in e observações' },
+  { title: 'Turmas', path: '/teacher/classes', icon: Users, description: 'Gerenciar turmas e alunos' },
   { title: 'PEI', path: '/pei', icon: ClipboardCheck, description: 'Plano Educacional Individualizado' },
   { title: 'Relatórios', path: '/relatorios', icon: FileText },
   { title: 'Mensagens', path: '/mensagens', icon: Mail },
@@ -148,10 +149,10 @@ const THERAPIST_BOTTOM: BottomNavItem[] = [
 ];
 
 const TEACHER_BOTTOM: BottomNavItem[] = [
-  { name: 'Educação', path: '/educacao', icon: School },
+  { name: 'Dashboard', path: '/teacher-dashboard', icon: GraduationCap },
   { name: 'Turmas', path: '/teacher/classes', icon: Users },
+  { name: 'Educação', path: '/educacao', icon: School },
   { name: 'Relatórios', path: '/relatorios', icon: FileText },
-  { name: 'Mensagens', path: '/mensagens', icon: Mail },
 ];
 
 const ADMIN_BOTTOM: BottomNavItem[] = [

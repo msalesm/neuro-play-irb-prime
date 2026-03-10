@@ -9,12 +9,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { ArrowLeft, Search, Users, TrendingUp, Plus, BarChart3, MessageSquare, FileText } from 'lucide-react';
+import { ArrowLeft, Search, Users, TrendingUp, Plus, BarChart3, MessageSquare, FileText, Trash2 } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/gamification';
 import { TeacherClassStats, ParentCommunicationPanel } from '@/components/teacher';
 import { ClassPedagogicalReport } from '@/components/teacher/ClassPedagogicalReport';
 import { AddStudentToClassModal } from '@/components/teacher/AddStudentToClassModal';
+import { ClassProgressCharts } from '@/components/teacher/ClassProgressCharts';
 import { useClassProgress } from '@/hooks/useClassProgress';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface ClassInfo {
   name: string;
@@ -30,6 +41,8 @@ export default function TeacherClassView() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [studentToRemove, setStudentToRemove] = useState<{ id: string; name: string } | null>(null);
+  const [removing, setRemoving] = useState(false);
 
   const { students, stats, loading: progressLoading, reload } = useClassProgress(classId);
 
@@ -66,6 +79,26 @@ export default function TeacherClassView() {
       toast.error('Erro ao carregar dados da turma');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const removeStudent = async () => {
+    if (!studentToRemove || !classId) return;
+    try {
+      setRemoving(true);
+      const { error } = await supabase
+        .from('class_students')
+        .update({ is_active: false })
+        .eq('class_id', classId)
+        .eq('child_id', studentToRemove.id);
+      if (error) throw error;
+      toast.success(`${studentToRemove.name} removido da turma`);
+      reload();
+    } catch (e) {
+      toast.error('Erro ao remover aluno');
+    } finally {
+      setRemoving(false);
+      setStudentToRemove(null);
     }
   };
 
@@ -130,6 +163,10 @@ export default function TeacherClassView() {
               <Users className="h-4 w-4" />
               Alunos
             </TabsTrigger>
+            <TabsTrigger value="progress" className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Progresso
+            </TabsTrigger>
             <TabsTrigger value="report" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Relatório
@@ -163,7 +200,7 @@ export default function TeacherClassView() {
                 {filteredStudents.map((student) => (
                   <Card
                     key={student.id}
-                    className={`hover:shadow-lg transition-all cursor-pointer ${
+                    className={`hover:shadow-lg transition-all cursor-pointer relative group ${
                       student.needsAttention ? 'border-warning bg-warning/5 dark:bg-warning/10' : ''
                     }`}
                     onClick={() => navigate(`/teacher/student/${student.id}`)}
@@ -181,7 +218,20 @@ export default function TeacherClassView() {
                             <p className="text-sm text-muted-foreground">{student.age} anos</p>
                           </div>
                         </div>
-                        {getTrendIcon(student.trend)}
+                        <div className="flex items-center gap-1">
+                          {getTrendIcon(student.trend)}
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setStudentToRemove({ id: student.id, name: student.name });
+                            }}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
                       </div>
 
                       {/* Quick Stats */}
@@ -239,6 +289,19 @@ export default function TeacherClassView() {
             )}
           </TabsContent>
 
+          {/* Progress Tab */}
+          <TabsContent value="progress">
+            <ClassProgressCharts
+              students={students}
+              classStats={{
+                totalStudents: stats.totalStudents,
+                averageAccuracy: stats.averageAccuracy,
+                totalSessions: stats.totalSessions,
+              }}
+              cognitiveScores={stats.cognitiveScores}
+            />
+          </TabsContent>
+
           {/* Report Tab */}
           <TabsContent value="report">
             <ClassPedagogicalReport
@@ -274,6 +337,29 @@ export default function TeacherClassView() {
           }}
           existingStudentIds={students.map(s => s.id)}
         />
+
+        {/* Remove Student Confirmation */}
+        <AlertDialog open={!!studentToRemove} onOpenChange={(open) => !open && setStudentToRemove(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Remover aluno da turma?</AlertDialogTitle>
+              <AlertDialogDescription>
+                <strong>{studentToRemove?.name}</strong> será removido desta turma. 
+                Os dados do aluno serão mantidos no sistema.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={removing}>Cancelar</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={removeStudent}
+                disabled={removing}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                {removing ? 'Removendo...' : 'Remover'}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </ModernPageLayout>
   );
