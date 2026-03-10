@@ -33,7 +33,7 @@ export function ClassroomScan({ classId, className, students }: ClassroomScanPro
   useEffect(() => {
     if (activeSession?.id && activeSession.status === 'active') {
       const unsub = subscribeToSession(activeSession.id);
-      return unsub;
+      return () => { unsub(); };
     }
   }, [activeSession?.id, activeSession?.status]);
 
