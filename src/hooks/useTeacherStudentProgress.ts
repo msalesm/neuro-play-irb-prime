@@ -55,11 +55,11 @@ export function useTeacherStudentProgress() {
   }, [user, isAdmin]);
 
   const resolveChildProfileId = async (child: { id: string; name: string; parent_id?: string | null }): Promise<string | null> => {
-    // 1) Try by child_id FK on child_profiles
-    const { data: byChildId } = await supabase
+    // 1) Try by child_id FK on child_profiles (column added via migration)
+    const { data: byChildId } = await (supabase
       .from('child_profiles')
-      .select('id')
-      .eq('child_id' as any, child.id)
+      .select('id') as any)
+      .eq('child_id', child.id)
       .maybeSingle();
     if (byChildId) return byChildId.id;
 

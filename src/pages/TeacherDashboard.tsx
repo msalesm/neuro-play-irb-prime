@@ -53,10 +53,10 @@ export default function TeacherDashboard() {
         studentList.map(async (s: any) => {
           const child = s.children as any;
           // Try child_id FK first
-          const { data: byId } = await supabase
+          const { data: byId } = await (supabase
             .from('child_profiles')
-            .select('id')
-            .eq('child_id' as any, child.id)
+            .select('id') as any)
+            .eq('child_id', child.id)
             .maybeSingle();
           if (byId) { childProfileIds.push(byId.id); return; }
           // Fallback: parent + name
