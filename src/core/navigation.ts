@@ -149,10 +149,10 @@ const THERAPIST_BOTTOM: BottomNavItem[] = [
 ];
 
 const TEACHER_BOTTOM: BottomNavItem[] = [
-  { name: 'Educação', path: '/educacao', icon: School },
+  { name: 'Dashboard', path: '/teacher/dashboard', icon: GraduationCap },
   { name: 'Turmas', path: '/teacher/classes', icon: Users },
+  { name: 'Educação', path: '/educacao', icon: School },
   { name: 'Relatórios', path: '/relatorios', icon: FileText },
-  { name: 'Mensagens', path: '/mensagens', icon: Mail },
 ];
 
 const ADMIN_BOTTOM: BottomNavItem[] = [
