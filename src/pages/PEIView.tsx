@@ -439,9 +439,9 @@ const getStatusLabel = (status: string) => {
               </p>
               <p className="text-sm text-muted-foreground mb-4">Crie um plano educacional individualizado para acompanhar o desenvolvimento.</p>
               <Button onClick={async () => {
-                const targetId = selectedStudentId || patientId;
-                if (!targetId) return;
-                const result = await createPlan('manual', targetId);
+                const childId = selectedStudentId || patientId;
+                if (!childId || !user) return;
+                const result = await createPlan(null, user.id, childId);
                 if (result.success) {
                   loadPEI();
                 }
