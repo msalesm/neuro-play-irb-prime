@@ -104,6 +104,7 @@ const THERAPIST_NAV: NavItem[] = [
 const TEACHER_NAV: NavItem[] = [
   { title: 'Educação', path: '/educacao', icon: School, description: 'Turmas, check-in e relatórios' },
   { title: 'Turmas', path: '/teacher/classes', icon: Users },
+  { title: 'PEI', path: '/pei', icon: ClipboardCheck, description: 'Plano Educacional Individualizado' },
   { title: 'Relatórios', path: '/relatorios', icon: FileText },
   { title: 'Mensagens', path: '/mensagens', icon: Mail },
 ];
