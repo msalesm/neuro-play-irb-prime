@@ -116,17 +116,25 @@ export function usePEI() {
     setCurrentPlan(plan);
   };
 
-  const createPlan = async (screeningId: string | null, userId: string) => {
+  const createPlan = async (screeningId: string | null, userId: string, childId?: string) => {
     try {
       setLoading(true);
       const insertData: any = {
-        user_id: userId,
         goals: [],
         accommodations: [],
         strategies: [],
         progress_notes: [],
         status: 'active'
       };
+      
+      // If childId is provided, use it; otherwise set user_id
+      if (childId) {
+        insertData.child_id = childId;
+      }
+      // Only set user_id if it's a valid auth user (not a child ID)
+      // We try to set it, but it's now nullable
+      insertData.user_id = userId;
+      
       if (screeningId && screeningId !== 'manual') {
         insertData.screening_id = screeningId;
       }
