@@ -67,16 +67,16 @@ export default function PEIView() {
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(patientId || null);
   const [selectedStudentName, setSelectedStudentName] = useState<string>('');
 
-  // Teacher without a selected student: load their class students
+  // Teacher or Admin without a selected student: load students
   useEffect(() => {
     if (!user) {
       navigate('/auth');
       return;
     }
-    if (isTeacher && !patientId && !screeningId) {
+    if ((isTeacher || isAdmin) && !patientId && !screeningId) {
       loadTeacherStudents();
     }
-  }, [user, isTeacher, patientId, screeningId]);
+  }, [user, isTeacher, isAdmin, patientId, screeningId]);
 
   const loadTeacherStudents = async () => {
     if (!user) return;
