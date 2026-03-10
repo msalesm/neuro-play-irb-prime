@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { 
   School, Users, AlertTriangle, CheckCircle2, Clock, 
-  ClipboardCheck, ChevronRight, UserCheck, MapPin, Sparkles
+  ClipboardCheck, ChevronRight, UserCheck, MapPin, Sparkles, Scan
 } from 'lucide-react';
 import { format, startOfWeek, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -24,6 +24,7 @@ import { ClassManager } from '@/components/educacao/ClassManager';
 import { CognitiveIndicatorsTable } from '@/components/educacao/CognitiveIndicatorsTable';
 import { EducationalAlerts } from '@/components/educacao/EducationalAlerts';
 import { ClassGamification } from '@/components/educacao/ClassGamification';
+import { ClassroomScan } from '@/components/educacao/ClassroomScan';
 
 interface ClassStudent {
   id: string;
@@ -291,10 +292,14 @@ export default function EducacaoDashboard() {
           <>
             {/* Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
                 <TabsTrigger value="painel" className="gap-1.5">
                   <ClipboardCheck className="h-4 w-4" />
                   <span className="hidden sm:inline">Painel</span>
+                </TabsTrigger>
+                <TabsTrigger value="scan" className="gap-1.5">
+                  <Scan className="h-4 w-4" />
+                  <span className="hidden sm:inline">Triagem</span>
                 </TabsTrigger>
                 <TabsTrigger value="mapa" className="gap-1.5">
                   <MapPin className="h-4 w-4" />
@@ -447,6 +452,15 @@ export default function EducacaoDashboard() {
                   observedStudents={classIndicators.observed}
                   className={selectedClassName?.name}
                   weekLabel={weekLabel}
+                />
+              </TabsContent>
+
+              {/* === TAB: Classroom Cognitive Scan === */}
+              <TabsContent value="scan" className="mt-4">
+                <ClassroomScan
+                  classId={selectedClassId}
+                  className={selectedClassName?.name}
+                  students={students}
                 />
               </TabsContent>
 
