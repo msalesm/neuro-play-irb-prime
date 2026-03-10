@@ -1,0 +1,1 @@
+ALTER TABLE public.pei_plans ALTER COLUMN screening_id DROP NOT NULL;
