@@ -6,6 +6,7 @@ import { Eye, Brain, BookOpen, Puzzle, AlertTriangle, Users, CheckCircle2, Scan 
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
+import { calculateClassNCI, getNCIColor, getNCILabel } from '@/modules/cognitive-index';
 
 interface ClassCognitiveProfileProps {
   classId: string;
