@@ -64,6 +64,13 @@ interface PatientOption {
   name: string;
 }
 
+interface ClassOption {
+  id: string;
+  name: string;
+  grade_level?: string;
+  student_count: number;
+}
+
 const reportTypes = [
   {
     type: 'familiar' as const,
