@@ -118,8 +118,11 @@ export default function UnifiedReports() {
   const [selectedPeriod, setSelectedPeriod] = useState<string>('30');
   const [generating, setGenerating] = useState<string | null>(null);
   const [selectedChild, setSelectedChild] = useState<string>('');
+  const [selectedClass, setSelectedClass] = useState<string>('');
+  const [classes, setClasses] = useState<ClassOption[]>([]);
   const [children, setChildren] = useState<PatientOption[]>([]);
   const [loadingChildren, setLoadingChildren] = useState(false);
+  const [reportMode, setReportMode] = useState<'student' | 'class'>('class');
   const [reports, setReports] = useState<Record<string, ReportData | null>>({
     clinical: null,
     pedagogical: null,
@@ -128,16 +131,82 @@ export default function UnifiedReports() {
 
   useEffect(() => {
     trackScreenView('unified_reports');
+    if (isAdmin || isTeacher) {
+      loadClassesForUser();
+    }
     if (isAdmin) {
       loadAllChildren();
     } else if (isTherapist) {
       loadPatientsForTherapist();
     } else if (isParent) {
       loadChildrenForParent();
-    } else if (isTeacher) {
-      loadStudentsForTeacher();
     }
   }, [trackScreenView, isAdmin, isTherapist, isParent, isTeacher]);
+
+  const loadClassesForUser = async () => {
+    if (!user) return;
+    try {
+      let query = supabase.from('school_classes').select('id, name, grade_level');
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user.id);
+      }
+      const { data: classesData, error } = await query.order('name');
+      if (error) throw error;
+
+      const classesWithCounts = await Promise.all(
+        (classesData || []).map(async (cls) => {
+          const { count } = await supabase
+            .from('class_students')
+            .select('*', { count: 'exact', head: true })
+            .eq('class_id', cls.id)
+            .eq('is_active', true);
+          return {
+            id: cls.id,
+            name: cls.name,
+            grade_level: cls.grade_level || undefined,
+            student_count: count || 0,
+          };
+        })
+      );
+      setClasses(classesWithCounts);
+      if (classesWithCounts.length > 0 && !selectedClass) {
+        setSelectedClass(classesWithCounts[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading classes:', error);
+    }
+  };
+
+  // When class changes, load its students
+  useEffect(() => {
+    if ((isTeacher || isAdmin) && selectedClass && reportMode === 'class') {
+      loadStudentsForClass(selectedClass);
+    }
+  }, [selectedClass, reportMode]);
+
+  const loadStudentsForClass = async (classId: string) => {
+    setLoadingChildren(true);
+    try {
+      const { data, error } = await supabase
+        .from('class_students')
+        .select('child_id, children!class_students_child_id_fkey(id, name)')
+        .eq('class_id', classId)
+        .eq('is_active', true);
+
+      if (error) throw error;
+      const list = (data || [])
+        .filter((d: any) => d.children)
+        .map((d: any) => ({ id: d.children.id, name: d.children.name }));
+      setChildren(list);
+      if (list.length > 0) {
+        setSelectedChild(list[0].id);
+      }
+    } catch (error) {
+      console.error('Error loading class students:', error);
+    } finally {
+      setLoadingChildren(false);
+    }
+  };
 
   const loadAllChildren = async () => {
     if (!user) return;
