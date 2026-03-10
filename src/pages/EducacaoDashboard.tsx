@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { 
   School, Users, AlertTriangle, CheckCircle2, Clock, 
-  ClipboardCheck, ChevronRight, UserCheck, MapPin, Sparkles
+  ClipboardCheck, ChevronRight, UserCheck, MapPin, Sparkles, Scan
 } from 'lucide-react';
 import { format, startOfWeek, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
