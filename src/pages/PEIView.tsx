@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
 import { usePEI } from '@/hooks/usePEI';
+import { supabase } from '@/integrations/supabase/client';
 import { ModernPageLayout } from '@/components/ModernPageLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -37,12 +38,18 @@ interface PEIAccommodation {
   context: string;
 }
 
+interface TeacherStudent {
+  child_id: string;
+  child_name: string;
+  class_name: string;
+}
+
 export default function PEIView() {
   const { patientId } = useParams();
   const [searchParams] = useSearchParams();
   const screeningId = searchParams.get('screening');
   const { user } = useAuth();
-  const { isAdmin } = useUserRole();
+  const { isAdmin, isTeacher } = useUserRole();
   const navigate = useNavigate();
   const { currentPlan, allPlans, loading, getPEIByScreening, getPEIByUserId, getAllPEIs, selectPlan, updatePEI, createPlan } = usePEI();
   
@@ -55,35 +62,78 @@ export default function PEIView() {
     timeline: ''
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [teacherStudents, setTeacherStudents] = useState<TeacherStudent[]>([]);
+  const [loadingStudents, setLoadingStudents] = useState(false);
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(patientId || null);
+  const [selectedStudentName, setSelectedStudentName] = useState<string>('');
 
+  // Teacher without a selected student: load their class students
   useEffect(() => {
     if (!user) {
       navigate('/auth');
       return;
     }
+    if (isTeacher && !patientId && !screeningId) {
+      loadTeacherStudents();
+    }
+  }, [user, isTeacher, patientId, screeningId]);
 
-    loadPEI();
-  }, [user, screeningId, patientId, isAdmin]);
+  const loadTeacherStudents = async () => {
+    if (!user) return;
+    setLoadingStudents(true);
+    try {
+      const { data, error } = await supabase
+        .from('class_students')
+        .select('child_id, children!inner(name), school_classes!inner(name)')
+        .eq('teacher_id', user.id)
+        .eq('is_active', true);
+
+      if (error) throw error;
+
+      const students: TeacherStudent[] = (data || []).map((row: any) => ({
+        child_id: row.child_id,
+        child_name: row.children?.name || 'Sem nome',
+        class_name: row.school_classes?.name || '',
+      }));
+      setTeacherStudents(students);
+    } catch (err) {
+      console.error('Error loading teacher students:', err);
+    } finally {
+      setLoadingStudents(false);
+    }
+  };
+
+  const handleSelectStudent = (studentId: string) => {
+    const student = teacherStudents.find(s => s.child_id === studentId);
+    setSelectedStudentId(studentId);
+    setSelectedStudentName(student?.child_name || '');
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    if (selectedStudentId || patientId || screeningId || isAdmin) {
+      loadPEI();
+    }
+  }, [user, screeningId, patientId, selectedStudentId, isAdmin]);
 
   const loadPEI = async () => {
     let plan = null;
 
-    // If screeningId is provided, fetch by screening
     if (screeningId) {
       plan = await getPEIByScreening(screeningId);
     } 
-    // If patientId is provided (therapist viewing patient), fetch by patient
     else if (patientId) {
       plan = await getPEIByUserId(patientId);
     }
-    // Admin: fetch all PEIs
+    else if (selectedStudentId) {
+      plan = await getPEIByUserId(selectedStudentId);
+    }
     else if (isAdmin) {
       const plans = await getAllPEIs();
       if (plans.length > 0) {
         plan = plans[0];
       }
     }
-    // Otherwise fetch for current user
     else if (user) {
       plan = await getPEIByUserId(user.id);
     }
@@ -91,7 +141,6 @@ export default function PEIView() {
     if (plan) {
       loadPlanData(plan);
     } else {
-      // No plan found - reset state
       setGoals([]);
       setAccommodations([]);
     }
@@ -243,11 +292,62 @@ const getStatusLabel = (status: string) => {
     toast.success('PDF do PEI gerado com sucesso!');
   };
 
-  if (loading) {
+  if (loading || loadingStudents) {
     return (
       <ModernPageLayout>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-8 text-muted-foreground">Carregando PEI...</div>
+        </div>
+      </ModernPageLayout>
+    );
+  }
+
+  // Teacher without selected student: show student picker
+  if (isTeacher && !patientId && !screeningId && !selectedStudentId) {
+    return (
+      <ModernPageLayout>
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold">PEI Inteligente</h1>
+            <p className="text-muted-foreground mt-1">Selecione um aluno para visualizar ou criar o Plano Educacional Individualizado</p>
+          </div>
+
+          {teacherStudents.length === 0 ? (
+            <Card>
+              <CardContent className="py-12 text-center">
+                <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-medium">Nenhum aluno encontrado</p>
+                <p className="text-muted-foreground mt-1">Cadastre alunos nas suas turmas para criar PEIs.</p>
+                <Button className="mt-4" onClick={() => navigate('/teacher/classes')}>
+                  Gerenciar Turmas
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {teacherStudents.map((student) => (
+                <Card
+                  key={student.child_id}
+                  className="cursor-pointer hover:border-primary/50 hover:shadow-md transition-all"
+                  onClick={() => handleSelectStudent(student.child_id)}
+                >
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Brain className="h-4 w-4 text-primary" />
+                      {student.child_name}
+                    </CardTitle>
+                    <CardDescription>{student.class_name}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button variant="outline" size="sm" className="w-full">
+                      <ClipboardCheck className="h-4 w-4 mr-2" />
+                      Ver PEI
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </ModernPageLayout>
     );
@@ -258,7 +358,16 @@ const getStatusLabel = (status: string) => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+            <Button variant="ghost" size="icon" onClick={() => {
+                if (isTeacher && selectedStudentId && !patientId) {
+                  setSelectedStudentId(null);
+                  setSelectedStudentName('');
+                  setGoals([]);
+                  setAccommodations([]);
+                } else {
+                  navigate(-1);
+                }
+              }}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
@@ -271,7 +380,11 @@ const getStatusLabel = (status: string) => {
                   </Badge>
                 )}
               </div>
-              <p className="text-muted-foreground">Plano Educacional Individualizado baseado em dados cognitivos</p>
+              <p className="text-muted-foreground">
+                {selectedStudentName 
+                  ? `Plano de ${selectedStudentName}`
+                  : 'Plano Educacional Individualizado baseado em dados cognitivos'}
+              </p>
             </div>
           </div>
           
@@ -310,6 +423,30 @@ const getStatusLabel = (status: string) => {
             </Button>
           )}
         </div>
+
+        {/* No plan yet: offer to create one */}
+        {!currentPlan && (selectedStudentId || patientId) && (
+          <Card className="mb-6">
+            <CardContent className="py-8 text-center">
+              <AlertCircle className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+              <p className="text-lg font-medium mb-1">
+                {selectedStudentName ? `${selectedStudentName} ainda não possui PEI` : 'Nenhum PEI encontrado para este aluno'}
+              </p>
+              <p className="text-sm text-muted-foreground mb-4">Crie um plano educacional individualizado para acompanhar o desenvolvimento.</p>
+              <Button onClick={async () => {
+                const targetId = selectedStudentId || patientId;
+                if (!targetId) return;
+                const result = await createPlan('manual', targetId);
+                if (result.success) {
+                  loadPEI();
+                }
+              }}>
+                <Plus className="h-4 w-4 mr-2" />
+                Criar PEI
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
