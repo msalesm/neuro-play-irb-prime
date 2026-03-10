@@ -37,6 +37,7 @@ interface SchoolClass {
 export default function TeacherClasses() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const [classes, setClasses] = useState<SchoolClass[]>([]);
   const [filteredClasses, setFilteredClasses] = useState<SchoolClass[]>([]);
   const [loading, setLoading] = useState(true);
