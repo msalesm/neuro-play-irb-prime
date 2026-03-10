@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ChildAvatarDisplay } from '@/components/gamification';
+import { PatientAvatar } from '@/components/clinical/PatientAvatar';
 import { ArrowLeft, Download, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { PatientData } from '@/hooks/useTherapistPatientData';
@@ -26,7 +26,7 @@ export function TherapistPatientHeader({ patient, onGenerateReport, onSetTab }: 
         <CardContent className="p-6">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
-              <ChildAvatarDisplay avatar={patient.avatar_url} name={patient.name} size="xl" />
+              <PatientAvatar photoUrl={patient.avatar_url} name={patient.name} size="xl" />
               <div>
                 <h1 className="text-3xl font-bold">{patient.name}</h1>
                 <p className="text-muted-foreground">{patient.age} anos</p>

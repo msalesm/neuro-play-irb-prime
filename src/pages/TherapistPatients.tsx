@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { Search, UserCircle, TrendingUp, AlertCircle, Calendar, Plus, LayoutGrid, List, ClipboardList, FileText, Pencil } from 'lucide-react';
-import { ChildAvatarDisplay } from '@/components/gamification';
+import { PatientAvatar } from '@/components/clinical/PatientAvatar';
 import { AddPatientModal } from '@/components/therapist/AddPatientModal';
 import { EditPatientModal } from '@/components/therapist/EditPatientModal';
 import { TherapistPatientSection } from '@/components/therapist/TherapistPatientSection';
@@ -205,8 +205,8 @@ export default function TherapistPatients() {
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <ChildAvatarDisplay
-                        avatar={patient.avatar_url}
+                      <PatientAvatar
+                        photoUrl={patient.avatar_url}
                         name={patient.name}
                         size="md"
                       />
