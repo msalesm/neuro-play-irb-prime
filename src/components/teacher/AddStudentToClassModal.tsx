@@ -46,6 +46,11 @@ export function AddStudentToClassModal({
   });
   const [creating, setCreating] = useState(false);
 
+  // CSV import
+  const [csvData, setCsvData] = useState<Array<{ name: string; birth_date: string }>>([]);
+  const [csvError, setCsvError] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+
   const searchChildren = async () => {
     if (searchQuery.length < 2) return;
 
