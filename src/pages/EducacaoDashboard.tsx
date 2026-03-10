@@ -24,6 +24,7 @@ import { ClassManager } from '@/components/educacao/ClassManager';
 import { CognitiveIndicatorsTable } from '@/components/educacao/CognitiveIndicatorsTable';
 import { EducationalAlerts } from '@/components/educacao/EducationalAlerts';
 import { ClassGamification } from '@/components/educacao/ClassGamification';
+import { ClassroomScan } from '@/components/educacao/ClassroomScan';
 
 interface ClassStudent {
   id: string;
