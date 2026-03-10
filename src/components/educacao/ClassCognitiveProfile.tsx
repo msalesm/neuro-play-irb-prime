@@ -97,6 +97,8 @@ export function ClassCognitiveProfile({ classId, className, studentCount }: Clas
       }).length,
     };
 
+    const nci = calculateClassNCI(r);
+
     return {
       attention: avg('attention_score'),
       memory: avg('memory_score'),
@@ -105,6 +107,7 @@ export function ClassCognitiveProfile({ classId, className, studentCount }: Clas
       assessed: n,
       risks,
       date: latestScan.session.completed_at,
+      nci,
     };
   }, [latestScan]);
 
