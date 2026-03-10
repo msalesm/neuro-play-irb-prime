@@ -6,9 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Users, Activity, GraduationCap, Sparkles, BookOpen,
-  AlertTriangle, TrendingUp, Target,
+  AlertTriangle, TrendingUp, Target, Scan, Brain,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -18,6 +19,9 @@ import { TeacherStudentSection } from '@/components/teacher/TeacherStudentSectio
 import { SchoolOccurrences } from '@/components/teacher/SchoolOccurrences';
 import { QuickActivities } from '@/modules/school/components/QuickActivities';
 import { SchoolWeeklyEngagement } from '@/modules/school/components/SchoolWeeklyEngagement';
+import { ClassCognitiveProfile } from '@/components/educacao/ClassCognitiveProfile';
+import { ClassEvolutionChart } from '@/components/educacao/ClassEvolutionChart';
+import { ClassroomScan } from '@/components/educacao/ClassroomScan';
 
 export default function TeacherDashboard() {
   const navigate = useNavigate();
