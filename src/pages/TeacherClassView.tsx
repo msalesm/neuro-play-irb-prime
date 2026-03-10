@@ -16,7 +16,6 @@ import { ClassPedagogicalReport } from '@/components/teacher/ClassPedagogicalRep
 import { AddStudentToClassModal } from '@/components/teacher/AddStudentToClassModal';
 import { ClassProgressCharts } from '@/components/teacher/ClassProgressCharts';
 import { useClassProgress } from '@/hooks/useClassProgress';
-import { toast } from 'sonner';
 import {
   AlertDialog,
   AlertDialogAction,
