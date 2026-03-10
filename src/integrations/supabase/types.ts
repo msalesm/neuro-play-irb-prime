@@ -2837,6 +2837,7 @@ export type Database = {
       }
       child_profiles: {
         Row: {
+          child_id: string | null
           cognitive_baseline: Json | null
           created_at: string | null
           current_level: number | null
@@ -2850,6 +2851,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          child_id?: string | null
           cognitive_baseline?: Json | null
           created_at?: string | null
           current_level?: number | null
@@ -2863,6 +2865,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          child_id?: string | null
           cognitive_baseline?: Json | null
           created_at?: string | null
           current_level?: number | null
@@ -2875,7 +2878,29 @@ export type Database = {
           total_stars?: number | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "child_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "child_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "child_profiles_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       children: {
         Row: {
@@ -10287,6 +10312,42 @@ export type Database = {
           is_default?: boolean | null
           name?: string
           native_name?: string
+        }
+        Relationships: []
+      }
+      teacher_training: {
+        Row: {
+          certificate_url: string | null
+          completed_at: string | null
+          id: string
+          module_name: string
+          score: number
+          started_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          certificate_url?: string | null
+          completed_at?: string | null
+          id?: string
+          module_name: string
+          score?: number
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          certificate_url?: string | null
+          completed_at?: string | null
+          id?: string
+          module_name?: string
+          score?: number
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
