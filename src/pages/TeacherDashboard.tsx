@@ -28,6 +28,42 @@ export default function TeacherDashboard() {
   const { user } = useAuth();
   const { isAdmin } = useUserRole();
   const [activeTab, setActiveTab] = useState<string>('alunos');
+  const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
+
+  // Fetch classes list
+  const { data: classesList = [] } = useQuery({
+    queryKey: ['teacher-classes-list', user?.id, isAdmin],
+    queryFn: async () => {
+      if (!user) return [];
+      let query = supabase.from('school_classes').select('id, name, grade_level, school_year');
+      if (!isAdmin) query = query.eq('teacher_id', user.id);
+      const { data } = await query;
+      return data || [];
+    },
+    enabled: !!user,
+  });
+
+  // Auto-select first class
+  React.useEffect(() => {
+    if (classesList.length > 0 && !selectedClassId) {
+      setSelectedClassId(classesList[0].id);
+    }
+  }, [classesList, selectedClassId]);
+
+  // Fetch students for selected class (for scan)
+  const { data: classStudents = [] } = useQuery({
+    queryKey: ['class-students-for-scan', selectedClassId],
+    queryFn: async () => {
+      if (!selectedClassId) return [];
+      const { data } = await supabase
+        .from('class_students')
+        .select('id, child_id, children!class_students_child_id_fkey(id, name)')
+        .eq('class_id', selectedClassId)
+        .eq('is_active', true);
+      return (data || []).map((d: any) => ({ ...d, children: d.children }));
+    },
+    enabled: !!selectedClassId,
+  });
 
   const { data: classData, isLoading: statsLoading } = useQuery({
     queryKey: ['teacher-dashboard-stats', user?.id, isAdmin],
