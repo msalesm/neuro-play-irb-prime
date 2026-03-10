@@ -3126,6 +3126,59 @@ export type Database = {
           },
         ]
       }
+      classroom_scan_sessions: {
+        Row: {
+          class_id: string
+          class_results: Json | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          session_code: string
+          started_at: string | null
+          status: string
+          students_completed: number | null
+          teacher_id: string
+          total_students: number | null
+          updated_at: string
+        }
+        Insert: {
+          class_id: string
+          class_results?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          session_code: string
+          started_at?: string | null
+          status?: string
+          students_completed?: number | null
+          teacher_id: string
+          total_students?: number | null
+          updated_at?: string
+        }
+        Update: {
+          class_id?: string
+          class_results?: Json | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          session_code?: string
+          started_at?: string | null
+          status?: string
+          students_completed?: number | null
+          teacher_id?: string
+          total_students?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "classroom_scan_sessions_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "school_classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       classroom_weekly_reports: {
         Row: {
           active_students: number | null
@@ -4103,6 +4156,83 @@ export type Database = {
             columns: ["parent_id"]
             isOneToOne: false
             referencedRelation: "public_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cognitive_events: {
+        Row: {
+          accuracy: number | null
+          attempts: number | null
+          child_id: string
+          event_type: string
+          game_type: string
+          id: string
+          is_correct: boolean | null
+          latency_ms: number | null
+          persistence_score: number | null
+          raw_data: Json | null
+          reaction_time_ms: number | null
+          recorded_at: string
+          session_id: string
+        }
+        Insert: {
+          accuracy?: number | null
+          attempts?: number | null
+          child_id: string
+          event_type?: string
+          game_type: string
+          id?: string
+          is_correct?: boolean | null
+          latency_ms?: number | null
+          persistence_score?: number | null
+          raw_data?: Json | null
+          reaction_time_ms?: number | null
+          recorded_at?: string
+          session_id: string
+        }
+        Update: {
+          accuracy?: number | null
+          attempts?: number | null
+          child_id?: string
+          event_type?: string
+          game_type?: string
+          id?: string
+          is_correct?: boolean | null
+          latency_ms?: number | null
+          persistence_score?: number | null
+          raw_data?: Json | null
+          reaction_time_ms?: number | null
+          recorded_at?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cognitive_events_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cognitive_events_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "cognitive_events_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cognitive_events_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "classroom_scan_sessions"
             referencedColumns: ["id"]
           },
         ]
@@ -8758,6 +8888,89 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      scan_student_results: {
+        Row: {
+          attention_score: number | null
+          child_id: string
+          completed_at: string | null
+          created_at: string
+          executive_function_score: number | null
+          id: string
+          language_score: number | null
+          memory_score: number | null
+          overall_score: number | null
+          raw_metrics: Json | null
+          risk_flags: Json | null
+          session_id: string
+          started_at: string | null
+          status: string
+          student_name: string
+        }
+        Insert: {
+          attention_score?: number | null
+          child_id: string
+          completed_at?: string | null
+          created_at?: string
+          executive_function_score?: number | null
+          id?: string
+          language_score?: number | null
+          memory_score?: number | null
+          overall_score?: number | null
+          raw_metrics?: Json | null
+          risk_flags?: Json | null
+          session_id: string
+          started_at?: string | null
+          status?: string
+          student_name: string
+        }
+        Update: {
+          attention_score?: number | null
+          child_id?: string
+          completed_at?: string | null
+          created_at?: string
+          executive_function_score?: number | null
+          id?: string
+          language_score?: number | null
+          memory_score?: number | null
+          overall_score?: number | null
+          raw_metrics?: Json | null
+          risk_flags?: Json | null
+          session_id?: string
+          started_at?: string | null
+          status?: string
+          student_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scan_student_results_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scan_student_results_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "scan_student_results_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scan_student_results_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "classroom_scan_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       school_classes: {
         Row: {
