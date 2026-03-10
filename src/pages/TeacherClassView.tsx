@@ -42,6 +42,8 @@ export default function TeacherClassView() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [studentToRemove, setStudentToRemove] = useState<{ id: string; name: string } | null>(null);
+  const [removing, setRemoving] = useState(false);
 
   const { students, stats, loading: progressLoading, reload } = useClassProgress(classId);
 
