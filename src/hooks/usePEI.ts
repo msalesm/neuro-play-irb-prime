@@ -45,6 +45,19 @@ export function usePEI() {
   const getPEIByUserId = async (userId: string) => {
     try {
       setLoading(true);
+      // Try child_id first, then user_id
+      const { data: childData, error: childError } = await supabase
+        .from('pei_plans')
+        .select('*')
+        .eq('child_id', userId)
+        .order('created_at', { ascending: false })
+        .maybeSingle();
+
+      if (!childError && childData) {
+        setCurrentPlan(childData);
+        return childData;
+      }
+
       const { data, error } = await supabase
         .from('pei_plans')
         .select('*')
