@@ -619,8 +619,10 @@ export default function UnifiedReports() {
                         <CardTitle className="text-base truncate">
                           {reportType.title}
                         </CardTitle>
-                        {selectedChildName && (
-                          <p className="text-xs text-muted-foreground truncate mt-0.5">{selectedChildName}</p>
+                        {(selectedClassName || selectedChildName) && (
+                          <p className="text-xs text-muted-foreground truncate mt-0.5">
+                            {selectedClassName ? `${selectedClassName}` : ''}{selectedClassName && selectedChildName ? ' — ' : ''}{selectedChildName || ''}
+                          </p>
                         )}
                         <CardDescription className="text-xs mt-1 line-clamp-2">
                           {reportType.description}
