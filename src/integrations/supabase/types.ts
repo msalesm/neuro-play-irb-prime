@@ -9154,6 +9154,7 @@ export type Database = {
           contact_phone: string | null
           created_at: string | null
           id: string
+          institution_id: string | null
           name: string
           principal_name: string | null
           region: string | null
@@ -9170,6 +9171,7 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string | null
           id?: string
+          institution_id?: string | null
           name: string
           principal_name?: string | null
           region?: string | null
@@ -9186,6 +9188,7 @@ export type Database = {
           contact_phone?: string | null
           created_at?: string | null
           id?: string
+          institution_id?: string | null
           name?: string
           principal_name?: string | null
           region?: string | null
@@ -9193,7 +9196,15 @@ export type Database = {
           total_students?: number | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "schools_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       screenings: {
         Row: {
