@@ -95,12 +95,17 @@ export default function PEIView() {
 
       if (error) throw error;
 
-      const students: TeacherStudent[] = (data || []).map((row: any) => ({
-        child_id: row.child_id,
-        child_name: row.children?.name || 'Sem nome',
-        class_name: row.school_classes?.name || '',
-      }));
-      setTeacherStudents(students);
+      const studentsMap = new Map<string, TeacherStudent>();
+      (data || []).forEach((row: any) => {
+        if (!studentsMap.has(row.child_id)) {
+          studentsMap.set(row.child_id, {
+            child_id: row.child_id,
+            child_name: row.children?.name || 'Sem nome',
+            class_name: row.school_classes?.name || '',
+          });
+        }
+      });
+      setTeacherStudents(Array.from(studentsMap.values()));
     } catch (err) {
       console.error('Error loading teacher students:', err);
     } finally {
