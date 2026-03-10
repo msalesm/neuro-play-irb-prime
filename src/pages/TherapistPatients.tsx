@@ -205,8 +205,8 @@ export default function TherapistPatients() {
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <ChildAvatarDisplay
-                        avatar={patient.avatar_url}
+                      <PatientAvatar
+                        photoUrl={patient.avatar_url}
                         name={patient.name}
                         size="md"
                       />
