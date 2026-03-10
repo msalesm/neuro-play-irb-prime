@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -77,6 +78,7 @@ function getRiskLabel(level: string | null) {
 
 export default function EducacaoDashboard() {
   const { user } = useAuth();
+  const { isAdmin } = useUserRole();
   const queryClient = useQueryClient();
   const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
   const [checkinOpen, setCheckinOpen] = useState(false);
@@ -87,15 +89,18 @@ export default function EducacaoDashboard() {
   const currentWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
   const weekLabel = `${format(currentWeek, "dd/MM", { locale: ptBR })} – ${format(addDays(currentWeek, 6), "dd/MM", { locale: ptBR })}`;
 
-  // Fetch teacher's classes
+  // Fetch classes (admin sees all, teacher sees own)
   const { data: classes = [] } = useQuery({
-    queryKey: ['teacher-classes-edu', user?.id],
+    queryKey: ['teacher-classes-edu', user?.id, isAdmin],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await supabase
+      let query = supabase
         .from('school_classes')
-        .select('id, name, grade_level, school_year')
-        .eq('teacher_id', user.id);
+        .select('id, name, grade_level, school_year');
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user.id);
+      }
+      const { data, error } = await query;
       if (error) throw error;
       return data || [];
     },
