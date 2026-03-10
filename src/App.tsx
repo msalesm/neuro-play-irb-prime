@@ -213,6 +213,7 @@ const App = () => (
                   <Route path="/index" element={<Index />} />
                   <Route path="/onboarding" element={<OnboardingWizard />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/join" element={<L><JoinScan /></L>} />
                   <Route path="/aceitar-convite" element={<L><AcceptInvite /></L>} />
                   
                   {/* Dashboards */}
