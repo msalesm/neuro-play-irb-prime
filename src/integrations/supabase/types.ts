@@ -7861,7 +7861,7 @@ export type Database = {
           goals: Json | null
           id: string
           progress_notes: Json | null
-          screening_id: string
+          screening_id: string | null
           status: string | null
           strategies: Json | null
           updated_at: string | null
@@ -7873,7 +7873,7 @@ export type Database = {
           goals?: Json | null
           id?: string
           progress_notes?: Json | null
-          screening_id: string
+          screening_id?: string | null
           status?: string | null
           strategies?: Json | null
           updated_at?: string | null
@@ -7885,7 +7885,7 @@ export type Database = {
           goals?: Json | null
           id?: string
           progress_notes?: Json | null
-          screening_id?: string
+          screening_id?: string | null
           status?: string | null
           strategies?: Json | null
           updated_at?: string | null

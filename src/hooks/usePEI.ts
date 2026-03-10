@@ -116,20 +116,23 @@ export function usePEI() {
     setCurrentPlan(plan);
   };
 
-  const createPlan = async (screeningId: string, userId: string) => {
+  const createPlan = async (screeningId: string | null, userId: string) => {
     try {
       setLoading(true);
+      const insertData: any = {
+        user_id: userId,
+        goals: [],
+        accommodations: [],
+        strategies: [],
+        progress_notes: [],
+        status: 'active'
+      };
+      if (screeningId && screeningId !== 'manual') {
+        insertData.screening_id = screeningId;
+      }
       const { data, error } = await supabase
         .from('pei_plans')
-        .insert({
-          screening_id: screeningId,
-          user_id: userId,
-          goals: [],
-          accommodations: [],
-          strategies: [],
-          progress_notes: [],
-          status: 'active'
-        })
+        .insert(insertData)
         .select()
         .single();
 
