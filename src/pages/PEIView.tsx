@@ -358,7 +358,16 @@ const getStatusLabel = (status: string) => {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+            <Button variant="ghost" size="icon" onClick={() => {
+                if (isTeacher && selectedStudentId && !patientId) {
+                  setSelectedStudentId(null);
+                  setSelectedStudentName('');
+                  setGoals([]);
+                  setAccommodations([]);
+                } else {
+                  navigate(-1);
+                }
+              }}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
@@ -371,7 +380,11 @@ const getStatusLabel = (status: string) => {
                   </Badge>
                 )}
               </div>
-              <p className="text-muted-foreground">Plano Educacional Individualizado baseado em dados cognitivos</p>
+              <p className="text-muted-foreground">
+                {selectedStudentName 
+                  ? `Plano de ${selectedStudentName}`
+                  : 'Plano Educacional Individualizado baseado em dados cognitivos'}
+              </p>
             </div>
           </div>
           
