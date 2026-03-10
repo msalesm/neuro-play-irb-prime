@@ -45,6 +45,19 @@ export function usePEI() {
   const getPEIByUserId = async (userId: string) => {
     try {
       setLoading(true);
+      // Try child_id first, then user_id
+      const { data: childData, error: childError } = await supabase
+        .from('pei_plans')
+        .select('*')
+        .eq('child_id', userId)
+        .order('created_at', { ascending: false })
+        .maybeSingle();
+
+      if (!childError && childData) {
+        setCurrentPlan(childData);
+        return childData;
+      }
+
       const { data, error } = await supabase
         .from('pei_plans')
         .select('*')
@@ -67,6 +80,20 @@ export function usePEI() {
   const getAllPEIsForUser = async (userId: string) => {
     try {
       setLoading(true);
+      // Try child_id first
+      const { data: childData } = await supabase
+        .from('pei_plans')
+        .select('*')
+        .eq('child_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (childData && childData.length > 0) {
+        setCurrentPlan(childData[0]);
+        setAllPlans(childData);
+        setLoading(false);
+        return childData;
+      }
+
       const { data, error } = await supabase
         .from('pei_plans')
         .select('*')
@@ -116,17 +143,25 @@ export function usePEI() {
     setCurrentPlan(plan);
   };
 
-  const createPlan = async (screeningId: string | null, userId: string) => {
+  const createPlan = async (screeningId: string | null, userId: string, childId?: string) => {
     try {
       setLoading(true);
       const insertData: any = {
-        user_id: userId,
         goals: [],
         accommodations: [],
         strategies: [],
         progress_notes: [],
         status: 'active'
       };
+      
+      // If childId is provided, use it; otherwise set user_id
+      if (childId) {
+        insertData.child_id = childId;
+      }
+      // Only set user_id if it's a valid auth user (not a child ID)
+      // We try to set it, but it's now nullable
+      insertData.user_id = userId;
+      
       if (screeningId && screeningId !== 'manual') {
         insertData.screening_id = screeningId;
       }

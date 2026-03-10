@@ -95,12 +95,17 @@ export default function PEIView() {
 
       if (error) throw error;
 
-      const students: TeacherStudent[] = (data || []).map((row: any) => ({
-        child_id: row.child_id,
-        child_name: row.children?.name || 'Sem nome',
-        class_name: row.school_classes?.name || '',
-      }));
-      setTeacherStudents(students);
+      const studentsMap = new Map<string, TeacherStudent>();
+      (data || []).forEach((row: any) => {
+        if (!studentsMap.has(row.child_id)) {
+          studentsMap.set(row.child_id, {
+            child_id: row.child_id,
+            child_name: row.children?.name || 'Sem nome',
+            class_name: row.school_classes?.name || '',
+          });
+        }
+      });
+      setTeacherStudents(Array.from(studentsMap.values()));
     } catch (err) {
       console.error('Error loading teacher students:', err);
     } finally {
@@ -439,9 +444,9 @@ const getStatusLabel = (status: string) => {
               </p>
               <p className="text-sm text-muted-foreground mb-4">Crie um plano educacional individualizado para acompanhar o desenvolvimento.</p>
               <Button onClick={async () => {
-                const targetId = selectedStudentId || patientId;
-                if (!targetId) return;
-                const result = await createPlan('manual', targetId);
+                const childId = selectedStudentId || patientId;
+                if (!childId || !user) return;
+                const result = await createPlan(null, user.id, childId);
                 if (result.success) {
                   loadPEI();
                 }
