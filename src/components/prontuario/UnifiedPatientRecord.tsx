@@ -29,7 +29,7 @@ import { TeleconsultTab } from './TeleconsultTab';
 import { DiagnosticsTab } from './DiagnosticsTab';
 import { AbaHistoryTab } from './AbaHistoryTab';
 import { PeiIntegrationTab } from './PeiIntegrationTab';
-import { ChildAvatarDisplay } from '@/components/gamification/ChildAvatarDisplay';
+import { PatientAvatar } from '@/components/clinical/PatientAvatar';
 
 interface UnifiedPatientRecordProps {
   childId: string;
