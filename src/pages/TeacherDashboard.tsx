@@ -256,6 +256,33 @@ export default function TeacherDashboard() {
         </div>
       </div>
 
+      {/* Class Selector */}
+      {classesList.length > 0 && (
+        <div className="flex items-center gap-3">
+          <Select value={selectedClassId || ''} onValueChange={setSelectedClassId}>
+            <SelectTrigger className="w-full sm:w-72">
+              <SelectValue placeholder="Selecionar turma" />
+            </SelectTrigger>
+            <SelectContent>
+              {classesList.map(c => (
+                <SelectItem key={c.id} value={c.id}>
+                  {c.name} – {c.grade_level} ({c.school_year})
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {/* Cognitive Profile of Selected Class */}
+      {selectedClassId && (
+        <ClassCognitiveProfile
+          classId={selectedClassId}
+          className={classesList.find(c => c.id === selectedClassId)?.name}
+          studentCount={classStudents.length}
+        />
+      )}
+
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {statsLoading ? (
@@ -292,7 +319,7 @@ export default function TeacherDashboard() {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <TrendingUp className="h-4 w-4 text-emerald-500" />
+                  <TrendingUp className="h-4 w-4 text-chart-3" />
                   <span className="text-xs text-muted-foreground">Evoluindo</span>
                 </div>
                 <p className="text-2xl font-bold text-foreground">
@@ -304,7 +331,7 @@ export default function TeacherDashboard() {
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-1">
-                  <Target className="h-4 w-4 text-amber-500" />
+                  <Target className="h-4 w-4 text-chart-4" />
                   <span className="text-xs text-muted-foreground">Necessita Apoio</span>
                 </div>
                 <p className="text-2xl font-bold text-foreground">{stats.needsSupport}</p>
@@ -316,9 +343,9 @@ export default function TeacherDashboard() {
       </div>
 
       {!statsLoading && stats.needsSupport > 0 && (
-        <Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20">
-          <AlertTriangle className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800 dark:text-amber-300">
+        <Alert className="border-destructive/20 bg-destructive/5">
+          <AlertTriangle className="h-4 w-4 text-destructive" />
+          <AlertDescription className="text-destructive">
             <strong>{stats.needsSupport}</strong> aluno(s) apresentam indicadores que merecem acompanhamento.
             Verifique o progresso individual para sugestões de atividades de apoio.
           </AlertDescription>
@@ -327,22 +354,26 @@ export default function TeacherDashboard() {
 
       {/* Main content tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList>
-          <TabsTrigger value="alunos" className="flex items-center gap-2">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="alunos" className="gap-1.5">
             <Users className="h-4 w-4" />
-            Alunos
+            <span className="hidden sm:inline">Alunos</span>
           </TabsTrigger>
-          <TabsTrigger value="atividades" className="flex items-center gap-2">
+          <TabsTrigger value="triagem" className="gap-1.5">
+            <Scan className="h-4 w-4" />
+            <span className="hidden sm:inline">Triagem</span>
+          </TabsTrigger>
+          <TabsTrigger value="evolucao" className="gap-1.5">
+            <TrendingUp className="h-4 w-4" />
+            <span className="hidden sm:inline">Evolução</span>
+          </TabsTrigger>
+          <TabsTrigger value="atividades" className="gap-1.5">
             <Sparkles className="h-4 w-4" />
-            Atividades Rápidas
+            <span className="hidden sm:inline">Atividades</span>
           </TabsTrigger>
-          <TabsTrigger value="engajamento" className="flex items-center gap-2">
+          <TabsTrigger value="engajamento" className="gap-1.5">
             <Activity className="h-4 w-4" />
-            Engajamento
-          </TabsTrigger>
-          <TabsTrigger value="ocorrencias" className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4" />
-            Observações
+            <span className="hidden sm:inline">Engajamento</span>
           </TabsTrigger>
         </TabsList>
 
@@ -350,6 +381,37 @@ export default function TeacherDashboard() {
           <TeacherStudentSection 
             onViewDetails={(studentId) => navigate(`/teacher/student/${studentId}`)}
           />
+        </TabsContent>
+
+        <TabsContent value="triagem" className="mt-4">
+          {selectedClassId ? (
+            <ClassroomScan
+              classId={selectedClassId}
+              className={classesList.find(c => c.id === selectedClassId)?.name}
+              students={classStudents}
+            />
+          ) : (
+            <Card className="border-dashed">
+              <CardContent className="p-8 text-center text-muted-foreground">
+                Selecione uma turma acima para iniciar a triagem
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
+
+        <TabsContent value="evolucao" className="mt-4">
+          {selectedClassId ? (
+            <ClassEvolutionChart
+              classId={selectedClassId}
+              className={classesList.find(c => c.id === selectedClassId)?.name}
+            />
+          ) : (
+            <Card className="border-dashed">
+              <CardContent className="p-8 text-center text-muted-foreground">
+                Selecione uma turma para ver a evolução cognitiva
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="atividades" className="mt-4">
@@ -373,10 +435,6 @@ export default function TeacherDashboard() {
             weekData={weeklyData} 
             totalStudents={stats.students}
           />
-        </TabsContent>
-
-        <TabsContent value="ocorrencias" className="mt-4">
-          <SchoolOccurrences />
         </TabsContent>
       </Tabs>
     </div>
