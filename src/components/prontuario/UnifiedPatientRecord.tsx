@@ -79,8 +79,8 @@ export function UnifiedPatientRecord({ childId, onGenerateReport }: UnifiedPatie
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <ChildAvatarDisplay
-                avatar={profile.avatarUrl}
+              <PatientAvatar
+                photoUrl={profile.avatarUrl}
                 name={profile.name}
                 size="xl"
               />
