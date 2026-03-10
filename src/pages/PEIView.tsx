@@ -38,12 +38,18 @@ interface PEIAccommodation {
   context: string;
 }
 
+interface TeacherStudent {
+  child_id: string;
+  child_name: string;
+  class_name: string;
+}
+
 export default function PEIView() {
   const { patientId } = useParams();
   const [searchParams] = useSearchParams();
   const screeningId = searchParams.get('screening');
   const { user } = useAuth();
-  const { isAdmin } = useUserRole();
+  const { isAdmin, isTeacher } = useUserRole();
   const navigate = useNavigate();
   const { currentPlan, allPlans, loading, getPEIByScreening, getPEIByUserId, getAllPEIs, selectPlan, updatePEI, createPlan } = usePEI();
   
@@ -56,35 +62,78 @@ export default function PEIView() {
     timeline: ''
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [teacherStudents, setTeacherStudents] = useState<TeacherStudent[]>([]);
+  const [loadingStudents, setLoadingStudents] = useState(false);
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(patientId || null);
+  const [selectedStudentName, setSelectedStudentName] = useState<string>('');
 
+  // Teacher without a selected student: load their class students
   useEffect(() => {
     if (!user) {
       navigate('/auth');
       return;
     }
+    if (isTeacher && !patientId && !screeningId) {
+      loadTeacherStudents();
+    }
+  }, [user, isTeacher, patientId, screeningId]);
 
-    loadPEI();
-  }, [user, screeningId, patientId, isAdmin]);
+  const loadTeacherStudents = async () => {
+    if (!user) return;
+    setLoadingStudents(true);
+    try {
+      const { data, error } = await supabase
+        .from('class_students')
+        .select('child_id, children!inner(name), school_classes!inner(name)')
+        .eq('teacher_id', user.id)
+        .eq('is_active', true);
+
+      if (error) throw error;
+
+      const students: TeacherStudent[] = (data || []).map((row: any) => ({
+        child_id: row.child_id,
+        child_name: row.children?.name || 'Sem nome',
+        class_name: row.school_classes?.name || '',
+      }));
+      setTeacherStudents(students);
+    } catch (err) {
+      console.error('Error loading teacher students:', err);
+    } finally {
+      setLoadingStudents(false);
+    }
+  };
+
+  const handleSelectStudent = (studentId: string) => {
+    const student = teacherStudents.find(s => s.child_id === studentId);
+    setSelectedStudentId(studentId);
+    setSelectedStudentName(student?.child_name || '');
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    if (selectedStudentId || patientId || screeningId || isAdmin) {
+      loadPEI();
+    }
+  }, [user, screeningId, patientId, selectedStudentId, isAdmin]);
 
   const loadPEI = async () => {
     let plan = null;
 
-    // If screeningId is provided, fetch by screening
     if (screeningId) {
       plan = await getPEIByScreening(screeningId);
     } 
-    // If patientId is provided (therapist viewing patient), fetch by patient
     else if (patientId) {
       plan = await getPEIByUserId(patientId);
     }
-    // Admin: fetch all PEIs
+    else if (selectedStudentId) {
+      plan = await getPEIByUserId(selectedStudentId);
+    }
     else if (isAdmin) {
       const plans = await getAllPEIs();
       if (plans.length > 0) {
         plan = plans[0];
       }
     }
-    // Otherwise fetch for current user
     else if (user) {
       plan = await getPEIByUserId(user.id);
     }
@@ -92,7 +141,6 @@ export default function PEIView() {
     if (plan) {
       loadPlanData(plan);
     } else {
-      // No plan found - reset state
       setGoals([]);
       setAccommodations([]);
     }
