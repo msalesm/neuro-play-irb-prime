@@ -133,12 +133,6 @@ export function usePEI() {
       const { data, error } = await supabase
         .from('pei_plans')
         .insert(insertData)
-          goals: [],
-          accommodations: [],
-          strategies: [],
-          progress_notes: [],
-          status: 'active'
-        })
         .select()
         .single();
 
