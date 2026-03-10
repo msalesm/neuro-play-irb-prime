@@ -98,7 +98,7 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
       const { data: prevSessions } = await supabase
         .from('game_sessions')
         .select('accuracy_percentage, cognitive_games(cognitive_domains)')
-        .eq('child_profile_id', childId)
+        .eq('child_profile_id', profileId)
         .eq('completed', true)
         .gte('completed_at', previousStart)
         .lt('completed_at', startDate);
