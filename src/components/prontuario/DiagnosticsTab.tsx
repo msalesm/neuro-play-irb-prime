@@ -299,7 +299,7 @@ export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {
               <ClipboardCheck className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
               <p className="text-muted-foreground mb-4">Nenhuma avaliação consolidada encontrada</p>
               <Button variant="outline" asChild>
-                <Link to="/testes-diagnosticos">Realizar Triagem</Link>
+                <Link to="/diagnostico-completo">Realizar Triagem</Link>
               </Button>
             </div>
           )}
@@ -382,7 +382,7 @@ export function DiagnosticsTab({ childId }: DiagnosticsTabProps) {
               <Calendar className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
               <p className="text-muted-foreground mb-4">Nenhuma triagem realizada ainda</p>
               <Button variant="outline" asChild>
-                <Link to="/testes-diagnosticos">Iniciar Triagem</Link>
+                <Link to="/diagnostico-completo">Iniciar Triagem</Link>
               </Button>
             </div>
           )}
