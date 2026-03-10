@@ -329,7 +329,7 @@ const App = () => (
                   <Route path="/stories/:storyId" element={<P><StoryReader /></P>} />
                   
                   {/* Reports & Analytics */}
-                  <Route path="/relatorios" element={<P roles={['therapist', 'teacher', 'parent']}><UnifiedReports /></P>} />
+                  <Route path="/relatorios" element={<P roles={['therapist', 'teacher', 'parent', 'admin']}><UnifiedReports /></P>} />
                   <Route path="/intelligent-reports" element={<Navigate to="/relatorios" replace />} />
                   <Route path="/reports" element={<Navigate to="/relatorios" replace />} />
                   <Route path="/risk-analysis" element={<P roles={['therapist', 'teacher']}><RiskAnalysisPage /></P>} />
