@@ -44,7 +44,7 @@ export default function TeacherDashboard() {
   });
 
   // Auto-select first class
-  React.useEffect(() => {
+  useEffect(() => {
     if (classesList.length > 0 && !selectedClassId) {
       setSelectedClassId(classesList[0].id);
     }
