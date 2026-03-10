@@ -364,7 +364,7 @@ const getStatusLabel = (status: string) => {
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" onClick={() => {
-                if (isTeacher && selectedStudentId && !patientId) {
+                if ((isTeacher || isAdmin) && selectedStudentId && !patientId) {
                   setSelectedStudentId(null);
                   setSelectedStudentName('');
                   setGoals([]);
