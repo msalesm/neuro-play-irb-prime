@@ -7857,6 +7857,7 @@ export type Database = {
       pei_plans: {
         Row: {
           accommodations: Json | null
+          child_id: string | null
           created_at: string | null
           goals: Json | null
           id: string
@@ -7865,10 +7866,11 @@ export type Database = {
           status: string | null
           strategies: Json | null
           updated_at: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           accommodations?: Json | null
+          child_id?: string | null
           created_at?: string | null
           goals?: Json | null
           id?: string
@@ -7877,10 +7879,11 @@ export type Database = {
           status?: string | null
           strategies?: Json | null
           updated_at?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           accommodations?: Json | null
+          child_id?: string | null
           created_at?: string | null
           goals?: Json | null
           id?: string
@@ -7889,9 +7892,30 @@ export type Database = {
           status?: string | null
           strategies?: Json | null
           updated_at?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "pei_plans_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "children"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pei_plans_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["child_id"]
+          },
+          {
+            foreignKeyName: "pei_plans_child_id_fkey"
+            columns: ["child_id"]
+            isOneToOne: false
+            referencedRelation: "parent_child_relationships"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "pei_plans_screening_id_fkey"
             columns: ["screening_id"]
