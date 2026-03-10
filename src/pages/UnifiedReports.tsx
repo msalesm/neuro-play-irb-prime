@@ -431,6 +431,7 @@ export default function UnifiedReports() {
           : reportTypes.filter(r => r.type === 'familiar');
 
   const selectedChildName = children.find(c => c.id === selectedChild)?.name;
+  const selectedClassName = classes.find(c => c.id === selectedClass)?.name;
 
   const getPageTitle = () => {
     if (isTherapist) return 'Relatório Clínico';
@@ -442,7 +443,7 @@ export default function UnifiedReports() {
   const getPageDescription = () => {
     if (isTherapist) return 'Gere relatórios detalhados com análise de IA para acompanhamento terapêutico';
     if (isParent) return 'Acompanhe o progresso do seu filho com relatórios simples e claros';
-    if (isTeacher) return 'Relatórios pedagógicos para acompanhamento escolar do aluno';
+    if (isTeacher) return 'Selecione a turma e o aluno para gerar relatórios pedagógicos';
     return 'Visão unificada de todos os relatórios da plataforma';
   };
 
