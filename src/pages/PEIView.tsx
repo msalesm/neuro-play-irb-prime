@@ -82,11 +82,16 @@ export default function PEIView() {
     if (!user) return;
     setLoadingStudents(true);
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('class_students')
         .select('child_id, children!inner(name), school_classes!inner(name)')
-        .eq('teacher_id', user.id)
         .eq('is_active', true);
+      
+      if (!isAdmin) {
+        query = query.eq('teacher_id', user.id);
+      }
+      
+      const { data, error } = await query;
 
       if (error) throw error;
 
