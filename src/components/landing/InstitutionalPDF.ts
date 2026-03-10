@@ -8,16 +8,11 @@ export function generateInstitutionalPDF() {
   const now = format(new Date(), "dd/MM/yyyy", { locale: ptBR });
   let y = 0;
 
-  const accent = [58, 134, 255]; // primary blue
-  const dark = [20, 20, 30];
-  const gray = [100, 100, 120];
-  const green = [16, 185, 129];
-
   const addPage = () => { doc.addPage(); y = 25; };
   const checkPage = (need: number) => { if (y + need > 270) addPage(); };
 
   // ── PAGE 1: Cover ──────────────────────────────
-  doc.setFillColor(...accent);
+  doc.setFillColor(58, 134, 255);
   doc.rect(0, 0, w, 55, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(28);
@@ -29,9 +24,8 @@ export function generateInstitutionalPDF() {
   doc.setFontSize(9);
   doc.text(`Documento institucional · ${now}`, 20, 50);
 
-  // Tagline
   y = 72;
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.setFontSize(16);
   doc.setFont('helvetica', 'bold');
   doc.text('Avalie, acompanhe e desenvolva habilidades', 20, y);
@@ -41,7 +35,7 @@ export function generateInstitutionalPDF() {
 
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
+  doc.setTextColor(100, 100, 120);
   const intro = doc.splitTextToSize(
     'O NeuroPlay utiliza jogos cognitivos e análise de dados para avaliar habilidades importantes para o aprendizado. ' +
     'A plataforma gera um índice cognitivo proprietário (NCI) que acompanha o desenvolvimento da criança ao longo do tempo, ' +
@@ -54,11 +48,11 @@ export function generateInstitutionalPDF() {
   // Key benefits
   doc.setFontSize(13);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('Benefícios Principais', 20, y);
   y += 10;
 
-  const benefits = [
+  const benefits: [string, string][] = [
     ['Triagem cognitiva em minutos', 'Avaliação gamificada rápida para turmas inteiras'],
     ['Acompanhamento longitudinal', 'Evolução cognitiva semana a semana com gráficos claros'],
     ['Relatórios automáticos', 'Dashboards para professores, diretores e famílias'],
@@ -69,27 +63,27 @@ export function generateInstitutionalPDF() {
   doc.setFontSize(10);
   benefits.forEach(([title, desc]) => {
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...accent);
+    doc.setTextColor(58, 134, 255);
     doc.text('●', 22, y);
-    doc.setTextColor(...dark);
+    doc.setTextColor(20, 20, 30);
     doc.text(title, 28, y);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...gray);
+    doc.setTextColor(100, 100, 120);
     doc.text(desc, 28, y + 5);
     y += 14;
   });
 
-  // ── PAGE 2: O Problema & Solução ──────────────
+  // ── PAGE 2: Problema & Solução ─────────────────
   addPage();
   doc.setFontSize(15);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('O Problema', 20, y);
   y += 10;
 
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
+  doc.setTextColor(100, 100, 120);
   const problem = doc.splitTextToSize(
     'Muitas dificuldades cognitivas infantis não são identificadas precocemente. ' +
     'Isso resulta em atraso na alfabetização, dificuldades de atenção, baixa confiança escolar e diagnóstico tardio. ' +
@@ -101,11 +95,11 @@ export function generateInstitutionalPDF() {
 
   doc.setFontSize(15);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('A Solução NeuroPlay', 20, y);
   y += 10;
 
-  const steps = [
+  const steps: [string, string][] = [
     ['1. Triagem Gamificada', 'Jogos cognitivos curtos avaliam atenção, memória, linguagem e funções executivas.'],
     ['2. Análise Cognitiva Automática', 'O sistema calcula o NeuroPlay Cognitive Index (NCI) com score 0-100.'],
     ['3. Recomendações de Intervenção', 'Protocolos de exercícios são sugeridos com base nos resultados.'],
@@ -116,27 +110,27 @@ export function generateInstitutionalPDF() {
   steps.forEach(([title, desc]) => {
     checkPage(16);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...accent);
+    doc.setTextColor(58, 134, 255);
     doc.text(title, 20, y);
     y += 6;
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...gray);
+    doc.setTextColor(100, 100, 120);
     const lines = doc.splitTextToSize(desc, 170);
     doc.text(lines, 20, y);
     y += lines.length * 5 + 8;
   });
 
-  // ── PAGE 3: NCI & Dados ───────────────────────
+  // ── PAGE 3: NCI ────────────────────────────────
   addPage();
   doc.setFontSize(15);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('NeuroPlay Cognitive Index (NCI)', 20, y);
   y += 10;
 
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
+  doc.setTextColor(100, 100, 120);
   const nciDesc = doc.splitTextToSize(
     'Índice cognitivo proprietário que combina 5 domínios para gerar um score único de 0 a 100. ' +
     'Permite monitorar o desenvolvimento cognitivo infantil de forma padronizada.',
@@ -145,27 +139,26 @@ export function generateInstitutionalPDF() {
   doc.text(nciDesc, 20, y);
   y += nciDesc.length * 5 + 10;
 
-  // NCI Domains table
-  const domains = [
-    ['Atenção', '25%', 'Foco sustentado e seletivo'],
-    ['Memória de Trabalho', '25%', 'Retenção e manipulação de informação'],
-    ['Linguagem', '20%', 'Processamento fonológico e semântico'],
-    ['Função Executiva', '20%', 'Planejamento, flexibilidade, inibição'],
-    ['Cognição Social', '10%', 'Reconhecimento emocional e empatia'],
-  ];
-
   // Table header
   doc.setFillColor(240, 243, 248);
   doc.rect(20, y - 4, 170, 8, 'F');
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('Domínio', 22, y);
   doc.text('Peso', 100, y);
   doc.text('Descrição', 120, y);
   y += 8;
 
+  const domains: [string, string, string][] = [
+    ['Atenção', '25%', 'Foco sustentado e seletivo'],
+    ['Memória de Trabalho', '25%', 'Retenção e manipulação'],
+    ['Linguagem', '20%', 'Processamento fonológico'],
+    ['Função Executiva', '20%', 'Planejamento e inibição'],
+    ['Cognição Social', '10%', 'Reconhecimento emocional'],
+  ];
+
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
+  doc.setTextColor(100, 100, 120);
   domains.forEach(([name, weight, desc]) => {
     doc.text(name, 22, y);
     doc.text(weight, 100, y);
@@ -177,43 +170,43 @@ export function generateInstitutionalPDF() {
   // NCI Bands
   doc.setFontSize(12);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('Classificação NCI', 20, y);
   y += 8;
 
-  const bands = [
-    ['85-100', 'Avançado', green],
-    ['70-84', 'Desenvolvimento Saudável', [16, 185, 129]],
-    ['55-69', 'Atenção Recomendada', [245, 158, 11]],
-    ['40-54', 'Intervenção Sugerida', [249, 115, 22]],
-    ['0-39', 'Intervenção Urgente', [239, 68, 68]],
+  const bands: [string, string, number, number, number][] = [
+    ['85-100', 'Avançado', 16, 185, 129],
+    ['70-84', 'Desenvolvimento Saudável', 16, 185, 129],
+    ['55-69', 'Atenção Recomendada', 245, 158, 11],
+    ['40-54', 'Intervenção Sugerida', 249, 115, 22],
+    ['0-39', 'Intervenção Urgente', 239, 68, 68],
   ];
 
   doc.setFontSize(10);
-  bands.forEach(([range, label, color]) => {
-    doc.setFillColor(...(color as [number, number, number]));
+  bands.forEach(([range, label, r, g, b]) => {
+    doc.setFillColor(r, g, b);
     doc.circle(25, y - 1.5, 2, 'F');
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...dark);
+    doc.setTextColor(20, 20, 30);
     doc.text(range, 30, y);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...gray);
+    doc.setTextColor(100, 100, 120);
     doc.text(label, 55, y);
     y += 7;
   });
 
-  // ── PAGE 4: Para quem & Dados Científicos ─────
+  // ── PAGE 4: Audiências & Ciência ───────────────
   addPage();
   doc.setFontSize(15);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('Para Quem é o NeuroPlay', 20, y);
   y += 12;
 
-  const audiences = [
+  const audiences: [string, string][] = [
     ['Escolas', 'Triagem cognitiva em turmas, acompanhamento pedagógico, relatórios institucionais para diretores.'],
-    ['Profissionais de Saúde', 'Psicólogos, fonoaudiólogos e terapeutas acompanham evolução das crianças com dados estruturados.'],
-    ['Famílias', 'Pais recebem mini-relatórios sobre o desenvolvimento cognitivo dos filhos após cada sessão.'],
+    ['Profissionais de Saúde', 'Psicólogos, fonoaudiólogos e terapeutas acompanham evolução com dados estruturados.'],
+    ['Famílias', 'Pais recebem mini-relatórios sobre o desenvolvimento cognitivo dos filhos.'],
     ['Redes de Ensino', 'Gestão centralizada com comparação entre escolas e relatórios municipais.'],
   ];
 
@@ -221,118 +214,109 @@ export function generateInstitutionalPDF() {
   audiences.forEach(([title, desc]) => {
     checkPage(18);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...accent);
+    doc.setTextColor(58, 134, 255);
     doc.text(title, 20, y);
     y += 6;
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...gray);
+    doc.setTextColor(100, 100, 120);
     const lines = doc.splitTextToSize(desc, 170);
     doc.text(lines, 20, y);
     y += lines.length * 5 + 10;
   });
 
-  // Data & Science
   checkPage(50);
   doc.setFontSize(15);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('Dados e Ciência', 20, y);
   y += 10;
 
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
+  doc.setTextColor(100, 100, 120);
   const science = doc.splitTextToSize(
     'A plataforma registra eventos cognitivos detalhados durante cada atividade: tempo de reação, ' +
-    'latência cognitiva, taxa de erro, sequência de tentativa e persistência. Esses dados permitem ' +
-    'análises longitudinais precisas e geração de evidência científica observacional.',
+    'latência cognitiva, taxa de erro, sequência de tentativa e persistência.',
     170
   );
   doc.text(science, 20, y);
   y += science.length * 5 + 10;
 
   const metrics = [
-    'Tempo de reação (ms)',
-    'Precisão por tentativa (%)',
-    'Latência cognitiva',
-    'Taxa de persistência',
-    'Padrões de abandono',
-    'Sequência de tentativas',
+    'Tempo de reação (ms)', 'Precisão por tentativa (%)', 'Latência cognitiva',
+    'Taxa de persistência', 'Padrões de abandono', 'Sequência de tentativas',
   ];
   metrics.forEach((m) => {
-    doc.setTextColor(...accent);
+    doc.setTextColor(58, 134, 255);
     doc.text('▸', 22, y);
-    doc.setTextColor(...gray);
+    doc.setTextColor(100, 100, 120);
     doc.text(m, 28, y);
     y += 6;
   });
 
-  // ── PAGE 5: Escala & Contato ──────────────────
+  // ── PAGE 5: Escala & Modelo ────────────────────
   addPage();
   doc.setFontSize(15);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('Potencial de Escala', 20, y);
   y += 10;
 
   doc.setFontSize(10);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
-
-  const scaleData = [
-    ['50 escolas', '20.000 alunos', 'Fase Inicial'],
-    ['500 escolas', '200.000 alunos', 'Expansão'],
-    ['2.000 escolas', '800.000 alunos', 'Escala'],
-    ['+ uso familiar', '1.000.000+ alunos', 'Meta'],
-  ];
-
   doc.setFillColor(240, 243, 248);
   doc.rect(20, y - 4, 170, 8, 'F');
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('Fase', 22, y);
   doc.text('Escolas', 70, y);
   doc.text('Alunos', 120, y);
   y += 8;
 
+  const scaleData: [string, string, string][] = [
+    ['Fase Inicial', '50 escolas', '20.000 alunos'],
+    ['Expansão', '500 escolas', '200.000 alunos'],
+    ['Escala', '2.000 escolas', '800.000 alunos'],
+    ['Meta', '+ uso familiar', '1.000.000+ alunos'],
+  ];
+
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
-  scaleData.forEach(([schools, students, phase]) => {
+  doc.setTextColor(100, 100, 120);
+  scaleData.forEach(([phase, schools, students]) => {
     doc.text(phase, 22, y);
     doc.text(schools, 70, y);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(...dark);
+    doc.setTextColor(20, 20, 30);
     doc.text(students, 120, y);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...gray);
+    doc.setTextColor(100, 100, 120);
     y += 7;
   });
 
   y += 15;
   doc.setFontSize(15);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...dark);
+  doc.setTextColor(20, 20, 30);
   doc.text('Modelo Freemium', 20, y);
   y += 10;
 
   doc.setFontSize(10);
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...accent);
+  doc.setTextColor(58, 134, 255);
   doc.text('Plano Gratuito', 20, y);
   y += 6;
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
+  doc.setTextColor(100, 100, 120);
   ['Jogos cognitivos básicos', 'Triagem inicial', 'Dashboard simples'].forEach((t) => {
     doc.text(`• ${t}`, 24, y); y += 6;
   });
   y += 4;
 
   doc.setFont('helvetica', 'bold');
-  doc.setTextColor(...accent);
+  doc.setTextColor(58, 134, 255);
   doc.text('Plano Institucional', 20, y);
   y += 6;
   doc.setFont('helvetica', 'normal');
-  doc.setTextColor(...gray);
+  doc.setTextColor(100, 100, 120);
   ['Relatórios avançados e NCI completo', 'Comparação entre turmas e escolas', 'Acompanhamento longitudinal', 'Protocolos de intervenção'].forEach((t) => {
     doc.text(`• ${t}`, 24, y); y += 6;
   });
@@ -348,8 +332,7 @@ export function generateInstitutionalPDF() {
       w / 2, 287,
       { align: 'center' }
     );
-    // Bottom accent line
-    doc.setDrawColor(...accent);
+    doc.setDrawColor(58, 134, 255);
     doc.setLineWidth(0.5);
     doc.line(20, 283, w - 20, 283);
   }

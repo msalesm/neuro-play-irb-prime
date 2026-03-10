@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
+import { generateInstitutionalPDF } from "@/components/landing/InstitutionalPDF";
 
 import heroImg from "@/assets/hero-children-learning.jpg";
 import childFocusedImg from "@/assets/child-focused-learning.jpg";
