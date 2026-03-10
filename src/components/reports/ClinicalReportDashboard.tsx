@@ -46,6 +46,33 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
     if (user && childId) fetchData();
   }, [user, childId, period]);
 
+  const resolveProfileId = async (cId: string): Promise<string> => {
+    // Check if it's a child_profile_id directly
+    const { data: directProfile } = await supabase
+      .from('child_profiles')
+      .select('id')
+      .eq('id', cId)
+      .maybeSingle();
+    if (directProfile) return directProfile.id;
+
+    // Look up by name from children table
+    const { data: childRow } = await supabase
+      .from('children')
+      .select('name')
+      .eq('id', cId)
+      .maybeSingle();
+    if (childRow?.name) {
+      const { data: profileByName } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('name', childRow.name)
+        .limit(1)
+        .maybeSingle();
+      if (profileByName) return profileByName.id;
+    }
+    return cId;
+  };
+
   const fetchData = async () => {
     if (!user || !childId) return;
     setLoading(true);
@@ -55,11 +82,14 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
       const startDate = new Date(Date.now() - periodDays * 24 * 60 * 60 * 1000).toISOString();
       const previousStart = new Date(Date.now() - periodDays * 2 * 24 * 60 * 60 * 1000).toISOString();
 
+      // Resolve children.id to child_profiles.id
+      const profileId = await resolveProfileId(childId);
+
       // Fetch game sessions for the period
       const { data: sessions } = await supabase
         .from('game_sessions')
         .select('completed_at, accuracy_percentage, score, game_id, cognitive_games(cognitive_domains)')
-        .eq('child_profile_id', childId)
+        .eq('child_profile_id', profileId)
         .eq('completed', true)
         .gte('completed_at', startDate)
         .order('completed_at', { ascending: true });
@@ -68,7 +98,7 @@ export function ClinicalReportDashboard({ childId, childName }: ReportDashboardP
       const { data: prevSessions } = await supabase
         .from('game_sessions')
         .select('accuracy_percentage, cognitive_games(cognitive_domains)')
-        .eq('child_profile_id', childId)
+        .eq('child_profile_id', profileId)
         .eq('completed', true)
         .gte('completed_at', previousStart)
         .lt('completed_at', startDate);

@@ -1,6 +1,48 @@
 import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.57.3";
 import { SessionsQueryResult, NeurodiversityProfile } from "./types.ts";
 
+export async function resolveChildProfileId(
+  supabase: SupabaseClient,
+  childId: string
+): Promise<string> {
+  // First try: childId is already a child_profile_id
+  const { data: directProfile } = await supabase
+    .from('child_profiles')
+    .select('id')
+    .eq('id', childId)
+    .maybeSingle();
+  
+  if (directProfile) return directProfile.id;
+
+  // Second try: look up child_profiles linked via aba_aprendizes.child_id
+  const { data: aprendiz } = await supabase
+    .from('aba_aprendizes')
+    .select('codigo_aprendiz')
+    .eq('child_id', childId)
+    .maybeSingle();
+  
+  // Third try: look up by matching name from children table
+  const { data: childRow } = await supabase
+    .from('children')
+    .select('name')
+    .eq('id', childId)
+    .maybeSingle();
+  
+  if (childRow?.name) {
+    const { data: profileByName } = await supabase
+      .from('child_profiles')
+      .select('id')
+      .eq('name', childRow.name)
+      .limit(1)
+      .maybeSingle();
+    
+    if (profileByName) return profileByName.id;
+  }
+
+  // Fallback: return the original childId
+  return childId;
+}
+
 export async function fetchSessionsData(
   supabase: SupabaseClient,
   userId: string,
@@ -10,7 +52,9 @@ export async function fetchSessionsData(
 ): Promise<SessionsQueryResult> {
   // If childId is provided, prefer game_sessions for that child
   if (childId) {
-    console.log(`📊 Fetching game_sessions for child ${childId}...`);
+    // Resolve children.id → child_profiles.id
+    const profileId = await resolveChildProfileId(supabase, childId);
+    console.log(`📊 Fetching game_sessions for child ${childId} (profile: ${profileId})...`);
 
     const { data: gameSessions, error } = await supabase
       .from('game_sessions')
@@ -28,7 +72,7 @@ export async function fetchSessionsData(
         avg_reaction_time_ms,
         cognitive_games ( name, cognitive_domains )
       `)
-      .eq('child_profile_id', childId)
+      .eq('child_profile_id', profileId)
       .gte('created_at', startDate)
       .lte('created_at', endDate)
       .order('created_at', { ascending: true });
