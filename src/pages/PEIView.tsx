@@ -292,11 +292,62 @@ const getStatusLabel = (status: string) => {
     toast.success('PDF do PEI gerado com sucesso!');
   };
 
-  if (loading) {
+  if (loading || loadingStudents) {
     return (
       <ModernPageLayout>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-8 text-muted-foreground">Carregando PEI...</div>
+        </div>
+      </ModernPageLayout>
+    );
+  }
+
+  // Teacher without selected student: show student picker
+  if (isTeacher && !patientId && !screeningId && !selectedStudentId) {
+    return (
+      <ModernPageLayout>
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold">PEI Inteligente</h1>
+            <p className="text-muted-foreground mt-1">Selecione um aluno para visualizar ou criar o Plano Educacional Individualizado</p>
+          </div>
+
+          {teacherStudents.length === 0 ? (
+            <Card>
+              <CardContent className="py-12 text-center">
+                <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-lg font-medium">Nenhum aluno encontrado</p>
+                <p className="text-muted-foreground mt-1">Cadastre alunos nas suas turmas para criar PEIs.</p>
+                <Button className="mt-4" onClick={() => navigate('/teacher/classes')}>
+                  Gerenciar Turmas
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {teacherStudents.map((student) => (
+                <Card
+                  key={student.child_id}
+                  className="cursor-pointer hover:border-primary/50 hover:shadow-md transition-all"
+                  onClick={() => handleSelectStudent(student.child_id)}
+                >
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Brain className="h-4 w-4 text-primary" />
+                      {student.child_name}
+                    </CardTitle>
+                    <CardDescription>{student.class_name}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button variant="outline" size="sm" className="w-full">
+                      <ClipboardCheck className="h-4 w-4 mr-2" />
+                      Ver PEI
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </ModernPageLayout>
     );
