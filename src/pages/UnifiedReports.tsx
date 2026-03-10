@@ -484,12 +484,57 @@ export default function UnifiedReports() {
         >
           <Card className="mb-8 border-primary/20 shadow-sm">
             <CardContent className="pt-6">
-              <div className="flex flex-col sm:flex-row gap-4 items-end">
-                {/* Child Selector */}
-                {(isAdmin || isTherapist || isParent || isTeacher) && (
+              <div className="flex flex-col gap-4">
+                {/* Teacher/Admin: Class & Student selectors */}
+                {(isTeacher || isAdmin) && (
+                  <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    {/* Class Selector */}
+                    <div className="flex-1 w-full">
+                      <label className="text-sm font-medium mb-2 block text-foreground">Turma</label>
+                      <Select value={selectedClass} onValueChange={(v) => {
+                        setSelectedClass(v);
+                        setSelectedChild('');
+                        setReports({ clinical: null, pedagogical: null, familiar: null });
+                      }}>
+                        <SelectTrigger className="w-full">
+                          <GraduationCap className="h-4 w-4 mr-2 text-muted-foreground" />
+                          <SelectValue placeholder="Selecione a turma..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {classes.map((cls) => (
+                            <SelectItem key={cls.id} value={cls.id}>
+                              {cls.name} {cls.grade_level ? `(${cls.grade_level})` : ''} — {cls.student_count} alunos
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Student Selector */}
+                    <div className="flex-1 w-full">
+                      <label className="text-sm font-medium mb-2 block text-foreground">Aluno</label>
+                      <Select value={selectedChild} onValueChange={setSelectedChild}>
+                        <SelectTrigger className="w-full">
+                          <UserCircle className="h-4 w-4 mr-2 text-muted-foreground" />
+                          <SelectValue placeholder={loadingChildren ? "Carregando..." : selectedClass ? "Selecione o aluno..." : "Selecione uma turma primeiro"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {children.map((child) => (
+                            <SelectItem key={child.id} value={child.id}>
+                              {child.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                )}
+
+                {/* Therapist/Parent: Child selector */}
+                {(isTherapist || isParent) && (
                   <div className="flex-1 w-full">
                     <label className="text-sm font-medium mb-2 block text-foreground">
-                      {isTherapist ? 'Paciente' : isTeacher ? 'Aluno' : isAdmin ? 'Criança/Paciente' : 'Filho(a)'}
+                      {isTherapist ? 'Paciente' : 'Filho(a)'}
                     </label>
                     <Select value={selectedChild} onValueChange={setSelectedChild}>
                       <SelectTrigger className="w-full">
@@ -507,38 +552,40 @@ export default function UnifiedReports() {
                   </div>
                 )}
 
-                {/* Period */}
-                <div className={`${(isAdmin || isTherapist || isParent || isTeacher) ? '' : 'flex-1'} w-full sm:w-auto`}>
-                  <label className="text-sm font-medium mb-2 block text-foreground">Período</label>
-                  <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-                    <SelectTrigger className="w-full sm:w-[160px]">
-                      <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="7">7 dias</SelectItem>
-                      <SelectItem value="30">30 dias</SelectItem>
-                      <SelectItem value="90">3 meses</SelectItem>
-                      <SelectItem value="180">6 meses</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                  {/* Period */}
+                  <div className="w-full sm:w-auto">
+                    <label className="text-sm font-medium mb-2 block text-foreground">Período</label>
+                    <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                      <SelectTrigger className="w-full sm:w-[160px]">
+                        <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="7">7 dias</SelectItem>
+                        <SelectItem value="30">30 dias</SelectItem>
+                        <SelectItem value="90">3 meses</SelectItem>
+                        <SelectItem value="180">6 meses</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-                {/* Generate All (admin only) */}
-                {isAdmin && (
-                  <Button 
-                    onClick={generateAllReports} 
-                    disabled={generating !== null}
-                    className="shrink-0"
-                  >
-                    {generating ? (
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    ) : (
-                      <Sparkles className="h-4 w-4 mr-2" />
-                    )}
-                    Gerar Todos
-                  </Button>
-                )}
+                  {/* Generate All (admin only) */}
+                  {isAdmin && (
+                    <Button 
+                      onClick={generateAllReports} 
+                      disabled={generating !== null}
+                      className="shrink-0"
+                    >
+                      {generating ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      ) : (
+                        <Sparkles className="h-4 w-4 mr-2" />
+                      )}
+                      Gerar Todos
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
