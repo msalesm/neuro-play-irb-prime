@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ChildAvatarDisplay } from '@/components/gamification';
+import { PatientAvatar } from '@/components/clinical/PatientAvatar';
 import { ArrowLeft, Download, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import type { PatientData } from '@/hooks/useTherapistPatientData';
