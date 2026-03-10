@@ -300,12 +300,12 @@ const App = () => (
                   <Route path="/chat" element={<Navigate to="/therapeutic-chat" replace />} />
                   
                   {/* Teacher Routes */}
-                  <Route path="/teacher-dashboard" element={<P roles={['teacher']}><TeacherDashboard /></P>} />
-                  <Route path="/teacher/classes" element={<P roles={['teacher']}><TeacherClasses /></P>} />
-                  <Route path="/teacher/class/:classId" element={<P roles={['teacher']}><TeacherClassView /></P>} />
-                  <Route path="/teacher/student/:studentId" element={<P roles={['teacher']}><TeacherStudentView /></P>} />
-                  <Route path="/pei" element={<P roles={['therapist', 'teacher']}><PEIView /></P>} />
-                  <Route path="/pei/:patientId" element={<P roles={['therapist', 'teacher']}><PEIView /></P>} />
+                  <Route path="/teacher-dashboard" element={<P roles={['teacher', 'admin']}><TeacherDashboard /></P>} />
+                  <Route path="/teacher/classes" element={<P roles={['teacher', 'admin']}><TeacherClasses /></P>} />
+                  <Route path="/teacher/class/:classId" element={<P roles={['teacher', 'admin']}><TeacherClassView /></P>} />
+                  <Route path="/teacher/student/:studentId" element={<P roles={['teacher', 'admin']}><TeacherStudentView /></P>} />
+                  <Route path="/pei" element={<P roles={['therapist', 'teacher', 'admin']}><PEIView /></P>} />
+                  <Route path="/pei/:patientId" element={<P roles={['therapist', 'teacher', 'admin']}><PEIView /></P>} />
                   
                   {/* Admin Routes */}
                   <Route path="/admin" element={<P roles={['admin']}><AdminDashboard /></P>} />
