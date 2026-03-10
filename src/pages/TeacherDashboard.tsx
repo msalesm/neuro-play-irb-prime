@@ -358,7 +358,7 @@ export default function TeacherDashboard() {
 
       {/* Main content tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="alunos" className="gap-1.5">
             <Users className="h-4 w-4" />
             <span className="hidden sm:inline">Alunos</span>
@@ -370,6 +370,10 @@ export default function TeacherDashboard() {
           <TabsTrigger value="evolucao" className="gap-1.5">
             <TrendingUp className="h-4 w-4" />
             <span className="hidden sm:inline">Evolução</span>
+          </TabsTrigger>
+          <TabsTrigger value="intervencoes" className="gap-1.5">
+            <Stethoscope className="h-4 w-4" />
+            <span className="hidden sm:inline">Intervenções</span>
           </TabsTrigger>
           <TabsTrigger value="atividades" className="gap-1.5">
             <Sparkles className="h-4 w-4" />
