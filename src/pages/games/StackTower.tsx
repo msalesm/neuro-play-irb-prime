@@ -21,7 +21,7 @@ export default function StackTower() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
       
       {/* Exit Button */}
-      <div className="absolute top-4 right-4 z-50">
+      <div className="absolute top-4 left-28 z-50">
         <GameExitButton returnTo="/sistema-planeta-azul" />
       </div>
 
