@@ -95,7 +95,7 @@ export function StackTowerGame() {
       <div ref={containerRef} className="w-full h-full" />
       
       {/* Game Controls */}
-      <div className="absolute top-4 left-4 flex gap-2 z-10">
+      <div className="absolute top-4 left-4 flex gap-2 z-50">
         <Button
           variant="secondary"
           size="icon"
