@@ -37,7 +37,7 @@ interface SchoolClass {
 export default function TeacherClasses() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isAdmin } = useUserRole();
+  const { isAdmin, isTeacher, loading: roleLoading } = useUserRole();
   const [classes, setClasses] = useState<SchoolClass[]>([]);
   const [filteredClasses, setFilteredClasses] = useState<SchoolClass[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,10 +56,10 @@ export default function TeacherClasses() {
   });
 
   useEffect(() => {
-    if (user) {
+    if (user && !roleLoading) {
       loadClasses();
     }
-  }, [user]);
+  }, [user, roleLoading, isAdmin]);
 
   useEffect(() => {
     if (searchQuery) {
