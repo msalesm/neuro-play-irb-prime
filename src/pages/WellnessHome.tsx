@@ -51,15 +51,15 @@ export default function WellnessHome() {
 
       const { data: sessions } = await supabase
         .from('learning_sessions')
-        .select('created_at, duration_minutes')
+        .select('created_at, session_duration_seconds')
         .eq('user_id', user!.id)
         .gte('created_at', weekStart.toISOString());
 
       // Build weekly progress
       const weekMap = new Map<number, number>();
       sessions?.forEach(s => {
-        const day = new Date(s.created_at).getDay();
-        weekMap.set(day, (weekMap.get(day) || 0) + (s.duration_minutes || 5));
+        const day = new Date(s.created_at!).getDay();
+        weekMap.set(day, (weekMap.get(day) || 0) + Math.round((s.session_duration_seconds || 300) / 60));
       });
 
       const todayIndex = now.getDay();
