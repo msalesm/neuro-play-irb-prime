@@ -79,14 +79,14 @@ export function ParentLayout({ children }: ParentLayoutProps) {
                   to={item.path}
                   className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all min-w-[56px] ${
                     active
-                      ? 'text-amber-600 dark:text-amber-400'
+                      ? 'text-primary'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                   aria-label={item.name}
                   aria-current={active ? 'page' : undefined}
                 >
-                  <Icon className={`h-5 w-5 mb-0.5 ${active ? 'text-amber-600 dark:text-amber-400' : ''}`} />
-                  <span className={`text-[10px] font-medium leading-tight ${active ? 'text-amber-600 dark:text-amber-400' : ''}`}>
+                  <Icon className={`h-5 w-5 mb-0.5 ${active ? 'text-primary' : ''}`} />
+                  <span className={`text-[10px] font-medium leading-tight ${active ? 'text-primary' : ''}`}>
                     {item.name}
                   </span>
                 </Link>
