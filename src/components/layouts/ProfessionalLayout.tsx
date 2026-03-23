@@ -46,7 +46,7 @@ export function ProfessionalLayout({ children }: ProfessionalLayoutProps) {
             <div className="flex items-center gap-3">
               <LanguageSelector variant="icon" />
               <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                <div className="w-1.5 h-1.5 bg-accent rounded-full" />
                 <span className="text-[11px] text-muted-foreground">Online</span>
               </div>
             </div>
