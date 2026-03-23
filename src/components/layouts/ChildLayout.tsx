@@ -32,15 +32,15 @@ export function ChildLayout({ children }: ChildLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-background to-emerald-50/30 dark:from-sky-950/20 dark:via-background dark:to-emerald-950/10">
+    <div className="min-h-screen bg-background">
       {/* Child-friendly top bar */}
       <header className="sticky top-0 z-40 bg-card/90 backdrop-blur-md border-b border-border/50 px-4 py-2">
         <div className="flex items-center justify-between max-w-lg mx-auto">
           <Link to="/student-hub" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-emerald-500 rounded-xl flex items-center justify-center shadow-sm">
+            <div className="w-8 h-8 bg-primary rounded-xl flex items-center justify-center shadow-sm">
               <Sparkles className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-bold text-base bg-gradient-to-r from-primary to-emerald-600 bg-clip-text text-transparent">
+            <span className="font-bold text-base text-foreground">
               NeuroPlay
             </span>
           </Link>

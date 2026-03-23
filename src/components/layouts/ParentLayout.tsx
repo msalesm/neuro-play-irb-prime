@@ -101,7 +101,7 @@ export function ParentLayout({ children }: ParentLayoutProps) {
   // Desktop: sidebar layout
   return (
     <SidebarProvider defaultOpen>
-      <div className="min-h-screen flex w-full bg-gradient-to-b from-amber-50/30 via-background to-background dark:from-amber-950/5 dark:via-background">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         
         <div className="flex-1 flex flex-col">
