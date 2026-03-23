@@ -1,24 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { format, addDays, startOfWeek, isToday, isSameDay } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import {
-  Calendar,
-  Clock,
-  ChevronLeft,
-  ChevronRight,
-  User,
-  MapPin,
-  RefreshCw,
+  Calendar, Clock, ChevronLeft, ChevronRight,
+  User, MapPin, RefreshCw, ArrowRight
 } from 'lucide-react';
-import { AppointmentCard } from './AppointmentCard';
+import { PatientAvatar } from '@/components/clinical/PatientAvatar';
 
 interface WorkSchedule {
   day_of_week: number;
@@ -37,7 +32,7 @@ interface TherapistAppointment {
   room: string | null;
   service_mode: string | null;
   internal_notes: string | null;
-  child?: { id: string; name: string } | null;
+  child?: { id: string; name: string; avatar_url?: string } | null;
   parent?: { id: string; full_name: string } | null;
   professional?: { id: string; full_name: string } | null;
   appointment_type?: { id: string; name: string; color: string; duration_minutes: number } | null;
@@ -52,10 +47,20 @@ interface TherapistAppointment {
   created_at: string;
 }
 
-const DAYS_LABELS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+const DAYS_LABELS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+const STATUS_MAP: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+  agendado: { label: 'Agendado', variant: 'outline' },
+  confirmado: { label: 'Confirmado', variant: 'default' },
+  em_atendimento: { label: 'Em atendimento', variant: 'default' },
+  realizado: { label: 'Realizado', variant: 'secondary' },
+  falta: { label: 'Falta', variant: 'destructive' },
+  cancelado: { label: 'Cancelado', variant: 'destructive' },
+};
 
 export function TherapistAgendaView() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [appointments, setAppointments] = useState<TherapistAppointment[]>([]);
   const [workSchedule, setWorkSchedule] = useState<WorkSchedule[]>([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -64,41 +69,26 @@ export function TherapistAgendaView() {
   const weekStart = startOfWeek(selectedDate, { weekStartsOn: 0 });
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
 
-  useEffect(() => {
-    if (user) {
-      fetchWorkSchedule();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (user) {
-      fetchAppointments();
-    }
-  }, [user, selectedDate]);
+  useEffect(() => { if (user) fetchWorkSchedule(); }, [user]);
+  useEffect(() => { if (user) fetchAppointments(); }, [user, selectedDate]);
 
   const fetchWorkSchedule = async () => {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('professional_schedules')
       .select('day_of_week, start_time, end_time, is_available, max_cases_per_slot')
       .eq('professional_id', user?.id)
       .order('day_of_week');
-
-    if (error) {
-      console.error('Error fetching work schedule:', error);
-      return;
-    }
     setWorkSchedule(data || []);
   };
 
   const fetchAppointments = async () => {
     setLoading(true);
     const endOfWeek = addDays(weekStart, 6);
-
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('clinic_appointments')
       .select(`
         *,
-        child:children(id, name),
+        child:children(id, name, avatar_url),
         parent:profiles!clinic_appointments_parent_id_fkey(id, full_name),
         professional:profiles!clinic_appointments_professional_id_fkey(id, full_name),
         appointment_type:appointment_types(id, name, color, duration_minutes)
@@ -108,21 +98,14 @@ export function TherapistAgendaView() {
       .lte('scheduled_date', format(endOfWeek, 'yyyy-MM-dd'))
       .order('scheduled_date')
       .order('scheduled_time');
-
-    if (error) {
-      console.error('Error fetching appointments:', error);
-    }
     setAppointments((data as TherapistAppointment[]) || []);
     setLoading(false);
   };
 
-  const getScheduleForDay = (dayOfWeek: number): WorkSchedule | undefined => {
-    return workSchedule.find(s => s.day_of_week === dayOfWeek && s.is_available);
-  };
-
+  const getScheduleForDay = (dow: number) => workSchedule.find(s => s.day_of_week === dow && s.is_available);
   const getAppointmentsForDay = (date: Date) => {
-    const dateStr = format(date, 'yyyy-MM-dd');
-    return appointments.filter(a => a.scheduled_date === dateStr);
+    const ds = format(date, 'yyyy-MM-dd');
+    return appointments.filter(a => a.scheduled_date === ds);
   };
 
   const todayAppointments = getAppointmentsForDay(selectedDate);
@@ -136,284 +119,244 @@ export function TherapistAgendaView() {
   };
 
   const updateStatus = async (id: string, status: string, extra?: Record<string, any>) => {
-    const { error } = await supabase
-      .from('clinic_appointments')
-      .update({ status, ...extra })
-      .eq('id', id);
-    if (!error) fetchAppointments();
+    await supabase.from('clinic_appointments').update({ status, ...extra }).eq('id', id);
+    fetchAppointments();
   };
 
   return (
-    <div className="space-y-6">
-      {/* Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div className="space-y-5">
+      {/* Week Nav */}
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="icon" onClick={() => setSelectedDate(addDays(selectedDate, -7))}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button variant="outline" onClick={() => setSelectedDate(new Date())}>Hoje</Button>
+          <Button variant="outline" size="sm" onClick={() => setSelectedDate(new Date())}>Hoje</Button>
           <Button variant="outline" size="icon" onClick={() => setSelectedDate(addDays(selectedDate, 7))}>
             <ChevronRight className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="icon" onClick={fetchAppointments}>
+          <Button variant="ghost" size="icon" onClick={fetchAppointments}>
             <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
           </Button>
         </div>
-        <span className="text-sm font-medium text-muted-foreground">
-          {format(weekStart, "d MMM", { locale: ptBR })} - {format(addDays(weekStart, 6), "d MMM yyyy", { locale: ptBR })}
+        <span className="text-sm text-muted-foreground">
+          {format(weekStart, "d MMM", { locale: ptBR })} – {format(addDays(weekStart, 6), "d MMM yyyy", { locale: ptBR })}
         </span>
       </div>
 
-      <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
-        {/* Left: Week overview */}
-        <div className="lg:col-span-2 space-y-4">
-          {/* Week day selector */}
-          <div className="flex gap-1.5 overflow-x-auto pb-2 sm:grid sm:grid-cols-7 sm:gap-2 sm:overflow-visible sm:pb-0">
+      <div className="flex flex-col lg:grid lg:grid-cols-[1fr_280px] gap-5">
+        {/* Main area */}
+        <div className="space-y-4">
+          {/* Day pills */}
+          <div className="flex gap-1.5 overflow-x-auto pb-1">
             {weekDays.map((day) => {
-              const daySchedule = getScheduleForDay(day.getDay());
-              const dayAppts = getAppointmentsForDay(day);
-              const isSelected = isSameDay(day, selectedDate);
-
+              const sched = getScheduleForDay(day.getDay());
+              const appts = getAppointmentsForDay(day);
+              const sel = isSameDay(day, selectedDate);
               return (
                 <button
                   key={day.toISOString()}
                   onClick={() => setSelectedDate(day)}
                   className={cn(
-                    "min-w-[3.25rem] flex-shrink-0 p-2 sm:p-3 rounded-lg border text-center transition-colors",
-                    isSelected && "border-primary bg-primary/10",
-                    isToday(day) && !isSelected && "border-primary/50",
-                    !daySchedule && "opacity-50"
+                    "flex-shrink-0 min-w-[4rem] p-2 rounded-xl border text-center transition-all",
+                    sel ? "border-primary bg-primary/10 shadow-sm" : "hover:bg-muted/50",
+                    isToday(day) && !sel && "border-primary/40",
+                    !sched && "opacity-40"
                   )}
                 >
-                  <div className="text-xs text-muted-foreground">
-                    {format(day, 'EEE', { locale: ptBR })}
-                  </div>
-                  <div className={cn("text-base sm:text-lg font-semibold", isToday(day) && "text-primary")}>
-                    {format(day, 'd')}
-                  </div>
-                  {daySchedule && (
-                    <div className="text-[10px] text-muted-foreground hidden sm:block">
-                      {daySchedule.start_time.slice(0, 5)}-{daySchedule.end_time.slice(0, 5)}
+                  <div className="text-[10px] text-muted-foreground uppercase">{DAYS_LABELS[day.getDay()]}</div>
+                  <div className={cn("text-lg font-semibold", isToday(day) && "text-primary")}>{format(day, 'd')}</div>
+                  {appts.length > 0 && (
+                    <div className="flex justify-center mt-0.5">
+                      {appts.length <= 3 ? (
+                        appts.map((_, i) => <div key={i} className="w-1 h-1 rounded-full bg-primary mx-0.5" />)
+                      ) : (
+                        <span className="text-[10px] text-primary font-medium">{appts.length}</span>
+                      )}
                     </div>
-                  )}
-                  {dayAppts.length > 0 && (
-                    <Badge variant="secondary" className="text-[10px] mt-1">
-                      {dayAppts.length}
-                    </Badge>
-                  )}
-                  {!daySchedule && (
-                    <div className="text-[10px] text-muted-foreground hidden sm:block">Folga</div>
                   )}
                 </button>
               );
             })}
           </div>
 
-          {/* Day detail */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5" />
-                  {format(selectedDate, "EEEE, d 'de' MMMM", { locale: ptBR })}
-                </div>
-                {todaySchedule && (
-                  <Badge variant="outline" className="font-normal gap-1">
-                    <Clock className="w-3 h-3" />
-                    {todaySchedule.start_time.slice(0, 5)} - {todaySchedule.end_time.slice(0, 5)}
-                  </Badge>
-                )}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {!todaySchedule ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Clock className="w-10 h-10 mx-auto mb-2 opacity-40" />
-                  <p className="font-medium">Sem expediente neste dia</p>
-                  <p className="text-sm">Configure seus horários de trabalho no Centro de Operações</p>
-                </div>
-              ) : todayAppointments.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Calendar className="w-10 h-10 mx-auto mb-2 opacity-40" />
-                  <p>Nenhum agendamento para este dia</p>
-                </div>
-              ) : (
-                <ScrollArea className="max-h-[500px]">
-                  <div className="space-y-3">
-                    {todayAppointments.map((appt) => (
-                      <div
-                        key={appt.id}
-                        className={cn(
-                          "p-4 rounded-lg border space-y-2",
-                          appt.status === 'cancelado' && "opacity-50",
-                          appt.status === 'realizado' && "bg-muted/30",
-                        )}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="text-lg font-semibold">
+          {/* Day header */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">
+              {format(selectedDate, "EEEE, d 'de' MMMM", { locale: ptBR })}
+            </h2>
+            {todaySchedule && (
+              <Badge variant="outline" className="text-xs gap-1">
+                <Clock className="w-3 h-3" />
+                {todaySchedule.start_time.slice(0, 5)} – {todaySchedule.end_time.slice(0, 5)}
+              </Badge>
+            )}
+          </div>
+
+          {/* Timeline — vertical stacked, NO overlap */}
+          {!todaySchedule ? (
+            <Card>
+              <CardContent className="py-12 text-center text-muted-foreground">
+                <Clock className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                <p className="font-medium">Sem expediente</p>
+                <p className="text-sm">Configure horários no Centro de Operações</p>
+              </CardContent>
+            </Card>
+          ) : todayAppointments.length === 0 ? (
+            <Card>
+              <CardContent className="py-12 text-center text-muted-foreground">
+                <Calendar className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                <p>Nenhum agendamento para este dia</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="relative space-y-0">
+              {/* Timeline line */}
+              <div className="absolute left-[23px] top-4 bottom-4 w-px bg-border" />
+
+              {todayAppointments.map((appt, idx) => {
+                const st = STATUS_MAP[appt.status] || { label: appt.status, variant: 'outline' as const };
+                const isActive = appt.status === 'em_atendimento';
+                const isDone = appt.status === 'realizado' || appt.status === 'cancelado' || appt.status === 'falta';
+
+                return (
+                  <div key={appt.id} className="relative flex gap-4 pb-4">
+                    {/* Timeline dot */}
+                    <div className="relative z-10 flex flex-col items-center pt-1">
+                      <div className={cn(
+                        "w-3 h-3 rounded-full border-2 shrink-0",
+                        isActive ? "bg-primary border-primary animate-pulse" :
+                        isDone ? "bg-muted-foreground/30 border-muted-foreground/30" :
+                        "bg-background border-primary"
+                      )} />
+                    </div>
+
+                    {/* Card */}
+                    <Card className={cn(
+                      "flex-1 transition-all",
+                      isActive && "ring-2 ring-primary/30",
+                      isDone && "opacity-60"
+                    )}>
+                      <CardContent className="p-4">
+                        {/* Time + Status */}
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg font-bold tabular-nums">
                               {appt.scheduled_time.slice(0, 5)}
-                            </div>
+                            </span>
                             {appt.end_time && (
                               <span className="text-sm text-muted-foreground">
-                                até {appt.end_time.slice(0, 5)}
+                                → {appt.end_time.slice(0, 5)}
                               </span>
                             )}
                           </div>
-                          <Badge
-                            variant={
-                              appt.status === 'confirmado' ? 'default' :
-                              appt.status === 'realizado' ? 'secondary' :
-                              appt.status === 'cancelado' ? 'destructive' :
-                              appt.status === 'em_atendimento' ? 'default' :
-                              'outline'
-                            }
-                          >
-                            {appt.status === 'agendado' && 'Agendado'}
-                            {appt.status === 'confirmado' && 'Confirmado'}
-                            {appt.status === 'em_atendimento' && 'Em atendimento'}
-                            {appt.status === 'realizado' && 'Realizado'}
-                            {appt.status === 'falta' && 'Falta'}
-                            {appt.status === 'cancelado' && 'Cancelado'}
-                          </Badge>
+                          <Badge variant={st.variant}>{st.label}</Badge>
                         </div>
 
-                        <div className="flex items-center gap-4 text-sm">
-                          {appt.child && (
-                            <span className="flex items-center gap-1">
-                              <User className="w-3.5 h-3.5 text-muted-foreground" />
-                              {appt.child.name}
-                            </span>
-                          )}
-                          {appt.appointment_type && (
-                            <Badge
-                              variant="outline"
-                              style={{
-                                borderColor: appt.appointment_type.color || undefined,
-                                color: appt.appointment_type.color || undefined
-                              }}
-                            >
-                              {appt.appointment_type.name}
-                            </Badge>
-                          )}
+                        {/* Patient info — large card */}
+                        {appt.child && (
+                          <div
+                            className="flex items-center gap-3 p-3 rounded-lg bg-muted/40 hover:bg-muted/60 cursor-pointer transition-colors mb-3"
+                            onClick={() => navigate(`/therapist/patient/${appt.child!.id}`)}
+                          >
+                            <PatientAvatar
+                              photoUrl={appt.child.avatar_url}
+                              name={appt.child.name}
+                              size="md"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold truncate">{appt.child.name}</p>
+                              {appt.appointment_type && (
+                                <p className="text-xs text-muted-foreground">{appt.appointment_type.name}</p>
+                              )}
+                            </div>
+                            <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+                          </div>
+                        )}
+
+                        {/* Meta */}
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
                           {appt.room && (
-                            <span className="flex items-center gap-1 text-muted-foreground">
-                              <MapPin className="w-3.5 h-3.5" />
-                              {appt.room}
+                            <span className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" /> {appt.room}
                             </span>
                           )}
                           {appt.service_mode && (
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="secondary" className="text-[10px]">
                               {appt.service_mode === 'premium' ? 'Premium' : 'Standard'}
                             </Badge>
                           )}
                         </div>
 
                         {appt.internal_notes && (
-                          <p className="text-xs text-muted-foreground border-t pt-2 mt-2">
-                            {appt.internal_notes}
-                          </p>
+                          <p className="text-xs text-muted-foreground mt-2 border-t pt-2">{appt.internal_notes}</p>
                         )}
 
-                        {/* Quick actions */}
-                        {appt.status !== 'cancelado' && appt.status !== 'realizado' && appt.status !== 'falta' && (
-                          <div className="flex gap-2 pt-1">
+                        {/* Actions */}
+                        {!isDone && (
+                          <div className="flex gap-2 mt-3 pt-2 border-t">
                             {appt.status === 'agendado' && (
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => updateStatus(appt.id, 'confirmado', { confirmed_at: new Date().toISOString(), confirmed_via: 'manual' })}
-                              >
-                                Confirmar
-                              </Button>
+                              <Button size="sm" variant="outline" onClick={() =>
+                                updateStatus(appt.id, 'confirmado', { confirmed_at: new Date().toISOString(), confirmed_via: 'manual' })
+                              }>Confirmar</Button>
                             )}
                             {(appt.status === 'confirmado' || appt.status === 'agendado') && (
-                              <Button
-                                size="sm"
-                                onClick={() => updateStatus(appt.id, 'em_atendimento', { check_in_at: new Date().toISOString() })}
-                              >
-                                Iniciar Atendimento
-                              </Button>
+                              <Button size="sm" onClick={() =>
+                                updateStatus(appt.id, 'em_atendimento', { check_in_at: new Date().toISOString() })
+                              }>Iniciar</Button>
                             )}
                             {appt.status === 'em_atendimento' && (
-                              <Button
-                                size="sm"
-                                onClick={() => updateStatus(appt.id, 'realizado')}
-                              >
+                              <Button size="sm" onClick={() => updateStatus(appt.id, 'realizado')}>
                                 Finalizar
                               </Button>
                             )}
                           </div>
                         )}
-                      </div>
-                    ))}
+                      </CardContent>
+                    </Card>
                   </div>
-                </ScrollArea>
-              )}
-            </CardContent>
-          </Card>
+                );
+              })}
+            </div>
+          )}
         </div>
 
-        {/* Right sidebar */}
+        {/* Sidebar */}
         <div className="space-y-4">
-          {/* Weekly summary */}
           <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base">Resumo da Semana</CardTitle>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm">Resumo da Semana</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Total</span>
-                <span className="font-medium">{statusCounts.total}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Confirmados</span>
-                <span className="font-medium text-success">{statusCounts.confirmed}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Aguardando</span>
-                <span className="font-medium text-warning">{statusCounts.pending}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Realizados</span>
-                <span className="font-medium text-info">{statusCounts.completed}</span>
-              </div>
+            <CardContent className="space-y-1.5 text-sm">
+              <div className="flex justify-between"><span className="text-muted-foreground">Total</span><span className="font-medium">{statusCounts.total}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Confirmados</span><span className="font-medium">{statusCounts.confirmed}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Pendentes</span><span className="font-medium">{statusCounts.pending}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Realizados</span><span className="font-medium">{statusCounts.completed}</span></div>
             </CardContent>
           </Card>
 
-          {/* Work schedule card */}
           <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                Horário de Trabalho
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5" /> Horários
               </CardTitle>
             </CardHeader>
             <CardContent>
               {workSchedule.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  Nenhum horário configurado
-                </p>
+                <p className="text-xs text-muted-foreground text-center py-3">Nenhum horário configurado</p>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {DAYS_LABELS.map((label, idx) => {
-                    const schedule = workSchedule.find(s => s.day_of_week === idx);
+                    const s = workSchedule.find(ws => ws.day_of_week === idx);
                     return (
-                      <div
-                        key={idx}
-                        className={cn(
-                          "flex items-center justify-between text-sm py-1.5 px-2 rounded",
-                          schedule?.is_available ? "bg-success/10" : "opacity-50"
-                        )}
-                      >
-                        <span className="font-medium">{label.slice(0, 3)}</span>
-                        {schedule?.is_available ? (
-                          <span className="text-muted-foreground">
-                            {schedule.start_time.slice(0, 5)} - {schedule.end_time.slice(0, 5)}
-                          </span>
-                        ) : (
-                          <span className="text-muted-foreground text-xs">—</span>
-                        )}
+                      <div key={idx} className={cn(
+                        "flex justify-between text-xs py-1 px-2 rounded",
+                        s?.is_available ? "bg-primary/5" : "opacity-40"
+                      )}>
+                        <span className="font-medium">{label}</span>
+                        <span className="text-muted-foreground">
+                          {s?.is_available ? `${s.start_time.slice(0, 5)} – ${s.end_time.slice(0, 5)}` : '—'}
+                        </span>
                       </div>
                     );
                   })}
