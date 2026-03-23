@@ -30,6 +30,9 @@ const DashboardPais = lazy(() => import("./pages/DashboardPais"));
 const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
 const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
 const StudentHub = lazy(() => import("./pages/StudentHub"));
+const WellnessHome = lazy(() => import("./pages/WellnessHome"));
+const EmotionCheck = lazy(() => import("./pages/EmotionCheck"));
+const ActivityPage = lazy(() => import("./pages/ActivityPage"));
 
 // Games - Navigation
 const Games = lazy(() => import("./pages/Games"));
@@ -220,7 +223,10 @@ const App = () => (
                   <Route path="/dashboard" element={<Navigate to="/" replace />} />
                   <Route path="/dashboard-pais" element={<P roles={['parent']}><DashboardPais /></P>} />
                   <Route path="/clinical" element={<P roles={['therapist']}><ClinicalDashboard /></P>} />
-                  <Route path="/student-hub" element={<P roles={['patient']}><StudentHub /></P>} />
+                  <Route path="/student-hub" element={<P roles={['patient']}><WellnessHome /></P>} />
+                  <Route path="/student-hub-classic" element={<P roles={['patient']}><StudentHub /></P>} />
+                  <Route path="/emotion-check" element={<P><EmotionCheck /></P>} />
+                  <Route path="/activity" element={<P><ActivityPage /></P>} />
                   
                   {/* Diagnostics */}
                   <Route path="/diagnostico-completo" element={<P roles={['therapist']}><DiagnosticoCompleto /></P>} />
