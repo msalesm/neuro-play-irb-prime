@@ -37,13 +37,13 @@ export function ParentLayout({ children }: ParentLayoutProps) {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50/50 via-background to-orange-50/20 dark:from-amber-950/10 dark:via-background dark:to-orange-950/5">
+      <div className="min-h-screen bg-background">
         {/* Warm, welcoming header */}
         <header className="sticky top-0 z-40 bg-card/90 backdrop-blur-md border-b border-border/50 px-4 py-3">
           <div className="flex items-center justify-between">
             <Link to="/dashboard-pais" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-sm">
-                <Heart className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center shadow-sm">
+                <Heart className="w-4 h-4 text-secondary-foreground" />
               </div>
               <div className="flex flex-col">
                 <span className="font-bold text-sm text-foreground">NeuroPlay</span>
@@ -79,14 +79,14 @@ export function ParentLayout({ children }: ParentLayoutProps) {
                   to={item.path}
                   className={`flex flex-col items-center justify-center py-2 px-3 rounded-lg transition-all min-w-[56px] ${
                     active
-                      ? 'text-amber-600 dark:text-amber-400'
+                      ? 'text-primary'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                   aria-label={item.name}
                   aria-current={active ? 'page' : undefined}
                 >
-                  <Icon className={`h-5 w-5 mb-0.5 ${active ? 'text-amber-600 dark:text-amber-400' : ''}`} />
-                  <span className={`text-[10px] font-medium leading-tight ${active ? 'text-amber-600 dark:text-amber-400' : ''}`}>
+                  <Icon className={`h-5 w-5 mb-0.5 ${active ? 'text-primary' : ''}`} />
+                  <span className={`text-[10px] font-medium leading-tight ${active ? 'text-primary' : ''}`}>
                     {item.name}
                   </span>
                 </Link>
@@ -101,7 +101,7 @@ export function ParentLayout({ children }: ParentLayoutProps) {
   // Desktop: sidebar layout
   return (
     <SidebarProvider defaultOpen>
-      <div className="min-h-screen flex w-full bg-gradient-to-b from-amber-50/30 via-background to-background dark:from-amber-950/5 dark:via-background">
+      <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         
         <div className="flex-1 flex flex-col">
