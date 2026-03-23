@@ -37,13 +37,13 @@ export function ParentLayout({ children }: ParentLayoutProps) {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50/50 via-background to-orange-50/20 dark:from-amber-950/10 dark:via-background dark:to-orange-950/5">
+      <div className="min-h-screen bg-background">
         {/* Warm, welcoming header */}
         <header className="sticky top-0 z-40 bg-card/90 backdrop-blur-md border-b border-border/50 px-4 py-3">
           <div className="flex items-center justify-between">
             <Link to="/dashboard-pais" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-sm">
-                <Heart className="w-4 h-4 text-white" />
+              <div className="w-8 h-8 bg-secondary rounded-xl flex items-center justify-center shadow-sm">
+                <Heart className="w-4 h-4 text-secondary-foreground" />
               </div>
               <div className="flex flex-col">
                 <span className="font-bold text-sm text-foreground">NeuroPlay</span>
