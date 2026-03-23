@@ -256,29 +256,29 @@
     background: var(--dislexia-gradient);
   }
 
-  /* Game category specific gradients — softened */
+  /* Game category gradients — professional, single-tone */
   .gradient-focus {
-    background: linear-gradient(135deg, hsl(210, 40%, 55%), hsl(210, 35%, 65%));
+    background: linear-gradient(180deg, hsl(210, 40%, 55%), hsl(210, 38%, 48%));
   }
   
   .gradient-memory {
-    background: linear-gradient(135deg, hsl(160, 35%, 48%), hsl(160, 30%, 58%));
+    background: linear-gradient(180deg, hsl(160, 35%, 48%), hsl(160, 32%, 42%));
   }
   
   .gradient-language {
-    background: linear-gradient(135deg, hsl(260, 28%, 60%), hsl(260, 25%, 68%));
+    background: linear-gradient(180deg, hsl(260, 28%, 60%), hsl(260, 26%, 54%));
   }
   
   .gradient-social {
-    background: linear-gradient(135deg, hsl(28, 50%, 58%), hsl(42, 50%, 68%));
+    background: linear-gradient(180deg, hsl(28, 50%, 58%), hsl(28, 48%, 52%));
   }
   
   .gradient-math {
-    background: linear-gradient(135deg, hsl(340, 40%, 62%), hsl(350, 35%, 68%));
+    background: linear-gradient(180deg, hsl(340, 40%, 62%), hsl(340, 38%, 56%));
   }
   
   .gradient-problem {
-    background: linear-gradient(135deg, hsl(210, 40%, 55%), hsl(260, 28%, 60%));
+    background: linear-gradient(180deg, hsl(210, 40%, 55%), hsl(210, 38%, 48%));
   }
 
   .text-balance {
