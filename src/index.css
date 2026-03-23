@@ -55,14 +55,14 @@
     
     --radius: 1.25rem;                     /* More rounded for wellness */
 
-    /* Wellness Gradients — soft, barely-there */
-    --gradient-primary: linear-gradient(135deg, hsl(210 40% 55%), hsl(260 25% 65%));
-    --gradient-gold: linear-gradient(135deg, hsl(28 55% 62%), hsl(42 55% 72%));
-    --gradient-therapeutic: linear-gradient(135deg, hsl(160 30% 50%), hsl(210 40% 55%));
-    --gradient-playful: linear-gradient(135deg, hsl(260 25% 70%), hsl(28 50% 65%), hsl(42 55% 75%));
-    --gradient-hero: linear-gradient(135deg, hsl(210 40% 55%), hsl(260 25% 62%), hsl(160 30% 52%));
-    --gradient-card: linear-gradient(135deg, hsl(40 15% 100%), hsl(40 20% 98%));
-    --gradient-accent: linear-gradient(135deg, hsl(160 30% 50%), hsl(210 40% 55%));
+    /* Professional Gradients — clean, subtle, single-tone */
+    --gradient-primary: linear-gradient(180deg, hsl(210 40% 55%), hsl(210 38% 48%));
+    --gradient-gold: linear-gradient(180deg, hsl(35 45% 58%), hsl(35 42% 50%));
+    --gradient-therapeutic: linear-gradient(180deg, hsl(160 30% 50%), hsl(160 28% 44%));
+    --gradient-playful: linear-gradient(180deg, hsl(210 40% 55%), hsl(210 35% 50%));
+    --gradient-hero: linear-gradient(180deg, hsl(220 18% 16%), hsl(220 15% 22%));
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%), hsl(40 12% 98%));
+    --gradient-accent: linear-gradient(180deg, hsl(160 30% 50%), hsl(160 28% 44%));
     
     /* Shadows — whisper-soft */
     --shadow-soft: 0 4px 24px -6px hsl(220 15% 50% / 0.06);
