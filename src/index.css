@@ -79,18 +79,18 @@
     --tdah-primary: 28 50% 58%;
     --tdah-secondary: 42 50% 68%;
     --tdah-accent: 22 45% 62%;
-    --tdah-gradient: linear-gradient(135deg, hsl(28 50% 58%), hsl(42 50% 68%));
+    --tdah-gradient: linear-gradient(180deg, hsl(28 50% 58%), hsl(28 48% 52%));
     
     --tea-primary: 260 28% 60%;
     --tea-secondary: 275 30% 65%;
     --tea-accent: 255 35% 72%;
     --tea-background: 265 20% 97%;
-    --tea-gradient: linear-gradient(135deg, hsl(260 28% 60%), hsl(275 30% 65%));
+    --tea-gradient: linear-gradient(180deg, hsl(260 28% 60%), hsl(260 26% 54%));
     
     --dislexia-primary: 160 35% 48%;
     --dislexia-secondary: 168 30% 58%;
     --dislexia-accent: 185 28% 60%;
-    --dislexia-gradient: linear-gradient(135deg, hsl(160 35% 48%), hsl(168 30% 58%));
+    --dislexia-gradient: linear-gradient(180deg, hsl(160 35% 48%), hsl(160 32% 42%));
 
     /* Typography — Rounded, friendly, calming */
     --font-heading: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif;
