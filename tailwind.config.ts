@@ -70,7 +70,7 @@ export default {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
-        // NeuroPlay Brand
+        // NeuroPlay Brand — Wellness palette
         neuroplay: {
           blue: "hsl(var(--neuroplay-blue))",
           purple: "hsl(var(--neuroplay-purple))",
@@ -78,7 +78,12 @@ export default {
           orange: "hsl(var(--neuroplay-orange))",
           yellow: "hsl(var(--neuroplay-yellow))",
         },
-        
+        // Vortex planet colors (used by StackTower game)
+        vortex: {
+          400: "hsl(210 40% 60%)",
+          800: "hsl(220 18% 14%)",
+          900: "hsl(220 18% 10%)",
+        },
       },
       fontFamily: {
         'heading': ['Nunito', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
@@ -112,20 +117,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
         "shake": {
           "0%, 100%": { transform: "translateX(0)" },
@@ -133,47 +130,21 @@ export default {
           "20%, 40%, 60%, 80%": { transform: "translateX(10px)" },
         },
         "particle-float": {
-          "0%": {
-            opacity: "1",
-            transform: "translateY(0) scale(1)",
-          },
-          "100%": {
-            opacity: "0",
-            transform: "translateY(-100px) scale(0.5)",
-          },
+          "0%": { opacity: "1", transform: "translateY(0) scale(1)" },
+          "100%": { opacity: "0", transform: "translateY(-100px) scale(0.5)" },
         },
         "confetti-fall": {
-          "0%": {
-            transform: "translateY(-100%) rotate(0deg)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "translateY(800px) rotate(720deg)",
-            opacity: "0",
-          },
+          "0%": { transform: "translateY(-100%) rotate(0deg)", opacity: "1" },
+          "100%": { transform: "translateY(800px) rotate(720deg)", opacity: "0" },
         },
         "pulse-success": {
-          "0%, 100%": {
-            transform: "scale(1)",
-            opacity: "1",
-          },
-          "50%": {
-            transform: "scale(1.2)",
-            opacity: "0.8",
-          },
+          "0%, 100%": { transform: "scale(1)", opacity: "1" },
+          "50%": { transform: "scale(1.2)", opacity: "0.8" },
         },
         "bounce-in": {
-          "0%": {
-            transform: "scale(0)",
-            opacity: "0",
-          },
-          "50%": {
-            transform: "scale(1.1)",
-          },
-          "100%": {
-            transform: "scale(1)",
-            opacity: "1",
-          },
+          "0%": { transform: "scale(0)", opacity: "0" },
+          "50%": { transform: "scale(1.1)" },
+          "100%": { transform: "scale(1)", opacity: "1" },
         },
       },
       animation: {
