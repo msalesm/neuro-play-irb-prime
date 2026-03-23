@@ -223,7 +223,10 @@ const App = () => (
                   <Route path="/dashboard" element={<Navigate to="/" replace />} />
                   <Route path="/dashboard-pais" element={<P roles={['parent']}><DashboardPais /></P>} />
                   <Route path="/clinical" element={<P roles={['therapist']}><ClinicalDashboard /></P>} />
-                  <Route path="/student-hub" element={<P roles={['patient']}><StudentHub /></P>} />
+                  <Route path="/student-hub" element={<P roles={['patient']}><WellnessHome /></P>} />
+                  <Route path="/student-hub-classic" element={<P roles={['patient']}><StudentHub /></P>} />
+                  <Route path="/emotion-check" element={<P><EmotionCheck /></P>} />
+                  <Route path="/activity" element={<P><ActivityPage /></P>} />
                   
                   {/* Diagnostics */}
                   <Route path="/diagnostico-completo" element={<P roles={['therapist']}><DiagnosticoCompleto /></P>} />
