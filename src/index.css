@@ -2,154 +2,155 @@
 @tailwind components;
 @tailwind utilities;
 
-/* NeuroPlay Design System — Neurodiverse, playful, inclusive
+/* NeuroPlay Wellness Design System — Calm, Minimal, Inclusive
+   Inspired by Headspace/Calm aesthetics for neurodivergent users.
    All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    /* NeuroPlay Brand Colors (neurodiversity palette) */
-    --neuroplay-blue: 220 100% 62%;       /* #3A86FF */
-    --neuroplay-purple: 266 82% 57%;      /* #8338EC */
-    --neuroplay-green: 163 95% 42%;       /* #06D6A0 */
-    --neuroplay-orange: 33 100% 55%;      /* #FF9F1C */
-    --neuroplay-yellow: 42 100% 70%;      /* #FFD166 */
+    /* NeuroPlay Wellness Brand Colors — soft, muted, calming */
+    --neuroplay-blue: 210 40% 62%;         /* Soft steel blue */
+    --neuroplay-purple: 260 30% 62%;       /* Muted lavender */
+    --neuroplay-green: 160 35% 52%;        /* Sage green */
+    --neuroplay-orange: 28 55% 62%;        /* Warm peach */
+    --neuroplay-yellow: 42 55% 72%;        /* Soft sand */
     
-    /* Semantic Tokens — NeuroPlay Playful Theme */
-    --background: 220 20% 98%;
-    --foreground: 220 25% 15%;
+    /* Semantic Tokens — Calm & Minimal */
+    --background: 40 20% 98%;              /* Warm off-white */
+    --foreground: 220 15% 22%;             /* Soft dark */
     
-    --card: 0 0% 100%;
-    --card-foreground: 220 25% 15%;
+    --card: 40 15% 100%;
+    --card-foreground: 220 15% 22%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 15%;
+    --popover: 40 15% 100%;
+    --popover-foreground: 220 15% 22%;
     
-    --primary: 220 100% 62%;              /* Blue — main brand */
+    --primary: 210 40% 55%;                /* Calm teal-blue */
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 266 82% 57%;             /* Purple */
+    --secondary: 260 25% 65%;              /* Soft lavender */
     --secondary-foreground: 0 0% 100%;
     
-    --accent: 163 95% 42%;                /* Green — highlights / success */
+    --accent: 160 30% 50%;                 /* Sage green — calm highlight */
     --accent-foreground: 0 0% 100%;
     
-    --muted: 220 15% 94%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 40 12% 94%;                   /* Warm muted */
+    --muted-foreground: 220 10% 50%;
     
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 55% 58%;              /* Softened red */
     --destructive-foreground: 0 0% 98%;
 
-    /* Semantic Status Colors */
-    --success: 163 95% 42%;
+    /* Semantic Status Colors — gentler */
+    --success: 160 35% 48%;
     --success-foreground: 0 0% 100%;
-    --warning: 33 100% 55%;
-    --warning-foreground: 0 0% 10%;
-    --info: 220 100% 62%;
+    --warning: 35 50% 55%;
+    --warning-foreground: 0 0% 15%;
+    --info: 210 40% 58%;
     --info-foreground: 0 0% 100%;
     
-    --border: 220 15% 90%;
-    --input: 220 15% 90%;
-    --ring: 220 100% 62%;
+    --border: 40 12% 90%;
+    --input: 40 12% 90%;
+    --ring: 210 40% 55%;
     
-    --radius: 1rem;
+    --radius: 1.25rem;                     /* More rounded for wellness */
 
-    /* NeuroPlay Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220 100% 62%), hsl(266 82% 57%));
-    --gradient-gold: linear-gradient(135deg, hsl(33 100% 55%), hsl(42 100% 70%));
-    --gradient-therapeutic: linear-gradient(135deg, hsl(163 95% 42%), hsl(220 100% 62%));
-    --gradient-playful: linear-gradient(135deg, hsl(266 82% 57%), hsl(33 100% 55%), hsl(42 100% 70%));
-    --gradient-hero: linear-gradient(135deg, hsl(220 100% 62%), hsl(266 82% 57%), hsl(163 95% 42%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(220 20% 98%));
-    --gradient-accent: linear-gradient(135deg, hsl(163 95% 42%), hsl(220 100% 62%));
+    /* Wellness Gradients — soft, barely-there */
+    --gradient-primary: linear-gradient(135deg, hsl(210 40% 55%), hsl(260 25% 65%));
+    --gradient-gold: linear-gradient(135deg, hsl(28 55% 62%), hsl(42 55% 72%));
+    --gradient-therapeutic: linear-gradient(135deg, hsl(160 30% 50%), hsl(210 40% 55%));
+    --gradient-playful: linear-gradient(135deg, hsl(260 25% 70%), hsl(28 50% 65%), hsl(42 55% 75%));
+    --gradient-hero: linear-gradient(135deg, hsl(210 40% 55%), hsl(260 25% 62%), hsl(160 30% 52%));
+    --gradient-card: linear-gradient(135deg, hsl(40 15% 100%), hsl(40 20% 98%));
+    --gradient-accent: linear-gradient(135deg, hsl(160 30% 50%), hsl(210 40% 55%));
     
-    /* Shadows — playful & soft */
-    --shadow-soft: 0 4px 20px -4px hsl(220 100% 62% / 0.1);
-    --shadow-card: 0 8px 30px -6px hsl(220 20% 50% / 0.1);
-    --shadow-glow: 0 0 40px hsl(220 100% 62% / 0.2);
-    --shadow-medium: 0 4px 16px hsla(220, 25%, 15%, 0.1);
-    --shadow-strong: 0 8px 32px hsla(220, 25%, 15%, 0.14);
+    /* Shadows — whisper-soft */
+    --shadow-soft: 0 4px 24px -6px hsl(220 15% 50% / 0.06);
+    --shadow-card: 0 8px 32px -8px hsl(220 15% 50% / 0.08);
+    --shadow-glow: 0 0 48px hsl(210 40% 55% / 0.1);
+    --shadow-medium: 0 4px 16px hsl(220 15% 22% / 0.06);
+    --shadow-strong: 0 8px 32px hsl(220 15% 22% / 0.1);
     
-    /* Transitions */
+    /* Transitions — smooth and calm */
     --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-bounce: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 
-    /* Neurodiversity-specific color systems */
-    --tdah-primary: 33 100% 55%;
-    --tdah-secondary: 42 100% 70%;
-    --tdah-accent: 25 95% 65%;
-    --tdah-gradient: linear-gradient(135deg, hsl(33 100% 55%), hsl(42 100% 70%));
+    /* Neurodiversity color systems — softened */
+    --tdah-primary: 28 50% 58%;
+    --tdah-secondary: 42 50% 68%;
+    --tdah-accent: 22 45% 62%;
+    --tdah-gradient: linear-gradient(135deg, hsl(28 50% 58%), hsl(42 50% 68%));
     
-    --tea-primary: 266 82% 57%;
-    --tea-secondary: 280 85% 65%;
-    --tea-accent: 260 95% 75%;
-    --tea-background: 270 45% 97%;
-    --tea-gradient: linear-gradient(135deg, hsl(266 82% 57%), hsl(280 85% 65%));
+    --tea-primary: 260 28% 60%;
+    --tea-secondary: 275 30% 65%;
+    --tea-accent: 255 35% 72%;
+    --tea-background: 265 20% 97%;
+    --tea-gradient: linear-gradient(135deg, hsl(260 28% 60%), hsl(275 30% 65%));
     
-    --dislexia-primary: 163 95% 42%;
-    --dislexia-secondary: 170 65% 60%;
-    --dislexia-accent: 190 60% 65%;
-    --dislexia-gradient: linear-gradient(135deg, hsl(163 95% 42%), hsl(170 65% 60%));
+    --dislexia-primary: 160 35% 48%;
+    --dislexia-secondary: 168 30% 58%;
+    --dislexia-accent: 185 28% 60%;
+    --dislexia-gradient: linear-gradient(135deg, hsl(160 35% 48%), hsl(168 30% 58%));
 
-    /* Typography — Rounded, friendly */
+    /* Typography — Rounded, friendly, calming */
     --font-heading: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif;
     --font-body: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif;
     --font-dyslexic: 'OpenDyslexic', 'Inter', system-ui, sans-serif;
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 220 25% 15%;
-    --sidebar-primary: 220 100% 62%;
+    --sidebar-background: 40 15% 99%;
+    --sidebar-foreground: 220 15% 25%;
+    --sidebar-primary: 210 40% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 100% 96%;
-    --sidebar-accent-foreground: 220 100% 30%;
-    --sidebar-border: 220 15% 90%;
-    --sidebar-ring: 220 100% 62%;
+    --sidebar-accent: 210 30% 96%;
+    --sidebar-accent-foreground: 210 40% 35%;
+    --sidebar-border: 40 12% 92%;
+    --sidebar-ring: 210 40% 55%;
   }
 
   .dark {
-    --background: 220 25% 8%;
-    --foreground: 0 0% 98%;
+    --background: 220 18% 9%;
+    --foreground: 40 10% 95%;
     
-    --card: 220 25% 11%;
-    --card-foreground: 0 0% 98%;
+    --card: 220 18% 12%;
+    --card-foreground: 40 10% 95%;
     
-    --popover: 220 25% 11%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 220 18% 12%;
+    --popover-foreground: 40 10% 95%;
     
-    --primary: 220 100% 68%;
-    --primary-foreground: 220 25% 8%;
+    --primary: 210 40% 62%;
+    --primary-foreground: 220 18% 9%;
     
-    --secondary: 266 82% 65%;
+    --secondary: 260 25% 55%;
     --secondary-foreground: 0 0% 100%;
     
-    --accent: 163 95% 48%;
-    --accent-foreground: 220 25% 8%;
+    --accent: 160 30% 45%;
+    --accent-foreground: 220 18% 9%;
     
-    --muted: 220 20% 18%;
-    --muted-foreground: 220 15% 65%;
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 10% 60%;
     
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 45% 35%;
     --destructive-foreground: 0 0% 98%;
 
-    --success: 163 95% 36%;
+    --success: 160 35% 38%;
     --success-foreground: 0 0% 100%;
-    --warning: 33 100% 50%;
+    --warning: 35 50% 45%;
     --warning-foreground: 0 0% 10%;
-    --info: 220 100% 68%;
+    --info: 210 40% 62%;
     --info-foreground: 0 0% 100%;
     
-    --border: 220 20% 18%;
-    --input: 220 20% 18%;
-    --ring: 220 100% 68%;
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 210 40% 62%;
 
-    --sidebar-background: 220 25% 10%;
-    --sidebar-foreground: 220 15% 90%;
-    --sidebar-primary: 220 100% 70%;
-    --sidebar-primary-foreground: 220 25% 8%;
-    --sidebar-accent: 220 100% 18%;
-    --sidebar-accent-foreground: 220 100% 90%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 220 100% 70%;
+    --sidebar-background: 220 18% 10%;
+    --sidebar-foreground: 220 10% 88%;
+    --sidebar-primary: 210 40% 65%;
+    --sidebar-primary-foreground: 220 18% 9%;
+    --sidebar-accent: 210 30% 18%;
+    --sidebar-accent-foreground: 210 30% 88%;
+    --sidebar-border: 220 12% 18%;
+    --sidebar-ring: 210 40% 65%;
   }
 }
 
@@ -161,10 +162,13 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    letter-spacing: -0.01em;
   }
 }
 
@@ -252,56 +256,56 @@
     background: var(--dislexia-gradient);
   }
 
-  /* Game category specific gradients */
+  /* Game category specific gradients — softened */
   .gradient-focus {
-    background: linear-gradient(135deg, hsl(220, 100%, 62%), hsl(220, 80%, 70%));
+    background: linear-gradient(135deg, hsl(210, 40%, 55%), hsl(210, 35%, 65%));
   }
   
   .gradient-memory {
-    background: linear-gradient(135deg, hsl(163, 95%, 42%), hsl(163, 70%, 55%));
+    background: linear-gradient(135deg, hsl(160, 35%, 48%), hsl(160, 30%, 58%));
   }
   
   .gradient-language {
-    background: linear-gradient(135deg, hsl(266, 82%, 57%), hsl(266, 70%, 65%));
+    background: linear-gradient(135deg, hsl(260, 28%, 60%), hsl(260, 25%, 68%));
   }
   
   .gradient-social {
-    background: linear-gradient(135deg, hsl(33, 100%, 55%), hsl(42, 100%, 70%));
+    background: linear-gradient(135deg, hsl(28, 50%, 58%), hsl(42, 50%, 68%));
   }
   
   .gradient-math {
-    background: linear-gradient(135deg, hsl(345, 80%, 65%), hsl(355, 75%, 70%));
+    background: linear-gradient(135deg, hsl(340, 40%, 62%), hsl(350, 35%, 68%));
   }
   
   .gradient-problem {
-    background: linear-gradient(135deg, hsl(220, 100%, 62%), hsl(266, 82%, 57%));
+    background: linear-gradient(135deg, hsl(210, 40%, 55%), hsl(260, 28%, 60%));
   }
 
   .text-balance {
     text-wrap: balance;
   }
 
-  /* Animation utilities */
+  /* Animation utilities — gentler */
   .hover-scale {
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
   }
   
   .hover-scale:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
   
   .animate-fade-in {
-    animation: fadeIn 0.6s ease-out;
+    animation: fadeIn 0.7s ease-out;
   }
   
   .animate-scale-in {
-    animation: scaleIn 0.5s ease-out;
+    animation: scaleIn 0.6s ease-out;
   }
   
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(12px);
     }
     to {
       opacity: 1;
@@ -312,7 +316,7 @@
   @keyframes scaleIn {
     from {
       opacity: 0;
-      transform: scale(0.95);
+      transform: scale(0.97);
     }
     to {
       opacity: 1;
@@ -448,7 +452,7 @@
 
 /* Spacious UI Density */
 [data-ui-density="spacious"] {
-  --radius: 1.25rem;
+  --radius: 1.5rem;
 }
 
 [data-ui-density="spacious"] .gap-2 {
