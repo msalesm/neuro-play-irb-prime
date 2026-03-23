@@ -70,7 +70,7 @@ export default function WellnessHome() {
       setWeekData(wData);
 
       // Estimate domain progress from sessions count
-      const totalMin = sessions?.reduce((acc, s) => acc + (s.duration_minutes || 0), 0) || 0;
+      const totalMin = sessions?.reduce((acc, s) => acc + Math.round((s.session_duration_seconds || 0) / 60), 0) || 0;
       setDomainProgress({
         attention: Math.min(100, Math.round((totalMin / 60) * 100)),
         emotion: Math.min(100, Math.round(xp > 0 ? 45 : 0)),
