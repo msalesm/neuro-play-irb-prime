@@ -249,29 +249,29 @@
     background: var(--dislexia-gradient);
   }
 
-  /* Game category gradients — professional, single-tone */
+  /* Game category gradients — TEA/TDAH palette */
   .gradient-focus {
-    background: linear-gradient(180deg, hsl(210, 40%, 55%), hsl(210, 38%, 48%));
+    background: linear-gradient(180deg, hsl(258, 32%, 56%), hsl(258, 30%, 48%));
   }
   
   .gradient-memory {
-    background: linear-gradient(180deg, hsl(160, 35%, 48%), hsl(160, 32%, 42%));
+    background: linear-gradient(180deg, hsl(160, 28%, 48%), hsl(160, 26%, 42%));
   }
   
   .gradient-language {
-    background: linear-gradient(180deg, hsl(260, 28%, 60%), hsl(260, 26%, 54%));
+    background: linear-gradient(180deg, hsl(270, 28%, 58%), hsl(270, 26%, 52%));
   }
   
   .gradient-social {
-    background: linear-gradient(180deg, hsl(28, 50%, 58%), hsl(28, 48%, 52%));
+    background: linear-gradient(180deg, hsl(28, 50%, 60%), hsl(28, 48%, 52%));
   }
   
   .gradient-math {
-    background: linear-gradient(180deg, hsl(340, 40%, 62%), hsl(340, 38%, 56%));
+    background: linear-gradient(180deg, hsl(245, 35%, 58%), hsl(245, 33%, 52%));
   }
   
   .gradient-problem {
-    background: linear-gradient(180deg, hsl(210, 40%, 55%), hsl(210, 38%, 48%));
+    background: linear-gradient(180deg, hsl(258, 32%, 56%), hsl(258, 30%, 48%));
   }
 
   .text-balance {

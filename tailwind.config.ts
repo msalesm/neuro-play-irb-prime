@@ -80,9 +80,9 @@ export default {
         },
         // Vortex planet colors (used by StackTower game)
         vortex: {
-          400: "hsl(210 40% 60%)",
-          800: "hsl(220 18% 14%)",
-          900: "hsl(220 18% 10%)",
+          400: "hsl(258 32% 62%)",
+          800: "hsl(250 18% 14%)",
+          900: "hsl(250 18% 10%)",
         },
       },
       fontFamily: {
