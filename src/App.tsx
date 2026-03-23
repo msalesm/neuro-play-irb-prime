@@ -30,6 +30,9 @@ const DashboardPais = lazy(() => import("./pages/DashboardPais"));
 const ClinicalDashboard = lazy(() => import("./pages/ClinicalDashboard"));
 const LearningDashboard = lazy(() => import("./pages/LearningDashboard"));
 const StudentHub = lazy(() => import("./pages/StudentHub"));
+const WellnessHome = lazy(() => import("./pages/WellnessHome"));
+const EmotionCheck = lazy(() => import("./pages/EmotionCheck"));
+const ActivityPage = lazy(() => import("./pages/ActivityPage"));
 
 // Games - Navigation
 const Games = lazy(() => import("./pages/Games"));
