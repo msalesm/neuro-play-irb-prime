@@ -570,7 +570,7 @@ Deno.serve(async (req) => {
       results.push({ type: "neuro_scores", records: 0, errors: [] });
     }
 
-    httpClient.close();
+    if (httpClient) httpClient.close();
 
     const totalRecords = results.reduce((s, r) => s + r.records, 0);
     const allErrors = results.flatMap((r) => r.errors);
