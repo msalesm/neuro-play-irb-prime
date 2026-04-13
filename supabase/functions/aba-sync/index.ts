@@ -79,18 +79,25 @@ async function makeAbaRequest(
     Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
   }
 
+  const apiKey = Deno.env.get("ABA_PLUS_API_KEY");
+
   let lastError: Error | null = null;
   for (let attempt = 0; attempt < 3; attempt++) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 15000);
 
     try {
+      const headers: Record<string, string> = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      if (apiKey) {
+        headers["X-API-Key"] = apiKey;
+      }
+
       const fetchOptions: RequestInit & { client?: Deno.HttpClient } = {
         signal: controller.signal,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+        headers,
       };
       if (httpClient) {
         fetchOptions.client = httpClient;
