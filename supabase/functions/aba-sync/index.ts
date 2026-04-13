@@ -135,7 +135,7 @@ async function makeAbaRequest(
         "Content-Type": "application/json",
       };
       if (apiKey) {
-        headers["X-API-Key"] = apiKey;
+        headers["Abm-Api-Key"] = apiKey;
       }
 
       const fetchOptions: RequestInit & { client?: Deno.HttpClient } = {
