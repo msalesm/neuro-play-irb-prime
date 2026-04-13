@@ -44,10 +44,10 @@ export function AbaNeuroPlayDashboard() {
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Brain className="h-6 w-6 text-primary" />
-            ABA NeuroPlay
+            ABA+
           </h2>
           <p className="text-muted-foreground">
-            Dados clínicos nativos da plataforma com modelo compatível ABA+
+            Integração e dados clínicos ABA+
           </p>
         </div>
         {isTherapistOrAdmin && (

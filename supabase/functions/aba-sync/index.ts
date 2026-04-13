@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import forge from "https://esm.sh/node-forge@1.3.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,10 +17,10 @@ interface SyncResult {
 }
 
 /**
- * Creates a Deno HTTP client configured with mTLS using PFX certificate.
- * Extracts PEM cert and key from the PFX via openssl subprocess.
+ * Creates a Deno HTTP client configured with mTLS.
+ * Uses node-forge to parse PFX in pure JS (no subprocess needed).
  */
-async function createMtlsClient(): Promise<Deno.HttpClient> {
+function createMtlsClient(): Deno.HttpClient {
   const pfxBase64 = Deno.env.get("ABA_PLUS_CERTIFICATE_PFX");
   const pfxPassword = Deno.env.get("ABA_PLUS_CERTIFICATE_PASSWORD");
 
@@ -27,41 +28,26 @@ async function createMtlsClient(): Promise<Deno.HttpClient> {
     throw new Error("ABA+ certificate not configured (PFX or password missing)");
   }
 
-  // Write PFX to temp file
-  const pfxBytes = Uint8Array.from(atob(pfxBase64), (c) => c.charCodeAt(0));
-  const tmpPfx = "/tmp/aba_cert.pfx";
-  const tmpCert = "/tmp/aba_cert.pem";
-  const tmpKey = "/tmp/aba_key.pem";
-
-  await Deno.writeFile(tmpPfx, pfxBytes);
+  // Decode PFX from base64
+  const pfxDer = forge.util.decode64(pfxBase64);
+  const pfxAsn1 = forge.asn1.fromDer(pfxDer);
+  const p12 = forge.pkcs12.pkcs12FromAsn1(pfxAsn1, pfxPassword);
 
   // Extract certificate
-  const certCmd = new Deno.Command("openssl", {
-    args: ["pkcs12", "-in", tmpPfx, "-clcerts", "-nokeys", "-out", tmpCert, "-passin", `pass:${pfxPassword}`],
-  });
-  const certResult = await certCmd.output();
-  if (!certResult.success) {
-    throw new Error("Failed to extract certificate from PFX");
+  const certBags = p12.getBags({ bagType: forge.pki.oids.certBag });
+  const certBag = certBags[forge.pki.oids.certBag];
+  if (!certBag || certBag.length === 0) {
+    throw new Error("No certificate found in PFX");
   }
+  const certPem = forge.pki.certificateToPem(certBag[0].cert!);
 
   // Extract private key
-  const keyCmd = new Deno.Command("openssl", {
-    args: ["pkcs12", "-in", tmpPfx, "-nocerts", "-nodes", "-out", tmpKey, "-passin", `pass:${pfxPassword}`],
-  });
-  const keyResult = await keyCmd.output();
-  if (!keyResult.success) {
-    throw new Error("Failed to extract private key from PFX");
+  const keyBags = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag });
+  const keyBag = keyBags[forge.pki.oids.pkcs8ShroudedKeyBag];
+  if (!keyBag || keyBag.length === 0) {
+    throw new Error("No private key found in PFX");
   }
-
-  const certPem = await Deno.readTextFile(tmpCert);
-  const keyPem = await Deno.readTextFile(tmpKey);
-
-  // Cleanup temp files
-  await Promise.all([
-    Deno.remove(tmpPfx).catch(() => {}),
-    Deno.remove(tmpCert).catch(() => {}),
-    Deno.remove(tmpKey).catch(() => {}),
-  ]);
+  const keyPem = forge.pki.privateKeyToPem(keyBag[0].key!);
 
   return Deno.createHttpClient({
     certChain: certPem,
@@ -305,7 +291,6 @@ async function syncDesempenho(
   if (codigosSessao.length === 0) return result;
 
   try {
-    // API allows max 30 session codes per request
     const chunks: string[][] = [];
     for (let i = 0; i < codigosSessao.length; i += 30) {
       chunks.push(codigosSessao.slice(i, i + 30));
@@ -395,7 +380,6 @@ async function calculateNeuroScores(supabase: any): Promise<void> {
       avgIndependencia * 0.4 + (100 - avgErro) * 0.3 + taxaPresenca * 0.3
     );
 
-    // Detect alerts
     let alertType: string | null = null;
     let alertMessage: string | null = null;
 
@@ -446,7 +430,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Authenticate user
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -459,7 +442,6 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Verify user with getUser (correct supabase-js v2 method)
     const anonClient = createClient(
       supabaseUrl,
       Deno.env.get("SUPABASE_ANON_KEY")!,
@@ -476,7 +458,6 @@ Deno.serve(async (req) => {
 
     const userId = userData.user.id;
 
-    // Check admin/therapist role
     const { data: roleData } = await supabase
       .from("user_roles")
       .select("role")
@@ -491,10 +472,10 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Create mTLS client
+    // Create mTLS client using pure JS PFX parsing
     let httpClient: Deno.HttpClient;
     try {
-      httpClient = await createMtlsClient();
+      httpClient = createMtlsClient();
     } catch (certError) {
       return new Response(
         JSON.stringify({ error: "Certificate error", message: (certError as Error).message }),
@@ -505,7 +486,6 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const action = body.action || "full_sync";
 
-    // Log sync start
     const { data: syncLog } = await supabase
       .from("aba_sync_logs")
       .insert({ sync_type: action, status: "started", metadata: { triggered_by: userId } })
@@ -533,7 +513,6 @@ Deno.serve(async (req) => {
       results.push({ type: "neuro_scores", records: 0, errors: [] });
     }
 
-    // Close mTLS client
     httpClient.close();
 
     const totalRecords = results.reduce((s, r) => s + r.records, 0);
