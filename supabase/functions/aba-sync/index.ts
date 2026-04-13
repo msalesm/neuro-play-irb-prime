@@ -71,8 +71,12 @@ function createMtlsClient(): Deno.HttpClient {
   }
 
   try {
+    console.log(`PFX secret length: ${pfxBase64.length}, first 20 chars: ${pfxBase64.substring(0, 20)}, last 10 chars: ${pfxBase64.substring(pfxBase64.length - 10)}`);
+    console.log(`PFX password length: ${pfxPassword.length}`);
     const normalizedPfx = normalizePfxBase64(pfxBase64);
+    console.log(`Normalized PFX length: ${normalizedPfx.length}`);
     const pfxDer = forge.util.decode64(normalizedPfx);
+    console.log(`Decoded PFX DER bytes: ${pfxDer.length}`);
     const pfxAsn1 = forge.asn1.fromDer(pfxDer);
     const p12 = forge.pkcs12.pkcs12FromAsn1(pfxAsn1, pfxPassword);
 
