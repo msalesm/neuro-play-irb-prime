@@ -531,15 +531,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Create mTLS client using pure JS PFX parsing
-    let httpClient: Deno.HttpClient;
+    // Create mTLS client if certificate is available; otherwise proceed without it
+    let httpClient: Deno.HttpClient | undefined;
     try {
       httpClient = createMtlsClient();
     } catch (certError) {
-      return new Response(
-        JSON.stringify({ error: "Certificate error", message: (certError as Error).message }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      console.warn("mTLS não disponível, usando apenas API key + token:", (certError as Error).message);
+      // Continue without mTLS — API key + Bearer token may still work
     }
 
     const body = await req.json().catch(() => ({}));
