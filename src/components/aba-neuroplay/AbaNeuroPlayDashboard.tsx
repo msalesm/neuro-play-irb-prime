@@ -20,6 +20,7 @@ import { AbaReportsPanel } from './AbaReportsPanel';
 export function AbaNeuroPlayDashboard() {
   const { isTherapist, isAdmin } = useUserRole();
   const { aprendizes, profissionais, atendimentos, desempenho, loading, kpis } = useAbaNativeData();
+  const { triggerSync, syncing, syncLogs } = useAbaIntegration();
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
 
