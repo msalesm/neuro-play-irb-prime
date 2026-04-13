@@ -5,10 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useAbaNativeData } from '@/hooks/useAbaNativeData';
+import { useAbaIntegration } from '@/hooks/useAbaIntegration';
 import { 
   Brain, BookOpen, Users, BarChart3, FileText,
   Activity, AlertTriangle, TrendingUp, Clock, 
-  CheckCircle, Percent
+  CheckCircle, Percent, RefreshCw, Loader2
 } from 'lucide-react';
 import { AbaProgramsList } from './AbaProgramsList';
 import { AbaSkillsLibrary } from './AbaSkillsLibrary';
@@ -19,6 +20,7 @@ import { AbaReportsPanel } from './AbaReportsPanel';
 export function AbaNeuroPlayDashboard() {
   const { isTherapist, isAdmin } = useUserRole();
   const { aprendizes, profissionais, atendimentos, desempenho, loading, kpis } = useAbaNativeData();
+  const { triggerSync, syncing, syncLogs } = useAbaIntegration();
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
   const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
 
@@ -38,14 +40,31 @@ export function AbaNeuroPlayDashboard() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <Brain className="h-6 w-6 text-primary" />
-          ABA NeuroPlay
-        </h2>
-        <p className="text-muted-foreground">
-          Dados clínicos nativos da plataforma com modelo compatível ABA+
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <Brain className="h-6 w-6 text-primary" />
+            ABA NeuroPlay
+          </h2>
+          <p className="text-muted-foreground">
+            Dados clínicos nativos da plataforma com modelo compatível ABA+
+          </p>
+        </div>
+        {isTherapistOrAdmin && (
+          <Button 
+            onClick={() => triggerSync()} 
+            disabled={syncing}
+            size="sm"
+            className="gap-2"
+          >
+            {syncing ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <RefreshCw className="h-4 w-4" />
+            )}
+            {syncing ? 'Sincronizando...' : 'Sincronizar ABA+'}
+          </Button>
+        )}
       </div>
 
       {/* KPIs */}
