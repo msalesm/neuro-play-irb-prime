@@ -120,9 +120,7 @@ async function makeAbaRequest(
   }
 
   const apiKey = Deno.env.get("ABA_PLUS_API_KEY");
-  if (!apiKey) {
-    throw new Error("ABA+ API key não configurada");
-  }
+  const apiToken = Deno.env.get("ABA_PLUS_API_TOKEN");
 
   let lastError: Error | null = null;
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -134,8 +132,12 @@ async function makeAbaRequest(
         Accept: "application/json",
         "Content-Type": "application/json",
       };
+      // GET requests use mTLS + optional token; POST/PUT use Abm-Api-Key
       if (apiKey) {
         headers["Abm-Api-Key"] = apiKey;
+      }
+      if (apiToken) {
+        headers["Authorization"] = `Bearer ${apiToken}`;
       }
 
       const fetchOptions: RequestInit & { client?: Deno.HttpClient } = {
