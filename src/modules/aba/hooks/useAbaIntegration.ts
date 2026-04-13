@@ -1,7 +1,32 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { FunctionsHttpError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+
+async function getInvokeErrorMessage(error: unknown): Promise<string> {
+  if (error instanceof FunctionsHttpError) {
+    try {
+      const bodyText = await error.context.text();
+      if (!bodyText) return error.message;
+
+      try {
+        const parsed = JSON.parse(bodyText);
+        return parsed?.message || parsed?.error || bodyText;
+      } catch {
+        return bodyText;
+      }
+    } catch {
+      return error.message;
+    }
+  }
+
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return 'Erro inesperado na sincronização';
+}
 
 export function useAbaIntegration() {
   const queryClient = useQueryClient();
@@ -73,7 +98,9 @@ export function useAbaIntegration() {
       const { data, error } = await supabase.functions.invoke('aba-sync', {
         body: { action },
       });
-      if (error) throw error;
+      if (error) {
+        throw new Error(await getInvokeErrorMessage(error));
+      }
       return data;
     },
     onSuccess: (data) => {
