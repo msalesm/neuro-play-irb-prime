@@ -16,6 +16,48 @@ interface SyncResult {
   errors: string[];
 }
 
+function normalizePfxBase64(secret: string): string {
+  let normalized = secret.trim();
+
+  if (normalized.startsWith("data:")) {
+    const commaIndex = normalized.indexOf(",");
+    if (commaIndex >= 0) {
+      normalized = normalized.slice(commaIndex + 1);
+    }
+  }
+
+  if (
+    (normalized.startsWith('"') && normalized.endsWith('"')) ||
+    (normalized.startsWith("'") && normalized.endsWith("'"))
+  ) {
+    try {
+      normalized = JSON.parse(normalized);
+    } catch {
+      normalized = normalized.slice(1, -1);
+    }
+  }
+
+  normalized = normalized
+    .replace(/\\r/g, "")
+    .replace(/\\n/g, "")
+    .replace(/\s+/g, "")
+    .replace(/-/g, "+")
+    .replace(/_/g, "/");
+
+  if (normalized.startsWith("-----BEGIN")) {
+    throw new Error(
+      "ABA_PLUS_CERTIFICATE_PFX deve conter o base64 bruto do arquivo .pfx, não um PEM"
+    );
+  }
+
+  const remainder = normalized.length % 4;
+  if (remainder > 0) {
+    normalized = normalized.padEnd(normalized.length + (4 - remainder), "=");
+  }
+
+  return normalized;
+}
+
 /**
  * Creates a Deno HTTP client configured with mTLS.
  * Uses node-forge to parse PFX in pure JS (no subprocess needed).
@@ -28,31 +70,43 @@ function createMtlsClient(): Deno.HttpClient {
     throw new Error("ABA+ certificate not configured (PFX or password missing)");
   }
 
-  // Decode PFX from base64
-  const pfxDer = forge.util.decode64(pfxBase64);
-  const pfxAsn1 = forge.asn1.fromDer(pfxDer);
-  const p12 = forge.pkcs12.pkcs12FromAsn1(pfxAsn1, pfxPassword);
+  try {
+    const normalizedPfx = normalizePfxBase64(pfxBase64);
+    const pfxDer = forge.util.decode64(normalizedPfx);
+    const pfxAsn1 = forge.asn1.fromDer(pfxDer);
+    const p12 = forge.pkcs12.pkcs12FromAsn1(pfxAsn1, pfxPassword);
 
-  // Extract certificate
-  const certBags = p12.getBags({ bagType: forge.pki.oids.certBag });
-  const certBag = certBags[forge.pki.oids.certBag];
-  if (!certBag || certBag.length === 0) {
-    throw new Error("No certificate found in PFX");
+    const certBags = p12.getBags({ bagType: forge.pki.oids.certBag });
+    const certBag = certBags[forge.pki.oids.certBag];
+    if (!certBag || certBag.length === 0 || !certBag[0].cert) {
+      throw new Error("Nenhum certificado encontrado no PFX");
+    }
+
+    const shroudedKeyBags = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag });
+    const plainKeyBags = p12.getBags({ bagType: forge.pki.oids.keyBag });
+    const keyBag = [
+      ...(shroudedKeyBags[forge.pki.oids.pkcs8ShroudedKeyBag] || []),
+      ...(plainKeyBags[forge.pki.oids.keyBag] || []),
+    ][0];
+
+    if (!keyBag?.key) {
+      throw new Error("Nenhuma chave privada encontrada no PFX");
+    }
+
+    const certPem = forge.pki.certificateToPem(certBag[0].cert);
+    const keyPem = forge.pki.privateKeyToPem(keyBag.key);
+
+    return Deno.createHttpClient({
+      certChain: certPem,
+      privateKey: keyPem,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("ABA+ certificate parse failed:", message);
+    throw new Error(
+      `Certificado ABA+ inválido. Salve ABA_PLUS_CERTIFICATE_PFX como o base64 bruto do arquivo .pfx em uma única linha. Detalhe: ${message}`
+    );
   }
-  const certPem = forge.pki.certificateToPem(certBag[0].cert!);
-
-  // Extract private key
-  const keyBags = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag });
-  const keyBag = keyBags[forge.pki.oids.pkcs8ShroudedKeyBag];
-  if (!keyBag || keyBag.length === 0) {
-    throw new Error("No private key found in PFX");
-  }
-  const keyPem = forge.pki.privateKeyToPem(keyBag[0].key!);
-
-  return Deno.createHttpClient({
-    certChain: certPem,
-    privateKey: keyPem,
-  });
 }
 
 async function makeAbaRequest(
@@ -66,6 +120,9 @@ async function makeAbaRequest(
   }
 
   const apiKey = Deno.env.get("ABA_PLUS_API_KEY");
+  if (!apiKey) {
+    throw new Error("ABA+ API key não configurada");
+  }
 
   let lastError: Error | null = null;
   for (let attempt = 0; attempt < 3; attempt++) {
