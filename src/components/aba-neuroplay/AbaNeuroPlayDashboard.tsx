@@ -5,10 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useAbaNativeData } from '@/hooks/useAbaNativeData';
+import { useAbaIntegration } from '@/hooks/useAbaIntegration';
 import { 
   Brain, BookOpen, Users, BarChart3, FileText,
   Activity, AlertTriangle, TrendingUp, Clock, 
-  CheckCircle, Percent
+  CheckCircle, Percent, RefreshCw, Loader2
 } from 'lucide-react';
 import { AbaProgramsList } from './AbaProgramsList';
 import { AbaSkillsLibrary } from './AbaSkillsLibrary';
