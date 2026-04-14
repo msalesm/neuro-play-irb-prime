@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { ModernPageLayout } from '@/components/ModernPageLayout';
+import { useAuth } from '@/hooks/useAuth';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { AvatarSelectionModal, BadgeUnlockModal } from '@/components/gamification';
 import { PlatformOnboarding } from '@/components/PlatformOnboarding';
 import { PreventiveAlertModal } from '@/components/clinical/PreventiveAlertModal';
@@ -10,9 +9,12 @@ import { AddChildModal } from '@/components/dashboard/AddChildModal';
 import { ParentEmptyState } from '@/components/dashboard/ParentEmptyState';
 import { ParentDashboardContent } from '@/components/dashboard/ParentDashboardContent';
 import { useParentDashboard } from '@/hooks/useParentDashboard';
+import { HeroBanner } from '@/components/mobile';
+import { Heart, TrendingUp } from 'lucide-react';
 
 export default function DashboardPais() {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const dashboard = useParentDashboard();
 
   const [showAvatarModal, setShowAvatarModal] = useState(false);
@@ -22,15 +24,14 @@ export default function DashboardPais() {
   const [preventiveAlert, setPreventiveAlert] = useState<any>(null);
   const [showAddChildModal, setShowAddChildModal] = useState(false);
 
-  // Check for high-risk alerts
   useEffect(() => {
     if (dashboard.riskIndicator && (dashboard.riskIndicator.level === 'high' || dashboard.riskIndicator.level === 'critical')) {
       setPreventiveAlert({
         level: dashboard.riskIndicator.level,
-        title: dashboard.riskIndicator.level === 'critical' ? 'Alerta de Risco Crítico Detectado' : 'Alerta de Risco Alto Detectado',
+        title: dashboard.riskIndicator.level === 'critical' ? 'Alerta de Risco Crítico' : 'Alerta de Risco Alto',
         message: dashboard.riskIndicator.level === 'critical'
-          ? 'Nossa análise preditiva identificou sinais preocupantes que requerem atenção imediata.'
-          : 'Nossa análise detectou padrões comportamentais que merecem sua atenção.',
+          ? 'Sinais preocupantes que requerem atenção imediata.'
+          : 'Padrões comportamentais que merecem sua atenção.',
         indicators: dashboard.riskIndicator.indicators,
         urgentActions: dashboard.riskIndicator.recommendations,
         timeline: dashboard.riskIndicator.timeline,
@@ -40,7 +41,7 @@ export default function DashboardPais() {
   }, [dashboard.riskIndicator]);
 
   return (
-    <ModernPageLayout>
+    <div className="space-y-4">
       <PlatformOnboarding pageName="dashboard-pais" />
 
       {dashboard.selectedChild && (
@@ -50,61 +51,65 @@ export default function DashboardPais() {
           childId={dashboard.selectedChild}
         />
       )}
-
       <BadgeUnlockModal
         badgeKey={showBadgeModal ? (unlockedBadge as any)?.key || 'first_game' : undefined}
         onClose={() => setShowBadgeModal(false)}
       />
-
       {preventiveAlert && (
         <PreventiveAlertModal open={showAlertModal} onClose={() => setShowAlertModal(false)} alert={preventiveAlert} />
       )}
-
       <AddChildModal open={showAddChildModal} onClose={() => setShowAddChildModal(false)} onSuccess={() => dashboard.loadChildren()} />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <Button variant="ghost" onClick={() => navigate('/')} className="mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar
-          </Button>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Dashboard da Família</h1>
-          <p className="text-xl text-muted-foreground">Acompanhe o desenvolvimento e progresso do seu filho</p>
-        </div>
-
-        {dashboard.loading ? (
-          <div className="flex items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
-          </div>
-        ) : dashboard.children.length === 0 ? (
-          <ParentEmptyState sessions={dashboard.sessions} onAddChild={() => setShowAddChildModal(true)} />
-        ) : (
-          <ParentDashboardContent
-            children={dashboard.children}
-            selectedChild={dashboard.selectedChild}
-            setSelectedChild={dashboard.setSelectedChild}
-            selectedChildData={dashboard.selectedChildData}
-            sessions={dashboard.sessions}
-            cognitiveScores={dashboard.cognitiveScores}
-            totalSessions={dashboard.totalSessions}
-            avgScore={dashboard.avgScore}
-            missions={dashboard.missions}
-            missionsLoading={dashboard.missionsLoading}
-            badgeProgress={dashboard.badgeProgress}
-            avatarEvolution={dashboard.avatarEvolution}
-            getBadgeIcon={dashboard.getBadgeIcon}
-            getBadgeColor={dashboard.getBadgeColor}
-            riskIndicator={dashboard.riskIndicator}
-            analyzing={dashboard.analyzing}
-            detectCrisisRisk={dashboard.detectCrisisRisk}
-            reloadPredictiveAnalysis={dashboard.reloadPredictiveAnalysis}
-            generateReport={dashboard.generateReport}
-            onShowAvatarModal={() => setShowAvatarModal(true)}
-            onShowAlertModal={() => setShowAlertModal(true)}
-            onShowAddChild={() => setShowAddChildModal(true)}
-          />
-        )}
+      {/* Page title */}
+      <div>
+        <h1 className="text-2xl-mobile font-bold text-foreground">Dashboard da Família</h1>
+        <p className="text-sm-mobile text-muted-foreground">Acompanhe o progresso do seu filho</p>
       </div>
-    </ModernPageLayout>
+
+      {/* Hero banner on mobile */}
+      {isMobile && dashboard.children.length > 0 && (
+        <HeroBanner
+          title="Progresso da Semana"
+          subtitle={`${dashboard.totalSessions} sessões • Média ${dashboard.avgScore}%`}
+          ctaLabel="Ver detalhes"
+          ctaRoute="/learning-dashboard"
+          icon={TrendingUp}
+          gradient="primary"
+        />
+      )}
+
+      {dashboard.loading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" />
+        </div>
+      ) : dashboard.children.length === 0 ? (
+        <ParentEmptyState sessions={dashboard.sessions} onAddChild={() => setShowAddChildModal(true)} />
+      ) : (
+        <ParentDashboardContent
+          children={dashboard.children}
+          selectedChild={dashboard.selectedChild}
+          setSelectedChild={dashboard.setSelectedChild}
+          selectedChildData={dashboard.selectedChildData}
+          sessions={dashboard.sessions}
+          cognitiveScores={dashboard.cognitiveScores}
+          totalSessions={dashboard.totalSessions}
+          avgScore={dashboard.avgScore}
+          missions={dashboard.missions}
+          missionsLoading={dashboard.missionsLoading}
+          badgeProgress={dashboard.badgeProgress}
+          avatarEvolution={dashboard.avatarEvolution}
+          getBadgeIcon={dashboard.getBadgeIcon}
+          getBadgeColor={dashboard.getBadgeColor}
+          riskIndicator={dashboard.riskIndicator}
+          analyzing={dashboard.analyzing}
+          detectCrisisRisk={dashboard.detectCrisisRisk}
+          reloadPredictiveAnalysis={dashboard.reloadPredictiveAnalysis}
+          generateReport={dashboard.generateReport}
+          onShowAvatarModal={() => setShowAvatarModal(true)}
+          onShowAlertModal={() => setShowAlertModal(true)}
+          onShowAddChild={() => setShowAddChildModal(true)}
+        />
+      )}
+    </div>
   );
 }
