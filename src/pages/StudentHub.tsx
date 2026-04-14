@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
-import { StudentHubHeader } from '@/components/student-hub/StudentHubHeader';
 import { StudentHubGreeting } from '@/components/student-hub/StudentHubGreeting';
 import { StudentHubCTA } from '@/components/student-hub/StudentHubCTA';
 import { StudentHubProgress } from '@/components/student-hub/StudentHubProgress';
@@ -78,7 +77,7 @@ export default function StudentHub() {
           name: user?.user_metadata?.name || user?.email?.split('@')[0] || 'Explorador',
           level: gamification.level || 1,
           xp: gamification.experience_points || 0,
-          xpToNextLevel: (gamification.level || 1) * 100,
+          xpToNextLevel: ((gamification.level || 1) + 1) * 100,
           streak: gamification.current_streak || 0,
           totalStars: gamification.total_stars || 0,
         });
@@ -90,43 +89,37 @@ export default function StudentHub() {
       }
     } catch (error) {
       console.error('Error loading child data:', error);
-      setChildData(prev => ({
-        ...prev,
-        name: user?.user_metadata?.name || user?.email?.split('@')[0] || 'Explorador',
-      }));
     }
   };
 
   const loadDailyMissions = async () => {
     try {
-      setLoading(true);
-
       const dailyMissions: DailyMission[] = [
         {
-          id: 'game-daily',
+          id: '1',
           type: 'game',
-          title: 'Jogo Cognitivo',
+          title: 'Jogar Memória Colorida',
           iconName: 'Gamepad2',
           completed: false,
-          points: 40,
-          route: '/sistema-planeta-azul',
+          points: 20,
+          route: '/games/memoria-colorida',
         },
         {
-          id: 'story-daily',
+          id: '2',
           type: 'story',
-          title: 'História do Dia',
+          title: 'Ler uma História Social',
           iconName: 'BookOpen',
           completed: false,
-          points: 30,
+          points: 15,
           route: '/stories',
         },
         {
-          id: 'routine-daily',
+          id: '3',
           type: 'routine',
-          title: timeOfDay === 'morning' ? 'Rotina da Manhã' : timeOfDay === 'afternoon' ? 'Rotina da Tarde' : 'Rotina da Noite',
-          iconName: timeOfDay === 'morning' ? 'Sun' : timeOfDay === 'night' ? 'Moon' : 'Backpack',
+          title: 'Completar Rotina do Dia',
+          iconName: 'CheckCircle',
           completed: false,
-          points: 50,
+          points: 25,
           route: '/rotinas',
         },
       ];
@@ -169,53 +162,31 @@ export default function StudentHub() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
         >
-          <Sparkles className="h-12 w-12 text-primary" />
+          <Sparkles className="h-10 w-10 text-primary" />
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background pb-28">
-      <StudentHubHeader childData={childData} />
-      
-      <div className="max-w-lg mx-auto px-4 space-y-6">
-        <StudentHubGreeting 
-          childData={childData} 
-          timeOfDay={timeOfDay} 
-        />
-
-        <LevelProgressBar childData={childData} />
-        
-        <StudentHubCTA 
-          nextActivity={nextActivity} 
-          allCompleted={completedCount === missions.length && missions.length > 0}
-        />
-        
-        <StudentHubProgress 
-          missions={missions} 
-          completedCount={completedCount} 
-        />
-        
-        <StudentHubRecommended />
-
-        <StudentHubWorlds currentLevel={childData.level} />
-        
-        <StudentHubRoutine 
-          missions={missions} 
-        />
-
-        <WeeklyMissionsCard />
-        
-        <StudentHubAchievements 
-          childData={childData} 
-        />
-      </div>
+    <div className="space-y-5">
+      <StudentHubGreeting childData={childData} timeOfDay={timeOfDay} />
+      <LevelProgressBar childData={childData} />
+      <StudentHubCTA
+        nextActivity={nextActivity}
+        allCompleted={completedCount === missions.length && missions.length > 0}
+      />
+      <StudentHubProgress missions={missions} completedCount={completedCount} />
+      <StudentHubRecommended />
+      <StudentHubWorlds currentLevel={childData.level} />
+      <StudentHubRoutine missions={missions} />
+      <WeeklyMissionsCard />
+      <StudentHubAchievements childData={childData} />
     </div>
   );
 }

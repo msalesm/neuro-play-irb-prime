@@ -165,14 +165,14 @@ export default function AdminUserManagement() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <Shield className="h-8 w-8 text-secondary" />
-          <h1 className="text-3xl font-bold text-primary">Gerenciamento de Usuários</h1>
+    <div className="space-y-4">
+      <div>
+        <div className="flex items-center gap-2 mb-1">
+          <Shield className="h-6 w-6 text-primary" />
+          <h1 className="text-2xl-mobile font-bold text-foreground">Gerenciamento de Usuários</h1>
         </div>
-        <p className="text-muted-foreground">
-          Administre roles e permissões de todos os usuários da plataforma
+        <p className="text-sm-mobile text-muted-foreground">
+          Administre roles e permissões
         </p>
       </div>
 
