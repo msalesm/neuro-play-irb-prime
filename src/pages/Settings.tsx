@@ -11,7 +11,7 @@ import {
   Palette, Volume2, Eye, Brain, Monitor,
   Smartphone, Sun, Moon, Contrast, HelpCircle, Play, Sliders
 } from 'lucide-react';
-import { ModernPageLayout } from '@/components/ModernPageLayout';
+
 import { useLanguage } from '@/contexts/LanguageContext';
 import { HapticProvider } from '@/contexts/HapticContext';
 import { HapticSettings } from '@/components/accessibility/HapticSettings';
@@ -134,15 +134,14 @@ export default function Settings() {
 
   return (
     <HapticProvider childProfileId={childProfileId}>
-      <ModernPageLayout background="minimal">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-            <SettingsIcon className="w-6 h-6 text-primary" />
+      <div className="space-y-5">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-primary/10">
+            <SettingsIcon className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Configurações</h1>
-            <p className="text-muted-foreground">Personalize sua experiência na plataforma</p>
+            <h1 className="text-xl font-bold text-foreground">Configurações</h1>
+            <p className="text-xs text-muted-foreground">Personalize sua experiência</p>
           </div>
         </div>
 
@@ -465,8 +464,7 @@ export default function Settings() {
             </Button>
           </div>
         </div>
-        </div>
-      </ModernPageLayout>
+      </div>
     </HapticProvider>
   );
 }

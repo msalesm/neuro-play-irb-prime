@@ -271,27 +271,19 @@ export default function TeacherDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-primary/10">
-            <GraduationCap className="h-6 w-6 text-primary" />
+          <div className="p-2 rounded-xl bg-primary/10">
+            <GraduationCap className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Painel do Professor</h1>
-            <p className="text-sm text-muted-foreground">
-              Acompanhamento do desenvolvimento dos alunos
-            </p>
+            <h1 className="text-xl font-bold text-foreground">Painel do Professor</h1>
+            <p className="text-xs text-muted-foreground">Desenvolvimento dos alunos</p>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm">
+        <div className="flex gap-1.5">
+          <Button asChild variant="outline" size="sm" className="h-8 px-2.5 text-xs">
             <Link to="/teacher/classes">
-              <Users className="h-4 w-4 mr-2" />
+              <Users className="h-3.5 w-3.5 mr-1" />
               Turmas
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="sm">
-            <Link to="/training">
-              <BookOpen className="h-4 w-4 mr-2" />
-              Capacitação
             </Link>
           </Button>
         </div>
