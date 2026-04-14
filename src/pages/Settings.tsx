@@ -11,7 +11,7 @@ import {
   Palette, Volume2, Eye, Brain, Monitor,
   Smartphone, Sun, Moon, Contrast, HelpCircle, Play, Sliders
 } from 'lucide-react';
-import { ModernPageLayout } from '@/components/ModernPageLayout';
+
 import { useLanguage } from '@/contexts/LanguageContext';
 import { HapticProvider } from '@/contexts/HapticContext';
 import { HapticSettings } from '@/components/accessibility/HapticSettings';
