@@ -1,15 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import { Play, RotateCcw, Volume2, VolumeX, Trophy, Info } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, RotateCcw, Volume2, VolumeX, Trophy, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameSession } from '@/hooks/useGameSession';
 import { useGameHistory } from '@/hooks/useGameHistory';
-import { useEnhancedFeedback } from '@/hooks/useEnhancedFeedback';
-import { GameExitButton, GameResultsDashboard, SimonButton, SimonDisplay, SimonAchievements } from '@/components/games';
-import { useEducationalSystem } from "@/hooks/useEducationalSystem";
+import { GameExitButton } from '@/components/games';
 import { simonSoundEngine, SimonColor } from "@/lib/simonSounds";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -28,200 +25,113 @@ interface GameStats {
 
 const COLORS: SimonColor[] = ['red', 'blue', 'green', 'yellow'];
 
+const COLOR_STYLES: Record<SimonColor, { bg: string; active: string; ring: string; label: string }> = {
+  red: { bg: 'bg-destructive/70', active: 'bg-destructive shadow-[0_0_30px_hsl(var(--destructive)/0.6)]', ring: 'ring-destructive', label: 'Vermelho' },
+  blue: { bg: 'bg-info/70', active: 'bg-info shadow-[0_0_30px_hsl(var(--info)/0.6)]', ring: 'ring-info', label: 'Azul' },
+  green: { bg: 'bg-success/70', active: 'bg-success shadow-[0_0_30px_hsl(var(--success)/0.6)]', ring: 'ring-success', label: 'Verde' },
+  yellow: { bg: 'bg-warning/70', active: 'bg-warning shadow-[0_0_30px_hsl(var(--warning)/0.6)]', ring: 'ring-warning', label: 'Amarelo' },
+};
+
 export default function MemoriaColorida() {
   const { user } = useAuth();
-  const { getTrailByCategory } = useEducationalSystem();
-  const [gameState, setGameState] = useState<'idle' | 'showing' | 'playing' | 'gameOver' | 'results'>('idle');
-  const [showTutorial, setShowTutorial] = useState(true);
+  const [gameState, setGameState] = useState<'idle' | 'showing' | 'playing' | 'gameOver'>('idle');
   const [childProfileId, setChildProfileId] = useState<string | null>(null);
-  
+  const reactionStartRef = useRef<number>(0);
+  const reactionTimesRef = useRef<number[]>([]);
+
   const {
-    sessionId,
-    startSession,
-    endSession,
-    updateSession,
-    isActive,
-    recordMetric,
-    recoveredSession,
-    resumeSession,
-    discardRecoveredSession
+    sessionId, startSession, endSession, updateSession, isActive,
+    recoveredSession, resumeSession, discardRecoveredSession
   } = useGameSession('memoria-colorida', childProfileId || undefined);
 
-  const { 
-    evolution, 
-    getTrend, 
-    totalSessions 
-  } = useGameHistory('memoria-colorida', childProfileId);
-
-  const {
-    isGenerating,
-    therapeuticInsights,
-    recommendations,
-    generateEnhancedFeedback
-  } = useEnhancedFeedback();
+  const { evolution, getTrend, totalSessions } = useGameHistory('memoria-colorida', childProfileId);
 
   useEffect(() => {
     const loadChildProfile = async () => {
       if (!user) return;
-      const { data: profiles } = await supabase
-        .from('child_profiles')
-        .select('id')
-        .eq('parent_user_id', user.id)
-        .limit(1)
-        .maybeSingle();
-      if (profiles) {
-        setChildProfileId(profiles.id);
-      }
+      const { data } = await supabase
+        .from('child_profiles').select('id')
+        .eq('parent_user_id', user.id).limit(1).maybeSingle();
+      if (data) setChildProfileId(data.id);
     };
     loadChildProfile();
   }, [user]);
 
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [sequence, setSequence] = useState<SimonColor[]>([]);
   const [playerSequence, setPlayerSequence] = useState<SimonColor[]>([]);
-  const [currentShowingIndex, setCurrentShowingIndex] = useState(-1);
   const [stats, setStats] = useState<GameStats>({
-    level: 1,
-    score: 0,
-    streak: 0,
-    bestStreak: 0,
-    correctAnswers: 0,
-    totalAttempts: 0,
-    perfectRounds: 0,
-    highScore: 0,
+    level: 1, score: 0, streak: 0, bestStreak: 0,
+    correctAnswers: 0, totalAttempts: 0, perfectRounds: 0, highScore: 0,
   });
   const [showingColor, setShowingColor] = useState<SimonColor | null>(null);
   const [gameSpeed, setGameSpeed] = useState(1000);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [showColorNames, setShowColorNames] = useState(false);
-  const animationRef = useRef<number | null>(null);
+  const [lastFeedback, setLastFeedback] = useState<'correct' | 'wrong' | null>(null);
+
+  useEffect(() => { simonSoundEngine.setEnabled(soundEnabled); }, [soundEnabled]);
+  useEffect(() => { return () => { simonSoundEngine.dispose(); }; }, []);
 
   useEffect(() => {
-    simonSoundEngine.setEnabled(soundEnabled);
-  }, [soundEnabled]);
-
-  useEffect(() => {
-    return () => {
-      simonSoundEngine.dispose();
-    };
+    const saved = localStorage.getItem('simon_high_score');
+    if (saved) setStats(prev => ({ ...prev, highScore: parseInt(saved) }));
   }, []);
-
-  useEffect(() => {
-    const savedHighScore = localStorage.getItem('simon_high_score');
-    if (savedHighScore) {
-      setStats(prev => ({ ...prev, highScore: parseInt(savedHighScore) }));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (recoveredSession && gameState === 'idle' && !isActive) {
-      setShowRecoveryModal(true);
-    }
-  }, [recoveredSession, gameState, isActive]);
 
   const playSequence = useCallback((seq: SimonColor[]) => {
-    console.log('🎵 Tocando sequência:', seq);
     let index = 0;
-    setCurrentShowingIndex(0);
-    
     const showNext = () => {
       if (index < seq.length) {
         setShowingColor(seq[index]);
-        setCurrentShowingIndex(index);
-        
         simonSoundEngine.playColorTone(seq[index], gameSpeed / 2000);
-        
         setTimeout(() => {
           setShowingColor(null);
           index++;
-          setCurrentShowingIndex(-1);
-          
           if (index < seq.length) {
-            setTimeout(showNext, 300);
+            setTimeout(showNext, 250);
           } else {
             setTimeout(() => {
               setGameState('playing');
-              setCurrentShowingIndex(-1);
-              toast.info("🎯 Sua vez! Repita a sequência.");
-            }, 500);
+              reactionStartRef.current = performance.now();
+              toast.info("🎯 Sua vez!");
+            }, 400);
           }
         }, gameSpeed / 2);
       }
     };
-    
     setTimeout(showNext, 500);
   }, [gameSpeed]);
 
   const startGame = useCallback(async () => {
+    reactionTimesRef.current = [];
     try {
-      console.log('🎮 Iniciando jogo...');
-      
-      const result = await startSession({
-        score: 0
-      }, stats.level);
-      
-      console.log('💾 Sessão criada:', result);
+      await startSession({ score: 0 }, stats.level);
+    } catch (e) { console.error(e); }
 
-      if (result.success) {
-        const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-        const newSequence = [firstColor];
-        setSequence(newSequence);
-        setPlayerSequence([]);
-        setCurrentShowingIndex(-1);
-        setGameState('showing');
-        setShowTutorial(false);
-        playSequence(newSequence);
-      } else {
-        console.error('❌ Falha ao criar sessão');
-        const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-        const newSequence = [firstColor];
-        setSequence(newSequence);
-        setPlayerSequence([]);
-        setCurrentShowingIndex(-1);
-        setGameState('showing');
-        setShowTutorial(false);
-        playSequence(newSequence);
-      }
-    } catch (error) {
-      console.error('❌ Erro ao iniciar jogo:', error);
-      toast.error("Erro ao iniciar. Jogando sem salvar progresso.");
-      const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-      const newSequence = [firstColor];
-      setSequence(newSequence);
-      setPlayerSequence([]);
-      setCurrentShowingIndex(-1);
-      setGameState('showing');
-      setShowTutorial(false);
-      playSequence(newSequence);
-    }
+    const firstColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+    setSequence([firstColor]);
+    setPlayerSequence([]);
+    setGameState('showing');
+    setLastFeedback(null);
+    playSequence([firstColor]);
   }, [stats.level, startSession, playSequence]);
-
-  const handleResumeSession = async (session: any) => {
-    const recoveredData = resumeSession(session);
-    
-    setStats({
-      ...stats,
-      score: recoveredData.score || 0,
-      level: session.difficulty_level || 1,
-      correctAnswers: recoveredData.correctMoves || 0,
-      totalAttempts: recoveredData.totalMoves || 0
-    });
-
-    setGameState('idle');
-    setShowRecoveryModal(false);
-  };
 
   const handleColorClick = async (color: SimonColor) => {
     if (gameState !== 'playing') return;
 
+    // Track reaction time
+    const now = performance.now();
+    const reactionTime = Math.round(now - reactionStartRef.current);
+    reactionTimesRef.current.push(reactionTime);
+    reactionStartRef.current = now;
+
     const newPlayerSequence = [...playerSequence, color];
     setPlayerSequence(newPlayerSequence);
-
     simonSoundEngine.playColorTone(color, 0.2);
 
     if (color === sequence[playerSequence.length]) {
       if (newPlayerSequence.length === sequence.length) {
-        const isPerfect = newPlayerSequence.length === sequence.length;
+        setLastFeedback('correct');
+        simonSoundEngine.playSuccessSound();
+
         const newStats = {
           ...stats,
           score: stats.score + (sequence.length * 10),
@@ -230,7 +140,7 @@ export default function MemoriaColorida() {
           correctAnswers: stats.correctAnswers + 1,
           totalAttempts: stats.totalAttempts + 1,
           level: stats.level + 1,
-          perfectRounds: isPerfect ? stats.perfectRounds + 1 : stats.perfectRounds,
+          perfectRounds: stats.perfectRounds + 1,
         };
         setStats(newStats);
 
@@ -239,52 +149,51 @@ export default function MemoriaColorida() {
           localStorage.setItem('simon_high_score', newStats.score.toString());
         }
 
+        const avgReaction = reactionTimesRef.current.length > 0
+          ? Math.round(reactionTimesRef.current.reduce((a, b) => a + b, 0) / reactionTimesRef.current.length) : 0;
+
         await updateSession({
           score: newStats.score,
           correctMoves: newStats.correctAnswers,
           totalMoves: newStats.totalAttempts,
-          reactionTimes: []
+          reactionTimes: reactionTimesRef.current,
+          avgReactionTime: avgReaction,
         });
-        
-        simonSoundEngine.playSuccessSound();
 
         if (newStats.level > 3 && newStats.level % 3 === 0) {
-          const newSpeed = Math.max(400, gameSpeed - 100);
-          setGameSpeed(newSpeed);
+          setGameSpeed(prev => Math.max(400, prev - 100));
         }
-
-        if (newStats.level % 5 === 0) {
-          simonSoundEngine.playVictoryFanfare();
-        }
+        if (newStats.level % 5 === 0) simonSoundEngine.playVictoryFanfare();
 
         setTimeout(() => {
+          setLastFeedback(null);
           const nextColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-          const nextSequence = [...sequence, nextColor];
-          setSequence(nextSequence);
+          const nextSeq = [...sequence, nextColor];
+          setSequence(nextSeq);
           setPlayerSequence([]);
-          setCurrentShowingIndex(-1);
           setGameState('showing');
-          playSequence(nextSequence);
-        }, 1500);
+          playSequence(nextSeq);
+        }, 1200);
       }
     } else {
+      setLastFeedback('wrong');
       simonSoundEngine.playErrorSound();
 
-      const finalStats = {
-        ...stats,
-        streak: 0,
-        totalAttempts: stats.totalAttempts + 1,
-      };
+      const finalStats = { ...stats, streak: 0, totalAttempts: stats.totalAttempts + 1 };
       setStats(finalStats);
-      
+
+      const avgReaction = reactionTimesRef.current.length > 0
+        ? Math.round(reactionTimesRef.current.reduce((a, b) => a + b, 0) / reactionTimesRef.current.length) : 0;
+
       await endSession({
         score: finalStats.score,
         correctMoves: finalStats.correctAnswers,
         totalMoves: finalStats.totalAttempts,
-        accuracy: (finalStats.correctAnswers / finalStats.totalAttempts) * 100,
-        timeSpent: 0
+        accuracy: finalStats.totalAttempts > 0 ? (finalStats.correctAnswers / finalStats.totalAttempts) * 100 : 0,
+        avgReactionTime: avgReaction,
+        reactionTimes: reactionTimesRef.current,
+        timeSpent: 0,
       });
-      
       setGameState('gameOver');
     }
   };
@@ -293,384 +202,252 @@ export default function MemoriaColorida() {
     setGameState('idle');
     setSequence([]);
     setPlayerSequence([]);
-    setCurrentShowingIndex(-1);
     setShowingColor(null);
+    setLastFeedback(null);
     setStats(prev => ({
-      level: 1,
-      score: 0,
-      streak: 0,
-      bestStreak: prev.bestStreak,
-      correctAnswers: 0,
-      totalAttempts: 0,
-      perfectRounds: 0,
-      highScore: prev.highScore,
+      level: 1, score: 0, streak: 0, bestStreak: prev.bestStreak,
+      correctAnswers: 0, totalAttempts: 0, perfectRounds: 0, highScore: prev.highScore,
     }));
     setGameSpeed(1000);
-    setShowTutorial(true);
+    reactionTimesRef.current = [];
   };
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-card flex items-center justify-center p-6">
-        <Card className="max-w-md">
-          <CardHeader>
-            <CardTitle className="text-center">Acesso Restrito</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground">
-              Para jogar Memória Colorida, você precisa fazer login.
-            </p>
-            <Button asChild>
-              <Link to="/auth">Fazer Login</Link>
-            </Button>
+      <div className="flex items-center justify-center min-h-[60vh] p-4">
+        <Card className="max-w-sm w-full">
+          <CardContent className="p-6 text-center space-y-3">
+            <p className="text-muted-foreground">Faça login para jogar.</p>
+            <Button asChild><a href="/auth">Login</a></Button>
           </CardContent>
         </Card>
       </div>
     );
   }
 
-  const accuracy = stats.totalAttempts > 0 
-    ? Math.round((stats.correctAnswers / stats.totalAttempts) * 100) 
-    : 0;
+  const accuracy = stats.totalAttempts > 0 ? Math.round((stats.correctAnswers / stats.totalAttempts) * 100) : 0;
+  const avgReaction = reactionTimesRef.current.length > 0
+    ? Math.round(reactionTimesRef.current.reduce((a, b) => a + b, 0) / reactionTimesRef.current.length) : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-muted/30 to-background py-8">
-      <div className="container mx-auto px-4 max-w-6xl">
-        {recoveredSession && (
-          <Card className="bg-warning/10 border-warning/30 mb-8">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+    <div className="max-w-lg mx-auto space-y-4">
+      {/* Compact Header */}
+      <div className="flex items-center justify-between">
+        <GameExitButton
+          variant="quit"
+          onExit={async () => { if (isActive) await endSession({ quitReason: 'user_quit' }); }}
+          showProgress={gameState === 'playing'}
+          currentProgress={playerSequence.length}
+          totalProgress={sequence.length}
+        />
+        <h1 className="text-lg font-bold">🎨 Simon Says</h1>
+        <Button variant="ghost" size="icon" onClick={() => setSoundEnabled(!soundEnabled)}>
+          {soundEnabled ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+        </Button>
+      </div>
+
+      {/* Stats Strip */}
+      <div className="grid grid-cols-4 gap-2">
+        {[
+          { label: 'Nível', value: stats.level, color: 'text-info' },
+          { label: 'Pontos', value: stats.score, color: 'text-success' },
+          { label: 'Série', value: stats.streak, color: 'text-warning' },
+          { label: 'Precisão', value: `${accuracy}%`, color: 'text-primary' },
+        ].map(s => (
+          <div key={s.label} className="text-center bg-card rounded-xl p-2 border border-border">
+            <div className={cn("text-lg font-bold", s.color)}>{s.value}</div>
+            <div className="text-[10px] text-muted-foreground">{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Clinical Metric: Reaction Time */}
+      {gameState !== 'idle' && avgReaction > 0 && (
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <Sparkles className="h-3 w-3" />
+          <span>Tempo médio de reação: <strong className="text-foreground">{avgReaction}ms</strong></span>
+        </div>
+      )}
+
+      {/* Game Area */}
+      <Card className="border-0 shadow-lg overflow-hidden">
+        <CardContent className="p-0">
+          <AnimatePresence mode="wait">
+            {gameState === 'idle' && (
+              <motion.div
+                key="idle"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="p-6 text-center space-y-5"
+              >
+                <div className="text-5xl">🧠</div>
                 <div>
-                  <p className="text-warning font-medium">Sessão anterior encontrada</p>
-                  <p className="text-warning/70 text-sm">Score: {recoveredSession.score}</p>
+                  <h2 className="text-xl font-bold mb-1">Memória Colorida</h2>
+                  <p className="text-sm text-muted-foreground">Observe e repita a sequência de cores</p>
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleResumeSession(recoveredSession)}
-                    className="bg-warning/20 border-warning/50"
-                  >
-                    Retomar
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={discardRecoveredSession}
-                    className="bg-muted/50 border-border"
-                  >
-                    Descartar
-                  </Button>
+
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  {[
+                    { icon: '👀', text: 'Observe a sequência' },
+                    { icon: '🎯', text: 'Repita na ordem' },
+                    { icon: '⚡', text: 'Cada nível, +1 cor' },
+                    { icon: '🏆', text: 'Bata seu recorde!' },
+                  ].map(tip => (
+                    <div key={tip.text} className="flex items-center gap-2 p-2.5 bg-muted/50 rounded-lg">
+                      <span className="text-lg">{tip.icon}</span>
+                      <span className="text-muted-foreground text-xs">{tip.text}</span>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex gap-2 items-center">
-            <GameExitButton
-              variant="quit"
-              onExit={async () => {
-                if (isActive) {
-                  await endSession({
-                    quitReason: 'user_quit'
-                  });
-                }
-              }}
-              showProgress={gameState === 'playing'}
-              currentProgress={playerSequence.length}
-              totalProgress={sequence.length}
-            />
-          </div>
-          
-          <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl font-bold font-heading text-foreground drop-shadow-lg">
-              🎨 Simon Says
-            </h1>
-            <p className="text-muted-foreground text-sm">Jogo de Memória Profissional</p>
-          </div>
 
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowColorNames(!showColorNames)}
-              className="gap-2 bg-card border-border text-muted-foreground"
-            >
-              <Info className="w-4 h-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setSoundEnabled(!soundEnabled);
-              }}
-              className="gap-2 bg-card border-border text-muted-foreground"
-            >
-              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </Button>
-          </div>
-        </div>
-
-        {/* Stats Panel */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-card/50 border-border">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-info">{stats.level}</div>
-              <div className="text-sm text-muted-foreground">Nível</div>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-card/50 border-border">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-success">{stats.score}</div>
-              <div className="text-sm text-muted-foreground">Pontos</div>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-card/50 border-border">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-warning">{stats.bestStreak}</div>
-              <div className="text-sm text-muted-foreground">Melhor Sequência</div>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-card/50 border-border">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-primary">{accuracy}%</div>
-              <div className="text-sm text-muted-foreground">Precisão</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Game Console */}
-        <Card className="mb-8 bg-gradient-to-br from-card to-muted/50 border-border">
-          <CardContent className="p-8 sm:p-12">
-            {gameState === 'idle' && showTutorial && (
-              <div className="text-center space-y-6 max-w-2xl mx-auto">
-                <div className="space-y-4">
-                  <h2 className="text-2xl font-bold text-foreground">Como Jogar Simon Says</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
-                    <div className="bg-muted/50 p-4 rounded-lg border border-border">
-                      <div className="flex items-start gap-3">
-                        <span className="text-2xl">👀</span>
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-1">Observe</h3>
-                          <p className="text-sm text-muted-foreground">Assista a sequência de cores que acendem</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bg-muted/50 p-4 rounded-lg border border-border">
-                      <div className="flex items-start gap-3">
-                        <span className="text-2xl">🎯</span>
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-1">Repita</h3>
-                          <p className="text-sm text-muted-foreground">Clique nas cores na mesma ordem</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bg-muted/50 p-4 rounded-lg border border-border">
-                      <div className="flex items-start gap-3">
-                        <span className="text-2xl">⚡</span>
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-1">Evolua</h3>
-                          <p className="text-sm text-muted-foreground">A cada nível, uma cor nova é adicionada</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bg-muted/50 p-4 rounded-lg border border-border">
-                      <div className="flex items-start gap-3">
-                        <span className="text-2xl">🏆</span>
-                        <div>
-                          <h3 className="font-semibold text-foreground mb-1">Vença</h3>
-                          <p className="text-sm text-muted-foreground">Desbloqueie conquistas e bata recordes!</p>
-                        </div>
-                      </div>
-                    </div>
+                {stats.highScore > 0 && (
+                  <div className="text-sm text-muted-foreground">
+                    🏅 Recorde: <strong className="text-warning">{stats.highScore}</strong>
                   </div>
-                </div>
-                
-                <Button 
-                  onClick={() => {
-                    simonSoundEngine.setEnabled(true);
-                    startGame();
-                  }} 
-                  size="lg" 
-                  className="gap-2 bg-gradient-primary hover:opacity-90 text-primary-foreground shadow-lg"
-                >
-                  <Play className="w-5 h-5" />
-                  Começar Jogo
+                )}
+
+                <Button onClick={() => { simonSoundEngine.setEnabled(true); startGame(); }}
+                  size="lg" className="w-full h-14 text-lg font-bold rounded-2xl gap-2">
+                  <Play className="h-5 w-5 fill-current" />
+                  Começar
                 </Button>
-              </div>
+              </motion.div>
             )}
 
-            {(gameState === 'showing' || gameState === 'playing' || (gameState === 'idle' && !showTutorial)) && (
-              <div className="flex flex-col items-center justify-center py-8 space-y-6">
-                {/* Simon Console - Classic Circular Layout */}
-                <div className="relative">
-                  {/* The 4-button grid */}
-                  <div className={cn(
-                    "grid grid-cols-2 gap-3 p-6 rounded-full",
-                    "bg-background shadow-2xl border-8 border-border",
-                    "w-[320px] h-[320px] sm:w-[400px] sm:h-[400px]"
-                  )}>
-                    <div className="w-full h-full">
-                      <SimonButton
-                        color="red"
-                        isActive={showingColor === 'red'}
-                        isDisabled={gameState !== 'playing'}
-                        position="top-left"
-                        onClick={() => handleColorClick('red')}
-                        showName={showColorNames}
-                      />
-                    </div>
-                    <div className="w-full h-full">
-                      <SimonButton
-                        color="blue"
-                        isActive={showingColor === 'blue'}
-                        isDisabled={gameState !== 'playing'}
-                        position="top-right"
-                        onClick={() => handleColorClick('blue')}
-                        showName={showColorNames}
-                      />
-                    </div>
-                    <div className="w-full h-full">
-                      <SimonButton
-                        color="green"
-                        isActive={showingColor === 'green'}
-                        isDisabled={gameState !== 'playing'}
-                        position="bottom-left"
-                        onClick={() => handleColorClick('green')}
-                        showName={showColorNames}
-                      />
-                    </div>
-                    <div className="w-full h-full">
-                      <SimonButton
-                        color="yellow"
-                        isActive={showingColor === 'yellow'}
-                        isDisabled={gameState !== 'playing'}
-                        position="bottom-right"
-                        onClick={() => handleColorClick('yellow')}
-                        showName={showColorNames}
-                      />
-                    </div>
-                  </div>
+            {(gameState === 'showing' || gameState === 'playing') && (
+              <motion.div
+                key="game"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="p-4 space-y-4"
+              >
+                {/* Sequence progress dots */}
+                <div className="flex items-center justify-center gap-1.5">
+                  {sequence.map((_, i) => (
+                    <div key={i} className={cn(
+                      "h-2 rounded-full transition-all",
+                      i < playerSequence.length ? "w-6 bg-success" :
+                      i === playerSequence.length && gameState === 'playing' ? "w-4 bg-primary animate-pulse" :
+                      "w-2 bg-muted"
+                    )} />
+                  ))}
                 </div>
 
-                {/* Central Display - Moved Below */}
-                <SimonDisplay
-                  level={stats.level}
-                  score={stats.score}
-                  gameState={gameState}
-                  currentPosition={playerSequence.length}
-                  sequenceLength={sequence.length}
-                  highScore={stats.highScore}
-                />
-              </div>
+                <div className="text-center text-xs font-medium text-muted-foreground">
+                  {gameState === 'showing' ? '👀 Observe...' : `Sua vez! ${playerSequence.length}/${sequence.length}`}
+                </div>
+
+                {/* Simon Grid - Full width mobile touch targets */}
+                <div className="grid grid-cols-2 gap-3 aspect-square max-w-[340px] mx-auto">
+                  {COLORS.map(color => {
+                    const style = COLOR_STYLES[color];
+                    const isActive = showingColor === color;
+                    const isDisabled = gameState !== 'playing';
+                    return (
+                      <motion.button
+                        key={color}
+                        whileTap={!isDisabled ? { scale: 0.92 } : undefined}
+                        className={cn(
+                          "rounded-2xl transition-all duration-150 flex items-center justify-center min-h-[120px]",
+                          isActive ? style.active : style.bg,
+                          !isDisabled && "active:brightness-125 cursor-pointer",
+                          isDisabled && gameState === 'showing' && "cursor-default",
+                        )}
+                        disabled={isDisabled}
+                        onClick={() => handleColorClick(color)}
+                        aria-label={style.label}
+                      >
+                        <span className={cn(
+                          "text-3xl transition-transform",
+                          isActive && "scale-125"
+                        )}>
+                          {color === 'red' ? '🔴' : color === 'blue' ? '🔵' : color === 'green' ? '🟢' : '🟡'}
+                        </span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
+                {/* Feedback flash */}
+                {lastFeedback && (
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className={cn(
+                      "text-center text-sm font-bold py-2 rounded-xl",
+                      lastFeedback === 'correct' ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
+                    )}
+                  >
+                    {lastFeedback === 'correct' ? '✅ Perfeito!' : '❌ Errou!'}
+                  </motion.div>
+                )}
+              </motion.div>
             )}
 
             {gameState === 'gameOver' && (
-              <div className="text-center space-y-6 max-w-2xl mx-auto">
-                <div className="space-y-4">
-                  <h2 className="text-3xl font-bold text-foreground">Game Over!</h2>
-                  <div className="bg-muted/50 p-6 rounded-lg border border-border">
-                    <div className="grid grid-cols-2 gap-4 text-center">
-                      <div>
-                        <div className="text-3xl font-bold text-info">{stats.level}</div>
-                        <div className="text-sm text-muted-foreground">Nível Alcançado</div>
-                      </div>
-                      <div>
-                        <div className="text-3xl font-bold text-success">{stats.score}</div>
-                        <div className="text-sm text-muted-foreground">Pontos</div>
-                      </div>
-                      <div>
-                        <div className="text-3xl font-bold text-warning">{stats.bestStreak}</div>
-                        <div className="text-sm text-muted-foreground">Melhor Sequência</div>
-                      </div>
-                      <div>
-                        <div className="text-3xl font-bold text-primary">{accuracy}%</div>
-                        <div className="text-sm text-muted-foreground">Precisão</div>
-                      </div>
+              <motion.div
+                key="over"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="p-6 text-center space-y-5"
+              >
+                <div className="text-5xl">{stats.score === stats.highScore && stats.score > 0 ? '🏆' : '🎮'}</div>
+                <h2 className="text-2xl font-bold">Game Over!</h2>
+
+                {stats.score === stats.highScore && stats.score > 0 && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="inline-block bg-warning/10 text-warning px-4 py-1.5 rounded-full text-sm font-bold"
+                  >
+                    🏅 Novo Recorde!
+                  </motion.div>
+                )}
+
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: 'Nível', value: stats.level, icon: '🎯' },
+                    { label: 'Pontos', value: stats.score, icon: '⭐' },
+                    { label: 'Melhor Série', value: stats.bestStreak, icon: '🔥' },
+                    { label: 'Precisão', value: `${accuracy}%`, icon: '🎯' },
+                    { label: 'Reação Média', value: avgReaction > 0 ? `${avgReaction}ms` : '—', icon: '⚡' },
+                    { label: 'Tentativas', value: stats.totalAttempts, icon: '🔄' },
+                  ].map(s => (
+                    <div key={s.label} className="p-3 bg-muted/50 rounded-xl">
+                      <div className="text-lg font-bold">{s.icon} {s.value}</div>
+                      <div className="text-[10px] text-muted-foreground">{s.label}</div>
                     </div>
+                  ))}
+                </div>
 
-                    {stats.score === stats.highScore && stats.score > 0 && (
-                      <div className="mt-4 p-3 bg-warning/20 border border-warning/50 rounded-lg">
-                        <p className="text-warning font-semibold">
-                          🏆 Novo Recorde: {stats.highScore} pontos!
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="flex gap-4 justify-center">
-                  <Button 
-                    onClick={startGame} 
-                    size="lg"
-                    className="gap-2 bg-gradient-to-r from-success to-success/80 hover:opacity-90"
-                  >
-                    <Play className="w-5 h-5" />
-                    Jogar Novamente
+                <div className="grid grid-cols-2 gap-3">
+                  <Button onClick={startGame} className="h-12 gap-2 rounded-xl font-bold">
+                    <Play className="h-4 w-4 fill-current" /> Jogar
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    onClick={resetGame} 
-                    size="lg"
-                    className="gap-2 bg-card border-border text-muted-foreground"
-                  >
-                    <RotateCcw className="w-5 h-5" />
-                    Menu Inicial
+                  <Button variant="outline" onClick={resetGame} className="h-12 gap-2 rounded-xl">
+                    <RotateCcw className="h-4 w-4" /> Menu
                   </Button>
                 </div>
-              </div>
+              </motion.div>
             )}
-          </CardContent>
-        </Card>
+          </AnimatePresence>
+        </CardContent>
+      </Card>
 
-        {/* Achievements */}
-        <div className="relative z-0">
-          <SimonAchievements
-          stats={{
-            level: stats.level,
-            score: stats.score,
-            bestStreak: stats.bestStreak,
-            accuracy,
-            perfectRounds: stats.perfectRounds
-          }}
-        />
-        </div>
-
-        {/* Benefits */}
-        <Card className="mt-8 bg-card/50 border-border">
-          <CardContent className="p-6">
-            <h3 className="font-semibold mb-4 flex items-center gap-2 text-foreground">
-              <Trophy className="w-5 h-5 text-warning" />
-              Benefícios Terapêuticos & Cognitivos
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <h4 className="font-medium text-info mb-2">🧠 Memória de Trabalho</h4>
-                <p className="text-muted-foreground">
-                  Fortalece a capacidade de reter e manipular sequências temporariamente, essencial para aprendizado e resolução de problemas.
-                </p>
-              </div>
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <h4 className="font-medium text-success mb-2">🎯 Atenção Sequencial</h4>
-                <p className="text-muted-foreground">
-                  Desenvolve foco em padrões e ordem temporal, crucial para compreensão de processos complexos.
-                </p>
-              </div>
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <h4 className="font-medium text-primary mb-2">⚡ Concentração</h4>
-                <p className="text-muted-foreground">
-                  Melhora sustentação da atenção e controle inibitório, fundamentais para produtividade e autocontrole.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Therapeutic Benefits - Compact */}
+      <div className="grid grid-cols-3 gap-2 text-center">
+        {[
+          { icon: '🧠', label: 'Memória', desc: 'de Trabalho' },
+          { icon: '🎯', label: 'Atenção', desc: 'Sequencial' },
+          { icon: '⚡', label: 'Controle', desc: 'Inibitório' },
+        ].map(b => (
+          <div key={b.label} className="p-3 bg-card rounded-xl border border-border">
+            <div className="text-xl mb-1">{b.icon}</div>
+            <div className="text-xs font-semibold">{b.label}</div>
+            <div className="text-[10px] text-muted-foreground">{b.desc}</div>
+          </div>
+        ))}
       </div>
     </div>
   );
