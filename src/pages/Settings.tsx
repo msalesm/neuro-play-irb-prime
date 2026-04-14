@@ -465,7 +465,7 @@ export default function Settings() {
           </div>
         </div>
         </div>
-      </ModernPageLayout>
+      </div>
     </HapticProvider>
   );
 }
