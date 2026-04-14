@@ -112,10 +112,10 @@ export function AppLayout({ children }: AppLayoutProps) {
         
         {getLayoutContent()}
         
-        {/* Shared overlays — always present regardless of role */}
+        {/* Shared overlays — hide floating buttons on mobile to avoid tab bar conflict */}
         <ClinicalDisclaimerModal />
-        <FloatingAIAssistant />
-        <AccessibilityQuickPanel />
+        {!isMobile && <FloatingAIAssistant />}
+        {!isMobile && <AccessibilityQuickPanel />}
         {isMobile && <MobileTour />}
         <OfflineIndicator />
         <PWAInstallPrompt />
