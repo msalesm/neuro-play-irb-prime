@@ -22,6 +22,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          light: "hsl(var(--primary-light))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -70,7 +71,15 @@ export default {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
-        // NeuroPlay Brand — Wellness palette
+        // Cognitive Domain Colors
+        cognitive: {
+          attention: "hsl(var(--color-attention))",
+          memory: "hsl(var(--color-memory))",
+          language: "hsl(var(--color-language))",
+          reasoning: "hsl(var(--color-reasoning))",
+          motor: "hsl(var(--color-motor))",
+        },
+        // NeuroPlay Brand
         neuroplay: {
           blue: "hsl(var(--neuroplay-blue))",
           purple: "hsl(var(--neuroplay-purple))",
@@ -78,7 +87,7 @@ export default {
           orange: "hsl(var(--neuroplay-orange))",
           yellow: "hsl(var(--neuroplay-yellow))",
         },
-        // Vortex planet colors (used by StackTower game)
+        // Vortex planet colors
         vortex: {
           400: "hsl(258 32% 62%)",
           800: "hsl(250 18% 14%)",
@@ -86,9 +95,18 @@ export default {
         },
       },
       fontFamily: {
-        'heading': ['Nunito', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        'body': ['Nunito', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'heading': ['Plus Jakarta Sans', 'Nunito', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'body': ['DM Sans', 'Nunito', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         'dyslexic': ['OpenDyslexic', 'Inter', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        'xs-mobile': ['11px', { lineHeight: '16px' }],
+        'sm-mobile': ['13px', { lineHeight: '18px' }],
+        'base-mobile': ['15px', { lineHeight: '22px' }],
+        'lg-mobile': ['17px', { lineHeight: '24px' }],
+        'xl-mobile': ['20px', { lineHeight: '28px' }],
+        '2xl-mobile': ['24px', { lineHeight: '32px' }],
+        '3xl-mobile': ['28px', { lineHeight: '36px' }],
       },
       backgroundImage: {
         'gradient-hero': 'var(--gradient-hero)',
@@ -105,6 +123,8 @@ export default {
         'glow': 'var(--shadow-glow)',
         'medium': 'var(--shadow-medium)',
         'strong': 'var(--shadow-strong)',
+        'tab': 'var(--shadow-tab)',
+        'fab': 'var(--shadow-fab)',
       },
       transitionTimingFunction: {
         'smooth': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -114,6 +134,12 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        '2xl': '1.25rem',
+        '3xl': '1.5rem',
+      },
+      spacing: {
+        'safe-bottom': 'env(safe-area-inset-bottom, 0px)',
+        'tab-bar': 'calc(64px + env(safe-area-inset-bottom, 0px))',
       },
       keyframes: {
         "accordion-down": {
@@ -146,6 +172,14 @@ export default {
           "50%": { transform: "scale(1.1)" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
+        "slide-up": {
+          "0%": { opacity: "0", transform: "translateY(16px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fab-pulse": {
+          "0%, 100%": { boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)" },
+          "50%": { boxShadow: "0 4px 28px rgba(0, 0, 0, 0.3)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -155,6 +189,8 @@ export default {
         "confetti-fall": "confetti-fall 3s ease-out forwards",
         "pulse-success": "pulse-success 0.6s ease-in-out",
         "bounce-in": "bounce-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "slide-up": "slide-up 0.3s ease forwards",
+        "fab-pulse": "fab-pulse 2s ease-in-out infinite",
       },
     },
   },
