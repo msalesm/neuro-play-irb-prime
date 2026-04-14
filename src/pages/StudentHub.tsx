@@ -78,8 +78,8 @@ export default function StudentHub() {
           level: gamification.level || 1,
           xp: gamification.experience_points || 0,
           xpToNextLevel: ((gamification.level || 1) + 1) * 100,
-          streak: gamification.streak_days || 0,
-          totalStars: gamification.total_points || 0,
+          streak: gamification.current_streak || 0,
+          totalStars: gamification.total_stars || 0,
         });
       } else {
         setChildData(prev => ({
