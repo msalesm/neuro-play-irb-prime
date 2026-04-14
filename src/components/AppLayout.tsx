@@ -20,11 +20,10 @@ import { ChildLayout } from '@/components/layouts/ChildLayout';
 import { ProfessionalLayout } from '@/components/layouts/ProfessionalLayout';
 import { ParentLayout } from '@/components/layouts/ParentLayout';
 
-// Fallback layout components (for unauthenticated or loading)
+// Fallback layout (mobile uses tab bar, desktop uses sidebar)
+import { MobileBottomTabBar } from '@/components/mobile/MobileBottomTabBar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
-import { MobileMenu } from '@/components/MobileMenu';
-import { BottomNavigation } from '@/components/BottomNavigation';
 import { LanguageSelector } from '@/components/LanguageSelector';
 
 interface AppLayoutProps {
@@ -73,12 +72,13 @@ export function AppLayout({ children }: AppLayoutProps) {
         return <ProfessionalLayout>{children}</ProfessionalLayout>;
       
       default:
-        // Fallback: use the original generic layout
+        // Fallback: mobile gets tab bar, desktop gets sidebar
         return isMobile ? (
           <div className="min-h-screen bg-background">
-            <MobileMenu />
-            <main id="main-content" className="pt-16 pb-24">{children}</main>
-            <BottomNavigation />
+            <main id="main-content" className="pb-tab-bar min-h-[100dvh]">
+              <div className="mobile-container px-4 py-4">{children}</div>
+            </main>
+            <MobileBottomTabBar />
           </div>
         ) : (
           <SidebarProvider defaultOpen>
