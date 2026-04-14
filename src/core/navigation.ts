@@ -185,7 +185,11 @@ const ADMIN_MOBILE_SECTIONS: NavSection[] = [
     label: 'Clínico',
     items: [
       { title: 'Pacientes', path: '/therapist/patients', icon: Users },
+      { title: 'Agenda', path: '/agenda', icon: Calendar },
       { title: 'Teleconsultas', path: '/teleconsultas', icon: Stethoscope },
+      { title: 'Avaliações', path: '/diagnostico-completo', icon: ClipboardCheck },
+      { title: 'Inventário', path: '/inventario-habilidades', icon: ClipboardList },
+      { title: 'Anamnese', path: '/anamnese', icon: ClipboardList },
       { title: 'ABA NeuroPlay', path: '/aba-neuroplay', icon: Activity },
     ],
   },
@@ -193,16 +197,41 @@ const ADMIN_MOBILE_SECTIONS: NavSection[] = [
     id: 'admin-education',
     label: 'Educação',
     items: [
+      { title: 'Painel do Professor', path: '/teacher-dashboard', icon: GraduationCap },
       { title: 'Educação', path: '/educacao', icon: School },
+      { title: 'Turmas', path: '/teacher/classes', icon: Users },
+      { title: 'PEI', path: '/pei', icon: ClipboardCheck },
       { title: 'Escola', path: '/escola-dashboard', icon: Building2 },
     ],
   },
   {
+    id: 'admin-parents',
+    label: 'Área dos Pais',
+    items: [
+      { title: 'Dashboard Pais', path: '/dashboard-pais', icon: Home },
+      { title: 'Progresso', path: '/learning-dashboard', icon: TrendingUp },
+      { title: 'Microlearning', path: '/training', icon: BookOpen },
+    ],
+  },
+  {
+    id: 'admin-patient',
+    label: 'Área do Paciente',
+    items: [
+      { title: 'Student Hub', path: '/student-hub', icon: Home },
+      { title: 'Jogos', path: '/games', icon: Gamepad2 },
+      { title: 'Planeta Azul', path: '/sistema-planeta-azul', icon: Sparkles },
+      { title: 'Histórias Sociais', path: '/stories', icon: Drama },
+      { title: 'Conquistas', path: '/conquistas', icon: Trophy },
+    ],
+  },
+  {
     id: 'admin-reports',
-    label: 'Relatórios',
+    label: 'Relatórios & Config',
     items: [
       { title: 'Relatórios', path: '/relatorios', icon: FileText },
-      { title: 'Agenda', path: '/agenda', icon: Calendar },
+      { title: 'Mensagens', path: '/mensagens', icon: Mail },
+      { title: 'Perfil', path: '/profile', icon: User },
+      { title: 'Configurações', path: '/settings', icon: Settings },
     ],
   },
 ];
