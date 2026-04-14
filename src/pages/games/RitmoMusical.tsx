@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Play, Pause, RotateCcw, Music, Trophy, Volume2, VolumeX, ChevronDown, ChevronUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, RotateCcw, Volume2, VolumeX, Trophy, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { LevelProgress } from "@/components/gamification";
-import { GameAchievements } from "@/components/games";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useGameSession } from '@/hooks/useGameSession';
+import { GameExitButton } from '@/components/games';
+import { cn } from "@/lib/utils";
+import { supabase } from '@/integrations/supabase/client';
 
 type BeatType = 'kick' | 'snare' | 'hihat' | 'crash';
 type Difficulty = 'easy' | 'medium' | 'hard';
@@ -28,918 +28,487 @@ interface GameStats {
   totalBeats: number;
   streak: number;
   bestStreak: number;
-  bpm: number;
-  xp: number;
-  xpToNext: number;
-  totalSessions: number;
-  sessionProgress: number;
-  justLeveledUp: boolean;
-  recentXpGain: number;
+  totalRounds: number;
 }
 
-const BEAT_SOUNDS = {
-  kick: { freq: 60, color: 'bg-destructive', name: '🥁 Bumbo', key: 'Space' },
-  snare: { freq: 200, color: 'bg-info', name: '🪘 Caixa', key: 'S' },
-  hihat: { freq: 8000, color: 'bg-warning', name: '🎵 Chimbal', key: 'H' },
-  crash: { freq: 4000, color: 'bg-secondary', name: '💥 Prato', key: 'C' },
+const BEAT_CONFIG: Record<BeatType, { emoji: string; name: string; color: string; activeColor: string }> = {
+  kick:  { emoji: '🥁', name: 'Bumbo', color: 'bg-destructive/60', activeColor: 'bg-destructive shadow-[0_0_20px_hsl(var(--destructive)/0.5)]' },
+  snare: { emoji: '🪘', name: 'Caixa', color: 'bg-info/60', activeColor: 'bg-info shadow-[0_0_20px_hsl(var(--info)/0.5)]' },
+  hihat: { emoji: '🎵', name: 'Chimbal', color: 'bg-warning/60', activeColor: 'bg-warning shadow-[0_0_20px_hsl(var(--warning)/0.5)]' },
+  crash: { emoji: '💥', name: 'Prato', color: 'bg-secondary/60', activeColor: 'bg-secondary shadow-[0_0_20px_hsl(var(--secondary)/0.5)]' },
 };
 
 const DIFFICULTY_SETTINGS = {
-  easy: { bpm: 40, tolerance: 300, beatsPerPattern: 2 },
-  medium: { bpm: 60, tolerance: 250, beatsPerPattern: 3 },
-  hard: { bpm: 80, tolerance: 200, beatsPerPattern: 4 },
+  easy:   { bpm: 40, beatsPerPattern: 2 },
+  medium: { bpm: 60, beatsPerPattern: 3 },
+  hard:   { bpm: 80, beatsPerPattern: 4 },
 };
 
 export default function RitmoMusical() {
   const { user } = useAuth();
-  const [gameState, setGameState] = useState<'idle' | 'listening' | 'playing' | 'paused' | 'gameOver'>('idle');
+  const [gameState, setGameState] = useState<'idle' | 'listening' | 'playing' | 'feedback' | 'gameOver'>('idle');
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [pattern, setPattern] = useState<Beat[]>([]);
-  const [currentBeatIndex, setCurrentBeatIndex] = useState(0);
-  const [playerBeats, setPlayerBeats] = useState<Beat[]>([]);
+  const [currentBeatIndex, setCurrentBeatIndex] = useState(-1);
+  const [playerBeats, setPlayerBeats] = useState<BeatType[]>([]);
   const [stats, setStats] = useState<GameStats>({
-    level: 1,
-    score: 0,
-    accuracy: 100,
-    perfectHits: 0,
-    totalBeats: 0,
-    streak: 0,
-    bestStreak: 0,
-    bpm: 40,
-    xp: 0,
-    xpToNext: 100,
-    totalSessions: 0,
-    sessionProgress: 0,
-    justLeveledUp: false,
-    recentXpGain: 0
+    level: 1, score: 0, accuracy: 100, perfectHits: 0,
+    totalBeats: 0, streak: 0, bestStreak: 0, totalRounds: 0,
   });
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [isListening, setIsListening] = useState(false);
-  const [achievementsOpen, setAchievementsOpen] = useState(false);
-  const [achievements, setAchievements] = useState<any[]>([
-    {
-      id: 'first_perfect',
-      title: 'Primeira Perfeição',
-      description: 'Acerte um padrão com 100% de precisão',
-      icon: '🎯',
-      type: 'instant',
-      unlocked: false
-    },
-    {
-      id: 'streak_master',
-      title: 'Mestre da Sequência',
-      description: 'Consiga 5 acertos consecutivos',
-      icon: '🔥',
-      type: 'progress',
-      value: 0,
-      maxValue: 5,
-      unlocked: false
-    },
-    {
-      id: 'level_5',
-      title: 'Músico Experiente',
-      description: 'Chegue ao nível 5',
-      icon: '🎸',
-      type: 'milestone',
-      unlocked: false
-    },
-    {
-      id: 'score_1000',
-      title: 'Pontuação Elite',
-      description: 'Consiga 1000 pontos',
-      icon: '⭐',
-      type: 'progress',
-      value: 0,
-      maxValue: 1000,
-      unlocked: false
-    }
-  ]);
+  const [lastPad, setLastPad] = useState<BeatType | null>(null);
+  const [childProfileId, setChildProfileId] = useState<string | null>(null);
+  const reactionTimesRef = useRef<number[]>([]);
+  const reactionStartRef = useRef<number>(0);
   const audioContextRef = useRef<AudioContext | null>(null);
   const patternTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const gameTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Initialize audio context
+  const {
+    startSession, endSession, updateSession, isActive
+  } = useGameSession('ritmo-musical', childProfileId || undefined);
+
+  useEffect(() => {
+    const load = async () => {
+      if (!user) return;
+      const { data } = await supabase.from('child_profiles').select('id')
+        .eq('parent_user_id', user.id).limit(1).maybeSingle();
+      if (data) setChildProfileId(data.id);
+    };
+    load();
+  }, [user]);
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
     }
-    
-    return () => {
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
-    };
+    return () => { audioContextRef.current?.close(); };
   }, []);
 
-  // Play sound with improved audio quality
-  const playSound = useCallback((beatType: BeatType, duration: number = 0.15) => {
-    if (!soundEnabled || !audioContextRef.current || document.documentElement.classList.contains('reduced-sounds')) {
-      return;
-    }
-
+  const playSound = useCallback((beatType: BeatType) => {
+    if (!soundEnabled || !audioContextRef.current) return;
     const ctx = audioContextRef.current;
-    
-    // Create compressor for better audio quality
-    const compressor = ctx.createDynamicsCompressor();
-    compressor.threshold.setValueAtTime(-50, ctx.currentTime);
-    compressor.knee.setValueAtTime(40, ctx.currentTime);
-    compressor.ratio.setValueAtTime(12, ctx.currentTime);
-    compressor.attack.setValueAtTime(0, ctx.currentTime);
-    compressor.release.setValueAtTime(0.25, ctx.currentTime);
-    compressor.connect(ctx.destination);
+    const gain = ctx.createGain();
+    gain.connect(ctx.destination);
 
-    // Improved instrument sounds
     if (beatType === 'kick') {
-      // Kick drum: Deep bass with pitch envelope
-      const osc1 = ctx.createOscillator();
-      const osc2 = ctx.createOscillator();
-      const gainNode = ctx.createGain();
-      
-      osc1.type = 'sine';
-      osc2.type = 'sine';
-      
-      // Pitch envelope for kick
-      osc1.frequency.setValueAtTime(150, ctx.currentTime);
-      osc1.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.05);
-      
-      osc2.frequency.setValueAtTime(80, ctx.currentTime);
-      osc2.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 0.05);
-      
-      gainNode.gain.setValueAtTime(0.9, ctx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-      
-      osc1.connect(gainNode);
-      osc2.connect(gainNode);
-      gainNode.connect(compressor);
-      
-      osc1.start(ctx.currentTime);
-      osc2.start(ctx.currentTime);
-      osc1.stop(ctx.currentTime + duration);
-      osc2.stop(ctx.currentTime + duration);
-      
-    } else if (beatType === 'snare') {
-      // Snare: Tone + noise
       const osc = ctx.createOscillator();
-      const noise = ctx.createBufferSource();
-      const noiseFilter = ctx.createBiquadFilter();
-      const gainNode = ctx.createGain();
-      const noiseGain = ctx.createGain();
-      
-      // Create noise buffer
-      const bufferSize = ctx.sampleRate * 0.1;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
-      noise.buffer = buffer;
-      
-      // Tone component
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(150, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.8, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+      osc.connect(gain);
+      osc.start(); osc.stop(ctx.currentTime + 0.15);
+    } else if (beatType === 'snare') {
+      const osc = ctx.createOscillator();
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(200, ctx.currentTime);
-      
-      // Noise component with high-pass filter
-      noiseFilter.type = 'highpass';
-      noiseFilter.frequency.setValueAtTime(1000, ctx.currentTime);
-      
-      gainNode.gain.setValueAtTime(0.6, ctx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-      
-      noiseGain.gain.setValueAtTime(0.8, ctx.currentTime);
-      noiseGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
-      
-      osc.connect(gainNode);
-      noise.connect(noiseFilter);
-      noiseFilter.connect(noiseGain);
-      gainNode.connect(compressor);
-      noiseGain.connect(compressor);
-      
-      osc.start(ctx.currentTime);
-      noise.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + duration);
-      noise.stop(ctx.currentTime + 0.08);
-      
-    } else if (beatType === 'hihat') {
-      // Hi-hat: Filtered noise
+      gain.gain.setValueAtTime(0.5, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      osc.connect(gain); osc.start(); osc.stop(ctx.currentTime + 0.1);
+      // noise layer
+      const buf = ctx.createBuffer(1, ctx.sampleRate * 0.08, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
       const noise = ctx.createBufferSource();
+      noise.buffer = buf;
+      const ng = ctx.createGain();
+      ng.gain.setValueAtTime(0.6, ctx.currentTime);
+      ng.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+      noise.connect(ng); ng.connect(ctx.destination);
+      noise.start(); noise.stop(ctx.currentTime + 0.08);
+    } else if (beatType === 'hihat') {
+      const buf = ctx.createBuffer(1, ctx.sampleRate * 0.04, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const noise = ctx.createBufferSource();
+      noise.buffer = buf;
       const filter = ctx.createBiquadFilter();
-      const gainNode = ctx.createGain();
-      
-      const bufferSize = ctx.sampleRate * 0.05;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
-      noise.buffer = buffer;
-      
-      filter.type = 'highpass';
-      filter.frequency.setValueAtTime(7000, ctx.currentTime);
-      filter.Q.setValueAtTime(1, ctx.currentTime);
-      
-      gainNode.gain.setValueAtTime(0.7, ctx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-      
-      noise.connect(filter);
-      filter.connect(gainNode);
-      gainNode.connect(compressor);
-      
-      noise.start(ctx.currentTime);
-      noise.stop(ctx.currentTime + 0.05);
-      
-    } else if (beatType === 'crash') {
-      // Crash cymbal: Complex noise with reverb-like decay
-      const noise1 = ctx.createBufferSource();
-      const noise2 = ctx.createBufferSource();
-      const filter1 = ctx.createBiquadFilter();
-      const filter2 = ctx.createBiquadFilter();
-      const gainNode = ctx.createGain();
-      
-      const bufferSize = ctx.sampleRate * 0.5;
-      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
-      noise1.buffer = buffer;
-      noise2.buffer = buffer;
-      
-      filter1.type = 'highpass';
-      filter1.frequency.setValueAtTime(3000, ctx.currentTime);
-      
-      filter2.type = 'bandpass';
-      filter2.frequency.setValueAtTime(8000, ctx.currentTime);
-      filter2.Q.setValueAtTime(0.5, ctx.currentTime);
-      
-      gainNode.gain.setValueAtTime(0.8, ctx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
-      
-      noise1.connect(filter1);
-      noise2.connect(filter2);
-      filter1.connect(gainNode);
-      filter2.connect(gainNode);
-      gainNode.connect(compressor);
-      
-      noise1.start(ctx.currentTime);
-      noise2.start(ctx.currentTime);
-      noise1.stop(ctx.currentTime + 0.4);
-      noise2.stop(ctx.currentTime + 0.4);
+      filter.type = 'highpass'; filter.frequency.setValueAtTime(7000, ctx.currentTime);
+      gain.gain.setValueAtTime(0.5, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.04);
+      noise.connect(filter); filter.connect(gain);
+      noise.start(); noise.stop(ctx.currentTime + 0.04);
+    } else {
+      const buf = ctx.createBuffer(1, ctx.sampleRate * 0.3, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const noise = ctx.createBufferSource();
+      noise.buffer = buf;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass'; filter.frequency.setValueAtTime(3000, ctx.currentTime);
+      gain.gain.setValueAtTime(0.6, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+      noise.connect(filter); filter.connect(gain);
+      noise.start(); noise.stop(ctx.currentTime + 0.3);
     }
   }, [soundEnabled]);
 
-  // Generate rhythm pattern
-  const generatePattern = useCallback((difficulty: Difficulty, level: number): Beat[] => {
-    const settings = DIFFICULTY_SETTINGS[difficulty];
-    const beatTypes: BeatType[] = level >= 5 ? ['kick', 'snare', 'hihat'] : 
-                                 level >= 3 ? ['kick', 'snare'] : ['kick'];
-    
-    const beats: Beat[] = [];
-    const beatInterval = (60 / settings.bpm) * 1000; // ms per beat
-    
-    // Simple patterns - every beat has a sound for easier learning
-    for (let i = 0; i < settings.beatsPerPattern; i++) {
-      const beatType = beatTypes[i % beatTypes.length]; // Cycle through available types
-      beats.push({
-        id: `beat-${i}`,
-        type: beatType,
-        time: i * beatInterval,
-        played: false,
-      });
-    }
-    
-    return beats;
+  const generatePattern = useCallback((diff: Difficulty, level: number): Beat[] => {
+    const settings = DIFFICULTY_SETTINGS[diff];
+    const beatTypes: BeatType[] = level >= 5 ? ['kick', 'snare', 'hihat', 'crash'] :
+                                   level >= 3 ? ['kick', 'snare', 'hihat'] : ['kick', 'snare'];
+    const interval = (60 / settings.bpm) * 1000;
+    return Array.from({ length: settings.beatsPerPattern }, (_, i) => ({
+      id: `beat-${i}`,
+      type: beatTypes[i % beatTypes.length],
+      time: i * interval,
+      played: false,
+    }));
   }, []);
 
-  // Play pattern for listening
   const playPattern = useCallback((beats: Beat[]) => {
-    if (!beats.length) return;
-    
-    setIsListening(true);
-    let currentIndex = 0;
-    
-    const playNextBeat = () => {
-      if (currentIndex < beats.length) {
-        const beat = beats[currentIndex];
-        playSound(beat.type);
-        setCurrentBeatIndex(currentIndex);
-        
-        currentIndex++;
-        const nextBeat = beats[currentIndex];
-        const delay = nextBeat ? nextBeat.time - beat.time : 500;
-        
-        patternTimerRef.current = setTimeout(playNextBeat, delay);
+    let i = 0;
+    setCurrentBeatIndex(0);
+    const playNext = () => {
+      if (i < beats.length) {
+        setCurrentBeatIndex(i);
+        playSound(beats[i].type);
+        const current = i;
+        i++;
+        const delay = i < beats.length ? beats[i].time - beats[current].time : 500;
+        patternTimerRef.current = setTimeout(playNext, delay);
       } else {
-        setIsListening(false);
-        setCurrentBeatIndex(0);
+        setCurrentBeatIndex(-1);
         setTimeout(() => {
           setGameState('playing');
-        }, 1000);
+          setPlayerBeats([]);
+          reactionStartRef.current = performance.now();
+        }, 600);
       }
     };
-    
-    playNextBeat();
+    setTimeout(playNext, 400);
   }, [playSound]);
 
-  // Start game
-  const startGame = useCallback(() => {
+  const startGame = useCallback(async () => {
+    reactionTimesRef.current = [];
+    try { await startSession({ score: 0 }, stats.level); } catch (e) { console.error(e); }
     const newPattern = generatePattern(difficulty, stats.level);
     setPattern(newPattern);
     setPlayerBeats([]);
-    setCurrentBeatIndex(0);
+    setCurrentBeatIndex(-1);
     setGameState('listening');
-    
-    setTimeout(() => {
-      playPattern(newPattern);
-    }, 1000);
-  }, [difficulty, stats.level, generatePattern, playPattern]);
+    setTimeout(() => playPattern(newPattern), 500);
+  }, [difficulty, stats.level, generatePattern, playPattern, startSession]);
 
-  // Handle player input
-  const handleBeatInput = (beatType: BeatType) => {
+  const handlePadTap = (beatType: BeatType) => {
     if (gameState !== 'playing') return;
+    playSound(beatType);
+    setLastPad(beatType);
+    setTimeout(() => setLastPad(null), 150);
 
-    const currentTime = Date.now();
-    playSound(beatType, 0.1);
-    
-    const newBeat: Beat = {
-      id: `player-${playerBeats.length}`,
-      type: beatType,
-      time: currentTime,
-      played: true,
-    };
-    
-    setPlayerBeats(prev => [...prev, newBeat]);
+    const rt = Math.round(performance.now() - reactionStartRef.current);
+    reactionTimesRef.current.push(rt);
+    reactionStartRef.current = performance.now();
+
+    const newBeats = [...playerBeats, beatType];
+    setPlayerBeats(newBeats);
+
+    if (newBeats.length >= pattern.length) {
+      evaluateRound(newBeats);
+    }
   };
 
-  // Evaluate performance
-  const evaluatePerformance = useCallback(() => {
-    if (!pattern.length || !playerBeats.length) return;
-
-    let perfectHits = 0;
-    let totalExpectedBeats = pattern.length;
-    
-    // Simple evaluation: check if player hit the right beats in roughly the right order
+  const evaluateRound = (played: BeatType[]) => {
     const patternTypes = pattern.map(b => b.type);
-    const playerTypes = playerBeats.map(b => b.type);
-    
-    const minLength = Math.min(patternTypes.length, playerTypes.length);
-    
-    for (let i = 0; i < minLength; i++) {
-      if (patternTypes[i] === playerTypes[i]) {
-        perfectHits++;
-      }
+    let hits = 0;
+    for (let i = 0; i < Math.min(patternTypes.length, played.length); i++) {
+      if (patternTypes[i] === played[i]) hits++;
     }
-    
-    const accuracy = totalExpectedBeats > 0 ? (perfectHits / totalExpectedBeats) * 100 : 0;
-    const points = Math.round(perfectHits * 10 * (accuracy / 100) * stats.level);
-    
-    // Calculate XP gain
-    let xpGain = Math.round(points * 0.5);
-    if (accuracy === 100) xpGain += 25; // Perfect bonus
-    if (accuracy >= 90) xpGain += 10; // Excellence bonus
-    
+    const roundAccuracy = pattern.length > 0 ? (hits / pattern.length) * 100 : 0;
+    const points = Math.round(hits * 10 * stats.level * (roundAccuracy / 100));
+
     const newStats = {
       ...stats,
       score: stats.score + points,
-      perfectHits: stats.perfectHits + perfectHits,
-      totalBeats: stats.totalBeats + totalExpectedBeats,
-      accuracy: stats.totalBeats + totalExpectedBeats > 0 ? 
-        ((stats.perfectHits + perfectHits) / (stats.totalBeats + totalExpectedBeats)) * 100 : 100,
-      streak: accuracy >= 70 ? stats.streak + 1 : 0,
-      bestStreak: Math.max(stats.bestStreak, accuracy >= 70 ? stats.streak + 1 : stats.streak),
-      xp: stats.xp + xpGain,
-      recentXpGain: xpGain,
-      sessionProgress: stats.sessionProgress + (accuracy / 100),
-      totalSessions: stats.totalSessions + 1,
-      justLeveledUp: false
+      perfectHits: stats.perfectHits + hits,
+      totalBeats: stats.totalBeats + pattern.length,
+      totalRounds: stats.totalRounds + 1,
+      accuracy: ((stats.perfectHits + hits) / (stats.totalBeats + pattern.length)) * 100,
+      streak: roundAccuracy >= 70 ? stats.streak + 1 : 0,
+      bestStreak: Math.max(stats.bestStreak, roundAccuracy >= 70 ? stats.streak + 1 : stats.streak),
     };
-
-    // Level progression
-    const levelMultiplier = 100;
-    const requiredXP = newStats.level * levelMultiplier;
-    
-    if (newStats.xp >= requiredXP) {
-      newStats.level += 1;
-      newStats.xp -= requiredXP;
-      newStats.xpToNext = newStats.level * levelMultiplier;
-      newStats.streak = 0;
-      newStats.bpm = Math.min(newStats.bpm + 10, 140);
-      newStats.justLeveledUp = true;
-    } else {
-      newStats.xpToNext = requiredXP;
-    }
-
-    // Check achievements
-    const updatedAchievements = [...achievements];
-    
-    // Perfect accuracy achievement
-    if (accuracy === 100 && !achievements[0].unlocked) {
-      updatedAchievements[0].unlocked = true;
-      updatedAchievements[0].justUnlocked = true;
-    }
-    
-    // Streak achievement
-    updatedAchievements[1].value = newStats.streak;
-    if (newStats.streak >= 5 && !achievements[1].unlocked) {
-      updatedAchievements[1].unlocked = true;
-      updatedAchievements[1].justUnlocked = true;
-    }
-    
-    // Level milestone
-    if (newStats.level >= 5 && !achievements[2].unlocked) {
-      updatedAchievements[2].unlocked = true;
-      updatedAchievements[2].justUnlocked = true;
-    }
-    
-    // Score achievement
-    updatedAchievements[3].value = newStats.score;
-    if (newStats.score >= 1000 && !achievements[3].unlocked) {
-      updatedAchievements[3].unlocked = true;
-      updatedAchievements[3].justUnlocked = true;
-    }
-    
-    setAchievements(updatedAchievements);
     setStats(newStats);
-    
-    // Show results and continue
+
+    const avgReaction = reactionTimesRef.current.length > 0
+      ? Math.round(reactionTimesRef.current.reduce((a, b) => a + b, 0) / reactionTimesRef.current.length) : 0;
+
+    if (isActive) {
+      updateSession({
+        score: newStats.score,
+        accuracy: newStats.accuracy,
+        correctMoves: newStats.perfectHits,
+        totalMoves: newStats.totalBeats,
+        avgReactionTime: avgReaction,
+      });
+    }
+
+    setGameState('feedback');
+
     setTimeout(() => {
-      if (newStats.level > stats.level) {
-        // Level up - increase difficulty
-        if (difficulty === 'easy' && newStats.level >= 4) {
-          setDifficulty('medium');
-        } else if (difficulty === 'medium' && newStats.level >= 7) {
-          setDifficulty('hard');
-        }
+      // Level up logic
+      if (newStats.streak >= 3 && newStats.totalRounds % 3 === 0) {
+        const newLevel = stats.level + 1;
+        setStats(prev => ({ ...prev, level: newLevel }));
+        if (difficulty === 'easy' && newLevel >= 4) setDifficulty('medium');
+        else if (difficulty === 'medium' && newLevel >= 7) setDifficulty('hard');
       }
-      startGame();
-    }, 2000);
-  }, [pattern, playerBeats, stats, difficulty, startGame, achievements]);
 
-  // Auto-evaluate after pattern completion or timeout
-  useEffect(() => {
-    if (gameState === 'playing' && playerBeats.length >= pattern.length) {
-      setTimeout(evaluatePerformance, 500);
-    }
-  }, [gameState, playerBeats, pattern, evaluatePerformance]);
-
-  // Keyboard controls
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (gameState !== 'playing') return;
-      
-      const key = event.code;
-      switch (key) {
-        case 'Space':
-          event.preventDefault();
-          handleBeatInput('kick');
-          break;
-        case 'KeyS':
-          handleBeatInput('snare');
-          break;
-        case 'KeyH':
-          handleBeatInput('hihat');
-          break;
-        case 'KeyC':
-          handleBeatInput('crash');
-          break;
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [gameState]);
-
-  // Pause/Resume game
-  const togglePause = () => {
-    if (gameState === 'playing') {
-      setGameState('paused');
-    } else if (gameState === 'paused') {
-      setGameState('playing');
-    }
+      // Next round
+      const nextPattern = generatePattern(difficulty, newStats.level);
+      setPattern(nextPattern);
+      setPlayerBeats([]);
+      setCurrentBeatIndex(-1);
+      setGameState('listening');
+      setTimeout(() => playPattern(nextPattern), 500);
+    }, 1500);
   };
 
-  // Reset game
+  const endGame = async () => {
+    const avgReaction = reactionTimesRef.current.length > 0
+      ? Math.round(reactionTimesRef.current.reduce((a, b) => a + b, 0) / reactionTimesRef.current.length) : 0;
+    if (isActive) {
+      await endSession({
+        score: stats.score,
+        accuracy: stats.accuracy,
+        avgReactionTime: avgReaction,
+        correctMoves: stats.perfectHits,
+        totalMoves: stats.totalBeats,
+      });
+    }
+    setGameState('gameOver');
+  };
+
   const resetGame = () => {
     if (patternTimerRef.current) clearTimeout(patternTimerRef.current);
-    if (gameTimerRef.current) clearTimeout(gameTimerRef.current);
-    
     setGameState('idle');
-    setPattern([]);
-    setPlayerBeats([]);
-    setCurrentBeatIndex(0);
-    setIsListening(false);
+    setPattern([]); setPlayerBeats([]);
     setDifficulty('easy');
-    setStats({
-      level: 1,
-      score: 0,
-      accuracy: 100,
-      perfectHits: 0,
-      totalBeats: 0,
-      streak: 0,
-      bestStreak: stats.bestStreak, // Keep best streak
-      bpm: 40,
-      xp: 0,
-      xpToNext: 100,
-      totalSessions: 0,
-      sessionProgress: 0,
-      justLeveledUp: false,
-      recentXpGain: 0
-    });
+    setStats({ level: 1, score: 0, accuracy: 100, perfectHits: 0, totalBeats: 0, streak: 0, bestStreak: 0, totalRounds: 0 });
+    reactionTimesRef.current = [];
   };
 
-  // Cleanup timers
   useEffect(() => {
-    return () => {
-      if (patternTimerRef.current) clearTimeout(patternTimerRef.current);
-      if (gameTimerRef.current) clearTimeout(gameTimerRef.current);
+    const handler = (e: KeyboardEvent) => {
+      if (gameState !== 'playing') return;
+      if (e.code === 'Space') { e.preventDefault(); handlePadTap('kick'); }
+      else if (e.key === 's' || e.key === 'S') handlePadTap('snare');
+      else if (e.key === 'h' || e.key === 'H') handlePadTap('hihat');
+      else if (e.key === 'c' || e.key === 'C') handlePadTap('crash');
     };
-  }, []);
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [gameState, playerBeats, pattern]);
 
-  // Login required check
+  useEffect(() => { return () => { if (patternTimerRef.current) clearTimeout(patternTimerRef.current); }; }, []);
+
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-card flex items-center justify-center p-6">
-        <Card className="max-w-md">
-          <CardHeader>
-            <CardTitle className="text-center">Acesso Restrito</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground">
-              Para jogar Ritmo Musical, você precisa fazer login.
-            </p>
-            <Button asChild>
-              <Link to="/auth">Fazer Login</Link>
-            </Button>
+      <div className="flex items-center justify-center min-h-[60vh] p-4">
+        <Card className="max-w-sm w-full">
+          <CardContent className="p-6 text-center space-y-3">
+            <p className="text-muted-foreground">Faça login para jogar.</p>
+            <Button asChild><a href="/auth">Login</a></Button>
           </CardContent>
         </Card>
       </div>
     );
   }
 
+  const avgReaction = reactionTimesRef.current.length > 0
+    ? Math.round(reactionTimesRef.current.reduce((a, b) => a + b, 0) / reactionTimesRef.current.length) : 0;
+  const visibleBeats = stats.level >= 5 ? (['kick', 'snare', 'hihat', 'crash'] as BeatType[]) :
+                        stats.level >= 3 ? (['kick', 'snare', 'hihat'] as BeatType[]) : (['kick', 'snare'] as BeatType[]);
+
   return (
-    <div className="min-h-screen bg-gradient-card py-8">
-      <div className="container mx-auto px-4 max-w-4xl">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <Button variant="ghost" asChild className="gap-2">
-            <Link to="/games">
-              <ArrowLeft className="w-4 h-4" />
-              Voltar aos Jogos
-            </Link>
-          </Button>
-          
-          <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl font-bold font-heading text-foreground">
-              🎵 Ritmo Musical
-            </h1>
-            <p className="text-muted-foreground text-sm">Coordenação temporal e ritmo</p>
-          </div>
+    <div className="max-w-lg mx-auto space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <GameExitButton variant="quit" onExit={endGame} showProgress={gameState === 'playing'} currentProgress={playerBeats.length} totalProgress={pattern.length} />
+        <h1 className="text-lg font-bold">🎵 Ritmo Musical</h1>
+        <Button variant="ghost" size="icon" onClick={() => setSoundEnabled(!soundEnabled)}>
+          {soundEnabled ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+        </Button>
+      </div>
 
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              className="gap-2"
-            >
-              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </Button>
-            {(gameState === 'playing' || gameState === 'paused') && (
-              <Button variant="outline" onClick={togglePause} size="sm" className="gap-2">
-                {gameState === 'playing' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                {gameState === 'playing' ? 'Pausar' : 'Retomar'}
-              </Button>
-            )}
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-2">
+        {[
+          { label: 'Nível', value: stats.level, color: 'text-primary' },
+          { label: 'Pontos', value: stats.score, color: 'text-success' },
+          { label: 'Precisão', value: `${Math.round(stats.accuracy)}%`, color: 'text-info' },
+          { label: 'Série', value: stats.streak, color: 'text-warning' },
+        ].map(s => (
+          <div key={s.label} className="text-center bg-card rounded-xl p-2 border border-border">
+            <div className={cn("text-lg font-bold", s.color)}>{s.value}</div>
+            <div className="text-[10px] text-muted-foreground">{s.label}</div>
           </div>
+        ))}
+      </div>
+
+      {/* Clinical Metric */}
+      {avgReaction > 0 && (
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <Sparkles className="h-3 w-3" />
+          <span>Tempo de reação: <strong className="text-foreground">{avgReaction}ms</strong></span>
         </div>
+      )}
 
-        {/* Stats Panel */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {/* Level Progress */}
-          <LevelProgress
-            currentLevel={stats.level}
-            currentXP={stats.xp}
-            xpToNext={stats.xpToNext}
-            levelProgress={(stats.xp / stats.xpToNext) * 100}
-            recentGain={stats.recentXpGain}
-            showLevelUp={stats.justLeveledUp}
-          />
-          
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <Card>
-              <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-success">{stats.score}</div>
-                <div className="text-xs text-muted-foreground">Pontos</div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-info">{Math.round(stats.accuracy)}%</div>
-                <div className="text-xs text-muted-foreground">Precisão</div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-secondary">{stats.bpm}</div>
-                <div className="text-xs text-muted-foreground">BPM</div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="p-3 text-center">
-                <div className="text-lg font-bold text-warning">{stats.streak}</div>
-                <div className="text-xs text-muted-foreground">
-                  <div className="flex items-center justify-center gap-1">
-                    <span>Sequência</span>
-                    {stats.streak >= 3 && <span className="text-accent">🔥</span>}
-                  </div>
+      {/* Main Game */}
+      <Card className="border-0 shadow-lg overflow-hidden">
+        <CardContent className="p-0">
+          <AnimatePresence mode="wait">
+            {gameState === 'idle' && (
+              <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="p-6 text-center space-y-5">
+                <div className="text-5xl">🎵</div>
+                <div>
+                  <h2 className="text-xl font-bold mb-1">Ritmo Musical</h2>
+                  <p className="text-sm text-muted-foreground">Ouça e reproduza padrões rítmicos</p>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
 
-        {/* Difficulty Selector */}
-        {gameState === 'idle' && (
-          <Card className="mb-6">
-            <CardContent className="p-4">
-              <div className="text-center">
-                <h3 className="font-semibold mb-4">Escolha a Dificuldade</h3>
+                {/* Difficulty */}
                 <div className="flex justify-center gap-2">
-                  {Object.entries(DIFFICULTY_SETTINGS).map(([key, settings]) => (
-                    <Button
-                      key={key}
-                      variant={difficulty === key ? "default" : "outline"}
-                      onClick={() => setDifficulty(key as Difficulty)}
-                      className="gap-2"
-                    >
-                      {key === 'easy' ? '🟢 Fácil' : key === 'medium' ? '🟡 Médio' : '🔴 Difícil'}
-                      <span className="text-xs">({settings.bpm} BPM)</span>
+                  {(['easy', 'medium', 'hard'] as Difficulty[]).map(d => (
+                    <Button key={d} size="sm" variant={difficulty === d ? 'default' : 'outline'} onClick={() => setDifficulty(d)} className="text-xs">
+                      {d === 'easy' ? '🟢 Fácil' : d === 'medium' ? '🟡 Médio' : '🔴 Difícil'}
                     </Button>
                   ))}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
 
-        {/* Game and Achievements Area */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Main Game Area */}
-          <div className="lg:col-span-2">
-            <Card className="mb-6">
-              <CardContent className="p-8">
-                {gameState === 'idle' && (
-                  <div className="text-center space-y-6">
-                    <div className="space-y-4">
-                      <h2 className="text-xl font-bold">Como Jogar</h2>
-                      <div className="space-y-2 text-left max-w-md mx-auto">
-                        <p className="flex items-center gap-2">
-                          <Music className="w-4 h-4 text-primary" />
-                          Ouça o padrão rítmico atentamente
-                        </p>
-                        <p className="flex items-center gap-2">
-                          <span className="w-4 h-4 text-primary">🎹</span>
-                          Reproduza usando mouse ou teclado
-                        </p>
-                        <p className="flex items-center gap-2">
-                          <span className="w-4 h-4 text-primary">⏱️</span>
-                          Mantenha o tempo correto
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <Button onClick={startGame} size="lg" className="gap-2">
-                      <Play className="w-5 h-5" />
-                      Começar Jogo
-                    </Button>
-                  </div>
-                )}
+                <Button onClick={startGame} size="lg" className="w-full h-14 text-lg font-bold rounded-2xl gap-2">
+                  <Play className="h-5 w-5 fill-current" /> Começar
+                </Button>
+              </motion.div>
+            )}
 
-                {gameState === 'listening' && (
-                  <div className="text-center space-y-6">
-                    <Badge variant="outline" className="text-lg p-3 mb-6">
-                      🎧 Ouça o padrão...
-                    </Badge>
-                    
-                    {/* Minimal Pattern Indicators - Fixed Position */}
-                    <div className="flex justify-center gap-3 flex-wrap min-h-[80px] items-center">
-                      {pattern.map((beat, index) => (
-                        <div
-                          key={beat.id}
-                          className={`w-16 h-16 rounded-full flex items-center justify-center text-2xl border-4 transition-all duration-200 ${
-                            index === currentBeatIndex && isListening
-                              ? `${BEAT_SOUNDS[beat.type].color} border-primary shadow-[0_0_20px_rgba(var(--primary),0.5)]`
-                              : `${BEAT_SOUNDS[beat.type].color} border-muted-foreground/30 opacity-70`
-                          }`}
-                        >
-                          {beat.type === 'kick' ? '🥁' : 
-                           beat.type === 'snare' ? '🪘' : 
-                           beat.type === 'hihat' ? '🎵' : '💥'}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {gameState === 'playing' && (
-                  <div className="space-y-6">
-                    {/* Current Pattern Display */}
-                    <div className="text-center">
-                      <Badge variant="outline" className="text-lg p-3 mb-4">
-                        🎹 Sua vez! Reproduza o padrão
-                      </Badge>
-                      
-                      {/* Pattern Display */}
-                      <div className="bg-muted/20 rounded-lg p-4 mb-6">
-                        <h4 className="text-sm font-medium text-muted-foreground mb-3">Padrão Alvo:</h4>
-                        <div className="flex justify-center gap-2 flex-wrap">
-                          {pattern.map((beat, index) => (
-                            <div
-                              key={beat.id}
-                              className={`w-12 h-12 rounded-full flex items-center justify-center text-lg border-2 ${BEAT_SOUNDS[beat.type].color} border-white shadow-sm`}
-                            >
-                              {beat.type === 'kick' ? '🥁' : 
-                               beat.type === 'snare' ? '🪘' : 
-                               beat.type === 'hihat' ? '🎵' : '💥'}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Interactive Drum Kit */}
-                    <div className="bg-gradient-to-br from-muted to-muted/80 dark:from-muted dark:to-muted/60 rounded-xl p-6">
-                      <h4 className="text-sm font-medium text-center text-muted-foreground mb-4">Kit de Bateria Virtual</h4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {Object.entries(BEAT_SOUNDS).map(([beatType, config]) => (
-                          <button
-                            key={beatType}
-                            onClick={() => handleBeatInput(beatType as BeatType)}
-                            className={`${config.color} hover:scale-105 active:scale-95 transition-all duration-150 rounded-xl p-4 text-primary-foreground font-medium shadow-lg hover:shadow-xl border-2 border-primary-foreground/20`}
-                          >
-                            <div className="text-2xl mb-1">
-                              {beatType === 'kick' ? '🥁' : 
-                               beatType === 'snare' ? '🪘' : 
-                               beatType === 'hihat' ? '🎵' : '💥'}
-                            </div>
-                            <div className="text-xs">{config.name}</div>
-                            <div className="text-xs opacity-75">{config.key}</div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Player Progress */}
-                    <div className="text-center">
-                      <div className="flex justify-center gap-2 flex-wrap">
-                        <span className="text-sm text-muted-foreground">Tocado:</span>
-                        {playerBeats.map((beat, index) => (
-                          <div
-                            key={index}
-                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${BEAT_SOUNDS[beat.type].color} border border-white shadow-sm`}
-                          >
-                            {beat.type === 'kick' ? '🥁' : 
-                             beat.type === 'snare' ? '🪘' : 
-                             beat.type === 'hihat' ? '🎵' : '💥'}
-                          </div>
-                        ))}
-                      </div>
-                      <Progress 
-                        value={(playerBeats.length / pattern.length) * 100} 
-                        className="w-full max-w-xs mx-auto mt-3"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {gameState === 'paused' && (
-                  <div className="text-center space-y-4">
-                    <h2 className="text-xl font-bold">Jogo Pausado</h2>
-                    <p className="text-muted-foreground">Clique em "Retomar" para continuar</p>
-                  </div>
-                )}
-
-                {gameState === 'gameOver' && (
-                  <div className="text-center space-y-6">
-                    <div className="space-y-2">
-                      <h2 className="text-xl font-bold">Fim de Jogo!</h2>
-                      <p className="text-muted-foreground">
-                        Você chegou ao nível {stats.level} com {stats.score} pontos
-                      </p>
-                      <div className="flex justify-center gap-4 text-sm">
-                        <div className="flex items-center gap-1">
-                          <Music className="w-4 h-4 text-info" />
-                          Precisão: {Math.round(stats.accuracy)}%
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Trophy className="w-4 h-4 text-secondary" />
-                          Melhor sequência: {stats.bestStreak}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex gap-4 justify-center">
-                      <Button onClick={startGame} className="gap-2">
-                        <Play className="w-4 h-4" />
-                        Jogar Novamente
-                      </Button>
-                      <Button variant="outline" onClick={resetGame} className="gap-2">
-                        <RotateCcw className="w-4 h-4" />
-                        Reiniciar
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Achievements Sidebar - Collapsible */}
-          <div className="lg:col-span-1">
-            <Collapsible open={achievementsOpen} onOpenChange={setAchievementsOpen}>
-              <Card>
-                <CollapsibleTrigger className="w-full">
-                  <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-                    <CardTitle className="flex items-center justify-between text-lg">
-                      <div className="flex items-center gap-2">
-                        <Trophy className="w-5 h-5 text-warning" />
-                        Conquistas
-                        <Badge variant="secondary" className="ml-2">
-                          {achievements.filter(a => a.unlocked).length}/{achievements.length}
-                        </Badge>
-                      </div>
-                      {achievementsOpen ? (
-                        <ChevronUp className="w-4 h-4" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4" />
-                      )}
-                    </CardTitle>
-                  </CardHeader>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <CardContent>
-                    <GameAchievements 
-                      achievements={achievements} 
-                      onAchievementComplete={(achievementId) => {
-                        setAchievements(prev => prev.map(a => 
-                          a.id === achievementId ? { ...a, justUnlocked: false } : a
-                        ));
-                        setAchievementsOpen(true); // Auto-expand on unlock
-                      }}
-                    />
-                  </CardContent>
-                </CollapsibleContent>
-              </Card>
-            </Collapsible>
-          </div>
-        </div>
-
-        {/* Keyboard Controls */}
-        <Card className="mb-6">
-          <CardContent className="p-4">
-            <h3 className="font-semibold mb-3 text-center">Controles do Teclado</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-              {Object.entries(BEAT_SOUNDS).map(([beatType, config]) => (
-                <div key={beatType} className="text-center p-2 bg-muted/50 rounded">
-                  <div className="text-lg mb-1">
-                    {beatType === 'kick' ? '🥁' : 
-                     beatType === 'snare' ? '🪘' : 
-                     beatType === 'hihat' ? '🎵' : '💥'}
-                  </div>
-                  <div className="font-medium">{config.name}</div>
-                  <div className="text-xs text-muted-foreground">{config.key}</div>
+            {gameState === 'listening' && (
+              <motion.div key="listen" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 text-center space-y-5">
+                <div className="text-sm font-medium text-muted-foreground">🎧 Ouça o padrão...</div>
+                <div className="flex justify-center gap-3">
+                  {pattern.map((beat, i) => {
+                    const cfg = BEAT_CONFIG[beat.type];
+                    return (
+                      <motion.div
+                        key={beat.id}
+                        animate={i === currentBeatIndex ? { scale: [1, 1.3, 1] } : {}}
+                        transition={{ duration: 0.2 }}
+                        className={cn(
+                          "w-16 h-16 rounded-2xl flex items-center justify-center text-2xl transition-all",
+                          i === currentBeatIndex ? cfg.activeColor : cfg.color
+                        )}
+                      >
+                        {cfg.emoji}
+                      </motion.div>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </motion.div>
+            )}
 
-        {/* Benefits */}
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-warning" />
-              Benefícios Terapêuticos
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div>
-                <h4 className="font-medium text-primary">Coordenação Motora</h4>
-                <p className="text-muted-foreground">Desenvolve sincronização entre movimento e tempo musical</p>
-              </div>
-              <div>
-                <h4 className="font-medium text-primary">Processamento Auditivo</h4>
-                <p className="text-muted-foreground">Melhora discriminação e sequenciamento de sons temporais</p>
-              </div>
-              <div>
-                <h4 className="font-medium text-primary">Ritmo Temporal</h4>
-                <p className="text-muted-foreground">Fortalece percepção de padrões e intervalos de tempo</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            {(gameState === 'playing' || gameState === 'feedback') && (
+              <motion.div key="play" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 space-y-4">
+                {/* Target pattern */}
+                <div className="flex justify-center gap-2">
+                  {pattern.map((beat, i) => {
+                    const cfg = BEAT_CONFIG[beat.type];
+                    const matched = i < playerBeats.length && playerBeats[i] === beat.type;
+                    const wrong = i < playerBeats.length && playerBeats[i] !== beat.type;
+                    return (
+                      <div key={beat.id} className={cn(
+                        "w-10 h-10 rounded-xl flex items-center justify-center text-lg border-2 transition-all",
+                        matched ? "border-success bg-success/20" :
+                        wrong ? "border-destructive bg-destructive/20" :
+                        i === playerBeats.length ? "border-primary bg-primary/10 animate-pulse" :
+                        "border-border bg-muted/30"
+                      )}>
+                        {cfg.emoji}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="text-center text-xs text-muted-foreground">
+                  {gameState === 'feedback' ? '✅ Avaliando...' : `Toque! ${playerBeats.length}/${pattern.length}`}
+                </div>
+
+                {/* Drum Pads - Large touch targets */}
+                <div className={cn(
+                  "grid gap-3",
+                  visibleBeats.length <= 2 ? "grid-cols-2" : "grid-cols-2"
+                )}>
+                  {visibleBeats.map(beatType => {
+                    const cfg = BEAT_CONFIG[beatType];
+                    const isActive = lastPad === beatType;
+                    return (
+                      <motion.button
+                        key={beatType}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => handlePadTap(beatType)}
+                        disabled={gameState !== 'playing'}
+                        className={cn(
+                          "rounded-2xl p-5 flex flex-col items-center justify-center transition-all min-h-[100px]",
+                          isActive ? cfg.activeColor : cfg.color,
+                          gameState === 'playing' && "active:brightness-125 cursor-pointer",
+                        )}
+                      >
+                        <span className="text-3xl mb-1">{cfg.emoji}</span>
+                        <span className="text-xs font-medium text-white/90">{cfg.name}</span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
+                {/* Progress */}
+                <Progress value={(playerBeats.length / pattern.length) * 100} className="h-1.5" />
+              </motion.div>
+            )}
+
+            {gameState === 'gameOver' && (
+              <motion.div key="over" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 text-center space-y-5">
+                <div className="text-5xl">🎶</div>
+                <h2 className="text-xl font-bold">Sessão Concluída!</h2>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { label: 'Nível', value: stats.level, icon: '🎯' },
+                    { label: 'Pontos', value: stats.score, icon: '⭐' },
+                    { label: 'Precisão', value: `${Math.round(stats.accuracy)}%`, icon: '🎯' },
+                    { label: 'Reação', value: avgReaction > 0 ? `${avgReaction}ms` : '—', icon: '⚡' },
+                  ].map(s => (
+                    <div key={s.label} className="p-3 bg-muted/50 rounded-xl">
+                      <div className="text-lg font-bold">{s.icon} {s.value}</div>
+                      <div className="text-[10px] text-muted-foreground">{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <Button onClick={() => { resetGame(); startGame(); }} className="h-12 gap-2 rounded-xl font-bold">
+                    <Play className="h-4 w-4 fill-current" /> Jogar
+                  </Button>
+                  <Button variant="outline" onClick={resetGame} className="h-12 gap-2 rounded-xl">
+                    <RotateCcw className="h-4 w-4" /> Menu
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+
+      {/* Benefits */}
+      <div className="grid grid-cols-3 gap-2 text-center">
+        {[
+          { icon: '🎵', label: 'Ritmo', desc: 'Temporal' },
+          { icon: '👂', label: 'Audição', desc: 'Percepção' },
+          { icon: '🤲', label: 'Motor', desc: 'Coordenação' },
+        ].map(b => (
+          <div key={b.label} className="p-3 bg-card rounded-xl border border-border">
+            <div className="text-xl mb-1">{b.icon}</div>
+            <div className="text-xs font-semibold">{b.label}</div>
+            <div className="text-[10px] text-muted-foreground">{b.desc}</div>
+          </div>
+        ))}
       </div>
     </div>
   );
