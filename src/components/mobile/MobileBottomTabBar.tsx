@@ -98,21 +98,25 @@ export function MobileBottomTabBar({ fabAction, fabRoute }: MobileBottomTabBarPr
         <div className="fixed inset-0 z-[60]" onClick={() => setMoreOpen(false)}>
           <div className="absolute inset-0 bg-black/40" />
           <div
-            className="absolute bottom-0 left-0 right-0 bg-card rounded-t-3xl max-h-[70vh] overflow-y-auto animate-in slide-in-from-bottom duration-200"
+            className="absolute bottom-0 left-0 right-0 bg-card rounded-t-3xl max-h-[75vh] overflow-y-auto animate-in slide-in-from-bottom duration-200"
             onClick={(e) => e.stopPropagation()}
-            style={{ paddingBottom: 'env(safe-area-inset-bottom, 16px)' }}
           >
-            <div className="flex items-center justify-between px-5 pt-4 pb-2 border-b border-border/50">
-              <h2 className="text-base font-bold text-foreground">Navegação Completa</h2>
-              <button
-                onClick={() => setMoreOpen(false)}
-                className="p-2 rounded-full hover:bg-muted tap-feedback"
-                aria-label="Fechar"
-              >
-                <X className="w-5 h-5 text-muted-foreground" />
-              </button>
+            <div className="sticky top-0 bg-card rounded-t-3xl z-10">
+              <div className="flex justify-center pt-3 pb-1">
+                <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
+              </div>
+              <div className="flex items-center justify-between px-5 pb-3 border-b border-border/50">
+                <h2 className="text-base font-bold text-foreground">Navegação Completa</h2>
+                <button
+                  onClick={() => setMoreOpen(false)}
+                  className="p-2 rounded-full hover:bg-muted tap-feedback"
+                  aria-label="Fechar"
+                >
+                  <X className="w-5 h-5 text-muted-foreground" />
+                </button>
+              </div>
             </div>
-            <div className="px-4 py-3 space-y-4">
+            <div className="px-4 py-3 space-y-4 pb-8">
               {adminSections.map((section) => (
                 <div key={section.id}>
                   <h3 className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
@@ -151,9 +155,14 @@ export function MobileBottomTabBar({ fabAction, fabRoute }: MobileBottomTabBarPr
         className="fixed bottom-0 left-0 right-0 z-50 no-print"
         role="navigation"
         aria-label="Navegação principal"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
-        <div className="bg-card border-t border-border/50" style={{ boxShadow: '0 -1px 0 rgba(0,0,0,0.06)' }}>
+        <div
+          className="bg-card border-t border-border/50"
+          style={{
+            boxShadow: '0 -1px 0 rgba(0,0,0,0.06)',
+            paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+          }}
+        >
           <div className="flex items-center justify-around h-16 relative">
             {/* Left tabs */}
             {leftItems.map(renderTab)}
