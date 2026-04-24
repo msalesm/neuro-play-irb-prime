@@ -1,8 +1,10 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
-import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen, ArrowLeft } from "lucide-react";
+import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen, ArrowLeft, Search, X } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { GameIllustration } from "@/components/games";
@@ -198,6 +200,8 @@ const gamesList = [
 export default function Games() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string>('all');
 
   if (!user) {
     return (
@@ -221,6 +225,32 @@ export default function Games() {
 
   const basicGames = gamesList.filter(g => g.type === 'basic');
   const diagnosticGames = gamesList.filter(g => g.type === 'diagnostic');
+
+  // Build category list from basic games (short labels)
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    basicGames.forEach(g => {
+      // Use first part before "&" as compact label
+      const compact = g.category.split('&')[0].trim();
+      set.add(compact);
+    });
+    return ['all', ...Array.from(set).sort()];
+  }, [basicGames]);
+
+  const normalize = (s: string) =>
+    s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+  const filteredBasicGames = useMemo(() => {
+    const q = normalize(searchTerm.trim());
+    return basicGames.filter(g => {
+      const compact = g.category.split('&')[0].trim();
+      const matchesCategory = activeCategory === 'all' || compact === activeCategory;
+      if (!matchesCategory) return false;
+      if (!q) return true;
+      const haystack = normalize(`${g.title} ${g.description} ${g.category} ${g.features.join(' ')}`);
+      return haystack.includes(q);
+    });
+  }, [basicGames, searchTerm, activeCategory]);
 
   return (
     <>
