@@ -16,6 +16,8 @@ import { toast } from 'sonner';
 import { ArrowLeft, FileText, AlertCircle, MessageSquare, Plus, Loader2, Calendar, TrendingUp } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/gamification';
 import { StudentTraitProfile } from '@/components/educacao/StudentTraitProfile';
+import { ParentTeacherNotes } from '@/components/educacao/ParentTeacherNotes';
+import { PedagogicalReportButton } from '@/components/educacao/PedagogicalReportPDF';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -221,6 +223,10 @@ export default function TeacherStudentView() {
                   )}
                 </div>
               </div>
+              <PedagogicalReportButton
+                studentId={student.id}
+                studentName={student.name}
+              />
             </div>
           </CardContent>
         </Card>
@@ -487,22 +493,11 @@ export default function TeacherStudentView() {
 
           {/* Communication Tab */}
           <TabsContent value="communication">
-            <Card>
-              <CardHeader>
-                <CardTitle>Comunicação Escola-Família-Terapeuta</CardTitle>
-                <CardDescription>
-                  Canal de comunicação para acompanhamento integrado
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-center py-12 text-muted-foreground">
-                  <div className="text-center">
-                    <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>Sistema de mensagens em breve</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <ParentTeacherNotes
+              childId={student.id}
+              childName={student.name}
+              asRole="teacher"
+            />
           </TabsContent>
         </Tabs>
       </div>
