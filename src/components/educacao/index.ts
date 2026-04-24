@@ -10,3 +10,4 @@ export { ClassAnnouncementsBoard } from './ClassAnnouncementsBoard';
 export { ParentTeacherNotes } from './ParentTeacherNotes';
 export { ParentSchoolUpdates } from './ParentSchoolUpdates';
 export { PedagogicalReportButton } from './PedagogicalReportPDF';
+export { EmptyState } from './EmptyState';
