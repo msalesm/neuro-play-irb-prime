@@ -2,18 +2,72 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Sparkles, Lightbulb, Heart } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 import { useTraitProfile } from '@/hooks/useTraitProfile';
 import { traitToneClass } from '@/modules/behavioral/trait-profile-engine';
 
 interface StudentTraitProfileProps {
+  /** Pass either a child_profile_id directly OR a children.id with `resolveFromChildId` */
   childId: string | undefined;
+  /** When true, treats `childId` as `children.id` and resolves the matching child_profile_id */
+  resolveFromChildId?: boolean;
   studentName?: string;
   /** Compact mode renders a tighter card (used inside lists) */
   compact?: boolean;
 }
 
-export function StudentTraitProfile({ childId, studentName, compact = false }: StudentTraitProfileProps) {
-  const { data, isLoading } = useTraitProfile(childId);
+export function StudentTraitProfile({
+  childId,
+  studentName,
+  compact = false,
+  resolveFromChildId = false,
+}: StudentTraitProfileProps) {
+  const [resolvedId, setResolvedId] = useState<string | undefined>(
+    resolveFromChildId ? undefined : childId,
+  );
+
+  useEffect(() => {
+    if (!resolveFromChildId) {
+      setResolvedId(childId);
+      return;
+    }
+    if (!childId) {
+      setResolvedId(undefined);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      // Try child_profiles.child_id FK first
+      const { data: byId } = await (supabase
+        .from('child_profiles')
+        .select('id') as any)
+        .eq('child_id', childId)
+        .maybeSingle();
+      if (cancelled) return;
+      if (byId) {
+        setResolvedId(byId.id);
+        return;
+      }
+      // Fallback: lookup via children.parent_id + name
+      const { data: child } = await supabase
+        .from('children')
+        .select('parent_id, name')
+        .eq('id', childId)
+        .maybeSingle();
+      if (cancelled || !child?.parent_id) return;
+      const { data: byParent } = await supabase
+        .from('child_profiles')
+        .select('id')
+        .eq('parent_user_id', child.parent_id)
+        .eq('name', child.name)
+        .maybeSingle();
+      if (!cancelled) setResolvedId(byParent?.id);
+    })();
+    return () => { cancelled = true; };
+  }, [childId, resolveFromChildId]);
+
+  const { data, isLoading } = useTraitProfile(resolvedId);
 
   if (isLoading) {
     return (
