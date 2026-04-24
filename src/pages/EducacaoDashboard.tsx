@@ -299,11 +299,11 @@ export default function EducacaoDashboard() {
                 </TabsTrigger>
                 <TabsTrigger value="scan" className="gap-1.5">
                   <Scan className="h-4 w-4" />
-                  <span className="hidden sm:inline">Triagem</span>
+                  <span className="hidden sm:inline">Avaliação</span>
                 </TabsTrigger>
                 <TabsTrigger value="mapa" className="gap-1.5">
                   <MapPin className="h-4 w-4" />
-                  <span className="hidden sm:inline">Vulnerabilidade</span>
+                  <span className="hidden sm:inline">Perfil</span>
                 </TabsTrigger>
                 <TabsTrigger value="ia" className="gap-1.5">
                   <Sparkles className="h-4 w-4" />
@@ -464,7 +464,7 @@ export default function EducacaoDashboard() {
                 />
               </TabsContent>
 
-              {/* === TAB: Mapa de Vulnerabilidade === */}
+              {/* === TAB: Perfil Pedagógico === */}
               <TabsContent value="mapa" className="mt-4">
                 <VulnerabilityMap
                   observations={observations}

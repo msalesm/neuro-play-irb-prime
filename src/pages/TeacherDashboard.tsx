@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Users, Activity, GraduationCap, Sparkles, BookOpen,
-  AlertTriangle, TrendingUp, Target, Scan, Brain, Stethoscope,
+  Heart, TrendingUp, Target, Scan, Brain, Stethoscope, ChevronRight,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserRole } from '@/hooks/useUserRole';
@@ -32,7 +32,16 @@ export default function TeacherDashboard() {
   const { user } = useAuth();
   const { isAdmin } = useUserRole();
   const [activeTab, setActiveTab] = useState<string>('alunos');
-  const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
+  const SELECTED_CLASS_KEY = 'np-teacher-selected-class';
+  const [selectedClassId, setSelectedClassId] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem(SELECTED_CLASS_KEY);
+  });
+
+  // Persist selected class
+  useEffect(() => {
+    if (selectedClassId) localStorage.setItem(SELECTED_CLASS_KEY, selectedClassId);
+  }, [selectedClassId]);
 
   // Fetch classes list
   const { data: classesList = [] } = useQuery({
@@ -268,44 +277,52 @@ export default function TeacherDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-primary/10">
-            <GraduationCap className="h-5 w-5 text-primary" />
+      {/* Hero Card with persistent class selector */}
+      <Card className="border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-background overflow-hidden">
+        <CardContent className="p-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="h-12 w-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
+                <GraduationCap className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-lg sm:text-xl font-bold text-foreground leading-tight">
+                  Olá, professor(a) 👋
+                </h1>
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Acompanhe o desenvolvimento dos seus alunos
+                </p>
+              </div>
+            </div>
+            <Button asChild variant="outline" size="sm" className="self-start sm:self-auto">
+              <Link to="/teacher/classes">
+                <Users className="h-4 w-4 mr-2" />
+                Minhas Turmas
+              </Link>
+            </Button>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-foreground">Painel do Professor</h1>
-            <p className="text-xs text-muted-foreground">Desenvolvimento dos alunos</p>
-          </div>
-        </div>
-        <div className="flex gap-1.5">
-          <Button asChild variant="outline" size="sm" className="h-8 px-2.5 text-xs">
-            <Link to="/teacher/classes">
-              <Users className="h-3.5 w-3.5 mr-1" />
-              Turmas
-            </Link>
-          </Button>
-        </div>
-      </div>
 
-      {/* Class Selector */}
-      {classesList.length > 0 && (
-        <div className="flex items-center gap-3">
-          <Select value={selectedClassId || ''} onValueChange={setSelectedClassId}>
-            <SelectTrigger className="w-full sm:w-72">
-              <SelectValue placeholder="Selecionar turma" />
-            </SelectTrigger>
-            <SelectContent>
-              {classesList.map(c => (
-                <SelectItem key={c.id} value={c.id}>
-                  {c.name} – {c.grade_level} ({c.school_year})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
+          {classesList.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-border/50">
+              <label className="text-xs font-medium text-muted-foreground mb-2 block">
+                Turma selecionada
+              </label>
+              <Select value={selectedClassId || ''} onValueChange={setSelectedClassId}>
+                <SelectTrigger className="w-full bg-background/80 h-12 text-base">
+                  <SelectValue placeholder="Selecionar turma" />
+                </SelectTrigger>
+                <SelectContent>
+                  {classesList.map(c => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.name} – {c.grade_level} ({c.school_year})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Cognitive Profile of Selected Class */}
       {selectedClassId && (
@@ -376,25 +393,55 @@ export default function TeacherDashboard() {
       </div>
 
       {!statsLoading && stats.needsSupport > 0 && (
-        <Alert className="border-destructive/20 bg-destructive/5">
-          <AlertTriangle className="h-4 w-4 text-destructive" />
-          <AlertDescription className="text-destructive">
-            <strong>{stats.needsSupport}</strong> aluno(s) apresentam indicadores que merecem acompanhamento.
-            Verifique o progresso individual para sugestões de atividades de apoio.
+        <Alert className="border-primary/20 bg-primary/5">
+          <Heart className="h-4 w-4 text-primary" />
+          <AlertDescription className="text-foreground">
+            <strong>{stats.needsSupport}</strong> aluno(s) podem se beneficiar de um olhar mais próximo.
+            Veja o perfil individual para sugestões de atividades acolhedoras.
           </AlertDescription>
         </Alert>
       )}
 
+      {/* Quick Action Cards (mobile-first) */}
+      <div className="grid grid-cols-2 gap-3 sm:hidden">
+        {[
+          { tab: 'alunos', icon: Users, label: 'Alunos', color: 'text-primary', bg: 'bg-primary/10' },
+          { tab: 'triagem', icon: Scan, label: 'Avaliação', color: 'text-chart-2', bg: 'bg-chart-2/10' },
+          { tab: 'evolucao', icon: TrendingUp, label: 'Evolução', color: 'text-chart-3', bg: 'bg-chart-3/10' },
+          { tab: 'atividades', icon: Sparkles, label: 'Atividades', color: 'text-chart-4', bg: 'bg-chart-4/10' },
+        ].map(action => {
+          const Icon = action.icon;
+          const active = activeTab === action.tab;
+          return (
+            <button
+              key={action.tab}
+              onClick={() => setActiveTab(action.tab)}
+              className={`p-4 rounded-2xl border transition-all text-left tap-feedback ${
+                active
+                  ? 'border-primary bg-primary/5 shadow-sm'
+                  : 'border-border bg-card hover:border-primary/40'
+              }`}
+            >
+              <div className={`h-10 w-10 rounded-xl ${action.bg} flex items-center justify-center mb-2`}>
+                <Icon className={`h-5 w-5 ${action.color}`} />
+              </div>
+              <p className="font-semibold text-sm text-foreground">{action.label}</p>
+              <ChevronRight className={`h-4 w-4 mt-1 ${active ? 'text-primary' : 'text-muted-foreground'}`} />
+            </button>
+          );
+        })}
+      </div>
+
       {/* Main content tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="hidden sm:grid w-full grid-cols-6">
           <TabsTrigger value="alunos" className="gap-1.5">
             <Users className="h-4 w-4" />
             <span className="hidden sm:inline">Alunos</span>
           </TabsTrigger>
           <TabsTrigger value="triagem" className="gap-1.5">
             <Scan className="h-4 w-4" />
-            <span className="hidden sm:inline">Triagem</span>
+            <span className="hidden sm:inline">Avaliação</span>
           </TabsTrigger>
           <TabsTrigger value="evolucao" className="gap-1.5">
             <TrendingUp className="h-4 w-4" />
@@ -402,7 +449,7 @@ export default function TeacherDashboard() {
           </TabsTrigger>
           <TabsTrigger value="intervencoes" className="gap-1.5">
             <Stethoscope className="h-4 w-4" />
-            <span className="hidden sm:inline">Intervenções</span>
+            <span className="hidden sm:inline">Sugestões</span>
           </TabsTrigger>
           <TabsTrigger value="atividades" className="gap-1.5">
             <Sparkles className="h-4 w-4" />
