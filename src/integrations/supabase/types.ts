@@ -3067,6 +3067,50 @@ export type Database = {
         }
         Relationships: []
       }
+      class_announcements: {
+        Row: {
+          category: string
+          class_id: string
+          created_at: string
+          id: string
+          message: string
+          pinned: boolean
+          teacher_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          class_id: string
+          created_at?: string
+          id?: string
+          message: string
+          pinned?: boolean
+          teacher_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          class_id?: string
+          created_at?: string
+          id?: string
+          message?: string
+          pinned?: boolean
+          teacher_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_announcements_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "school_classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       class_students: {
         Row: {
           child_id: string
