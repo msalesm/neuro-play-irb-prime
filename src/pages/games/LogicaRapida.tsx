@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, RotateCcw, Zap, Trophy, Clock, Sparkles } from "lucide-react";
+import { hapticsEngine } from "@/lib/haptics";
 import { useAuth } from "@/hooks/useAuth";
 import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton, GameResultsDashboard } from '@/components/games';
@@ -164,8 +165,10 @@ export default function LogicaRapida() {
 
     if (isCorrect) {
       audio.playSuccess('medium');
+      hapticsEngine.trigger('success');
     } else {
       audio.playError('soft');
+      hapticsEngine.trigger('error');
     }
 
     const newStats = {
@@ -195,6 +198,7 @@ export default function LogicaRapida() {
     setTimeout(() => {
       if (newStats.questionsInLevel >= 5 && newStats.streak >= 3) {
         audio.playLevelUp();
+        hapticsEngine.trigger('achievement');
         setStats(prev => ({ ...prev, level: Math.min(prev.level + 1, 10), questionsInLevel: 0 }));
       } else if (newStats.questionsInLevel >= 5) {
         setStats(prev => ({ ...prev, questionsInLevel: 0 }));

@@ -1,8 +1,10 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
-import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen, ArrowLeft } from "lucide-react";
+import { Play, Clock, Users, Target, Lock, Trophy, Gamepad2, Activity, BookOpen, ArrowLeft, Search, X } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { GameIllustration } from "@/components/games";
@@ -198,6 +200,8 @@ const gamesList = [
 export default function Games() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string>('all');
 
   if (!user) {
     return (
@@ -221,6 +225,32 @@ export default function Games() {
 
   const basicGames = gamesList.filter(g => g.type === 'basic');
   const diagnosticGames = gamesList.filter(g => g.type === 'diagnostic');
+
+  // Build category list from basic games (short labels)
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    basicGames.forEach(g => {
+      // Use first part before "&" as compact label
+      const compact = g.category.split('&')[0].trim();
+      set.add(compact);
+    });
+    return ['all', ...Array.from(set).sort()];
+  }, [basicGames]);
+
+  const normalize = (s: string) =>
+    s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+  const filteredBasicGames = useMemo(() => {
+    const q = normalize(searchTerm.trim());
+    return basicGames.filter(g => {
+      const compact = g.category.split('&')[0].trim();
+      const matchesCategory = activeCategory === 'all' || compact === activeCategory;
+      if (!matchesCategory) return false;
+      if (!q) return true;
+      const haystack = normalize(`${g.title} ${g.description} ${g.category} ${g.features.join(' ')}`);
+      return haystack.includes(q);
+    });
+  }, [basicGames, searchTerm, activeCategory]);
 
   return (
     <>
@@ -316,8 +346,63 @@ export default function Games() {
                 Jogos Disponíveis
               </span>
             </h2>
+
+            {/* Search + category chips */}
+            <div className="mb-5 md:mb-8 max-w-3xl mx-auto space-y-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary-foreground/60" />
+                <Input
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Buscar jogo por nome ou habilidade..."
+                  className="pl-9 pr-9 h-11 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus-visible:ring-accent"
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm('')}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 rounded-md flex items-center justify-center text-primary-foreground/60 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                    aria-label="Limpar busca"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setActiveCategory(cat)}
+                    className={cn(
+                      'px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-colors border',
+                      activeCategory === cat
+                        ? 'bg-accent text-accent-foreground border-accent shadow'
+                        : 'bg-primary-foreground/5 text-primary-foreground/80 border-primary-foreground/20 hover:bg-primary-foreground/10'
+                    )}
+                  >
+                    {cat === 'all' ? 'Todos' : cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {filteredBasicGames.length === 0 ? (
+              <div className="text-center py-12 text-primary-foreground/70">
+                <Gamepad2 className="h-10 w-10 mx-auto mb-3 opacity-50" />
+                <p className="text-sm md:text-base">Nenhum jogo encontrado para esses filtros.</p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="mt-3 text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  onClick={() => { setSearchTerm(''); setActiveCategory('all'); }}
+                >
+                  Limpar filtros
+                </Button>
+              </div>
+            ) : (
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-              {basicGames.map((game, index) => (
+              {filteredBasicGames.map((game, index) => (
                 <Card 
                   key={game.id}
                   data-tour={index === 0 ? "game-card" : undefined}
@@ -395,6 +480,7 @@ export default function Games() {
                 </Card>
               ))}
             </div>
+            )}
           </div>
 
           {/* Diagnostic Games */}

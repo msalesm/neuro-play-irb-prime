@@ -25,6 +25,7 @@ import { ClassroomScan } from '@/components/educacao/ClassroomScan';
 import { InterventionRecommendations } from '@/components/educacao/InterventionRecommendations';
 import { ClassTraitOverview } from '@/components/educacao/ClassTraitOverview';
 import { ClassAnnouncementsBoard } from '@/components/educacao/ClassAnnouncementsBoard';
+import { EmptyState } from '@/components/educacao/EmptyState';
 import { generateClassInterventions } from '@/modules/intervention-protocols';
 import { calculateClassNCI } from '@/modules/cognitive-index';
 import { useQuery as useQueryTanstack } from '@tanstack/react-query';
@@ -327,7 +328,7 @@ export default function TeacherDashboard() {
       </Card>
 
       {/* Cognitive Profile of Selected Class */}
-      {selectedClassId && (
+      {selectedClassId ? (
         <>
           <ClassTraitOverview
             classId={selectedClassId}
@@ -343,6 +344,14 @@ export default function TeacherDashboard() {
             className={classesList.find(c => c.id === selectedClassId)?.name}
           />
         </>
+      ) : (
+        <EmptyState
+          Icon={GraduationCap}
+          title="Crie sua primeira turma"
+          description="Você ainda não tem turmas cadastradas. Crie uma turma para começar a acompanhar o desenvolvimento dos seus alunos."
+          ctaLabel="Gerenciar turmas"
+          ctaTo="/teacher/classes"
+        />
       )}
 
       {/* Stats Cards */}

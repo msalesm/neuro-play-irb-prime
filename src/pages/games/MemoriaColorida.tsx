@@ -8,6 +8,7 @@ import { useGameSession } from '@/hooks/useGameSession';
 import { useGameHistory } from '@/hooks/useGameHistory';
 import { GameExitButton } from '@/components/games';
 import { simonSoundEngine, SimonColor } from "@/lib/simonSounds";
+import { hapticsEngine } from "@/lib/haptics";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { supabase } from '@/integrations/supabase/client';
@@ -126,11 +127,13 @@ export default function MemoriaColorida() {
     const newPlayerSequence = [...playerSequence, color];
     setPlayerSequence(newPlayerSequence);
     simonSoundEngine.playColorTone(color, 0.2);
+    hapticsEngine.trigger('tap');
 
     if (color === sequence[playerSequence.length]) {
       if (newPlayerSequence.length === sequence.length) {
         setLastFeedback('correct');
         simonSoundEngine.playSuccessSound();
+        hapticsEngine.trigger('success');
 
         const newStats = {
           ...stats,
@@ -164,6 +167,7 @@ export default function MemoriaColorida() {
           setGameSpeed(prev => Math.max(400, prev - 100));
         }
         if (newStats.level % 5 === 0) simonSoundEngine.playVictoryFanfare();
+        if (newStats.level % 5 === 0) hapticsEngine.trigger('achievement');
 
         setTimeout(() => {
           setLastFeedback(null);
@@ -178,6 +182,7 @@ export default function MemoriaColorida() {
     } else {
       setLastFeedback('wrong');
       simonSoundEngine.playErrorSound();
+      hapticsEngine.trigger('error');
 
       const finalStats = { ...stats, streak: 0, totalAttempts: stats.totalAttempts + 1 };
       setStats(finalStats);
