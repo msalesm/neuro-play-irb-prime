@@ -9,6 +9,7 @@ import { useGameSession } from '@/hooks/useGameSession';
 import { GameExitButton } from '@/components/games';
 import { cn } from "@/lib/utils";
 import { supabase } from '@/integrations/supabase/client';
+import { hapticsEngine } from "@/lib/haptics";
 
 type BeatType = 'kick' | 'snare' | 'hihat' | 'crash';
 type Difficulty = 'easy' | 'medium' | 'hard';
@@ -203,6 +204,7 @@ export default function RitmoMusical() {
 
     const newBeats = [...playerBeats, beatType];
     setPlayerBeats(newBeats);
+    hapticsEngine.trigger('tap');
 
     if (newBeats.length >= pattern.length) {
       evaluateRound(newBeats);
@@ -229,6 +231,11 @@ export default function RitmoMusical() {
       bestStreak: Math.max(stats.bestStreak, roundAccuracy >= 70 ? stats.streak + 1 : stats.streak),
     };
     setStats(newStats);
+
+    // Haptic feedback based on round accuracy
+    if (roundAccuracy >= 80) hapticsEngine.trigger('success');
+    else if (roundAccuracy >= 50) hapticsEngine.trigger('warning');
+    else hapticsEngine.trigger('error');
 
     const avgReaction = reactionTimesRef.current.length > 0
       ? Math.round(reactionTimesRef.current.reduce((a, b) => a + b, 0) / reactionTimesRef.current.length) : 0;
