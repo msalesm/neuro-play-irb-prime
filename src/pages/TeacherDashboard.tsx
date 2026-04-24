@@ -23,6 +23,7 @@ import { ClassCognitiveProfile } from '@/components/educacao/ClassCognitiveProfi
 import { ClassEvolutionChart } from '@/components/educacao/ClassEvolutionChart';
 import { ClassroomScan } from '@/components/educacao/ClassroomScan';
 import { InterventionRecommendations } from '@/components/educacao/InterventionRecommendations';
+import { ClassTraitOverview } from '@/components/educacao/ClassTraitOverview';
 import { generateClassInterventions } from '@/modules/intervention-protocols';
 import { calculateClassNCI } from '@/modules/cognitive-index';
 import { useQuery as useQueryTanstack } from '@tanstack/react-query';
@@ -326,11 +327,17 @@ export default function TeacherDashboard() {
 
       {/* Cognitive Profile of Selected Class */}
       {selectedClassId && (
-        <ClassCognitiveProfile
-          classId={selectedClassId}
-          className={classesList.find(c => c.id === selectedClassId)?.name}
-          studentCount={classStudents.length}
-        />
+        <>
+          <ClassTraitOverview
+            classId={selectedClassId}
+            className={classesList.find(c => c.id === selectedClassId)?.name}
+          />
+          <ClassCognitiveProfile
+            classId={selectedClassId}
+            className={classesList.find(c => c.id === selectedClassId)?.name}
+            studentCount={classStudents.length}
+          />
+        </>
       )}
 
       {/* Stats Cards */}

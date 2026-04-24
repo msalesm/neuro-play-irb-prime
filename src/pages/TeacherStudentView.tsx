@@ -15,6 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { ArrowLeft, FileText, AlertCircle, MessageSquare, Plus, Loader2, Calendar, TrendingUp } from 'lucide-react';
 import { ChildAvatarDisplay } from '@/components/gamification';
+import { StudentTraitProfile } from '@/components/educacao/StudentTraitProfile';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -282,38 +283,12 @@ export default function TeacherStudentView() {
           </TabsContent>
 
           {/* Progress Tab */}
-          <TabsContent value="progress">
-            <Card>
-              <CardHeader>
-                <CardTitle>Progresso por Trilha</CardTitle>
-                <CardDescription>Visão simplificada do desempenho do aluno</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Atenção Sustentada</span>
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-success" />
-                      <Badge variant="secondary">75%</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Memória de Trabalho</span>
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-warning" />
-                      <Badge variant="secondary">60%</Badge>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Processamento Fonológico</span>
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-success" />
-                      <Badge variant="secondary">82%</Badge>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <TabsContent value="progress" className="space-y-4">
+            <StudentTraitProfile
+              childId={studentId}
+              studentName={student?.name}
+              resolveFromChildId
+            />
           </TabsContent>
 
           {/* Occurrences Tab */}
