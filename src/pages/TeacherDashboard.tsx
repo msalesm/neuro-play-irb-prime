@@ -24,6 +24,7 @@ import { ClassEvolutionChart } from '@/components/educacao/ClassEvolutionChart';
 import { ClassroomScan } from '@/components/educacao/ClassroomScan';
 import { InterventionRecommendations } from '@/components/educacao/InterventionRecommendations';
 import { ClassTraitOverview } from '@/components/educacao/ClassTraitOverview';
+import { ClassAnnouncementsBoard } from '@/components/educacao/ClassAnnouncementsBoard';
 import { generateClassInterventions } from '@/modules/intervention-protocols';
 import { calculateClassNCI } from '@/modules/cognitive-index';
 import { useQuery as useQueryTanstack } from '@tanstack/react-query';
@@ -336,6 +337,10 @@ export default function TeacherDashboard() {
             classId={selectedClassId}
             className={classesList.find(c => c.id === selectedClassId)?.name}
             studentCount={classStudents.length}
+          />
+          <ClassAnnouncementsBoard
+            classId={selectedClassId}
+            className={classesList.find(c => c.id === selectedClassId)?.name}
           />
         </>
       )}

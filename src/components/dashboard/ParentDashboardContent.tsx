@@ -13,6 +13,7 @@ import { BehavioralProfileWidget } from '@/components/dashboard/BehavioralProfil
 import { ReportGeneratorWidget } from '@/components/dashboard/ReportGeneratorWidget';
 import { AppointmentReminders } from '@/components/clinic/AppointmentReminders';
 import type { ChildProfile, SessionData, CognitiveScores } from '@/hooks/useParentDashboard';
+import { ParentSchoolUpdates } from '@/components/educacao/ParentSchoolUpdates';
 
 interface ParentDashboardContentProps {
   children: ChildProfile[];
@@ -342,8 +343,9 @@ export function ParentDashboardContent({
 
       {/* Tabs */}
       <Tabs defaultValue="cognitive" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5">
           <TabsTrigger value="cognitive" className="text-xs sm:text-sm">Perfil Cognitivo</TabsTrigger>
+          <TabsTrigger value="school" className="text-xs sm:text-sm">Escola</TabsTrigger>
           <TabsTrigger value="achievements" className="text-xs sm:text-sm">Conquistas</TabsTrigger>
           <TabsTrigger value="progress" className="text-xs sm:text-sm">Progresso</TabsTrigger>
           <TabsTrigger value="history" className="text-xs sm:text-sm">Histórico</TabsTrigger>
@@ -369,6 +371,19 @@ export function ParentDashboardContent({
               </div>
             ) : <p className="text-muted-foreground text-center py-8">Complete mais sessões para visualizar</p>}
           </Card>
+        </TabsContent>
+
+        <TabsContent value="school">
+          {selectedChildData ? (
+            <ParentSchoolUpdates
+              childId={selectedChildData.id}
+              childName={selectedChildData.name}
+            />
+          ) : (
+            <Card className="p-6 text-center text-muted-foreground">
+              Selecione um filho para ver os avisos da escola.
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="achievements"><TourAchievementsPanel /></TabsContent>

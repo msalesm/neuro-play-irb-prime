@@ -6,3 +6,7 @@ export { EducationalAlerts } from './EducationalAlerts';
 export { AISuggestions } from './AISuggestions';
 export { ClassGamification } from './ClassGamification';
 export { generateStudentPDF, StudentReportButton } from './StudentReportPDF';
+export { ClassAnnouncementsBoard } from './ClassAnnouncementsBoard';
+export { ParentTeacherNotes } from './ParentTeacherNotes';
+export { ParentSchoolUpdates } from './ParentSchoolUpdates';
+export { PedagogicalReportButton } from './PedagogicalReportPDF';
