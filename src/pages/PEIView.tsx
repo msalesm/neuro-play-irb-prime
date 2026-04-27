@@ -815,6 +815,30 @@ const getStatusLabel = (status: string) => {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            <TabsContent value="badges">
+              <PEIBadgesPanel
+                goals={goals.map((g) => ({
+                  id: g.id,
+                  area: g.area,
+                  objective: g.objective,
+                  progress: g.progress,
+                }))}
+                milestones={milestones}
+                isEditing={isEditing}
+                onAddMilestone={handleAddMilestone}
+              />
+            </TabsContent>
+
+            <TabsContent value="signature">
+              <PEISignaturePanel
+                signatures={signatures}
+                isEditing={isEditing}
+                defaultSignerName={user?.user_metadata?.full_name || user?.email || ''}
+                defaultSignerRole={isTeacher ? 'Professor(a)' : isAdmin ? 'Administrador(a)' : 'Responsável'}
+                onSign={handleAddSignature}
+              />
+            </TabsContent>
           </Tabs>
         </div>
       </div>
