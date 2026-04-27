@@ -71,6 +71,8 @@ export default function PEIView() {
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(patientId || null);
   const [selectedStudentName, setSelectedStudentName] = useState<string>('');
+  const [generatorOpen, setGeneratorOpen] = useState(false);
+  const [progressEntries, setProgressEntries] = useState<any[]>([]);
 
   // Teacher or Admin without a selected student: load students
   useEffect(() => {
@@ -203,6 +205,9 @@ export default function PEIView() {
 
     setGoals(planGoals);
     setAccommodations(planAccommodations);
+
+    const rawNotes = Array.isArray(plan?.progress_notes) ? plan.progress_notes : [];
+    setProgressEntries(rawNotes);
   };
 
   const handlePlanSelect = (planId: string) => {
