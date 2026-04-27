@@ -137,6 +137,14 @@ export function getMobileMenuSections(role: AppRole | null, isAdmin: boolean): N
   return getSidebarSections(role, isAdmin);
 }
 
+/** Sections shown in the admin "Mais" sheet of the mobile bottom bar. */
+export function getAdminMobileSections(): NavSection[] {
+  return [
+    { id: 'admin', label: 'Administração', items: ADMIN_NAV },
+    { id: 'settings', label: 'Configurações', items: SETTINGS_NAV },
+  ];
+}
+
 export function getBottomNavItems(role: AppRole | null, isAdmin: boolean): BottomNavItem[] {
   if (isAdmin) return ADMIN_BOTTOM;
   const r = normalizeRole(role);
