@@ -25,24 +25,17 @@ export default function Home() {
       return;
     }
 
-    // Redirect based on user role
+    // Redirect based on user role (NeuroPlay EDU)
     switch (role) {
       case 'admin':
-        navigate('/admin/network', { replace: true });
+        navigate('/admin', { replace: true });
         break;
-      case 'therapist':
-        navigate('/therapist/patients', { replace: true });
-        break;
-      case 'teacher':
-        navigate('/educacao', { replace: true });
-        break;
-      case 'patient':
+      case 'student':
         navigate('/student-hub', { replace: true });
         break;
-      case 'parent':
-      case 'user':
+      case 'teacher':
       default:
-        navigate('/dashboard-pais', { replace: true });
+        navigate('/educacao', { replace: true });
         break;
     }
   }, [user, role, authLoading, roleLoading, navigate]);
