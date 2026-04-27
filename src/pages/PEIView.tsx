@@ -15,11 +15,16 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Brain, Target, Lightbulb, ClipboardCheck, 
-  Plus, Save, TrendingUp, AlertCircle, ArrowLeft, FileDown, Shield
+  Plus, Save, TrendingUp, AlertCircle, ArrowLeft, FileDown, Shield,
+  Sparkles, Award, ShieldCheck
 } from 'lucide-react';
 import { generatePEIPdf, getClassificationLabel, getDefaultBNCCSkills } from '@/lib/peiPdfGenerator';
 import { toast } from 'sonner';
 import { SkillsInventory } from '@/components/pei/SkillsInventory';
+import { GoalGeneratorDialog } from '@/components/pei/GoalGeneratorDialog';
+import { PEIBadgesPanel, type PEIMilestone } from '@/components/pei/PEIBadgesPanel';
+import { PEISignaturePanel, type PEISignature } from '@/components/pei/PEISignaturePanel';
+import type { BnccGoalTemplate } from '@/lib/peiBnccCatalog';
 
 interface PEIGoal {
   id: string;
