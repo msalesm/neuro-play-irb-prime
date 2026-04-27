@@ -15,11 +15,16 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Brain, Target, Lightbulb, ClipboardCheck, 
-  Plus, Save, TrendingUp, AlertCircle, ArrowLeft, FileDown, Shield
+  Plus, Save, TrendingUp, AlertCircle, ArrowLeft, FileDown, Shield,
+  Sparkles, Award, ShieldCheck
 } from 'lucide-react';
 import { generatePEIPdf, getClassificationLabel, getDefaultBNCCSkills } from '@/lib/peiPdfGenerator';
 import { toast } from 'sonner';
 import { SkillsInventory } from '@/components/pei/SkillsInventory';
+import { GoalGeneratorDialog } from '@/components/pei/GoalGeneratorDialog';
+import { PEIBadgesPanel, type PEIMilestone } from '@/components/pei/PEIBadgesPanel';
+import { PEISignaturePanel, type PEISignature } from '@/components/pei/PEISignaturePanel';
+import type { BnccGoalTemplate } from '@/lib/peiBnccCatalog';
 
 interface PEIGoal {
   id: string;
@@ -66,6 +71,8 @@ export default function PEIView() {
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(patientId || null);
   const [selectedStudentName, setSelectedStudentName] = useState<string>('');
+  const [generatorOpen, setGeneratorOpen] = useState(false);
+  const [progressEntries, setProgressEntries] = useState<any[]>([]);
 
   // Teacher or Admin without a selected student: load students
   useEffect(() => {
@@ -198,6 +205,9 @@ export default function PEIView() {
 
     setGoals(planGoals);
     setAccommodations(planAccommodations);
+
+    const rawNotes = Array.isArray(plan?.progress_notes) ? plan.progress_notes : [];
+    setProgressEntries(rawNotes);
   };
 
   const handlePlanSelect = (planId: string) => {
@@ -245,6 +255,61 @@ export default function PEIView() {
     
     setIsEditing(false);
   };
+
+  const handleGenerateGoalsFromBNCC = async (templates: BnccGoalTemplate[]) => {
+    const newGoals: PEIGoal[] = templates.map((t, idx) => ({
+      id: `${Date.now()}_${idx}`,
+      area: t.area,
+      objective: `[${t.bnccCode}] ${t.objective}`,
+      strategies: [...t.strategies, ...t.recommendations.map((r) => `Recomendação: ${r}`)],
+      timeline: t.suggestedTimeline,
+      progress: 0,
+      status: 'pending',
+    }));
+    const updated = [...goals, ...newGoals];
+    setGoals(updated);
+    if (currentPlan) {
+      await updatePEI(currentPlan.id, { goals: updated });
+    }
+    toast.success(`${newGoals.length} meta(s) BNCC adicionada(s) ao PEI`);
+  };
+
+  const persistProgressEntries = async (entries: any[]) => {
+    setProgressEntries(entries);
+    if (currentPlan) {
+      await updatePEI(currentPlan.id, { progress_notes: entries });
+    }
+  };
+
+  const handleAddMilestone = (m: Omit<PEIMilestone, 'id' | 'type'>) => {
+    const entry: PEIMilestone = {
+      id: `m_${Date.now()}`,
+      type: 'milestone',
+      ...m,
+      created_by: user?.id,
+    };
+    persistProgressEntries([...progressEntries, entry]);
+    toast.success('Marco registrado');
+  };
+
+  const handleAddSignature = (s: Omit<PEISignature, 'id' | 'type'>) => {
+    const entry: PEISignature = {
+      id: `s_${Date.now()}`,
+      type: 'signature',
+      ...s,
+    };
+    persistProgressEntries([...progressEntries, entry]);
+  };
+
+  const milestones: PEIMilestone[] = progressEntries.filter(
+    (e: any) => e?.type === 'milestone',
+  );
+  const signatures: PEISignature[] = progressEntries.filter(
+    (e: any) => e?.type === 'signature',
+  );
+  const legacyNotes = progressEntries.filter(
+    (e: any) => e?.type !== 'milestone' && e?.type !== 'signature',
+  );
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -426,6 +491,12 @@ const getStatusLabel = (status: string) => {
           <Button variant="secondary" onClick={() => setIsEditing(!isEditing)} className="text-foreground">
             {isEditing ? 'Cancelar' : 'Editar PEI'}
           </Button>
+          {isEditing && currentPlan && (
+            <Button variant="outline" onClick={() => setGeneratorOpen(true)}>
+              <Sparkles className="h-4 w-4 mr-2" />
+              Gerar metas BNCC
+            </Button>
+          )}
           {isEditing && (
             <Button onClick={handleSavePEI}>
               <Save className="h-4 w-4 mr-2" />
@@ -515,7 +586,15 @@ const getStatusLabel = (status: string) => {
               <TabsTrigger value="skills">Inventário de Habilidades</TabsTrigger>
               <TabsTrigger value="accommodations">Acomodações</TabsTrigger>
               <TabsTrigger value="strategies">Estratégias</TabsTrigger>
-              <TabsTrigger value="progress">Notas de Progresso</TabsTrigger>
+              <TabsTrigger value="badges">
+                <Award className="h-4 w-4 mr-1" />
+                Avanços e Badges
+              </TabsTrigger>
+              <TabsTrigger value="signature">
+                <ShieldCheck className="h-4 w-4 mr-1" />
+                Assinatura
+              </TabsTrigger>
+              <TabsTrigger value="progress">Notas</TabsTrigger>
             </TabsList>
 
             <TabsContent value="goals" className="space-y-4">
@@ -719,9 +798,9 @@ const getStatusLabel = (status: string) => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {currentPlan?.progress_notes && Array.isArray(currentPlan.progress_notes) && currentPlan.progress_notes.length > 0 ? (
+                  {legacyNotes.length > 0 ? (
                     <div className="space-y-4">
-                      {currentPlan.progress_notes.map((note: any, idx: number) => (
+                      {legacyNotes.map((note: any, idx: number) => (
                         <div key={idx} className="border-l-2 border-primary pl-4 py-2">
                           <p className="text-sm text-muted-foreground">{note.date}</p>
                           <p className="text-sm mt-1">{note.note}</p>
@@ -736,9 +815,39 @@ const getStatusLabel = (status: string) => {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            <TabsContent value="badges">
+              <PEIBadgesPanel
+                goals={goals.map((g) => ({
+                  id: g.id,
+                  area: g.area,
+                  objective: g.objective,
+                  progress: g.progress,
+                }))}
+                milestones={milestones}
+                isEditing={isEditing}
+                onAddMilestone={handleAddMilestone}
+              />
+            </TabsContent>
+
+            <TabsContent value="signature">
+              <PEISignaturePanel
+                signatures={signatures}
+                isEditing={isEditing}
+                defaultSignerName={user?.user_metadata?.full_name || user?.email || ''}
+                defaultSignerRole={isTeacher ? 'Professor(a)' : isAdmin ? 'Administrador(a)' : 'Responsável'}
+                onSign={handleAddSignature}
+              />
+            </TabsContent>
           </Tabs>
         </div>
       </div>
+
+      <GoalGeneratorDialog
+        open={generatorOpen}
+        onOpenChange={setGeneratorOpen}
+        onGenerate={handleGenerateGoalsFromBNCC}
+      />
     </ModernPageLayout>
   );
 }
