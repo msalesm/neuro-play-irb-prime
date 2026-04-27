@@ -47,7 +47,6 @@ const SilabaMagica = lazy(() => import("./pages/games/SilabaMagica"));
 const QuebraCabecaMagico = lazy(() => import("./pages/games/QuebraCabecaMagico"));
 const AventuraNumeros = lazy(() => import("./pages/games/AventuraNumeros"));
 const ContadorHistorias = lazy(() => import("./pages/games/ContadorHistorias"));
-const SocialScenarios = lazy(() => import("./pages/games/SocialScenarios"));
 const EmotionalWeather = lazy(() => import("./pages/games/EmotionalWeather"));
 const SensoryFlow = lazy(() => import("./pages/games/SensoryFlow"));
 const VisualSync = lazy(() => import("./pages/games/VisualSync"));
