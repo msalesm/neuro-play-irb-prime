@@ -1,3 +1,4 @@
 // EDU stub: clinical/behavioral widget removed.
-export default function StudentTraitProfile(_props: any) { return null; }
-export const StudentTraitProfile = (_props: any) => null;
+const StudentTraitProfileStub = (_props: any) => null;
+export default StudentTraitProfileStub;
+export const StudentTraitProfile = StudentTraitProfileStub;

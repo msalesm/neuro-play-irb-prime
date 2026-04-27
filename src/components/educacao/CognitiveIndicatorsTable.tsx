@@ -1,3 +1,4 @@
 // EDU stub: clinical/behavioral widget removed.
-export default function CognitiveIndicatorsTable(_props: any) { return null; }
-export const CognitiveIndicatorsTable = (_props: any) => null;
+const CognitiveIndicatorsTableStub = (_props: any) => null;
+export default CognitiveIndicatorsTableStub;
+export const CognitiveIndicatorsTable = CognitiveIndicatorsTableStub;

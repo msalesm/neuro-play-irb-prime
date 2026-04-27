@@ -1,3 +1,4 @@
 // EDU stub: clinical/behavioral widget removed.
-export default function ClassGamification(_props: any) { return null; }
-export const ClassGamification = (_props: any) => null;
+const ClassGamificationStub = (_props: any) => null;
+export default ClassGamificationStub;
+export const ClassGamification = ClassGamificationStub;

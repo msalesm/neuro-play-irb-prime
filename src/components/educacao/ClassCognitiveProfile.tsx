@@ -1,3 +1,4 @@
 // EDU stub: clinical/behavioral widget removed.
-export default function ClassCognitiveProfile(_props: any) { return null; }
-export const ClassCognitiveProfile = (_props: any) => null;
+const ClassCognitiveProfileStub = (_props: any) => null;
+export default ClassCognitiveProfileStub;
+export const ClassCognitiveProfile = ClassCognitiveProfileStub;
