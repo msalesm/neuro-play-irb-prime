@@ -256,6 +256,61 @@ export default function PEIView() {
     setIsEditing(false);
   };
 
+  const handleGenerateGoalsFromBNCC = async (templates: BnccGoalTemplate[]) => {
+    const newGoals: PEIGoal[] = templates.map((t, idx) => ({
+      id: `${Date.now()}_${idx}`,
+      area: t.area,
+      objective: `[${t.bnccCode}] ${t.objective}`,
+      strategies: [...t.strategies, ...t.recommendations.map((r) => `Recomendação: ${r}`)],
+      timeline: t.suggestedTimeline,
+      progress: 0,
+      status: 'pending',
+    }));
+    const updated = [...goals, ...newGoals];
+    setGoals(updated);
+    if (currentPlan) {
+      await updatePEI(currentPlan.id, { goals: updated });
+    }
+    toast.success(`${newGoals.length} meta(s) BNCC adicionada(s) ao PEI`);
+  };
+
+  const persistProgressEntries = async (entries: any[]) => {
+    setProgressEntries(entries);
+    if (currentPlan) {
+      await updatePEI(currentPlan.id, { progress_notes: entries });
+    }
+  };
+
+  const handleAddMilestone = (m: Omit<PEIMilestone, 'id' | 'type'>) => {
+    const entry: PEIMilestone = {
+      id: `m_${Date.now()}`,
+      type: 'milestone',
+      ...m,
+      created_by: user?.id,
+    };
+    persistProgressEntries([...progressEntries, entry]);
+    toast.success('Marco registrado');
+  };
+
+  const handleAddSignature = (s: Omit<PEISignature, 'id' | 'type'>) => {
+    const entry: PEISignature = {
+      id: `s_${Date.now()}`,
+      type: 'signature',
+      ...s,
+    };
+    persistProgressEntries([...progressEntries, entry]);
+  };
+
+  const milestones: PEIMilestone[] = progressEntries.filter(
+    (e: any) => e?.type === 'milestone',
+  );
+  const signatures: PEISignature[] = progressEntries.filter(
+    (e: any) => e?.type === 'signature',
+  );
+  const legacyNotes = progressEntries.filter(
+    (e: any) => e?.type !== 'milestone' && e?.type !== 'signature',
+  );
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return 'default';
