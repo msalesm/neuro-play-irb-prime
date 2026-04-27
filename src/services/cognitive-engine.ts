@@ -1,5 +1,8 @@
-// EDU stub: cognitive engine simplified for EDU.
+// EDU stub
 export function analyzeCognitiveSession(_data: any) {
   return { score: 0, domains: {}, suggestions: [] };
 }
-export default { analyzeCognitiveSession };
+export function generateBehavioralProfile(_data: any) {
+  return { dominantTrait: 'balanced', scores: {} };
+}
+export default { analyzeCognitiveSession, generateBehavioralProfile };

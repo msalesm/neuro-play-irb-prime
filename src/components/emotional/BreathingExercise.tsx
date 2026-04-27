@@ -1,2 +1,4 @@
 // EDU stub
-export default function BreathingExercise() { return null; }
+const BreathingExercise = (_props: any) => null;
+export default BreathingExercise;
+export { BreathingExercise };

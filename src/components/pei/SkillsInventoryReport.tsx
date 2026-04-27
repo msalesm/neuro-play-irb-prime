@@ -1,2 +1,4 @@
 // EDU stub
-export default function SkillsInventoryReport(_props: any) { return null; }
+const SkillsInventoryReport = (_props: any) => null;
+export default SkillsInventoryReport;
+export { SkillsInventoryReport };

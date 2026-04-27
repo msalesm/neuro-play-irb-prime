@@ -1,2 +1,4 @@
-// EDU stub: full onboarding wizard removed.
-export default function PlatformOnboarding() { return null; }
+// EDU stub
+const PlatformOnboarding = (_props: any) => null;
+export default PlatformOnboarding;
+export { PlatformOnboarding };
