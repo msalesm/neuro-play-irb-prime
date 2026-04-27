@@ -9,11 +9,13 @@ export interface CognitiveIndex {
     language: number;
     logic: number;
     socioemotional: number;
+    executiveFunction: number;
+    socialCognition: number;
   };
 }
 const EMPTY: CognitiveIndex = {
   value: 0, level: 'medium', score: 0,
-  domains: { attention: 0, memory: 0, language: 0, logic: 0, socioemotional: 0 },
+  domains: { attention: 0, memory: 0, language: 0, logic: 0, socioemotional: 0, executiveFunction: 0, socialCognition: 0 },
 };
 export function calculateCognitiveIndex(_data?: any): CognitiveIndex { return { ...EMPTY }; }
 export function calculateClassNCI(_classData?: any): CognitiveIndex { return { ...EMPTY }; }
