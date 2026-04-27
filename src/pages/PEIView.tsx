@@ -798,9 +798,9 @@ const getStatusLabel = (status: string) => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {currentPlan?.progress_notes && Array.isArray(currentPlan.progress_notes) && currentPlan.progress_notes.length > 0 ? (
+                  {legacyNotes.length > 0 ? (
                     <div className="space-y-4">
-                      {currentPlan.progress_notes.map((note: any, idx: number) => (
+                      {legacyNotes.map((note: any, idx: number) => (
                         <div key={idx} className="border-l-2 border-primary pl-4 py-2">
                           <p className="text-sm text-muted-foreground">{note.date}</p>
                           <p className="text-sm mt-1">{note.note}</p>
@@ -818,6 +818,12 @@ const getStatusLabel = (status: string) => {
           </Tabs>
         </div>
       </div>
+
+      <GoalGeneratorDialog
+        open={generatorOpen}
+        onOpenChange={setGeneratorOpen}
+        onGenerate={handleGenerateGoalsFromBNCC}
+      />
     </ModernPageLayout>
   );
 }
