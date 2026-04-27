@@ -491,6 +491,12 @@ const getStatusLabel = (status: string) => {
           <Button variant="secondary" onClick={() => setIsEditing(!isEditing)} className="text-foreground">
             {isEditing ? 'Cancelar' : 'Editar PEI'}
           </Button>
+          {isEditing && currentPlan && (
+            <Button variant="outline" onClick={() => setGeneratorOpen(true)}>
+              <Sparkles className="h-4 w-4 mr-2" />
+              Gerar metas BNCC
+            </Button>
+          )}
           {isEditing && (
             <Button onClick={handleSavePEI}>
               <Save className="h-4 w-4 mr-2" />
@@ -580,7 +586,15 @@ const getStatusLabel = (status: string) => {
               <TabsTrigger value="skills">Inventário de Habilidades</TabsTrigger>
               <TabsTrigger value="accommodations">Acomodações</TabsTrigger>
               <TabsTrigger value="strategies">Estratégias</TabsTrigger>
-              <TabsTrigger value="progress">Notas de Progresso</TabsTrigger>
+              <TabsTrigger value="badges">
+                <Award className="h-4 w-4 mr-1" />
+                Avanços e Badges
+              </TabsTrigger>
+              <TabsTrigger value="signature">
+                <ShieldCheck className="h-4 w-4 mr-1" />
+                Assinatura
+              </TabsTrigger>
+              <TabsTrigger value="progress">Notas</TabsTrigger>
             </TabsList>
 
             <TabsContent value="goals" className="space-y-4">
