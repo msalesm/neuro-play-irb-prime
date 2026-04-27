@@ -152,7 +152,6 @@ const App = () => (
                     <Route path="/games/aventura-numeros" element={<P><AventuraNumeros /></P>} />
                     <Route path="/games/contador-historias" element={<P><ContadorHistorias /></P>} />
                     <Route path="/games/mindful-breath" element={<P><MindfulBreath /></P>} />
-                    <Route path="/games/social-scenarios" element={<P><SocialScenarios /></P>} />
                     <Route path="/games/emotional-weather" element={<P><EmotionalWeather /></P>} />
                     <Route path="/games/sensory-flow" element={<P><SensoryFlow /></P>} />
                     <Route path="/games/visual-sync" element={<P><VisualSync /></P>} />
