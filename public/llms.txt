@@ -1,0 +1,16 @@
+# NeuroPlay EDU
+
+> Plataforma brasileira de triagem gamificada de neurodiversidade, geração de Plano Educacional Individualizado (PEI) e capacitação docente para escolas.
+
+NeuroPlay EDU oferece jogos cognitivos validados pedagogicamente para identificar sinais de dislexia, TDAH e TEA em até 15 minutos, gera rascunhos de PEI alinhados à BNCC e à Lei 14.254/21, e fornece módulos de capacitação com certificado digital para professores.
+
+## Pages
+
+- [Home](/): Visão geral da plataforma e proposta de valor.
+- [Entrar](/auth): Login e criação de conta para escolas, professores e alunos.
+- [Iniciar sessão de triagem](/join): Aluno entra em uma sessão coletiva via código de 4 dígitos.
+- [Aceitar convite](/accept-invite): Vincula um responsável a um perfil de aluno via código.
+
+## Optional
+
+- Painéis internos (alunos, professores, gestão escolar) requerem autenticação e não são indexáveis.

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -134,13 +135,21 @@ export default function JoinScan() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <Helmet>
+        <title>Iniciar sessão de triagem — NeuroPlay EDU</title>
+        <meta name="description" content="Digite o código fornecido pelo professor para iniciar sua sessão de triagem cognitiva NeuroPlay." />
+        <link rel="canonical" href="https://neuroplaybr.com/join" />
+        <meta property="og:title" content="Iniciar sessão de triagem — NeuroPlay EDU" />
+        <meta property="og:description" content="Entre em uma sessão de triagem cognitiva via código de 4 dígitos." />
+        <meta property="og:url" content="https://neuroplaybr.com/join" />
+      </Helmet>
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-6">
           <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
             <Brain className="h-7 w-7 text-primary" />
           </div>
-          <h1 className="text-2xl font-bold">NeuroPlay</h1>
+          <h1 className="text-2xl font-bold">NeuroPlay — Iniciar Sessão</h1>
           <p className="text-sm text-muted-foreground">Cognitive Scan</p>
         </div>
 
@@ -160,6 +169,7 @@ export default function JoinScan() {
                   maxLength={4}
                   inputMode="numeric"
                   autoFocus
+                  aria-label="Código da sessão de triagem"
                 />
               </div>
               <Button

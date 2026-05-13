@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { signInSchema, signUpSchema, authSchemas } from '@/lib/validation';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
+import { Helmet } from 'react-helmet-async';
 
 export default function Auth() {
   const { user, signIn, signUp, loading } = useAuth();
@@ -227,6 +228,14 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/30 to-background flex items-center justify-center p-6 relative overflow-hidden">
+      <Helmet>
+        <title>Entrar — NeuroPlay EDU</title>
+        <meta name="description" content="Entre na sua conta NeuroPlay EDU para acessar triagens, PEI e capacitação docente." />
+        <link rel="canonical" href="https://neuroplaybr.com/auth" />
+        <meta property="og:title" content="Entrar — NeuroPlay EDU" />
+        <meta property="og:description" content="Acesse sua conta para gerenciar triagens, PEI e capacitação." />
+        <meta property="og:url" content="https://neuroplaybr.com/auth" />
+      </Helmet>
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-4 w-72 h-72 bg-secondary/20 rounded-full blur-3xl animate-pulse" />
@@ -239,7 +248,7 @@ export default function Auth() {
             <Brain className="h-10 w-10 text-primary-foreground" />
           </div>
           <h1 className="font-heading text-4xl font-bold text-primary-foreground mb-3 bg-gradient-to-r from-primary-foreground via-secondary/60 to-info/60 bg-clip-text text-transparent">
-            NeuroPlay
+            NeuroPlay EDU — Entrar
           </h1>
           <p className="text-primary-foreground/80 text-lg">
             Jogos Terapêuticos para Neurodiversidade

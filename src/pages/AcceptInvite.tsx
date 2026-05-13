@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Loader2, Gift, Check, UserPlus, ArrowLeft, LogOut } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const inviteCodeSchema = z.object({
   code: z.string().min(8, 'Código deve ter 8 caracteres').max(8, 'Código deve ter 8 caracteres'),
@@ -189,12 +190,20 @@ export default function AcceptInvite() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-background to-muted">
+      <Helmet>
+        <title>Aceitar convite — NeuroPlay EDU</title>
+        <meta name="description" content="Vincule seu acesso a um perfil de aluno usando o código de convite de 8 caracteres recebido da escola ou responsável." />
+        <link rel="canonical" href="https://neuroplaybr.com/accept-invite" />
+        <meta property="og:title" content="Aceitar convite — NeuroPlay EDU" />
+        <meta property="og:description" content="Vincule seu acesso a um perfil via código de convite." />
+        <meta property="og:url" content="https://neuroplaybr.com/accept-invite" />
+      </Helmet>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
             <Gift className="w-8 h-8 text-primary" />
           </div>
-          <CardTitle>Aceitar Convite</CardTitle>
+          <h1 className="text-2xl font-semibold leading-none tracking-tight">Aceitar convite NeuroPlay EDU</h1>
           <CardDescription>
             Digite o código de convite que você recebeu
           </CardDescription>

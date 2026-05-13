@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/react';
 import { createRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
 import "./index.css";
 import { ErrorFallback } from "./components/ErrorFallback.tsx";
@@ -48,6 +49,8 @@ createRoot(document.getElementById("root")!).render(
   <Sentry.ErrorBoundary
     fallback={({ resetError }) => <ErrorFallback resetError={resetError} />}
   >
-    <App />
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
   </Sentry.ErrorBoundary>
 );

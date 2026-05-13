@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Gamepad2, ClipboardCheck, GraduationCap } from "lucide-react";
@@ -6,6 +7,14 @@ import { Gamepad2, ClipboardCheck, GraduationCap } from "lucide-react";
 export default function Index() {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>NeuroPlay EDU — Triagem de neurodiversidade para escolas</title>
+        <meta name="description" content="Identifique sinais de dislexia, TDAH e TEA em 15 minutos com triagem gamificada, PEI automático e capacitação docente alinhada à BNCC." />
+        <link rel="canonical" href="https://neuroplaybr.com/" />
+        <meta property="og:title" content="NeuroPlay EDU — Triagem de neurodiversidade para escolas" />
+        <meta property="og:description" content="Triagem gamificada, PEI automático e capacitação docente para identificar sinais de dislexia, TDAH e TEA." />
+        <meta property="og:url" content="https://neuroplaybr.com/" />
+      </Helmet>
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <span className="font-bold text-xl text-foreground">NeuroPlay EDU</span>
@@ -33,6 +42,7 @@ export default function Index() {
         </section>
 
         <section className="container mx-auto px-6 py-12 grid md:grid-cols-3 gap-6 max-w-5xl">
+          <h2 className="sr-only md:col-span-3">Recursos da plataforma</h2>
           <Card className="p-6">
             <Gamepad2 className="w-10 h-10 text-primary mb-3" />
             <h3 className="font-semibold text-lg mb-2">Triagem em 15 minutos</h3>
