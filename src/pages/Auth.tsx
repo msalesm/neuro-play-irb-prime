@@ -39,7 +39,7 @@ export default function Auth() {
           if (!roles || roles.length === 0) {
             navigate('/student-hub');
           } else {
-            const primaryRole = roles[0].role;
+            const primaryRole = roles[0].role as string;
             switch (primaryRole) {
               case 'admin':
                 navigate('/escola-dashboard');
