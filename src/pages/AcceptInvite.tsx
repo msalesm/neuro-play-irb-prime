@@ -203,7 +203,7 @@ export default function AcceptInvite() {
           <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4">
             <Gift className="w-8 h-8 text-primary" />
           </div>
-          <CardTitle asChild><h1 className="text-2xl font-semibold leading-none tracking-tight">Aceitar convite NeuroPlay EDU</h1></CardTitle>
+          <h1 className="text-2xl font-semibold leading-none tracking-tight">Aceitar convite NeuroPlay EDU</h1>
           <CardDescription>
             Digite o código de convite que você recebeu
           </CardDescription>

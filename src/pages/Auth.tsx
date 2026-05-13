@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { signInSchema, signUpSchema, authSchemas } from '@/lib/validation';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
+import { Helmet } from 'react-helmet-async';
 
 export default function Auth() {
   const { user, signIn, signUp, loading } = useAuth();
