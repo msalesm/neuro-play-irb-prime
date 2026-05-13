@@ -228,7 +228,7 @@ export function AccessibilityQuickPanel() {
                   className="w-full justify-between mb-4"
                   onClick={() => {
                     setIsOpen(false);
-                    navigate('/accessibility-settings');
+                    navigate('/accessibility');
                   }}
                 >
                   <span className="flex items-center gap-2">
