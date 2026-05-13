@@ -15,22 +15,23 @@ export default function Home() {
 
     // If not authenticated, show landing page
     if (!user) {
-      navigate('/index', { replace: true });
+      navigate('/', { replace: true });
       return;
     }
 
-    // If user has no role, redirect to onboarding
+    // If user has no role, send to student hub by default
     if (!role) {
-      navigate('/onboarding', { replace: true });
+      navigate('/student-hub', { replace: true });
       return;
     }
 
     // Redirect based on user role (NeuroPlay EDU)
     switch (role) {
       case 'admin':
-        navigate('/admin', { replace: true });
+        navigate('/escola-dashboard', { replace: true });
         break;
       case 'student':
+      case 'patient':
         navigate('/student-hub', { replace: true });
         break;
       case 'teacher':
