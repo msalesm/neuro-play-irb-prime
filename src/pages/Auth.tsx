@@ -37,35 +37,27 @@ export default function Auth() {
           if (error) throw error;
 
           if (!roles || roles.length === 0) {
-            // No role assigned - redirect to onboarding
-            navigate('/onboarding');
+            navigate('/student-hub');
           } else {
-            // Has role - redirect based on role
             const primaryRole = roles[0].role;
             switch (primaryRole) {
-              case 'parent':
-                navigate('/dashboard-pais');
-                break;
-              case 'patient':
-                navigate('/sistema-planeta-azul');
-                break;
-              case 'therapist':
-                navigate('/therapist/patients');
-                break;
-              case 'user':
-                navigate('/teacher/classes');
-                break;
               case 'admin':
-                navigate('/institutional');
+                navigate('/escola-dashboard');
+                break;
+              case 'teacher':
+                navigate('/educacao');
+                break;
+              case 'student':
+              case 'patient':
+                navigate('/student-hub');
                 break;
               default:
-                navigate('/dashboard-pais');
+                navigate('/home');
             }
           }
         } catch (error) {
           console.error('Error checking user role:', error);
-          // On error, redirect to onboarding to be safe
-          navigate('/onboarding');
+          navigate('/home');
         } finally {
           setCheckingRole(false);
         }
